@@ -1,9 +1,7 @@
 const start = Date.now();
 const moment = require('moment');
 require('moment-duration-format');
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = (client) => {
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
 	client.channels.cache.get('812082273393704960').messages.fetch({ limit: 1 }).then(msg => {

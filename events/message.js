@@ -2,12 +2,10 @@ const Discord = require('discord.js');
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
 const { apikey } = require('../config/pterodactyl.json');
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 function clean(text) {
-	if (typeof (text) === 'string') {return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));}
-	else {return text;}
+	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
+	else return text;
 }
 module.exports = (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
@@ -111,7 +109,7 @@ module.exports = (client, message) => {
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 		console.log(`[${time} INFO]: ${message.author.tag} issued dash command: ${message.content}`);
 		if (message.author.id !== '249638347306303499') client.users.cache.get('249638347306303499').send(commandLogEmbed);
-		command.execute(message, args, client, Discord);
+		command.execute(message, args, client);
 	}
 	catch (error) {
 		commandLogEmbed.setTitle('COMMAND FAILED').addField('**Error:**', clean(error));

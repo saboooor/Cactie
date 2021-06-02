@@ -23,6 +23,13 @@ If after step 3, you do not see a box that says \`Message @${e[0]}\`, you disabl
 **1.** On your list of Discord servers in the left-hand servers tab, you should see the ${e[2]} logo. Right click it.
 **2.** Click Privacy \`Settings\`
 **3.** Enable the setting labeled \`Allow direct messages from server members\`.`);
-		message.channel.send(Embed);
+		const row = new Discord.MessageActionRow()
+			.addComponents(
+				new Discord.MessageButton()
+					.setCustomID('create_ticket')
+					.setLabel('Still have an issue? Create a ticket by clicking here!')
+					.setStyle('SECONDARY'),
+			);
+		message.reply({ embed: Embed, components: [row] });
 	},
 };

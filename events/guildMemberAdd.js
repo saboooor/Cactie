@@ -1,6 +1,4 @@
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = (client, member) => {
 	const srvconfig = client.settings.get(member.guild.id);
 	if (srvconfig.joinmessage == 'false') return;
