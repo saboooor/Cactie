@@ -102,7 +102,7 @@ module.exports = (client, message) => {
 	try {
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: ${message.author.tag} issued legacy command: ${message.content}`);
+		console.log(`[${time} INFO]: ${message.author.tag} issued dash command: ${message.content}`);
 		if (message.author.id !== '249638347306303499') client.users.cache.get('249638347306303499').send(commandLogEmbed);
 		command.execute(message, args, client, Discord);
 	}

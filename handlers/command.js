@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 module.exports = client => {
+	client.cooldowns = new Discord.Collection();
 	client.commands = new Discord.Collection();
 	const commandFolders = fs.readdirSync('./commands');
 	for (const folder of commandFolders) {
