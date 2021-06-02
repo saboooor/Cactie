@@ -4,7 +4,7 @@ module.exports = client => {
 	client.response = new Discord.Collection();
 	const responseFiles = fs.readdirSync('./responses').filter(file => file.endsWith('.js'));
 	for (const file of responseFiles) {
-		const response = require(`./responses/${file}`);
+		const response = require(`../responses/${file}`);
 		client.response.set(response.name, response);
 	}
 };
