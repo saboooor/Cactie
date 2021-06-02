@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const nodeactyl = require('nodeactyl');
+const fetch = require('node-fetch');
 const Client = nodeactyl.Client;
 const { apikey } = require('../config/pterodactyl.json');
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
@@ -7,7 +8,7 @@ function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
-module.exports = (client, message) => {
+module.exports = async (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
 		message.channel.send('Updating to latest commit...');
 		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
@@ -19,6 +20,15 @@ module.exports = (client, message) => {
 	if (message.author.bot) return;
 	if (message.channel.type == 'dm') {
 		if (message.content.startsWith('-')) return message.reply('You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead');
+		if (message.attachments.size == 1) {
+			const picture = message.attachments.first();
+			const attachmenturl = picture.attachment;
+			const response = await fetch(attachmenturl, {
+				method: 'GET',
+			});
+			const buffer = await response.buffer();
+			return client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`, new Discord.MessageAttachment(buffer, 'image.png'));
+		}
 		return client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`);
 	}
 	const srvconfig = client.settings.get(message.guild.id);
