@@ -23,6 +23,13 @@ module.exports = (client, message) => {
 		if (message.content.startsWith('-')) return message.reply('You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead');
 		client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`);
 	}
+	if (message.content.startsWith('**Online players (') || message.content.includes('PLAYERS ONLINE**')) client.response.get('list').execute(message);
+	if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'daddy', 'mommy', 'cute'].some(word => message.content.toLowerCase().includes(word))) {
+		if (srvconfig.simpreaction == 'false') return;
+		client.response.get('simp').execute(message);
+	}
+	if (message.content.toLowerCase().includes('what') && message.content.toLowerCase().includes('ip')) client.response.get('whatip').execute(message);
+	if (message.content.toLowerCase().includes('pup') && ['bad', 'gross', 'shit', 'dum'].some(word => message.content.toLowerCase().includes(word))) client.response.get('pupbad').execute(message);
 	const srvconfig = client.settings.get(message.guild.id);
 	if (message.content.includes(client.user.id)) {
 		message.reply(`My prefix is \`${srvconfig.prefix}\``);
