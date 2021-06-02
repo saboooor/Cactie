@@ -3,7 +3,7 @@ function minTwoDigits(n) {
 }
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
-const { apikey } = require('../config/pterodactyl.json');
+const { apikey } = require('../../../config/pterodactyl.json');
 module.exports = {
 	name: 'bungee',
 	description: 'Chopsticks proxy console',
