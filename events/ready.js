@@ -3,14 +3,15 @@ const start = Date.now();
 const moment = require('moment');
 require('moment-duration-format');
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
-module.exports = (client) => {
+module.exports = async (client) => {
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
 	client.channels.cache.get('812082273393704960').messages.fetch({ limit: 1 }).then(msg => {
 		const mesg = msg.first();
 		if (mesg.content !== 'Started Successfully!') client.channels.cache.get('812082273393704960').send('Started Successfully!');
 	});
+	const commands = await client.guilds.cache.get('811354612547190794').commands.fetch();
+	commands.forEach(command => console.log(command.name));
 	client.slashcommands.forEach(async command => {
-		const commands = await client.api.applications(client.user.id).commands.get();
 		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
 		console.log(`Detected ${command.name} has some changes! Updating command...`);
 		await client.guilds.cache.get('811354612547190794').commands.create({
