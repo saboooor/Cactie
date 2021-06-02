@@ -10,7 +10,6 @@ module.exports = async (client) => {
 		if (mesg.content !== 'Started Successfully!') client.channels.cache.get('812082273393704960').send('Started Successfully!');
 	});
 	const commands = await client.guilds.cache.get('811354612547190794').commands.fetch();
-	commands.forEach(command => console.log(command.name));
 	client.slashcommands.forEach(async command => {
 		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
 		console.log(`Detected ${command.name} has some changes! Updating command...`);

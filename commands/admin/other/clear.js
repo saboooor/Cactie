@@ -15,7 +15,7 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (message.commandName) {
-			args[0] = args[0].value;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 			if (args[0] > 100) return message.reply('You can only clear 100 messages at once!', { ephemeral: true });
 		}
 		else if (args[0] > 100) {
