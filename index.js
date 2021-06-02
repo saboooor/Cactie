@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
+const fs = require('fs');
 const client = new Discord.Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'], intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS', 'GUILD_BANS', 'GUILD_PRESENCES', 'GUILD_MESSAGE_REACTIONS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS'], allowedMentions: { parse: ['users', 'roles', 'everyone'], repliedUser: true } });
-require('./handlers/event.js')(client);
-require('./handlers/database.js')(client);
-require('./handlers/commands.js')(client);
-require('./handlers/responses.js')(client);
-require('./handlers/autodelete.js')(client);
-require('./handlers/login.js')(client);
+client.handlers = new Discord.Collection();
+const responseFiles = fs.readdirSync('./handlers').filter(file => file.endsWith('.js'));
+for (const file of responseFiles) require(`./handlers/${file}`)(client);
