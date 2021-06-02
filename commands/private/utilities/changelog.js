@@ -1,10 +1,11 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'changelog',
 	description: 'Post a changelog',
 	aliases: ['cl'],
 	args: true,
 	usage: '<Server> <Changes (split with new line)>',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		const changes = args.join(' ').replace(args[0] + ' ', '').split('\n');
 		const Embed = new Discord.MessageEmbed()
 			.setAuthor('Changelog', 'https://hotemoji.com/images/dl/g/scroll-emoji-by-google.png')

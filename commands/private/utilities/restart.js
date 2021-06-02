@@ -7,7 +7,7 @@ const { apikey } = require('../../../config/pterodactyl.json');
 module.exports = {
 	name: 'restart',
 	description: 'Restart pup or a server',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		let id = '5bcaad8d';
 		let arg = args.join(' ');
 		if (arg) arg = arg.toLowerCase();

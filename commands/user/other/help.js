@@ -1,9 +1,10 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with pup',
 	aliases: ['commands'],
 	cooldown: 2,
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215));

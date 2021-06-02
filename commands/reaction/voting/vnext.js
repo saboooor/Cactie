@@ -78,7 +78,7 @@ function checkign(user, command, message) {
 module.exports = {
 	name: 'vnext',
 	description: 'Check your votenext',
-	async execute(message, user, client, Discord, reaction) {
+	async execute(message, user, client, reaction) {
 		if (message.guild.id !== '711661870926397601' && message.guild.id !== '661736128373719141' && message.guild.id !== '837116518730694678') return;
 		if (reaction) {
 			message.author = user;

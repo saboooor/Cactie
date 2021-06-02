@@ -1,10 +1,11 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'settings',
 	description: 'Configure the bot in this guild',
 	aliases: ['setting'],
 	cooldown: 1,
 	permissions: 'ADMINISTRATOR',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');

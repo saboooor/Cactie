@@ -1,9 +1,10 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'invite',
 	description: 'Get pup invite links',
 	aliases: ['inv'],
 	cooldown: 10,
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))

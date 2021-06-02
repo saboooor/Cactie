@@ -4,7 +4,7 @@ function sleep(ms) {
 module.exports = {
 	name: 'nsfw',
 	description: 'Toggle the NSFW role',
-	async execute(message, user, client, Discord, reaction) {
+	async execute(message, user, client, reaction) {
 		if (message.guild.id !== '661736128373719141') return;
 		if (reaction) {
 			message.author = user;

@@ -1,10 +1,11 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something',
 	cooldown: 10,
 	args: true,
 	usage: '<Suggestion>',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		let channel = message.guild.channels.cache.find(c => c.name.includes('suggestions'));
 		const suggestion = args.join(' ');
 		const Embed = new Discord.MessageEmbed()

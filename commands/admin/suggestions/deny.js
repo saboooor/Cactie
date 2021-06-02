@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'deny',
 	description: 'Deny a suggestion',
@@ -5,7 +6,7 @@ module.exports = {
 	args: true,
 	permissions: 'ADMINISTRATOR',
 	usage: '<Message ID> [Response]',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		await message.delete();
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();

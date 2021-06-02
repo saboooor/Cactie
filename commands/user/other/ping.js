@@ -1,9 +1,10 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
 	aliases: ['pong'],
 	cooldown: 2,
-	execute(message, args, client, Discord) {
+	execute(message, args, client) {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Pong!')

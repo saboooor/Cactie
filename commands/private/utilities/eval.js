@@ -8,7 +8,7 @@ module.exports = {
 	aliases: ['ec'],
 	args: true,
 	usage: '<Code>',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (message.author.id !== '249638347306303499') return message.reply('You can\'t do that!');
 		try {
 			const code = args.join(' ');

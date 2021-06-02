@@ -5,7 +5,7 @@ module.exports = {
 	name: 'resolved',
 	description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',
 	aliases: ['resolve'],
-	async execute(message, args, client, Client, Discord) {
+	async execute(message, args, client, Client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.tickets == 'false') return message.reply('Tickets are disabled!');
 		if (!message.channel.topic) return message.reply('This is not a valid ticket!');

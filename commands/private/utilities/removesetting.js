@@ -1,10 +1,11 @@
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
+const Discord = require('discord.js');
 module.exports = {
 	name: 'removesetting',
 	description: 'Remove a guild setting',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (message.author.id !== '249638347306303499') return message.reply('You can\'t do that!');
 		const prop = args[0];
 		client.guilds.cache.forEach(guild => {

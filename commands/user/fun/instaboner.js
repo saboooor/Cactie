@@ -1,9 +1,10 @@
+const Discord = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your pp grow FAST',
 	aliases: ['instapp', 'instapenis', 'instaerect'],
 	cooldown: 1,
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply('This command is disabled!');
 		const srvconfig = client.settings.get(message.guild.id);
 		const nick = message.member.displayName;

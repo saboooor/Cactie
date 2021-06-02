@@ -10,7 +10,7 @@ module.exports = {
 	description: 'Join a minecraft server with Pup',
 	args: true,
 	usage: '<join/leave/chat/goto/move>',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (!client.guilds.cache.get('811354612547190794').members.cache.get(message.member.id)) return message.reply('You need to be in the Pup Bot Discord server for this to work! Do -invite to join!');
 		if (message.channel.id !== '841886305239826462') return message.reply('You need to be in <#841886305239826462> for this to work! This is due to spam reasons and we also need to see what you\'re doing with the bot.');
 		if (args[0] == 'join') {

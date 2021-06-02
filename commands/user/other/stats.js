@@ -9,12 +9,13 @@ const protocols = require('../../../config/mcprotocol.json');
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
+const Discord = require('discord.js');
 module.exports = {
 	name: 'stats',
 	description: 'Get stats of Pup or a Minecraft server',
 	aliases: ['status'],
 	cooldown: 5,
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
 			.setThumbnail('https://bugs.mojang.com/secure/attachment/99116/unknown_pack.png')

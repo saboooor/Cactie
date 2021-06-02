@@ -4,7 +4,7 @@ function sleep(ms) {
 module.exports = {
 	name: 'event',
 	description: 'Toggle the Event Notifs role',
-	async execute(message, user, client, Discord, reaction) {
+	async execute(message, user, client, reaction) {
 		if (message.guild.id !== '837116518730694678') return;
 		if (reaction) {
 			message.author = user;

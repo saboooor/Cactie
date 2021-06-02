@@ -1,12 +1,13 @@
 function sleep(ms) {
 	return new Promise(res => setTimeout(res, ms));
 }
+const Discord = require('discord.js');
 module.exports = {
 	name: 'boner',
 	description: 'See your pp grow',
 	aliases: ['pp', 'penis', 'erect'],
 	cooldown: 10,
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply('This command is disabled!');
 		const srvconfig = client.settings.get(message.guild.id);
 		const random = Math.round(Math.random() * srvconfig.maxppsize);

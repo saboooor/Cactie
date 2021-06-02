@@ -2,12 +2,13 @@ function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
 const hastebin = require('hastebin');
+const Discord = require('discord.js');
 module.exports = {
 	name: 'delete',
 	description: 'Delete a ticket',
 	guildOnly: true,
 	permissions: 'ADMINISTRATOR',
-	async execute(message, user, client, Discord, reaction) {
+	async execute(message, user, client, reaction) {
 		let author = message.author;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;

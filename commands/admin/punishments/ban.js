@@ -1,6 +1,7 @@
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
+const Discord = require('discord.js');
 module.exports = {
 	name: 'ban',
 	description: 'Ban someone with a reason',
@@ -8,7 +9,7 @@ module.exports = {
 	usage: '<User Mention> [Reason]',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (!message.mentions.users.first()) return message.reply('Please use a user mention');
 		const user = message.mentions.users.first();
 		const member = message.guild.members.cache.get(user.id);

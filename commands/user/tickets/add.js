@@ -1,12 +1,13 @@
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
+const Discord = require('discord.js');
 module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket',
 	args: true,
 	usage: '<User Mention or ID>',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply('Tickets are disabled!');
 		if (!message.channel.topic) return message.reply('This is not a valid ticket!');
 		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');

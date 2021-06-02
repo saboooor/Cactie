@@ -10,7 +10,7 @@ module.exports = {
 	aliases: ['b'],
 	args: true,
 	usage: '<Command>',
-	async execute(message, args, client, Discord) {
+	async execute(message, args, client) {
 		if (!client.guilds.cache.get('837116518730694678').members.cache.get(message.member.id)) return message.reply('You can\'t do that!');
 		if (!client.guilds.cache.get('837116518730694678').members.cache.get(message.member.id).roles.cache.has('837119752232632380')) return message.reply('You can\'t do that!');
 		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {

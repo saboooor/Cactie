@@ -4,11 +4,12 @@ function sleep(ms) {
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
+const Discord = require('discord.js');
 module.exports = {
 	name: 'ticket',
 	description: 'Create a ticket',
 	aliases: ['new'],
-	async execute(message, args, client, Discord, reaction) {
+	async execute(message, args, client, reaction) {
 		let author = message.author;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;
