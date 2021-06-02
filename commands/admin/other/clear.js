@@ -1,6 +1,4 @@
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = {
 	name: 'clear',
 	description: 'Delete multiple messages at once',

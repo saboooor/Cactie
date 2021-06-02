@@ -1,6 +1,4 @@
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const hastebin = require('hastebin');
 const Discord = require('discord.js');
 module.exports = {

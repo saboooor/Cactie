@@ -1,6 +1,4 @@
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'remove',

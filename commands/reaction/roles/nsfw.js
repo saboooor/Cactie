@@ -1,6 +1,4 @@
-function sleep(ms) {
-	return new Promise(res => setTimeout(res, ms));
-}
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'nsfw',
 	description: 'Toggle the NSFW role',

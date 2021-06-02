@@ -1,6 +1,4 @@
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
 const { apikey } = require('../../../config/pterodactyl.json');

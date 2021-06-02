@@ -1,6 +1,3 @@
-function sleep(ms) {
-	return new Promise(res => setTimeout(res, ms));
-}
 const mineflayer = require('mineflayer');
 const { mineflayer: mineflayerViewer } = require('prismarine-viewer');
 const { pathfinder, Movements, goals: { GoalNear } } = require('mineflayer-pathfinder');

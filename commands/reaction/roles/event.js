@@ -1,6 +1,4 @@
-function sleep(ms) {
-	return new Promise(res => setTimeout(res, ms));
-}
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'event',
 	description: 'Toggle the Event Notifs role',
