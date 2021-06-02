@@ -1,4 +1,9 @@
+const Discord = require('discord.js');
 function checkign(user, command, message) {
+	const Embed = new Discord.MessageEmbed()
+		.setColor(3447003)
+		.setTitle('Could not get votenext output.')
+		.setFooter(message.guild.name, message.guild.iconURL());
 	let console = message.guild.channels.cache.find(channel => channel.name === 'console');
 	if (!console) console = message.guild.channels.cache.find(channel => channel.name === 'hub-console');
 	const member = message.guild.members.cache.get(user.id);
@@ -12,27 +17,13 @@ function checkign(user, command, message) {
 		if (!check3) return;
 		const playername = check3.split(' (')[0].replace('- Player: ', '');
 		if (playername == '<Unknown>') {
-			member.send({ embed: {
-				color: 3447003,
-				title: 'Could not get votenext output.',
-				description: 'You need a linked account to see your votenext.',
-				footer: {
-					text: message.guild.name,
-					icon_url: message.guild.iconURL(),
-				},
-			} });
+			Embed.setDescription('You need a linked account to see your votenext.');
+			member.send(Embed);
 			return;
 		}
 		if (playername.includes(' ')) {
-			member.send({ embed: {
-				color: 3447003,
-				title: 'Could not get votenext output.',
-				description: 'You might need to leave the server to make this work.',
-				footer: {
-					text: message.guild.name,
-					icon_url: message.guild.iconURL(),
-				},
-			} });
+			Embed.setDescription('You need to leave the server to make this work.');
+			member.send(Embed);
 			return;
 		}
 		console.send(`${command} ${playername}`);
@@ -40,15 +31,8 @@ function checkign(user, command, message) {
 		const vnextcollect = console.createMessageCollector(filter2, { time: 7000 });
 		vnextcollect.on('collect', m2 => {
 			if (m2.content.includes('User does not exist: ')) {
-				member.send({ embed: {
-					color: 3447003,
-					title: 'Could not get votenext output.',
-					description: '(User does not exist) This is a known bug, please be patient while the owner fixes it!',
-					footer: {
-						text: message.guild.name,
-						icon_url: message.guild.iconURL(),
-					},
-				} });
+				Embed.setDescription('User does not exist');
+				member.send(Embed);
 				return;
 			}
 			const output2 = m2.content.split(/\n/);
@@ -62,15 +46,8 @@ function checkign(user, command, message) {
 				vnext6 = `\n${output2.find(site => site.startsWith('MCMP')).replace('MCMP:', '**MCMP:**')}`;
 				vnext7 = `\n${output2.find(site => site.startsWith('MCPS')).replace('MCPS:', '**MCPS:**')}`;
 			}
-			member.send({ embed: {
-				color: 3447003,
-				title: 'Your Next Votes:',
-				description: `${vnext1}\n${vnext2}\n${vnext3}\n${vnext4}\n${vnext5}${vnext6}${vnext7}`,
-				footer: {
-					text: message.guild.name,
-					icon_url: message.guild.iconURL(),
-				},
-			} });
+			Embed.setTitle('Your Next Votes:').setDescription(`${vnext1}\n${vnext2}\n${vnext3}\n${vnext4}\n${vnext5}${vnext6}${vnext7}`);
+			member.send(Embed);
 		});
 		return;
 	});
@@ -80,9 +57,7 @@ module.exports = {
 	description: 'Check your votenext',
 	async execute(message, user, client, reaction) {
 		if (message.guild.id !== '711661870926397601' && message.guild.id !== '661736128373719141' && message.guild.id !== '837116518730694678') return;
-		if (reaction) {
-			message.author = user;
-		}
+		if (reaction) message.author = user;
 		checkign(message.author, 'vnext', message);
 	},
 };

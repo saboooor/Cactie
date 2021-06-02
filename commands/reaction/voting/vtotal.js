@@ -1,4 +1,9 @@
+const Discord = require('discord.js');
 function checkign(user, command, message) {
+	const Embed = new Discord.MessageEmbed()
+		.setColor(3447003)
+		.setTitle('Could not get votetotal output.')
+		.setFooter(message.guild.name, message.guild.iconURL());
 	let console = message.guild.channels.cache.find(channel => channel.name === 'console');
 	if (!console) console = message.guild.channels.cache.find(channel => channel.name === 'hub-console');
 	const member = message.guild.members.cache.get(user.id);
@@ -12,27 +17,13 @@ function checkign(user, command, message) {
 		if (!check3) return;
 		const playername = check3.split(' (')[0].replace('- Player: ', '');
 		if (playername == '<Unknown>') {
-			member.send({ embed: {
-				color: 3447003,
-				title: 'Could not get votetotal output.',
-				description: 'You need a linked account to see your votetotal.',
-				footer: {
-					text: message.guild.name,
-					icon_url: message.guild.iconURL(),
-				},
-			} });
+			Embed.setDescription('You need a linked account to see your votenext.');
+			member.send(Embed);
 			return;
 		}
 		if (playername.includes(' ')) {
-			member.send({ embed: {
-				color: 3447003,
-				title: 'Could not get votetotal output.',
-				description: 'You might need to leave the server to make this work.',
-				footer: {
-					text: message.guild.name,
-					icon_url: message.guild.iconURL(),
-				},
-			} });
+			Embed.setDescription('You need to leave the server to make this work.');
+			member.send(Embed);
 			return;
 		}
 		console.send(`${command} ${playername}`);
@@ -40,15 +31,8 @@ function checkign(user, command, message) {
 		const vnextcollect = console.createMessageCollector(filter2, { time: 7000 });
 		vnextcollect.on('collect', m2 => {
 			if (m2.content.includes('User does not exist: ')) {
-				member.send({ embed: {
-					color: 3447003,
-					title: 'Could not get votetotal output.',
-					description: '(User does not exist) This is a known bug, please be patient while the owner fixes it!',
-					footer: {
-						text: message.guild.name,
-						icon_url: message.guild.iconURL(),
-					},
-				} });
+				Embed.setDescription('User does not exist');
+				member.send(Embed);
 				return;
 			}
 			const output2 = m2.content.split(/\n/);
@@ -56,15 +40,8 @@ function checkign(user, command, message) {
 			const vtotal2 = output2.find(site => site.startsWith('Weekly')).replace('Weekly Total:', '**Weekly Total:**');
 			const vtotal3 = output2.find(site => site.startsWith('Monthly')).replace('Monthly Total:', '**Monthly Total:**');
 			const vtotal4 = output2.find(site => site.startsWith('AllTime')).replace('AllTime Total:', '**AllTime Total:**');
-			member.send({ embed: {
-				color: 3447003,
-				title: 'Your Total Votes:',
-				description: `${vtotal1}\n${vtotal2}\n${vtotal3}\n${vtotal4}`,
-				footer: {
-					text: message.guild.name,
-					icon_url: message.guild.iconURL(),
-				},
-			} });
+			Embed.setTitle('Your Total Votes:').setDescription(`${vtotal1}\n${vtotal2}\n${vtotal3}\n${vtotal4}`);
+			member.send(Embed);
 		});
 		return;
 	});
@@ -74,9 +51,7 @@ module.exports = {
 	description: 'Check your votetotal',
 	async execute(message, user, client, reaction) {
 		if (message.guild.id !== '711661870926397601' && message.guild.id !== '661736128373719141' && message.guild.id !== '837116518730694678') return;
-		if (reaction) {
-			message.author = user;
-		}
+		if (reaction) message.author = user;
 		checkign(message.author, 'vtotal', message);
 	},
 };
