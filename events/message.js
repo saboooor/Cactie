@@ -24,7 +24,18 @@ module.exports = (client, message) => {
 		client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`);
 	}
 	const srvconfig = client.settings.get(message.guild.id);
-	if (!message.content.startsWith(srvconfig.prefix)) return;
+	if (!message.content.startsWith(srvconfig.prefix)) {
+		if (message.channel.name.includes('ticket-')) {
+			if (!message.channel.topic) return;
+			if (!message.channel.topic.includes('Ticket Opened by')) return;
+			if (client.tickets.get(message.channel.id).resolved != 'true') return;
+			client.tickets.set(message.channel.id, 'false', 'resolved');
+			const rn = new Date();
+			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
+			console.log(`[${time} INFO]: Unmarked ticket #${message.channel.name} as resolved`);
+		}
+		return;
+	}
 
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
