@@ -28,28 +28,21 @@ module.exports = async (client, reaction, user) => {
 			client.commands.get('event').execute(message, user, client, Discord, reaction);
 		}
 	}
-	if (reaction.emoji.name == '❌') {
-		if (message.channel.type != 'dm') return;
-		if (!message.content.includes('React to this message to unsubscribe to the broadcast')) return;
-		if (client.userdata.get(user.id, 'unsubbed') == 'true') return message.channel.send('You\'re already unsubscribed!');
-		client.userdata.set(user.id, 'true', 'unsubbed');
-		message.channel.send('Unsubscribed!');
-	}
 	if (message.channel.type == 'dm') return;
 	if (reaction.emoji.name == '🎫') {
 		if (message.embeds[0].title !== 'Need help? No problem!') return;
 		reaction.users.remove(user.id);
-		client.commands.get('ticket').execute(message, null, client, Discord, reaction);
+		client.commands.get('nsfw').execute(message, user, client, Discord, reaction);
 	}
 	else if (reaction.emoji.name == '⛔') {
-		await client.commands.get('delete').execute(message, null, client, Discord, reaction);
+		client.commands.get('nsfw').execute(message, user, client, Discord, reaction);
 	}
 	else if (reaction.emoji.name == '🔓') {
 		reaction.users.remove(user.id);
-		await client.commands.get('open').execute(message, null, client, Discord, reaction);
+		client.commands.get('nsfw').execute(message, user, client, Discord, reaction);
 	}
 	else if (reaction.emoji.name == '🔒') {
 		reaction.users.remove(user.id);
-		client.commands.get('close').execute(message, null, client, Discord, reaction);
+		client.commands.get('nsfw').execute(message, user, client, Discord, reaction);
 	}
 };
