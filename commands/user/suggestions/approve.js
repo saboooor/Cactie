@@ -1,11 +1,23 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'approve',
-	description: 'Approve a suggestion',
+	description: 'Approve a suggestion!',
 	aliases: ['accept'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
 	usage: '<Message ID> [Response]',
+	guildOnly: true,
+	options: [{
+		type: 3,
+		name: 'messageid',
+		description: 'The ID of the message of the suggestion you want to approve',
+		required: true,
+	},
+	{
+		type: 3,
+		name: 'response',
+		description: 'Response to the suggestion',
+	}],
 	async execute(message, args, client) {
 		await message.delete();
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
