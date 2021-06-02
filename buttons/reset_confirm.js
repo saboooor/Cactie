@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'reset_confirm',
 	async execute(interaction, client) {
+		if (interaction.user.id != interaction.guild.ownerID) return interaction.deferUpdate();
 		client.settings.delete(interaction.guild.id);
 		const button = new Discord.MessageButton()
 			.setCustomID('none')

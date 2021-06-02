@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'reset',
 	async execute(interaction, client) {
+		if (interaction.user.id != interaction.guild.ownerID) return interaction.deferUpdate();
 		const button = new Discord.MessageButton()
 			.setCustomID('none')
 			.setLabel('Please wait 5 seconds..')
@@ -14,5 +15,14 @@ module.exports = {
 		await sleep('5000');
 		row.addComponents(button);
 		interaction.message.edit({ components: [row] });
+		await sleep('5000');
+		const fuckgoback = new Discord.MessageActionRow()
+			.addComponents(
+				new Discord.MessageButton()
+					.setCustomID('reset')
+					.setLabel('Reset Settings')
+					.setStyle('DANGER'),
+			);
+		interaction.message.edit({ components: [fuckgoback] });
 	},
 };
