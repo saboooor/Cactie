@@ -1,4 +1,7 @@
 const Discord = require('discord.js');
+const nodeactyl = require('nodeactyl');
+const Client = nodeactyl.Client;
+const { apikey } = require('../config/pterodactyl.json');
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
@@ -7,6 +10,14 @@ function clean(text) {
 	else {return text;}
 }
 module.exports = (client, message) => {
+	if (message.webhookID && message.channel.id == '812082273393704960') {
+		message.channel.send('Updating to latest commit...');
+		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
+			if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
+		});
+		Client.restartServer('5bcaad8d').catch();
+		Client.killServer('5bcaad8d').catch();
+	}
 	if (message.author.bot) return;
 	if (message.channel.type == 'dm') {
 		if (message.content.startsWith('-')) return message.reply('You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead');
