@@ -43,6 +43,13 @@ module.exports = {
 			});
 			Embed.setDescription(srvconfig.join('\n')).addField('Usage', `\`${client.settings.get(message.guild.id).prefix}settings [<Setting> <Value>]\``);
 		}
-		message.channel.send(Embed);
+		const row = new Discord.MessageActionRow()
+			.addComponents(
+				new Discord.MessageButton()
+					.setCustomID('reset')
+					.setLabel('Reset Settings')
+					.setStyle('DANGER'),
+			);
+		message.reply({ embed: Embed, components: [row] });
 	},
 };
