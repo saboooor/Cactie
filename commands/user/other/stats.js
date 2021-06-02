@@ -5,7 +5,7 @@ const hastebin = require('hastebin');
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
 const { apikey } = require('../../../config/pterodactyl.json');
-const protocols = require('../../../mcprotocol.json');
+const protocols = require('../../../config/mcprotocol.json');
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
