@@ -10,9 +10,6 @@ function clean(text) {
 	else {return text;}
 }
 module.exports = (client, message) => {
-	if (message.content.includes(client.user.id)) {
-		message.reply(`My prefix is \`${srvconfig.prefix}\``);
-	}
 	if (message.webhookID && message.channel.id == '812082273393704960') {
 		message.channel.send('Updating to latest commit...');
 		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
@@ -27,6 +24,9 @@ module.exports = (client, message) => {
 		client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`);
 	}
 	const srvconfig = client.settings.get(message.guild.id);
+	if (message.content.includes(client.user.id)) {
+		message.reply(`My prefix is \`${srvconfig.prefix}\``);
+	}
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		if (message.channel.name.includes('ticket-')) {
 			if (!message.channel.topic) return;
