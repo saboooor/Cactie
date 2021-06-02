@@ -1,4 +1,5 @@
 const Enmap = require('enmap');
+const { prefix } = require('../config/bot.json');
 module.exports = client => {
 	client.settings = new Enmap({
 		name: 'settings',
@@ -6,7 +7,7 @@ module.exports = client => {
 		fetchAll: false,
 		cloneLevel: 'deep',
 		autoEnsure: {
-			prefix: client.config.prefix,
+			prefix: prefix,
 			simpreaction: 'true',
 			leavemessage: 'false',
 			joinmessage: 'false',
