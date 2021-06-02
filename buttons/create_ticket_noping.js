@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
-	name: 'create_ticket',
+	name: 'create_ticket_noping',
 	async execute(interaction, client) {
 		const author = interaction.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
@@ -47,10 +47,6 @@ module.exports = {
 			.setFooter(`To close this ticket do ${srvconfig.prefix}close, /close or react with 🔒`)
 			.addField('Extra details', 'Created using a button');
 		const embed = await ticket.send(`${author}`, Embed);
-		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send('@everyone');
-			await ping.delete();
-		}
 		embed.react('🔒');
 	},
 };

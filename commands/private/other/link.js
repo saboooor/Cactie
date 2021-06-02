@@ -26,7 +26,7 @@ If after step 3, you do not see a box that says \`Message @${e[0]}\`, you disabl
 		const row = new Discord.MessageActionRow()
 			.addComponents(
 				new Discord.MessageButton()
-					.setCustomID('create_ticket')
+					.setCustomID('create_ticket_noping')
 					.setLabel('Still have an issue? Create a ticket by clicking here!')
 					.setStyle('SECONDARY'),
 			);
