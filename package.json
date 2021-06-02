@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js",
+    "discord.js": "github:monbrey/discord.js#message-components",
     "enmap": "^5.8.4",
     "eslint": "^7.18.0",
     "fs": "0.0.1-security",
