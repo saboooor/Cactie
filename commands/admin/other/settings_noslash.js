@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'settings',
-	description: 'Configure the bot in this guild',
+	description: 'Configure Pup\'s Guild settings',
 	aliases: ['setting'],
 	cooldown: 1,
 	permissions: 'ADMINISTRATOR',
