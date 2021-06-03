@@ -4,7 +4,7 @@
   "description": "Pup bot go brr",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saboooor/Pup-Rewrite.git"
+    "url": "git+https://github.com/saboooor/Pup.git"
   },
   "main": "index.js",
   "scripts": {
