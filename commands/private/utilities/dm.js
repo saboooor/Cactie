@@ -21,7 +21,7 @@ module.exports = {
 		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args[1]);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`**Message sent to ${client.users.cache.get(args[0])}!**\n**Content:** ${args[1]}\nTo see the response, see ${client.channels.cache.get('776992487537377311')}`);
+			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args[1]}\nTo see the response, see ${client.channels.cache.get('776992487537377311')}`);
 		message.reply(Embed);
 	},
 };
