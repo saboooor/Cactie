@@ -27,8 +27,5 @@ React with the bot
 Check the stats for pup or a Minecraft server (Alias: ${srvconfig.prefix}status)
 **${srvconfig.prefix}invite**
 Invite the bot to your server or join the discord server where the bot's home is!
-
-**Want to support the bot? [Donate here!](https://paypal.me/youhavebeenyoted)**
-**Still need help with the bot? Do ${srvconfig.prefix}invite!**
 `);
 };

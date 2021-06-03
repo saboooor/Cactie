@@ -55,8 +55,8 @@ module.exports = {
 		else if (arg == 'nsfw') {
 			require('../../../help/nsfw.js')(srvconfig, Embed);
 		}
-		else if (arg == 'support') {
-			require('../../../help/support.js')(srvconfig, Embed);
+		else if (arg == 'tickets') {
+			require('../../../help/tickets.js')(srvconfig, Embed);
 		}
 		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
@@ -89,6 +89,10 @@ module.exports = {
 				new Discord.MessageButton()
 					.setCustomID('help_admin')
 					.setLabel('Admin')
+					.setStyle('SECONDARY'),
+				new Discord.MessageButton()
+					.setCustomID('help_tickets')
+					.setLabel('Tickets')
 					.setStyle('SECONDARY')]);
 		const row2 = new Discord.MessageActionRow()
 			.addComponents([

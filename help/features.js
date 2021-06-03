@@ -5,8 +5,5 @@ module.exports = (srvconfig, Embed) => {
 
 - Support tickets
 - Suggestions
-
-**Want to support the bot? [Donate here!](https://paypal.me/youhavebeenyoted)**
-**Still need help with the bot? Do ${srvconfig.prefix}invite!**
 `);
 };

@@ -24,8 +24,5 @@ Deny a suggestion (Alias: ${srvconfig.prefix}decline)
 **${srvconfig.prefix}help support**
 Walks you through how to setup support tickets in your guild
 *Permission: Administrator*
-
-**Want to support the bot? [Donate here!](https://paypal.me/youhavebeenyoted)**
-**Still need help with the bot? Do ${srvconfig.prefix}invite!**
 `);
 };
