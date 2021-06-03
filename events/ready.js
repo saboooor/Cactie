@@ -22,7 +22,7 @@ module.exports = async (client) => {
 	const rn = new Date();
 	const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 	const timer = (Date.now() - start) / 1000;
-	console.log(`[${time} INFO]: Done (${timer}s)! I am online!`);
+	console.log(`[${time} INFO]: Done (${timer}s)! I am running!`);
 	setInterval(async () => {
 		const activities = [
 			['WATCHING', `${client.users.cache.size} Users`],
