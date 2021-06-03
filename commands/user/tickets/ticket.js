@@ -69,7 +69,7 @@ module.exports = {
 		const embed = await ticket.send(`${author}`, Embed);
 		embed.react('🔒');
 		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send('@.everyone');
+			const ping = await ticket.send('@everyone');
 			await ping.delete();
 		}
 	},
