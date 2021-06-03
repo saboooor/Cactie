@@ -16,8 +16,7 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		if (message.guild.id == '661736128373719141' && !client.guilds.cache.get('661736128373719141').members.cache.get(message.member.user.id).roles.cache.has('699724468469366844')) return;
-		else if (message.member.user.id !== '249638347306303499') return;
+		if (!client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id).roles.cache.has('849452673156513813')) return;
 		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args[1]);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
