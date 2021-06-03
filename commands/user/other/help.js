@@ -1,10 +1,42 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'help',
-	description: 'Get help with pup',
+	description: 'Get help with Pup!',
 	aliases: ['commands'],
 	cooldown: 2,
+	guildOnly: true,
+	options: [{
+		type: 3,
+		name: 'type',
+		description: 'The type of help you need',
+		required: false,
+		choices: [{
+			name: 'features',
+			value: 'features',
+		},
+		{
+			name: 'commands',
+			value: 'commands',
+		},
+		{
+			name: 'nsfw',
+			value: 'nsfw',
+		},
+		{
+			name: 'admin',
+			value: 'admin',
+		},
+		{
+			name: 'support',
+			value: 'support',
+		},
+		{
+			name: 'supportpanel (ADMIN ONLY)',
+			value: 'supportpanel',
+		}],
+	}],
 	async execute(message, args, client) {
+		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215));
@@ -179,6 +211,6 @@ Otherwise just do ${srvconfig.prefix}ticket or ${srvconfig.prefix}new to create 
 **Want to support the bot? [Donate here!](https://paypal.me/youhavebeenyoted)**
 **Still need help with the bot? Do ${srvconfig.prefix}invite!**`);
 		}
-		message.channel.send(Embed);
+		message.reply(Embed);
 	},
 };
