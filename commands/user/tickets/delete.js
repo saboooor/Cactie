@@ -7,7 +7,7 @@ module.exports = {
 	guildOnly: true,
 	permissions: 'ADMINISTRATOR',
 	async execute(message, user, client, reaction) {
-		let author = message.author;
+		let author = message.member.user;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;
 			author = user;
@@ -18,7 +18,7 @@ module.exports = {
 		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');
 		if (message.channel.name.includes('ticket-')) return message.reply('This ticket needs to be closed first!');
 		if (srvconfig.ticketlogchannel != 'false') {
-			const trans = await message.channel.send('Creating transcript...');
+			const trans = await message.reply('Creating transcript...');
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const logs = [];
 			await messages.forEach(async msg => {
@@ -41,10 +41,11 @@ module.exports = {
 			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 			console.log(`[${time} INFO]: Created transcript of ${message.channel.name}: ${link}.txt`);
 		}
+		else { message.reply('Deleting Ticket...'); }
 		await client.tickets.delete(message.channel.id);
-		await message.channel.delete();
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 		console.log(`[${time} INFO]: Deleted ticket #${message.channel.name}`);
+		await message.channel.delete();
 	},
 };

@@ -3,10 +3,17 @@ function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'ticket',
-	description: 'Create a ticket',
+	description: 'Create a ticket.',
 	aliases: ['new'],
+	guildOnly: true,
+	options: [{
+		type: 3,
+		name: 'message',
+		description: 'The message to send on the ticket',
+	}],
 	async execute(message, args, client, reaction) {
-		let author = message.author;
+		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		let author = message.member.user;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;
 			author = args;
@@ -47,7 +54,8 @@ module.exports = {
 		}).catch(console.error);
 		client.tickets.set(ticket.id, author.id, 'opener');
 		client.tickets.push(ticket.id, author.id, 'users');
-		const msg = await message.reply(`Ticket created at ${ticket}!`);
+		if (message.commandName) message.reply(`Ticket created at ${ticket}!`, { ephemeral: true });
+		else message.reply(`Ticket created at ${ticket}!`);
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 		console.log(`[${time} INFO]: Ticket created at #${ticket.name}`);
@@ -61,11 +69,8 @@ module.exports = {
 		const embed = await ticket.send(`${author}`, Embed);
 		embed.react('🔒');
 		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send('@everyone');
+			const ping = await ticket.send('@.everyone');
 			await ping.delete();
 		}
-		await sleep(4000);
-		await msg.delete();
-		if (!reaction) await message.delete();
 	},
 };

@@ -2,10 +2,18 @@ function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'remove',
-	description: 'Remove someone from a ticket',
+	description: 'Remove someone from a ticket.',
 	args: true,
 	usage: '<User Mention or ID>',
+	guildOnly: true,
+	options: [{
+		type: 6,
+		name: 'user',
+		description: 'User to add to ticket',
+		required: true,
+	}],
 	async execute(message, args, client, Client) {
+		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply('Tickets are disabled!');
 		if (!message.channel.topic) return message.reply('This is not a valid ticket!');
 		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');
@@ -17,8 +25,8 @@ module.exports = {
 		message.channel.updateOverwrite(user, { VIEW_CHANNEL: false });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
-			.setDescription(`${message.author} removed ${user} from the ticket`);
-		message.channel.send(Embed);
+			.setDescription(`${message.member.user} removed ${user} from the ticket`);
+		message.reply(Embed);
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 		console.log(`[${time} INFO]: Removed ${user.username} from #${message.channel.name}`);

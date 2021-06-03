@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Repen a ticket',
 	aliases: ['reopen'],
 	async execute(message, user, client, reaction) {
-		let author = message.author;
+		let author = message.member.user;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;
 			author = user;
@@ -17,14 +17,14 @@ module.exports = {
 		if (message.channel.name.includes('ticket-')) return message.reply('This ticket is already opened!');
 		await message.channel.setName(message.channel.name.replace('closed', 'ticket'));
 		await sleep(1000);
-		if (message.channel.name.includes('closed-')) return message.channel.send('Failed to open ticket, please try again in 10 minutes');
+		if (message.channel.name.includes('closed-')) return message.reply('Failed to open ticket, please try again in 10 minutes');
 		client.tickets.get(message.channel.id).users.forEach(userid => {
 			message.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 		});
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Opened by ${author}`);
-		message.channel.send(Embed);
+		message.reply(Embed);
 		await sleep(1000);
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;

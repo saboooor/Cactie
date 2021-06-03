@@ -5,7 +5,7 @@ module.exports = {
 	name: 'close',
 	description: 'Close a ticket',
 	async execute(message, user, client, reaction) {
-		let author = message.author;
+		let author = message.member.user;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;
 			author = user;
@@ -20,7 +20,7 @@ module.exports = {
 		}
 		message.channel.setName(message.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
-		if (message.channel.name.includes('ticket-')) return message.channel.send('Failed to close ticket, please try again in 10 minutes');
+		if (message.channel.name.includes('ticket-')) return message.reply('Failed to close ticket, please try again in 10 minutes');
 		client.tickets.set(message.channel.id, 'false', 'resolved');
 		client.tickets.get(message.channel.id).users.forEach(userid => {
 			message.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: false });
@@ -28,7 +28,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
-		message.channel.send(Embed);
+		message.reply(Embed);
 		Embed.setColor(3447003).setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
 		const msg = await message.channel.send(Embed);
 		msg.react('🔓');
