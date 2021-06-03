@@ -2,7 +2,8 @@ const Discord = require('discord.js');
 const nodeactyl = require('nodeactyl');
 const fetch = require('node-fetch');
 const Client = nodeactyl.Client;
-const { apikey } = require('../config/pterodactyl.json');
+const { apikey, apikey2 } = require('../config/pterodactyl.json');
+const { dev } = require('../config/bot.json');
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
@@ -11,11 +12,20 @@ function clean(text) {
 module.exports = async (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
 		message.channel.send('Updating to latest commit...');
-		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
-			if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
-		});
-		Client.restartServer('5bcaad8d').catch();
-		Client.killServer('5bcaad8d').catch();
+		if (dev == 'true') {
+			Client.login('https://panel.discordbothosting.com', apikey2, (logged_in, err) => {
+				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.discordbothosting.com\n${err}`);
+			});
+			Client.restartServer('b04dbb8c').catch();
+			Client.killServer('b04dbb8c').catch();
+		}
+		else {
+			Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
+				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
+			});
+			Client.restartServer('5bcaad8d').catch();
+			Client.killServer('5bcaad8d').catch();
+		}
 	}
 	if (message.author.bot) return;
 	if (message.channel.type == 'dm') {

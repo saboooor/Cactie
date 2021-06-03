@@ -1,3 +1,4 @@
 {
-    "apikey": "[PTERODACTYL API KEY HERE]"
+    "apikey": "[PTERODACTYL API KEY HERE]",
+    "apikey2": "[PTERODACTYL API KEY FOR PUP DEV HERE]"
 }

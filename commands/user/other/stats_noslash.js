@@ -4,8 +4,11 @@ const moment = require('moment');
 const hastebin = require('hastebin');
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
-const { apikey } = require('../../../config/pterodactyl.json');
+let { apikey } = require('../../../config/pterodactyl.json');
+const { apikey2 } = require('../../../config/pterodactyl.json');
+const { dev } = require('../../../config/bot.json');
 const protocols = require('../../../config/mcprotocol.json');
+let url = 'https://panel.birdflop.com';
 function minTwoDigits(n) {
 	return (n < 10 ? '0' : '') + n;
 }
@@ -21,14 +24,18 @@ module.exports = {
 			.setThumbnail('https://bugs.mojang.com/secure/attachment/99116/unknown_pack.png')
 			.setColor(3447003);
 		const reply = await message.channel.send('<a:loading:826611946258038805> Pup is thinking...');
-		const panel = 'https://panel.birdflop.com';
 		let id = '';
 		let serverip = '';
 		let arg = args.join(' ');
 		if (arg) arg = arg.toLowerCase();
 		if (srvconfig.adfree == 'true') {
-			if (arg != 'pup') {
-				arg = 'pup';
+			if (dev == 'false') {
+				if (arg != 'pup') {
+					arg = 'pup';
+				}
+			}
+			else if (arg != 'pup dev') {
+				arg = 'pup dev';
 			}
 			if (message.guild.id == '661736128373719141') {
 				arg = 'nether depths';
@@ -41,7 +48,12 @@ module.exports = {
 			}
 		}
 		if (!arg) {
-			id = '5bcaad8d';
+			if (dev == 'false') {
+				id = '5bcaad8d';
+			}
+			else {
+				id = 'b04dbb8c';
+			}
 			if (message.guild.id == '661736128373719141') {
 				id = '50dc31e4';
 				serverip = 'play.netherdepths.com';
@@ -56,6 +68,9 @@ module.exports = {
 		}
 		else if (arg == 'pup') {
 			id = '5bcaad8d';
+		}
+		else if (arg == 'pup dev') {
+			id = 'b04dbb8c';
 		}
 		else if (arg == 'taco haven') {
 			id = 'd68c84e1';
@@ -87,7 +102,11 @@ module.exports = {
 			serverip = args[0];
 		}
 		if (id !== '') {
-			Client.login(panel, apikey, (logged_in, err) => {
+			if (id == 'b04dbb8c') {
+				url = 'https://panel.discordbothosting.com';
+				apikey = apikey2;
+			}
+			Client.login(url, apikey, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong\n${err}`);
 			});
 			const rn = new Date();
@@ -102,8 +121,14 @@ module.exports = {
 			if (status == 'stopping') Embed.setColor(16737280);
 			if (status == 'offline') Embed.setColor(16711680);
 			if (status == 'starting') Embed.setColor(16737280);
+			if (id == 'b04dbb8c') {
+				Embed.setTitle('Pup Dev');
+				const duration = moment.duration(client.uptime).format('D [days], H [hrs], m [mins], s [secs]');
+				if (duration) Embed.addField('**Uptime:**', duration);
+				Embed.setThumbnail(reply.author.avatarURL());
+			}
 			if (id == '5bcaad8d') {
-				Embed.setTitle('Pup Bot');
+				Embed.setTitle('Pup');
 				const duration = moment.duration(client.uptime).format('D [days], H [hrs], m [mins], s [secs]');
 				if (duration) Embed.addField('**Uptime:**', duration);
 				Embed.setThumbnail(reply.author.avatarURL());
