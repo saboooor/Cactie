@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'help',
-	description: 'Get help with Pup!',
+	description: 'Get help with Pup',
 	aliases: ['commands'],
 	cooldown: 2,
 	guildOnly: true,
@@ -27,8 +27,8 @@ module.exports = {
 			value: 'admin',
 		},
 		{
-			name: 'support',
-			value: 'support',
+			name: 'tickets',
+			value: 'tickets',
 		},
 		{
 			name: 'supportpanel (ADMIN ONLY)',
