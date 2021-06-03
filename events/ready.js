@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const start = Date.now();
 const moment = require('moment');
 require('moment-duration-format');
@@ -9,16 +8,16 @@ module.exports = async (client) => {
 		const mesg = msg.first();
 		if (mesg.content !== 'Started Successfully!') client.channels.cache.get('812082273393704960').send('Started Successfully!');
 	});
-	const commands = await client.guilds.cache.get('811354612547190794').commands.fetch();
-	client.slashcommands.forEach(async command => {
+	if (!client.application?.owner) await client.application?.fetch();
+	const commands = await client.application?.commands.fetch();
+	await client.slashcommands.forEach(async command => {
 		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
-		console.log(`Detected ${command.name} has some changes! Updating command...`);
-		await client.guilds.cache.get('811354612547190794').commands.create({
+		await console.log(`Detected ${command.name} has some changes! Updating command...`);
+		await client.application?.commands.create({
 			name: command.name,
 			description: command.description,
 			options: command.options,
 		});
-		await sleep(2000);
 	});
 	const rn = new Date();
 	const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
