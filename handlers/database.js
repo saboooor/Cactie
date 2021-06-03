@@ -15,6 +15,8 @@ module.exports = client => {
 			maxppsize: '35',
 			tickets: 'true',
 			bonercmd: 'true',
+			suggestionchannel: 'default',
+			pollchannel: 'default',
 			ticketlogchannel: 'false',
 			ticketcategory: 'false',
 			ticketmention: 'true',

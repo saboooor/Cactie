@@ -10,6 +10,11 @@ module.exports = {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');
 		if (args[1]) {
+			if (args[0] == 'pollchannel' || args[0] == 'suggestionchannel' || args[0] == 'ticketlogchannel' || args[0] == 'ticketcategory') {
+				if (args[1] != 'false' && args[1] != 'default') {
+					if (!client.channels.cache.get(args[1])) return message.reply('That isn\'t a valid channel!');
+				}
+			}
 			if (args[0] == 'maxppsize') {
 				if (args[1] > 75) return message.reply('You can\'t set maxppsize to a number over 75!');
 			}
@@ -33,6 +38,8 @@ module.exports = {
 				maxppsize: '*Maximum pp size in pp and instapp commands*',
 				tickets: '*Enables tickets (true/false)*',
 				bonercmd: '*Toggles boner command (true/false)*',
+				suggestionchannel: '*The channel where the bot puts suggestions in\nCan be either false, default, or the channel ID*',
+				pollchannel: '*The channel where the bot puts polls in\nCan be either false, default, or the channel ID*',
 				ticketlogchannel: '*The channel where the bot puts transcripts of tickets\nCan be either false or the channel ID*',
 				ticketcategory: '*The category where the bot creates tickets in\nMust be a category ID*',
 				supportrole: '*The ticket support team role\nCan be either false or the role ID*',

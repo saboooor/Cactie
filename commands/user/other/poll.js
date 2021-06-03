@@ -129,11 +129,13 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		let channel = message.guild.channels.cache.find(c => c.name.includes('poll'));
+		const srvconfig = client.settings.get(message.guild.id);
+		if (srvconfig.pollchannel == 'false') channel = message.channel;
+		else if (srvconfig.pollchannel != 'default') channel = client.channels.cache.get(srvconfig.pollchannel);
 		const Poll = new Discord.MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Poll')
 			.setAuthor(message.member.user.username, message.member.user.avatarURL());
-		if (!channel) channel = message.channel;
 		let type = 'yesno';
 		if (message.commandName) type = args[0].value;
 		if (type == 'yesno') {
