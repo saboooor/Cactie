@@ -41,7 +41,8 @@ module.exports = {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been kicked.');
 			});
 		}
-		await message.reply(Embed);
+		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
+		else message.reply(Embed);
 		await member.kick().catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;

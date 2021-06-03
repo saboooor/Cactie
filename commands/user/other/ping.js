@@ -14,6 +14,7 @@ module.exports = {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Pong!')
 			.setDescription(`${Date.now() - message.createdTimestamp}ms`);
-		message.channel.send({ embed: Embed, components: [row] });
+		if (message.commandName) message.reply({ embeds: [Embed], components: [row], ephemeral: true });
+		else message.reply({ embed: Embed, components: [row] });
 	},
 };

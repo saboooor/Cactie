@@ -211,6 +211,7 @@ Otherwise just do ${srvconfig.prefix}ticket or ${srvconfig.prefix}new to create 
 **Want to support the bot? [Donate here!](https://paypal.me/youhavebeenyoted)**
 **Still need help with the bot? Do ${srvconfig.prefix}invite!**`);
 		}
-		message.reply(Embed);
+		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
+		else message.reply(Embed);
 	},
 };

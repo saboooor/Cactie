@@ -12,6 +12,6 @@ module.exports = {
 			.addField('**Add the bot (Admin):**', '[Invite the bot to your server using this link!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=8&scope=bot%20applications.commands)')
 			.addField('**Bot Support:**', '[Join the bot\'s discord server!](https://discord.gg/Bsefgbaedz)');
 		if (srvconfig.adfree == 'false') Embed.addField('**Nether Depths:**', '[Also check out Nether Depths!](https://discord.gg/g7hSukX)');
-		await message.channel.send(Embed);
+		await message.reply(Embed);
 	},
 };
