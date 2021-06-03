@@ -39,7 +39,8 @@ module.exports = {
 		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
-			.setColor(Math.floor(Math.random() * 16777215));
+			.setColor(Math.floor(Math.random() * 16777215))
+			.setTitle('**HELP**');
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
 		if (arg == 'commands') {
@@ -69,14 +70,7 @@ module.exports = {
 			await msg.react('🎫');
 		}
 		else {
-			Embed.setDescription(`
-**HELP**
-
-Please use the buttons below to navigate through the help menu
-
-**Want to support the bot? [Donate here!](https://paypal.me/youhavebeenyoted)**
-**Still need help with the bot? Do ${srvconfig.prefix}invite!**
-`);
+			Embed.setDescription('\n\nPlease use the buttons below to navigate through the help menu');
 		}
 		const row = new Discord.MessageActionRow()
 			.addComponents([
@@ -96,7 +90,17 @@ Please use the buttons below to navigate through the help menu
 					.setCustomID('help_admin')
 					.setLabel('Admin')
 					.setStyle('SECONDARY')]);
-		if (message.commandName) message.reply({ embeds: [Embed], components: [row], ephemeral: true });
+		const row2 = new Discord.MessageActionRow()
+			.addComponents([
+				new Discord.MessageButton()
+					.setURL('https://discord.gg/Bsefgbaedz')
+					.setLabel('Support Discord')
+					.setStyle('LINK'),
+				new Discord.MessageButton()
+					.setURL('https://paypal.me/youhavebeenyoted')
+					.setLabel('Donate')
+					.setStyle('LINK')]);
+		if (message.commandName) message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true });
 		else message.reply({ embed: Embed, components: [row] });
 	},
 };
