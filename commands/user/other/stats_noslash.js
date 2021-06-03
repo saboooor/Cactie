@@ -158,6 +158,6 @@ module.exports = {
 			}
 		}
 		await reply.delete();
-		await message.channel.send('', Embed);
+		await message.reply(Embed);
 	},
 };
