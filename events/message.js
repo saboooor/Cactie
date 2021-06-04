@@ -11,8 +11,9 @@ function clean(text) {
 }
 module.exports = async (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
-		message.channel.send('Updating to latest commit...');
 		if (dev == 'true') {
+			if (!message.embeds[0].title.includes('dev')) return;
+			message.channel.send('Updating to latest commit...');
 			Client.login('https://panel.discordbothosting.com', apikey2, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.discordbothosting.com\n${err}`);
 			});
@@ -20,6 +21,8 @@ module.exports = async (client, message) => {
 			Client.killServer('b04dbb8c').catch();
 		}
 		else {
+			if (!message.embeds[0].title.includes('master')) return;
+			message.channel.send('Updating to latest commit...');
 			Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
 			});
