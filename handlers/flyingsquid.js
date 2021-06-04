@@ -1,7 +1,7 @@
 const config = require('../config/flyingsquid.json');
 const mcServer = require('flying-squid');
 module.exports = client => {
-	mcServer.createMCServer({
+	const srv = mcServer.createMCServer({
 		'motd': config.motd,
 		'port': config.port,
 		'max-players': config.max_players,
@@ -27,5 +27,11 @@ module.exports = client => {
 		'everybody-op': config.everybody_op,
 		'max-entities': config.mob_cap,
 		'version': config.version,
+	});
+	srv.on('newPlayer', player => {
+		client.channels.cache.get('849453797809455125').send(`${player._client.username} joined the server!`);
+		player.once('disconnected', e => {
+			return client.channels.cache.get('849453797809455125').send(`${player._client.username} left the server!`);
+		});
 	});
 };
