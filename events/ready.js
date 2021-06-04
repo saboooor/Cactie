@@ -25,10 +25,8 @@ module.exports = async (client) => {
 	console.log(`[${time} INFO]: Done (${timer}s)! I am running!`);
 	setInterval(async () => {
 		const activities = [
-			['WATCHING', `${client.users.cache.size} Users`],
 			['PLAYING', '{UPTIME}'],
 			['PLAYING', 'with you ;)'],
-			['WATCHING', `${client.channels.cache.size} Channels`],
 			['COMPETING', `${client.guilds.cache.size} Servers`],
 			['PLAYING', '{GUILD}'],
 		];
