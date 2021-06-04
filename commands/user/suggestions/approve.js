@@ -19,8 +19,12 @@ module.exports = {
 		description: 'Response to the suggestion',
 	}],
 	async execute(message, args, client) {
-		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		else message.delete();
+		if (message.commandName) {
+			args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
+		else {
+			message.delete();
+		}
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
 		fetchedMsg.reactions.removeAll();

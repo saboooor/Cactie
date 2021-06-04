@@ -12,7 +12,7 @@ module.exports = {
 		required: true,
 	}],
 	async execute(message, args, client) {
-		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		if (message.commandName) args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply('Tickets are disabled!');
 		if (!message.channel.topic) return message.reply('This is not a valid ticket!');
 		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');

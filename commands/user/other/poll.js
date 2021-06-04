@@ -139,7 +139,7 @@ module.exports = {
 		let type = 'yesno';
 		if (message.commandName) type = args[0].value;
 		if (type == 'yesno') {
-			if (message.commandName) await args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+			if (message.commandName) args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 			let poll = await args.join(' ');
 			if (message.commandName) poll = poll.replace(args[0], '');
 			Poll.setDescription(poll);

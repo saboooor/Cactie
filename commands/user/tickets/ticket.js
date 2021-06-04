@@ -11,7 +11,7 @@ module.exports = {
 		description: 'The message to send on the ticket',
 	}],
 	async execute(message, args, client, reaction) {
-		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		if (message.commandName) args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		let author = message.member.user;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;
