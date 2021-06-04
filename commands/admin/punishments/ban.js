@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'ban',
@@ -44,8 +43,6 @@ module.exports = {
 		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
 		else message.reply(Embed);
 		await member.ban().catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Banned user: ${user.tag} from ${message.guild.name}`);
+		client.logger.log('info', `Banned user: ${user.tag} from ${message.guild.name}`);
 	},
 };

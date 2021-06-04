@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = {
 	name: 'clear',
 	description: 'Delete multiple messages at once',
@@ -30,8 +29,6 @@ module.exports = {
 			consolechannel.send('clearchat');
 		}
 		if (message.commandName) message.reply(`Cleared ${args[0]} messages!`, { ephemeral: true });
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
+		client.logger.log('info', `Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
 	},
 };
