@@ -118,3 +118,4 @@ dist
 config/
 data/
 .DS_Store
+world/
