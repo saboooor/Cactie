@@ -32,6 +32,6 @@ module.exports = {
 		const msg = await message.channel.send(Embed);
 		msg.react('🔓');
 		msg.react('⛔');
-		client.logger.log('info', `Closed ticket #${message.channel.name}`);
+		client.logger.info(`Closed ticket #${message.channel.name}`);
 	},
 };

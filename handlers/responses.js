@@ -7,5 +7,5 @@ module.exports = client => {
 		const response = require(`../responses/${file}`);
 		client.response.set(response.name, response);
 	}
-	client.logger.log('info', 'Response files loaded!');
+	client.logger.info('Response files loaded!');
 };

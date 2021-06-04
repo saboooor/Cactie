@@ -7,5 +7,5 @@ module.exports = client => {
 		const button = require(`../buttons/${file}`);
 		client.buttons.set(button.name, button);
 	}
-	client.logger.log('info', 'Button files loaded!');
+	client.logger.info('Button files loaded!');
 };

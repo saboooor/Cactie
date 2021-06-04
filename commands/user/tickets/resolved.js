@@ -14,6 +14,6 @@ module.exports = {
 		client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
 		client.tickets.set(message.channel.id, 'true', 'resolved');
 		message.reply(`${users}, this ticket has been marked as resolved and will close at 12AM ET if you don't respond.\nIf you still have an issue, please explain it here. Otherwise, you can do \`/close\`, \`-close\`, or react to the original message to close the ticket now.`);
-		client.logger.log('info', `Marked ticket #${message.channel.name} as resolved`);
+		client.logger.info(`Marked ticket #${message.channel.name} as resolved`);
 	},
 };

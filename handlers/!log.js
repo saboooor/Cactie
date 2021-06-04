@@ -13,5 +13,5 @@ module.exports = client => {
 			new winston.transports.File({ filename: `logs/${date}.log` }),
 		],
 	});
-	client.logger.log('info', 'Logger started!');
+	client.logger.info('Logger started!');
 };

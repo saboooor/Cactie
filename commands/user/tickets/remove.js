@@ -26,6 +26,6 @@ module.exports = {
 			.setColor(15105570)
 			.setDescription(`${message.member.user} removed ${user} from the ticket`);
 		message.reply(Embed);
-		client.logger.log('info', `Removed ${user.username} from #${message.channel.name}`);
+		client.logger.info(`Removed ${user.username} from #${message.channel.name}`);
 	},
 };

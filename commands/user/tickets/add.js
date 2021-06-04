@@ -25,6 +25,6 @@ module.exports = {
 			.setColor(15105570)
 			.setDescription(`${message.member.user} added ${user} to the ticket`);
 		message.reply(Embed);
-		client.logger.log('info', `Added ${user.username} to #${message.channel.name}`);
+		client.logger.info(`Added ${user.username} to #${message.channel.name}`);
 	},
 };

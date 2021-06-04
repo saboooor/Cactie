@@ -36,11 +36,11 @@ module.exports = {
 				.addField('**Deleted by**', author);
 			await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
 			await trans.delete();
-			client.logger.log('info', `Created transcript of ${message.channel.name}: ${link}.txt`);
+			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 		}
 		else { message.reply('Deleting Ticket...'); }
 		await client.tickets.delete(message.channel.id);
-		client.logger.log('info', `Deleted ticket #${message.channel.name}`);
+		client.logger.info(`Deleted ticket #${message.channel.name}`);
 		await message.channel.delete();
 	},
 };

@@ -38,7 +38,7 @@ module.exports = {
 		Client.restartServer(id).catch((error) => {
 			client.logger.log('error', error);
 		});
-		client.logger.log('info', `Restarting ${info.attributes.name}`);
+		client.logger.info(`Restarting ${info.attributes.name}`);
 		await console.log(`[${time} INFO]: Restarting ${info.attributes.name}`);
 		await message.channel.send(`Restarting ${info.attributes.name}`);
 		if (id == '5bcaad8d') {

@@ -7,7 +7,7 @@ module.exports = {
 		const prop = args[0];
 		client.guilds.cache.forEach(guild => {
 			client.settings.delete(guild.id, prop);
-			client.logger.log('info', `Removed setting from ${guild.name}: ${prop}`);
+			client.logger.info(`Removed setting from ${guild.name}: ${prop}`);
 		});
 		const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop2 => {
 			return `**${prop2}** \`${client.settings.get(message.guild.id)[prop2]}\``;

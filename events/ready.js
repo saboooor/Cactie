@@ -1,7 +1,7 @@
 const moment = require('moment');
 require('moment-duration-format');
 module.exports = async (client) => {
-	client.logger.log('info', 'Bot started!');
+	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
 	client.channels.cache.get('812082273393704960').messages.fetch({ limit: 1 }).then(msg => {
 		const mesg = msg.first();
@@ -11,7 +11,7 @@ module.exports = async (client) => {
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
 		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
-		client.logger.log('info', `Detected ${command.name} has some changes! Updating command...`);
+		client.logger.info(`Detected ${command.name} has some changes! Updating command...`);
 		await client.application?.commands.create({
 			name: command.name,
 			description: command.description,
@@ -32,5 +32,5 @@ module.exports = async (client) => {
 		client.user.setPresence({ activities: [{ name: activity[1], type: activity[0] }] });
 	}, 5000);
 	const timer = (Date.now() - client.startTimestamp) / 1000;
-	client.logger.log('info', `Done (${timer}s)! I am running!`);
+	client.logger.info(`Done (${timer}s)! I am running!`);
 };

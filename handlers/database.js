@@ -23,7 +23,7 @@ module.exports = client => {
 			supportrole: 'Not Set',
 		},
 	});
-	client.logger.log('info', 'Settings database loaded!');
+	client.logger.info('Settings database loaded!');
 	client.tickets = new Enmap({
 		name: 'tickets',
 		autoFetch: true,
@@ -34,5 +34,5 @@ module.exports = client => {
 			users: [],
 		},
 	});
-	client.logger.log('info', 'Ticket database loaded!');
+	client.logger.info('Ticket database loaded!');
 };

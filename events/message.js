@@ -61,7 +61,7 @@ module.exports = async (client, message) => {
 			if (!message.channel.topic.includes('Ticket Opened by')) return;
 			if (client.tickets.get(message.channel.id).resolved != 'true') return;
 			client.tickets.set(message.channel.id, 'false', 'resolved');
-			client.logger.log('info', `Unmarked ticket #${message.channel.name} as resolved`);
+			client.logger.info(`Unmarked ticket #${message.channel.name} as resolved`);
 		}
 		return;
 	}
@@ -126,7 +126,7 @@ module.exports = async (client, message) => {
 	}
 
 	try {
-		client.logger.log('info', ` ${message.author.tag} issued dash command: ${message.content}`);
+		client.logger.info(` ${message.author.tag} issued dash command: ${message.content}`);
 		client.users.cache.get('249638347306303499').send(commandLogEmbed);
 		command.execute(message, args, client);
 	}

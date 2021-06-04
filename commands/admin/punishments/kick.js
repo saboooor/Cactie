@@ -43,6 +43,6 @@ module.exports = {
 		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
 		else message.reply(Embed);
 		await member.kick().catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
-		client.logger.log('info', `Kicked user: ${user.tag} from ${message.guild.name}`);
+		client.logger.info(`Kicked user: ${user.tag} from ${message.guild.name}`);
 	},
 };

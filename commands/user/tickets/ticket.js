@@ -50,12 +50,12 @@ module.exports = {
 					allow: ['VIEW_CHANNEL'],
 				},
 			],
-		}).catch(error => client.logger.log('error', error));
+		}).catch(error => client.logger.error(error));
 		client.tickets.set(ticket.id, author.id, 'opener');
 		client.tickets.push(ticket.id, author.id, 'users');
 		if (message.commandName) message.reply(`Ticket created at ${ticket}!`, { ephemeral: true });
 		else message.reply(`Ticket created at ${ticket}!`);
-		client.logger.log('info', `Ticket created at #${ticket.name}`);
+		client.logger.info(`Ticket created at #${ticket.name}`);
 		await sleep(1000);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(3447003)

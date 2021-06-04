@@ -14,7 +14,7 @@ module.exports = {
 			if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
 		});
 		Client.sendCommand('68505ddb', args.join(' ')).catch((error) => {
-			client.logger.log('error', error);
+			client.logger.error(error);
 		});
 		message.reply(`Sent command \`${args.join(' ')}\` to Bungee`);
 	},

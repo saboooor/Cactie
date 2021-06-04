@@ -106,10 +106,10 @@ module.exports = {
 			Client.login(url, apikey, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong\n${err}`);
 			});
-			const info = await Client.getServerInfo(id).catch((error) => {client.logger.log('error', error);});
-			const cpu = await Client.getCPUUsage(id).catch((error) => {client.logger.log('error', error);});
-			const ram = await Client.getRAMUsage(id).catch((error) => {client.logger.log('error', error);});
-			const status = await Client.getServerStatus(id).catch((error) => {client.logger.log('error', error);});
+			const info = await Client.getServerInfo(id).catch((error) => {client.logger.error(error);});
+			const cpu = await Client.getCPUUsage(id).catch((error) => {client.logger.error(error);});
+			const ram = await Client.getRAMUsage(id).catch((error) => {client.logger.error(error);});
+			const status = await Client.getServerStatus(id).catch((error) => {client.logger.error(error);});
 			const statusname = status.replace('running', 'Online').replace('stopping', 'Stopping').replace('offline', 'Offline').replace('starting', 'Starting');
 			Embed.setTitle(`${info.attributes.name} (${statusname})`);
 			if (status == 'running') Embed.setColor(65280);

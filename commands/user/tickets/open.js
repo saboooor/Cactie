@@ -25,6 +25,6 @@ module.exports = {
 			.setDescription(`Ticket Opened by ${author}`);
 		message.reply(Embed);
 		await sleep(1000);
-		client.logger.log('info', `Reopened ticket #${message.channel.name}`);
+		client.logger.info(`Reopened ticket #${message.channel.name}`);
 	},
 };

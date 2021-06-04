@@ -65,7 +65,7 @@ module.exports = (client, interaction) => {
 		}
 
 		try {
-			client.logger.log('info', `${interaction.user.tag} issued slash command: /${command.name}`);
+			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name}`);
 			client.users.cache.get('249638347306303499').send(commandLogEmbed);
 			command.execute(interaction, args, client);
 		}

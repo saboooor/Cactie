@@ -29,6 +29,6 @@ module.exports = {
 			consolechannel.send('clearchat');
 		}
 		if (message.commandName) message.reply(`Cleared ${args[0]} messages!`, { ephemeral: true });
-		client.logger.log('info', `Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
+		client.logger.info(`Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
 	},
 };
