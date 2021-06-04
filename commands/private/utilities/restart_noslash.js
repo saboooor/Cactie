@@ -34,16 +34,15 @@ module.exports = {
 		}
 		const rn = new Date();
 		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		const info = await Client.getServerInfo(id).catch((error) => {console.error(`[${time} ERROR]: ${error}`);});
+		const info = await Client.getServerInfo(id).catch((error) => {client.logger.log('error', error);});
 		Client.restartServer(id).catch((error) => {
-			console.error(`[${time} ERROR]: ${error}`);
+			client.logger.log('error', error);
 		});
+		client.logger.log('info', `Restarting ${info.attributes.name}`);
 		await console.log(`[${time} INFO]: Restarting ${info.attributes.name}`);
 		await message.channel.send(`Restarting ${info.attributes.name}`);
 		if (id == '5bcaad8d') {
-			Client.killServer(id).catch(() => {
-				console.log('Goodbye!');
-			});
+			Client.killServer(id);
 		}
 	},
 };

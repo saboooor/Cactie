@@ -9,9 +9,6 @@ const { apikey2 } = require('../../../config/pterodactyl.json');
 const { dev } = require('../../../config/bot.json');
 const protocols = require('../../../config/mcprotocol.json');
 let url = 'https://panel.birdflop.com';
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
 const Discord = require('discord.js');
 module.exports = {
 	name: 'stats',
@@ -109,12 +106,10 @@ module.exports = {
 			Client.login(url, apikey, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong\n${err}`);
 			});
-			const rn = new Date();
-			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-			const info = await Client.getServerInfo(id).catch((error) => {console.error(`[${time} ERROR]: ${error}`);});
-			const cpu = await Client.getCPUUsage(id).catch((error) => {console.error(`[${time} ERROR]: ${error}`);});
-			const ram = await Client.getRAMUsage(id).catch((error) => {console.error(`[${time} ERROR]: ${error}`);});
-			const status = await Client.getServerStatus(id).catch((error) => {console.error(`[${time} ERROR]: ${error}`);});
+			const info = await Client.getServerInfo(id).catch((error) => {client.logger.log('error', error);});
+			const cpu = await Client.getCPUUsage(id).catch((error) => {client.logger.log('error', error);});
+			const ram = await Client.getRAMUsage(id).catch((error) => {client.logger.log('error', error);});
+			const status = await Client.getServerStatus(id).catch((error) => {client.logger.log('error', error);});
 			const statusname = status.replace('running', 'Online').replace('stopping', 'Stopping').replace('offline', 'Offline').replace('starting', 'Starting');
 			Embed.setTitle(`${info.attributes.name} (${statusname})`);
 			if (status == 'running') Embed.setColor(65280);

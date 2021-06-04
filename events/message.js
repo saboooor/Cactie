@@ -61,9 +61,7 @@ module.exports = async (client, message) => {
 			if (!message.channel.topic.includes('Ticket Opened by')) return;
 			if (client.tickets.get(message.channel.id).resolved != 'true') return;
 			client.tickets.set(message.channel.id, 'false', 'resolved');
-			const rn = new Date();
-			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-			console.log(`[${time} INFO]: Unmarked ticket #${message.channel.name} as resolved`);
+			client.logger.log('info', `Unmarked ticket #${message.channel.name} as resolved`);
 		}
 		return;
 	}
@@ -128,17 +126,13 @@ module.exports = async (client, message) => {
 	}
 
 	try {
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: ${message.author.tag} issued dash command: ${message.content}`);
-		if (message.author.id !== '249638347306303499') client.users.cache.get('249638347306303499').send(commandLogEmbed);
+		client.logger.log('info', ` ${message.author.tag} issued dash command: ${message.content}`);
+		client.users.cache.get('249638347306303499').send(commandLogEmbed);
 		command.execute(message, args, client);
 	}
 	catch (error) {
 		commandLogEmbed.setTitle('COMMAND FAILED').addField('**Error:**', clean(error));
 		client.users.cache.get('249638347306303499').send(commandLogEmbed);
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.error(`[${time} ERROR]: ${error}`);
+		client.logger.log('error', error);
 	}
 };

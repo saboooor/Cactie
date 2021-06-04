@@ -1,5 +1,4 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'ticket',
@@ -51,14 +50,12 @@ module.exports = {
 					allow: ['VIEW_CHANNEL'],
 				},
 			],
-		}).catch(console.error);
+		}).catch(error => client.logger.log('error', error));
 		client.tickets.set(ticket.id, author.id, 'opener');
 		client.tickets.push(ticket.id, author.id, 'users');
 		if (message.commandName) message.reply(`Ticket created at ${ticket}!`, { ephemeral: true });
 		else message.reply(`Ticket created at ${ticket}!`);
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Ticket created at #${ticket.name}`);
+		client.logger.log('info', `Ticket created at #${ticket.name}`);
 		await sleep(1000);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(3447003)

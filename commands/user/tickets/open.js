@@ -1,5 +1,4 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'open',
@@ -26,8 +25,6 @@ module.exports = {
 			.setDescription(`Ticket Opened by ${author}`);
 		message.reply(Embed);
 		await sleep(1000);
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Reopened ticket #${message.channel.name}`);
+		client.logger.log('info', `Reopened ticket #${message.channel.name}`);
 	},
 };

@@ -29,4 +29,5 @@ module.exports = client => {
 			}
 		});
 	});
+	client.logger.log('info', 'Resolved ticket autodelete loaded!');
 };

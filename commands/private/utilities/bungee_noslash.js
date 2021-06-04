@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
 const { apikey } = require('../../../config/pterodactyl.json');
@@ -14,10 +13,8 @@ module.exports = {
 		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
 			if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
 		});
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 		Client.sendCommand('68505ddb', args.join(' ')).catch((error) => {
-			console.error(`[${time} ERROR]: ${error}`);
+			client.logger.log('error', error);
 		});
 		message.reply(`Sent command \`${args.join(' ')}\` to Bungee`);
 	},

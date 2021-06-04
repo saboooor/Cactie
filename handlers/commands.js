@@ -14,4 +14,5 @@ module.exports = client => {
 			}
 		}
 	}
+	client.logger.log('info', 'Command files loaded!');
 };

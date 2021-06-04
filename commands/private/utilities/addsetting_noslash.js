@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'addsetting',
@@ -9,9 +8,7 @@ module.exports = {
 			const [prop, ...value] = args;
 			client.guilds.cache.forEach(guild => {
 				client.settings.set(guild.id, value.join(' '), prop);
-				const rn = new Date();
-				const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-				console.log(`[${time} INFO]: Added setting: ${prop} = ${value}`);
+				client.logger.log('info', `Added setting to ${guild.name}: ${prop} = ${value}`);
 			});
 		}
 		const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {

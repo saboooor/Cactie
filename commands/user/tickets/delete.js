@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const hastebin = require('hastebin');
 const Discord = require('discord.js');
 module.exports = {
@@ -37,15 +36,11 @@ module.exports = {
 				.addField('**Deleted by**', author);
 			await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
 			await trans.delete();
-			const rn = new Date();
-			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-			console.log(`[${time} INFO]: Created transcript of ${message.channel.name}: ${link}.txt`);
+			client.logger.log('info', `Created transcript of ${message.channel.name}: ${link}.txt`);
 		}
 		else { message.reply('Deleting Ticket...'); }
 		await client.tickets.delete(message.channel.id);
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Deleted ticket #${message.channel.name}`);
+		client.logger.log('info', `Deleted ticket #${message.channel.name}`);
 		await message.channel.delete();
 	},
 };

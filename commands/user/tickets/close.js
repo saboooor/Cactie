@@ -1,5 +1,4 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'close',
@@ -33,8 +32,6 @@ module.exports = {
 		const msg = await message.channel.send(Embed);
 		msg.react('🔓');
 		msg.react('⛔');
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Closed ticket #${message.channel.name}`);
+		client.logger.log('info', `Closed ticket #${message.channel.name}`);
 	},
 };

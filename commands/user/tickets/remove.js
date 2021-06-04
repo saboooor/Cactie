@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'remove',
@@ -27,8 +26,6 @@ module.exports = {
 			.setColor(15105570)
 			.setDescription(`${message.member.user} removed ${user} from the ticket`);
 		message.reply(Embed);
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-		console.log(`[${time} INFO]: Removed ${user.username} from #${message.channel.name}`);
+		client.logger.log('info', `Removed ${user.username} from #${message.channel.name}`);
 	},
 };

@@ -13,4 +13,5 @@ module.exports = client => {
 			}
 		}
 	}
+	client.logger.log('info', 'Slash Command files loaded!');
 };

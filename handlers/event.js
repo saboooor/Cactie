@@ -11,4 +11,5 @@ module.exports = client => {
 		});
 		// goes through all the files in the events folder and registers them
 	});
+	client.logger.log('info', 'Event listener started!');
 };

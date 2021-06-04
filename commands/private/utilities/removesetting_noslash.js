@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const Discord = require('discord.js');
 module.exports = {
 	name: 'removesetting',
@@ -8,9 +7,7 @@ module.exports = {
 		const prop = args[0];
 		client.guilds.cache.forEach(guild => {
 			client.settings.delete(guild.id, prop);
-			const rn = new Date();
-			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-			console.log(`[${time} INFO]: Removed setting: ${prop}`);
+			client.logger.log('info', `Removed setting from ${guild.name}: ${prop}`);
 		});
 		const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop2 => {
 			return `**${prop2}** \`${client.settings.get(message.guild.id)[prop2]}\``;

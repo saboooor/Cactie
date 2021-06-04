@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -9,7 +8,7 @@ module.exports = (client, interaction) => {
 		const button = client.buttons.get(interaction.customID);
 		if (!button) return;
 		try { button.execute(interaction, client); }
-		catch (error) { console.error(error); }
+		catch (error) { client.logger.log('error', error); }
 	}
 	else if (interaction.isCommand()) {
 		const command = client.slashcommands.get(interaction.commandName);
@@ -66,18 +65,14 @@ module.exports = (client, interaction) => {
 		}
 
 		try {
-			const rn = new Date();
-			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-			console.log(`[${time} INFO]: ${interaction.user.tag} issued slash command: /${command.name}`);
+			client.logger.log('info', `${interaction.user.tag} issued slash command: /${command.name}`);
 			client.users.cache.get('249638347306303499').send(commandLogEmbed);
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
 			commandLogEmbed.setTitle('COMMAND FAILED').addField('**Error:**', clean(error));
 			client.users.cache.get('249638347306303499').send(commandLogEmbed);
-			const rn = new Date();
-			const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-			console.error(`[${time} ERROR]: ${error}`);
+			client.logger.log('error', error);
 		}
 	}
 };
