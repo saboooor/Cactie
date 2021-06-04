@@ -20,7 +20,10 @@ module.exports = client => {
 		'plugins': config.plugins,
 		'modpe': false,
 		'view-distance': config.view_distance,
-		'player-list-text': config.tab_list,
+		'player-list-text': {
+			header: config.tab_list.header,
+			footer: config.tab_list.footer,
+		},
 		'everybody-op': config.everybody_op,
 		'max-entities': config.mob_cap,
 		'version': config.version,
