@@ -29,6 +29,9 @@ module.exports = {
 			.setAuthor(message.member.displayName, message.member.user.avatarURL())
 			.setTitle('Suggestion')
 			.setDescription(suggestion);
+		const msg = await channel.send(Embed);
+		await msg.react(yes);
+		await msg.react(no);
 		if (!message.commandName) {
 			if (channel != message.channel) {
 				const created = await message.reply(`**Suggestion Created at ${channel}!**`);
@@ -40,8 +43,5 @@ module.exports = {
 		else {
 			message.reply(`**Suggestion Created at ${channel}!**`, { ephemeral: true });
 		}
-		const msg = await channel.send(Embed);
-		await msg.react(yes);
-		await msg.react(no);
 	},
 };
