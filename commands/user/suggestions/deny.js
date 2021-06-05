@@ -19,8 +19,9 @@ module.exports = {
 		description: 'Response to the suggestion',
 	}],
 	async execute(message, args, client) {
-		if (message.commandName) {
-			args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
 		else {
 			message.delete();

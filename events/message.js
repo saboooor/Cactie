@@ -126,7 +126,7 @@ module.exports = async (client, message) => {
 	}
 
 	try {
-		client.logger.info(` ${message.author.tag} issued dash command: ${message.content}`);
+		client.logger.info(`${message.author.tag} issued dash command: ${message.content}`);
 		client.users.cache.get('249638347306303499').send(commandLogEmbed);
 		command.execute(message, args, client);
 	}

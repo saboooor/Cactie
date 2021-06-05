@@ -19,7 +19,10 @@ module.exports = {
 		description: 'Reason of ban',
 	}],
 	async execute(message, args, client) {
-		if (message.commandName) args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
 		if (!message.commandName && !message.mentions.users.first()) return message.reply('Please use a user mention');
 		let user = client.users.cache.get(args[0]);
 		if (!message.commandName) user = message.mentions.users.first();

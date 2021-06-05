@@ -12,7 +12,10 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply('This command is disabled!');
-		if (message.commandName) args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
 		const srvconfig = client.settings.get(message.guild.id);
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
 		let nick = message.member.displayName;

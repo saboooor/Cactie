@@ -16,12 +16,15 @@ module.exports = {
 		required: true,
 	}],
 	async execute(message, args, client) {
-		if (message.commandName) args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
 		if (!client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id).roles.cache.has('849452673156513813')) return;
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args.join(' ').replace(args[0], '')}\nTo see the response, see ${client.channels.cache.get('849453797809455125')}`);
-		if (message.attachments.size == 1 && !message.commandName) {
+		if (message.attachments && message.attachments.size == 1 && !message.commandName) {
 			const picture = message.attachments.first();
 			const attachmenturl = picture.attachment;
 			const response = await fetch(attachmenturl, {

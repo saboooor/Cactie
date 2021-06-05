@@ -36,7 +36,10 @@ module.exports = {
 		}],
 	}],
 	async execute(message, args, client) {
-		if (message.commandName) args = Array.from(args); args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
