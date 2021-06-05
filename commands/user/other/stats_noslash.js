@@ -6,7 +6,6 @@ const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
 let { apikey } = require('../../../config/pterodactyl.json');
 const { apikey2 } = require('../../../config/pterodactyl.json');
-const { dev } = require('../../../config/bot.json');
 const protocols = require('../../../config/mcprotocol.json');
 let url = 'https://panel.birdflop.com';
 const Discord = require('discord.js');
@@ -26,13 +25,15 @@ module.exports = {
 		let arg = args.join(' ');
 		if (arg) arg = arg.toLowerCase();
 		if (srvconfig.adfree == 'true') {
-			if (dev == 'false') {
+			if (client.user.username == 'Pup') {
 				if (arg != 'pup') {
 					arg = 'pup';
 				}
 			}
-			else if (arg != 'pup dev') {
-				arg = 'pup dev';
+			else if (client.user.username == 'Pup Dev' || client.user.username == 'Pup Canary') {
+				if (arg != 'pup dev') {
+					arg = 'pup dev';
+				}
 			}
 			if (message.guild.id == '661736128373719141') {
 				arg = 'nether depths';
@@ -45,10 +46,10 @@ module.exports = {
 			}
 		}
 		if (!arg) {
-			if (dev == 'false') {
+			if (client.user.username == 'Pup') {
 				id = '5bcaad8d';
 			}
-			else {
+			else if (client.user.username == 'Pup Dev') {
 				id = 'b04dbb8c';
 			}
 			if (message.guild.id == '661736128373719141') {

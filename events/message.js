@@ -3,15 +3,13 @@ const nodeactyl = require('nodeactyl');
 const fetch = require('node-fetch');
 const Client = nodeactyl.Client;
 const { apikey, apikey2 } = require('../config/pterodactyl.json');
-const { dev } = require('../config/bot.json');
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
 module.exports = async (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
-		if (dev == 'true') {
+		if (client.user.username == 'Pup Dev') {
 			if (!message.embeds[0].title.includes('dev')) return;
 			message.channel.send('Updating to latest commit...');
 			Client.login('https://panel.discordbothosting.com', apikey2, (logged_in, err) => {
@@ -20,7 +18,7 @@ module.exports = async (client, message) => {
 			Client.restartServer('b04dbb8c').catch();
 			Client.killServer('b04dbb8c').catch();
 		}
-		else {
+		else if (client.user.username == 'Pup') {
 			if (!message.embeds[0].title.includes('master')) return;
 			message.channel.send('Updating to latest commit...');
 			Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {

@@ -1,5 +1,4 @@
 {
     "token": "[BOT TOKEN HERE]",
-    "prefix": "[BOT PREFIX HERE]",
-    "dev": "[DEV OR NOT]"
+    "prefix": "[BOT PREFIX HERE]"
 }
