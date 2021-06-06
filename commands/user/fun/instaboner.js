@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your pp grow FAST!',
-	aliases: ['instapp', 'instapenis', 'instaerect'],
+	aliases: ['instapp'],
 	cooldown: 1,
 	options: [{
 		type: 3,

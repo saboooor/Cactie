@@ -108,6 +108,6 @@ module.exports = {
 					.setLabel('Donate')
 					.setStyle('LINK')]);
 		if (message.commandName) message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true });
-		else message.reply({ embed: Embed, components: [row] });
+		else message.reply({ embed: Embed, components: [row, row2] });
 	},
 };
