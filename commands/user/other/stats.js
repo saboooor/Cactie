@@ -14,12 +14,27 @@ module.exports = {
 	description: 'Get stats of Pup or a Minecraft server',
 	aliases: ['status'],
 	cooldown: 5,
+	options: [{
+		type: 3,
+		name: 'server',
+		description: 'Specify a Minecraft server',
+	}],
 	async execute(message, args, client) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
 		const srvconfig = client.settings.get(message.guild.id);
 		const Embed = new Discord.MessageEmbed()
 			.setThumbnail('https://bugs.mojang.com/secure/attachment/99116/unknown_pack.png')
 			.setColor(3447003);
-		const reply = await message.channel.send('<a:loading:826611946258038805> Pup is thinking...');
+		let reply = null;
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			await message.defer();
+		}
+		else {
+			reply = await message.reply('<a:loading:826611946258038805> Pup is thinking...');
+		}
 		let id = '';
 		let serverip = '';
 		let arg = args.join(' ');
@@ -142,7 +157,14 @@ module.exports = {
 				else Embed.setTitle(`${pong.ip}:${pong.port}`);
 				let noadmsg = '**Server is offline**';
 				if (srvconfig.adfree == 'false') noadmsg = '**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:```yml\nPup\nTaco Haven\nNether Depths\nChopsticks (Hub/Survival/Factions/Proxy)```';
-				if (!pong.online) return reply.edit(noadmsg);
+				if (!pong.online) {
+					if (message.type && message.type == 'APPLICATION_COMMAND') {
+						return message.editReply(noadmsg);
+					}
+					else {
+						return reply.edit(noadmsg);
+					}
+				}
 			}
 			const duration = moment.duration(Date.now() - pong.debug.cachetime * 1000).format('m [mins and] s [secs]');
 			Embed.setDescription(`Last Updated: \`${duration} ago\``);
@@ -178,7 +200,11 @@ module.exports = {
 				else Embed.setFooter('Query disabled! If you want to see more information, please contact the owner and tell them to set enable-query to true and query.port to the same port as the server in server.properties');
 			}
 		}
-		await reply.delete();
-		await message.reply(Embed);
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			await message.editReply(Embed);
+		}
+		else {
+			reply.edit('Pong!', Embed);
+		}
 	},
 };
