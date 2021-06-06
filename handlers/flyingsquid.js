@@ -28,10 +28,4 @@ module.exports = client => {
 		'max-entities': config.mob_cap,
 		'version': config.version,
 	});
-	srv.on('newPlayer', player => {
-		client.channels.cache.get('849453797809455125').send(`${player._client.username} joined the server!`);
-		player.once('disconnected', e => {
-			return client.channels.cache.get('849453797809455125').send(`${player._client.username} left the server!`);
-		});
-	});
 };
