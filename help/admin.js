@@ -21,7 +21,7 @@ Approve a suggestion (Alias: ${prefix}accept)
 **${prefix}deny <message id> [response]**
 Deny a suggestion (Alias: ${prefix}decline)
 *Permission: Administrator*
-**${prefix}help support**
+**${prefix}help tickets**
 Walks you through how to setup support tickets in your guild
 *Permission: Administrator*
 `);
