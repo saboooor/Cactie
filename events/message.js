@@ -106,16 +106,6 @@ module.exports = async (client, message) => {
 		return message.channel.send(Usage);
 	}
 
-	const commandLogEmbed = new Discord.MessageEmbed()
-		.setColor(Math.floor(Math.random() * 16777215))
-		.setTitle('Command executed!')
-		.setAuthor(message.author.tag, message.author.avatarURL())
-		.addField('**Type:**', 'Dash');
-
-	commandLogEmbed.addField('**Guild:**', message.guild.name).addField('**Channel:**', message.channel.name);
-
-	commandLogEmbed.addField('**Command:**', srvconfig.prefix + command.name);
-
 	if (command.permissions) {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (!authorPerms || !authorPerms.has(command.permissions)) {
@@ -125,12 +115,20 @@ module.exports = async (client, message) => {
 
 	try {
 		client.logger.info(`${message.author.tag} issued dash command: ${message.content}`);
-		client.users.cache.get('249638347306303499').send(commandLogEmbed);
 		command.execute(message, args, client);
 	}
 	catch (error) {
-		commandLogEmbed.setTitle('COMMAND FAILED').addField('**Error:**', clean(error));
-		client.users.cache.get('249638347306303499').send(commandLogEmbed);
+		const commandFailed = new Discord.MessageEmbed()
+			.setColor(Math.floor(Math.random() * 16777215))
+			.setTitle('COMMAND FAILED')
+			.setAuthor(message.author.tag, message.author.avatarURL())
+			.addField('**Type:**', 'Dash')
+			.addField('**Guild:**', message.guild.name)
+			.addField('**Channel:**', message.channel.name)
+			.addField('**Command:**', srvconfig.prefix + command.name)
+			.addField('**Error:**', clean(error));
+		client.users.cache.get('249638347306303499').send(commandFailed);
+		message.author.send(commandFailed);
 		client.logger.log('error', error);
 	}
 };

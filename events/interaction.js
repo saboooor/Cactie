@@ -42,20 +42,9 @@ module.exports = (client, interaction) => {
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
-		const commandLogEmbed = new Discord.MessageEmbed()
-			.setColor(Math.floor(Math.random() * 16777215))
-			.setTitle('Command executed!')
-			.setAuthor(interaction.user.tag, interaction.user.avatarURL())
-			.addField('**Type:**', 'Slash');
-
-		if (interaction.guild) {
-			commandLogEmbed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
-		}
-		else if (command.guildOnly) {
+		if (!interaction.guild && command.guildOnly) {
 			return interaction.reply('You can only execute this command in a Discord Server!');
 		}
-
-		commandLogEmbed.addField('**Command:**', command.name);
 
 		if (command.permissions && interaction.user.id !== '249638347306303499') {
 			const authorPerms = interaction.member.permissions;
@@ -66,12 +55,19 @@ module.exports = (client, interaction) => {
 
 		try {
 			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name}`);
-			client.users.cache.get('249638347306303499').send(commandLogEmbed);
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
-			commandLogEmbed.setTitle('COMMAND FAILED').addField('**Error:**', clean(error));
-			client.users.cache.get('249638347306303499').send(commandLogEmbed);
+			const commandFailed = new Discord.MessageEmbed()
+				.setColor(Math.floor(Math.random() * 16777215))
+				.setTitle('COMMAND FAILED')
+				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
+				.addField('**Type:**', 'Slash')
+				.addField('**Command:**', command.name)
+				.addField('**Error:**', clean(error));
+			if (interaction.guild) commandFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+			client.users.cache.get('249638347306303499').send(commandFailed);
+			interaction.user.send(commandFailed);
 			client.logger.log('error', error);
 		}
 	}
