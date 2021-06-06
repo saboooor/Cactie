@@ -8,7 +8,7 @@ module.exports = {
 		if (!message.channel.topic) return message.reply('This is not a valid ticket!');
 		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');
 		if (client.tickets.get(message.channel.id).users.includes(message.member.user.id)) return message.reply('You cannot resolve this ticket! Try closing the ticket instead');
-		if (message.channel.name.includes('closed-')) return message.reply('This ticket is already closed!');
+		if (message.channel.name.includes(`closed${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return message.reply('This ticket is already closed!');
 		if (client.tickets.get(message.channel.id).resolved == 'true') return message.reply('This ticket is already marked as resolved!');
 		const users = [];
 		client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
