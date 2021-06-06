@@ -31,9 +31,9 @@ module.exports = {
 			const Embed = new Discord.MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${message.channel.name}`)
-				.addField('**Users in ticket**', users)
+				.addField('**Users in ticket**', `${users}`)
 				.addField('**Transcript**', `${link}.txt`)
-				.addField('**Deleted by**', author);
+				.addField('**Deleted by**', `${author}`);
 			await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
 			await trans.delete();
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
