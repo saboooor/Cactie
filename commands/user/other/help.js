@@ -40,26 +40,26 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
-		const srvconfig = client.settings.get(message.guild.id);
+		const prefix = await client.settings.get(message.guild.id).prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('**HELP**');
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
 		if (arg == 'commands') {
-			require('../../../help/commands.js')(srvconfig, Embed);
+			require('../../../help/commands.js')(prefix, Embed);
 		}
 		else if (arg == 'features') {
-			require('../../../help/features.js')(srvconfig, Embed);
+			require('../../../help/features.js')(prefix, Embed);
 		}
 		else if (arg == 'admin') {
-			require('../../../help/admin.js')(srvconfig, Embed);
+			require('../../../help/admin.js')(prefix, Embed);
 		}
 		else if (arg == 'nsfw') {
-			require('../../../help/nsfw.js')(srvconfig, Embed);
+			require('../../../help/nsfw.js')(prefix, Embed);
 		}
 		else if (arg == 'tickets') {
-			require('../../../help/tickets.js')(srvconfig, Embed);
+			require('../../../help/tickets.js')(prefix, Embed);
 		}
 		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
