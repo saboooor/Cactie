@@ -15,7 +15,7 @@ module.exports = async (client, reaction, user) => {
 			client.commands.get('vtotal').execute(message, user, client, reaction);
 		}
 	}
-	if (message.channel.id == '678391804563030031') {
+	if (message.channel.id == '678391804563030031' || message.channel.id == '851385490821087252') {
 		if (reaction.emoji.name == '🔞') {
 			reaction.users.remove(user.id);
 			client.commands.get('nsfw').execute(message, user, client, reaction);
