@@ -27,11 +27,33 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
-		message.reply(Embed);
-		Embed.setColor(3447003).setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
-		const msg = await message.channel.send(Embed);
-		msg.react('🔓');
-		msg.react('⛔');
+		if (client.settings.get(message.guild.id).tickets == 'buttons') {
+			const row = new Discord.MessageActionRow()
+				.addComponents([
+					new Discord.MessageButton()
+						.setCustomID('delete_ticket')
+						.setLabel('Delete Ticket')
+						.setEmoji('⛔')
+						.setStyle('DANGER'),
+					new Discord.MessageButton()
+						.setCustomID('reopen_ticket')
+						.setLabel('Reopen Ticket')
+						.setEmoji('🔓')
+						.setStyle('PRIMARY'),
+				]);
+			if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [Embed], components: [row] });
+			else message.reply({ embed: Embed, components: [row] });
+		}
+		else {
+			message.reply(Embed);
+		}
+		if (client.settings.get(message.guild.id).tickets == 'reactions') {
+			Embed.setColor(3447003);
+			Embed.setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
+			const embed = await message.channel.send(Embed);
+			embed.react('🔓');
+			embed.react('⛔');
+		}
 		client.logger.info(`Closed ticket #${message.channel.name}`);
 	},
 };

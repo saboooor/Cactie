@@ -63,11 +63,25 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Ticket Created')
-			.setDescription('Please explain your issue and we\'ll be with you shortly.')
-			.setFooter(`To close this ticket do ${srvconfig.prefix}close, /close or react with 🔒`);
+			.setDescription('Please explain your issue and we\'ll be with you shortly.');
 		if (args && args[0] && !reaction) Embed.addField('Description', args.join(' '));
-		const embed = await ticket.send(`${author}`, Embed);
-		embed.react('🔒');
+		if (client.settings.get(message.guild.id).tickets == 'buttons') {
+			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or click the button below`);
+			const row = new Discord.MessageActionRow()
+				.addComponents(
+					new Discord.MessageButton()
+						.setCustomID('close_ticket')
+						.setLabel('Close Ticket')
+						.setEmoji('🔒')
+						.setStyle('DANGER'),
+				);
+			await ticket.send(`${author}`, { embed: Embed, components: [row] });
+		}
+		else if (client.settings.get(message.guild.id).tickets == 'reactions') {
+			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
+			const embed = await ticket.send(`${author}`, Embed);
+			await embed.react('🔒');
+		}
 		if (srvconfig.ticketmention == 'true') {
 			const ping = await ticket.send('@everyone');
 			await ping.delete();
