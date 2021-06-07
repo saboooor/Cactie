@@ -3,6 +3,6 @@ module.exports = {
 	description: 'nsfw',
 	cooldown: 1,
 	async execute(message, args, client) {
-		require('./fetch.js')('nhentai', message);
+		require('../other/redditfetch_noslash.js')('nhentai', message);
 	},
 };
