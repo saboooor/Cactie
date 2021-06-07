@@ -1,11 +1,6 @@
 const cron = require('node-cron');
 const Discord = require('discord.js');
-function sleep(ms) {
-	return new Promise(res => setTimeout(res, ms));
-}
-function minTwoDigits(n) {
-	return (n < 10 ? '0' : '') + n;
-}
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = client => {
 	cron.schedule('0 0 * * *', () => {
 		client.channels.cache.forEach(async channel => {
@@ -23,9 +18,7 @@ module.exports = client => {
 				const msg = await channel.send(Embed);
 				msg.react('🔓');
 				msg.react('⛔');
-				const rn = new Date();
-				const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
-				console.log(`[${time} INFO]: Closed resolved ticket #${channel.name}`);
+				client.logger.info(`Closed resolved ticket #${channel.name}`);
 			}
 		});
 	});

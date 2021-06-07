@@ -11,7 +11,7 @@ module.exports = async (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
 		if (client.user.username == 'Pup Dev') {
 			if (!message.embeds[0].title.includes('dev')) return;
-			message.channel.send('Updating to latest commit...');
+			message.reply('Updating to latest commit...');
 			Client.login('https://panel.discordbothosting.com', apikey2, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.discordbothosting.com\n${err}`);
 			});
@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
 		}
 		else if (client.user.username == 'Pup') {
 			if (!message.embeds[0].title.includes('master')) return;
-			message.channel.send('Updating to latest commit...');
+			message.reply('Updating to latest commit...');
 			Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
 				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
 			});
@@ -96,14 +96,12 @@ module.exports = async (client, message) => {
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
-	if (!command.argamnt) command.argamnt = 1;
-
-	if (command.args && args.length < command.argamnt) {
+	if (command.args && args.length < 1) {
 		const Usage = new Discord.MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
-		return message.channel.send(Usage);
+		return message.reply(Usage);
 	}
 
 	if (command.permissions) {
