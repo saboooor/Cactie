@@ -13,7 +13,7 @@ module.exports = client => {
 			joinmessage: 'false',
 			adfree: 'false',
 			maxppsize: '35',
-			tickets: 'true',
+			tickets: 'buttons',
 			bonercmd: 'true',
 			suggestionchannel: 'default',
 			pollchannel: 'default',
