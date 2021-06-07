@@ -213,12 +213,18 @@ module.exports = {
 			.setTitle('Bot Settings');
 		if (args[1]) {
 			const prop = args[0];
-			let value = '';
-			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1];
-			else value = args.join(' ').replace(`${args[0]} `, '');
 			if(!client.settings.has(message.guild.id, prop)) {
 				return message.reply('Invalid setting!');
 			}
+			let value = '';
+			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1];
+			else value = args.join(' ').replace(`${args[0]} `, '');
+			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention') && value != 'true' && value != 'false') return message.reply('This setting must be either `true` or `false`!');
+			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply('Please set a system channel in your server settings first!');
+			if (prop == 'maxppsize' && value > 76) return message.reply('maxppsize must be less than 76!');
+			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply('That is not a valid text channel ID!');
+			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'category')) return message.reply('That is not a valid category ID!');
+			if (prop == 'supportrole' && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply('That is not a valid role ID!');
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
