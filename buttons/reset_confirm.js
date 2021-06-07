@@ -11,18 +11,20 @@ module.exports = {
 		const row = new Discord.MessageActionRow()
 			.addComponents(button);
 		const desc = {
-			prefix: '*The bot\'s prefix (You can use double quotes (") to include spaces)*',
+			prefix: '*The bot\'s prefix*',
 			simpreaction: '*Reacts with "SIMP" on messages with simpy words (true/false)*',
-			leavemessage: '*Can be either false or the message text itself.\nVariables: {USER MENTION} {USER TAG}*',
-			joinmessage: '*Can be either false or the message text itself.\nVariables: {USER MENTION} {USER TAG}*',
+			leavemessage: '*The message when someone leaves the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
+			joinmessage: '*The message when someone joins the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
 			adfree: '*Gets rid of all references to other servers (true/false)*',
-			maxppsize: '*Maximum pp size in pp and instapp commands*',
-			tickets: '*Enables tickets (true/false)*',
-			bonercmd: '*Toggles boner command (true/false)*',
-			ticketlogchannel: '*The channel where the bot puts transcripts of tickets\nCan be either false or the channel ID*',
-			ticketcategory: '*The category where the bot creates tickets in\nMust be a category ID*',
-			supportrole: '*The ticket support team role\nCan be either false or the role ID*',
-			ticketmention: '*Pings @everyone every time a new ticket is created*',
+			maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
+			tickets: '*Toggles the ticket system (buttons/reactions/false)*',
+			bonercmd: '*Toggles the boner command (true/false)*',
+			suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelID)*',
+			pollchannel: '*The channel where the bot puts polls in (false/default/channelID)*',
+			ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelID)*',
+			ticketcategory: '*The category where the bot creates tickets in (false/categoryID)*',
+			supportrole: '*The ticket support team role (false/roleID)*',
+			ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
 		};
 		const srvconfig = Object.keys(client.settings.get(interaction.guild.id)).map(prop => {
 			return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(interaction.guild.id)[prop]}\``;

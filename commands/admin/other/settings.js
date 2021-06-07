@@ -219,6 +219,7 @@ module.exports = {
 			let value = '';
 			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1];
 			else value = args.join(' ').replace(`${args[0]} `, '');
+			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply('This setting must be either `buttons`, `reactions`, or `false`!');
 			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention') && value != 'true' && value != 'false') return message.reply('This setting must be either `true` or `false`!');
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply('Please set a system channel in your server settings first!');
 			if (prop == 'maxppsize' && value > 76) return message.reply('maxppsize must be less than 76!');
@@ -237,7 +238,7 @@ module.exports = {
 				joinmessage: '*The message when someone joins the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
 				adfree: '*Gets rid of all references to other servers (true/false)*',
 				maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
-				tickets: '*Toggles the ticket system (true/false)*',
+				tickets: '*Toggles the ticket system (buttons/reactions/false)*',
 				bonercmd: '*Toggles the boner command (true/false)*',
 				suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelID)*',
 				pollchannel: '*The channel where the bot puts polls in (false/default/channelID)*',
