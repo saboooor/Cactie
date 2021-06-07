@@ -11,7 +11,8 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setTitle(pong[0].data.children[0].data.title)
 			.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
-			.setImage(pong[0].data.children[0].data.url);
+			.setImage(pong[0].data.children[0].data.url)
+			.setFooter(`Fetched from ${pong[0].data.children[0].data.subreddit_name_prefixed}, Pup is not responsible for any of these images`);
 		await message.reply(Embed);
 	},
 };
