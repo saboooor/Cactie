@@ -16,10 +16,9 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
+		if (!client.tickets.get(message.channel.id)) return;
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply('Tickets are disabled!');
-		if (!message.channel.topic) return message.reply('This is not a valid ticket!');
-		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');
-		if (message.channel.name.includes(`closed${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return message.reply('This ticket is closed!');
+		if (message.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('This ticket is closed!');
 		const user = client.users.cache.find(u => u.id === args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply('This user isn\'t in this ticket!');
 		if (user.id == client.tickets.get(message.channel.id).opener) return message.reply('You can\'t remove the ticket opener!');

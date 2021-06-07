@@ -12,10 +12,9 @@ module.exports = {
 			author = user;
 		}
 		const srvconfig = client.settings.get(message.guild.id);
+		if (!client.tickets.get(message.channel.id)) return;
 		if (srvconfig.tickets == 'false') return message.reply('Tickets are disabled!');
-		if (!message.channel.topic) return message.reply('This is not a valid ticket!');
-		if (!message.channel.topic.includes('Ticket Opened by')) return message.reply('This is not a valid ticket!');
-		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return message.reply('This ticket needs to be closed first!');
+		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('This ticket needs to be closed first!');
 		if (srvconfig.ticketlogchannel != 'false') {
 			const trans = await message.reply('Creating transcript...');
 			const messages = await message.channel.messages.fetch({ limit: 100 });

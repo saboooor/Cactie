@@ -24,7 +24,7 @@ module.exports = {
 		if (srvconfig.tickets == 'false') return message.reply('Tickets are disabled!');
 		let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 		const role = message.guild.roles.cache.get(srvconfig.supportrole);
-		const channel = message.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
+		const channel = message.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
 		if (channel) {
 			message.guild.channels.cache.get(channel.id).send(`❗ **${author} Ticket already exists!**`);
 			const msg = await message.reply(`You've already created a ticket at ${channel}!`);
@@ -35,7 +35,7 @@ module.exports = {
 		if (!role) return message.reply(`You need to set a role with ${srvconfig.prefix}settings supportrole <Role ID>!`);
 		if (!parent) parent = { id: null };
 		if (parent.type != 'category') parent = { id: null };
-		const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
+		const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
 			type: 'text',
 			parent: parent.id,
 			topic: `Ticket Opened by ${author.tag}`,
