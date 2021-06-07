@@ -5,16 +5,14 @@ module.exports = {
 	async execute(interaction, client) {
 		const author = interaction.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
-		if (srvconfig.tickets == 'false') return interaction.reply('Tickets are disabled!');
-		if (!interaction.channel.topic) return interaction.reply('This is not a valid ticket!');
 		if (!interaction.channel.topic.includes('Ticket Opened by')) return interaction.reply('This is not a valid ticket!');
-		if (interaction.channel.name.includes(`closed${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply('This ticket is already closed!');
+		if (interaction.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply('This ticket is already closed!');
 		if (client.tickets.get(interaction.channel.id).users.includes(author.id)) {
 			if (author.id != client.tickets.get(interaction.channel.id).opener) return interaction.reply('You can\'t close this ticket!');
 		}
 		interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
-		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply('Failed to close ticket, please try again in 10 minutes');
+		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply('Failed to close ticket, please try again in 10 minutes');
 		client.tickets.set(interaction.channel.id, 'false', 'resolved');
 		client.tickets.get(interaction.channel.id).users.forEach(userid => {
 			interaction.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: false });
