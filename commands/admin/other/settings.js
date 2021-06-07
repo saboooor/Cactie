@@ -1,12 +1,17 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'settings',
-	description: 'Configure this guild\'s Pup settings',
+	description: 'Configure this server\'s Pup settings',
 	aliases: ['setting'],
 	cooldown: 1,
 	permissions: 'ADMINISTRATOR',
 	guildOnly: true,
 	options: [
+		{
+			type: 1,
+			name: 'get',
+			description: 'Show all settings',
+		},
 		{
 			type: 1,
 			name: 'prefix',
@@ -211,6 +216,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');
+		if (args[1] == 'get') args[1] == null;
 		if (args[1] != null) {
 			const prop = args[0];
 			if(!client.settings.has(message.guild.id, prop)) {
