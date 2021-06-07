@@ -104,7 +104,7 @@ module.exports = async (client, message) => {
 		return message.reply(Usage);
 	}
 
-	if (command.permissions) {
+	if (command.permissions && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (!authorPerms || !authorPerms.has(command.permissions)) {
 			return message.reply('You can\'t do that!');
@@ -116,17 +116,17 @@ module.exports = async (client, message) => {
 		command.execute(message, args, client);
 	}
 	catch (error) {
-		const commandFailed = new Discord.MessageEmbed()
+		const interactionFailed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
-			.setTitle('COMMAND FAILED')
+			.setTitle('INTERACTION FAILED')
 			.setAuthor(message.author.tag, message.author.avatarURL())
 			.addField('**Type:**', 'Dash')
 			.addField('**Guild:**', message.guild.name)
 			.addField('**Channel:**', message.channel.name)
-			.addField('**Command:**', srvconfig.prefix + command.name)
+			.addField('**INTERACTION:**', srvconfig.prefix + command.name)
 			.addField('**Error:**', clean(error));
-		client.users.cache.get('249638347306303499').send(commandFailed);
-		message.author.send(commandFailed);
-		client.logger.log('error', error);
+		client.users.cache.get('249638347306303499').send(interactionFailed);
+		message.author.send(interactionFailed);
+		client.logger.error(error);
 	}
 };

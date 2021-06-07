@@ -7,8 +7,32 @@ module.exports = (client, interaction) => {
 	if (interaction.isMessageComponent()) {
 		const button = client.buttons.get(interaction.customID);
 		if (!button) return;
-		try { button.execute(interaction, client); }
-		catch (error) { client.logger.log('error', error); }
+
+		if (button.permissions && interaction.user.id !== '249638347306303499') {
+			const authorPerms = interaction.member.permissions;
+			if (!authorPerms || !authorPerms.has(button.permissions)) {
+				interaction.deferUpdate();
+				return interaction.user.send('You can\'t do that!');
+			}
+		}
+
+		try {
+			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}`);
+			button.execute(interaction, client);
+		}
+		catch (error) {
+			const interactionFailed = new Discord.MessageEmbed()
+				.setColor(Math.floor(Math.random() * 16777215))
+				.setTitle('INTERACTION FAILED')
+				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
+				.addField('**Type:**', 'Button')
+				.addField('**Interaction:**', button.name)
+				.addField('**Error:**', clean(error));
+			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+			client.users.cache.get('249638347306303499').send(interactionFailed);
+			interaction.user.send(interactionFailed);
+			client.logger.error(error);
+		}
 	}
 	else if (interaction.isCommand()) {
 		const command = client.slashcommands.get(interaction.commandName);
@@ -35,7 +59,7 @@ module.exports = (client, interaction) => {
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])
 					.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-				return interaction.reply(Embed);
+				return interaction.reply({ embeds: [Embed], ephemeral: true });
 			}
 		}
 
@@ -43,13 +67,13 @@ module.exports = (client, interaction) => {
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		if (!interaction.guild && command.guildOnly) {
-			return interaction.reply('You can only execute this command in a Discord Server!');
+			return interaction.reply('You can only execute this command in a Discord Server!', { ephemeral: true });
 		}
 
 		if (command.permissions && interaction.user.id !== '249638347306303499') {
 			const authorPerms = interaction.member.permissions;
 			if (!authorPerms || !authorPerms.has(command.permissions)) {
-				return interaction.reply('You can\'t do that!');
+				return interaction.reply('You can\'t do that!', { ephemeral: true });
 			}
 		}
 
@@ -58,17 +82,17 @@ module.exports = (client, interaction) => {
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
-			const commandFailed = new Discord.MessageEmbed()
+			const interactionFailed = new Discord.MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle('COMMAND FAILED')
+				.setTitle('INTERACTION FAILED')
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
 				.addField('**Type:**', 'Slash')
-				.addField('**Command:**', command.name)
+				.addField('**Interaction:**', command.name)
 				.addField('**Error:**', clean(error));
-			if (interaction.guild) commandFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
-			client.users.cache.get('249638347306303499').send(commandFailed);
-			interaction.user.send(commandFailed);
-			client.logger.log('error', error);
+			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+			client.users.cache.get('249638347306303499').send(interactionFailed);
+			interaction.user.send(interactionFailed);
+			client.logger.error(error);
 		}
 	}
 };
