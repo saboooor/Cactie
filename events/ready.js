@@ -9,10 +9,6 @@ module.exports = async (client) => {
 	});
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
-	const guildcommands = await client.guilds.cache.get('811354612547190794').commands.fetch();
-	guildcommands.forEach(async command => {
-		command.delete();
-	})
 	await client.slashcommands.forEach(async command => {
 		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
 		client.logger.info(`Detected ${command.name} has some changes! Updating command...`);
