@@ -63,14 +63,31 @@ module.exports = {
 		}
 		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
-			Embed.setDescription('Created support panel! You may now delete this message, otherwise it\'ll be deleted in 10 seconds');
+			Embed.setDescription('Created support panel! You may now delete this message');
 			const Panel = new Discord.MessageEmbed()
 				.setColor(3447003)
 				.setTitle('Need help? No problem!')
-				.setDescription('React with 🎫 to open a ticket!')
 				.setFooter(`${message.guild.name} Support`, message.guild.iconURL());
-			const msg = await message.channel.send(Panel);
-			await msg.react('🎫');
+			if (client.settings.get(message.guild.id).tickets == 'buttons') {
+				Panel.setDescription('Click the button below to open a ticket!');
+				const row = new Discord.MessageActionRow()
+					.addComponents(
+						new Discord.MessageButton()
+							.setCustomID('create_ticket')
+							.setLabel('Open Ticket')
+							.setEmoji('🎫')
+							.setStyle('PRIMARY'),
+					);
+				message.channel.send({ embed: Panel, components: [row] });
+			}
+			else if (client.settings.get(message.guild.id).tickets == 'reactions') {
+				Panel.setDescription('React with 🎫 to open a ticket!');
+				const msg = await message.channel.send(Panel);
+				await msg.react('🎫');
+			}
+			else if (client.settings.get(message.guild.id).tickets == 'false') {
+				return message.reply('Tickets are disabled!');
+			}
 		}
 		else {
 			Embed.setDescription('\n\nPlease use the buttons below to navigate through the help menu');

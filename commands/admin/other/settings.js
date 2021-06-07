@@ -211,13 +211,13 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');
-		if (args[1]) {
+		if (args[1] != null) {
 			const prop = args[0];
 			if(!client.settings.has(message.guild.id, prop)) {
 				return message.reply('Invalid setting!');
 			}
 			let value = '';
-			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1];
+			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1].toString();
 			else value = args.join(' ').replace(`${args[0]} `, '');
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply('This setting must be either `buttons`, `reactions`, or `false`!');
 			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention') && value != 'true' && value != 'false') return message.reply('This setting must be either `true` or `false`!');
