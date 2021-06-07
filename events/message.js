@@ -49,7 +49,10 @@ module.exports = async (client, message) => {
 		client.response.get('simp').execute(message);
 	}
 	if (message.content.toLowerCase().includes('what') && message.content.toLowerCase().includes('ip')) client.response.get('whatip').execute(message);
-	if (message.content.toLowerCase().includes('pup') && ['bad', 'gross', 'shit', 'dum'].some(word => message.content.toLowerCase().includes(word))) client.response.get('pupbad').execute(message);
+	if (message.content.toLowerCase().includes('pup') && ['bad', 'gross', 'shit', 'dum'].some(word => message.content.toLowerCase().includes(word))) {
+		if (srvconfig.simpreaction == 'false') return;
+		client.response.get('pupbad').execute(message);
+	}
 	if (message.content.includes(client.user.id)) {
 		message.reply(`My prefix is \`${srvconfig.prefix}\``);
 	}
