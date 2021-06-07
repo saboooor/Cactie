@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const request = require('request').defaults({ encoding: null });
 const Discord = require('discord.js');
 module.exports = {
 	name: 'hentai',

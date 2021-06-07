@@ -23,7 +23,6 @@
     "moment-duration-format": "^2.3.2",
     "node-cron": "^3.0.0",
     "nodeactyl": "github:saboooor/nodeactyl",
-    "request": "^2.88.2",
     "winston": "^3.3.3"
   }
 }
