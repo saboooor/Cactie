@@ -3,7 +3,7 @@ module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
 	aliases: ['commands'],
-	cooldown: 2,
+	cooldown: 10,
 	guildOnly: true,
 	options: [{
 		type: 3,

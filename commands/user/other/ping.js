@@ -3,7 +3,7 @@ module.exports = {
 	name: 'ping',
 	description: 'Pong!',
 	aliases: ['pong'],
-	cooldown: 2,
+	cooldown: 10,
 	execute(message, args, client) {
 		const row = new Discord.MessageActionRow()
 			.addComponents(new Discord.MessageButton()

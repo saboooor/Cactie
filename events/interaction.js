@@ -47,7 +47,7 @@ module.exports = (client, interaction) => {
 
 		const now = Date.now();
 		const timestamps = cooldowns.get(command.name);
-		const cooldownAmount = (command.cooldown || 3) * 1000;
+		const cooldownAmount = (command.cooldown || 3) * 1200;
 
 		if (timestamps.has(interaction.user.id)) {
 			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
@@ -55,6 +55,7 @@ module.exports = (client, interaction) => {
 			const messages = ['Do I look like Usain Bolt to u?', 'BRUH IM JUST A DOG SLOW DOWN', 'can u not', 'leave me alone ;-;'];
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
+				if ((expirationTime - now) < 1200) return;
 				const Embed = new Discord.MessageEmbed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])

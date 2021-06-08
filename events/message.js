@@ -3,6 +3,7 @@ const nodeactyl = require('nodeactyl');
 const fetch = require('node-fetch');
 const Client = nodeactyl.Client;
 const { apikey, apikey2 } = require('../config/pterodactyl.json');
+const { cooldown } = require('../commands/user/other/help');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -80,7 +81,7 @@ module.exports = async (client, message) => {
 
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.name);
-	const cooldownAmount = (command.cooldown || 3) * 1000;
+	const cooldownAmount = (command.cooldown || 1) * 1200;
 
 	if (timestamps.has(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
@@ -88,6 +89,7 @@ module.exports = async (client, message) => {
 		const messages = ['Do I look like Usain Bolt to u?', 'BRUH IM JUST A DOG SLOW DOWN', 'can u not', 'leave me alone ;-;'];
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
+			if ((expirationTime - now) < 1200) return message.react('⏱️');
 			const Embed = new Discord.MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(messages[random])

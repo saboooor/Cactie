@@ -3,7 +3,6 @@ module.exports = {
 	name: 'settings',
 	description: 'Configure this server\'s Pup settings',
 	aliases: ['setting'],
-	cooldown: 1,
 	permissions: 'ADMINISTRATOR',
 	guildOnly: true,
 	options: [

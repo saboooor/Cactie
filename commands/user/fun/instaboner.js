@@ -3,7 +3,6 @@ module.exports = {
 	name: 'instaboner',
 	description: 'See your pp grow FAST!',
 	aliases: ['instapp'],
-	cooldown: 1,
 	options: [{
 		type: 3,
 		name: 'someone',

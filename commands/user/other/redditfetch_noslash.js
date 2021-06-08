@@ -13,7 +13,7 @@ module.exports = async (subreddit, message) => {
 		.setDescription(pong[0].data.children[0].data.selftext)
 		.setImage(pong[0].data.children[0].data.url)
 		.setFooter(`Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts`);
-	if (pong[0].data.children[0].data.url.includes('redgifs') || pong[0].data.children[0].data.url.includes('gfycat') || pong[0].data.children[0].data.url.includes('.gifv')) return require('./redditfetch_noslash.js')(subreddit, message);
+	if (pong[0].data.children[0].data.url.includes('redgifs') || pong[0].data.children[0].data.url.includes('gfycat') || pong[0].data.children[0].data.url.includes('.gifv') || pong[0].data.children[0].data.url.includes('v.redd.it')) return require('./redditfetch_noslash.js')(subreddit, message);
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞');
 	await message.reply(Embed);
 };
