@@ -3,6 +3,6 @@ module.exports = {
 	description: 'nsfw',
 	cooldown: 1,
 	async execute(message, args, client) {
-		require('../other/redditfetch_noslash.js')('lewd', message);
+		require('../other/redditfetch_noslash.js')('lewd', message, client);
 	},
 };
