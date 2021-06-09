@@ -47,19 +47,19 @@ module.exports = {
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
 		if (arg == 'commands') {
-			require('../../../help/commands.js')(prefix, Embed);
+			require('../../help/commands.js')(prefix, Embed);
 		}
 		else if (arg == 'features') {
-			require('../../../help/features.js')(prefix, Embed);
+			require('../../help/features.js')(prefix, Embed);
 		}
 		else if (arg == 'admin') {
-			require('../../../help/admin.js')(prefix, Embed);
+			require('../../help/admin.js')(prefix, Embed);
 		}
 		else if (arg == 'nsfw') {
-			require('../../../help/nsfw.js')(prefix, Embed);
+			require('../../help/nsfw.js')(prefix, Embed);
 		}
 		else if (arg == 'tickets') {
-			require('../../../help/tickets.js')(prefix, Embed);
+			require('../../help/tickets.js')(prefix, Embed);
 		}
 		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
