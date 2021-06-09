@@ -56,6 +56,7 @@ module.exports = {
 			require('../../help/admin.js')(prefix, Embed);
 		}
 		else if (arg == 'nsfw') {
+			if (!message.channel.nsfw) return message.react('🔞');
 			require('../../help/nsfw.js')(prefix, Embed);
 		}
 		else if (arg == 'tickets') {
