@@ -45,7 +45,7 @@ module.exports = {
 		}
 		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
 		else message.reply(Embed);
-		await member.ban().catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
+		await member.ban({ reason: `Banned by ${message.member.user.tag} for ${args.slice(1).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		client.logger.info(`Banned user: ${user.tag} from ${message.guild.name}`);
 	},
 };
