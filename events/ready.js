@@ -11,12 +11,17 @@ module.exports = async (client) => {
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
 		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
-		client.logger.info(`Detected ${command.name} has some changes! Updating command...`);
+		client.logger.info(`Detected /${command.name} has some changes! Updating command...`);
 		await client.application?.commands.create({
 			name: command.name,
 			description: command.description,
 			options: command.options,
 		});
+	});
+	await commands.forEach(async command => {
+		if (client.slashcommands.find(c => c.name == command.name)) return;
+		client.logger.info(`Detected /${command.name} has been deleted! Deleting command...`);
+		await command.delete();
 	});
 	setInterval(async () => {
 		const activities = [
