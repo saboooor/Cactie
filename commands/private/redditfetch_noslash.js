@@ -13,6 +13,7 @@ module.exports = async (subreddit, message, client) => {
 	if (!pong[0]) return message.reply('Couldn\'t get data! Try again later.');
 	if (pong[0].data.children[0].data.selftext) return require('./redditfetch_noslash.js')(subreddit, message, client);
 	const Embed = new Discord.MessageEmbed()
+		.setColor(Math.round(Math.random() * 16777215))
 		.setAuthor(`u/${pong[0].data.children[0].data.author}`)
 		.setTitle(`${pong[0].data.children[0].data.title} (${pong[0].data.children[0].data.ups} Upvotes)`)
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
