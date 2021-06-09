@@ -3,7 +3,7 @@ module.exports = {
 	name: 'event',
 	description: 'Toggle the Event Notifs role',
 	async execute(message, user, client, reaction) {
-		if (message.guild.id !== '837116518730694678') return;
+		if (message.guild.id !== '837116518730694678' && client.user.id !== '765287593762881616') return;
 		if (reaction) message.author = user;
 		const member = await message.guild.members.cache.find(m => m.id === message.author.id);
 		const role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === 'event notifs');

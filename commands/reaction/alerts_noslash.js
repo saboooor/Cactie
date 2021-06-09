@@ -3,7 +3,7 @@ module.exports = {
 	name: 'alerts',
 	description: 'Toggle the Alerts role',
 	async execute(message, user, client, reaction) {
-		if (message.guild.id !== '711661870926397601' && message.guild.id !== '661736128373719141' && message.guild.id !== '837116518730694678') return;
+		if (message.guild.id !== '711661870926397601' && message.guild.id !== '661736128373719141' && message.guild.id !== '837116518730694678' && client.user.id !== '765287593762881616') return;
 		if (reaction) message.author = user;
 		const member = await message.guild.members.cache.find(m => m.id === message.author.id);
 		const role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === 'alerts');
