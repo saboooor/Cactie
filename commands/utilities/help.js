@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'help',
-	description: 'Get help with Pup',
+	description: 'Get help with Pup Bot',
 	aliases: ['commands'],
+	usage: '[Type]',
 	cooldown: 10,
 	guildOnly: true,
 	options: [{
@@ -11,27 +12,27 @@ module.exports = {
 		description: 'The type of help you need',
 		required: false,
 		choices: [{
-			name: 'features',
-			value: 'features',
+			name: 'admin',
+			value: 'admin',
 		},
 		{
-			name: 'commands',
-			value: 'commands',
+			name: 'fun',
+			value: 'fun',
 		},
 		{
 			name: 'nsfw',
 			value: 'nsfw',
 		},
 		{
-			name: 'admin',
-			value: 'admin',
-		},
-		{
 			name: 'tickets',
 			value: 'tickets',
 		},
 		{
-			name: 'supportpanel (ADMIN ONLY)',
+			name: 'utilities',
+			value: 'utilities',
+		},
+		{
+			name: 'supportpanel',
 			value: 'supportpanel',
 		}],
 	}],
@@ -46,14 +47,11 @@ module.exports = {
 			.setTitle('**HELP**');
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
-		if (arg == 'commands') {
-			require('../../help/commands.js')(prefix, Embed);
-		}
-		else if (arg == 'features') {
-			require('../../help/features.js')(prefix, Embed);
-		}
-		else if (arg == 'admin') {
+		if (arg == 'admin') {
 			require('../../help/admin.js')(prefix, Embed);
+		}
+		else if (arg == 'fun') {
+			require('../../help/fun.js')(prefix, Embed);
 		}
 		else if (arg == 'nsfw') {
 			if (!message.channel.nsfw) return message.react('🔞');
@@ -61,6 +59,9 @@ module.exports = {
 		}
 		else if (arg == 'tickets') {
 			require('../../help/tickets.js')(prefix, Embed);
+		}
+		else if (arg == 'utilities') {
+			require('../../help/utilities.js')(prefix, Embed);
 		}
 		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
@@ -96,25 +97,25 @@ module.exports = {
 		const row = new Discord.MessageActionRow()
 			.addComponents([
 				new Discord.MessageButton()
-					.setCustomID('help_features')
-					.setLabel('Features')
+					.setCustomID('help_admin')
+					.setLabel('Admin')
 					.setStyle('PRIMARY'),
 				new Discord.MessageButton()
-					.setCustomID('help_commands')
-					.setLabel('Commands')
+					.setCustomID('help_fun')
+					.setLabel('Fun')
 					.setStyle('PRIMARY'),
 				new Discord.MessageButton()
 					.setCustomID('help_nsfw')
 					.setLabel('NSFW')
 					.setStyle('DANGER'),
 				new Discord.MessageButton()
-					.setCustomID('help_admin')
-					.setLabel('Admin')
-					.setStyle('SECONDARY'),
-				new Discord.MessageButton()
 					.setCustomID('help_tickets')
 					.setLabel('Tickets')
-					.setStyle('SECONDARY')]);
+					.setStyle('PRIMARY'),
+				new Discord.MessageButton()
+					.setCustomID('help_utilities')
+					.setLabel('Utilities')
+					.setStyle('PRIMARY')]);
 		const row2 = new Discord.MessageActionRow()
 			.addComponents([
 				new Discord.MessageButton()

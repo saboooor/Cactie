@@ -4,6 +4,7 @@ module.exports = {
 	name: 'ticket',
 	description: 'Create a ticket.',
 	aliases: ['new'],
+	usage: '[Description]',
 	guildOnly: true,
 	options: [{
 		type: 3,

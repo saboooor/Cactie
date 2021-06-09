@@ -2,10 +2,10 @@ const Discord = require('discord.js');
 const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'poll',
-	description: 'Create a poll!',
+	description: 'Create a poll!\nIt is recommended to use /poll instead',
 	cooldown: 10,
 	args: true,
-	usage: '<Question>\nIt is recommended to use /poll instead',
+	usage: '<Question>',
 	guildOnly: true,
 	options: [{
 		type: 3,

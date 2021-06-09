@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'boner',
 	description: 'See your pp grow!',
+	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 10,
 	options: [{

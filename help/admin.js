@@ -6,7 +6,7 @@ module.exports = (prefix, Embed, client) => {
 		const command = require(`../commands/admin/${file}`);
 		commands.push(command);
 	}
-	const srvconfig = Object.keys(commands).map(i => {
+	const commandlist = Object.keys(commands).map(i => {
 		return `**${prefix}${commands[i].name} ${commands[i].usage}**\n${commands[i].description}\n*Permission: ${commands[i].permissions}*`;
 	});
 	Embed.setDescription(`
@@ -15,6 +15,6 @@ module.exports = (prefix, Embed, client) => {
 [] = Optional
 <> = Required
 
-${srvconfig.join('\n')}
+${commandlist.join('\n')}
 `);
 };

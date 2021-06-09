@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your pp grow FAST!',
+	usage: '[Someone]',
 	aliases: ['instapp'],
 	options: [{
 		type: 3,

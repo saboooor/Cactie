@@ -13,6 +13,7 @@ module.exports = {
 	name: 'stats',
 	description: 'Get stats of Pup or a Minecraft server',
 	aliases: ['status'],
+	usage: '[Server]',
 	cooldown: 10,
 	options: [{
 		type: 3,
