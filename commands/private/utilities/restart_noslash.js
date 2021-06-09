@@ -1,4 +1,3 @@
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
 const { apikey } = require('../../../config/pterodactyl.json');
@@ -32,14 +31,11 @@ module.exports = {
 		if (id == '5bcaad8d') {
 			client.user.setPresence({ activity: { name: 'Restarting', type: 'PLAYING' } });
 		}
-		const rn = new Date();
-		const time = `${minTwoDigits(rn.getHours())}:${minTwoDigits(rn.getMinutes())}:${minTwoDigits(rn.getSeconds())}`;
 		const info = await Client.getServerInfo(id).catch((error) => {client.logger.log('error', error);});
 		Client.restartServer(id).catch((error) => {
 			client.logger.log('error', error);
 		});
 		client.logger.info(`Restarting ${info.attributes.name}`);
-		await console.log(`[${time} INFO]: Restarting ${info.attributes.name}`);
 		await message.channel.send(`Restarting ${info.attributes.name}`);
 		if (id == '5bcaad8d') {
 			Client.killServer(id);
