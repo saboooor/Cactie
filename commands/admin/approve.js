@@ -39,7 +39,7 @@ module.exports = {
 			fetchedMsg.edit(Embed);
 		}
 		else {
-			Embed.setFooter(`Response:${args.join(' ').replace(args[0], '')}`);
+			Embed.setFooter(`Response:${args.slice(1).join(' ')}`);
 			fetchedMsg.edit(Embed);
 		}
 		if (message.commandName) message.reply('Suggestion Approved!', { ephemeral: true });

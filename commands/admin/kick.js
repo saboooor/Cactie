@@ -3,7 +3,7 @@ module.exports = {
 	name: 'kick',
 	description: 'Kick someone from the guild',
 	args: true,
-	usage: '<User Mention> [Reason]',
+	usage: '<User> [Reason]',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
@@ -32,8 +32,8 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		if (args[1]) {
-			Embed.setTitle(`Kicked ${user.tag} for ${args.join(' ').replace(`${args[0]} `, '')}`);
-			await user.send(`**You've been kicked from ${message.guild.name} for ${args.join(' ').replace(`${args[0]} `, '')}**`).catch(e => {
+			Embed.setTitle(`Kicked ${user.tag} for ${args.slice(1).join(' ')}`);
+			await user.send(`**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been kicked.');
 			});
 		}

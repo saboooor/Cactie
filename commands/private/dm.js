@@ -23,7 +23,7 @@ module.exports = {
 		if (!client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id).roles.cache.has('849452673156513813')) return;
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args.join(' ').replace(args[0], '')}\nTo see the response, see ${client.channels.cache.get('849453797809455125')}`);
+			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args.slice(1).join(' ')}\nTo see the response, see ${client.channels.cache.get('849453797809455125')}`);
 		if (message.attachments && message.attachments.size == 1 && !message.commandName) {
 			const picture = message.attachments.first();
 			const attachmenturl = picture.attachment;
@@ -31,10 +31,10 @@ module.exports = {
 				method: 'GET',
 			});
 			const buffer = await response.buffer();
-			client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args.join(' ').replace(args[0], ''), new Discord.MessageAttachment(buffer, 'image.png'));
+			client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args.slice(1).join(' '), new Discord.MessageAttachment(buffer, 'image.png'));
 			return message.reply(Embed);
 		}
-		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args.join(' ').replace(args[0], ''));
+		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args.slice(1).join(' '));
 		message.reply(Embed);
 	},
 };

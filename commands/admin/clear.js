@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Delete multiple messages at once',
 	aliases: ['purge'],
 	args: true,
-	usage: '<Amount of messages>',
+	usage: '<Message Amount>',
 	permissions: 'MANAGE_MESSAGES',
 	guildOnly: true,
 	options: [{

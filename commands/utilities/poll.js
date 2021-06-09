@@ -144,7 +144,7 @@ module.exports = {
 				args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 			}
 			let poll = await args.join(' ');
-			if (message.commandName) poll = poll.replace(args[0], '');
+			if (message.commandName) poll = args.slice(1).join(' ');
 			Poll.setDescription(poll);
 			const msg = await channel.send(Poll);
 			await msg.react(yes);

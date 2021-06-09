@@ -1,28 +1,20 @@
-module.exports = (prefix, Embed) => {
+const fs = require('fs');
+module.exports = (prefix, Embed, client) => {
+	const adminCommands = fs.readdirSync('./commands/admin').filter(file => file.endsWith('.js'));
+	const commands = [];
+	for (const file of adminCommands) {
+		const command = require(`../commands/admin/${file}`);
+		commands.push(command);
+	}
+	const srvconfig = Object.keys(commands).map(i => {
+		return `**${prefix}${commands[i].name} ${commands[i].usage}**\n${commands[i].description}\n*Permission: ${commands[i].permissions}*`;
+	});
 	Embed.setDescription(`
 **ADMIN COMMANDS:**
-*These commands require the member to have specified permissions*
+*These commands require the member to have specified permissions.*
+[] = Optional
+<> = Required
 
-**${prefix}settings [<Setting> <Value>]**
-Configure the bot
-*Permission: Administrator*
-**${prefix}kick <member id or mention> <reason>**
-Kicks a member
-*Permission: Kick Members*
-**${prefix}ban <member id or mention> <reason>**
-Bans a member
-*Permission: Ban Members*
-**${prefix}clear <message amount>**
-Clear a lot of messages at once (Alias: ${prefix}purge)
-*Permission: Delete Messages*
-**${prefix}approve <message id> [response]**
-Approve a suggestion (Alias: ${prefix}accept)
-*Permission: Administrator*
-**${prefix}deny <message id> [response]**
-Deny a suggestion (Alias: ${prefix}decline)
-*Permission: Administrator*
-**${prefix}help tickets**
-Walks you through how to setup support tickets in your guild
-*Permission: Administrator*
+${srvconfig.join('\n')}
 `);
 };
