@@ -4,6 +4,6 @@ module.exports = {
 	aliases: ['r/', 'r'],
 	async execute(message, args, client) {
 		if (message.author.id != '249638347306303499') return;
-		require('../../user/other/redditfetch_noslash')(args[0], message);
+		require('../../user/other/redditfetch_noslash')(args[0], message, client);
 	},
 };
