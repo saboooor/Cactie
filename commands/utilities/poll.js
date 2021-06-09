@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { yes, no } = require('../../../config/emoji.json');
+const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'poll',
 	description: 'Create a poll!',

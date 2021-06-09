@@ -3,7 +3,6 @@ const nodeactyl = require('nodeactyl');
 const fetch = require('node-fetch');
 const Client = nodeactyl.Client;
 const { apikey, apikey2 } = require('../config/pterodactyl.json');
-const { cooldown } = require('../commands/user/other/help');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;

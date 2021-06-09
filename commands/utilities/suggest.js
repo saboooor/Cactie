@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const Discord = require('discord.js');
-const { yes, no } = require('../../../config/emoji.json');
+const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',

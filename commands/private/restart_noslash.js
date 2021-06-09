@@ -1,6 +1,6 @@
 const nodeactyl = require('nodeactyl');
 const Client = nodeactyl.Client;
-const { apikey } = require('../../../config/pterodactyl.json');
+const { apikey } = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'restart',
 	description: 'Restart pup or a server',
