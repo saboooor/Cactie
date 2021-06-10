@@ -206,6 +206,19 @@ module.exports = {
 				},
 			],
 		},
+		{
+			type: 1,
+			name: 'muterole',
+			description: 'The role to give when muting someone',
+			options: [
+				{
+					type: 8,
+					name: 'role',
+					description: 'The mute role',
+					required: true,
+				},
+			],
+		},
 	],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
@@ -231,7 +244,7 @@ module.exports = {
 			if (prop == 'maxppsize' && value > 76) return message.reply('maxppsize must be less than 76!');
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply('That is not a valid text channel ID!');
 			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'category')) return message.reply('That is not a valid category ID!');
-			if (prop == 'supportrole' && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply('That is not a valid role ID!');
+			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply('That is not a valid role ID!');
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
@@ -250,7 +263,7 @@ module.exports = {
 				pollchannel: '*The channel where the bot puts polls in (false/default/channelID)*',
 				ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelID)*',
 				ticketcategory: '*The category where the bot creates tickets in (false/categoryID)*',
-				supportrole: '*The ticket support team role (false/roleID)*',
+				supportrole: '*The ticket support team role (roleID)*',
 				ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
 			};
 			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
