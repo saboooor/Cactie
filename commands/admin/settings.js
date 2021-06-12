@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'settings',
-	description: 'Configure this server\'s Pup settings',
+	description: 'Configure this server\'s settings on Pup',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
