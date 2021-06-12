@@ -219,6 +219,19 @@ module.exports = {
 				},
 			],
 		},
+		{
+			type: 1,
+			name: 'mutecmd',
+			description: 'Toggles the mute command',
+			options: [
+				{
+					type: 5,
+					name: 'value',
+					description: 'The setting value',
+					required: true,
+				},
+			],
+		},
 	],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
@@ -239,7 +252,7 @@ module.exports = {
 			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1].toString();
 			else value = args.join(' ').replace(`${args[0]} `, '');
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply('This setting must be either `buttons`, `reactions`, or `false`!');
-			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention') && value != 'true' && value != 'false') return message.reply('This setting must be either `true` or `false`!');
+			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply('This setting must be either `true` or `false`!');
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply('Please set a system channel in your server settings first!');
 			if (prop == 'maxppsize' && value > 76) return message.reply('maxppsize must be less than 76!');
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply('That is not a valid text channel ID!');
@@ -265,6 +278,8 @@ module.exports = {
 				ticketcategory: '*The category where the bot creates tickets in (false/categoryID)*',
 				supportrole: '*The ticket support team role (roleID)*',
 				ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
+				muterole: '*The role for muting someone (false/roleID)*',
+				mutecmd: '*Toggles the mute command (true/false)*',
 			};
 			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(message.guild.id)[prop]}\``;

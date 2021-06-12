@@ -21,6 +21,8 @@ module.exports = client => {
 			ticketcategory: 'false',
 			ticketmention: 'true',
 			supportrole: 'Not Set',
+			mutecmd: 'true',
+			muterole: 'Not Set',
 		},
 	});
 	client.logger.info('Settings database loaded!');
