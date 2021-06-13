@@ -1,4 +1,13 @@
 const Discord = require('discord.js');
+function time(ms) {
+	if (ms.endsWith('s')) return ms.replace('s', '') * 1000;
+	if (ms.endsWith('m')) return ms.replace('m', '') * 60000;
+	if (ms.endsWith('h')) return ms.replace('h', '') * 3600000;
+	if (ms.endsWith('d')) return ms.replace('d', '') * 86400000;
+	if (ms.endsWith('w')) return ms.replace('w', '') * 604800000;
+	if (ms.endsWith('mo')) return ms.replace('mo', '') * 2592000000;
+	if (ms.endsWith('y')) return ms.replace('y', '') * 31536000000;
+}
 module.exports = {
 	name: 'ban',
 	description: 'Ban someone from the guild',
@@ -36,7 +45,8 @@ module.exports = {
 		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
-		if (!isNaN(args[1]) && args[2]) {
+		const ms = time(args[1]);
+		if (!isNaN(ms) && args[2]) {
 			Embed.setTitle(`Banned ${user.tag} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
 			await user.send(`**You've been banned from ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been banned.');
@@ -45,7 +55,7 @@ module.exports = {
 			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'bannedUntil');
 			await member.ban({ reason: `Banned user: ${user.tag} from ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		}
-		else if (!isNaN(args[1])) {
+		else if (!isNaN(ms)) {
 			Embed.setTitle(`Banned ${user.tag} for ${args[1]} minutes.`);
 			await user.send(`**You've been banned on ${message.guild.name} for ${args[1]} minutes.**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been banned.');
