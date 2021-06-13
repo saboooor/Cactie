@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Unmute someone in the server',
 	args: true,
 	usage: '<User>',
-	permissions: 'BAN_MEMBERS',
+	permissions: 'MANAGE_MESSAGES',
 	cooldown: 5,
 	guildOnly: true,
 	options: [{
