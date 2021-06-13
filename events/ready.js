@@ -43,15 +43,22 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
 				const member = await guild.members.cache.get(data[0].split('-')[0]);
 				const role = await guild.roles.cache.get(client.settings.get(guild.id).muterole);
-				await member.roles.remove(role);
 				member.user.send('**You have been unmuted**');
 				client.memberdata.set(data[0], 0, 'mutedUntil');
 				client.logger.info(`Unmuted ${member.user.tag} in ${guild.name}`);
+				await member.roles.remove(role);
 			}
-			else if (data[1].mutedUntil == 0) {
+			else if (data[1].bannedUntil < Date.now() && data[1].bannedUntil != 0) {
+				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
+				client.users.cache.get(data[0].split('-')[0]).send(`**You've been unbanned in ${guild.name}**`);
+				client.memberdata.set(data[0], 0, 'bannedUntil');
+				client.logger.info(`Unbanned ${client.users.cache.get(data[0].split('-')[0]).tag} in ${guild.name}`);
+				await guild.members.unban(data[0].split('-')[0]);
+			}
+			else if (data[1].mutedUntil == 0 && data[1].bannedUntil == 0) {
 				client.memberdata.delete(data[0]);
 			}
-		})
+		});
 	}, 10000);
 	const timer = (Date.now() - client.startTimestamp) / 1000;
 	client.logger.info(`Done (${timer}s)! I am running!`);
