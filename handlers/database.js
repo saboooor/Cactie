@@ -40,7 +40,7 @@ module.exports = client => {
 	client.memberdata = new Enmap({
 		name: 'memberdata',
 		autoFetch: true,
-		fetchAll: false,
+		fetchAll: true,
 		autoEnsure: {
 			mutedUntil: 0,
 			bannedUntil: 0,

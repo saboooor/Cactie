@@ -36,6 +36,8 @@ module.exports = {
 		if (!message.commandName) user = message.mentions.users.first();
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
+		const role = await message.guild.roles.cache.get(srvconfig.muterole);
+		if (member.roles.cache.has(role.id)) return message.reply('This user is already muted! Try unmuting instead.');
 		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
@@ -45,7 +47,7 @@ module.exports = {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
-			client.memberdata.set(`${user.id}${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
+			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
 		}
 		else if (!isNaN(args[1])) {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]} minutes.`);
@@ -53,7 +55,7 @@ module.exports = {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes`);
-			client.memberdata.set(`${user.id}${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
+			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
 		}
 		else if (args[1]) {
 			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}`);
@@ -69,14 +71,9 @@ module.exports = {
 			});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} forever`);
 		}
-		const role = await message.guild.roles.cache.get(srvconfig.muterole);
-		if (!member.roles.cache.has(role.id)) {
-			await member.roles.add(role);
-		}
-		else {
-			await member.roles.remove(role);
-		}
+		await member.roles.add(role);
 		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
 		else message.reply(Embed);
+		console.log(client.memberdata);
 	},
 };
