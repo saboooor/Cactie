@@ -45,6 +45,7 @@ module.exports = {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
+			client.memberdata.set(`${user.id}${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
 		}
 		else if (!isNaN(args[1])) {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]} minutes.`);
@@ -52,6 +53,7 @@ module.exports = {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes`);
+			client.memberdata.set(`${user.id}${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
 		}
 		else if (args[1]) {
 			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}`);
