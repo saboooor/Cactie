@@ -23,9 +23,8 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
-		if (!message.commandName && !message.mentions.users.first()) return message.reply('Please use a user mention');
-		let user = client.users.cache.get(args[0]);
-		if (!message.commandName) user = message.mentions.users.first();
+		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		if (!user) return message.reply('Invalid User!');
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
 		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');

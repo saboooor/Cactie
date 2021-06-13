@@ -18,8 +18,8 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
-		if (!client.users.cache.get(args[0])) return message.reply('Invalid user! Please use a user ID or unban through server settings.');
-		const user = client.users.cache.get(args[0]);
+		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		if (!user) return message.reply('Invalid User!');
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unbanned ${user.tag}`);
