@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'mute',
-	description: 'Mute someone from the guild',
+	description: 'Mute someone in the server',
 	args: true,
 	usage: '<User> [Reason]',
 	permissions: 'BAN_MEMBERS',
@@ -74,6 +74,5 @@ module.exports = {
 		await member.roles.add(role);
 		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
 		else message.reply(Embed);
-		console.log(client.memberdata);
 	},
 };
