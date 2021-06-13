@@ -10,9 +10,9 @@ function time(ms) {
 }
 module.exports = {
 	name: 'ban',
-	description: 'Ban someone from the guild',
+	description: 'Ban someone from the server.',
 	args: true,
-	usage: '<User> [Time in minutes and/or Reason]',
+	usage: '<User> [Time and/or Reason]',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
@@ -25,7 +25,7 @@ module.exports = {
 	{
 		type: 3,
 		name: 'time',
-		description: 'Amount of time to banne in minutes',
+		description: 'Amount of time to banned',
 	},
 	{
 		type: 3,
@@ -46,23 +46,24 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		const ms = time(args[1]);
+		if (ms > 31536000000) return message.reply('You cannot ban someone for more than 1 year!');
 		if (!isNaN(ms) && args[2]) {
-			Embed.setTitle(`Banned ${user.tag} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
-			await user.send(`**You've been banned from ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}**`).catch(e => {
+			Embed.setTitle(`Banned ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
+			await user.send(`**You've been banned from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been banned.');
 			});
-			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'bannedUntil');
-			await member.ban({ reason: `Banned user: ${user.tag} from ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
+			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
+			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + ms, 'bannedUntil');
+			await member.ban({ reason: `Banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		}
 		else if (!isNaN(ms)) {
-			Embed.setTitle(`Banned ${user.tag} for ${args[1]} minutes.`);
-			await user.send(`**You've been banned on ${message.guild.name} for ${args[1]} minutes.**`).catch(e => {
+			Embed.setTitle(`Banned ${user.tag} for ${args[1]}.`);
+			await user.send(`**You've been banned on ${message.guild.name} for ${args[1]}.**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been banned.');
 			});
-			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes`);
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'bannedUntil');
-			await member.ban({ reason: `Banned user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
+			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
+			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + ms, 'bannedUntil');
+			await member.ban({ reason: `Banned user: ${user.tag} on ${message.guild.name} for ${args[1]}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		}
 		else if (args[1]) {
 			Embed.setTitle(`Banned ${user.tag} for ${args.slice(1).join(' ')}`);

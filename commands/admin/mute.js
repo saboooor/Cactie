@@ -10,9 +10,9 @@ function time(ms) {
 }
 module.exports = {
 	name: 'mute',
-	description: 'Mute someone in the server',
+	description: 'Mute someone in the server.',
 	args: true,
-	usage: '<User> [Time in minutes and/or Reason]',
+	usage: '<User> [Time and/or Reason]',
 	permissions: 'MANAGE_MESSAGES',
 	cooldown: 5,
 	guildOnly: true,
@@ -25,7 +25,7 @@ module.exports = {
 	{
 		type: 3,
 		name: 'time',
-		description: 'Amount of time to mute in minutes',
+		description: 'Amount of time',
 	},
 	{
 		type: 3,
@@ -51,21 +51,22 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		const ms = time(args[1]);
+		if (ms > 31536000000) return message.reply('You cannot mute someone for more than 1 year!');
 		if (!isNaN(ms) && args[2]) {
-			Embed.setTitle(`Muted ${user.tag} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
-			await user.send(`**You've been muted on ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}**`).catch(e => {
+			Embed.setTitle(`Muted ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
+			await user.send(`**You've been muted on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
-			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes. Reason: ${args.slice(2).join(' ')}`);
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
+			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
+			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + ms, 'mutedUntil');
 		}
 		else if (!isNaN(ms)) {
-			Embed.setTitle(`Muted ${user.tag} for ${args[1]} minutes.`);
-			await user.send(`**You've been muted on ${message.guild.name} for ${args[1]} minutes.**`).catch(e => {
+			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`);
+			await user.send(`**You've been muted on ${message.guild.name} for ${args[1]}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
-			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]} minutes`);
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + (args[1] * 60000), 'mutedUntil');
+			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
+			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + ms, 'mutedUntil');
 		}
 		else if (args[1]) {
 			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}`);
