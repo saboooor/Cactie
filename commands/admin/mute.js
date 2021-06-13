@@ -3,7 +3,7 @@ module.exports = {
 	name: 'mute',
 	description: 'Mute someone in the server',
 	args: true,
-	usage: '<User> [Reason]',
+	usage: '<User> [Time and/or Reason]',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
