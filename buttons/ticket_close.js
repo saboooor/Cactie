@@ -36,6 +36,7 @@ module.exports = {
 			.addField('**Closed by**', `${author}`);
 		await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
 		client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
+		users.forEach(usr => { usr.send(EmbedDM); });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
