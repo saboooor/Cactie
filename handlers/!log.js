@@ -23,5 +23,5 @@ module.exports = client => {
 		],
 		exitOnError: false,
 	});
-	client.logger.info('Logger started!');
+	client.logger.info('Logger started');
 };

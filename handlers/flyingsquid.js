@@ -6,7 +6,7 @@ module.exports = client => {
 		'port': config.port,
 		'max-players': config.max_players,
 		'online-mode': config.online_mode,
-		'logging': true,
+		'logging': false,
 		'gameMode': config.game_mode,
 		'difficulty': config.difficulty,
 		'worldFolder': config.world_name,

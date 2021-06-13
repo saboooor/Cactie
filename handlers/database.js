@@ -25,7 +25,7 @@ module.exports = client => {
 			muterole: 'Not Set',
 		},
 	});
-	client.logger.info('Settings database loaded!');
+	client.logger.info('Settings database loaded');
 	client.tickets = new Enmap({
 		name: 'tickets',
 		autoFetch: true,
@@ -36,5 +36,5 @@ module.exports = client => {
 			users: [],
 		},
 	});
-	client.logger.info('Ticket database loaded!');
+	client.logger.info('Ticket database loaded');
 };
