@@ -49,8 +49,9 @@ module.exports = {
 			.setTitle(`${member.displayName} (${member.user.tag} / ${member.user.id})`)
 			.setThumbnail(member.user.avatarURL())
 			.setDescription(`${member.user}`)
-			.addField('Status', member.user.presence.status)
-			.addField('Activities', activitieslist.join('\n'))
+			.addField('Status', member.user.presence.status);
+		if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
+		Embed
 			.addField('Join Date', `${moment(member.joinedAt)}`)
 			.addField('Creation Date', `${moment(member.user.createdAt)}`)
 			.addField('Roles', roleslist.join(', '));
