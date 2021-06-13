@@ -13,10 +13,6 @@ module.exports = client => {
 			new winston.transports.Console(),
 			new winston.transports.File({ filename: `logs/${date}.log` }),
 		],
-		exceptionHandlers: [
-			new winston.transports.Console(),
-			new winston.transports.File({ filename: `logs/${date}.log` }),
-		],
 		rejectionHandlers: [
 			new winston.transports.Console(),
 			new winston.transports.File({ filename: `logs/${date}.log` }),
