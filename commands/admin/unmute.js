@@ -25,10 +25,8 @@ module.exports = {
 		let user = client.users.cache.get(args[0]);
 		if (!message.commandName) user = message.mentions.users.first();
 		const member = message.guild.members.cache.get(user.id);
-		const author = message.member;
 		const role = await message.guild.roles.cache.get(srvconfig.muterole);
 		if (!member.roles.cache.has(role.id)) return message.reply('This user is not muted!');
-		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unmuted ${user.tag}`);
