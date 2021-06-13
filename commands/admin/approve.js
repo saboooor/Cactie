@@ -33,14 +33,17 @@ module.exports = {
 			.setColor(3066993)
 			.setAuthor(fetchedMsg.embeds[0].author.name, fetchedMsg.embeds[0].author.iconURL)
 			.setDescription(fetchedMsg.embeds[0].description)
+			.setURL(fetchedMsg.embeds[0].url)
 			.setTitle('Suggestion (Approved)');
 		if (!args[1]) {
 			Embed.setFooter('No response.');
 			fetchedMsg.edit(Embed);
+			if (fetchedMsg.embeds[0].url) client.users.cache.get(fetchedMsg.embeds[0].url.split('a')[1]).send(`**Your suggestion at ${message.guild.name} has been approved.**`);
 		}
 		else {
-			Embed.setFooter(`Response:${args.slice(1).join(' ')}`);
+			Embed.setFooter(`Response: ${args.slice(1).join(' ')}`);
 			fetchedMsg.edit(Embed);
+			if (fetchedMsg.embeds[0].url) client.users.cache.get(fetchedMsg.embeds[0].url.split('a')[1]).send(`**Your suggestion at ${message.guild.name} has been approved.**\nResponse: ${args.slice(1).join(' ')}`);
 		}
 		if (message.commandName) message.reply('Suggestion Approved!', { ephemeral: true });
 	},

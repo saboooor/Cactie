@@ -28,7 +28,8 @@ module.exports = {
 			.setColor(3447003)
 			.setAuthor(message.member.displayName, message.member.user.avatarURL())
 			.setTitle('Suggestion')
-			.setDescription(suggestion);
+			.setDescription(suggestion)
+			.setURL(`https://a${message.member.user.id}a.pup`);
 		const msg = await channel.send(Embed);
 		await msg.react(yes);
 		await msg.react(no);
