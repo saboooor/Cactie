@@ -1,4 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+const hastebin = require('hastebin');
 const Discord = require('discord.js');
 module.exports = {
 	name: 'close',
@@ -23,6 +24,24 @@ module.exports = {
 		client.tickets.get(message.channel.id).users.forEach(userid => {
 			message.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: false });
 		});
+		const messages = await message.channel.messages.fetch({ limit: 100 });
+		const logs = [];
+		await messages.forEach(async msg => {
+			const time = new Date(msg.createdTimestamp).toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+			logs.push(`[${time}] ${msg.author.tag}\n${msg.content}`);
+		});
+		logs.reverse();
+		const link = await hastebin.createPaste(logs.join('\n\n'), { server: 'https://bin.birdflop.com' });
+		const users = [];
+		await client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+		const EmbedDM = new Discord.MessageEmbed()
+			.setColor(Math.floor(Math.random() * 16777215))
+			.setTitle(`Closed ${message.channel.name}`)
+			.addField('**Users in ticket**', `${users}`)
+			.addField('**Transcript**', `${link}.txt`)
+			.addField('**Closed by**', `${author}`);
+		await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
+		client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
