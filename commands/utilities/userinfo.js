@@ -28,19 +28,24 @@ module.exports = {
 		const activities = member.user.presence.activities;
 		const activitieslist = Object.keys(activities).map(i => {
 			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji} ${activities[i].state}`;
-			if (activities[i].name == 'Spotify') {
-				const start = new Date(activities[i].timestamps.start);
-				const now = new Date();
-				const end = new Date(activities[i].timestamps.end);
-				return `**${activities[i].name}:**\n${activities[i].details} - ${activities[i].state}\nAlbum: ${activities[i].assets.largeText}\n${Math.floor((now - start) / 60000)}:${minTwoDigits(Math.floor(((now - start) / 1000) - (60 * Math.floor((now - start) / 60000))))} / ${Math.floor((end - start) / 60000)}:${minTwoDigits(Math.floor(((end - start) / 1000) - (60 * Math.floor((end - start) / 60000))))}`;
-			}
 			const activitystack = [`**${activities[i].name}**`];
 			if (activities[i].details) activitystack.push(`\n${activities[i].details}`);
 			if (activities[i].state) activitystack.push(`\n${activities[i].state}`);
-			if (activities[i].timestamps.start) {
+			if (activities[i].timestamps.start && activities[i].timestamps.end) {
+				const start = new Date(activities[i].timestamps.start);
+				const now = new Date();
+				const end = new Date(activities[i].timestamps.end);
+				activitystack.push(`\n${Math.floor((now - start) / 60000)}:${minTwoDigits(Math.floor(((now - start) / 1000) - (60 * Math.floor((now - start) / 60000))))} / ${Math.floor((end - start) / 60000)}:${minTwoDigits(Math.floor(((end - start) / 1000) - (60 * Math.floor((end - start) / 60000))))}`);
+			}
+			else if (activities[i].timestamps.start) {
 				const start = new Date(activities[i].timestamps.start);
 				const now = new Date();
 				activitystack.push(`\nFor ${moment.duration(now - start).format('D [days], H [hrs], m [mins], s [secs]')}`);
+			}
+			else if (activities[i].timestamps.end) {
+				const end = new Date(activities[i].timestamps.end);
+				const now = new Date();
+				activitystack.push(`\n${moment.duration(end - now).format('D [days], H [hrs], m [mins], s [secs]')} Remaining`);
 			}
 			return activitystack.join('');
 		});
