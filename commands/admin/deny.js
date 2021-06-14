@@ -23,9 +23,7 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
-		else {
-			message.delete();
-		}
+		else { message.delete(); }
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
 		fetchedMsg.reactions.removeAll();
