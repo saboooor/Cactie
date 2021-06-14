@@ -14,7 +14,6 @@ module.exports = {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Pong!')
 			.setDescription(`${Date.now() - message.createdTimestamp}ms`);
-		if (message.commandName) message.reply({ embeds: [Embed], components: [row], ephemeral: true });
-		else message.reply({ embed: Embed, components: [row] });
+		message.commandName ? message.reply({ embeds: [Embed], components: [row], ephemeral: true }) : message.reply({ embed: Embed, components: [row] });
 	},
 };

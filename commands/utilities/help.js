@@ -126,7 +126,6 @@ module.exports = {
 					.setURL('https://paypal.me/youhavebeenyoted')
 					.setLabel('Donate')
 					.setStyle('LINK')]);
-		if (message.commandName) message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true });
-		else message.reply({ embed: Embed, components: [row, row2] });
+		message.commandName ? message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true }) : message.reply({ embed: Embed, components: [row, row2] });
 	},
 };

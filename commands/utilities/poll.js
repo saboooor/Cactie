@@ -136,15 +136,13 @@ module.exports = {
 			.setColor(3447003)
 			.setTitle('Poll')
 			.setAuthor(message.member.user.username, message.member.user.avatarURL());
-		let type = 'yesno';
-		if (message.commandName) type = args[0].value;
+		const type = message.commandName ? args[0].value : 'yesno';
 		if (type == 'yesno') {
 			if (message.type && message.type == 'APPLICATION_COMMAND') {
 				args = Array.from(args);
 				args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 			}
-			let poll = await args.join(' ');
-			if (message.commandName) poll = args.slice(1).join(' ');
+			const poll = await message.commandName ? args.slice(1).join(' ') : args.join(' ');
 			Poll.setDescription(poll);
 			const msg = await channel.send(Poll);
 			await msg.react(yes);

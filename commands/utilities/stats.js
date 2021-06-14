@@ -201,11 +201,6 @@ module.exports = {
 				else Embed.setFooter('Query disabled! If you want to see more information, please contact the owner and tell them to set enable-query to true and query.port to the same port as the server in server.properties');
 			}
 		}
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			await message.editReply(Embed);
-		}
-		else {
-			reply.edit('Pong!', Embed);
-		}
+		message.commandName ? message.editReply(Embed) : reply.edit('Pong!', Embed);
 	},
 };
