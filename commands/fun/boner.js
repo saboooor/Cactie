@@ -19,14 +19,10 @@ module.exports = {
 		}
 		const srvconfig = client.settings.get(message.guild.id);
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
-		let nick = message.member.displayName;
-		if (args[0]) {
-			nick = args[0];
-			if (nick.startsWith('<@') && nick.endsWith('>')) {
-				let mention = nick.slice(2, -1);
-				if (mention.startsWith('!')) mention = mention.slice(1);
-				nick = client.users.cache.get(mention).username;
-			}
+		let nick = args[0] ? args[0] : message.member.displayName;
+		if (args[0] && nick.startsWith('<@') && nick.endsWith('>')) {
+			const mention = nick.slice(2, -1).startsWith('!') ? nick.slice(2, -1).slice(1) : nick.slice(2, -1);
+			nick = client.users.cache.get(mention).username;
 		}
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
@@ -37,19 +33,14 @@ module.exports = {
 		for (let step = 0; step < random; step++) {
 			await sleep(1200);
 			Embed.setDescription('8' + shaft.join('') + 'D');
-			if (!message.commandName) pp.edit(Embed);
-			else message.editReply(Embed);
+			message.commandName ? message.editReply(Embed) : pp.edit(Embed);
 			shaft.push('=');
 		}
-		const sike = Math.round(Math.random() * 10);
-		if (sike == 5) {
+		if (Math.round(Math.random() * 10) == 5) {
 			Embed.setDescription('SIKE').setFooter(`${nick} has no pp`);
-			if (!message.commandName) pp.edit(Embed);
-			else message.editReply(Embed);
-			return;
+			return message.commandName ? message.editReply(Embed) : pp.edit(Embed);
 		}
 		Embed.setFooter(`pp size = ${random}"`);
-		if (!message.commandName) pp.edit(Embed);
-		else message.editReply(Embed);
+		message.commandName ? message.editReply(Embed) : pp.edit(Embed);
 	},
 };
