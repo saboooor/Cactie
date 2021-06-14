@@ -21,7 +21,7 @@ module.exports = {
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
 		let nick = args[0] ? args[0] : message.member.displayName;
 		if (args[0] && nick.startsWith('<@') && nick.endsWith('>')) {
-			const mention = nick.slice(2, -1).startsWith('!') ? nick.slice(2, -1).slice(1) : nick.slice(2, -1);
+			const mention = nick.includes('!') ? nick.slice(3, -1) : nick.slice(2, -1);
 			nick = client.users.cache.get(mention).username;
 		}
 		const Embed = new Discord.MessageEmbed()
