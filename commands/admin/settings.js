@@ -245,12 +245,8 @@ module.exports = {
 		if (args[1] == 'get') args[1] == null;
 		if (args[1] != null) {
 			const prop = args[0];
-			if(!client.settings.has(message.guild.id, prop)) {
-				return message.reply('Invalid setting!');
-			}
-			let value = '';
-			if (message.type && message.type == 'APPLICATION_COMMAND') value = args[1].toString();
-			else value = args.join(' ').replace(`${args[0]} `, '');
+			if (!client.settings.has(message.guild.id, prop)) return message.reply('Invalid setting!');
+			const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply('This setting must be either `buttons`, `reactions`, or `false`!');
 			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply('This setting must be either `true` or `false`!');
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply('Please set a system channel in your server settings first!');
@@ -293,7 +289,6 @@ module.exports = {
 					.setLabel('Reset Settings')
 					.setStyle('DANGER'),
 			);
-		if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [Embed], components: [row], ephemeral: true });
-		else message.reply({ embed: Embed, components: [row] });
+		message.commandName ? message.reply({ embeds: [Embed], components: [row], ephemeral: true }) : message.reply({ embed: Embed, components: [row] });
 	},
 };

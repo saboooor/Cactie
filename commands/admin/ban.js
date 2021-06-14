@@ -80,7 +80,6 @@ module.exports = {
 			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} forever`);
 			await member.ban({ reason: `Banned user: ${user.tag} on ${message.guild.name} forever` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		}
-		if (message.commandName) message.reply({ embeds: [Embed], ephemeral: true });
-		else message.reply(Embed);
+		message.commandName ? message.reply({ embeds: [Embed], ephemeral: true }) : message.reply(Embed);
 	},
 };
