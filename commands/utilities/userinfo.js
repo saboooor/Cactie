@@ -27,7 +27,6 @@ module.exports = {
 		});
 		const activities = member.user.presence.activities;
 		const activitieslist = Object.keys(activities).map(i => {
-			console.log(activities[i]);
 			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji} ${activities[i].state}`;
 			const activitystack = [`**${activities[i].name}**`];
 			if (activities[i].details) activitystack.push(`\n${activities[i].details}`);
