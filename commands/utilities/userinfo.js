@@ -42,15 +42,15 @@ module.exports = {
 				const now = new Date();
 				activitystack.push(`\nFor ${moment.duration(now - start).format('D [days], H [hrs], m [mins], s [secs]')}`);
 			}
+			else if (activities[i].timestamps && activities[i].timestamps.end) {
+				const end = new Date(activities[i].timestamps.end);
+				const now = new Date();
+				activitystack.push(`\n${moment.duration(end - now).format('D [days], H [hrs], m [mins], s [secs]')} left`);
+			}
 			else if (activities[i].createdTimestamp) {
 				const start = new Date(activities[i].createdTimestamp);
 				const now = new Date();
 				activitystack.push(`\nFor ${moment.duration(now - start).format('D [days], H [hrs], m [mins], s [secs]')}`);
-			}
-			else if (activities[i].timestamps && activities[i].timestamps.end) {
-				const end = new Date(activities[i].timestamps.end);
-				const now = new Date();
-				activitystack.push(`\n${moment.duration(end - now).format('D [days], H [hrs], m [mins], s [secs]')} Remaining`);
 			}
 			return activitystack.join('');
 		});
