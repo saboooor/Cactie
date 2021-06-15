@@ -21,7 +21,11 @@ module.exports = {
 		let member = message.member;
 		if (args[0]) member = message.guild.members.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!member) return message.reply('Invalid member!');
-		const roles = Array.from(member.roles.cache);
+		const roles = Array.from(member.roles.cache).sort(function(a, b) {
+			if (b[1].rawPosition < a[1].rawPosition) return -1;
+			if (b[1].rawPosition > a[1].rawPosition) return 1;
+			return 0;
+		});
 		const roleslist = Object.keys(roles).map(i => {
 			return `**${roles[i][1]}**`;
 		});
