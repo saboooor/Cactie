@@ -60,7 +60,7 @@ module.exports = {
 		});
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setTitle(`${member.displayName} (${member.user.tag} / ${member.user.id})`)
+			.setTitle(`${member.displayName}`)
 			.setThumbnail(member.user.avatarURL())
 			.setDescription(`${member.user}`)
 			.addField('Status', member.user.presence.status);
@@ -69,7 +69,6 @@ module.exports = {
 			.addField('Join Date', `${moment(member.joinedAt)}`)
 			.addField('Creation Date', `${moment(member.user.createdAt)}`)
 			.addField('Roles', roleslist.join(', '));
-		if (member.displayName == member.user.username) Embed.setTitle(`${member.user.tag} (${member.user.id})`);
 		await message.reply(Embed);
 	},
 };
