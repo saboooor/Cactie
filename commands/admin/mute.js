@@ -49,7 +49,7 @@ module.exports = {
 		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
-		const ms = time(args[1]);
+		const ms = args[1] ? time(args[1]) : null;
 		if (ms > 31536000000) return message.reply('You cannot mute someone for more than 1 year!');
 		if (!isNaN(ms) && args[2]) {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
@@ -59,7 +59,7 @@ module.exports = {
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + ms, 'mutedUntil');
 		}
-		else if (!isNaN(ms)) {
+		else if (!isNaN(ms) && args[1]) {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`);
 			await user.send(`**You've been muted on ${message.guild.name} for ${args[1]}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
