@@ -68,7 +68,7 @@ module.exports = {
 			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + ms, 'mutedUntil');
 		}
 		else if (args[1]) {
-			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}`);
+			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}, forever`);
 			await user.send(`**You've been muted on ${message.guild.name} for ${args.slice(1).join(' ')}**`).catch(e => {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
 			});
