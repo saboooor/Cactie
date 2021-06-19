@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Kick someone from the guild',
 	args: true,
 	usage: '<User> [Reason]',
-	permissions: 'BAN_MEMBERS',
+	permissions: 'KICK_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
 	options: [{
