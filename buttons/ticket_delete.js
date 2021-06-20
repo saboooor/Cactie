@@ -10,7 +10,7 @@ module.exports = {
 		if (!interaction.channel.topic.includes('Ticket Opened by')) return interaction.reply('This is not a valid ticket!');
 		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply('This ticket needs to be closed first!');
 		if (srvconfig.ticketlogchannel != 'false') {
-			const trans = await interaction.reply('Creating transcript...');
+			await interaction.reply('Creating transcript...');
 			const interactions = await interaction.channel.messages.fetch({ limit: 100 });
 			const logs = [];
 			await interactions.forEach(async msg => {
@@ -28,7 +28,6 @@ module.exports = {
 				.addField('**Transcript**', `${link}.txt`)
 				.addField('**Deleted by**', `${author}`);
 			await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
-			await trans.delete();
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		}
 		else { interaction.reply('Deleting Ticket...'); }
