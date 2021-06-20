@@ -11,7 +11,7 @@ module.exports = {
 		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply('This ticket needs to be closed first!');
 		if (srvconfig.ticketlogchannel != 'false') {
 			const trans = await interaction.reply('Creating transcript...');
-			const interactions = await interaction.channel.interactions.fetch({ limit: 100 });
+			const interactions = await interaction.channel.messages.fetch({ limit: 100 });
 			const logs = [];
 			await interactions.forEach(async msg => {
 				const time = new Date(msg.createdTimestamp).toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
