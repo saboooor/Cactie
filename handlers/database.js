@@ -23,6 +23,7 @@ module.exports = client => {
 			supportrole: 'Not Set',
 			mutecmd: 'true',
 			muterole: 'Not Set',
+			adminrole: 'permission',
 		},
 	});
 	client.logger.info('Settings database loaded');

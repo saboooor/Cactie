@@ -1,5 +1,5 @@
 const fs = require('fs');
-module.exports = (prefix, Embed, client) => {
+module.exports = (prefix, Embed) => {
 	const utilityCommands = fs.readdirSync('./commands/utilities').filter(file => file.endsWith('.js'));
 	const commands = [];
 	for (const file of utilityCommands) {

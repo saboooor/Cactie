@@ -232,6 +232,19 @@ module.exports = {
 				},
 			],
 		},
+		{
+			type: 1,
+			name: 'adminrole',
+			description: 'The role to replace the ADMINISTRATOR permission',
+			options: [
+				{
+					type: 8,
+					name: 'role',
+					description: 'The admin role',
+					required: true,
+				},
+			],
+		},
 	],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
@@ -254,6 +267,7 @@ module.exports = {
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply('That is not a valid text channel ID!');
 			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'category')) return message.reply('That is not a valid category ID!');
 			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply('That is not a valid role ID!');
+			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply('That is not a valid role ID!');
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
@@ -276,6 +290,7 @@ module.exports = {
 				ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
 				muterole: '*The role for muting someone (false/roleID)*',
 				mutecmd: '*Toggles the mute command (true/false)*',
+				adminrole: '*The role to replace the ADMINISTRATOR permission (permission/roleID)*',
 			};
 			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(message.guild.id)[prop]}\``;

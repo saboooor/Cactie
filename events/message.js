@@ -110,7 +110,10 @@ module.exports = async (client, message) => {
 
 	if (command.permissions && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
-		if (!authorPerms || !authorPerms.has(command.permissions)) {
+		if (command.permissions == 'ADMINISTRATOR' && client.settings.get(message.guild.id).adminrole != 'permission' && !message.member.roles.cache.has(client.settings.get(message.guild.id).adminrole)) {
+			return message.reply('You can\'t do that!');
+		}
+		else if (!authorPerms && client.settings.get(message.guild.id).adminrole == 'permission' || !authorPerms.has(command.permissions) && client.settings.get(message.guild.id).adminrole == 'permission') {
 			return message.reply('You can\'t do that!');
 		}
 	}

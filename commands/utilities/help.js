@@ -48,7 +48,7 @@ module.exports = {
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
 		if (arg == 'admin') {
-			require('../../help/admin.js')(prefix, Embed);
+			require('../../help/admin.js')(prefix, Embed, client.settings.get(message.guild.id));
 		}
 		else if (arg == 'fun') {
 			require('../../help/fun.js')(prefix, Embed);
