@@ -7,7 +7,7 @@ module.exports = client => {
 			if (client.tickets.get(channel.id).resolved == 'true' && channel.name.includes('ticket-')) {
 				channel.setName(channel.name.replace('ticket', 'closed'));
 				await sleep(1000);
-				if (channel.name.includes('ticket-')) return channel.send('Failed to close ticket, please try again in 10 minutes');
+				if (channel.name.includes('ticket-')) return channel.send({ content: 'Failed to close ticket, please try again in 10 minutes' });
 				client.tickets.set(channel.id, 'false', 'resolved');
 				client.tickets.get(channel.id).users.forEach(userid => channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: false }));
 				const Embed = new Discord.MessageEmbed()

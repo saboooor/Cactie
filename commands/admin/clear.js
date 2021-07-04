@@ -22,13 +22,8 @@ module.exports = {
 			return message.reply({ content: 'You can only clear 100 messages at once!' });
 		}
 		await message.channel.messages.fetch({ limit: args[0] }).then(messages => {
-			message.channel.bulkDelete(messages).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
+			message.channel.bulkDelete(messages).catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
 		});
-		if (message.channel.name == 'global') {
-			const consolechannel = message.guild.channels.cache.find(c => c.name.includes('console'));
-			if (!consolechannel) return;
-			consolechannel.send('clearchat');
-		}
 		if (message.commandName) message.reply({ content: `Cleared ${args[0]} messages!`, ephemeral: true });
 		client.logger.info(`Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
 	},

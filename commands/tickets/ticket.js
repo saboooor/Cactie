@@ -27,7 +27,7 @@ module.exports = {
 		const role = message.guild.roles.cache.get(srvconfig.supportrole);
 		const channel = message.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
 		if (channel) {
-			message.guild.channels.cache.get(channel.id).send(`❗ **${author} Ticket already exists!**`);
+			message.guild.channels.cache.get(channel.id).send({ content: `❗ **${author} Ticket already exists!**` });
 			const msg = await message.reply({ content: `You've already created a ticket at ${channel}!` });
 			await sleep(5000);
 			await msg.delete();
@@ -78,15 +78,15 @@ module.exports = {
 						.setEmoji('🔒')
 						.setStyle('DANGER'),
 				);
-			await ticket.send(`${author}`, { embeds: [Embed], components: [row] });
+			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
 		else if (client.settings.get(message.guild.id).tickets == 'reactions') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
-			const embed = await ticket.send(`${author}`, Embed);
+			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');
 		}
 		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send('@everyone');
+			const ping = await ticket.send({ content: '@everyone' });
 			await ping.delete();
 		}
 	},

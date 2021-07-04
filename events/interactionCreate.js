@@ -12,7 +12,7 @@ module.exports = (client, interaction) => {
 			const authorPerms = interaction.member.permissions;
 			if (!authorPerms || !authorPerms.has(button.permissions)) {
 				interaction.deferUpdate();
-				return interaction.user.send('You can\'t do that!');
+				return interaction.user.send({ content: 'You can\'t do that!' });
 			}
 		}
 

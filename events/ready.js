@@ -5,7 +5,7 @@ module.exports = async (client) => {
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
 	client.channels.cache.get('812082273393704960').messages.fetch({ limit: 1 }).then(msg => {
 		const mesg = msg.first();
-		if (mesg.content !== 'Started Successfully!' && !mesg.webhookID) client.channels.cache.get('812082273393704960').send('Started Successfully!');
+		if (mesg.content !== 'Started Successfully!' && !mesg.webhookID) client.channels.cache.get('812082273393704960').send({ content: 'Started Successfully!' });
 	});
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
@@ -43,14 +43,14 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
 				const member = await guild.members.cache.get(data[0].split('-')[0]);
 				const role = await guild.roles.cache.get(client.settings.get(guild.id).muterole);
-				member.user.send('**You have been unmuted**');
+				member.user.send({ content: '**You have been unmuted**' });
 				client.memberdata.set(data[0], 0, 'mutedUntil');
 				client.logger.info(`Unmuted ${member.user.tag} in ${guild.name}`);
 				await member.roles.remove(role);
 			}
 			else if (data[1].bannedUntil < Date.now() && data[1].bannedUntil != 0) {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
-				client.users.cache.get(data[0].split('-')[0]).send(`**You've been unbanned in ${guild.name}**`);
+				client.users.cache.get(data[0].split('-')[0]).send({ content: `**You've been unbanned in ${guild.name}**` });
 				client.memberdata.set(data[0], 0, 'bannedUntil');
 				client.logger.info(`Unbanned ${client.users.cache.get(data[0].split('-')[0]).tag} in ${guild.name}`);
 				await guild.members.unban(data[0].split('-')[0]);

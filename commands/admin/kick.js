@@ -32,18 +32,18 @@ module.exports = {
 			.setColor(Math.round(Math.random() * 16777215));
 		if (args[1]) {
 			Embed.setTitle(`Kicked ${user.tag} for ${args.slice(1).join(' ')}`);
-			await user.send(`**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**`).catch(e => {
-				message.channel.send('Could not DM user! You may have to manually let them know that they have been kicked.');
+			await user.send({ content: `**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**` }).catch(e => {
+				message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
 			});
 		}
 		else {
 			Embed.setTitle(`Kicked ${user.tag}.`);
-			await user.send(`**You've been kicked from ${message.guild.name}.**`).catch(e => {
-				message.channel.send('Could not DM user! You may have to manually let them know that they have been kicked.');
+			await user.send({ content: `**You've been kicked from ${message.guild.name}.**` }).catch(e => {
+				message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
 			});
 		}
 		message.reply({ embeds: [Embed], ephemeral: true });
-		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
+		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` }).catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
 		client.logger.info({ content: `Kicked user: ${user.tag} from ${message.guild.name}` });
 	},
 };

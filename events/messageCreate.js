@@ -38,9 +38,9 @@ module.exports = async (client, message) => {
 				method: 'GET',
 			});
 			const buffer = await response.buffer();
-			return client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`, new Discord.MessageAttachment(buffer, 'image.png'));
+			return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}`, attachments: [new Discord.MessageAttachment(buffer, 'image.png')] });
 		}
-		return client.channels.cache.get('849453797809455125').send(`**<@!${message.author.id}>** > ${message.content}`);
+		return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}` });
 	}
 	const srvconfig = client.settings.get(message.guild.id);
 	if (message.content.startsWith('**Online players (') || message.content.includes('PLAYERS ONLINE**')) client.response.get('list').execute(message);

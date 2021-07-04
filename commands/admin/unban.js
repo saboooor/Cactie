@@ -23,8 +23,8 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unbanned ${user.tag}`);
-		await user.send(`**You've been unbanned in ${message.guild.name}`).catch(e => {
-			message.channel.send('Could not DM user! You may have to manually let them know that they have been unbanned.');
+		await user.send({ content: `**You've been unbanned in ${message.guild.name}` }).catch(e => {
+			message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
 		});
 		message.reply({ embeds: [Embed], ephemeral: true });
 		message.guild.members.unban(args[0]);

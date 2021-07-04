@@ -9,7 +9,7 @@ module.exports = {
 		const role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === 'nsfw');
 		if (!member.roles.cache.has(role.id)) {
 			await member.roles.add(role);
-			const msg = await message.channel.send(`✅ **Added NSFW Role to ${message.author}**`);
+			const msg = await message.channel.send({ content: `✅ **Added NSFW Role to ${message.author}**` });
 			if (reaction) {
 				await sleep(1000);
 				await msg.delete();
@@ -17,7 +17,7 @@ module.exports = {
 		}
 		else {
 			await member.roles.remove(role);
-			const msg = await message.channel.send(`❌ **Removed NSFW Role from ${message.author}**`);
+			const msg = await message.channel.send({ content: `❌ **Removed NSFW Role from ${message.author}**` });
 			if (reaction) {
 				await sleep(1000);
 				await msg.delete();

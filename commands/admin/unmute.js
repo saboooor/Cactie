@@ -30,8 +30,8 @@ module.exports = {
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unmuted ${user.tag}`);
 		client.memberdata.set(`${user.id}-${message.guild.id}`, 0, 'mutedUntil');
-		await user.send('**You\'ve been unmuted**').catch(e => {
-			message.channel.send('Could not DM user! You may have to manually let them know that they have been muted.');
+		await user.send({ content: '**You\'ve been unmuted**' }).catch(e => {
+			message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 		});
 		client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);
 		await member.roles.remove(role);

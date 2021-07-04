@@ -15,7 +15,7 @@ module.exports = {
 		else if (arg == 'pup') {id = '5bcaad8d';}
 		else if (arg == 'taco haven') {id = 'd68c84e1';}
 		else if (arg == 'nether depths') {id = '50dc31e4';}
-		else { return message.channel.send('**Invalid server**\nList of servers:\n`Pup, Taco Haven, Nether Depths`'); }
+		else { return message.channel.send({ content: '**Invalid server**\nList of servers:\n`Pup, Taco Haven, Nether Depths`' }); }
 		const guilds = client.guilds.cache;
 		try {
 			if (id == '5bcaad8d') if (message.member.id != '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
@@ -34,7 +34,7 @@ module.exports = {
 			client.logger.log('error', error);
 		});
 		client.logger.info(`Restarting ${info.attributes.name}`);
-		await message.channel.send(`Restarting ${info.attributes.name}`);
+		await message.channel.send({ content: `Restarting ${info.attributes.name}` });
 		if (id == '5bcaad8d') Client.killServer(id);
 	},
 };

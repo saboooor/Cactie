@@ -144,7 +144,7 @@ module.exports = {
 			}
 			const poll = await message.commandName ? args.slice(1).join(' ') : args.join(' ');
 			Poll.setDescription(poll);
-			const msg = await channel.send(Poll);
+			const msg = await channel.send({ embeds: [Poll] });
 			await msg.react(yes);
 			await msg.react(no);
 		}
@@ -169,13 +169,13 @@ module.exports = {
 			});
 			Poll.setDescription(`${args[1].value}${combine.join('')}`);
 			if (channel) {
-				const pp = await channel.send(Poll);
+				const pp = await channel.send({ embeds: [Poll] });
 				emojis.forEach(emoji => {
 					pp.react(emoji).catch(error => { return; });
 				});
 			}
 			else {
-				const poll = message.channel.send(Poll);
+				const poll = message.channel.send({ embeds: [Poll] });
 				emojis.forEach(emoji => {
 					poll.react(emoji).catch(error => { return; });
 				});

@@ -7,7 +7,7 @@ function checkign(user, command, message) {
 	let console = message.guild.channels.cache.find(channel => channel.name === 'console');
 	if (!console) console = message.guild.channels.cache.find(channel => channel.name === 'hub-console');
 	const member = message.guild.members.cache.get(user.id);
-	console.send(`discord linked ${member.id}`);
+	console.send({ content: `discord linked ${member.id}` });
 	const filter = m => m.content.includes(member.displayName);
 	const usernamecollector = console.createMessageCollector(filter, { time: 14000 });
 	usernamecollector.on('collect', m => {
@@ -26,7 +26,7 @@ function checkign(user, command, message) {
 			member.send({ embeds: [Embed] });
 			return;
 		}
-		console.send(`${command} ${playername}`);
+		console.send({ content: `${command} ${playername}` });
 		const filter2 = m2 => m2.content.includes('Next Votes') || m2.content.includes('User does not exist: ');
 		const vnextcollect = console.createMessageCollector(filter2, { time: 7000 });
 		vnextcollect.on('collect', m2 => {
