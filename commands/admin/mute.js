@@ -82,6 +82,6 @@ module.exports = {
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} forever`);
 		}
 		await member.roles.add(role).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
-		message.commandName ? message.reply({ embeds: [Embed], ephemeral: true }) : message.reply(Embed);
+		message.reply({ embeds: [Embed], ephemeral: true });
 	},
 };

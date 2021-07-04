@@ -93,7 +93,7 @@ module.exports = async (client, message) => {
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-			return message.reply(Embed);
+			return message.reply({ embeds: [Embed] });
 		}
 	}
 

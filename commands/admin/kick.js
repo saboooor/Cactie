@@ -42,7 +42,7 @@ module.exports = {
 				message.channel.send('Could not DM user! You may have to manually let them know that they have been kicked.');
 			});
 		}
-		message.commandName ? message.reply({ embeds: [Embed], ephemeral: true }) : message.reply(Embed);
+		message.reply({ embeds: [Embed], ephemeral: true });
 		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
 		client.logger.info(`Kicked user: ${user.tag} from ${message.guild.name}`);
 	},

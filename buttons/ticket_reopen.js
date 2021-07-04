@@ -15,7 +15,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Opened by ${author}`);
-		interaction.reply(Embed);
+		interaction.reply({ embeds: [Embed] });
 		await sleep(1000);
 		client.logger.info(`Reopened ticket #${interaction.channel.name}`);
 	},

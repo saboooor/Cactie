@@ -22,7 +22,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Opened by ${author}`);
-		message.reply(Embed);
+		message.reply({ embeds: [Embed] });
 		await sleep(1000);
 		client.logger.info(`Reopened ticket #${message.channel.name}`);
 	},

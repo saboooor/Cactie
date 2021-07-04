@@ -27,7 +27,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`${message.member.user} removed ${user} from the ticket`);
-		message.reply(Embed);
+		message.reply({ embeds: [Embed] });
 		client.logger.info(`Removed ${user.username} from #${message.channel.name}`);
 	},
 };

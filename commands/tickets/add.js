@@ -26,7 +26,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`${message.member.user} added ${user} to the ticket`);
-		message.reply(Embed);
+		message.reply({ embeds: [Embed] });
 		client.logger.info(`Added ${user.username} to #${message.channel.name}`);
 	},
 };

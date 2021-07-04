@@ -27,7 +27,7 @@ module.exports = {
 				.addField('**Users in ticket**', `${users}`)
 				.addField('**Transcript**', `${link}.txt`)
 				.addField('**Deleted by**', `${author}`);
-			await client.channels.cache.get(srvconfig.ticketlogchannel).send(Embed);
+			await client.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [Embed] });
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		}
 		else { interaction.reply('Deleting Ticket...'); }

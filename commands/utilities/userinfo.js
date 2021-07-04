@@ -69,6 +69,6 @@ module.exports = {
 			.addField('Join Date', `${moment(member.joinedAt)}`)
 			.addField('Creation Date', `${moment(member.user.createdAt)}`)
 			.addField('Roles', roleslist.join(', '));
-		await message.reply(Embed);
+		await message.reply({ embeds: [Embed] });
 	},
 };

@@ -32,9 +32,9 @@ module.exports = {
 			});
 			const buffer = await response.buffer();
 			client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args.slice(1).join(' '), new Discord.MessageAttachment(buffer, 'image.png'));
-			return message.reply(Embed);
+			return message.reply({ embeds: [Embed] });
 		}
 		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send(args.slice(1).join(' '));
-		message.reply(Embed);
+		message.reply({ embeds: [Embed] });
 	},
 };

@@ -63,12 +63,12 @@ module.exports = {
 			else message.reply({ embed: Embed, components: [row] });
 		}
 		else {
-			message.reply(Embed);
+			message.reply({ embeds: [Embed] });
 		}
 		if (client.settings.get(message.guild.id).tickets == 'reactions') {
 			Embed.setColor(3447003);
 			Embed.setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
-			const embed = await message.channel.send(Embed);
+			const embed = await message.channel.send({ embeds: [Embed] });
 			embed.react('🔓');
 			embed.react('⛔');
 		}

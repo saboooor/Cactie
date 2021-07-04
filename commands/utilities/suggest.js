@@ -30,7 +30,7 @@ module.exports = {
 			.setTitle('Suggestion')
 			.setDescription(suggestion)
 			.setURL(`https://a${message.member.user.id}a.pup`);
-		const msg = await channel.send(Embed);
+		const msg = await channel.send({ embeds: [Embed] });
 		await msg.react(yes);
 		await msg.react(no);
 		if (!message.commandName) {

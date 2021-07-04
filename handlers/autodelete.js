@@ -13,9 +13,9 @@ module.exports = client => {
 				const Embed = new Discord.MessageEmbed()
 					.setColor(15105570)
 					.setDescription('Ticket Closed automatically');
-				channel.send(Embed);
+				channel.send({ embeds: [Embed] });
 				Embed.setColor(3447003).setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
-				const msg = await channel.send(Embed);
+				const msg = await channel.send({ embeds: [Embed] });
 				msg.react('🔓');
 				msg.react('⛔');
 				client.logger.info(`Closed resolved ticket #${channel.name}`);

@@ -304,6 +304,6 @@ module.exports = {
 					.setLabel('Reset Settings')
 					.setStyle('DANGER'),
 			);
-		message.commandName ? message.reply({ embeds: [Embed], components: [row], ephemeral: true }) : message.reply({ embed: Embed, components: [row] });
+		message.reply({ embeds: [Embed], components: [row], ephemeral: true });
 	},
 };

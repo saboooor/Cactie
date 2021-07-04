@@ -16,6 +16,6 @@ module.exports = {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Settings')
 			.setDescription(`${srvconfig.join('\n')}`);
-		message.channel.send(Embed);
+		message.channel.send({ embeds: [Embed] });
 	},
 };

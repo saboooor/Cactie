@@ -22,5 +22,5 @@ module.exports = async (subreddit, message, client) => {
 	client.logger.info(`Image URL: ${pong[0].data.children[0].data.url}`);
 	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditfetch_noslash.js')(subreddit, message, client);
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞');
-	await message.reply(Embed);
+	await message.reply({ embeds: [Embed] });
 };

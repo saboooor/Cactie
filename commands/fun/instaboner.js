@@ -28,10 +28,10 @@ module.exports = {
 			.setTitle(`${nick}'s ${hardtxt} pp size`);
 		if (Math.round(Math.random() * 10) == 5) {
 			Embed.setDescription('SIKE').setFooter(`${nick} has no pp`);
-			return message.reply(Embed);
+			return message.reply({ embeds: [Embed] });
 		}
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
 		Embed.setDescription('8' + '='.repeat(random - 1) + 'D').setFooter(`${hardtxt} pp size = ${random}"`);
-		message.reply(Embed);
+		message.reply({ embeds: [Embed] });
 	},
 };

@@ -18,12 +18,12 @@ function checkign(user, command, message) {
 		const playername = check3.split(' (')[0].replace('- Player: ', '');
 		if (playername == '<Unknown>') {
 			Embed.setDescription('You need a linked account to see your votenext.');
-			member.send(Embed);
+			member.send({ embeds: [Embed] });
 			return;
 		}
 		if (playername.includes(' ')) {
 			Embed.setDescription('You need to leave the server to make this work.');
-			member.send(Embed);
+			member.send({ embeds: [Embed] });
 			return;
 		}
 		console.send(`${command} ${playername}`);
@@ -32,7 +32,7 @@ function checkign(user, command, message) {
 		vnextcollect.on('collect', m2 => {
 			if (m2.content.includes('User does not exist: ')) {
 				Embed.setDescription('User does not exist');
-				member.send(Embed);
+				member.send({ embeds: [Embed] });
 				return;
 			}
 			const output2 = m2.content.split(/\n/);
@@ -47,7 +47,7 @@ function checkign(user, command, message) {
 				vnext7 = `\n${output2.find(site => site.startsWith('MCPS')).replace('MCPS:', '**MCPS:**')}`;
 			}
 			Embed.setTitle('Your Next Votes:').setDescription(`${vnext1}\n${vnext2}\n${vnext3}\n${vnext4}\n${vnext5}${vnext6}${vnext7}`);
-			member.send(Embed);
+			member.send({ embeds: [Embed] });
 		});
 		return;
 	});

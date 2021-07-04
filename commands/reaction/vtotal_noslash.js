@@ -18,12 +18,12 @@ function checkign(user, command, message) {
 		const playername = check3.split(' (')[0].replace('- Player: ', '');
 		if (playername == '<Unknown>') {
 			Embed.setDescription('You need a linked account to see your votenext.');
-			member.send(Embed);
+			member.send({ embeds: [Embed] });
 			return;
 		}
 		if (playername.includes(' ')) {
 			Embed.setDescription('You need to leave the server to make this work.');
-			member.send(Embed);
+			member.send({ embeds: [Embed] });
 			return;
 		}
 		console.send(`${command} ${playername}`);
@@ -32,7 +32,7 @@ function checkign(user, command, message) {
 		vnextcollect.on('collect', m2 => {
 			if (m2.content.includes('User does not exist: ')) {
 				Embed.setDescription('User does not exist');
-				member.send(Embed);
+				member.send({ embeds: [Embed] });
 				return;
 			}
 			const output2 = m2.content.split(/\n/);
@@ -41,7 +41,7 @@ function checkign(user, command, message) {
 			const vtotal3 = output2.find(site => site.startsWith('Monthly')).replace('Monthly Total:', '**Monthly Total:**');
 			const vtotal4 = output2.find(site => site.startsWith('AllTime')).replace('AllTime Total:', '**AllTime Total:**');
 			Embed.setTitle('Your Total Votes:').setDescription(`${vtotal1}\n${vtotal2}\n${vtotal3}\n${vtotal4}`);
-			member.send(Embed);
+			member.send({ embeds: [Embed] });
 		});
 		return;
 	});

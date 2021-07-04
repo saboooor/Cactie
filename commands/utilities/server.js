@@ -17,6 +17,6 @@ module.exports = {
 			.addField('Members', `${message.guild.memberCount}`)
 			.addField('Channels', `${message.guild.channels.cache.size}`)
 			.addField('Creation Date', `${moment(message.guild.createdAt)}`);
-		await message.reply(Embed);
+		await message.reply({ embeds: [Embed] });
 	},
 };

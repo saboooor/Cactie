@@ -98,7 +98,7 @@ module.exports = {
 			if (player) Embed.addField('**Player**', player);
 			if (other) Embed.addField('**Other**', other);
 		}
-		const msg = await message.channel.send(Embed);
+		const msg = await message.channel.send({ embeds: [Embed] });
 		await sleep(8000);
 		msg.delete();
 		list.delete();

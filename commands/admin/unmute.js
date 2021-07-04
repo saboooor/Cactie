@@ -35,6 +35,6 @@ module.exports = {
 		});
 		client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);
 		await member.roles.remove(role);
-		message.commandName ? message.reply({ embeds: [Embed], ephemeral: true }) : message.reply(Embed);
+		message.reply({ embeds: [Embed], ephemeral: true });
 	},
 };

@@ -28,19 +28,19 @@ module.exports = {
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`${nick}'s pp size`)
 			.setDescription('<a:loading:826611946258038805> Calculating...');
-		const pp = await message.reply(Embed);
+		const pp = await message.reply({ embeds: [Embed] });
 		const shaft = [];
 		for (let step = 0; step < random; step++) {
 			await sleep(1200);
 			Embed.setDescription('8' + shaft.join('') + 'D');
-			message.commandName ? message.editReply(Embed) : pp.edit(Embed);
+			message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 			shaft.push('=');
 		}
 		if (Math.round(Math.random() * 10) == 5) {
 			Embed.setDescription('SIKE').setFooter(`${nick} has no pp`);
-			return message.commandName ? message.editReply(Embed) : pp.edit(Embed);
+			return message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 		}
 		Embed.setFooter(`pp size = ${random}"`);
-		message.commandName ? message.editReply(Embed) : pp.edit(Embed);
+		message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 	},
 };

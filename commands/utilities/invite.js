@@ -13,6 +13,6 @@ module.exports = {
 			.addField('**Add the bot (Dev):**', '[Invite Pup Dev to your server using this link!](https://discord.com/api/oauth2/authorize?client_id=848775888673439745&permissions=8&scope=applications.commands%20bot)')
 			.addField('**Bot Support:**', '[Join Pup\'s discord server!](https://discord.gg/Bsefgbaedz)');
 		if (srvconfig.adfree == 'false') Embed.addField('**Nether Depths:**', '[Also check out Nether Depths!](https://discord.gg/g7hSukX)');
-		await message.reply(Embed);
+		await message.reply({ embeds: [Embed] });
 	},
 };
