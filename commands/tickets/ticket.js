@@ -78,7 +78,7 @@ module.exports = {
 						.setEmoji('🔒')
 						.setStyle('DANGER'),
 				);
-			await ticket.send(`${author}`, { embed: Embed, components: [row] });
+			await ticket.send(`${author}`, { embeds: [Embed], components: [row] });
 		}
 		else if (client.settings.get(message.guild.id).tickets == 'reactions') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);

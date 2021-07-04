@@ -30,6 +30,6 @@ If after step 3, you do not see a box that says \`Message @${e[0]}\`, you disabl
 					.setLabel('Still have an issue? Create a ticket by clicking here!')
 					.setStyle('SECONDARY'),
 			);
-		message.reply({ embed: Embed, components: [row] });
+		message.reply({ embeds: [Embed], components: [row] });
 	},
 };

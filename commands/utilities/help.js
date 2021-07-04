@@ -80,11 +80,11 @@ module.exports = {
 							.setEmoji('🎫')
 							.setStyle('PRIMARY'),
 					);
-				message.channel.send({ embed: Panel, components: [row] });
+				message.channel.send({ embeds: [Panel], components: [row] });
 			}
 			else if (client.settings.get(message.guild.id).tickets == 'reactions') {
 				Panel.setDescription('React with 🎫 to open a ticket!');
-				const msg = await message.channel.send(Panel);
+				const msg = await message.channel.send({ embeds: [Panel] });
 				await msg.react('🎫');
 			}
 			else if (client.settings.get(message.guild.id).tickets == 'false') {
@@ -126,6 +126,6 @@ module.exports = {
 					.setURL('https://paypal.me/youhavebeenyoted')
 					.setLabel('Donate')
 					.setStyle('LINK')]);
-		message.commandName ? message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true }) : message.reply({ embed: Embed, components: [row, row2] });
+		message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true });
 	},
 };

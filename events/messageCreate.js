@@ -105,7 +105,7 @@ module.exports = async (client, message) => {
 			.setColor(3447003)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
-		return message.reply(Usage);
+		return message.reply({ embeds: [Usage] });
 	}
 
 	if (command.permissions && message.author.id !== '249638347306303499') {
@@ -132,8 +132,8 @@ module.exports = async (client, message) => {
 			.addField('**Channel:**', message.channel.name)
 			.addField('**INTERACTION:**', srvconfig.prefix + command.name)
 			.addField('**Error:**', clean(error));
-		client.users.cache.get('249638347306303499').send(interactionFailed);
-		message.author.send(interactionFailed);
+		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
+		message.author.send({ embeds: [interactionFailed] });
 		client.logger.error(error);
 	}
 };

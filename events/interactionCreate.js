@@ -29,8 +29,8 @@ module.exports = (client, interaction) => {
 				.addField('**Interaction:**', button.name)
 				.addField('**Error:**', clean(error));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
-			client.users.cache.get('249638347306303499').send(interactionFailed);
-			interaction.user.send(interactionFailed);
+			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
+			interaction.user.send({ embeds: [interactionFailed] });
 			client.logger.error(error);
 		}
 	}
@@ -91,8 +91,8 @@ module.exports = (client, interaction) => {
 				.addField('**Interaction:**', command.name)
 				.addField('**Error:**', clean(error));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
-			client.users.cache.get('249638347306303499').send(interactionFailed);
-			interaction.user.send(interactionFailed);
+			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
+			interaction.user.send({ embeds: [interactionFailed] });
 			client.logger.error(error);
 		}
 	}
