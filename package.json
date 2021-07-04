@@ -14,8 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^13.0.0-dev.610b0b4.1625357028",
-    "enmap": "^5.8.5",
-    "eslint": "^7.27.0",
+    "enmap": "^5.8.6",
+    "eslint": "^7.30.0",
     "flying-squid": "^1.4.0",
     "fs": "^0.0.1-security",
     "hastebin": "^0.2.1",
