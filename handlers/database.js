@@ -24,6 +24,7 @@ module.exports = client => {
 			mutecmd: 'true',
 			muterole: 'Not Set',
 			adminrole: 'permission',
+			msgshortener: '30',
 		},
 	});
 	client.logger.info('Settings database loaded');

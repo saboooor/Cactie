@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const nodeactyl = require('nodeactyl');
 const fetch = require('node-fetch');
 const Client = nodeactyl.Client;
+const hastebin = require('hastebin');
 const { apikey, apikey2 } = require('../config/pterodactyl.json');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
@@ -56,13 +57,21 @@ module.exports = async (client, message) => {
 	if (message.content.includes(client.user.id)) {
 		message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 	}
+	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
+		message.delete();
+		const link = await hastebin.createPaste(message.content, { server: 'https://bin.birdflop.com' });
+		const Embed = new Discord.MessageEmbed()
+			.setColor(Math.floor(Math.random() * 16777215))
+			.setTitle('Shortened long message')
+			.setAuthor(message.member.displayName, message.member.user.avatarURL())
+			.setDescription(link)
+			.setFooter('Next time please use a paste service');
+		message.channel.send({ embeds: [Embed] });
+	}
 	if (!message.content.startsWith(srvconfig.prefix)) {
-		if (message.channel.name.includes('ticket-')) {
-			if (!message.channel.topic) return;
-			if (!message.channel.topic.includes('Ticket Opened by')) return;
-			if (client.tickets.get(message.channel.id).resolved != 'true') return;
+		if (client.tickets.get(message.channel.id) && client.tickets.get(message.channel.id).resolved == 'true') {
 			client.tickets.set(message.channel.id, 'false', 'resolved');
-			client.logger.info(`Unmarked ticket #${message.channel.name} as resolved`);
+			client.logger.info(`Unresolved #${message.channel.name}`);
 		}
 		return;
 	}
