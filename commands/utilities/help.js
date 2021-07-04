@@ -92,7 +92,7 @@ module.exports = {
 			}
 		}
 		else {
-			Embed.setDescription('\n\nPlease use the buttons below to navigate through the help menu');
+			Embed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
 		}
 		const row = new Discord.MessageActionRow()
 			.addComponents([
