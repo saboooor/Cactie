@@ -57,9 +57,6 @@ module.exports = {
 			else if (message.guild.id == '711661870926397601') {
 				arg = 'taco haven';
 			}
-			else if (message.guild.id == '837116518730694678') {
-				arg = 'network';
-			}
 		}
 		if (!arg) {
 			if (client.user.username == 'Pup') {
@@ -76,9 +73,6 @@ module.exports = {
 				id = 'd68c84e1';
 				serverip = 'tacohaven.club';
 			}
-			else if (message.guild.id == '837116518730694678') {
-				serverip = 'network';
-			}
 		}
 		else if (arg == 'pup') {
 			id = '5bcaad8d';
@@ -93,24 +87,6 @@ module.exports = {
 		else if (arg == 'nether depths') {
 			id = '50dc31e4';
 			serverip = 'play.netherdepths.com';
-		}
-		else if (arg == 'chopsticks survival') {
-			id = '979d4d06';
-			serverip = 'survival.chopsticksmc.net';
-		}
-		else if (arg == 'chopsticks hub') {
-			id = 'c1b15b0f';
-			serverip = 'hub.chopsticksmc.net';
-		}
-		else if (arg == 'chopsticks proxy') {
-			id = '68505ddb';
-		}
-		else if (arg == 'chopsticks factions') {
-			id = '7d9c4185';
-			serverip = 'factions.chopsticksmc.net';
-		}
-		else if (arg == 'chopsticks') {
-			serverip = 'play.chopsticksmc.net';
 		}
 		else {
 			serverip = args[0];
@@ -157,7 +133,7 @@ module.exports = {
 				else if (pong.port == 25565) Embed.setTitle(pong.ip);
 				else Embed.setTitle(`${pong.ip}:${pong.port}`);
 				let noadmsg = '**Server is offline**';
-				if (srvconfig.adfree == 'false') noadmsg = '**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:```yml\nPup\nTaco Haven\nNether Depths\nChopsticks (Hub/Survival/Factions/Proxy)```';
+				if (srvconfig.adfree == 'false') noadmsg = '**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:```yml\nPup\nTaco Haven\nNether Depths```';
 				if (!pong.online) {
 					if (message.type && message.type == 'APPLICATION_COMMAND') {
 						return message.editReply(noadmsg);

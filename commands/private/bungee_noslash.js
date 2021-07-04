@@ -3,7 +3,7 @@ const Client = nodeactyl.Client;
 const { apikey } = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'bungee',
-	description: 'Chopsticks proxy console',
+	description: 'Nether Depths proxy console',
 	aliases: ['b'],
 	args: true,
 	usage: '<Command>',
