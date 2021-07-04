@@ -22,18 +22,18 @@ module.exports = {
 			author = args;
 		}
 		const srvconfig = client.settings.get(message.guild.id);
-		if (srvconfig.tickets == 'false') return message.reply('Tickets are disabled!');
+		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 		const role = message.guild.roles.cache.get(srvconfig.supportrole);
 		const channel = message.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
 		if (channel) {
 			message.guild.channels.cache.get(channel.id).send(`❗ **${author} Ticket already exists!**`);
-			const msg = await message.reply(`You've already created a ticket at ${channel}!`);
+			const msg = await message.reply({ content: `You've already created a ticket at ${channel}!` });
 			await sleep(5000);
 			await msg.delete();
 			return;
 		}
-		if (!role) return message.reply(`You need to set a role with ${srvconfig.prefix}settings supportrole <Role ID>!`);
+		if (!role) return message.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role ID>!` });
 		if (!parent) parent = { id: null };
 		if (parent.type != 'category') parent = { id: null };
 		const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
@@ -59,8 +59,8 @@ module.exports = {
 		client.tickets.set(ticket.id, 'false', 'resolved');
 		client.tickets.set(ticket.id, [], 'users');
 		client.tickets.push(ticket.id, author.id, 'users');
-		if (message.commandName) message.reply(`Ticket created at ${ticket}!`, { ephemeral: true });
-		else message.reply(`Ticket created at ${ticket}!`);
+		if (message.commandName) message.reply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
+		else message.reply({ content: `Ticket created at ${ticket}!` });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 		await sleep(1000);
 		const Embed = new Discord.MessageEmbed()

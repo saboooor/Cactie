@@ -24,10 +24,10 @@ module.exports = {
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
-		if (!user) return message.reply('Invalid User!');
+		if (!user) return message.reply({ content: 'Invalid User!' });
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
-		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
+		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		if (args[1]) {
@@ -44,6 +44,6 @@ module.exports = {
 		}
 		message.reply({ embeds: [Embed], ephemeral: true });
 		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` }).catch(e => message.channel.send(`\`${`${e}`.split('at')[0]}\``));
-		client.logger.info(`Kicked user: ${user.tag} from ${message.guild.name}`);
+		client.logger.info({ content: `Kicked user: ${user.tag} from ${message.guild.name}` });
 	},
 };

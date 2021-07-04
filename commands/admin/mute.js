@@ -34,23 +34,23 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
-		if (srvconfig.mutecmd == 'false') return message.reply('This command is disabled!');
-		if (srvconfig.muterole == 'Not Set') return message.reply('Please set a mute role with -settings muterole <Role ID>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!');
+		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
+		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role ID>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
-		if (!user) return message.reply('Invalid User!');
+		if (!user) return message.reply({ content: 'Invalid User!' });
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
 		const role = await message.guild.roles.cache.get(srvconfig.muterole);
-		if (member.roles.cache.has(role.id)) return message.reply('This user is already muted! Try unmuting instead.');
-		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
+		if (member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
+		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		const ms = args[1] ? time(args[1]) : null;
-		if (ms > 31536000000) return message.reply('You cannot mute someone for more than 1 year!');
+		if (ms > 31536000000) return message.reply({ content: 'You cannot mute someone for more than 1 year!' });
 		if (!isNaN(ms) && args[2]) {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 			await user.send(`**You've been muted on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**`).catch(e => {

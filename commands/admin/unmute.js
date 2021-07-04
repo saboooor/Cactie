@@ -15,17 +15,17 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
-		if (srvconfig.mutecmd == 'false') return message.reply('This command is disabled!');
-		if (srvconfig.muterole == 'Not Set') return message.reply('Please set a mute role with -settings muterole <Role ID>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!');
+		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
+		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role ID>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
-		if (!user) return message.reply('Invalid User!');
+		if (!user) return message.reply({ content: 'Invalid User!' });
 		const member = message.guild.members.cache.get(user.id);
 		const role = await message.guild.roles.cache.get(srvconfig.muterole);
-		if (!member.roles.cache.has(role.id)) return message.reply('This user is not muted!');
+		if (!member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unmuted ${user.tag}`);

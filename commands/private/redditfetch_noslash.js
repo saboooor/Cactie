@@ -5,12 +5,12 @@ module.exports = async (subreddit, message, client) => {
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`);
 	const pong = await json.json().catch(e => {
 		client.logger.error(e);
-		message.reply(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json`);
+		message.reply({ content: `Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json` });
 		return;
 	});
 	if (!pong) return;
-	if (pong.message == 'Not Found') return message.reply('Invalid subreddit!');
-	if (!pong[0]) return message.reply('Couldn\'t get data! Try again later.');
+	if (pong.message == 'Not Found') return message.reply({ content: 'Invalid subreddit!' });
+	if (!pong[0]) return message.reply({ content: 'Couldn\'t get data! Try again later.' });
 	if (pong[0].data.children[0].data.selftext) return require('./redditfetch_noslash.js')(subreddit, message, client);
 	const Embed = new Discord.MessageEmbed()
 		.setColor(Math.round(Math.random() * 16777215))

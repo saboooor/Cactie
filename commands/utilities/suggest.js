@@ -35,14 +35,14 @@ module.exports = {
 		await msg.react(no);
 		if (!message.commandName) {
 			if (channel != message.channel) {
-				const created = await message.reply(`**Suggestion Created at ${channel}!**`);
+				const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });
 				await sleep(5000);
 				created.delete();
 			}
 			message.delete();
 		}
 		else {
-			message.reply(`**Suggestion Created at ${channel}!**`, { ephemeral: true });
+			message.reply({ content: `**Suggestion Created at ${channel}!**`, ephemeral: true });
 		}
 	},
 };

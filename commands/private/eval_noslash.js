@@ -9,7 +9,7 @@ module.exports = {
 	args: true,
 	usage: '<Code>',
 	async execute(message, args, client) {
-		if (message.author.id !== '249638347306303499') return message.reply('You can\'t do that!');
+		if (message.author.id !== '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
 		try {
 			const code = args.join(' ');
 			let evaled = eval(code);

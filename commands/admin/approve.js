@@ -43,6 +43,6 @@ module.exports = {
 			fetchedMsg.edit({ embeds: [Embed] });
 			if (fetchedMsg.embeds[0].url) client.users.cache.get(fetchedMsg.embeds[0].url.split('a')[1]).send(`**Your suggestion at ${message.guild.name} has been approved.**\nResponse: ${args.slice(1).join(' ')}`);
 		}
-		if (message.commandName) message.reply('Suggestion Approved!', { ephemeral: true });
+		if (message.commandName) message.reply({ content: 'Suggestion Approved!', ephemeral: true });
 	},
 };

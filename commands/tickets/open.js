@@ -11,11 +11,11 @@ module.exports = {
 			author = user;
 		}
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
-		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply('Tickets are disabled!');
-		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('This ticket is already opened!');
+		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
+		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already opened!' });
 		await message.channel.setName(message.channel.name.replace('closed', 'ticket'));
 		await sleep(1000);
-		if (message.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('Failed to open ticket, please try again in 10 minutes');
+		if (message.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
 		client.tickets.get(message.channel.id).users.forEach(userid => {
 			message.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 		});

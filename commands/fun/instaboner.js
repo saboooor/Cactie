@@ -10,7 +10,7 @@ module.exports = {
 		description: 'Pick someone for the bot to calculate the pp size of',
 	}],
 	async execute(message, args, client) {
-		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply('This command is disabled!');
+		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);

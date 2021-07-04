@@ -34,7 +34,7 @@ module.exports = {
 			await message.defer();
 		}
 		else {
-			reply = await message.reply('<a:loading:826611946258038805> Pup is thinking...');
+			reply = await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
 		}
 		let id = '';
 		let serverip = '';
@@ -97,7 +97,7 @@ module.exports = {
 				apikey = apikey2;
 			}
 			Client.login(url, apikey, (logged_in, err) => {
-				if (logged_in == false) return message.reply(`Something went wrong\n${err}`);
+				if (logged_in == false) return message.reply({ content: `Something went wrong\n${err}` });
 			});
 			const info = await Client.getServerInfo(id).catch((error) => {client.logger.error(error);});
 			const cpu = await Client.getCPUUsage(id).catch((error) => {client.logger.error(error);});

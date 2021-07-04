@@ -13,10 +13,10 @@ module.exports = {
 		}
 		const srvconfig = client.settings.get(message.guild.id);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
-		if (srvconfig.tickets == 'false') return message.reply('Tickets are disabled!');
-		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('This ticket needs to be closed first!');
+		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
+		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket needs to be closed first!' });
 		if (srvconfig.ticketlogchannel != 'false') {
-			const trans = await message.reply('Creating transcript...');
+			const trans = await message.reply({ content: 'Creating transcript...' });
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const logs = [];
 			await messages.forEach(async msg => {
@@ -37,7 +37,7 @@ module.exports = {
 			await trans.delete();
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 		}
-		else { message.reply('Deleting Ticket...'); }
+		else { message.reply({ content: 'Deleting Ticket...' }); }
 		await client.tickets.delete(message.channel.id);
 		client.logger.info(`Deleted ticket #${message.channel.name}`);
 		await message.channel.delete();

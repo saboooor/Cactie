@@ -88,7 +88,7 @@ module.exports = {
 				await msg.react('🎫');
 			}
 			else if (client.settings.get(message.guild.id).tickets == 'false') {
-				return message.reply('Tickets are disabled!');
+				return message.reply({ content: 'Tickets are disabled!' });
 			}
 		}
 		else {

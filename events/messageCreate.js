@@ -11,18 +11,18 @@ module.exports = async (client, message) => {
 	if (message.webhookID && message.channel.id == '812082273393704960') {
 		if (client.user.username == 'Pup Dev') {
 			if (!message.embeds[0].title.includes('dev')) return;
-			message.reply('Updating to latest commit...');
+			message.reply({ content: 'Updating to latest commit...' });
 			Client.login('https://panel.discordbothosting.com', apikey2, (logged_in, err) => {
-				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.discordbothosting.com\n${err}`);
+				if (logged_in == false) return message.reply({ content: `Something went wrong, please use https://panel.discordbothosting.com\n${err}` });
 			});
 			Client.restartServer('b04dbb8c').catch();
 			Client.killServer('b04dbb8c').catch();
 		}
 		else if (client.user.username == 'Pup') {
 			if (!message.embeds[0].title.includes('master')) return;
-			message.reply('Updating to latest commit...');
+			message.reply({ content: 'Updating to latest commit...' });
 			Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
-				if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
+				if (logged_in == false) return message.reply({ content: `Something went wrong, please use https://panel.birdflop.com\n${err}` });
 			});
 			Client.restartServer('5bcaad8d').catch();
 			Client.killServer('5bcaad8d').catch();
@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 	}
 	if (message.author.bot) return;
 	if (message.channel.type == 'dm') {
-		if (message.content.startsWith('-')) return message.reply('You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead');
+		if (message.content.startsWith('-')) return message.reply({ content: 'You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead' });
 		if (message.attachments.size == 1) {
 			const picture = message.attachments.first();
 			const attachmenturl = picture.attachment;
@@ -54,7 +54,7 @@ module.exports = async (client, message) => {
 		client.response.get('pupbad').execute(message);
 	}
 	if (message.content.includes(client.user.id)) {
-		message.reply(`My prefix is \`${srvconfig.prefix}\``);
+		message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 	}
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		if (message.channel.name.includes('ticket-')) {
@@ -111,10 +111,10 @@ module.exports = async (client, message) => {
 	if (command.permissions && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (command.permissions == 'ADMINISTRATOR' && client.settings.get(message.guild.id).adminrole != 'permission' && !message.member.roles.cache.has(client.settings.get(message.guild.id).adminrole)) {
-			return message.reply('You can\'t do that!');
+			return message.reply({ content: 'You can\'t do that!' });
 		}
 		else if (!authorPerms && client.settings.get(message.guild.id).adminrole == 'permission' || !authorPerms.has(command.permissions) && client.settings.get(message.guild.id).adminrole == 'permission') {
-			return message.reply('You can\'t do that!');
+			return message.reply({ content: 'You can\'t do that!' });
 		}
 	}
 

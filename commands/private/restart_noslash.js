@@ -18,15 +18,15 @@ module.exports = {
 		else { return message.channel.send('**Invalid server**\nList of servers:\n`Pup, Taco Haven, Nether Depths`'); }
 		const guilds = client.guilds.cache;
 		try {
-			if (id == '5bcaad8d') if (message.member.id != '249638347306303499') return message.reply('You can\'t do that!');
-			if (id == '50dc31e4') if (!guilds.get('661736128373719141').members.cache.get(message.member.id).roles.cache.has('699724468469366844')) return message.reply('You can\'t do that!');
-			if (id == 'd68c84e1') if (!guilds.get('711661870926397601').members.cache.get(message.member.id).roles.cache.has('716208607070257162')) return message.reply('You can\'t do that!');
+			if (id == '5bcaad8d') if (message.member.id != '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
+			if (id == '50dc31e4') if (!guilds.get('661736128373719141').members.cache.get(message.member.id).roles.cache.has('699724468469366844')) return message.reply({ content: 'You can\'t do that!' });
+			if (id == 'd68c84e1') if (!guilds.get('711661870926397601').members.cache.get(message.member.id).roles.cache.has('716208607070257162')) return message.reply({ content: 'You can\'t do that!' });
 		}
 		catch (e) {
-			return message.reply('You can\'t do that!');
+			return message.reply({ content: 'You can\'t do that!' });
 		}
 		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
-			if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
+			if (logged_in == false) return message.reply({ content: `Something went wrong, please use https://panel.birdflop.com\n${err}` });
 		});
 		if (id == '5bcaad8d') client.user.setPresence({ activity: { name: 'Restarting', type: 'PLAYING' } });
 		const info = await Client.getServerInfo(id).catch((error) => {client.logger.log('error', error);});

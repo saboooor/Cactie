@@ -149,7 +149,7 @@ module.exports = {
 			await msg.react(no);
 		}
 		else if (type == 'choices') {
-			if (!args[3].value) return message.reply('You need to pick at least one option!', { ephemeral: true });
+			if (!args[3].value) return message.reply({ content: 'You need to pick at least one option!', ephemeral: true });
 			const emojis = [];
 			const options = [];
 			args.forEach(arg => {
@@ -181,7 +181,7 @@ module.exports = {
 				});
 			}
 		}
-		if (channel === message.channel && message.commandName) return message.reply('**Poll Created!**', { ephemeral: true });
-		if (channel === message.guild.channels.cache.find(c => c.name.includes('poll'))) return message.reply(`**Poll Created! Check <#${channel.id}>**`);
+		if (channel === message.channel && message.commandName) return message.reply({ content: '**Poll Created!**', ephemeral: true });
+		if (channel === message.guild.channels.cache.find(c => c.name.includes('poll'))) return message.reply({ content: `**Poll Created! Check <#${channel.id}>**` });
 	},
 };

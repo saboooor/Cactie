@@ -38,14 +38,14 @@ module.exports = {
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
-		if (!user) return message.reply('Invalid User!');
+		if (!user) return message.reply({ content: 'Invalid User!' });
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
-		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply('You can\'t do that! Your role is lower than the user\'s role!');
+		if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		const ms = time(args[1]);
-		if (ms > 31536000000) return message.reply('You cannot ban someone for more than 1 year!');
+		if (ms > 31536000000) return message.reply({ content: 'You cannot ban someone for more than 1 year!' });
 		if (!isNaN(ms) && args[2]) {
 			Embed.setTitle(`Banned ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 			await user.send(`**You've been banned from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**`).catch(e => {
