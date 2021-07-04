@@ -4,7 +4,7 @@ function clean(text) {
 	else return text;
 }
 module.exports = (client, interaction) => {
-	if (interaction.isMessageComponent()) {
+	if (interaction.isButton()) {
 		const button = client.buttons.get(interaction.customID);
 		if (!button) return;
 
@@ -27,6 +27,36 @@ module.exports = (client, interaction) => {
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
 				.addField('**Type:**', 'Button')
 				.addField('**Interaction:**', button.name)
+				.addField('**Error:**', clean(error));
+			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
+			interaction.user.send({ embeds: [interactionFailed] });
+			client.logger.error(error);
+		}
+	}
+	else if (interaction.isSelectMenu()) {
+		const dropdown = client.dropdowns.get(interaction.values[0]);
+		if (!dropdown) return;
+
+		if (dropdown.permissions && interaction.user.id !== '249638347306303499') {
+			const authorPerms = interaction.member.permissions;
+			if (!authorPerms || !authorPerms.has(dropdown.permissions)) {
+				interaction.deferUpdate();
+				return interaction.user.send({ content: 'You can\'t do that!' });
+			}
+		}
+
+		try {
+			client.logger.info(`${interaction.user.tag} clicked dropdown: ${interaction.values[0]}`);
+			dropdown.execute(interaction, client);
+		}
+		catch (error) {
+			const interactionFailed = new Discord.MessageEmbed()
+				.setColor(Math.floor(Math.random() * 16777215))
+				.setTitle('INTERACTION FAILED')
+				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
+				.addField('**Type:**', 'Dropdown')
+				.addField('**Interaction:**', interaction.values[0])
 				.addField('**Error:**', clean(error));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });

@@ -96,26 +96,37 @@ module.exports = {
 		}
 		const row = new Discord.MessageActionRow()
 			.addComponents([
-				new Discord.MessageButton()
-					.setCustomID('help_admin')
-					.setLabel('Admin')
-					.setStyle('PRIMARY'),
-				new Discord.MessageButton()
-					.setCustomID('help_fun')
-					.setLabel('Fun')
-					.setStyle('PRIMARY'),
-				new Discord.MessageButton()
-					.setCustomID('help_nsfw')
-					.setLabel('NSFW')
-					.setStyle('DANGER'),
-				new Discord.MessageButton()
-					.setCustomID('help_tickets')
-					.setLabel('Tickets')
-					.setStyle('PRIMARY'),
-				new Discord.MessageButton()
-					.setCustomID('help_utilities')
-					.setLabel('Utilities')
-					.setStyle('PRIMARY')]);
+				new Discord.MessageSelectMenu()
+					.setCustomID('select')
+					.setPlaceholder('Select a help category!')
+					.addOptions([
+						{
+							label: 'Admin',
+							description: 'These commands require specific permissions.',
+							value: 'help_admin',
+						},
+						{
+							label: 'Fun',
+							description: 'These commands are made just for fun!',
+							value: 'help_fun',
+						},
+						{
+							label: 'NSFW',
+							description: 'These commands have sensitive content that is NSFW',
+							value: 'help_nsfw',
+						},
+						{
+							label: 'Tickets',
+							description: 'These commands are related to Pup\'s tickets system',
+							value: 'help_tickets',
+						},
+						{
+							label: 'Utilities',
+							description: 'These commands are useful for some situations',
+							value: 'help_utilities',
+						},
+					]),
+			]);
 		const row2 = new Discord.MessageActionRow()
 			.addComponents([
 				new Discord.MessageButton()
