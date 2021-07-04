@@ -68,13 +68,13 @@ module.exports = (client, interaction) => {
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		if (!interaction.guild && command.guildOnly) {
-			return interaction.reply('You can only execute this command in a Discord Server!', { ephemeral: true });
+			return interaction.reply({ content: 'You can only execute this command in a Discord Server!', ephemeral: true });
 		}
 
 		if (command.permissions && interaction.user.id !== '249638347306303499') {
 			const authorPerms = interaction.member.permissions;
 			if (!authorPerms || !authorPerms.has(command.permissions)) {
-				return interaction.reply('You can\'t do that!', { ephemeral: true });
+				return interaction.reply({ content: 'You can\'t do that!', ephemeral: true });
 			}
 		}
 

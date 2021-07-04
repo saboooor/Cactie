@@ -4,11 +4,11 @@ module.exports = {
 	name: 'reopen_ticket',
 	async execute(interaction, client) {
 		const author = interaction.user;
-		if (client.settings.get(interaction.guild.id).tickets == 'false') return interaction.reply('Tickets are disabled!');
-		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply('This ticket is already opened!');
+		if (client.settings.get(interaction.guild.id).tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
+		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already opened!' });
 		await interaction.channel.setName(interaction.channel.name.replace('closed', 'ticket'));
 		await sleep(1000);
-		if (interaction.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply('Failed to open ticket, please try again in 10 minutes');
+		if (interaction.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
 		client.tickets.get(interaction.channel.id).users.forEach(userid => {
 			interaction.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 		});

@@ -5,12 +5,12 @@ module.exports = {
 	async execute(interaction, client) {
 		const author = interaction.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
-		if (srvconfig.tickets == 'false') return interaction.reply('Tickets are disabled!');
-		if (!interaction.channel.topic) return interaction.reply('This is not a valid ticket!');
-		if (!interaction.channel.topic.includes('Ticket Opened by')) return interaction.reply('This is not a valid ticket!');
-		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply('This ticket needs to be closed first!');
+		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
+		if (!interaction.channel.topic) return interaction.reply({ content: 'This is not a valid ticket!' });
+		if (!interaction.channel.topic.includes('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
+		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 		if (srvconfig.ticketlogchannel != 'false') {
-			await interaction.reply('Creating transcript...');
+			await interaction.reply({ content: 'Creating transcript...' });
 			const interactions = await interaction.channel.messages.fetch({ limit: 100 });
 			const logs = [];
 			await interactions.forEach(async msg => {
@@ -30,7 +30,7 @@ module.exports = {
 			await client.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [Embed] });
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		}
-		else { interaction.reply('Deleting Ticket...'); }
+		else { interaction.reply({ content: 'Deleting Ticket...' }); }
 		await client.tickets.delete(interaction.channel.id);
 		client.logger.info(`Deleted ticket #${interaction.channel.name}`);
 		await interaction.channel.delete();

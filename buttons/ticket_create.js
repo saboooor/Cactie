@@ -5,15 +5,15 @@ module.exports = {
 	async execute(interaction, client) {
 		const author = interaction.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
-		if (srvconfig.tickets == 'false') return interaction.reply('Tickets are disabled!');
+		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 		let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
 		const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
 		const channel = interaction.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
 		if (channel) {
 			interaction.guild.channels.cache.get(channel.id).send(`❗ **${author} Ticket already exists!**`);
-			return interaction.reply(`You've already created a ticket at ${channel}!`, { ephemeral: true });
+			return interaction.reply({ content: `You've already created a ticket at ${channel}!`, ephemeral: true });
 		}
-		if (!role) return interaction.reply(`You need to set a role with ${srvconfig.prefix}settings supportrole <Role ID>!`);
+		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role ID>!` });
 		if (!parent) parent = { id: null };
 		if (parent.type != 'category') parent = { id: null };
 		const ticket = await interaction.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
@@ -37,7 +37,7 @@ module.exports = {
 		}).catch(error => client.logger.error(error));
 		client.tickets.set(ticket.id, author.id, 'opener');
 		client.tickets.push(ticket.id, author.id, 'users');
-		interaction.reply(`Ticket created at ${ticket}!`, { ephemeral: true });
+		interaction.reply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 		await sleep(1000);
 		const Embed = new Discord.MessageEmbed()
