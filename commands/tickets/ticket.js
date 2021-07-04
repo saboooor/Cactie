@@ -56,6 +56,8 @@ module.exports = {
 			],
 		}).catch(error => client.logger.error(error));
 		client.tickets.set(ticket.id, author.id, 'opener');
+		client.tickets.set(ticket.id, 'false', 'resolved');
+		client.tickets.set(ticket.id, [], 'users');
 		client.tickets.push(ticket.id, author.id, 'users');
 		if (message.commandName) message.reply(`Ticket created at ${ticket}!`, { ephemeral: true });
 		else message.reply(`Ticket created at ${ticket}!`);

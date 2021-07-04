@@ -30,11 +30,6 @@ module.exports = client => {
 		name: 'tickets',
 		autoFetch: true,
 		fetchAll: false,
-		autoEnsure: {
-			opener: null,
-			resolved: 'false',
-			users: [],
-		},
 	});
 	client.logger.info('Ticket database loaded');
 	client.memberdata = new Enmap({

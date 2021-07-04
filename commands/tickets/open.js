@@ -10,7 +10,7 @@ module.exports = {
 			if (message.author.id != client.user.id) return;
 			author = user;
 		}
-		if (!client.tickets.get(message.channel.id)) return;
+		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply('Tickets are disabled!');
 		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('This ticket is already opened!');
 		await message.channel.setName(message.channel.name.replace('closed', 'ticket'));

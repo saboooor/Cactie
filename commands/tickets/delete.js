@@ -12,7 +12,7 @@ module.exports = {
 			author = user;
 		}
 		const srvconfig = client.settings.get(message.guild.id);
-		if (!client.tickets.get(message.channel.id)) return;
+		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (srvconfig.tickets == 'false') return message.reply('Tickets are disabled!');
 		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply('This ticket needs to be closed first!');
 		if (srvconfig.ticketlogchannel != 'false') {
