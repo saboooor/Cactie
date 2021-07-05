@@ -4,7 +4,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = client => {
 	cron.schedule('0 0 * * *', () => {
 		client.channels.cache.forEach(async channel => {
-			if (client.tickets.get(channel.id).resolved == 'true' && channel.name.includes('ticket-')) {
+			if (client.tickets.get(channel.id) && client.tickets.get(channel.id).resolved == 'true' && channel.name.includes('ticket-')) {
 				channel.setName(channel.name.replace('ticket', 'closed'));
 				await sleep(1000);
 				if (channel.name.includes('ticket-')) return channel.send({ content: 'Failed to close ticket, please try again in 10 minutes' });
