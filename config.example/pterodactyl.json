@@ -1,5 +1,6 @@
 {
     "[server name]": {
+        "name": "[server name but capitalized]",
         "apikey": "[panel api key]",
         "url": "[panel url]",
         "id": "[server id]",
@@ -7,6 +8,7 @@
         "client": "[is this the bot itself]"
     },
     "example1": {
+        "name": "Example1",
         "apikey": "aJG7fvKl5quD0ZSlZffdQbBXfjfdDGDjLokOotm8wpIBhQ1U",
         "url": "https://panel.birdflop.com",
         "id": "53e410dc",
@@ -14,6 +16,7 @@
         "client": false
     },
     "example2": {
+        "name": "Example2",
         "apikey": "8OojT25SxrXGWIdD0whVlkeAJ0SHgdU4ZJ2dXMZTntYHLlD4",
         "url": "https://panel.discordbothosting.com",
         "id": "bdb8b04c",
