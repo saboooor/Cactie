@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const nodeactyl = require('nodeactyl');
 const fetch = require('node-fetch');
 const hastebin = require('hastebin');
-const servers = require('../../config/pterodactyl.json');
+const servers = require('../config/pterodactyl.json');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
