@@ -17,6 +17,11 @@ module.exports = {
 		description: 'Specify a Minecraft server',
 	}],
 	async execute(message, args, client) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = Array.from(args);
+			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+		}
+		const reply = message.type && message.type == 'APPLICATION_COMMAND' ? await message.defer() : await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
 		if (!args[0]) args = ['pup'];
 		let server = servers[args.join(' ').toLowerCase()];
 		const Embed = new Discord.MessageEmbed().setColor(15105570);
@@ -49,7 +54,7 @@ module.exports = {
 			const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
 			const pong = await json.json();
 			const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name}`; });
-			if (!pong.online) return message.reply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+			if (!pong.online) return message.type && message.type == 'APPLICATION_COMMAND' ? message.editReply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``) : reply.edit(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
 			if (!Embed.title && pong.hostname) Embed.setTitle(pong.hostname);
 			else if (!Embed.title && pong.port == 25565) Embed.setTitle(pong.ip);
 			else if (!Embed.title) Embed.setTitle(`${pong.ip}:${pong.port}`);
@@ -82,6 +87,6 @@ module.exports = {
 			}
 			if (!pong.debug.query) Embed.setFooter('Query disabled! If you want more info, contact the owner to enable query.');
 		}
-		iconpng ? message.reply({ embeds: [Embed], files: [iconpng] }) : message.reply({ embeds: [Embed] });
+		iconpng ? message.type && message.type == 'APPLICATION_COMMAND' ? message.editReply({ embeds: [Embed], files: [iconpng] }) : reply.edit({ content: null, embeds: [Embed], files: [iconpng] }) : message.type && message.type == 'APPLICATION_COMMAND' ? message.editReply({ embeds: [Embed] }) : reply.edit({ content: null, embeds: [Embed] });
 	},
 };
