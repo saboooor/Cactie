@@ -1,40 +1,28 @@
 const nodeactyl = require('nodeactyl');
-const Client = nodeactyl.Client;
-const { apikey } = require('../../config/pterodactyl.json');
+const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'restart',
 	description: 'Restart pup or a server',
 	async execute(message, args, client) {
-		let id = '5bcaad8d';
-		let arg = args.join(' ');
-		if (arg) arg = arg.toLowerCase();
-		if (!arg) {
-			if (message.guild.id == '661736128373719141') id = '50dc31e4';
-			else if (message.guild.id == '711661870926397601') id = 'd68c84e1';
+		const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name}`; });
+		if (!args[0]) {
+			args = [];
+			serverlist.forEach(i => {
+				i = i.replace('\n', '').toLowerCase();
+				if (servers[i].guildid == message.guild.id) args.push(servers[i].name);
+			});
+			if (args[1]) args = ['dumb'];
+			if (!args[0]) args = ['pup'];
 		}
-		else if (arg == 'pup') {id = '5bcaad8d';}
-		else if (arg == 'taco haven') {id = 'd68c84e1';}
-		else if (arg == 'nether depths') {id = '50dc31e4';}
-		else { return message.channel.send({ content: '**Invalid server**\nList of servers:\n`Pup, Taco Haven, Nether Depths`' }); }
-		const guilds = client.guilds.cache;
-		try {
-			if (id == '5bcaad8d') if (message.member.id != '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
-			if (id == '50dc31e4') if (!guilds.get('661736128373719141').members.cache.get(message.member.id).roles.cache.has('699724468469366844')) return message.reply({ content: 'You can\'t do that!' });
-			if (id == 'd68c84e1') if (!guilds.get('711661870926397601').members.cache.get(message.member.id).roles.cache.has('716208607070257162')) return message.reply({ content: 'You can\'t do that!' });
-		}
-		catch (e) {
-			return message.reply({ content: 'You can\'t do that!' });
-		}
-		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
-			if (logged_in == false) return message.reply({ content: `Something went wrong, please use https://panel.birdflop.com\n${err}` });
-		});
-		if (id == '5bcaad8d') client.user.setPresence({ activity: { name: 'Restarting', type: 'PLAYING' } });
-		const info = await Client.getServerInfo(id).catch((error) => {client.logger.log('error', error);});
-		Client.restartServer(id).catch((error) => {
-			client.logger.log('error', error);
-		});
-		client.logger.info(`Restarting ${info.attributes.name}`);
-		await message.channel.send({ content: `Restarting ${info.attributes.name}` });
-		if (id == '5bcaad8d') Client.killServer(id);
+		const server = servers[args.join(' ').toLowerCase()];
+		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+		if (!client.guilds.cache.get(server.guildid).members.cache.get(message.member.id) || !client.guilds.cache.get(server.guildid).members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
+		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
+		if (server.client) client.user.setPresence({ activity: { name: 'Restarting', type: 'PLAYING' } });
+		const info = await Client.getServerDetails(server.id);
+		Client.restartServer(server.id);
+		client.logger.info(`Restarting ${info.name}`);
+		await message.channel.send({ content: `Restarting ${info.name}` });
+		if (server.client) Client.killServer(server.id);
 	},
 };

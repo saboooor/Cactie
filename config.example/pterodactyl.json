@@ -3,6 +3,8 @@
         "name": "[server name but capitalized]",
         "apikey": "[panel api key]",
         "url": "[panel url]",
+        "guildid": "[guild id (for permissions)]",
+        "roleid": "[role id (for permissions)]",
         "id": "[server id]",
         "ip": "[minecraft ip (optional)]",
         "client": "[is this the bot itself]"
@@ -11,6 +13,8 @@
         "name": "Example1",
         "apikey": "aJG7fvKl5quD0ZSlZffdQbBXfjfdDGDjLokOotm8wpIBhQ1U",
         "url": "https://panel.birdflop.com",
+        "guildid": "661736128373719141",
+        "roleid": "699724468469366844",
         "id": "53e410dc",
         "ip": "play.netherdepths.com",
         "client": false
@@ -19,6 +23,8 @@
         "name": "Example2",
         "apikey": "8OojT25SxrXGWIdD0whVlkeAJ0SHgdU4ZJ2dXMZTntYHLlD4",
         "url": "https://panel.discordbothosting.com",
+        "guildid": "811354612547190794",
+        "roleid": "849452673156513813",
         "id": "bdb8b04c",
         "ip": null,
         "client": true
