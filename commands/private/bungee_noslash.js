@@ -1,6 +1,5 @@
 const nodeactyl = require('nodeactyl');
-const Client = nodeactyl.Client;
-const { apikey } = require('../../config/pterodactyl.json');
+const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'bungee',
 	description: 'Nether Depths proxy console',
@@ -8,14 +7,10 @@ module.exports = {
 	args: true,
 	usage: '<Command>',
 	async execute(message, args, client) {
-		if (!client.guilds.cache.get('837116518730694678').members.cache.get(message.member.id)) return message.reply({ content: 'You can\'t do that!' });
-		if (!client.guilds.cache.get('837116518730694678').members.cache.get(message.member.id).roles.cache.has('837119752232632380')) return message.reply({ content: 'You can\'t do that!' });
-		Client.login('https://panel.birdflop.com', apikey, (logged_in, err) => {
-			if (logged_in == false) return message.reply(`Something went wrong, please use https://panel.birdflop.com\n${err}`);
-		});
-		Client.sendCommand('68505ddb', args.join(' ')).catch((error) => {
-			client.logger.error(error);
-		});
+		const server = servers['nether depths bungee'];
+		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
+		if (!client.guilds.cache.get('661736128373719141').members.cache.get(message.member.id) || !client.guilds.cache.get('661736128373719141').members.cache.get(message.member.id).roles.cache.has('699724468469366844')) return message.reply({ content: 'You can\'t do that!' });
+		Client.sendServerCommand(server.id, args.join(' '));
 		message.reply({ content: `Sent command \`${args.join(' ')}\` to Bungee` });
 	},
 };
