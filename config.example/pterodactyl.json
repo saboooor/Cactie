@@ -3,18 +3,21 @@
         "apikey": "[panel api key]",
         "url": "[panel url]",
         "id": "[server id]",
-        "ip": "[minecraft ip (optional)]"
+        "ip": "[minecraft ip (optional)]",
+        "client": "[is this the bot itself]"
     },
     "example1": {
         "apikey": "aJG7fvKl5quD0ZSlZffdQbBXfjfdDGDjLokOotm8wpIBhQ1U",
         "url": "https://panel.birdflop.com",
         "id": "53e410dc",
-        "ip": "play.netherdepths.com"
+        "ip": "play.netherdepths.com",
+        "client": false
     },
     "example2": {
         "apikey": "8OojT25SxrXGWIdD0whVlkeAJ0SHgdU4ZJ2dXMZTntYHLlD4",
         "url": "https://panel.discordbothosting.com",
         "id": "bdb8b04c",
-        "ip": null
+        "ip": null,
+        "client": true
     }
 }
