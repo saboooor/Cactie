@@ -30,7 +30,6 @@ module.exports = async (client, message) => {
 		return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}` });
 	}
 	const srvconfig = client.settings.get(message.guild.id);
-	if (message.content.startsWith('**Online players (') || message.content.includes('PLAYERS ONLINE**')) client.response.get('list').execute(message);
 	if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'daddy', 'mommy', 'cute'].some(word => message.content.toLowerCase().includes(word))) {
 		if (srvconfig.simpreaction == 'false') return;
 		client.response.get('simp').execute(message);
