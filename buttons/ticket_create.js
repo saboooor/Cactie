@@ -49,7 +49,7 @@ module.exports = {
 			const row = new Discord.MessageActionRow()
 				.addComponents(
 					new Discord.MessageButton()
-						.setCustomID('close_ticket')
+						.setCustomId('close_ticket')
 						.setLabel('Close Ticket')
 						.setEmoji('🔒')
 						.setStyle('DANGER'),

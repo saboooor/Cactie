@@ -75,7 +75,7 @@ module.exports = {
 				const row = new Discord.MessageActionRow()
 					.addComponents(
 						new Discord.MessageButton()
-							.setCustomID('create_ticket')
+							.setCustomId('create_ticket')
 							.setLabel('Open Ticket')
 							.setEmoji('🎫')
 							.setStyle('PRIMARY'),
@@ -97,7 +97,7 @@ module.exports = {
 		const row = new Discord.MessageActionRow()
 			.addComponents([
 				new Discord.MessageSelectMenu()
-					.setCustomID('select')
+					.setCustomId('select')
 					.setPlaceholder('Select a help category!')
 					.addOptions([
 						{

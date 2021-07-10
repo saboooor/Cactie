@@ -8,7 +8,7 @@ module.exports = {
 		const confirm = new Discord.MessageActionRow()
 			.addComponents(
 				new Discord.MessageButton()
-					.setCustomID('reset_confirm')
+					.setCustomId('reset_confirm')
 					.setLabel('Are you sure you want to reset ALL of your settings?')
 					.setStyle('DANGER'),
 			);

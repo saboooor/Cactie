@@ -302,7 +302,7 @@ module.exports = {
 		const row = new Discord.MessageActionRow()
 			.addComponents(
 				new Discord.MessageButton()
-					.setCustomID('reset')
+					.setCustomId('reset')
 					.setLabel('Reset Settings')
 					.setStyle('DANGER'),
 			);

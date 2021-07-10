@@ -40,12 +40,12 @@ module.exports = {
 			row = new Discord.MessageActionRow()
 				.addComponents([
 					new Discord.MessageButton()
-						.setCustomID('delete_ticket')
+						.setCustomId('delete_ticket')
 						.setLabel('Delete Ticket')
 						.setEmoji('⛔')
 						.setStyle('DANGER'),
 					new Discord.MessageButton()
-						.setCustomID('reopen_ticket')
+						.setCustomId('reopen_ticket')
 						.setLabel('Reopen Ticket')
 						.setEmoji('🔓')
 						.setStyle('PRIMARY'),

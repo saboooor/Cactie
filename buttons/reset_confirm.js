@@ -5,7 +5,7 @@ module.exports = {
 	async execute(interaction, client) {
 		client.settings.delete(interaction.guild.id);
 		const button = new Discord.MessageButton()
-			.setCustomID('none')
+			.setCustomId('none')
 			.setLabel('Settings successfully reset!')
 			.setStyle('SECONDARY');
 		const row = new Discord.MessageActionRow()

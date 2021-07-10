@@ -7,7 +7,7 @@ module.exports = {
 	execute(message, args, client) {
 		const row = new Discord.MessageActionRow()
 			.addComponents(new Discord.MessageButton()
-				.setCustomID('ping_again')
+				.setCustomId('ping_again')
 				.setLabel('Click here to ping again!')
 				.setStyle('PRIMARY'));
 		const Embed = new Discord.MessageEmbed()

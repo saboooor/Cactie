@@ -22,7 +22,7 @@ module.exports = {
 		const user = client.users.cache.find(u => u.id === args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply({ content: 'This user has already been added!' });
 		client.tickets.push(message.channel.id, user.id, 'users');
-		message.channel.updateOverwrite(user, { VIEW_CHANNEL: true });
+		message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`${message.member.user} added ${user} to the ticket`);
