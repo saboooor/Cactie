@@ -67,7 +67,7 @@ module.exports = {
 		}
 		if (client.settings.get(message.guild.id).tickets == 'reactions') {
 			Embed.setColor(3447003);
-			Embed.setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
+			Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 			const embed = await message.channel.send({ embeds: [Embed] });
 			embed.react('🔓');
 			embed.react('⛔');
