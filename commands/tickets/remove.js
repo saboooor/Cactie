@@ -23,7 +23,7 @@ module.exports = {
 		if (!client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply({ content: 'This user isn\'t in this ticket!' });
 		if (user.id == client.tickets.get(message.channel.id).opener) return message.reply({ content: 'You can\'t remove the ticket opener!' });
 		client.tickets.remove(message.channel.id, user.id, 'users');
-		message.channel.updateOverwrite(user, { VIEW_CHANNEL: false });
+		message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`${message.member.user} removed ${user} from the ticket`);

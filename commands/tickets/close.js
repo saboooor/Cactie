@@ -22,7 +22,7 @@ module.exports = {
 		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 		client.tickets.set(message.channel.id, 'false', 'resolved');
 		client.tickets.get(message.channel.id).users.forEach(userid => {
-			message.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: false });
+			message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false });
 		});
 		const messages = await message.channel.messages.fetch({ limit: 100 });
 		const logs = [];

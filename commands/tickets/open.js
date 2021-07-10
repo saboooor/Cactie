@@ -17,7 +17,7 @@ module.exports = {
 		await sleep(1000);
 		if (message.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
 		client.tickets.get(message.channel.id).users.forEach(userid => {
-			message.channel.updateOverwrite(client.users.cache.get(userid), { VIEW_CHANNEL: true });
+			message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 		});
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15105570)
