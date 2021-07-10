@@ -5,12 +5,12 @@ module.exports = {
 	aliases: ['reject', 'decline'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
-	usage: '<Message ID> [Response]',
+	usage: '<Message Id> [Response]',
 	guildOnly: true,
 	options: [{
 		type: 3,
 		name: 'messageid',
-		description: 'The ID of the message of the suggestion you want to approve',
+		description: 'The Id of the message of the suggestion you want to approve',
 		required: true,
 	},
 	{

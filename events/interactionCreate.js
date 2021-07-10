@@ -5,7 +5,7 @@ function clean(text) {
 }
 module.exports = (client, interaction) => {
 	if (interaction.isButton()) {
-		const button = client.buttons.get(interaction.customID);
+		const button = client.buttons.get(interaction.customId);
 		if (!button) return;
 
 		if (button.permissions && interaction.user.id !== '249638347306303499') {

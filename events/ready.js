@@ -5,7 +5,7 @@ module.exports = async (client) => {
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
 	client.channels.cache.get('812082273393704960').messages.fetch({ limit: 1 }).then(msg => {
 		const mesg = msg.first();
-		if (mesg.content !== 'Started Successfully!' && !mesg.webhookID) client.channels.cache.get('812082273393704960').send({ content: 'Started Successfully!' });
+		if (mesg.content !== 'Started Successfully!' && !mesg.webhookId) client.channels.cache.get('812082273393704960').send({ content: 'Started Successfully!' });
 	});
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();

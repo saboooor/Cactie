@@ -19,11 +19,11 @@ module.exports = {
 			maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
 			tickets: '*Toggles the ticket system (buttons/reactions/false)*',
 			bonercmd: '*Toggles the boner command (true/false)*',
-			suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelID)*',
-			pollchannel: '*The channel where the bot puts polls in (false/default/channelID)*',
-			ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelID)*',
-			ticketcategory: '*The category where the bot creates tickets in (false/categoryID)*',
-			supportrole: '*The ticket support team role (false/roleID)*',
+			suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelId)*',
+			pollchannel: '*The channel where the bot puts polls in (false/default/channelId)*',
+			ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelId)*',
+			ticketcategory: '*The category where the bot creates tickets in (false/categoryId)*',
+			supportrole: '*The ticket support team role (false/roleId)*',
 			ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
 		};
 		const srvconfig = Object.keys(client.settings.get(interaction.guild.id)).map(prop => {

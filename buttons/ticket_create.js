@@ -13,7 +13,7 @@ module.exports = {
 			interaction.guild.channels.cache.get(channel.id).send({ content: `❗ **${author} Ticket already exists!**` });
 			return interaction.reply({ content: `You've already created a ticket at ${channel}!`, ephemeral: true });
 		}
-		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role ID>!` });
+		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
 		if (!parent) parent = { id: null };
 		if (parent.type != 'category') parent = { id: null };
 		const ticket = await interaction.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {

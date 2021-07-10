@@ -8,7 +8,7 @@ function clean(text) {
 	else return text;
 }
 module.exports = async (client, message) => {
-	if (message.webhookID && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('master')) {
+	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('master')) {
 		message.reply({ content: 'Updating to latest commit...' });
 		const server = servers['pup'];
 		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);

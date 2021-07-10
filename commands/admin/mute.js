@@ -35,7 +35,7 @@ module.exports = {
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
-		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role ID>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
+		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role Id>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);

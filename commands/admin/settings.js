@@ -157,7 +157,7 @@ module.exports = {
 		{
 			type: 1,
 			name: 'ticketlogchannel',
-			description: 'The channel where the bot puts ticket logs, Must be false or a channel ID',
+			description: 'The channel where the bot puts ticket logs, Must be false or a channel Id',
 			options: [
 				{
 					type: 7,
@@ -170,7 +170,7 @@ module.exports = {
 		{
 			type: 1,
 			name: 'ticketcategory',
-			description: 'The category where the bot creates tickets in, Must be false or a category ID',
+			description: 'The category where the bot creates tickets in, Must be false or a category Id',
 			options: [
 				{
 					type: 7,
@@ -264,10 +264,10 @@ module.exports = {
 			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
 			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
-			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply({ content: 'That is not a valid text channel ID!' });
-			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'category')) return message.reply({ content: 'That is not a valid category ID!' });
-			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role ID!' });
-			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role ID!' });
+			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply({ content: 'That is not a valid text channel Id!' });
+			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'category')) return message.reply({ content: 'That is not a valid category Id!' });
+			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
+			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
@@ -283,15 +283,15 @@ module.exports = {
 				maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
 				tickets: '*Toggles the ticket system (buttons/reactions/false)*',
 				bonercmd: '*Toggles the boner command (true/false)*',
-				suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelID)*',
-				pollchannel: '*The channel where the bot puts polls in (false/default/channelID)*',
-				ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelID)*',
-				ticketcategory: '*The category where the bot creates tickets in (false/categoryID)*',
-				supportrole: '*The ticket support team role (roleID)*',
+				suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelId)*',
+				pollchannel: '*The channel where the bot puts polls in (false/default/channelId)*',
+				ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelId)*',
+				ticketcategory: '*The category where the bot creates tickets in (false/categoryId)*',
+				supportrole: '*The ticket support team role (roleId)*',
 				ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
-				muterole: '*The role for muting someone (false/roleID)*',
+				muterole: '*The role for muting someone (false/roleId)*',
 				mutecmd: '*Toggles the mute command (true/false)*',
-				adminrole: '*The role to replace the ADMINISTRATOR permission (permission/roleID)*',
+				adminrole: '*The role to replace the ADMINISTRATOR permission (permission/roleId)*',
 				msgshortener: '*The amount of lines in a message to trigger message shortener (number [0 = false])*',
 			};
 			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
