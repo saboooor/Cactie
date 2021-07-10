@@ -10,7 +10,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setAuthor(message.guild.name, message.guild.iconURL())
-			.setFooter(`Owner: ${client.users.cache.get(message.guild.ownerId).username}`, client.users.cache.get(message.guild.ownerId).avatarURL());
+			.setFooter(`Owner: ${message.guild.fetchOwner().username}`, message.guild.fetchOwner().avatarURL());
 		if (message.guild.description) Embed.addField('Description', message.guild.description);
 		if (message.guild.vanityURLCode) Embed.addField('Vanity URL', `discord.gg/${message.guild.vanityURLCode}`);
 		Embed
