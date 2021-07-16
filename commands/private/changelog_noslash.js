@@ -11,16 +11,16 @@ module.exports = {
 			.setAuthor('Changelog', 'https://hotemoji.com/images/dl/g/scroll-emoji-by-google.png')
 			.setFooter(`By ${message.author.username}`, message.author.avatarURL());
 		if (args[0] == 'nd') {
-			if (!client.guilds.cache.get('661736128373719141').members.cache.get(message.member.id)) return message.reply({ content: 'You can\'t do that!' });
-			if (!client.guilds.cache.get('661736128373719141').members.cache.get(message.member.id).roles.cache.has('699724468469366844')) return message.reply({ content: 'You can\'t do that!' });
+			if (!client.guilds.cache.get('865519986806095902').members.cache.get(message.member.id)) return message.reply({ content: 'You can\'t do that!' });
+			if (!client.guilds.cache.get('865519986806095902').members.cache.get(message.member.id).roles.cache.has('865533361152589824')) return message.reply({ content: 'You can\'t do that!' });
 			changes.forEach(change => {
 				Embed.setColor(Math.floor(Math.random() * 16777215));
 				Embed.setDescription(change);
-				client.channels.cache.get('699175256954241095').send({ embeds: [Embed] });
-				client.channels.cache.get('676570220298633237').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
-				client.channels.cache.get('860896125363552326').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
-				client.channels.cache.get('861102381156794418').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
-				client.channels.cache.get('859918682658439199').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
+				client.channels.cache.get('865522730270326794').send({ embeds: [Embed] });
+				client.channels.cache.get('865525620950564864').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
+				client.channels.cache.get('865525653738749983').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
+				client.channels.cache.get('865525634780758056').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
+				client.channels.cache.get('865525676693913660').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
 			});
 		}
 		else if (args[0] == 'th') {
