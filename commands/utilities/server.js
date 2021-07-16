@@ -3,14 +3,15 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',
-	aliases: ['info', 'srv', 'guild'],
+	aliases: ['s', 'srv', 'guild'],
 	cooldown: 10,
 	guildOnly: true,
 	async execute(message, args, client) {
+		const owner = await message.guild.fetchOwner();
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setAuthor(message.guild.name, message.guild.iconURL())
-			.setFooter(`Owner: ${message.guild.fetchOwner().username}`, message.guild.fetchOwner().avatarURL());
+			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL());
 		if (message.guild.description) Embed.addField('Description', message.guild.description);
 		if (message.guild.vanityURLCode) Embed.addField('Vanity URL', `discord.gg/${message.guild.vanityURLCode}`);
 		Embed
