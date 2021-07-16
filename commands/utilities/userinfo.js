@@ -29,7 +29,7 @@ module.exports = {
 		const roleslist = Object.keys(roles).map(i => {
 			return `**${roles[i][1]}**`;
 		});
-		const activities = member.user.presence.activities;
+		const activities = member.presence.activities;
 		const activitieslist = Object.keys(activities).map(i => {
 			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji} ${activities[i].state}`;
 			const activitystack = [`**${activities[i].name}**`];
@@ -63,7 +63,7 @@ module.exports = {
 			.setTitle(`${member.displayName}`)
 			.setThumbnail(member.user.avatarURL())
 			.setDescription(`${member.user}`)
-			.addField('Status', member.user.presence.status);
+			.addField('Status', member.presence.status);
 		if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
 		Embed
 			.addField('Join Date', `${moment(member.joinedAt)}`)
