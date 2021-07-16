@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^13.0.0-dev.4206e35.1626393827",
+    "discord.js": "^13.0.0-dev.f200f14.1626436969",
     "enmap": "^5.8.6",
     "eslint": "^7.30.0",
     "fs": "^0.0.1-security",

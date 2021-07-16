@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'settings',
-	description: 'Configure this server\'s settings on Pup',
+	description: 'Configure this server\'s Pup settings',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
@@ -241,6 +241,19 @@ module.exports = {
 					type: 8,
 					name: 'role',
 					description: 'The admin role',
+					required: true,
+				},
+			],
+		},
+		{
+			type: 3,
+			name: 'msgshortener',
+			description: 'The amount of lines in a message to trigger message shortener',
+			options: [
+				{
+					type: 8,
+					name: 'number',
+					description: '[0 = disabled]',
 					required: true,
 				},
 			],
