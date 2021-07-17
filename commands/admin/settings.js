@@ -285,20 +285,20 @@ module.exports = {
 			if (prop == 'muterole') {
 				const role = message.guild.roles.cache.get(value);
 				message.guild.channels.cache.forEach(channel => {
-					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
-						.catch(e => {
-							if (`\`${`${e}`.split('at')[0]}\``.includes('Missing Permissions')) {
-								const ErrorEmbed = new Discord.MessageEmbed()
-									.setColor(Math.floor(Math.random() * 16777215))
-									.setTitle('Missing Permissions')
-									.setDescription('[Try fixing this by clicking here and refreshing my permissions!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=2416307446&scope=applications.commands%20bot)');
-								return message.reply({ embeds: [ErrorEmbed] });
-							}
-							else if (!`\`${`${e}`.split('at')[0]}\``.includes('Missing Access')) {
-								return message.reply({ content: `\`${`${e}`.split('at')[0]}\`` });
-							}
-						});
-				});
+					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false });
+				})
+					.catch(e => {
+						if (`\`${`${e}`.split('at')[0]}\``.includes('Missing Permissions')) {
+							const ErrorEmbed = new Discord.MessageEmbed()
+								.setColor(Math.floor(Math.random() * 16777215))
+								.setTitle('Missing Permissions')
+								.setDescription('[Try fixing this by clicking here and refreshing my permissions!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=2416307446&scope=applications.commands%20bot)');
+							return message.reply({ embeds: [ErrorEmbed] });
+						}
+						else if (!`\`${`${e}`.split('at')[0]}\``.includes('Missing Access')) {
+							return message.reply({ content: `\`${`${e}`.split('at')[0]}\`` });
+						}
+					});
 			}
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
