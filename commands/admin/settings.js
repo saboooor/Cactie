@@ -284,22 +284,20 @@ module.exports = {
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
 			if (prop == 'muterole') {
 				const role = message.guild.roles.cache.get(value);
-				message.guild.channels.cache.every(channel => {
-					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false }).catch(e => {
-						if (`\`${`${e}`.split('at')[0]}\``.includes('Missing Permissions')) {
-							const ErrorEmbed = new Discord.MessageEmbed()
-								.setColor(Math.floor(Math.random() * 16777215))
-								.setTitle('Missing Permissions')
-								.setDescription('[Try fixing this by clicking here and refreshing my permissions!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=2416307446&scope=applications.commands%20bot)');
-							message.reply({ embeds: [ErrorEmbed] });
-							return false;
-						}
-						else if (!`\`${`${e}`.split('at')[0]}\``.includes('Missing Access')) {
-							message.reply({ content: `\`${`${e}`.split('at')[0]}\`` });
-							return false;
-						}
-					});
-					return true;
+				message.guild.channels.cache.forEach(channel => {
+					let error = null;
+					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
+						.catch(e => error = e);
+					if (`\`${`${error}`.split('at')[0]}\``.includes('Missing Permissions')) {
+						const ErrorEmbed = new Discord.MessageEmbed()
+							.setColor(Math.floor(Math.random() * 16777215))
+							.setTitle('Missing Permissions')
+							.setDescription('[Try fixing this by clicking here and refreshing my permissions!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=2416307446&scope=applications.commands%20bot)');
+						return message.reply({ embeds: [ErrorEmbed] });
+					}
+					else if (!`\`${`${error}`.split('at')[0]}\``.includes('Missing Access')) {
+						return message.reply({ content: `\`${`${error}`.split('at')[0]}\`` });
+					}
 				});
 			}
 			client.settings.set(message.guild.id, value, prop);
