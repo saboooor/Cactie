@@ -52,7 +52,7 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
 				if (client.users.cache.get(data[0].split('-')[0])) client.users.cache.get(data[0].split('-')[0]).send({ content: `**You've been unbanned in ${guild.name}**` });
 				client.memberdata.set(data[0], 0, 'bannedUntil');
-				client.logger.info(`Unbanned ${client.users.cache.get(data[0].split('-')[0]).tag} in ${guild.name}`);
+				client.logger.info(`Unbanned ${client.users.cache.get(data[0].split('-')[0]) ? client.users.cache.get(data[0].split('-')[0]).tag : data[0].split('-')[0]} in ${guild.name}`);
 				await guild.members.unban(data[0].split('-')[0]);
 			}
 			else if (data[1].mutedUntil == 0 && data[1].bannedUntil == 0) {
