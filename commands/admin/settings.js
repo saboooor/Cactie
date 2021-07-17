@@ -246,12 +246,12 @@ module.exports = {
 			],
 		},
 		{
-			type: 3,
+			type: 1,
 			name: 'msgshortener',
 			description: 'The amount of lines in a message to trigger message shortener',
 			options: [
 				{
-					type: 8,
+					type: 3,
 					name: 'number',
 					description: '[0 = disabled]',
 					required: true,
