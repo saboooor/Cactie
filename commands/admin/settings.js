@@ -285,7 +285,7 @@ module.exports = {
 			if (prop == 'muterole') {
 				const role = message.guild.roles.cache.get(value);
 				message.guild.channels.cache.forEach(channel => {
-					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false });
+					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false }).catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
 				});
 			}
 			client.settings.set(message.guild.id, value, prop);
