@@ -284,7 +284,7 @@ module.exports = {
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
 			if (prop == 'muterole') {
 				const role = message.guild.roles.cache.get(value);
-				message.guild.channels.forEach(channel => {
+				message.guild.channels.cache.forEach(channel => {
 					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false });
 				});
 			}
