@@ -282,6 +282,12 @@ module.exports = {
 			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
+			if (prop == 'muterole') {
+				const role = message.guild.roles.cache.get(value);
+				message.guild.channels.forEach(channel => {
+					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false });
+				});
+			}
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
