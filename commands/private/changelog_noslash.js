@@ -8,7 +8,7 @@ module.exports = {
 	async execute(message, args, client) {
 		const changes = args.join(' ').replace(args[0] + ' ', '').split('\n');
 		const Embed = new Discord.MessageEmbed()
-			.setAuthor('Changelog', 'https://hotemoji.com/images/dl/g/scroll-emoji-by-google.png')
+			.setAuthor('Changelog', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png')
 			.setFooter(`By ${message.author.username}`, message.author.avatarURL());
 		if (args[0] == 'nd') {
 			if (!client.guilds.cache.get('865519986806095902').members.cache.get(message.member.id)) return message.reply({ content: 'You can\'t do that!' });
