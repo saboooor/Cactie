@@ -27,7 +27,7 @@ module.exports = async (client, reaction, user) => {
 			client.commands.get('event').execute(message, user, client, reaction);
 		}
 	}
-	if (message.channel.type == 'dm') return;
+	if (message.channel.type == 'DM') return;
 	if (reaction.emoji.name == '🎫') {
 		if (message.embeds[0].title !== 'Need help? No problem!') return;
 		reaction.users.remove(user.id);

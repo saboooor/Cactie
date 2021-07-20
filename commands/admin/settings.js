@@ -277,8 +277,8 @@ module.exports = {
 			if ((prop == 'simpreaction' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
 			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
-			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'text')) return message.reply({ content: 'That is not a valid text channel Id!' });
-			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'category')) return message.reply({ content: 'That is not a valid category Id!' });
+			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
+			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
 			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });

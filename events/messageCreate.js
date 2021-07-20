@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
 		Client.killServer(server.id);
 	}
 	if (message.author.bot) return;
-	if (message.channel.type == 'dm') {
+	if (message.channel.type == 'DM') {
 		if (message.content.startsWith('-')) return message.reply({ content: 'You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead' });
 		if (message.attachments.size == 1) {
 			const picture = message.attachments.first();
@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 		return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}` });
 	}
 	const srvconfig = client.settings.get(message.guild.id);
-	if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'daddy', 'mommy', 'cute'].some(word => message.content.toLowerCase().includes(word))) {
+	if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'cute'].some(word => message.content.toLowerCase().includes(word))) {
 		if (srvconfig.simpreaction == 'false') return;
 		client.response.get('simp').execute(message);
 	}
