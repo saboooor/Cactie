@@ -39,6 +39,10 @@ module.exports = async (client, message) => {
 		if (srvconfig.simpreaction == 'false') return;
 		client.response.get('pupbad').execute(message);
 	}
+	if (message.content.toLowerCase().includes('family')) {
+		if (srvconfig.simpreaction == 'false') return;
+		client.response.get('family').execute(message);
+	}
 	if (message.content.includes(client.user.id)) {
 		message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 	}
