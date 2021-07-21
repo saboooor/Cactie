@@ -8,7 +8,7 @@ module.exports = client => {
 		cloneLevel: 'deep',
 		autoEnsure: {
 			prefix: prefix,
-			simpreaction: 'true',
+			reactions: 'true',
 			leavemessage: 'false',
 			joinmessage: 'false',
 			adfree: 'false',

@@ -32,7 +32,7 @@ module.exports = async (client, message) => {
 
 	const srvconfig = client.settings.get(message.guild.id);
 
-	if (srvconfig.simpreaction != 'false') {
+	if (srvconfig.reactions != 'false') {
 		client.reactions.forEach(reaction => {
 			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) reaction.execute(message);
 			else if (!reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word))) reaction.execute(message);
