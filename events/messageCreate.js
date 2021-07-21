@@ -29,23 +29,19 @@ module.exports = async (client, message) => {
 		}
 		return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}` });
 	}
+
 	const srvconfig = client.settings.get(message.guild.id);
-	if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'cute'].some(word => message.content.toLowerCase().includes(word))) {
-		if (srvconfig.simpreaction == 'false') return;
-		client.response.get('simp').execute(message);
+
+	if (srvconfig.simpreaction != 'false') {
+		if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'cute'].some(word => message.content.toLowerCase().includes(word))) client.response.get('simp').execute(message);
+		if (message.content.toLowerCase().includes('pup') && ['bad', 'gross', 'shit', 'dum'].some(word => message.content.toLowerCase().includes(word))) client.response.get('pupbad').execute(message);
+		if (message.content.toLowerCase().includes('family')) client.response.get('family').execute(message);
 	}
+
 	if (message.content.toLowerCase().includes('what') && message.content.toLowerCase().includes('ip')) client.response.get('whatip').execute(message);
-	if (message.content.toLowerCase().includes('pup') && ['bad', 'gross', 'shit', 'dum'].some(word => message.content.toLowerCase().includes(word))) {
-		if (srvconfig.simpreaction == 'false') return;
-		client.response.get('pupbad').execute(message);
-	}
-	if (message.content.toLowerCase().includes('family')) {
-		if (srvconfig.simpreaction == 'false') return;
-		client.response.get('family').execute(message);
-	}
-	if (message.content.includes(client.user.id)) {
-		message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
-	}
+
+	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
+
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
 		const link = await hastebin.createPaste(message.content, { server: 'https://bin.birdflop.com' });
@@ -57,6 +53,7 @@ module.exports = async (client, message) => {
 			.setFooter('Next time please use a paste service');
 		message.channel.send({ embeds: [Embed] });
 	}
+
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		if (client.tickets.get(message.channel.id) && client.tickets.get(message.channel.id).resolved == 'true') {
 			client.tickets.set(message.channel.id, 'false', 'resolved');
