@@ -3,6 +3,6 @@ module.exports = {
 	description: 'dom toretto is quaking rn',
 	triggers: ['family'],
 	execute(message) {
-		message.react('867161839330131979');
+		message.react('867249480797257778');
 	},
 };
