@@ -79,7 +79,7 @@ module.exports = async (client, message) => {
 	if (timestamps.has(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 		const random = Math.floor(Math.random() * 4);
-		const messages = ['Do I look like Usain Bolt to u?', 'BRUH IM JUST A DOG SLOW DOWN', 'can u not', 'leave me alone ;-;'];
+		const messages = ['Do I look like Usain Bolt to u?', 'BRUH IM JUST A DOG SLOW DOWN', 'can u not', 'leave me alone ;-;', 'my name is pup, not sanic >:(', 'why do you do this to me'];
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️');
