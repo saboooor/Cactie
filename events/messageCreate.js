@@ -34,8 +34,14 @@ module.exports = async (client, message) => {
 
 	if (srvconfig.reactions != 'false') {
 		client.reactions.forEach(reaction => {
-			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) reaction.execute(message);
-			else if (!reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word))) reaction.execute(message);
+			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) {
+				reaction.execute(message);
+				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}`);
+			}
+			else if (!reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word))) {
+				reaction.execute(message);
+				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}`);
+			}
 		});
 	}
 
