@@ -33,12 +33,11 @@ module.exports = async (client, message) => {
 	const srvconfig = client.settings.get(message.guild.id);
 
 	if (srvconfig.simpreaction != 'false') {
-		if (['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'cute'].some(word => message.content.toLowerCase().includes(word))) client.response.get('simp').execute(message);
-		if (message.content.toLowerCase().includes('pup') && ['bad', 'gross', 'shit', 'dum'].some(word => message.content.toLowerCase().includes(word))) client.response.get('pupbad').execute(message);
-		if (message.content.toLowerCase().includes('family')) client.response.get('family').execute(message);
+		client.reactions.forEach(reaction => {
+			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) reaction.execute(message);
+			else if (!reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word))) reaction.execute(message);
+		});
 	}
-
-	if (message.content.toLowerCase().includes('what') && message.content.toLowerCase().includes('ip')) client.response.get('whatip').execute(message);
 
 	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 
