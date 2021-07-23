@@ -1,6 +1,7 @@
 const winston = require('winston');
 const rn = new Date();
-const date = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}/${minTwoDigits(rn.getHours())}-${minTwoDigits(rn.getMinutes())}`;
+const date = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
+const time = `${minTwoDigits(rn.getHours())}-${minTwoDigits(rn.getMinutes())}`;
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = client => {
 	client.logger = winston.createLogger({
@@ -11,13 +12,12 @@ module.exports = client => {
 		),
 		transports: [
 			new winston.transports.Console(),
-			new winston.transports.File({ filename: `logs/${date}.log` }),
+			new winston.transports.File({ filename: `logs/info/${date}/${time}.log` }),
 		],
 		rejectionHandlers: [
 			new winston.transports.Console(),
-			new winston.transports.File({ filename: `logs/${date}.log` }),
+			new winston.transports.File({ filename: `logs/error/${date}.log` }),
 		],
-		exitOnError: false,
 	});
 	client.logger.info('Logger started');
 };
