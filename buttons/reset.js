@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'reset',
 	permissions: 'ADMINISTRATOR',
-	async execute(interaction, client) {
+	async execute(interaction) {
 		await sleep('2000');
 		const confirm = new Discord.MessageActionRow()
 			.addComponents(

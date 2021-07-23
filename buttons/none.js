@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'none',
-	async execute(interaction, client) {
+	async execute(interaction) {
 		interaction.deferUpdate();
 	},
 };
