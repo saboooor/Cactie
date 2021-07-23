@@ -261,9 +261,8 @@ module.exports = {
 	],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args)[0][1];
-			args[0] = args.name;
-			args[1] = Array.from(args.options)[0][1].value;
+			args[0] = args._subCommand;
+			args[1] = args._hoistedOptions[0].value;
 		}
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
