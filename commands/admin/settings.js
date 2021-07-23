@@ -285,7 +285,7 @@ module.exports = {
 				const role = message.guild.roles.cache.get(value);
 				message.guild.channels.cache.forEach(channel => {
 					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
-						.catch(e => { return; });
+						.catch(e => { client.logger.error(e); });
 				});
 			}
 			client.settings.set(message.guild.id, value, prop);

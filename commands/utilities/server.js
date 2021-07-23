@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['s', 'srv', 'guild'],
 	cooldown: 10,
 	guildOnly: true,
-	async execute(message, args, client) {
+	async execute(message) {
 		const owner = await message.guild.fetchOwner();
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))

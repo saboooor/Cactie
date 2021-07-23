@@ -2,7 +2,7 @@ module.exports = {
 	name: 'resolved',
 	description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',
 	aliases: ['resolve'],
-	async execute(message, args, client, Client) {
+	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });

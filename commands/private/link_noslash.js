@@ -3,7 +3,7 @@ module.exports = {
 	name: 'link',
 	description: 'Get help on DiscordSRV linking',
 	cooldown: 10,
-	async execute(message, args, client) {
+	async execute(message) {
 		let e = [];
 		if (message.guild.id == '865519986806095902') e = ['Warden', '661797951223627787', 'Nether Depths'];
 		if (message.guild.id == '711661870926397601') e = ['Taco\'s Turtle Bot', '743741294190395402', 'Taco Haven'];

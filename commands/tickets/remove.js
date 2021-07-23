@@ -11,7 +11,7 @@ module.exports = {
 		description: 'User to add to ticket',
 		required: true,
 	}],
-	async execute(message, args, client, Client) {
+	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);

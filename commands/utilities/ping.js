@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Pong!',
 	aliases: ['pong'],
 	cooldown: 10,
-	execute(message, args, client) {
+	execute(message) {
 		const row = new Discord.MessageActionRow()
 			.addComponents(new Discord.MessageButton()
 				.setCustomId('ping_again')

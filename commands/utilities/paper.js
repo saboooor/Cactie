@@ -16,7 +16,7 @@ module.exports = {
 		name: 'build',
 		description: 'Specify a Paper build number',
 	}],
-	async execute(message, args, client) {
+	async execute(message, args) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
