@@ -3,7 +3,7 @@ module.exports = {
 	name: 'nsfw',
 	description: 'Toggle the NSFW role',
 	async execute(message, user, client, reaction) {
-		if (message.guild.id !== '811354612547190794' && client.user.id !== '765287593762881616') return;
+		if (message.guild.id !== '811354612547190794') return;
 		if (reaction) message.author = user;
 		const member = await message.guild.members.cache.find(m => m.id === message.author.id);
 		const role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === 'nsfw');
