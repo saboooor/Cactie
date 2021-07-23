@@ -36,11 +36,11 @@ module.exports = async (client, message) => {
 		client.reactions.forEach(reaction => {
 			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) {
 				reaction.execute(message);
-				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}`);
+				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
 			}
 			else if (!reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word))) {
 				reaction.execute(message);
-				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}`);
+				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
 			}
 		});
 	}
@@ -119,7 +119,7 @@ module.exports = async (client, message) => {
 	}
 
 	try {
-		client.logger.info(`${message.author.tag} issued dash command: ${message.content}`);
+		client.logger.info(`${message.author.tag} issued dash command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client);
 	}
 	catch (error) {

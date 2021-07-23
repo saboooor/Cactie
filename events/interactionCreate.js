@@ -17,7 +17,7 @@ module.exports = (client, interaction) => {
 		}
 
 		try {
-			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}`);
+			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
 			button.execute(interaction, client);
 		}
 		catch (error) {
@@ -47,7 +47,7 @@ module.exports = (client, interaction) => {
 		}
 
 		try {
-			client.logger.info(`${interaction.user.tag} clicked dropdown: ${interaction.values[0]}`);
+			client.logger.info(`${interaction.user.tag} clicked dropdown: ${interaction.values[0]}, in ${interaction.guild.name}`);
 			dropdown.execute(interaction, client);
 		}
 		catch (error) {
@@ -109,7 +109,7 @@ module.exports = (client, interaction) => {
 		}
 
 		try {
-			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name}`);
+			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name}, in ${interaction.guild.name}`);
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
