@@ -70,7 +70,7 @@ module.exports = async (client, message) => {
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	if (!command) return;
+	if (!command || !command.name) return;
 
 	const { cooldowns } = client;
 
@@ -131,7 +131,7 @@ module.exports = async (client, message) => {
 			.addField('**Guild:**', message.guild.name)
 			.addField('**Channel:**', message.channel.name)
 			.addField('**INTERACTION:**', srvconfig.prefix + command.name)
-			.addField('**Error:**', clean(error));
+			.addField('**Error:**', `${clean(error)}`);
 		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] });
 		client.logger.error(error);
