@@ -3,13 +3,14 @@ module.exports = {
 	name: 'nsfw',
 	description: 'Toggle the NSFW role',
 	async execute(message, user, client, reaction) {
-		if (message.guild.id !== '811354612547190794') return;
+		if (message.guild.id != '811354612547190794') return;
 		if (reaction) message.author = user;
 		const member = await message.guild.members.cache.find(m => m.id === message.author.id);
 		const role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === 'nsfw');
 		if (!member.roles.cache.has(role.id)) {
 			await member.roles.add(role);
-			const msg = await message.channel.send({ content: `✅ **Added NSFW Role to ${message.author}**` });
+			const msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${message.author}**` });
+			client.logger.info(`Added ${role.name} Role to ${message.author.tag} in ${message.guild.name}`);
 			if (reaction) {
 				await sleep(1000);
 				await msg.delete();
@@ -17,7 +18,8 @@ module.exports = {
 		}
 		else {
 			await member.roles.remove(role);
-			const msg = await message.channel.send({ content: `❌ **Removed NSFW Role from ${message.author}**` });
+			const msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${message.author}**` });
+			client.logger.info(`Removed ${role.name} Role from ${message.author.tag} in ${message.guild.name}`);
 			if (reaction) {
 				await sleep(1000);
 				await msg.delete();

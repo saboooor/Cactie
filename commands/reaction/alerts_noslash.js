@@ -9,7 +9,8 @@ module.exports = {
 		const role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === 'alerts');
 		if (!member.roles.cache.has(role.id)) {
 			await member.roles.add(role);
-			const msg = await message.channel.send({ content: `✅ **Added Alerts Role to ${message.author}**` });
+			const msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${message.author}**` });
+			client.logger.info(`Added ${role.name} Role to ${message.author.tag} in ${message.guild.name}`);
 			if (reaction) {
 				await sleep(1000);
 				await msg.delete();
@@ -17,7 +18,8 @@ module.exports = {
 		}
 		else {
 			await member.roles.remove(role);
-			const msg = await message.channel.send({ content: `❌ **Removed Alerts Role from ${message.author}**` });
+			const msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${message.author}**` });
+			client.logger.info(`Removed ${role.name} Role from ${message.author.tag} in ${message.guild.name}`);
 			if (reaction) {
 				await sleep(1000);
 				await msg.delete();
