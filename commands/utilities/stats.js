@@ -81,7 +81,7 @@ module.exports = {
 			else {
 				Embed.setThumbnail('https://cdn.mos.cms.futurecdn.net/6QQEiDSc3p6yXjhohY3tiF.jpg');
 			}
-			if (pong.plugins) {
+			if (pong.plugins && pong.plugins.raw[0]) {
 				const link = await hastebin.createPaste(pong.plugins.raw.join('\n'), { server: 'https://bin.birdflop.com' });
 				Embed.addField('**Plugins:**', `[Click Here](${link})`);
 			}
