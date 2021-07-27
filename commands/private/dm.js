@@ -31,10 +31,14 @@ module.exports = {
 				method: 'GET',
 			});
 			const buffer = await response.buffer();
-			client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send({ content: args.slice(1).join(' '), attachments: [new Discord.MessageAttachment(buffer, 'image.png')] });
+			client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))
+				.send({ content: args.slice(1).join(' '), attachments: [new Discord.MessageAttachment(buffer, 'image.png')] })
+				.catch(error => { client.logger.error(error); });
 			return message.reply({ embeds: [Embed] });
 		}
-		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', '')).send({ content: args.slice(1).join(' ') });
+		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))
+			.send({ content: args.slice(1).join(' ') })
+			.catch(error => { client.logger.error(error); });
 		message.reply({ embeds: [Embed] });
 	},
 };

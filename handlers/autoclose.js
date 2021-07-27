@@ -30,7 +30,10 @@ module.exports = client => {
 					.addField('**Transcript**', `${link}.txt`)
 					.addField('**Closed by**', 'Automatically closed');
 				client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
-				users.forEach(usr => { usr.send({ embeds: [EmbedDM] }); });
+				users.forEach(usr => {
+					usr.send({ embeds: [EmbedDM] })
+						.catch(error => { client.logger.error(error); });
+				});
 				const Embed = new Discord.MessageEmbed()
 					.setColor(15105570)
 					.setDescription('Ticket automatically closed resolved ticket');
