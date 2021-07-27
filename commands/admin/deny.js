@@ -26,6 +26,8 @@ module.exports = {
 		else { message.delete(); }
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
+		if (fetchedMsg.author != client.user) return;
+		if (!fetchedMsg.embeds[0] || !fetchedMsg.embeds[0].author || !fetchedMsg.embeds[0].title.startsWith('Suggestion')) return;
 		fetchedMsg.reactions.removeAll();
 		const Embed = new Discord.MessageEmbed()
 			.setColor(15158332)
