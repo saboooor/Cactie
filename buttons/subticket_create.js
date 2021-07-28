@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'subticket_create',
 	async execute(interaction, client) {
+		if (!interaction.guild.features.includes('THREADS_ENABLED')) return interaction.reply('Subtickets are a feature that uses Discord\'s Threads feature, this Discord server does not have it enabled yet!\nPlease contact the server owner or one of the administrators to enable it through the server settings or wait until August 17');
 		const srvconfig = client.settings.get(interaction.guild.id);
 		if (!client.tickets.get(interaction.channel.id) || !client.tickets.get(interaction.channel.id).opener) return;
 		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
