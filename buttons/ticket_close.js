@@ -6,12 +6,12 @@ module.exports = {
 	async execute(interaction, client) {
 		const author = interaction.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
-		if (!interaction.channel.topic.includes('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
-		if (interaction.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
+		if (!interaction.channel.topic.startsWith('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
+		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
 		if (client.tickets.get(interaction.channel.id).users.includes(author.id) && author.id != client.tickets.get(interaction.channel.id).opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
 		interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
-		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 		client.tickets.set(interaction.channel.id, 'false', 'resolved');
 		client.tickets.get(interaction.channel.id).users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });

@@ -16,10 +16,12 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
+		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '')} `) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-		if (message.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
+		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 		const user = client.users.cache.find(u => u.id === args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		if (user) return message.reply('Invalid User!');
 		if (!client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply({ content: 'This user isn\'t in this ticket!' });
 		if (user.id == client.tickets.get(message.channel.id).opener) return message.reply({ content: 'You can\'t remove the ticket opener!' });
 		client.tickets.remove(message.channel.id, user.id, 'users');

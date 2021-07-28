@@ -11,15 +11,36 @@ module.exports = {
 			author = user;
 		}
 		const srvconfig = client.settings.get(message.guild.id);
+		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '')} `) &&
+		message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
+			const messages = await message.channel.messages.fetch({ limit: 100 });
+			const logs = [];
+			await messages.forEach(async msg => {
+				const time = new Date(msg.createdTimestamp).toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+				logs.push(`[${time}] ${msg.author.tag}\n${msg.content}`);
+			});
+			logs.reverse();
+			const link = await hastebin.createPaste(logs.join('\n\n'), { server: 'https://bin.birdflop.com' });
+			const Embed = new Discord.MessageEmbed()
+				.setColor(Math.floor(Math.random() * 16777215))
+				.setTitle(`Closed ${message.channel.name}`)
+				.addField('**Transcript**', `${link}.txt`)
+				.addField('**Closed by**', `${message.member.user}`);
+			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
+			message.channel.parent.send({ embeds: [Embed] })
+				.catch(error => { client.logger.error(error); });
+			client.logger.info(`Closed subticket #${message.channel.name}`);
+			return message.channel.delete();
+		}
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-		if (message.channel.name.includes(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
+		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
 		if (client.tickets.get(message.channel.id).users.includes(author.id)) {
 			if (author.id != client.tickets.get(message.channel.id).opener) return message.reply({ content: 'You can\'t close this ticket!' });
 		}
 		message.channel.setName(message.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
-		if (message.channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+		if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 		client.tickets.set(message.channel.id, 'false', 'resolved');
 		client.tickets.get(message.channel.id).users.forEach(userid => {
 			message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false });

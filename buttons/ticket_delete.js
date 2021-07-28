@@ -7,8 +7,8 @@ module.exports = {
 		const srvconfig = client.settings.get(interaction.guild.id);
 		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 		if (!interaction.channel.topic) return interaction.reply({ content: 'This is not a valid ticket!' });
-		if (!interaction.channel.topic.includes('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
-		if (interaction.channel.name.includes(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
+		if (!interaction.channel.topic.startsWith('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
+		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 		if (srvconfig.ticketlogchannel != 'false') {
 			await interaction.reply({ content: 'Creating transcript...' });
 			const interactions = await interaction.channel.messages.fetch({ limit: 100 });

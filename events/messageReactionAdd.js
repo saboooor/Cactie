@@ -16,14 +16,22 @@ module.exports = async (client, reaction, user) => {
 		client.commands.get('nsfw').execute(message, user, client, reaction);
 	}
 	else if (reaction.emoji.name == '⛔') {
+		if (message.embeds[0].title !== 'Ticket Created') return;
 		client.commands.get('delete').execute(message, user, client, reaction);
 	}
 	else if (reaction.emoji.name == '🔓') {
+		if (message.embeds[0].title !== 'Ticket Created') return;
 		reaction.users.remove(user.id);
 		client.commands.get('open').execute(message, user, client, reaction);
 	}
 	else if (reaction.emoji.name == '🔒') {
+		if (!message.embeds[0].title.includes('icket Created')) return;
 		reaction.users.remove(user.id);
 		client.commands.get('close').execute(message, user, client, reaction);
+	}
+	else if (reaction.emoji.name == '📜') {
+		if (message.embeds[0].title !== 'Ticket Created') return;
+		reaction.users.remove(user.id);
+		client.commands.get('subticket').execute(message, user, client, reaction);
 	}
 };

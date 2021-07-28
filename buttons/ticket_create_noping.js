@@ -23,7 +23,11 @@ module.exports = {
 			permissionOverwrites: [
 				{
 					id: interaction.guild.id,
-					deny: ['VIEW_CHANNEL'],
+					deny: ['VIEW_CHANNEL', 'USE_PUBLIC_THREADS', 'USE_PRIVATE_THREADS'],
+				},
+				{
+					id: client.user.id,
+					allow: ['VIEW_CHANNEL'],
 				},
 				{
 					id: author.id,
@@ -45,7 +49,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Ticket Created')
-			.setDescription('Please explain your issue and we\'ll be with you shortly.');
+			.setDescription(`Please explain your issue and we'll be with you shortly\nIf you have multiple issues, please use the ${srvconfig.prefix}subticket command`);
 		if (client.settings.get(interaction.guild.id).tickets == 'buttons') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or click the button below`);
 			const row = new Discord.MessageActionRow()
@@ -55,6 +59,11 @@ module.exports = {
 						.setLabel('Close Ticket')
 						.setEmoji('🔒')
 						.setStyle('DANGER'),
+					new Discord.MessageButton()
+						.setCustomId('subticket_create')
+						.setLabel('Create Subticket')
+						.setEmoji('📜')
+						.setStyle('PRIMARY'),
 				);
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
@@ -62,6 +71,7 @@ module.exports = {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');
+			await embed.react('📜');
 		}
 	},
 };
