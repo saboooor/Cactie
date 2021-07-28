@@ -27,7 +27,7 @@ module.exports = {
 				},
 				{
 					id: client.user.id,
-					allow: ['VIEW_CHANNEL'],
+					allow: ['VIEW_CHANNEL', 'USE_PUBLIC_THREADS', 'USE_PRIVATE_THREADS'],
 				},
 				{
 					id: author.id,
