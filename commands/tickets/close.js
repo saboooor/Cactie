@@ -11,7 +11,7 @@ module.exports = {
 			author = user;
 		}
 		const srvconfig = client.settings.get(message.guild.id);
-		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '')} `) &&
+		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) &&
 		message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const logs = [];

@@ -10,7 +10,7 @@ module.exports = {
 		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
 		const subticket = await interaction.channel.threads.create({
-			name: `Subticket ${client.user.username.replace('Pup', '')} ${interaction.channel.threads.cache.size + 1}`,
+			name: `Subticket${client.user.username.replace('Pup', '') + ' '}${interaction.channel.threads.cache.size + 1}`,
 			autoArchiveDuration: 1440,
 			reason: 'Created with a button',
 		})
