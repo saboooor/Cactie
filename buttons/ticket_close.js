@@ -12,6 +12,11 @@ module.exports = {
 		interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+		if (client.tickets.get(interaction.channel.id).voiceticket) {
+			const voiceticket = interaction.guild.channels.cache.get(client.tickets.get(interaction.channel.id).voiceticket);
+			voiceticket.delete();
+			client.tickets.set(interaction.channel.id, 'false', 'voiceticket');
+		}
 		client.tickets.set(interaction.channel.id, 'false', 'resolved');
 		client.tickets.get(interaction.channel.id).users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
