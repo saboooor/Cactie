@@ -35,14 +35,14 @@ module.exports = {
 			if (usages.current_state == 'starting') Embed.setColor(16737280);
 			if (server.client) {
 				const duration = moment.duration(client.uptime).format('D [days], H [hrs], m [mins], s [secs]');
-				if (duration) Embed.addField('**Uptime:**', duration);
+				if (duration) Embed.addField('**Uptime:**', duration, true);
 			}
-			if (info.node) Embed.addField('**Node:**', info.node);
-			if (info.docker_image) Embed.addField('**Docker Image:**', info.docker_image);
-			if (usages.resources.cpu_absolute) Embed.addField('**CPU Usage:**', `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`);
-			if (usages.resources.memory_bytes) Embed.addField('**RAM Usage:**', `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`);
-			if (usages.resources.network_tx_bytes) Embed.addField('**Network Sent:**', `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`);
-			if (usages.resources.network_rx_bytes) Embed.addField('**Network Recieved:**', `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`);
+			if (info.node) Embed.addField('**Node:**', info.node, true);
+			if (info.docker_image) Embed.addField('**Docker Image:**', info.docker_image, true);
+			if (usages.resources.cpu_absolute) Embed.addField('**CPU Usage:**', `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, true);
+			if (usages.resources.memory_bytes) Embed.addField('**RAM Usage:**', `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, true);
+			if (usages.resources.network_tx_bytes) Embed.addField('**Network Sent:**', `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, true);
+			if (usages.resources.network_rx_bytes) Embed.addField('**Network Recieved:**', `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, true);
 			info.name ? Embed.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`) : Embed.setTitle(args.join(' '));
 			if (server.client) Embed.setThumbnail(client.user.avatarURL());
 		}
@@ -61,13 +61,13 @@ module.exports = {
 			const duration = moment.duration(Date.now() - pong.debug.cachetime * 1000).format('m [mins and] s [secs]');
 			Embed.setDescription(`Last Pinged: \`${duration} ago\``);
 			if (!pong.debug.cachetime) Embed.setDescription('Last Pinged: `just now`');
-			if (pong.version) Embed.addField('**Version:**', pong.version);
-			if (pong.protocol != -1 && pong.protocol) Embed.addField('**Protocol:**', `${pong.protocol} (${protocols[pong.protocol]})`);
-			if (pong.software) Embed.addField('**Software:**', pong.software);
-			if (pong.players) Embed.addField('**Players Online:**', `${pong.players.online} / ${pong.players.max}`);
+			if (pong.version) Embed.addField('**Version:**', pong.version, true);
+			if (pong.protocol != -1 && pong.protocol) Embed.addField('**Protocol:**', `${pong.protocol} (${protocols[pong.protocol]})`, true);
+			if (pong.software) Embed.addField('**Software:**', pong.software, true);
+			if (pong.players) Embed.addField('**Players Online:**', `${pong.players.online} / ${pong.players.max}`, true);
 			if (pong.players && pong.players.list && pong.players.online > 50) {
 				const link = await hastebin.createPaste(pong.players.list.join('\n'), { server: 'https://bin.birdflop.com' });
-				Embed.addField('**Players:**', `[Click Here](${link})`);
+				Embed.addField('**Players:**', `[Click Here](${link})`, true);
 			}
 			else if (pong.players && pong.players.list) {
 				Embed.addField('**Players:**', pong.players.list.join('\n').replace(/_/g, '\\_'));
@@ -83,7 +83,7 @@ module.exports = {
 			}
 			if (pong.plugins && pong.plugins.raw[0]) {
 				const link = await hastebin.createPaste(pong.plugins.raw.join('\n'), { server: 'https://bin.birdflop.com' });
-				Embed.addField('**Plugins:**', `[Click Here](${link})`);
+				Embed.addField('**Plugins:**', `[Click Here](${link})`, true);
 			}
 			if (!pong.debug.query) Embed.setFooter('Query disabled! If you want more info, contact the owner to enable query.');
 		}
