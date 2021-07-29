@@ -24,7 +24,7 @@ module.exports = {
 		if (!user) return message.reply('Invalid User!');
 		if (client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply({ content: 'This user has already been added!' });
 		client.tickets.push(message.channel.id, user.id, 'users');
-		if (client.tickets.get(message.channel.id).voiceticket) {
+		if (client.tickets.get(message.channel.id).voiceticket !== 'false') {
 			const voiceticket = message.guild.channels.cache.get(client.tickets.get(message.channel.id).voiceticket);
 			voiceticket.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
 		}

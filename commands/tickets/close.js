@@ -35,7 +35,7 @@ module.exports = {
 		message.channel.setName(message.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
 		if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
-		if (client.tickets.get(message.channel.id).voiceticket) {
+		if (client.tickets.get(message.channel.id).voiceticket !== 'false') {
 			const voiceticket = message.guild.channels.cache.get(client.tickets.get(message.channel.id).voiceticket);
 			voiceticket.delete();
 			client.tickets.set(message.channel.id, 'false', 'voiceticket');
