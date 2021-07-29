@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const getTranscript = require('../../functions/getTranscript.js');
+const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'delete_ticket',
 	async execute(interaction, client) {

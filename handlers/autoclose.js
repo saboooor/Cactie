@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const Discord = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const getTranscript = require('../../functions/getTranscript.js');
+const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
 	cron.schedule('0 0 * * *', () => {
 		client.channels.cache.forEach(async channel => {
