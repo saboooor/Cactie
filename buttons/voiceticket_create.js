@@ -1,9 +1,9 @@
 module.exports = {
 	name: 'voiceticket_create',
 	async execute(interaction, client) {
-		const author = interaction.member.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
 		if (!client.tickets.get(interaction.channel.id) || !client.tickets.get(interaction.channel.id).opener) return;
+		const author = client.users.cache.get(client.tickets.get(interaction.channel.id).opener);
 		if (client.tickets.get(interaction.channel.id).voiceticket) return interaction.reply({ content: 'This ticket already has a voiceticket!' });
 		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });

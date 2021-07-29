@@ -8,11 +8,8 @@ module.exports = {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
-		let author = message.member.user;
-		if (reaction) {
-			if (message.author.id != client.user.id) return;
-			author = args;
-		}
+		const author = client.users.cache.get(client.tickets.get(message.channel.id).opener);
+		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = client.settings.get(message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
