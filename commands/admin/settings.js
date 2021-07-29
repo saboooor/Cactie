@@ -66,19 +66,6 @@ module.exports = {
 		},
 		{
 			type: 1,
-			name: 'adfree',
-			description: 'Gets rid of all references to other servers',
-			options: [
-				{
-					type: 5,
-					name: 'value',
-					description: 'The setting value',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
 			name: 'maxppsize',
 			description: 'Maximum pp size in boner and instaboner commands',
 			options: [
@@ -273,7 +260,7 @@ module.exports = {
 			if (!client.settings.has(message.guild.id, prop)) return message.reply({ content: 'Invalid setting!' });
 			const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply({ content: 'This setting must be either `buttons`, `reactions`, or `false`!' });
-			if ((prop == 'reactions' || prop == 'adfree' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
+			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
 			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
@@ -298,7 +285,6 @@ module.exports = {
 				reactions: '*Reacts with various reactions on some words (true/false)*\nDo /reactions to see a list of them',
 				leavemessage: '*The message when someone leaves the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
 				joinmessage: '*The message when someone joins the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
-				adfree: '*Gets rid of all references to other servers (true/false)*',
 				maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
 				tickets: '*Toggles the ticket system (buttons/reactions/false)*',
 				bonercmd: '*Toggles the boner command (true/false)*',

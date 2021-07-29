@@ -15,7 +15,6 @@ module.exports = {
 			reactions: '*Reacts with various reactions on some words (true/false)*\nDo /reactions to see a list of them',
 			leavemessage: '*The message when someone leaves the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
 			joinmessage: '*The message when someone joins the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
-			adfree: '*Gets rid of all references to other servers (true/false)*',
 			maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
 			tickets: '*Toggles the ticket system (buttons/reactions/false)*',
 			bonercmd: '*Toggles the boner command (true/false)*',
