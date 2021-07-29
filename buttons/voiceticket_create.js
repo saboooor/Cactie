@@ -4,7 +4,7 @@ module.exports = {
 		const srvconfig = client.settings.get(interaction.guild.id);
 		if (!client.tickets.get(interaction.channel.id) || !client.tickets.get(interaction.channel.id).opener) return;
 		const author = client.users.cache.get(client.tickets.get(interaction.channel.id).opener);
-		if (client.tickets.get(interaction.channel.id).voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
+		if (client.tickets.get(interaction.channel.id).voiceticket && client.tickets.get(interaction.channel.id).voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
 		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
 		const role = interaction.guild.roles.cache.get(srvconfig.supportrole);

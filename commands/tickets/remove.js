@@ -25,7 +25,7 @@ module.exports = {
 		if (!client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply({ content: 'This user isn\'t in this ticket!' });
 		if (user.id == client.tickets.get(message.channel.id).opener) return message.reply({ content: 'You can\'t remove the ticket opener!' });
 		client.tickets.remove(message.channel.id, user.id, 'users');
-		if (client.tickets.get(message.channel.id).voiceticket !== 'false') {
+		if (client.tickets.get(message.channel.id).voiceticket && client.tickets.get(message.channel.id).voiceticket !== 'false') {
 			const voiceticket = message.guild.channels.cache.get(client.tickets.get(message.channel.id).voiceticket);
 			voiceticket.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
 		}
