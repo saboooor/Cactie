@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const hastebin = require('hastebin');
 const Discord = require('discord.js');
+const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
 	async execute(interaction, client) {
@@ -15,24 +15,7 @@ module.exports = {
 		client.tickets.set(interaction.channel.id, 'false', 'resolved');
 		client.tickets.get(interaction.channel.id).users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
-		const logs = [];
-		await messages.forEach(async msg => {
-			const time = new Date(msg.createdTimestamp).toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
-			msg.embeds.forEach(embed => {
-				if (embed.footer) logs.push(`${embed.footer.text}`);
-				embed.fields.forEach(field => {
-					logs.push(`${field.value}`);
-					logs.push(`${field.name}`);
-				});
-				if (embed.description) logs.push(`${embed.description}`);
-				if (embed.title) logs.push(`${embed.title}`);
-				if (embed.author) logs.push(`${embed.author.name}`);
-			});
-			if (msg.content) logs.push(`${msg.content}`);
-			logs.push(`\n[${time}] ${msg.author.tag}`);
-		});
-		logs.reverse();
-		const link = await hastebin.createPaste(logs.join('\n\n'), { server: 'https://bin.birdflop.com' });
+		const link = await getTranscript(messages);
 		const users = [];
 		await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const EmbedDM = new Discord.MessageEmbed()
