@@ -64,6 +64,11 @@ module.exports = {
 						.setLabel('Create Subticket')
 						.setEmoji('📜')
 						.setStyle('PRIMARY'),
+					new Discord.MessageButton()
+						.setCustomId('voiceticket_create')
+						.setLabel('Create Voiceticket')
+						.setEmoji('🔊')
+						.setStyle('SECONDARY'),
 				);
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
@@ -72,6 +77,7 @@ module.exports = {
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');
 			await embed.react('📜');
+			await embed.react('🔊');
 		}
 	},
 };

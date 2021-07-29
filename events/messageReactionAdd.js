@@ -32,4 +32,9 @@ module.exports = async (client, reaction, user) => {
 		reaction.users.remove(user.id);
 		client.commands.get('subticket').execute(message, user, client, reaction);
 	}
+	else if (reaction.emoji.name == '🔊') {
+		if (message.embeds[0].title !== 'Ticket Created') return;
+		reaction.users.remove(user.id);
+		client.commands.get('voiceticket').execute(message, user, client, reaction);
+	}
 };
