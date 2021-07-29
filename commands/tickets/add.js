@@ -21,7 +21,7 @@ module.exports = {
 		if (client.settings.get(message.guild.id).tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 		const user = client.users.cache.find(u => u.id === args[0].replace('<@', '').replace('!', '').replace('>', ''));
-		if (user) return message.reply('Invalid User!');
+		if (!user) return message.reply('Invalid User!');
 		if (client.tickets.get(message.channel.id).users.includes(user.id)) return message.reply({ content: 'This user has already been added!' });
 		client.tickets.push(message.channel.id, user.id, 'users');
 		message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
