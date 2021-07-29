@@ -59,9 +59,5 @@ module.exports = {
 			const embed = await subticket.send({ content: `${users}`, embeds: [Embed] });
 			await embed.react('🔒');
 		}
-		if (srvconfig.ticketmention == 'true') {
-			const ping = await subticket.send({ content: '@everyone' });
-			await ping.delete();
-		}
 	},
 };
