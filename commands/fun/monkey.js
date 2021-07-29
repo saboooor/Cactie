@@ -3,6 +3,6 @@ module.exports = {
 	description: '*monke noises*',
 	aliases: ['monke', 'monkeys'],
 	async execute(message, args, client) {
-		require('../private/redditfetch_noslash.js')('monkeys', message, client);
+		require('../../functions/redditFetch.js')('monkeys', message, client);
 	},
 };
