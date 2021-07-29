@@ -3,6 +3,7 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'transcript',
 	description: 'Get a transcript of the current channel',
+	cooldown: 10,
 	async execute(message, user, client) {
 		const messages = await message.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);
