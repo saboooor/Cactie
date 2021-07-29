@@ -1,20 +1,19 @@
 const ratings = require('../../config/rate.json');
 module.exports = {
 	name: 'rate',
-	description: 'Rate someone or something',
-	usage: '[Someone]',
-	args: true,
+	description: 'Rate someone or something!',
+	usage: '[Something or someone]',
 	options: [{
-		type: 6,
-		name: 'someone',
-		description: 'Pick someone to insult, or just insult yourself',
-		required: true,
+		type: 3,
+		name: 'value',
+		description: 'Pick someone or something to rate',
 	}],
 	async execute(message, args) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = Array.from(args);
 			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
 		}
+		if (!args[0]) args[0] == message.member.displayName;
 		const rating = Math.floor(Math.random() * (ratings.length * 10)) / 10;
 		const i = Math.floor(rating);
 		message.reply(ratings[i]
