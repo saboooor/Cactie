@@ -16,6 +16,7 @@ module.exports = {
 		})
 			.catch(error => client.logger.error(error));
 		client.logger.info(`Subticket created at #${subticket.name}`);
+		interaction.reply({ content: `Subticket created at #${subticket}!`, ephemeral: true });
 		await sleep(1000);
 		const users = [];
 		await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
