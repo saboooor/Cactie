@@ -1,1 +1,8 @@
-module.exports = (client, channel) => client.tickets.delete(channel.id);
+module.exports = (client, channel) => {
+	if (client.tickets.get(channel.id).voiceticket) {
+		const voiceticket = channel.guild.channels.cache.get(client.tickets.get(channel.id).voiceticket);
+		voiceticket.delete();
+		client.tickets.set(channel.id, 'false', 'voiceticket');
+	}
+	client.tickets.delete(channel.id);
+};
