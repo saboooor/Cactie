@@ -31,7 +31,6 @@ module.exports = {
 				.catch(error => { client.logger.error(error); });
 		});
 		client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
-		await client.tickets.delete(message.channel.id);
 		client.logger.info(`Deleted ticket #${message.channel.name}`);
 		await message.channel.delete();
 	},
