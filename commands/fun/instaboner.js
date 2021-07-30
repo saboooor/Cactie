@@ -10,11 +10,11 @@ module.exports = {
 		description: 'Pick someone for the bot to calculate the pp size of',
 	}],
 	async execute(message, args, client) {
-		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
+		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		const srvconfig = client.settings.get(message.guild.id);
 		let nick = args[0] ? args[0] : message.member.displayName;
 		if (args[0] && nick.startsWith('<@') && nick.endsWith('>')) {

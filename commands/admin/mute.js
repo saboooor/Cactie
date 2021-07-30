@@ -33,13 +33,13 @@ module.exports = {
 		description: 'Reason of mute',
 	}],
 	async execute(message, args, client) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role Id>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
-		}
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });
 		const member = message.guild.members.cache.get(user.id);

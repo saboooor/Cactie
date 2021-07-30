@@ -4,7 +4,7 @@ module.exports = {
 	name: 'transcript',
 	description: 'Get a transcript of the current channel',
 	cooldown: 10,
-	async execute(message, user, client) {
+	async execute(message, args, client) {
 		const messages = await message.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);
 		const Embed = new Discord.MessageEmbed()

@@ -16,8 +16,8 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		let channel = message.guild.channels.cache.find(c => c.name.includes('suggestions'));
 		const srvconfig = client.settings.get(message.guild.id);

@@ -139,8 +139,8 @@ module.exports = {
 		const type = message.commandName ? args[0].value : 'yesno';
 		if (type == 'yesno') {
 			if (message.type && message.type == 'APPLICATION_COMMAND') {
-				args = Array.from(args);
-				args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+				args = args._hoistedOptions;
+				args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 			}
 			const poll = await message.commandName ? args.slice(1).join(' ') : args.join(' ');
 			Poll.setDescription(poll);

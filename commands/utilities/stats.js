@@ -18,8 +18,8 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		const reply = message.type && message.type == 'APPLICATION_COMMAND' ? await message.defer() : await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
 		if (!args[0]) args = ['pup'];

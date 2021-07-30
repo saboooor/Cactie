@@ -15,8 +15,8 @@ module.exports = {
 	}],
 	async execute(message, args, client, reaction) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		if (reaction && message.author.id != client.user.id) return;
 		if (!message.guild.features.includes('THREADS_ENABLED')) return message.reply('Subtickets are a feature that uses Discord\'s Threads feature, this Discord server does not have it enabled yet!\nPlease contact the server owner or one of the administrators to enable it through the server settings or wait until August 17');

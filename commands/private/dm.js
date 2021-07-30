@@ -17,8 +17,8 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		if (!client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id).roles.cache.has('849452673156513813')) return;
 		const Embed = new Discord.MessageEmbed()

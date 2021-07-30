@@ -4,10 +4,6 @@ module.exports = {
 	aliases: ['voicenew', 'voice'],
 	guildOnly: true,
 	async execute(message, args, client, reaction) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
-		}
 		const author = client.users.cache.get(client.tickets.get(message.channel.id).opener);
 		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = client.settings.get(message.guild.id);

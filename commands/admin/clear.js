@@ -14,13 +14,10 @@ module.exports = {
 	}],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = Array.from(args);
-			args.forEach(arg => args[args.indexOf(arg)] = arg[1].value);
-			if (args[0] > 100) return message.reply({ content: 'You can only clear 100 messages at once!', ephemeral: true });
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
-		else if (args[0] > 100) {
-			return message.reply({ content: 'You can only clear 100 messages at once!' });
-		}
+		if (args[0] > 100) return message.reply({ content: 'You can only clear 100 messages at once!', ephemeral: true });
 		await message.channel.messages.fetch({ limit: args[0] }).then(messages => {
 			message.channel.bulkDelete(messages).catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
 		});
