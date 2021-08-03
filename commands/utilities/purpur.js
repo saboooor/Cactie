@@ -40,7 +40,11 @@ module.exports = {
 			.setDescription(`${f.commits.length} commit(s)`)
 			.setFooter(`${moment(f.timestamp)}`);
 		// add fields for commits
-		f.commits.forEach(commit => { Embed.addField(commit.author, `${commit.description}\n*${moment(commit.timestamp)}*`); });
+		f.commits.forEach(commit => {
+			// check if commit description is more than 1000, if so, split it into multiple fields
+			if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { Embed.addField(commit.author, `${chunk}`); });
+			else Embed.addField(commit.author, `${commit.description}\n*${moment(commit.timestamp)}*`);
+		});
 		// add field for download
 		Embed.addField('Download', `[Click Here](https://api.pl3x.net/v2/purpur/${c}/${d}/download)`);
 		// send embed

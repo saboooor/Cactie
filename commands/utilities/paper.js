@@ -44,7 +44,11 @@ module.exports = {
 			.setDescription(`${h.changes.length} commit(s)`)
 			.setFooter(`${moment(h.time)}`);
 		// add fields for commits
-		h.changes.forEach(commit => { Embed.addField(commit.commit, commit.message); });
+		h.changes.forEach(commit => {
+			// check if commit description is more than 1000, if so, split it into multiple fields
+			if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { Embed.addField(commit.commit, `${chunk}`); });
+			else Embed.addField(commit.commit, commit.message);
+		});
 		// add field for download
 		Embed.addField('Download', `[Click Here](https://papermc.io/api/v2/projects/paper/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})`);
 		// send embed
