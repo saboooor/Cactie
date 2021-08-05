@@ -7,10 +7,10 @@ module.exports = {
 	async execute(message) {
 		const Embed = new Discord.MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.addField('**Add the bot:**', '[Invite Pup to your server using this link!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=2416307446&scope=applications.commands%20bot)')
-			.addField('**Add the bot (Admin):**', '[Invite Pup to your server using this link!](https://discord.com/api/oauth2/authorize?client_id=765287593762881616&permissions=8&scope=bot%20applications.commands)')
-			.addField('**Bot Support:**', '[Join Pup\'s discord server!](https://discord.gg/Bsefgbaedz)')
-			.addField('**Nether Depths:**', '[Also check out Nether Depths!](https://discord.gg/g7hSukX)');
+			.addField('**Add the bot:**', '[Invite Pup to your server using this link!](https://pup.smhsmh.club/invite)')
+			.addField('**Add the bot (Admin):**', '[Invite Pup to your server using this link!](https://pup.smhsmh.club/admin)')
+			.addField('**Bot Support:**', '[Join Pup\'s discord server!](https://pup.smhsmh.club/invite)')
+			.addField('**Nether Depths:**', '[Also check out Nether Depths!](https://netherdepths.com/invite)');
 		await message.reply({ embeds: [Embed] });
 	},
 };
