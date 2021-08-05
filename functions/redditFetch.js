@@ -11,7 +11,7 @@ module.exports = async (subreddit, message, client) => {
 	if (!pong) return;
 	if (pong.message == 'Not Found') return message.reply({ content: 'Invalid subreddit!' });
 	if (!pong[0]) return message.reply({ content: 'Couldn\'t get data! Try again later.' });
-	if (pong[0].data.children[0].data.selftext) return require('./redditfetch_noslash.js')(subreddit, message, client);
+	if (pong[0].data.children[0].data.selftext) return require('./redditFetch.js')(subreddit, message, client);
 	const Embed = new Discord.MessageEmbed()
 		.setColor(Math.round(Math.random() * 16777215))
 		.setAuthor(`u/${pong[0].data.children[0].data.author}`)
@@ -20,7 +20,7 @@ module.exports = async (subreddit, message, client) => {
 		.setImage(pong[0].data.children[0].data.url)
 		.setFooter(`Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts`);
 	client.logger.info(`Image URL: ${pong[0].data.children[0].data.url}`);
-	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditfetch_noslash.js')(subreddit, message, client);
+	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditFetch.js')(subreddit, message, client);
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞');
 	await message.reply({ embeds: [Embed] });
 };
