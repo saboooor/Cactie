@@ -13,16 +13,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^13.0.0-dev.2675b08.1627603447",
+    "discord.js": "^13.0.1",
     "enmap": "^5.8.7",
-    "eslint": "^7.31.0",
+    "eslint": "^7.32.0",
     "fs": "^0.0.1-security",
     "hastebin": "^0.2.1",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "node-cron": "^3.0.0",
     "nodeactyl": "^3.1.0",
-    "websocket": "^1.0.34",
     "winston": "^3.3.3"
   }
 }
