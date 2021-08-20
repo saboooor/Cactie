@@ -35,7 +35,7 @@ module.exports = client => {
 				});
 				const Embed = new Discord.MessageEmbed()
 					.setColor(15105570)
-					.setDescription('Ticket automatically closed resolved ticket');
+					.setDescription('Automatically closed Resolved Ticket');
 				if (client.settings.get(channel.guild.id).tickets == 'buttons') {
 					const row = new Discord.MessageActionRow()
 						.addComponents([
