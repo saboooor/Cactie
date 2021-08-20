@@ -18,6 +18,7 @@ module.exports = {
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		if (args[0] > 100) return message.reply({ content: 'You can only clear 100 messages at once!', ephemeral: true });
+		if (isNaN(args[0])) return message.reply({ content: 'That is not a number!', ephemeral: true });
 		await message.channel.messages.fetch({ limit: args[0] }).then(messages => {
 			message.channel.bulkDelete(messages).catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
 		});

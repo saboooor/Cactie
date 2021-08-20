@@ -17,6 +17,7 @@ module.exports = {
 			.setDescription(`Ticket Opened by ${author}`);
 		interaction.reply({ embeds: [Embed] });
 		await sleep(1000);
+		if (!interaction.channel) return;
 		client.logger.info(`Reopened ticket #${interaction.channel.name}`);
 	},
 };
