@@ -32,7 +32,7 @@ module.exports = {
 		if (!member) return message.reply('uhhh technical difficulties you\'re too built different for me');
 		const activities = member.presence.activities;
 		const activitieslist = Object.keys(activities).map(i => {
-			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji} ${activities[i].state}`;
+			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji ? activities[i].emoji : ''} ${activities[i].state ? activities[i].state : ''}`;
 			const activitystack = [`**${activities[i].name}**`];
 			if (activities[i].details) activitystack.push(`\n${activities[i].details}`);
 			if (activities[i].state) activitystack.push(`\n${activities[i].state}`);
