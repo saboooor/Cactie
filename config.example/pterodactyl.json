@@ -1,32 +1,44 @@
 {
     "[server name]": {
         "name": "[server name but capitalized]",
+        "short": "[server name's abbreviation (NO SPACES)]",
         "apikey": "[panel api key]",
         "url": "[panel url]",
         "guildid": "[guild id (for permissions)]",
         "roleid": "[role id (for permissions)]",
         "id": "[server id]",
         "ip": "[minecraft ip (optional)]",
-        "client": "[is this the bot itself]"
+        "client": "[is this the bot itself]",
+        "changelogs": "[does this server use changelogs, if so, use the 3 settings below]",
+        "clconsolechannels": ["[channel 1]", "[channel 2]", "[and so on]"],
+        "clmainchannels": ["[channel 1]", "[channel 2]", "[and so on]"],
+        "clcommand": "[the command to put before the changelog]"
     },
     "example1": {
         "name": "Example1",
+        "short": "e1",
         "apikey": "aJG7fvKl5quD0ZSlZffdQbBXfjfdDGDjLokOotm8wpIBhQ1U",
-        "url": "https://panel.birdflop.com",
+        "url": "https://panel.netherdepths.com",
         "guildid": "661736128373719141",
         "roleid": "699724468469366844",
         "id": "53e410dc",
         "ip": "play.netherdepths.com",
-        "client": false
+        "client": false,
+        "changelogs": true,
+        "clconsolechannels": ["865525620950564864", "865525653738749983", "865525634780758056", "865525676693913660"],
+        "clmainchannels": ["865522730270326794"],
+        "clcommand": "bcast &4&lNEW UPDATE &#444444•&c "
     },
     "example2": {
         "name": "Example2",
+        "short": "e2",
         "apikey": "8OojT25SxrXGWIdD0whVlkeAJ0SHgdU4ZJ2dXMZTntYHLlD4",
         "url": "https://panel.discordbothosting.com",
         "guildid": "811354612547190794",
         "roleid": "849452673156513813",
         "id": "bdb8b04c",
         "ip": null,
-        "client": true
+        "client": true,
+        "changelogs": false
     }
 }

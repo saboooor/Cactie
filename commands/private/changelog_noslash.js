@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const pteroconfig = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'changelog',
 	description: 'Post a changelog',
@@ -7,31 +8,27 @@ module.exports = {
 	usage: '<Server> <Changes (split with new line)>',
 	async execute(message, args, client) {
 		const changes = args.join(' ').replace(args[0] + ' ', '').split('\n');
+		const servers = [];
+		Object.keys(pteroconfig).map(i => { if (pteroconfig[i].changelogs) servers.push(pteroconfig[i]); });
+		const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].short} (${servers[i].name})`; });
+		const server = servers.find(srv => args[0].toLowerCase() == srv.short);
 		const Embed = new Discord.MessageEmbed()
 			.setAuthor('Changelog', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png')
 			.setFooter(`By ${message.author.username}`, message.author.avatarURL());
-		if (args[0] == 'nd') {
-			if (!client.guilds.cache.get('865519986806095902').members.cache.get(message.member.id)) return message.reply({ content: 'You can\'t do that!' });
-			if (!client.guilds.cache.get('865519986806095902').members.cache.get(message.member.id).roles.cache.has('865533361152589824')) return message.reply({ content: 'You can\'t do that!' });
+		if (!server) return message.reply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+		if (!client.guilds.cache.get(server.guildid).members.cache.get(message.member.id) || !client.guilds.cache.get(server.guildid).members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
+		server.clconsolechannels.forEach(channelid => {
+			changes.forEach(change => {
+				client.channels.cache.get(channelid).send(`${server.clcommand}${change}`);
+			});
+		});
+		server.clmainchannels.forEach(channelid => {
 			changes.forEach(change => {
 				Embed.setColor(Math.floor(Math.random() * 16777215));
 				Embed.setDescription(change);
-				client.channels.cache.get('865522730270326794').send({ embeds: [Embed] });
-				client.channels.cache.get('865525620950564864').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
-				client.channels.cache.get('865525653738749983').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
-				client.channels.cache.get('865525634780758056').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
-				client.channels.cache.get('865525676693913660').send({ content: `bcast &4&lNEW UPDATE &#444444•&c ${change}` });
+				client.channels.cache.get(channelid).send({ embeds: [Embed] });
 			});
-		}
-		else if (args[0] == 'th') {
-			if (!client.guilds.cache.get('711661870926397601').members.cache.get(message.member.id)) return message.reply({ content: 'You can\'t do that!' });
-			if (!client.guilds.cache.get('711661870926397601').members.cache.get(message.member.id).roles.cache.has('716208607070257162')) return message.reply({ content: 'You can\'t do that!' });
-			changes.forEach(change => {
-				Embed.setColor(Math.floor(Math.random() * 16777215));
-				Embed.setDescription(change);
-				client.channels.cache.get('717514613930983445').send({ embeds: [Embed] });
-				client.channels.cache.get('744713171067207711').send({ content: `bcast &6[&4&lNEW UPDATE&6]&c ${change}` });
-			});
-		}
+		});
+		message.reply(`${changes.length} Changelog(s) sent to ${server.name}!`);
 	},
 };
