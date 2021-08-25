@@ -15,7 +15,7 @@ module.exports = {
 		const Embed = new Discord.MessageEmbed()
 			.setAuthor('Changelog', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png')
 			.setFooter(`By ${message.author.username}`, message.author.avatarURL());
-		if (!server) return message.reply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
 		if (!client.guilds.cache.get(server.guildid).members.cache.get(message.member.id) || !client.guilds.cache.get(server.guildid).members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
 		server.clconsolechannels.forEach(channelid => {
 			changes.forEach(change => {
