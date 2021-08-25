@@ -23,7 +23,10 @@ module.exports = {
 		}
 		const reply = message.type && message.type == 'APPLICATION_COMMAND' ? await message.defer() : await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
 		if (!args[0]) args = ['pup'];
+		const srvs = [];
+		Object.keys(servers).map(i => { srvs.push(servers[i]); });
 		let server = servers[args.join(' ').toLowerCase()];
+		if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
 		const Embed = new Discord.MessageEmbed().setColor(15105570);
 		if (server && server.id) {
 			const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
