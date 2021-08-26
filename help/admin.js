@@ -15,6 +15,6 @@ module.exports = (prefix, Embed, srvconfig) => {
 [] = Optional
 <> = Required
 
-${srvconfig.adminrole ? commandlist.join('\n').replace(/ADMINISTRATOR/g, `<@&${srvconfig.adminrole}>`) : commandlist.join('\n')}
+${srvconfig.adminrole != 'permission' ? commandlist.join('\n').replace(/ADMINISTRATOR/g, `<@&${srvconfig.adminrole}>`) : commandlist.join('\n')}
 `);
 };
