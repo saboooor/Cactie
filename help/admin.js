@@ -7,7 +7,7 @@ module.exports = (prefix, Embed, srvconfig) => {
 		commands.push(command);
 	}
 	const commandlist = Object.keys(commands).map(i => {
-		return `**${prefix}${commands[i].name} ${commands[i].usage}**\n${commands[i].description}\n*Permission: ${commands[i].permissions}*`;
+		return `**${prefix}${commands[i].name} ${commands[i].usage}**${commands[i].aliases ? `\n(Aliases: ${commands[i].aliases.join(', ')})` : ''}\n${commands[i].description}\n*Permission: ${commands[i].permissions}*`;
 	});
 	Embed.setDescription(`
 **ADMIN COMMANDS:**
