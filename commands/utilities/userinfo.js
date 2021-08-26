@@ -29,8 +29,8 @@ module.exports = {
 		const roleslist = Object.keys(roles).map(i => {
 			return `**${roles[i][1]}**`;
 		});
-		if (!member) return message.reply('uhhh technical difficulties you\'re too built different for me');
-		const activities = member.presence.activities;
+		if (!member.presence) return message.reply('uhhh technical difficulties you\'re too built different for me');
+		const activities = member.presence ? member.presence.activities : null;
 		const activitieslist = Object.keys(activities).map(i => {
 			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji ? activities[i].emoji : ''} ${activities[i].state ? activities[i].state : ''}`;
 			const activitystack = [`**${activities[i].name}**`];
