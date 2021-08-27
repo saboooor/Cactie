@@ -23,14 +23,21 @@ module.exports = async (client, message) => {
 	if (message.author.bot) return;
 	if (message.channel.type == 'DM') {
 		if (message.content.startsWith('-')) return message.reply({ content: 'You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead' });
-		if (message.attachments.size == 1) {
-			const picture = message.attachments.first();
-			const attachmenturl = picture.attachment;
-			const response = await fetch(attachmenturl, {
-				method: 'GET',
+		if (message.attachments && message.attachments.size >= 1 && !message.commandName) {
+			const files = [];
+			await message.attachments.forEach(async attachment => {
+				const response = await fetch(attachment.url, {
+					method: 'GET',
+				});
+				const buffer = await response.buffer();
+				const img = new Discord.MessageAttachment(buffer, `${attachment.id}.png`);
+				files.push(img);
+				if (files.length == message.attachments.size) {
+					client.channels.cache.get('849453797809455125')
+						.send({ content: `**<@!${message.author.id}>** > ${message.content}`, files: files })
+						.catch(error => { client.logger.error(error); });
+				}
 			});
-			const buffer = await response.buffer();
-			return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}`, attachments: [new Discord.MessageAttachment(buffer, 'image.png')] });
 		}
 		return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}` });
 	}
