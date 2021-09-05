@@ -42,6 +42,7 @@ module.exports = {
 			});
 			return message.reply({ embeds: [Embed] });
 		}
+		if (!client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) return message.reply({ content: 'Invalid user!', ephemeral: true });
 		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))
 			.send({ content: args.slice(1).join(' ') })
 			.catch(error => { client.logger.error(error); });
