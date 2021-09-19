@@ -9,7 +9,7 @@ module.exports = {
 	cooldown: 5,
 	args: true,
 	inVoiceChannel: true,
-	async execute(message, args, client) {
+	async execute(message, args) {
 		const { channel } = message.member.voice;
 		let player = message.client.manager.get(message.guild.id);
 		if (player && message.member.voice.channel !== message.guild.me.voice.channel) {

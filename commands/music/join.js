@@ -7,7 +7,7 @@ module.exports = {
 	cooldown: 2,
 	inVoiceChannel: true,
 	sameVoiceChannel: false,
-	async execute(message, args, client) {
+	async execute(message) {
 		const { channel } = message.member.voice;
 		if(!message.guild.me.voice.channel) {
 			const player = message.client.manager.create({
