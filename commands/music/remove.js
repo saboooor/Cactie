@@ -3,6 +3,7 @@ const { remove } = require('../../config/emoji.json');
 module.exports = {
 	name: 'remove',
 	description: 'Remove a song from the queue',
+	aliases: ['rem', 'rm'],
 	args: true,
 	usage: '<Index of song in queue>',
 	guildOnly: true,
