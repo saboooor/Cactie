@@ -20,6 +20,10 @@ module.exports = {
 			value: 'fun',
 		},
 		{
+			name: 'music',
+			value: 'music',
+		},
+		{
 			name: 'nsfw',
 			value: 'nsfw',
 		},
@@ -52,6 +56,9 @@ module.exports = {
 		}
 		else if (arg == 'fun') {
 			require('../../help/fun.js')(prefix, Embed);
+		}
+		else if (arg == 'music') {
+			require('../../help/music.js')(prefix, Embed);
 		}
 		else if (arg == 'nsfw') {
 			if (!message.channel.nsfw) return message.react('🔞');
@@ -109,6 +116,11 @@ module.exports = {
 							label: 'Fun',
 							description: 'These commands are made just for fun!',
 							value: 'help_fun',
+						},
+						{
+							label: 'Music',
+							description: 'These commands play music in your voice chat!',
+							value: 'help_music',
 						},
 						{
 							label: 'NSFW',
