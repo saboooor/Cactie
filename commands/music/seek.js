@@ -4,7 +4,6 @@ const ms = require('ms');
 const { forward, rewind } = require('../../config/emoji.json');
 module.exports = {
 	name: 'seek',
-	aliases: [],
 	description: 'Seek the currently playing song',
 	args: true,
 	usage: '<Time s/m/h>',
