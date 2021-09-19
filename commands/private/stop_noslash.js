@@ -1,7 +1,7 @@
 const nodeactyl = require('nodeactyl');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
-	name: 'stop',
+	name: 'astop',
 	description: 'Stop pup or a server',
 	async execute(message, args, client) {
 		const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });

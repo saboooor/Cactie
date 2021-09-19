@@ -3,7 +3,7 @@ const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'proxy',
 	description: 'Nether Depths proxy console',
-	aliases: ['p'],
+	aliases: ['b'],
 	args: true,
 	usage: '<Command>',
 	async execute(message, args, client) {
