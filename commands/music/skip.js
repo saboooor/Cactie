@@ -27,7 +27,7 @@ module.exports = {
 		}
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Skipped**\n[${song.title}](${song.uri})`)
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		return message.reply({ embeds: [thing] });
 	},

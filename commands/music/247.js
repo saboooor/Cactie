@@ -9,10 +9,10 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
-	async execute(message, args, client) {
+	async execute(message, args) {
 		const player = message.client.manager.players.get(message.guild.id);
 		const embed = new MessageEmbed()
-			.setColor(client.embedColor);
+			.setColor(Math.round(Math.random() * 16777215));
 		if (player.twentyFourSeven || args[0] == 'false') {
 			player.twentyFourSeven = false;
 			embed.setDescription(`${loop} 24/7 mode is now off.`);

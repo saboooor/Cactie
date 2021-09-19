@@ -18,7 +18,7 @@ module.exports = {
 		player.queue.reverse();
 		const thing = new MessageEmbed()
 			.setDescription(`${rewind} Reversed the queue`)
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		return message.reply({ embeds: [thing] }).catch(error => message.client.logger.error(error));
 	},

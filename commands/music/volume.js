@@ -19,7 +19,7 @@ module.exports = {
 		}
 		if (!args.length) {
 			const thing = new MessageEmbed()
-				.setColor(message.client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${volumehigh} The current volume is: **${player.volume}%**`);
 			return message.reply({ embeds: [thing] });
@@ -34,21 +34,21 @@ module.exports = {
 		player.setVolume(volume);
 		if (volume > player.volume) {
 			const thing = new MessageEmbed()
-				.setColor(message.client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${volumehigh} Volume set to: **${volume}%**`);
 			return message.reply({ embeds: [thing] });
 		}
 		else if (volume < player.volume) {
 			const thing = new MessageEmbed()
-				.setColor(message.client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${volumelow} Volume set to: **${volume}%**`);
 			return message.reply({ embeds: [thing] });
 		}
 		else {
 			const thing = new MessageEmbed()
-				.setColor(message.client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${volumehigh} Volume set to: **${volume}%**`);
 			return message.reply({ embeds: [thing] });

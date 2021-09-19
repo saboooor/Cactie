@@ -55,7 +55,7 @@ module.exports = {
 			}
 			else {
 				thing = new MessageEmbed()
-					.setColor(client.embedColor)
+					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
@@ -65,7 +65,7 @@ module.exports = {
 			player.queue.add(res.tracks);
 			if (!player.playing && !player.paused && player.queue.totalSize === res.tracks.length) player.play();
 			thing = new MessageEmbed()
-				.setColor(client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${playlist} **Added Playlist to queue**\n${res.tracks.length} Songs **${res.playlist.name}** - \`[${convertTime(res.playlist.duration)}]\``);
 			return message.reply({ embeds: [thing] });
@@ -77,7 +77,7 @@ module.exports = {
 			}
 			else {
 				thing = new MessageEmbed()
-					.setColor(client.embedColor)
+					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\`[<@${track.requester.id}>]`);

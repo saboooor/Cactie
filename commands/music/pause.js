@@ -25,7 +25,7 @@ module.exports = {
 		player.pause(true);
 		const song = player.queue.current;
 		const thing = new MessageEmbed()
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp()
 			.setDescription(`${pause} **Paused**\n[${song.title}](${song.uri})`);
 		return message.reply({ embeds: [thing] });

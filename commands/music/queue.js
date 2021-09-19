@@ -17,7 +17,7 @@ module.exports = {
 		}
 		const queue = player.queue;
 		const embed = new MessageEmbed()
-			.setColor(message.client.embedColor);
+			.setColor(Math.round(Math.random() * 16777215));
 		const multiple = 10;
 		const page = args.length && Number(args[0]) ? Number(args[0]) : 1;
 		const end = page * multiple;

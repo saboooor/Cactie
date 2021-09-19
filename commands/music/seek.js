@@ -28,7 +28,7 @@ module.exports = {
 				player.seek(time);
 				const thing = new MessageEmbed()
 					.setDescription(`${forward} **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration)}\``)
-					.setColor(message.client.embedColor)
+					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				return message.reply({ embeds: [thing] });
 			}
@@ -36,7 +36,7 @@ module.exports = {
 				player.seek(time);
 				const thing = new MessageEmbed()
 					.setDescription(`${rewind} **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration)}\``)
-					.setColor(message.client.embedColor)
+					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				return message.reply({ embeds: [thing] });
 			}

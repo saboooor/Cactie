@@ -17,7 +17,7 @@ module.exports = {
 		player.queue.shuffle();
 		const thing = new MessageEmbed()
 			.setDescription(`${shuffle} Shuffled the queue`)
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		return message.reply({ embeds: [thing] }).catch(error => message.client.logger.error(error));
 	},

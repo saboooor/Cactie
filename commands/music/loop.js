@@ -19,7 +19,7 @@ module.exports = {
 			player.setQueueRepeat(!player.queueRepeat);
 			const queueRepeat = player.queueRepeat ? 'enabled' : 'disabled';
 			const thing = new MessageEmbed()
-				.setColor(message.client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${loop} Loop queue is now **${queueRepeat}**`);
 			return message.reply({ embeds: [thing] });
@@ -27,7 +27,7 @@ module.exports = {
 		player.setTrackRepeat(!player.trackRepeat);
 		const trackRepeat = player.trackRepeat ? 'enabled' : 'disabled';
 		const thing = new MessageEmbed()
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp()
 			.setDescription(`${loop} Loop track is now **${trackRepeat}**`);
 		return message.reply({ embeds: [thing] });

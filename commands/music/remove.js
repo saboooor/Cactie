@@ -27,7 +27,7 @@ module.exports = {
 		const song = player.queue[position];
 		player.queue.remove(position);
 		const thing = new MessageEmbed()
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp()
 			.setDescription(`${remove} Removed\n[${song.title}](${song.uri})`);
 		return message.reply({ embeds: [thing] });

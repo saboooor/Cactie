@@ -25,7 +25,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration)}]\` [<@${song.requester.id}>]`)
 			.setThumbnail(song.displayThumbnail('3'))
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.addField('\u200b', progressbar(total, current, size, line, slider))
 			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total)}\``);
 		return message.reply({ embeds: [embed] });

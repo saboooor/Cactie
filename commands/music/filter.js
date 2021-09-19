@@ -19,7 +19,7 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		const thing = new MessageEmbed()
-			.setColor(client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		if (args[0] == 'party') {
 			const bands = [

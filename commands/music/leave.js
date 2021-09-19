@@ -11,7 +11,7 @@ module.exports = {
 		const player = message.client.manager.get(message.guild.id);
 		player.destroy();
 		const thing = new MessageEmbed()
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setDescription(`${leave} **Leave the voice channel**\nThank you for using ${message.client.user.username}!`);
 		return message.reply({ embeds: [thing] });
 	},

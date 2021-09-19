@@ -22,7 +22,7 @@ module.exports = {
 		player.stop();
 		player.queue.clear();
 		const thing = new MessageEmbed()
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp()
 			.setDescription(`${stop} Stopped the music`);
 		message.reply({ embeds: [thing] });

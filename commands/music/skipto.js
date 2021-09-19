@@ -28,7 +28,7 @@ module.exports = {
 		player.stop();
 		const thing = new MessageEmbed()
 			.setDescription(`${jump} Forward **${position}** Songs`)
-			.setColor(message.client.embedColor)
+			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		return message.reply({ embeds: [thing] });
 	},

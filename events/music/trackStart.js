@@ -6,7 +6,7 @@ module.exports = async (client, player, track) => {
 	const thing = new MessageEmbed()
 		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\` [<@${track.requester.id}>]`)
 		.setThumbnail(track.displayThumbnail('3'))
-		.setColor(client.embedColor)
+		.setColor(Math.round(Math.random() * 16777215))
 		.setTimestamp();
 	return channel.send({ embeds: [thing] });
 };

@@ -19,7 +19,7 @@ module.exports = {
 			});
 			player.connect();
 			const thing = new MessageEmbed()
-				.setColor(client.embedColor)
+				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`${join} **Join the voice channel**\nJoined <#${channel.id}> and bound to <#${message.channel.id}>`);
 			return message.reply({ embeds: [thing] });
 		}
