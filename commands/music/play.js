@@ -43,7 +43,7 @@ module.exports = {
 		const search = args.join(' ');
 		let res;
 		try {
-			res = await player.search(search, message.author);
+			res = await player.search(search, message.member.user);
 			if (res.loadType === 'LOAD_FAILED') {
 				if (!player.queue.current) player.destroy();
 				throw res.exception;
