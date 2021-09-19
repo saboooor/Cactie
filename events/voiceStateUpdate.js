@@ -28,7 +28,7 @@ module.exports = async (client, oldState, newState) => {
 	if (!oldState.guild.members.cache.get(client.user.id).voice.channelId) return;
 
 	// Don't leave channel if 24/7 mode is active
-	if (player.twentyFourSeven) return;
+	if (player.twentyFourSeven == true) return;
 
 	// Make sure the bot is in the voice channel that 'activated' the event
 	if (oldState.guild.members.cache.get(client.user.id).voice.channelId === oldState.channelId) {
@@ -41,6 +41,7 @@ module.exports = async (client, oldState, newState) => {
 			// times up check if bot is still by themselves in VC (exluding bots)
 			const vcMembers = oldState.guild.me.voice.channel?.members.size;
 			if (!vcMembers || vcMembers === 1) {
+				if (player.twentyFourSeven == true) return;
 				const newPlayer = client.manager?.players.get(newState.guild.id);
 				newPlayer ? player.destroy() : oldState.guild.me.voice.channel.leave();
 				const embed = new MessageEmbed(client, newState.guild)
