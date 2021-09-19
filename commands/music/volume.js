@@ -10,7 +10,17 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
+	options: [{
+		type: 4,
+		name: 'volume',
+		description: 'The volume to set (1-100)',
+		required: false,
+	}],
 	async execute(message, args) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		const player = message.client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()

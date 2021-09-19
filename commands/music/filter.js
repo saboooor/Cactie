@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { filter } = require('../../config/emoji.json');
 module.exports = {
 	name: 'eq',
-	description: 'Set Equalizer',
+	description: 'Set Equalizer (Custom is only on dash commands)',
 	usage: '<Party/Bass/Radio/Pop/Treblebass/Soft/Custom/Off>',
 	aliases: [ 'filter', 'equalizer' ],
 	cooldown: 10,
@@ -11,7 +11,45 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
+	options: [{
+		type: 3,
+		name: 'type',
+		description: 'The EQ profile',
+		required: true,
+		choices: [{
+			name: 'party',
+			value: 'party',
+		},
+		{
+			name: 'bass',
+			value: 'bass',
+		},
+		{
+			name: 'radio',
+			value: 'radio',
+		},
+		{
+			name: 'pop',
+			value: 'pop',
+		},
+		{
+			name: 'treblebass',
+			value: 'treblebass',
+		},
+		{
+			name: 'soft',
+			value: 'soft',
+		},
+		{
+			name: 'off',
+			value: 'off',
+		}],
+	}],
 	async execute(message, args) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		const player = message.client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()

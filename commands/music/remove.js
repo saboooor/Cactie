@@ -2,14 +2,24 @@ const { MessageEmbed } = require('discord.js');
 const { remove } = require('../../config/emoji.json');
 module.exports = {
 	name: 'remove',
-	description: 'Remove song from the queue',
+	description: 'Remove a song from the queue',
 	args: true,
-	usage: '<Number of song in queue>',
+	usage: '<Index of song in queue>',
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
+	options: [{
+		type: 4,
+		name: 'index',
+		description: 'The number of the song in the queue',
+		required: true,
+	}],
 	async execute(message, args) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		const player = message.client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()

@@ -4,14 +4,24 @@ const ms = require('ms');
 const { forward, rewind } = require('../../config/emoji.json');
 module.exports = {
 	name: 'seek',
-	description: 'Seek the currently playing song',
+	description: 'Seek through the playing song',
 	args: true,
 	usage: '<Time s/m/h>',
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
+	options: [{
+		type: 3,
+		name: 'time',
+		description: 'Time s/m/h (Ex. 10s, 2m)',
+		required: true,
+	}],
 	async execute(message, args) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		const player = message.client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()

@@ -3,14 +3,24 @@ const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist } = require('../../config/emoji.json');
 module.exports = {
 	name: 'play',
-	description: 'Plays audio from YouTube or Spotify',
+	description: 'Plays music from YouTube or Spotify',
 	usage: '<Song URL/Name>',
 	aliases: ['p'],
 	cooldown: 5,
 	args: true,
 	guildOnly: true,
 	inVoiceChannel: true,
+	options: [{
+		type: 3,
+		name: 'song',
+		description: 'Song URL/Name',
+		required: true,
+	}],
 	async execute(message, args) {
+		if (message.type && message.type == 'APPLICATION_COMMAND') {
+			args = args._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		const { channel } = message.member.voice;
 		let player = message.client.manager.get(message.guild.id);
 		if (player && message.member.voice.channel !== message.guild.me.voice.channel) {
