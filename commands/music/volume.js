@@ -39,7 +39,7 @@ module.exports = {
 		if (!volume || volume < 0 || volume > 100) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`Usage: ${message.client.config.prefix}volume <Number of volume between 0 - 100>`);
+				.setDescription(`Usage: ${message.client.settings.get(message.guild.id).prefix}volume <Number of volume between 0 - 100>`);
 			return message.reply({ embeds: [thing] });
 		}
 		player.setVolume(volume);

@@ -5,7 +5,7 @@ module.exports = {
 	name: 'playtop',
 	description: 'Plays music to the top of the queue',
 	usage: '<Song URL/Name>',
-	aliases: ['ptop', 'pt'],
+	aliases: ['pt', 'ptop'],
 	cooldown: 5,
 	args: true,
 	guildOnly: true,
@@ -27,7 +27,7 @@ module.exports = {
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription(`You must be in the same channel as ${message.client.user}`);
-			message.reply({ embeds: [thing] });
+			return message.reply({ embeds: [thing] });
 		}
 		else if (!player) {
 			player = message.client.manager.create({
@@ -41,6 +41,7 @@ module.exports = {
 		if (player.state !== 'CONNECTED') player.connect();
 		player.set('autoplay', false);
 		const search = args.join(' ');
+		const pp = message.reply(`🔎 Searching for \`${search}\`...`);
 		let res;
 		try {
 			res = await player.search(search, message.member.user);
@@ -50,14 +51,14 @@ module.exports = {
 			}
 		}
 		catch (err) {
-			return message.reply(`there was an error while searching: ${err.message}`);
+			return message.commandName ? message.editReply({ content: `there was an error while searching: ${err.message}` }) : pp.edit({ content: `there was an error while searching: ${err.message}` });
 		}
 		let thing = null;
 		let track = null;
 		switch (res.loadType) {
 		case 'NO_MATCHES':
 			if (!player.queue.current) player.destroy();
-			return message.reply('there were no results found.');
+			return message.commandName ? message.editReply({ content: 'there were no results found.' }) : pp.edit({ content: 'there were no results found.' });
 		case 'TRACK_LOADED':
 			track = res.tracks[0];
 			player.queue.reverse();
@@ -72,7 +73,7 @@ module.exports = {
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
-				return message.reply({ embeds: [thing] });
+				return message.commandName ? message.editReply({ embeds: [thing] }) : pp.edit({ embeds: [thing] });
 			}
 		case 'PLAYLIST_LOADED':
 			player.queue.reverse();
@@ -83,7 +84,7 @@ module.exports = {
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${playlist} **Added Playlist to queue**\n${res.tracks.length} Songs **${res.playlist.name}** - \`[${convertTime(res.playlist.duration)}]\``);
-			return message.reply({ embeds: [thing] });
+			return message.commandName ? message.editReply({ embeds: [thing] }) : pp.edit({ embeds: [thing] });
 		case 'SEARCH_RESULT':
 			track = res.tracks[0];
 			player.queue.reverse();
@@ -98,7 +99,7 @@ module.exports = {
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\`[<@${track.requester.id}>]`);
-				return message.reply({ embeds: [thing] });
+				return message.commandName ? message.editReply({ embeds: [thing] }) : pp.edit({ embeds: [thing] });
 			}
 		}
 	},
