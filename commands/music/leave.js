@@ -1,0 +1,18 @@
+const { MessageEmbed } = require('discord.js');
+const { leave } = require('../../config/emoji.json');
+module.exports = {
+	name: 'leave',
+	description: 'Leave voice channel',
+	aliases: ['dc'],
+	cooldown: 2,
+	inVoiceChannel: true,
+	sameVoiceChannel: true,
+	async execute(message) {
+		const player = message.client.manager.get(message.guild.id);
+		player.destroy();
+		const thing = new MessageEmbed()
+			.setColor(message.client.embedColor)
+			.setDescription(`${leave} **Leave the voice channel**\nThank you for using ${message.client.user.username}!`);
+		return message.reply({ embeds: [thing] });
+	},
+};

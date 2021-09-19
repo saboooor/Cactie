@@ -60,6 +60,7 @@ module.exports = async (client) => {
 			}
 		});
 	}, 10000);
+	client.manager.init(client.user.id);
 	const timer = (Date.now() - client.startTimestamp) / 1000;
 	client.logger.info(`Done (${timer}s)! I am running!`);
 };

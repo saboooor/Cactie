@@ -1,7 +1,7 @@
 const fs = require('fs');
 module.exports = client => {
 	fs.readdir('./events/', (err, files) => {
-		if (err) return console.error(err);
+		if (err) return client.logger.error(err);
 		files.forEach(file => {
 			if (!file.endsWith('.js')) return;
 			const event = require(`../events/${file}`);

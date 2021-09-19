@@ -20,4 +20,8 @@ module.exports = client => {
 		],
 	});
 	client.logger.info('Logger started');
+	client.on('disconnect', () => client.logger.info('Bot is disconnecting...'));
+	client.on('reconnecting', () => client.logger.info('Bot reconnecting...'));
+	client.on('warn', error => client.logger.warn(error));
+	client.on('error', error => client.logger.error(error));
 };

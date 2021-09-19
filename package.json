@@ -15,8 +15,12 @@
   "dependencies": {
     "discord.js": "^13.1.0",
     "enmap": "^5.8.7",
+    "erela.js": "^2.3.3",
+    "erela.js-deezer": "^1.0.7",
+    "erela.js-spotify": "^1.2.0",
     "eslint": "^7.32.0",
     "fs": "^0.0.1-security",
+    "ms": "^3.0.0-canary.1",
     "hastebin": "^0.2.1",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",

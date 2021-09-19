@@ -130,6 +130,26 @@ module.exports = async (client, message) => {
 		}
 	}
 
+	const embed = new Discord.MessageEmbed()
+		.setColor('RED');
+
+	const player = message.client.manager.get(message.guild.id);
+
+	if (command.player && !player) {
+		embed.setDescription('There is no player for this guild.');
+		return message.reply({ embeds: [embed] });
+	}
+
+	if (command.inVoiceChannel && !message.member.voice.channel) {
+		embed.setDescription('You must be in a voice channel!');
+		return message.reply({ embeds: [embed] });
+	}
+
+	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
+		embed.setDescription(`You must be in the same channel as ${message.client.user}!`);
+		return message.reply({ embeds: [embed] });
+	}
+
 	try {
 		client.logger.info(`${message.author.tag} issued dash command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client);
