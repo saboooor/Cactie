@@ -4,6 +4,7 @@ module.exports = (prefix, Embed) => {
 	const commands = [];
 	for (const file of musicCommands) {
 		const command = require(`../commands/music/${file}`);
+		if (!command.usage) command.usage = '';
 		commands.push(command);
 	}
 	const commandlist = Object.keys(commands).map(i => {

@@ -9,7 +9,7 @@ module.exports = {
 		require('../help/music.js')(prefix, Embed);
 		if (!interaction.message.components[0]) return interaction.reply('uhhhh..?');
 		interaction.message.components[0].components[0].options.forEach(option => option.default = false);
-		interaction.message.components[0].components[0].options[1].default = true;
+		interaction.message.components[0].components[0].options[2].default = true;
 		interaction.update({ embeds: [Embed], components: interaction.message.components });
 	},
 };
