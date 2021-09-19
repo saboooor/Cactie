@@ -41,7 +41,7 @@ module.exports = {
 		if (player.state !== 'CONNECTED') player.connect();
 		player.set('autoplay', false);
 		const search = args.join(' ');
-		const pp = message.reply(`🔎 Searching for \`${search}\`...`);
+		message.reply(`🔎 Searching for \`${search}\`...`);
 		let res;
 		try {
 			res = await player.search(search, message.member.user);
@@ -51,14 +51,14 @@ module.exports = {
 			}
 		}
 		catch (err) {
-			return message.commandName ? message.editReply({ content: `there was an error while searching: ${err.message}` }) : pp.edit({ content: `there was an error while searching: ${err.message}` });
+			return message.channel.send({ content: `there was an error while searching: ${err.message}` });
 		}
 		let thing = null;
 		let track = null;
 		switch (res.loadType) {
 		case 'NO_MATCHES':
 			if (!player.queue.current) player.destroy();
-			return message.commandName ? message.editReply({ content: 'there were no results found.' }) : pp.edit({ content: 'there were no results found.' });
+			return message.channel.send({ content: 'there were no results found.' });
 		case 'TRACK_LOADED':
 			track = res.tracks[0];
 			player.queue.reverse();
@@ -73,7 +73,7 @@ module.exports = {
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
-				return message.commandName ? message.editReply({ embeds: [thing] }) : pp.edit({ embeds: [thing] });
+				return message.channel.send({ embeds: [thing] });
 			}
 		case 'PLAYLIST_LOADED':
 			player.queue.reverse();
@@ -84,7 +84,7 @@ module.exports = {
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`${playlist} **Added Playlist to queue**\n${res.tracks.length} Songs **${res.playlist.name}** - \`[${convertTime(res.playlist.duration)}]\``);
-			return message.commandName ? message.editReply({ embeds: [thing] }) : pp.edit({ embeds: [thing] });
+			return message.channel.send({ embeds: [thing] });
 		case 'SEARCH_RESULT':
 			track = res.tracks[0];
 			player.queue.reverse();
@@ -99,7 +99,7 @@ module.exports = {
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\`[<@${track.requester.id}>]`);
-				return message.commandName ? message.editReply({ embeds: [thing] }) : pp.edit({ embeds: [thing] });
+				return message.channel.send({ embeds: [thing] });
 			}
 		}
 	},
