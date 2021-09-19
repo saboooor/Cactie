@@ -7,7 +7,6 @@ module.exports = {
 	cooldown: 2,
 	guildOnly: true,
 	inVoiceChannel: true,
-	sameVoiceChannel: false,
 	async execute(message) {
 		const { channel } = message.member.voice;
 		if(!message.guild.me.voice.channel) {
