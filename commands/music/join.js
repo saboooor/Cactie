@@ -5,6 +5,7 @@ module.exports = {
 	description: 'Join voice channel',
 	aliases: ['j'],
 	cooldown: 2,
+	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: false,
 	async execute(message) {

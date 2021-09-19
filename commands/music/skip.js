@@ -4,6 +4,7 @@ module.exports = {
 	name: 'skip',
 	aliases: ['s'],
 	description: 'Skip the currently playing song',
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

@@ -5,6 +5,7 @@ module.exports = {
 	description: 'Resume currently playing music',
 	aliases: ['r'],
 	cooldown: 2,
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

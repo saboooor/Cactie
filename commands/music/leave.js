@@ -5,6 +5,7 @@ module.exports = {
 	description: 'Leave voice channel',
 	aliases: ['dc'],
 	cooldown: 2,
+	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message) {

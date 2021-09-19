@@ -7,6 +7,7 @@ module.exports = {
 	description: 'Seek the currently playing song',
 	args: true,
 	usage: '<Time s/m/h>',
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

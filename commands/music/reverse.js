@@ -4,6 +4,7 @@ module.exports = {
 	name: 'reverse',
 	description: 'Reverse queue',
 	cooldown: 2,
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

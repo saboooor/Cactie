@@ -7,6 +7,7 @@ module.exports = {
 	aliases: [ 'filter', 'equalizer' ],
 	cooldown: 10,
 	args: true,
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

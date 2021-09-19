@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports = {
 	name: 'help',
-	description: 'Get help with Pup Bot',
+	description: 'Get help with Pup',
 	aliases: ['commands'],
 	usage: '[Type]',
 	cooldown: 10,

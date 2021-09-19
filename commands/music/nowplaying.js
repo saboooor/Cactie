@@ -7,6 +7,7 @@ module.exports = {
 	description: 'Show now playing song',
 	aliases: ['np'],
 	cooldown: 5,
+	guildOnly: true,
 	player: true,
 	async execute(message) {
 		const player = message.client.manager.get(message.guild.id);

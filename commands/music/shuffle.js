@@ -3,6 +3,7 @@ const { shuffle } = require('../../config/emoji.json');
 module.exports = {
 	name: 'shuffle',
 	description: 'Shuffle queue',
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

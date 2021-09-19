@@ -6,6 +6,7 @@ module.exports = {
 	description: 'Forward song',
 	args: true,
 	usage: '<Number of song in queue>',
+	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

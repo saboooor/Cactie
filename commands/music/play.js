@@ -8,6 +8,7 @@ module.exports = {
 	aliases: ['p'],
 	cooldown: 5,
 	args: true,
+	guildOnly: true,
 	inVoiceChannel: true,
 	async execute(message, args) {
 		const { channel } = message.member.voice;
