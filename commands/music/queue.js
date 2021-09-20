@@ -24,11 +24,11 @@ module.exports = {
 		const end = page * multiple;
 		const start = end - multiple;
 		const tracks = queue.slice(start, end);
-		if (queue.current) embed.addField('Now Playing', `[${queue.current.title}](${queue.current.uri}) \`[${convertTime(queue.current.duration).replace('07:12:56', 'LIVE')}]\``);
+		if (queue.current) embed.addField('Now Playing', `[${queue.current.title}](${queue.current.uri}) \`[${convertTime(queue.current.duration).replace('07:12:56', 'LIVE')}]\` [${queue.current.requester}]`);
 		if (!tracks.length) embed.setDescription(`No tracks in ${page > 1 ? `page ${page}` : 'the queue'}.`);
-		else embed.setDescription(`${emoji.queue} Queue List\n` + tracks.map((track, i) => `${start + (++i)} - [${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\``).join('\n'));
+		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - [${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
 		const maxPages = Math.ceil(queue.length / multiple);
-		embed.addField('\u200b', `Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
+		embed.setFooter(`Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
 		return message.reply({ embeds: [embed] });
 	},
 };

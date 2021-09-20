@@ -34,12 +34,12 @@ module.exports = async (client, message) => {
 				files.push(img);
 				if (files.length == message.attachments.size) {
 					client.channels.cache.get('849453797809455125')
-						.send({ content: `**<@!${message.author.id}>** > ${message.content}`, files: files })
+						.send({ content: `**${message.author}** > ${message.content}`, files: files })
 						.catch(error => { client.logger.error(error); });
 				}
 			});
 		}
-		return client.channels.cache.get('849453797809455125').send({ content: `**<@!${message.author.id}>** > ${message.content}` });
+		return client.channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}` });
 	}
 
 	const srvconfig = client.settings.get(message.guild.id);

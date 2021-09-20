@@ -182,6 +182,6 @@ module.exports = {
 			}
 		}
 		if (channel === message.channel && message.commandName) return message.reply({ content: '**Poll Created!**', ephemeral: true });
-		if (channel === message.guild.channels.cache.find(c => c.name.includes('poll'))) return message.reply({ content: `**Poll Created! Check <#${channel.id}>**` });
+		if (channel === message.guild.channels.cache.find(c => c.name.includes('poll'))) return message.reply({ content: `**Poll Created! Check ${channel}**` });
 	},
 };

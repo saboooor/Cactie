@@ -106,7 +106,7 @@ module.exports = {
 					.setColor(palette[3])
 					.setTimestamp()
 					.setThumbnail(img)
-					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\`[<@${track.requester.id}>]`);
+					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\`[${track.requester}]`);
 				return message.channel.send({ embeds: [thing] });
 			}
 		}

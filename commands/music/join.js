@@ -20,7 +20,7 @@ module.exports = {
 			player.connect();
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
-				.setDescription(`${join} **Join the voice channel**\nJoined <#${channel.id}> and bound to <#${message.channel.id}>`);
+				.setDescription(`${join} **Join the voice channel**\nJoined ${channel} and bound to ${message.channel}`);
 			return message.reply({ embeds: [thing] });
 		}
 		else if (message.guild.me.voice.channel !== channel) {
