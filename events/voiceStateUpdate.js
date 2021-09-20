@@ -43,6 +43,7 @@ module.exports = async (client, oldState, newState) => {
 			if (!vcMembers || vcMembers === 1) {
 				if (player.twentyFourSeven == true) return;
 				const newPlayer = client.manager?.players.get(newState.guild.id);
+				if (oldState.guild.me.voice.channel) return;
 				newPlayer ? player.destroy() : oldState.guild.me.voice.channel.leave();
 				const embed = new MessageEmbed(client, newState.guild)
 				// eslint-disable-next-line no-inline-comments

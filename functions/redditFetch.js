@@ -27,5 +27,10 @@ module.exports = async (subreddit, message, client) => {
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
 		.setImage(pong[0].data.children[0].data.url)
 		.setFooter(`Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts`);
-	message.type && message.type == 'APPLICATION_COMMAND' ? message.editReply({ embeds: [Embed] }) : message.reply({ embeds: [Embed] });
+	if (message.type && message.type == 'APPLICATION_COMMAND' && message.deferred) {
+		message.editReply({ embeds: [Embed] });
+	}
+	else {
+		message.reply({ embeds: [Embed] });
+	}
 };

@@ -11,6 +11,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(message) {
 		const player = message.client.manager.players.get(message.guild.id);
+		if (!player) return message.reply('An error has occured, please try again');
 		const embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		if (player.twentyFourSeven) {
