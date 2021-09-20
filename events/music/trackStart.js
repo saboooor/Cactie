@@ -9,7 +9,7 @@ module.exports = async (client, player, track) => {
 	const { body } = await got(img, { encoding: null });
 	const palette = await splashy(body);
 	const thing = new MessageEmbed()
-		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\` [<@${track.requester.id}>]`)
+		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [<@${track.requester.id}>]`)
 		.setThumbnail(img)
 		.setColor(palette[3])
 		.setTimestamp();

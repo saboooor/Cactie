@@ -29,11 +29,11 @@ module.exports = {
 		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
 		const embed = new MessageEmbed()
-			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration)}]\` [<@${song.requester.id}>]`)
+			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [<@${song.requester.id}>]`)
 			.setThumbnail(img)
 			.setColor(palette[3])
 			.addField('\u200b', progressbar(total, current, size, line, slider))
-			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total)}\``);
+			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total).replace('07:12:56', 'LIVE')}\``);
 		return message.reply({ embeds: [embed] });
 	},
 };
