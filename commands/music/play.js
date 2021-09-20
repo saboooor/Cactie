@@ -68,12 +68,13 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				const { body } = await got(track.displayThumbnail('hqdefault'), { encoding: null });
+				const img = track.displayThumbnail('hqdefault') ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+				const { body } = await got(img, { encoding: null });
 				const palette = await splashy(body);
 				thing = new MessageEmbed()
 					.setColor(palette[3])
 					.setTimestamp()
-					.setThumbnail(track.displayThumbnail('hqdefault'))
+					.setThumbnail(img)
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
 				return message.channel.send({ embeds: [thing] });
 			}
@@ -92,12 +93,13 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				const { body } = await got(track.displayThumbnail('hqdefault'), { encoding: null });
+				const img = track.displayThumbnail('hqdefault') ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+				const { body } = await got(img, { encoding: null });
 				const palette = await splashy(body);
 				thing = new MessageEmbed()
 					.setColor(palette[3])
 					.setTimestamp()
-					.setThumbnail(track.displayThumbnail('hqdefault'))
+					.setThumbnail(img)
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\`[<@${track.requester.id}>]`);
 				return message.channel.send({ embeds: [thing] });
 			}

@@ -25,11 +25,12 @@ module.exports = {
 		const size = 20;
 		const line = '▬';
 		const slider = '🔘';
-		const { body } = await got(song.displayThumbnail('3'), { encoding: null });
+		const img = song.displayThumbnail('3') ? song.displayThumbnail('3') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
 		const embed = new MessageEmbed()
 			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration)}]\` [<@${song.requester.id}>]`)
-			.setThumbnail(song.displayThumbnail('3'))
+			.setThumbnail(img)
 			.setColor(palette[3])
 			.addField('\u200b', progressbar(total, current, size, line, slider))
 			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total)}\``);
