@@ -1,6 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist } = require('../../config/emoji.json');
+const splashy = require('splashy');
+const got = require('got');
 module.exports = {
 	name: 'play',
 	description: 'Plays music from YouTube or Spotify',
@@ -66,8 +68,10 @@ module.exports = {
 				return player.play();
 			}
 			else {
+				const { body } = await got(track.displayThumbnail('hqdefault'), { encoding: null });
+				const palette = await splashy(body);
 				thing = new MessageEmbed()
-					.setColor(Math.round(Math.random() * 16777215))
+					.setColor(palette[3])
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\``);
@@ -88,8 +92,10 @@ module.exports = {
 				return player.play();
 			}
 			else {
+				const { body } = await got(track.displayThumbnail('hqdefault'), { encoding: null });
+				const palette = await splashy(body);
 				thing = new MessageEmbed()
-					.setColor(Math.round(Math.random() * 16777215))
+					.setColor(palette[3])
 					.setTimestamp()
 					.setThumbnail(track.displayThumbnail('hqdefault'))
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration)}]\`[<@${track.requester.id}>]`);

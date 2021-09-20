@@ -1,5 +1,7 @@
 const moment = require('moment');
 const Discord = require('discord.js');
+const splashy = require('splashy');
+const got = require('got');
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',
@@ -8,8 +10,10 @@ module.exports = {
 	guildOnly: true,
 	async execute(message) {
 		const owner = await message.guild.fetchOwner();
+		const { body } = await got(message.guild.iconURL().replace('webp', 'png'), { encoding: null });
+		const palette = await splashy(body);
 		const Embed = new Discord.MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215))
+			.setColor(palette[3])
 			.setAuthor(message.guild.name, message.guild.iconURL())
 			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL());
 		if (message.guild.description) Embed.addField('Description', message.guild.description);

@@ -2,6 +2,8 @@ const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { progressbar } = require('../../functions/progressbar.js');
 const { music } = require('../../config/emoji.json');
+const splashy = require('splashy');
+const got = require('got');
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
@@ -23,10 +25,12 @@ module.exports = {
 		const size = 20;
 		const line = '▬';
 		const slider = '🔘';
+		const { body } = await got(song.displayThumbnail('3'), { encoding: null });
+		const palette = await splashy(body);
 		const embed = new MessageEmbed()
 			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration)}]\` [<@${song.requester.id}>]`)
 			.setThumbnail(song.displayThumbnail('3'))
-			.setColor(Math.round(Math.random() * 16777215))
+			.setColor(palette[3])
 			.addField('\u200b', progressbar(total, current, size, line, slider))
 			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total)}\``);
 		return message.reply({ embeds: [embed] });

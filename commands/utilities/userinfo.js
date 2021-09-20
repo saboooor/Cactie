@@ -2,6 +2,8 @@ const moment = require('moment');
 require('moment-duration-format');
 const Discord = require('discord.js');
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
+const splashy = require('splashy');
+const got = require('got');
 module.exports = {
 	name: 'userinfo',
 	description: 'Discord member information',
@@ -59,8 +61,11 @@ module.exports = {
 			}
 			return activitystack.join('');
 		});
+		const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
+		const palette = await splashy(body);
+		console.log(await splashy(body));
 		const Embed = new Discord.MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215))
+			.setColor(palette[3])
 			.setTitle(`${member.displayName}`)
 			.setThumbnail(member.user.avatarURL())
 			.setDescription(`${member.user}`)
