@@ -19,7 +19,6 @@ module.exports = {
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		if (reaction && message.author.id != client.user.id) return;
-		if (!message.guild.features.includes('THREADS_ENABLED')) return message.reply('Subtickets are a feature that uses Discord\'s Threads feature, this Discord server does not have it enabled yet!\nPlease contact the server owner or one of the administrators to enable it through the server settings or wait until August 17');
 		const srvconfig = client.settings.get(message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
