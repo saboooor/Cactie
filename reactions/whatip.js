@@ -1,10 +1,12 @@
+const servers = require('../config/pterodactyl.json');
 module.exports = {
 	name: 'whatip',
 	triggers: ['what'],
 	additionaltriggers: ['ip'],
 	private: true,
 	execute(message) {
-		if (message.channel.guild.id == '711661870926397601') message.channel.send({ content: 'tacohaven.club' });
-		if (message.channel.guild.id == '865519986806095902') message.channel.send({ content: 'play.netherdepths.com' });
+		const serverlist = Object.keys(servers).map(i => { return servers[i].name.toLowerCase(); }), srvs = [];
+		serverlist.forEach(i => { if (servers[i].guildid == message.guild.id) srvs.push(servers[i].ip); });
+		if (srvs[0]) message.channel.send({ content: srvs[0] });
 	},
 };
