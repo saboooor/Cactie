@@ -10,6 +10,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(message) {
 		const player = message.client.manager.get(message.guild.id);
+		if (!player) return message.reply('The bot is not playing anything!');
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')

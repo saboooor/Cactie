@@ -93,7 +93,7 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				const img = track.displayThumbnail('hqdefault') ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+				const img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
 				const { body } = await got(img, { encoding: null });
 				const palette = await splashy(body);
 				thing = new MessageEmbed()
