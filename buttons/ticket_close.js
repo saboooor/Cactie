@@ -4,7 +4,7 @@ const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
 	async execute(interaction, client) {
-		if (client.tickets.get(interaction.channel.id)) return interaction.reply('An error occured, please manually delete this channel.');
+		if (!client.tickets.get(interaction.channel.id)) return interaction.reply('An error occured, please manually delete this channel.');
 		const author = interaction.user;
 		const srvconfig = client.settings.get(interaction.guild.id);
 		if (!interaction.channel.topic.startsWith('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
