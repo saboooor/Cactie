@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 const fetch = require('node-fetch');
 module.exports = {
 	name: 'dm',
@@ -22,7 +22,7 @@ module.exports = {
 		}
 		const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
 		if (!(member ? member.roles.cache.has('849452673156513813') : null)) return;
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args.slice(1).join(' ')}\nTo see the response, see ${client.channels.cache.get('849453797809455125')}`);
 		if (message.attachments && message.attachments.size >= 1 && !message.commandName) {
@@ -32,7 +32,7 @@ module.exports = {
 					method: 'GET',
 				});
 				const buffer = await response.buffer();
-				const img = new Discord.MessageAttachment(buffer, `${attachment.id}.png`);
+				const img = new MessageAttachment(buffer, `${attachment.id}.png`);
 				files.push(img);
 				if (files.length == message.attachments.size) {
 					client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))

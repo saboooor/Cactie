@@ -1,4 +1,4 @@
-const hastebin = require('hastebin');
+const { createPaste } = require('hastebin');
 module.exports = async function getTranscript(messages) {
 	const logs = [];
 	messages.forEach(async msg => {
@@ -17,5 +17,5 @@ module.exports = async function getTranscript(messages) {
 		logs.push(`\n[${time}] ${msg.author.tag}`);
 	});
 	logs.reverse();
-	return await hastebin.createPaste(logs.join('\n'), { server: 'https://bin.birdflop.com' });
+	return await createPaste(logs.join('\n'), { server: 'https://bin.birdflop.com' });
 };

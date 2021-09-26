@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'removesetting',
 	description: 'Remove a guild setting',
@@ -12,7 +12,7 @@ module.exports = {
 		const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop2 => {
 			return `**${prop2}** \`${client.settings.get(message.guild.id)[prop2]}\``;
 		});
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Settings')
 			.setDescription(`${srvconfig.join('\n')}`);

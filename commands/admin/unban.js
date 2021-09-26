@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unban',
 	description: 'Unban someone that was banned from the guild',
@@ -20,7 +20,7 @@ module.exports = {
 		}
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unbanned ${user.tag}`);
 		await user.send({ content: `**You've been unbanned in ${message.guild.name}` })

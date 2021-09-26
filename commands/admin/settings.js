@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Pup\'s settings',
@@ -251,7 +251,7 @@ module.exports = {
 			args[0] = args._subCommand;
 			args[1] = args._hoistedOptions[0].value;
 		}
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');
 		if (args[1] == 'get') args[1] == null;
@@ -304,9 +304,9 @@ module.exports = {
 			});
 			Embed.setDescription(srvconfig.join('\n')).addField('Usage', `\`${client.settings.get(message.guild.id).prefix}settings [<Setting> <Value>]\``);
 		}
-		const row = new Discord.MessageActionRow()
+		const row = new MessageActionRow()
 			.addComponents(
-				new Discord.MessageButton()
+				new MessageButton()
 					.setCustomId('reset')
 					.setLabel('Reset Settings')
 					.setStyle('DANGER'),

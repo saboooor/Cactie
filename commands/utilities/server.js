@@ -1,5 +1,5 @@
 const moment = require('moment');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 		const owner = await message.guild.fetchOwner();
 		const { body } = await got(message.guild.iconURL().replace('webp', 'png'), { encoding: null });
 		const palette = await splashy(body);
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(palette[3])
 			.setAuthor(message.guild.name, message.guild.iconURL())
 			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL());

@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 require('moment-duration-format');
 const moment = require('moment');
 const fetch = require('node-fetch');
@@ -33,7 +33,7 @@ module.exports = {
 		// check if error
 		if (f.error) return message.reply(f.error.message);
 		// initial embed creation
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(9790364)
 			.setTitle(`Purpur ${f.version} build ${f.build} (${f.result})`)
 			.setThumbnail('https://cdn.discordapp.com/attachments/742476351012864162/865391752675065896/purpur.png')

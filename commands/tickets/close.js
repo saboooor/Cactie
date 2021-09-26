@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const Discord = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
@@ -16,7 +16,7 @@ module.exports = {
 		message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
-			const Embed = new Discord.MessageEmbed()
+			const Embed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)
 				.addField('**Transcript**', `${link}.txt`)
@@ -49,7 +49,7 @@ module.exports = {
 		const link = await getTranscript(messages);
 		const users = [];
 		await client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
-		const EmbedDM = new Discord.MessageEmbed()
+		const EmbedDM = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(`Closed ${message.channel.name}`)
 			.addField('**Users in ticket**', `${users}`)
@@ -60,18 +60,18 @@ module.exports = {
 			usr.send({ embeds: [EmbedDM] })
 				.catch(error => { client.logger.error(error); });
 		});
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
 		if (client.settings.get(message.guild.id).tickets == 'buttons') {
-			const row = new Discord.MessageActionRow()
+			const row = new MessageActionRow()
 				.addComponents([
-					new Discord.MessageButton()
+					new MessageButton()
 						.setCustomId('delete_ticket')
 						.setLabel('Delete Ticket')
 						.setEmoji('⛔')
 						.setStyle('DANGER'),
-					new Discord.MessageButton()
+					new MessageButton()
 						.setCustomId('reopen_ticket')
 						.setLabel('Reopen Ticket')
 						.setEmoji('🔓')

@@ -1,9 +1,9 @@
 const moment = require('moment');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
-	const Embed = new Discord.MessageEmbed()
+	const Embed = new MessageEmbed()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`${client.user.username} has been added to ${guild.name}`)
 		.setThumbnail(guild.iconURL())

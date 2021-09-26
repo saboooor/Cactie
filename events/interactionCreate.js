@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed, Collection } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -21,7 +21,7 @@ module.exports = (client, interaction) => {
 			button.execute(interaction, client);
 		}
 		catch (error) {
-			const interactionFailed = new Discord.MessageEmbed()
+			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
@@ -51,7 +51,7 @@ module.exports = (client, interaction) => {
 			dropdown.execute(interaction, client);
 		}
 		catch (error) {
-			const interactionFailed = new Discord.MessageEmbed()
+			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
@@ -72,7 +72,7 @@ module.exports = (client, interaction) => {
 		const { cooldowns } = client;
 
 		if (!cooldowns.has(command.name)) {
-			cooldowns.set(command.name, new Discord.Collection());
+			cooldowns.set(command.name, new Collection());
 		}
 
 		const now = Date.now();
@@ -86,7 +86,7 @@ module.exports = (client, interaction) => {
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
 				if ((expirationTime - now) < 1200) return;
-				const Embed = new Discord.MessageEmbed()
+				const Embed = new MessageEmbed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])
 					.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -113,7 +113,7 @@ module.exports = (client, interaction) => {
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
-			const interactionFailed = new Discord.MessageEmbed()
+			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())

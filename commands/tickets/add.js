@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket.',
@@ -29,7 +29,7 @@ module.exports = {
 			voiceticket.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
 		}
 		message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`${message.member.user} added ${user} to the ticket`);
 		message.reply({ embeds: [Embed] });

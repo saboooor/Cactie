@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-const nodeactyl = require('nodeactyl');
+const { MessageAttachment, MessageEmbed, Collection } = require('discord.js');
+const { NodeactylClient } = require('nodeactyl');
 const fetch = require('node-fetch');
-const hastebin = require('hastebin');
+const { createPaste } = require('hastebin');
 const servers = require('../config/pterodactyl.json');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
@@ -11,13 +11,13 @@ module.exports = async (client, message) => {
 	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('master') && servers['pup'].client == true) {
 		message.reply({ content: 'Updating to latest commit...' });
 		const server = servers['pup'];
-		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
+		const Client = new NodeactylClient(server.url, server.apikey);
 		Client.restartServer(server.id);
 	}
 	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('dev') && servers['pup dev'].client == true) {
 		message.reply({ content: 'Updating to latest commit...' });
 		const server = servers['pup dev'];
-		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
+		const Client = new NodeactylClient(server.url, server.apikey);
 		Client.restartServer(server.id);
 	}
 	if (message.author.bot) return;
@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 					method: 'GET',
 				});
 				const buffer = await response.buffer();
-				const img = new Discord.MessageAttachment(buffer, `${attachment.id}.png`);
+				const img = new MessageAttachment(buffer, `${attachment.id}.png`);
 				files.push(img);
 				if (files.length == message.attachments.size) {
 					client.channels.cache.get('849453797809455125')
@@ -61,8 +61,8 @@ module.exports = async (client, message) => {
 
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
-		const link = await hastebin.createPaste(message.content, { server: 'https://bin.birdflop.com' });
-		const Embed = new Discord.MessageEmbed()
+		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
 			.setAuthor(message.member.displayName, message.member.user.avatarURL())
@@ -87,7 +87,7 @@ module.exports = async (client, message) => {
 	const { cooldowns } = client;
 
 	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
+		cooldowns.set(command.name, new Collection());
 	}
 
 	const now = Date.now();
@@ -101,7 +101,7 @@ module.exports = async (client, message) => {
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️');
-			const Embed = new Discord.MessageEmbed()
+			const Embed = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -113,7 +113,7 @@ module.exports = async (client, message) => {
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 	if (command.args && args.length < 1) {
-		const Usage = new Discord.MessageEmbed()
+		const Usage = new MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
@@ -130,7 +130,7 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	const embed = new Discord.MessageEmbed()
+	const embed = new MessageEmbed()
 		.setColor('RED');
 
 	const player = message.client.manager.get(message.guild.id);
@@ -155,7 +155,7 @@ module.exports = async (client, message) => {
 		command.execute(message, args, client);
 	}
 	catch (error) {
-		const interactionFailed = new Discord.MessageEmbed()
+		const interactionFailed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor(message.author.tag, message.author.avatarURL())

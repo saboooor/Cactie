@@ -1,4 +1,4 @@
-const nodeactyl = require('nodeactyl');
+const { NodeactylClient } = require('nodeactyl');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'start',
@@ -19,7 +19,7 @@ module.exports = {
 		if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
 		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
 		if (!client.guilds.cache.get(server.guildid).members.cache.get(message.member.id) || !client.guilds.cache.get(server.guildid).members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
-		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
+		const Client = new NodeactylClient(server.url, server.apikey);
 		const info = await Client.getServerDetails(server.id);
 		Client.startServer(server.id);
 		client.logger.info(`Starting ${info.name}`);

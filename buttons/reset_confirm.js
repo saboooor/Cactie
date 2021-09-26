@@ -1,14 +1,14 @@
-const Discord = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reset_confirm',
 	permissions: 'ADMINISTRATOR',
 	async execute(interaction, client) {
 		client.settings.delete(interaction.guild.id);
-		const button = new Discord.MessageButton()
+		const button = new MessageButton()
 			.setCustomId('none')
 			.setLabel('Settings successfully reset!')
 			.setStyle('SECONDARY');
-		const row = new Discord.MessageActionRow()
+		const row = new MessageActionRow()
 			.addComponents(button);
 		const desc = {
 			prefix: '*The bot\'s prefix*',
@@ -32,7 +32,7 @@ module.exports = {
 		const srvconfig = Object.keys(client.settings.get(interaction.guild.id)).map(prop => {
 			return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(interaction.guild.id)[prop]}\``;
 		});
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings')
 			.setDescription(srvconfig.join('\n'))

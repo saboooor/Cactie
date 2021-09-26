@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const Discord = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'subticket',
 	description: 'Create a subticket.',
@@ -36,16 +36,16 @@ module.exports = {
 		await sleep(1000);
 		const users = [];
 		await client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Subticket Created')
 			.setDescription('Please explain your issue and we\'ll be with you shortly.')
 			.addField('Description', args[0] ? args.join(' ') : 'Created using a reaction');
 		if (client.settings.get(message.guild.id).tickets == 'buttons') {
 			Embed.setFooter(`To close this subticket do ${srvconfig.prefix}close, or click the button below`);
-			const row = new Discord.MessageActionRow()
+			const row = new MessageActionRow()
 				.addComponents(
-					new Discord.MessageButton()
+					new MessageButton()
 						.setCustomId('close_subticket')
 						.setLabel('Close Subticket')
 						.setEmoji('🔒')

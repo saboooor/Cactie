@@ -1,4 +1,4 @@
-const eightball = require('../../config/8ball.json');
+const ball = require('../../config/8ball.json');
 module.exports = {
 	name: '8ball',
 	description: 'Let the 8ball decide your fate!',
@@ -11,7 +11,7 @@ module.exports = {
 		required: true,
 	}],
 	async execute(message) {
-		const i = Math.floor(Math.random() * eightball.length + 1);
-		message.reply(eightball[i]);
+		const i = Math.floor(Math.random() * ball.length + 1);
+		message.reply(ball[i]);
 	},
 };

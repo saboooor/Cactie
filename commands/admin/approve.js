@@ -25,12 +25,11 @@ module.exports = {
 		else { message.delete(); }
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
+		const Embed = fetchedMsg.embeds[0];
 		if (fetchedMsg.author != client.user) return;
-		if (!fetchedMsg.embeds[0] || !fetchedMsg.embeds[0].author || !fetchedMsg.embeds[0].title.startsWith('Suggestion')) return;
+		if (!Embed || !Embed.author || !Embed.title.startsWith('Suggestion')) return;
 		fetchedMsg.reactions.removeAll();
-		const Embed = fetchedMsg.embeds[0]
-			.setColor(3066993)
-			.setTitle('Suggestion (Approved)');
+		Embed.setColor(3066993).setTitle('Suggestion (Approved)');
 		if (!args[1]) {
 			Embed.setFooter('No response.');
 			fetchedMsg.edit({ embeds: [Embed] });

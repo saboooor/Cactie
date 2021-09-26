@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 		const palette = await splashy(body);
 		const embeds = [];
 		palette.forEach(hex => {
-			const Embed = new Discord.MessageEmbed()
+			const Embed = new MessageEmbed()
 				.setColor(hex)
 				.setDescription(hex);
 			embeds.push(Embed);

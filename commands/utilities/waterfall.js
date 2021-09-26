@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 require('moment-duration-format');
 const moment = require('moment');
 const fetch = require('node-fetch');
@@ -37,7 +37,7 @@ module.exports = {
 		// check if error
 		if (h.error) return message.reply(h.error);
 		// initial embed creation
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(16777215)
 			.setTitle(`Waterfall ${h.version} build ${h.build}`)
 			.setThumbnail('https://avatars.githubusercontent.com/u/7608950?s=200&v=4')

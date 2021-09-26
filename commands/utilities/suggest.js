@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'suggest',
@@ -24,7 +24,7 @@ module.exports = {
 		if (srvconfig.suggestionchannel == 'false') channel = message.channel;
 		else if (srvconfig.suggestionchannel != 'default') channel = client.channels.cache.get(srvconfig.suggestionchannel);
 		const suggestion = args.join(' ');
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(3447003)
 			.setAuthor(message.member.displayName, message.member.user.avatarURL())
 			.setTitle('Suggestion')

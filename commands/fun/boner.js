@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'boner',
 	description: 'See your pp grow!',
@@ -24,7 +24,7 @@ module.exports = {
 			const mention = nick.includes('!') ? nick.slice(3, -1) : nick.slice(2, -1);
 			nick = client.users.cache.get(mention).username;
 		}
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`${nick}'s pp size`)
 			.setDescription('<a:loading:826611946258038805> Calculating...');

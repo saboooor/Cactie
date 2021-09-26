@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reopen_ticket',
 	async execute(interaction, client) {
@@ -12,7 +12,7 @@ module.exports = {
 		client.tickets.get(interaction.channel.id).users.forEach(userid => {
 			interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 		});
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Opened by ${author}`);
 		interaction.reply({ embeds: [Embed] });

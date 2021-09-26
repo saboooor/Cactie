@@ -1,9 +1,9 @@
-const cron = require('node-cron');
-const Discord = require('discord.js');
+const { schedule } = require('node-cron');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
-	cron.schedule('0 0 * * *', () => {
+	schedule('0 0 * * *', () => {
 		client.channels.cache.forEach(async channel => {
 			if (client.tickets.get(channel.id) && client.tickets.get(channel.id).resolved == 'true' && channel.name.includes('ticket-')) {
 				channel.setName(channel.name.replace('ticket', 'closed'));
@@ -22,7 +22,7 @@ module.exports = client => {
 				const link = await getTranscript(messages);
 				const users = [];
 				await client.tickets.get(channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
-				const EmbedDM = new Discord.MessageEmbed()
+				const EmbedDM = new MessageEmbed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
 					.addField('**Users in ticket**', `${users}`)
@@ -33,18 +33,18 @@ module.exports = client => {
 					usr.send({ embeds: [EmbedDM] })
 						.catch(error => { client.logger.error(error); });
 				});
-				const Embed = new Discord.MessageEmbed()
+				const Embed = new MessageEmbed()
 					.setColor(15105570)
 					.setDescription('Automatically closed Resolved Ticket');
 				if (client.settings.get(channel.guild.id).tickets == 'buttons') {
-					const row = new Discord.MessageActionRow()
+					const row = new MessageActionRow()
 						.addComponents([
-							new Discord.MessageButton()
+							new MessageButton()
 								.setCustomId('delete_ticket')
 								.setLabel('Delete Ticket')
 								.setEmoji('⛔')
 								.setStyle('DANGER'),
-							new Discord.MessageButton()
+							new MessageButton()
 								.setCustomId('reopen_ticket')
 								.setLabel('Reopen Ticket')
 								.setEmoji('🔓')

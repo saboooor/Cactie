@@ -1,11 +1,11 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_subticket',
 	async execute(interaction, client) {
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(`Closed ${interaction.channel.name}`)
 			.addField('**Transcript**', `${link}.txt`)

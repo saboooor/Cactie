@@ -1,10 +1,10 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reactions',
-	description: 'See what words pup reacts to',
+	description: 'See what words Pup reacts to',
 	cooldown: 10,
 	execute(message, args, client) {
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Here are my reactions');
 		client.reactions.forEach(reaction => {

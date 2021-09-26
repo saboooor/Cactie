@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed, MessageSelectMenu } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -46,7 +46,7 @@ module.exports = {
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		const prefix = await client.settings.get(message.guild.id).prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('**HELP**');
 		let arg = args[0];
@@ -73,15 +73,15 @@ module.exports = {
 		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
 			Embed.setDescription('Created support panel! You may now delete this message');
-			const Panel = new Discord.MessageEmbed()
+			const Panel = new MessageEmbed()
 				.setColor(3447003)
 				.setTitle('Need help? No problem!')
 				.setFooter(`${message.guild.name} Support`, message.guild.iconURL());
 			if (client.settings.get(message.guild.id).tickets == 'buttons') {
 				Panel.setDescription('Click the button below to open a ticket!');
-				const row = new Discord.MessageActionRow()
+				const row = new MessageActionRow()
 					.addComponents(
-						new Discord.MessageButton()
+						new MessageButton()
 							.setCustomId('create_ticket')
 							.setLabel('Open Ticket')
 							.setEmoji('🎫')
@@ -101,9 +101,9 @@ module.exports = {
 		else {
 			Embed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
 		}
-		const row = new Discord.MessageActionRow()
+		const row = new MessageActionRow()
 			.addComponents([
-				new Discord.MessageSelectMenu()
+				new MessageSelectMenu()
 					.setCustomId('select')
 					.setPlaceholder('Select a help category!')
 					.addOptions([
@@ -139,13 +139,13 @@ module.exports = {
 						},
 					]),
 			]);
-		const row2 = new Discord.MessageActionRow()
+		const row2 = new MessageActionRow()
 			.addComponents([
-				new Discord.MessageButton()
+				new MessageButton()
 					.setURL('https://discord.gg/Bsefgbaedz')
 					.setLabel('Support Discord')
 					.setStyle('LINK'),
-				new Discord.MessageButton()
+				new MessageButton()
 					.setURL('https://paypal.me/youhavebeenyoted')
 					.setLabel('Donate')
 					.setStyle('LINK')]);

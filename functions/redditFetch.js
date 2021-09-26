@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = async (subreddit, message, client) => {
@@ -20,7 +20,7 @@ module.exports = async (subreddit, message, client) => {
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞');
 	const { body } = await got(pong[0].data.children[0].data.url, { encoding: null });
 	const palette = await splashy(body);
-	const Embed = new Discord.MessageEmbed()
+	const Embed = new MessageEmbed()
 		.setColor(palette[2])
 		.setAuthor(`u/${pong[0].data.children[0].data.author}`)
 		.setTitle(`${pong[0].data.children[0].data.title} (${pong[0].data.children[0].data.ups} Upvotes)`)

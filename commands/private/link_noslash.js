@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'link',
 	description: 'Get help on DiscordSRV linking',
@@ -8,7 +8,7 @@ module.exports = {
 		if (message.guild.id == '865519986806095902') e = ['Warden', '661797951223627787', 'Nether Depths'];
 		if (message.guild.id == '711661870926397601') e = ['Taco\'s Turtle Bot', '743741294190395402', 'Taco Haven'];
 		if (!e[0]) return;
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('DISCORD LINKING')
 			.setDescription(`**Follow these steps to link your Discord and Minecraft accounts**
@@ -23,9 +23,9 @@ If after step 3, you do not see a box that says \`Message @${e[0]}\`, you disabl
 **1.** On your list of Discord servers in the left-hand servers tab, you should see the ${e[2]} logo. Right click it.
 **2.** Click Privacy \`Settings\`
 **3.** Enable the setting labeled \`Allow direct messages from server members\`.`);
-		const row = new Discord.MessageActionRow()
+		const row = new MessageActionRow()
 			.addComponents(
-				new Discord.MessageButton()
+				new MessageButton()
 					.setCustomId('create_ticket')
 					.setLabel('Still have an issue? Create a ticket by clicking here!')
 					.setStyle('SECONDARY'),

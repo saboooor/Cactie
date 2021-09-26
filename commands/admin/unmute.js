@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unmute',
 	description: 'Unmute someone in the server',
@@ -26,7 +26,7 @@ module.exports = {
 		const member = message.guild.members.cache.get(user.id);
 		const role = await message.guild.roles.cache.get(srvconfig.muterole);
 		if (!member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`Unmuted ${user.tag}`);
 		client.memberdata.set(`${user.id}-${message.guild.id}`, 0, 'mutedUntil');

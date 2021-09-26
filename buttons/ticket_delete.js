@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'delete_ticket',
@@ -15,7 +15,7 @@ module.exports = {
 			const link = await getTranscript(messages);
 			const users = [];
 			await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const Embed = new Discord.MessageEmbed()
+			const Embed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${interaction.channel.name}`)
 				.addField('**Users in ticket**', `${users}`)

@@ -1,6 +1,6 @@
 const fs = require('fs');
 module.exports = (prefix, Embed, srvconfig) => {
-	const adminCommands = fs.readdirSync('./commands/admin').filter(file => file.endsWith('.js'));
+	const adminCommands = fs.readdir('./commands/admin').filter(file => file.endsWith('.js'));
 	const commands = [];
 	for (const file of adminCommands) {
 		const command = require(`../commands/admin/${file}`);

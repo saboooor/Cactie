@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 function time(ms) {
 	if (ms.endsWith('s')) return ms.replace('s', '') * 1000;
 	if (ms.endsWith('m')) return ms.replace('m', '') * 60000;
@@ -42,8 +42,7 @@ module.exports = {
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
 		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
-		const Embed = new Discord.MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215));
+		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		const ms = time(args[1]);
 		if (ms > 31536000000) return message.reply({ content: 'You cannot ban someone for more than 1 year!' });
 		if (!isNaN(ms) && args[2]) {

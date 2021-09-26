@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'kick',
 	description: 'Kick someone from the guild',
@@ -28,8 +28,7 @@ module.exports = {
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
 		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
-		const Embed = new Discord.MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215));
+		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		if (args[1]) {
 			Embed.setTitle(`Kicked ${user.tag} for ${args.slice(1).join(' ')}`);
 			await user.send({ content: `**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**` })

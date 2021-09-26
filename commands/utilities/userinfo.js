@@ -1,6 +1,6 @@
 const moment = require('moment');
 require('moment-duration-format');
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 const splashy = require('splashy');
 const got = require('got');
@@ -64,7 +64,7 @@ module.exports = {
 		const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
 		const palette = await splashy(body);
 		console.log(await splashy(body));
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(palette[3])
 			.setTitle(`${member.displayName}`)
 			.setThumbnail(member.user.avatarURL())

@@ -1,11 +1,11 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'invite',
 	description: 'Get pup invite links',
 	aliases: ['inv'],
 	cooldown: 10,
 	async execute(message) {
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.addField('**Add the bot:**', '[Invite Pup to your server using this link!](https://pup.smhsmh.club/invite)')
 			.addField('**Add the bot (Admin):**', '[Invite Pup to your server using this link!](https://pup.smhsmh.club/admin)')

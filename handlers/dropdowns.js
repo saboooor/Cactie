@@ -1,8 +1,8 @@
 const fs = require('fs');
-const Discord = require('discord.js');
+const { Collection } = require('discord.js');
 module.exports = client => {
 	let amount = 0;
-	client.dropdowns = new Discord.Collection();
+	client.dropdowns = new Collection();
 	const dropdownFiles = fs.readdirSync('./dropdowns').filter(file => file.endsWith('.js'));
 	for (const file of dropdownFiles) {
 		const dropdown = require(`../dropdowns/${file}`);

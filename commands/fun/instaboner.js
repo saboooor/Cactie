@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your pp grow FAST!',
@@ -23,7 +23,7 @@ module.exports = {
 		}
 		const hard = Math.round(Math.random());
 		const hardtxt = hard == 1 ? 'soft' : 'hard';
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle(`${nick}'s ${hardtxt} pp size`);
 		if (Math.round(Math.random() * 10) == 5) {

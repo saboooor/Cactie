@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const pteroconfig = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'changelog',
@@ -12,7 +12,7 @@ module.exports = {
 		Object.keys(pteroconfig).map(i => { if (pteroconfig[i].changelogs) servers.push(pteroconfig[i]); });
 		const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].short} (${servers[i].name})`; });
 		const server = servers.find(srv => args[0].toLowerCase() == srv.short);
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new MessageEmbed()
 			.setAuthor('Changelog', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png')
 			.setFooter(`By ${message.author.username}`, message.author.avatarURL());
 		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);

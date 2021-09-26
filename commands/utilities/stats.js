@@ -1,8 +1,8 @@
-const Discord = require('discord.js');
+const { MessageEmbed, MessageAttachment } = require('discord.js');
 require('moment-duration-format');
 const moment = require('moment');
-const hastebin = require('hastebin');
-const nodeactyl = require('nodeactyl');
+const { createPaste } = require('hastebin');
+const { NodeactylClient } = require('nodeactyl');
 const fetch = require('node-fetch');
 const servers = require('../../config/pterodactyl.json');
 const protocols = require('../../config/mcprotocol.json');
@@ -27,9 +27,9 @@ module.exports = {
 		Object.keys(servers).map(i => { srvs.push(servers[i]); });
 		let server = servers[args.join(' ').toLowerCase()];
 		if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
-		const Embed = new Discord.MessageEmbed().setColor(15105570);
+		const Embed = new MessageEmbed().setColor(15105570);
 		if (server && server.id) {
-			const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
+			const Client = new NodeactylClient(server.url, server.apikey);
 			const info = await Client.getServerDetails(server.id);
 			const usages = await Client.getServerUsages(server.id);
 			if (usages.current_state == 'running') Embed.setColor(65280);
@@ -52,7 +52,7 @@ module.exports = {
 		else {
 			server = { ip: args[0] };
 		}
-		let iconpng = null;
+		const iconpng = [];
 		if (server.ip) {
 			const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
 			const pong = await json.json();
@@ -69,7 +69,7 @@ module.exports = {
 			if (pong.software) Embed.addField('**Software:**', pong.software, true);
 			if (pong.players) Embed.addField('**Players Online:**', `${pong.players.online} / ${pong.players.max}`, true);
 			if (pong.players && pong.players.list && pong.players.online > 50) {
-				const link = await hastebin.createPaste(pong.players.list.join('\n'), { server: 'https://bin.birdflop.com' });
+				const link = await createPaste(pong.players.list.join('\n'), { server: 'https://bin.birdflop.com' });
 				Embed.addField('**Players:**', `[Click Here](${link})`, true);
 			}
 			else if (pong.players && pong.players.list) {
@@ -78,18 +78,20 @@ module.exports = {
 			if (pong.motd) Embed.addField('**MOTD:**', pong.motd.clean.join('\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&le;/g, '≤').replace(/&ge;/g, '≥'));
 			if (pong.icon) {
 				const base64string = Buffer.from(pong.icon.replace(/^data:image\/png;base64,/, ''), 'base64');
-				iconpng = new Discord.MessageAttachment(base64string, 'icon.png');
+				iconpng.push(new MessageAttachment(base64string, 'icon.png'));
 				Embed.setThumbnail('attachment://icon.png');
 			}
 			else {
 				Embed.setThumbnail('https://cdn.mos.cms.futurecdn.net/6QQEiDSc3p6yXjhohY3tiF.jpg');
 			}
 			if (pong.plugins && pong.plugins.raw[0]) {
-				const link = await hastebin.createPaste(pong.plugins.raw.join('\n'), { server: 'https://bin.birdflop.com' });
+				const link = await createPaste(pong.plugins.raw.join('\n'), { server: 'https://bin.birdflop.com' });
 				Embed.addField('**Plugins:**', `[Click Here](${link})`, true);
 			}
 			if (!pong.debug.query) Embed.setFooter('Query disabled! If you want more info, contact the owner to enable query.');
 		}
-		iconpng ? message.type && message.type == 'APPLICATION_COMMAND' ? message.editReply({ embeds: [Embed], files: [iconpng] }) : reply.edit({ content: null, embeds: [Embed], files: [iconpng] }) : message.type && message.type == 'APPLICATION_COMMAND' ? message.editReply({ embeds: [Embed] }) : reply.edit({ content: null, embeds: [Embed] });
+		message.type && message.type == 'APPLICATION_COMMAND'
+			? message.editReply({ embeds: [Embed], files: iconpng })
+			: reply.edit({ content: null, embeds: [Embed], files: iconpng });
 	},
 };
