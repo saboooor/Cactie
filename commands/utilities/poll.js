@@ -132,11 +132,12 @@ module.exports = {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.pollchannel == 'false') channel = message.channel;
 		else if (srvconfig.pollchannel != 'default') channel = client.channels.cache.get(srvconfig.pollchannel);
+		else if (!channel) channel = message.channel;
 		const Poll = new MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Poll')
 			.setAuthor(message.member.user.username, message.member.user.avatarURL());
-		const type = message.commandName ? args[0].value : 'yesno';
+		const type = message.commandName ? args._hoistedOptions[0].value : 'yesno';
 		if (type == 'yesno') {
 			if (message.type && message.type == 'APPLICATION_COMMAND') {
 				args = args._hoistedOptions;
@@ -149,10 +150,10 @@ module.exports = {
 			await msg.react(no);
 		}
 		else if (type == 'choices') {
-			if (!args[3].value) return message.reply({ content: 'You need to pick at least one option!', ephemeral: true });
+			if (!args._hoistedOptions[3].value) return message.reply({ content: 'You need to pick at least one option!', ephemeral: true });
 			const emojis = [];
 			const options = [];
-			args.forEach(arg => {
+			args._hoistedOptions.forEach(arg => {
 				if (arg.name.includes('emoji')) {
 					emojis.push(arg.value);
 				}
@@ -167,7 +168,7 @@ module.exports = {
 				combine.push(' ');
 				combine.push(options[emojis.indexOf(emoji)]);
 			});
-			Poll.setDescription(`${args[1].value}${combine.join('')}`);
+			Poll.setDescription(`${args._hoistedOptions[1].value}${combine.join('')}`);
 			if (channel) {
 				const pp = await channel.send({ embeds: [Poll] });
 				emojis.forEach(emoji => {
