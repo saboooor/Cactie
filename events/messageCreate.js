@@ -14,7 +14,7 @@ module.exports = async (client, message) => {
 		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
 		Client.restartServer(server.id);
 	}
-	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('dev')) {
+	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('dev') && servers['pup dev'].client == true) {
 		message.reply({ content: 'Updating to latest commit...' });
 		const server = servers['pup dev'];
 		const Client = new nodeactyl.NodeactylClient(server.url, server.apikey);
