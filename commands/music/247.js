@@ -15,7 +15,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
 		if (player.twentyFourSeven) {
-			player.twentyFourSeven = false;
+			player.twentyFourSeven = null;
 			embed.setDescription(`${loop} 24/7 mode is now off.`);
 		}
 		else {

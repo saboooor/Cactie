@@ -28,7 +28,7 @@ module.exports = async (client, oldState, newState) => {
 	if (!oldState.guild.members.cache.get(client.user.id).voice.channelId) return;
 
 	// Don't leave channel if 24/7 mode is active
-	if (player.twentyFourSeven == true) return;
+	if (player.twentyFourSeven) return;
 
 	// Make sure the bot is in the voice channel that 'activated' the event
 	if (oldState.guild.members.cache.get(client.user.id).voice.channelId === oldState.channelId) {
@@ -37,18 +37,17 @@ module.exports = async (client, oldState, newState) => {
 				oldState.guild.me.voice.channel.members.filter((m) => !m.user.bot).size === 0
 		) {
 			const vcName = oldState.guild.me.voice.channel.name;
-			await sleep(180000);
+			await sleep(120000);
 			// times up check if bot is still by themselves in VC (exluding bots)
 			const vcMembers = oldState.guild.me.voice.channel?.members.size;
 			if (!vcMembers || vcMembers === 1) {
-				if (player.twentyFourSeven == true) return;
 				const newPlayer = client.manager?.players.get(newState.guild.id);
 				if (!oldState.guild.me.voice.channel) return;
 				newPlayer ? player.destroy() : oldState.guild.me.voice.channel.leave();
 				const embed = new MessageEmbed(client, newState.guild)
 				// eslint-disable-next-line no-inline-comments
 					.setDescription(
-						`I left 🔉 **${vcName}** because I was inactive for too long.`,
+						`I left 🔉 **${vcName}** because I was left alone for too long <:Stare:811372073737912320>`,
 					);
 				try {
 					const c = client.channels.cache.get(player.textChannel);
