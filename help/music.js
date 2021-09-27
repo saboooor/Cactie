@@ -1,6 +1,6 @@
 const fs = require('fs');
 module.exports = (prefix, Embed) => {
-	const musicCommands = fs.readdir('./commands/music').filter(file => file.endsWith('.js'));
+	const musicCommands = fs.readdirSync('./commands/music').filter(file => file.endsWith('.js'));
 	const commands = [];
 	for (const file of musicCommands) {
 		const command = require(`../commands/music/${file}`);
