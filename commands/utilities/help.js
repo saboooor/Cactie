@@ -142,7 +142,7 @@ module.exports = {
 		const row2 = new MessageActionRow()
 			.addComponents([
 				new MessageButton()
-					.setURL('https://discord.gg/Bsefgbaedz')
+					.setURL('https://pup.smhsmh.club/discord')
 					.setLabel('Support Discord')
 					.setStyle('LINK'),
 				new MessageButton()
