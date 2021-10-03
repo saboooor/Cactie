@@ -5,7 +5,7 @@ const splashy = require('splashy');
 const got = require('got');
 module.exports = async (client, player, track) => {
 	const channel = client.channels.cache.get(player.textChannel);
-	const img = track.displayThumbnail ? track.displayThumbnail('3') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+	const img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
 	const { body } = await got(img, { encoding: null });
 	const palette = await splashy(body);
 	const thing = new MessageEmbed()
