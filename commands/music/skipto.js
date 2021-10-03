@@ -38,7 +38,7 @@ module.exports = {
 		player.queue.remove(0, position - 1);
 		player.stop();
 		const thing = new MessageEmbed()
-			.setDescription(`${jump} Forward **${position}** Songs`)
+			.setDescription(`${jump} Skipped **${position}** Songs`)
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		return message.reply({ embeds: [thing] });

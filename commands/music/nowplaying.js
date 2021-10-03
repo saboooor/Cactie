@@ -7,8 +7,7 @@ const got = require('got');
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
-	aliases: ['np'],
-	cooldown: 5,
+	aliases: ['playing', 'np'],
 	guildOnly: true,
 	player: true,
 	async execute(message) {
@@ -26,11 +25,9 @@ module.exports = {
 		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
 		const embed = new MessageEmbed()
-			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]`)
+			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('07:12:56', 'LIVE')}\``)
 			.setThumbnail(img)
-			.setColor(palette[3])
-			.addField('\u200b', progressbar(total, current, 20, '▬', '🔘'))
-			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total).replace('07:12:56', 'LIVE')}\``);
+			.setColor(palette[3]);
 		return message.reply({ embeds: [embed] });
 	},
 };

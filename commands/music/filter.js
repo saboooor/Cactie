@@ -156,7 +156,7 @@ module.exports = {
 				{ band: 13, gain: 0 },
 				{ band: 14, gain: 0 },
 			];
-			thing.setDescription(`${filter} Trablebass mode is ON`);
+			thing.setDescription(`${filter} Treblebass mode is ON`);
 			player.setEQ(...bands);
 		}
 		else if (args[0] === 'Bassboost' || args[0] == 'bassboost') {

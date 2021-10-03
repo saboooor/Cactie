@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { skip } = require('../../config/emoji.json');
+const splashy = require('splashy');
+const got = require('got');
 module.exports = {
 	name: 'skip',
 	aliases: ['s'],
@@ -27,10 +29,14 @@ module.exports = {
 			player.queue.clear();
 			player.set('autoplay', false);
 		}
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+		const { body } = await got(img, { encoding: null });
+		const palette = await splashy(body);
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Skipped**\n[${song.title}](${song.uri})`)
-			.setColor(Math.round(Math.random() * 16777215))
-			.setTimestamp();
+			.setColor(palette[3])
+			.setTimestamp()
+			.setThumbnail(img);
 		return message.reply({ embeds: [thing] });
 	},
 };

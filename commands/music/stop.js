@@ -3,7 +3,6 @@ const { stop } = require('../../config/emoji.json');
 module.exports = {
 	name: 'stop',
 	description: 'Stops the music',
-	cooldown: 10,
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,

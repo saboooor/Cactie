@@ -1,34 +1,27 @@
 const { MessageEmbed } = require('discord.js');
-const { resume } = require('../../config/emoji.json');
+const { loop } = require('../../config/emoji.json');
 module.exports = {
-	name: 'resume',
-	description: 'Resume currently playing music',
-	aliases: ['r'],
+	name: 'loopqueue',
+	description: 'Toggle queue loop',
+	aliases: ['lq'],
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message) {
 		const player = message.client.manager.get(message.guild.id);
-		const song = player.queue.current;
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
-		if (!player.paused) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription(`${resume} The player is already **resumed**.`)
-				.setTimestamp();
-			return message.reply({ embeds: [thing] });
-		}
-		player.pause(false);
+		player.setQueueRepeat(!player.queueRepeat);
+		const queueRepeat = player.queueRepeat ? 'enabled' : 'disabled';
 		const thing = new MessageEmbed()
-			.setDescription(`${resume} **Resumed**\n[${song.title}](${song.uri})`)
 			.setColor(Math.round(Math.random() * 16777215))
-			.setTimestamp();
+			.setTimestamp()
+			.setDescription(`${loop} Loop queue is now **${queueRepeat}**`);
 		return message.reply({ embeds: [thing] });
 	},
 };

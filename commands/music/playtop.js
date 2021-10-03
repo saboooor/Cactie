@@ -8,7 +8,6 @@ module.exports = {
 	description: 'Plays music to the top of the queue',
 	usage: '<Song URL/Name>',
 	aliases: ['pt', 'ptop'],
-	cooldown: 5,
 	args: true,
 	guildOnly: true,
 	inVoiceChannel: true,

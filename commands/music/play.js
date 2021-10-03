@@ -8,7 +8,6 @@ module.exports = {
 	description: 'Plays music from YouTube or Spotify',
 	usage: '<Song URL/Name>',
 	aliases: ['p'],
-	cooldown: 5,
 	args: true,
 	guildOnly: true,
 	inVoiceChannel: true,
