@@ -1,6 +1,4 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
-require('moment-duration-format');
-const moment = require('moment');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = require('node-fetch');
@@ -37,8 +35,8 @@ module.exports = {
 			if (usages.current_state == 'offline') Embed.setColor(16711680);
 			if (usages.current_state == 'starting') Embed.setColor(16737280);
 			if (server.client) {
-				const duration = moment.duration(client.uptime).format('D [days], H [hrs], m [mins], s [secs]');
-				if (duration) Embed.addField('**Uptime:**', duration, true);
+				const duration = `<t:${Math.round((Date.now() - client.uptime) / 1000)}:R>`;
+				if (duration) Embed.addField('**Last Started:**', duration, true);
 			}
 			if (info.node) Embed.addField('**Node:**', info.node, true);
 			if (info.docker_image) Embed.addField('**Docker Image:**', info.docker_image, true);
@@ -61,9 +59,8 @@ module.exports = {
 			if (!Embed.title && pong.hostname) Embed.setTitle(pong.hostname);
 			else if (!Embed.title && pong.port == 25565) Embed.setTitle(pong.ip);
 			else if (!Embed.title) Embed.setTitle(`${pong.ip}:${pong.port}`);
-			const duration = moment.duration(Date.now() - pong.debug.cachetime * 1000).format('m [mins and] s [secs]');
-			Embed.setDescription(`Last Pinged: \`${duration} ago\``);
-			if (!pong.debug.cachetime) Embed.setDescription('Last Pinged: `just now`');
+			Embed.setDescription(`Last Pinged: <t:${pong.debug.cachetime}:R>`);
+			if (!pong.debug.cachetime) Embed.setDescription(`Last Pinged: <t:${Math.round(Date.now() / 1000)}:R>`);
 			if (pong.version) Embed.addField('**Version:**', pong.version, true);
 			if (pong.protocol != -1 && pong.protocol) Embed.addField('**Protocol:**', `${pong.protocol} (${protocols[pong.protocol]})`, true);
 			if (pong.software) Embed.addField('**Software:**', pong.software, true);

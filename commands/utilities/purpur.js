@@ -1,6 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-require('moment-duration-format');
-const moment = require('moment');
 const fetch = require('node-fetch');
 module.exports = {
 	name: 'purpur',
@@ -36,14 +34,15 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setColor(9790364)
 			.setTitle(`Purpur ${f.version} build ${f.build} (${f.result})`)
+			.setURL(`https://api.pl3x.net/v2/purpur/${c}/${d}`)
 			.setThumbnail('https://cdn.discordapp.com/attachments/742476351012864162/865391752675065896/purpur.png')
 			.setDescription(`${f.commits.length} commit(s)`)
-			.setFooter(`${moment(f.timestamp)}`);
+			.setTimestamp(f.timestamp);
 		// add fields for commits
 		f.commits.forEach(commit => {
 			// check if commit description is more than 1000, if so, split it into multiple fields
 			if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { Embed.addField(commit.author, `${chunk}`); });
-			else Embed.addField(commit.author, `${commit.description}\n*${moment(commit.timestamp)}*`);
+			else Embed.addField(commit.author, `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*`);
 		});
 		// add field for download
 		Embed.addField('Download', `[Click Here](https://api.pl3x.net/v2/purpur/${c}/${d}/download)`);

@@ -1,6 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-require('moment-duration-format');
-const moment = require('moment');
 const fetch = require('node-fetch');
 module.exports = {
 	name: 'waterfall',
@@ -42,7 +40,7 @@ module.exports = {
 			.setTitle(`Waterfall ${h.version} build ${h.build}`)
 			.setThumbnail('https://avatars.githubusercontent.com/u/7608950?s=200&v=4')
 			.setDescription(`${h.changes.length} commit(s)`)
-			.setFooter(`${moment(h.time)}`);
+			.setTimestamp(Date.parse(h.time));
 		// add fields for commits
 		h.changes.forEach(commit => {
 			// check if commit description is more than 1000, if so, split it into multiple fields

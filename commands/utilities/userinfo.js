@@ -1,7 +1,6 @@
-const moment = require('moment');
-require('moment-duration-format');
 const { MessageEmbed } = require('discord.js');
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
+const { convertTime } = require('../../functions/convert.js');
+const { progressbar } = require('../../functions/progressbar.js');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
@@ -40,40 +39,34 @@ module.exports = {
 			if (activities[i].state) activitystack.push(`\n${activities[i].state}`);
 			if (activities[i].timestamps && activities[i].timestamps.start && activities[i].timestamps.end) {
 				const start = new Date(activities[i].timestamps.start);
-				const now = new Date();
-				const end = new Date(activities[i].timestamps.end);
-				activitystack.push(`\n${Math.floor((now - start) / 60000)}:${minTwoDigits(Math.floor(((now - start) / 1000) - (60 * Math.floor((now - start) / 60000))))} / ${Math.floor((end - start) / 60000)}:${minTwoDigits(Math.floor(((end - start) / 1000) - (60 * Math.floor((end - start) / 60000))))}`);
+				const current = new Date() - start;
+				const total = new Date(activities[i].timestamps.end) - start;
+				activitystack.push(`\n\`${convertTime(current)} ${progressbar(total, current, 10, '▬', '🔘')} ${convertTime(total)}\``);
 			}
 			else if (activities[i].timestamps && activities[i].timestamps.start) {
-				const start = new Date(activities[i].timestamps.start);
-				const now = new Date();
-				activitystack.push(`\nFor ${moment.duration(now - start).format('D [days], H [hrs], m [mins], s [secs]')}`);
+				activitystack.push(`\n<t:${Date.parse(activities[i].timestamps.start) / 1000}:R>`);
 			}
 			else if (activities[i].timestamps && activities[i].timestamps.end) {
-				const end = new Date(activities[i].timestamps.end);
-				const now = new Date();
-				activitystack.push(`\n${moment.duration(end - now).format('D [days], H [hrs], m [mins], s [secs]')} left`);
+				activitystack.push(`\nEnds <t:${Date.parse(activities[i].timestamps.end) / 1000}:R>`);
 			}
 			else if (activities[i].createdTimestamp) {
-				const start = new Date(activities[i].createdTimestamp);
-				const now = new Date();
-				activitystack.push(`\nFor ${moment.duration(now - start).format('D [days], H [hrs], m [mins], s [secs]')}`);
+				activitystack.push(`\n<t:${Date.parse(activities[i].createdTimestamp) / 1000}:R>`);
 			}
 			return activitystack.join('');
 		});
 		const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
 		const palette = await splashy(body);
-		console.log(await splashy(body));
 		const Embed = new MessageEmbed()
 			.setColor(palette[3])
 			.setTitle(`${member.displayName}`)
 			.setThumbnail(member.user.avatarURL())
 			.setDescription(`${member.user}`)
-			.addField('Status', member.presence.status);
+			.addField('Status', member.presence.status)
+			.setTimestamp();
 		if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
 		Embed
-			.addField('Join Date', `${moment(member.joinedAt)}`)
-			.addField('Creation Date', `${moment(member.user.createdAt)}`)
+			.addField('Joined Server At', `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>`)
+			.addField('Created Account At', `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`)
 			.addField('Roles', roleslist.join(', '));
 		await message.reply({ embeds: [Embed] });
 	},

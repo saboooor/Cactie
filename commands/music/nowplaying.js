@@ -22,9 +22,6 @@ module.exports = {
 		const song = player.queue.current;
 		const total = song.duration;
 		const current = player.position;
-		const size = 20;
-		const line = '▬';
-		const slider = '🔘';
 		const img = song.displayThumbnail('3') ? song.displayThumbnail('3') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
 		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
@@ -32,7 +29,7 @@ module.exports = {
 			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]`)
 			.setThumbnail(img)
 			.setColor(palette[3])
-			.addField('\u200b', progressbar(total, current, size, line, slider))
+			.addField('\u200b', progressbar(total, current, 20, '▬', '🔘'))
 			.addField('\u200b', `\`${convertTime(current)} / ${convertTime(total).replace('07:12:56', 'LIVE')}\``);
 		return message.reply({ embeds: [embed] });
 	},

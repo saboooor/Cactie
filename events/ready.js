@@ -1,5 +1,3 @@
-const moment = require('moment');
-require('moment-duration-format');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
@@ -33,7 +31,6 @@ module.exports = async (client) => {
 		const activitynumber = Math.round(Math.random() * (activities.length - 1));
 		const activity = activities[activitynumber];
 		if (activity[1] == '{GUILD}') activity[1] = `in ${client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name}`;
-		if (activity[1] == '{UPTIME}') activity[1] = `for ${moment.duration(client.uptime).format('D [days], H [hrs], m [mins], s [secs]')}`;
 		client.user.setPresence({ activities: [{ name: activity[1], type: activity[0] }] });
 	}, 5000);
 	setInterval(async () => {
