@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { pause } = require('../../config/emoji.json');
+const splashy = require('splashy');
+const got = require('got');
 module.exports = {
 	name: 'pause',
 	description: 'Pause the currently playing music',
@@ -24,10 +26,14 @@ module.exports = {
 		}
 		player.pause(true);
 		const song = player.queue.current;
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+		const { body } = await got(img, { encoding: null });
+		const palette = await splashy(body);
 		const thing = new MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215))
+			.setDescription(`${pause} **Paused**\n[${song.title}](${song.uri})`)
+			.setColor(palette[3])
 			.setTimestamp()
-			.setDescription(`${pause} **Paused**\n[${song.title}](${song.uri})`);
+			.setThumbnail(img);
 		return message.reply({ embeds: [thing] });
 	},
 };

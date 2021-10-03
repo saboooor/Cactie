@@ -17,11 +17,11 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		player.setQueueRepeat(!player.queueRepeat);
-		const queueRepeat = player.queueRepeat ? 'enabled' : 'disabled';
+		const queueRepeat = player.queueRepeat ? 'Now' : 'No Longer';
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp()
-			.setDescription(`${loop} Loop queue is now **${queueRepeat}**`);
+			.setDescription(`${loop} **${queueRepeat} Looping the Queue**`);
 		return message.reply({ embeds: [thing] });
 	},
 };

@@ -21,7 +21,7 @@ module.exports = {
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp()
-			.setDescription(`${remove} Removed all songs from the queue`);
+			.setDescription(`${remove} Cleared all songs from the queue`);
 		return message.reply({ embeds: [thing] });
 	},
 };
