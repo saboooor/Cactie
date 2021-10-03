@@ -249,7 +249,7 @@ module.exports = {
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args[0] = args._subCommand;
-			args[1] = args._hoistedOptions[0].value;
+			args[1] = args._hoistedOptions[0] ? args._hoistedOptions[0].value : null;
 		}
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))

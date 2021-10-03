@@ -31,7 +31,7 @@ module.exports = {
 			return message.reply({ embeds: [Embed] });
 		}
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
-		Embed.setDescription('8' + '='.repeat(random - 1) + 'D').setFooter(`${hardtxt} pp size = ${random}"`);
+		Embed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter(`${hardtxt} pp size = ${random}"`);
 		message.reply({ embeds: [Embed] });
 	},
 };
