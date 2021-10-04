@@ -7,7 +7,7 @@ module.exports = {
 		});
 		const embed = interaction.message.embeds[0];
 		const maxPages = Math.ceil(srvconfig.length / 5);
-		const lastPage = parseInt(embed.footer.text.split(' ')[1]);
+		const lastPage = parseInt(embed.footer ? embed.footer.text.split(' ')[1] : maxPages);
 		const page = lastPage - 1 ? lastPage - 1 : maxPages;
 		const end = page * 5;
 		const start = end - 5;
