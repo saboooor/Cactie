@@ -45,14 +45,15 @@ module.exports = {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
-		const prefix = await client.settings.get(message.guild.id).prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
+		const srvconfig = client.settings.get(message.guild.id);
+		const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('**HELP**');
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
 		if (arg == 'admin') {
-			require('../../help/admin.js')(prefix, Embed, client.settings.get(message.guild.id));
+			require('../../help/admin.js')(prefix, Embed, srvconfig);
 		}
 		else if (arg == 'fun') {
 			require('../../help/fun.js')(prefix, Embed);
@@ -77,7 +78,7 @@ module.exports = {
 				.setColor(3447003)
 				.setTitle('Need help? No problem!')
 				.setFooter(`${message.guild.name} Support`, message.guild.iconURL());
-			if (client.settings.get(message.guild.id).tickets == 'buttons') {
+			if (srvconfig.tickets == 'buttons') {
 				Panel.setDescription('Click the button below to open a ticket!');
 				const row = new MessageActionRow()
 					.addComponents(
@@ -89,12 +90,12 @@ module.exports = {
 					);
 				message.channel.send({ embeds: [Panel], components: [row] });
 			}
-			else if (client.settings.get(message.guild.id).tickets == 'reactions') {
+			else if (srvconfig.tickets == 'reactions') {
 				Panel.setDescription('React with 🎫 to open a ticket!');
 				const msg = await message.channel.send({ embeds: [Panel] });
 				await msg.react('🎫');
 			}
-			else if (client.settings.get(message.guild.id).tickets == 'false') {
+			else if (srvconfig.tickets == 'false') {
 				return message.reply({ content: 'Tickets are disabled!' });
 			}
 		}

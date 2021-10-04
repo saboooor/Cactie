@@ -10,7 +10,7 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
-	async execute(message) {
+	async execute(message, args, client) {
 		const player = message.client.manager.get(message.guild.id);
 		if (!player) return message.reply('The bot is not playing anything!');
 		if (!player.queue.current) {
@@ -19,14 +19,17 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
-		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
-		if (!player.skipAmount) player.skipAmount = [];
-		let alr = false;
-		player.skipAmount.forEach(i => { if (i == message.member.id) alr = true; });
-		if (alr) return message.reply('You\'ve already voted to skip this song!');
-		player.skipAmount.push(message.member.id);
-		if (player.skipAmount.length < requiredAmount) return message.reply(`**Skipping?** \`${player.skipAmount.length} / ${requiredAmount}\``);
-		player.skipAmount = null;
+		const srvconfig = client.settings.get(message.guild.id);
+		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
+			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
+			if (!player.skipAmount) player.skipAmount = [];
+			let alr = false;
+			player.skipAmount.forEach(i => { if (i == message.member.id) alr = true; });
+			if (alr) return message.reply('You\'ve already voted to skip this song!');
+			player.skipAmount.push(message.member.id);
+			if (player.skipAmount.length < requiredAmount) return message.reply(`**Skipping?** \`${player.skipAmount.length} / ${requiredAmount}\``);
+			player.skipAmount = null;
+		}
 		const autoplay = player.get('autoplay');
 		const song = player.queue.current;
 		if (autoplay === false) {

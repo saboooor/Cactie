@@ -7,7 +7,7 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
-	async execute(message) {
+	async execute(message, args, client) {
 		const player = message.client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
@@ -15,14 +15,17 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
-		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
-		if (!player.shuffleAmount) player.shuffleAmount = [];
-		let alr = false;
-		player.shuffleAmount.forEach(i => { if (i == message.member.id) alr = true; });
-		if (alr) return message.reply('You\'ve already voted to shuffle the queue!');
-		player.shuffleAmount.push(message.member.id);
-		if (player.shuffleAmount.length < requiredAmount) return message.reply(`**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\``);
-		player.shuffleAmount = null;
+		const srvconfig = client.settings.get(message.guild.id);
+		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
+			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
+			if (!player.shuffleAmount) player.shuffleAmount = [];
+			let alr = false;
+			player.shuffleAmount.forEach(i => { if (i == message.member.id) alr = true; });
+			if (alr) return message.reply('You\'ve already voted to shuffle the queue!');
+			player.shuffleAmount.push(message.member.id);
+			if (player.shuffleAmount.length < requiredAmount) return message.reply(`**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\``);
+			player.shuffleAmount = null;
+		}
 		player.queue.shuffle();
 		const thing = new MessageEmbed()
 			.setDescription(`${shuffle} Shuffled the queue`)

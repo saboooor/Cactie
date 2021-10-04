@@ -8,7 +8,7 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
-	async execute(message) {
+	async execute(message, args, client) {
 		const player = message.client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
@@ -16,14 +16,17 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
-		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
-		if (!player.loopQueueAmount) player.loopQueueAmount = [];
-		let alr = false;
-		player.loopQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
-		if (alr) return message.reply('You\'ve already voted to toggle the Queue Loop!');
-		player.loopQueueAmount.push(message.member.id);
-		if (player.loopQueueAmount.length < requiredAmount) return message.reply(`**Toggle Queue Loop?** \`${player.loopQueueAmount.length} / ${requiredAmount}\``);
-		player.loopQueueAmount = null;
+		const srvconfig = client.settings.get(message.guild.id);
+		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
+			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
+			if (!player.loopQueueAmount) player.loopQueueAmount = [];
+			let alr = false;
+			player.loopQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
+			if (alr) return message.reply('You\'ve already voted to toggle the Queue Loop!');
+			player.loopQueueAmount.push(message.member.id);
+			if (player.loopQueueAmount.length < requiredAmount) return message.reply(`**Toggle Queue Loop?** \`${player.loopQueueAmount.length} / ${requiredAmount}\``);
+			player.loopQueueAmount = null;
+		}
 		player.setQueueRepeat(!player.queueRepeat);
 		const queueRepeat = player.queueRepeat ? 'Now' : 'No Longer';
 		const thing = new MessageEmbed()
