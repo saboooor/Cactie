@@ -28,6 +28,7 @@ module.exports = {
 			mutecmd: '*Toggles the mute command (true/false)*',
 			adminrole: '*The role to replace the ADMINISTRATOR permission (permission/roleId)*',
 			msgshortener: '*The amount of lines in a message to trigger message shortener (number [0 = false])*',
+			djrole: '*The DJ feature of the bot that limits the skip/etc commands (false/roleId)*',
 		};
 		const srvconfig = Object.keys(client.settings.get(interaction.guild.id)).map(prop => {
 			return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(interaction.guild.id)[prop]}\``;

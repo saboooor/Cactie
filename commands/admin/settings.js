@@ -245,6 +245,19 @@ module.exports = {
 				},
 			],
 		},
+		{
+			type: 1,
+			name: 'djrole',
+			description: 'The DJ feature of the bot that limits the skip/etc commands',
+			options: [
+				{
+					type: 8,
+					name: 'role',
+					description: 'The role to use for the DJ role',
+					required: true,
+				},
+			],
+		},
 	],
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
@@ -265,7 +278,7 @@ module.exports = {
 			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
 			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
-			if ((prop == 'supportrole' || prop == 'muterole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
+			if ((prop == 'supportrole' || prop == 'muterole' || prop == 'djrole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
 			if (prop == 'muterole') {
@@ -298,6 +311,7 @@ module.exports = {
 				mutecmd: '*Toggles the mute command (true/false)*',
 				adminrole: '*The role to replace the ADMINISTRATOR permission (permission/roleId)*',
 				msgshortener: '*The amount of lines in a message to trigger message shortener (number [0 = false])*',
+				djrole: '*The DJ feature of the bot that limits the skip/etc commands (false/roleId)*',
 			};
 			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(message.guild.id)[prop]}\``;
