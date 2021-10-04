@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const emoji = require('../../config/emoji.json');
 const splashy = require('splashy');
@@ -35,6 +35,17 @@ module.exports = {
 		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - [${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
 		const maxPages = Math.ceil(queue.length / multiple);
 		embed.setFooter(`Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
-		return message.reply({ embeds: [embed] });
+		const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('queue_prev')
+					.setLabel('◄')
+					.setStyle('PRIMARY'),
+				new MessageButton()
+					.setCustomId('queue_next')
+					.setLabel('►')
+					.setStyle('PRIMARY'),
+			);
+		return message.reply({ embeds: [embed], components: [row] });
 	},
 };
