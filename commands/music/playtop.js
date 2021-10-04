@@ -11,6 +11,7 @@ module.exports = {
 	args: true,
 	guildOnly: true,
 	inVoiceChannel: true,
+	djRole: true,
 	options: [{
 		type: 3,
 		name: 'song',

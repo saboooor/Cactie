@@ -10,6 +10,7 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
+	djRole: true,
 	options: [{
 		type: 4,
 		name: 'volume',

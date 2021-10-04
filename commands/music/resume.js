@@ -10,6 +10,7 @@ module.exports = {
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
+	djRole: true,
 	async execute(message) {
 		const player = message.client.manager.get(message.guild.id);
 		const song = player.queue.current;

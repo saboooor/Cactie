@@ -150,6 +150,15 @@ module.exports = async (client, message) => {
 		return message.reply({ embeds: [embed] });
 	}
 
+	if (command.djRole && srvconfig.djrole != 'false') {
+		const role = message.guild.roles.cache.get(srvconfig.djrole);
+		if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
+		if (!message.member.roles.cache.has(srvconfig.djrole)) {
+			embed.setDescription(`You need the ${role} role to do that!`);
+			return message.reply({ embeds: [embed] });
+		}
+	}
+
 	try {
 		client.logger.info(`${message.author.tag} issued dash command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client);

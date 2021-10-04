@@ -17,7 +17,7 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
-		const requiredAmount = (message.guild.me.voice.channel.members.size - 1) / 2;
+		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 		if (!player.reverseAmount) player.reverseAmount = [];
 		let alr = false;
 		player.reverseAmount.forEach(i => { if (i == message.member.id) alr = true; });
