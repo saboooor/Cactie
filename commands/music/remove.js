@@ -1,5 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { remove } = require('../../config/emoji.json');
+const { DefaultThumbnail } = require('../../config/music.json');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
@@ -40,7 +41,8 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		const song = player.queue[position];
-		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+		let img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!img) img = DefaultThumbnail;
 		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
 		player.queue.remove(position);

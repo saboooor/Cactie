@@ -1,5 +1,6 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
+const { DefaultThumbnail } = require('../../config/music.json');
 const emoji = require('../../config/emoji.json');
 const splashy = require('splashy');
 const got = require('got');
@@ -19,7 +20,8 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		const queue = player.queue;
-		const img = queue.current.displayThumbnail ? queue.current.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+		let img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!img) img = DefaultThumbnail;
 		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
 		const embed = new MessageEmbed()

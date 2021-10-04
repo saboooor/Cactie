@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist } = require('../../config/emoji.json');
+const { DefaultThumbnail } = require('../../config/music.json');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
@@ -70,7 +71,8 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				const img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+				let img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : DefaultThumbnail;
+				if (!img) img = DefaultThumbnail;
 				const { body } = await got(img, { encoding: null });
 				const palette = await splashy(body);
 				thing = new MessageEmbed()
@@ -99,7 +101,8 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				const img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
+				let img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : DefaultThumbnail;
+				if (!img) img = DefaultThumbnail;
 				const { body } = await got(img, { encoding: null });
 				const palette = await splashy(body);
 				thing = new MessageEmbed()
