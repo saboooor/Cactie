@@ -1,7 +1,7 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'settings',
-	description: 'Configure Pup\'s settings',
+	description: 'Configure Pup Bot\'s settings',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
