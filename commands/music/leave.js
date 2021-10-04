@@ -10,6 +10,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(message) {
 		const player = message.client.manager.get(message.guild.id);
+		if (!player) return;
 		player.destroy();
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))

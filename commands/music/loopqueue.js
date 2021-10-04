@@ -16,6 +16,14 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
+		const requiredAmount = (message.guild.me.voice.channel.members.size - 1) / 2;
+		if (!player.loopQueueAmount) player.loopQueueAmount = [];
+		let alr = false;
+		player.loopQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
+		if (alr) return message.reply('You\'ve already voted to toggle the Queue Loop!');
+		player.loopQueueAmount.push(message.member.id);
+		if (player.loopQueueAmount.length < requiredAmount) return message.reply(`**Toggle Queue Loop?** \`${player.loopQueueAmount.length} / ${requiredAmount}\``);
+		player.loopQueueAmount = null;
 		player.setQueueRepeat(!player.queueRepeat);
 		const queueRepeat = player.queueRepeat ? 'Now' : 'No Longer';
 		const thing = new MessageEmbed()

@@ -15,6 +15,14 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
+		const requiredAmount = (message.guild.me.voice.channel.members.size - 1) / 2;
+		if (!player.shuffleAmount) player.shuffleAmount = [];
+		let alr = false;
+		player.shuffleAmount.forEach(i => { if (i == message.member.id) alr = true; });
+		if (alr) return message.reply('You\'ve already voted to shuffle the queue!');
+		player.shuffleAmount.push(message.member.id);
+		if (player.shuffleAmount.length < requiredAmount) return message.reply(`**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\``);
+		player.shuffleAmount = null;
 		player.queue.shuffle();
 		const thing = new MessageEmbed()
 			.setDescription(`${shuffle} Shuffled the queue`)

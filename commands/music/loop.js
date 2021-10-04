@@ -19,6 +19,14 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
+		const requiredAmount = (message.guild.me.voice.channel.members.size - 1) / 2;
+		if (!player.loopTrackAmount) player.loopTrackAmount = [];
+		let alr = false;
+		player.loopTrackAmount.forEach(i => { if (i == message.member.id) alr = true; });
+		if (alr) return message.reply('You\'ve already voted to toggle the Track Loop!');
+		player.loopTrackAmount.push(message.member.id);
+		if (player.loopTrackAmount.length < requiredAmount) return message.reply(`**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\``);
+		player.loopTrackAmount = null;
 		player.setTrackRepeat(!player.trackRepeat);
 		const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
 		const img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';

@@ -17,6 +17,14 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
+		const requiredAmount = (message.guild.me.voice.channel.members.size - 1) / 2;
+		if (!player.reverseAmount) player.reverseAmount = [];
+		let alr = false;
+		player.reverseAmount.forEach(i => { if (i == message.member.id) alr = true; });
+		if (alr) return message.reply('You\'ve already voted to reverse the queue!');
+		player.reverseAmount.push(message.member.id);
+		if (player.reverseAmount.length < requiredAmount) return message.reply(`**Reverse Queue?** \`${player.reverseAmount.length} / ${requiredAmount}\``);
+		player.reverseAmount = null;
 		player.queue.reverse();
 		const thing = new MessageEmbed()
 			.setDescription(`${rewind} Reversed the queue`)

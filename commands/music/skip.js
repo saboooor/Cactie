@@ -19,6 +19,14 @@ module.exports = {
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
+		const requiredAmount = (message.guild.me.voice.channel.members.size - 1) / 2;
+		if (!player.skipAmount) player.skipAmount = [];
+		let alr = false;
+		player.skipAmount.forEach(i => { if (i == message.member.id) alr = true; });
+		if (alr) return message.reply('You\'ve already voted to skip this song!');
+		player.skipAmount.push(message.member.id);
+		if (player.skipAmount.length < requiredAmount) return message.reply(`**Skipping?** \`${player.skipAmount.length} / ${requiredAmount}\``);
+		player.skipAmount = null;
 		const autoplay = player.get('autoplay');
 		const song = player.queue.current;
 		if (autoplay === false) {
