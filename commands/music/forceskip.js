@@ -1,51 +1,40 @@
 const { MessageEmbed } = require('discord.js');
-const { remove } = require('../../config/emoji.json');
+const { skip } = require('../../config/emoji.json');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
-	name: 'remove',
-	description: 'Remove a song from the queue',
-	aliases: ['rem', 'rm'],
-	args: true,
-	usage: '<Index of song in queue>',
+	name: 'forceskip',
+	aliases: ['fs'],
+	description: 'Force skip the currently playing song',
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 4,
-		name: 'index',
-		description: 'The number of the song in the queue',
-		required: true,
-	}],
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		const player = client.manager.get(message.guild.id);
+		if (!player) return message.reply('The bot is not playing anything!');
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
-		const position = (Number(args[0]) - 1);
-		if (position > player.queue.size) {
-			const number = (position + 1);
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`);
-			return message.reply({ embeds: [thing] });
+		const autoplay = player.get('autoplay');
+		const song = player.queue.current;
+		if (autoplay === false) {
+			player.stop();
 		}
-		const song = player.queue[position];
+		else {
+			player.stop();
+			player.queue.clear();
+			player.set('autoplay', false);
+		}
 		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/musical-note_1f3b5.png';
 		const { body } = await got(img, { encoding: null });
 		const palette = await splashy(body);
-		player.queue.remove(position);
 		const thing = new MessageEmbed()
-			.setDescription(`${remove} **Removed**\n[${song.title}](${song.uri})`)
+			.setDescription(`${skip} **Force Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(palette[3])
 			.setTimestamp()
 			.setThumbnail(img);

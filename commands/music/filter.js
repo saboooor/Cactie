@@ -46,12 +46,12 @@ module.exports = {
 			value: 'off',
 		}],
 	}],
-	async execute(message, args) {
+	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
-		const player = message.client.manager.get(message.guild.id);
+		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')

@@ -17,12 +17,12 @@ module.exports = {
 		description: 'The volume to set (1-100)',
 		required: false,
 	}],
-	async execute(message, args) {
+	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
-		const player = message.client.manager.get(message.guild.id);
+		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
@@ -40,7 +40,7 @@ module.exports = {
 		if (!volume || volume < 0 || volume > 100) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`Usage: ${message.client.settings.get(message.guild.id).prefix}volume <Number of volume between 0 - 100>`);
+				.setDescription(`Usage: ${client.settings.get(message.guild.id).prefix}volume <Number of volume between 0 - 100>`);
 			return message.reply({ embeds: [thing] });
 		}
 		player.setVolume(volume);

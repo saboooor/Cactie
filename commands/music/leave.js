@@ -9,13 +9,13 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	async execute(message) {
-		const player = message.client.manager.get(message.guild.id);
+	async execute(message, args, client) {
+		const player = client.manager.get(message.guild.id);
 		if (!player) return;
 		player.destroy();
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`${leave} **Left VC**\nThank you for using ${message.client.user.username}!`);
+			.setDescription(`${leave} **Left VC**\nThank you for using ${client.user.username}!`);
 		return message.reply({ embeds: [thing] });
 	},
 };

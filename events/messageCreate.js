@@ -133,7 +133,7 @@ module.exports = async (client, message) => {
 	const embed = new MessageEmbed()
 		.setColor('RED');
 
-	const player = message.client.manager.get(message.guild.id);
+	const player = client.manager.get(message.guild.id);
 
 	if (command.player && !player) {
 		embed.setDescription('There is no player for this guild.');
@@ -146,7 +146,7 @@ module.exports = async (client, message) => {
 	}
 
 	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
-		embed.setDescription(`You must be in the same channel as ${message.client.user}!`);
+		embed.setDescription(`You must be in the same channel as ${client.user}!`);
 		return message.reply({ embeds: [embed] });
 	}
 

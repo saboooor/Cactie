@@ -9,7 +9,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
-		const player = message.client.manager.get(message.guild.id);
+		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')

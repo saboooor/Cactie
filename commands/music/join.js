@@ -7,10 +7,10 @@ module.exports = {
 	cooldown: 2,
 	guildOnly: true,
 	inVoiceChannel: true,
-	async execute(message) {
+	async execute(message, args, client) {
 		const { channel } = message.member.voice;
 		if(!message.guild.me.voice.channel) {
-			const player = message.client.manager.create({
+			const player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: channel.id,
 				textChannel: message.channel.id,
@@ -26,7 +26,7 @@ module.exports = {
 		else if (message.guild.me.voice.channel !== channel) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`You must be in the same channel as ${message.client.user}`);
+				.setDescription(`You must be in the same channel as ${client.user}`);
 			return message.reply({ embeds: [thing] });
 		}
 	},

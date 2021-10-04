@@ -10,8 +10,8 @@ module.exports = {
 	cooldown: 4,
 	guildOnly: true,
 	player: true,
-	async execute(message, args) {
-		const player = message.client.manager.get(message.guild.id);
+	async execute(message, args, client) {
+		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')

@@ -17,12 +17,12 @@ module.exports = {
 		description: 'The amount of songs to skip',
 		required: true,
 	}],
-	async execute(message, args) {
+	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
-		const player = message.client.manager.get(message.guild.id);
+		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
@@ -33,7 +33,7 @@ module.exports = {
 		if (!position || position < 0 || position > player.queue.size) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`Usage: ${message.client.settings.get(message.guild.id).prefix}skipto <Number of song in queue>`);
+				.setDescription(`Usage: ${client.settings.get(message.guild.id).prefix}skipto <Number of song in queue>`);
 			return message.reply({ embeds: [thing] });
 		}
 		player.queue.remove(0, position - 1);

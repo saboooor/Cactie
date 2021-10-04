@@ -17,21 +17,21 @@ module.exports = {
 		description: 'Song URL/Name',
 		required: true,
 	}],
-	async execute(message, args) {
+	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
 		const { channel } = message.member.voice;
-		let player = message.client.manager.get(message.guild.id);
+		let player = client.manager.get(message.guild.id);
 		if (player && message.member.voice.channel !== message.guild.me.voice.channel) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`You must be in the same channel as ${message.client.user}`);
+				.setDescription(`You must be in the same channel as ${client.user}`);
 			return message.reply({ embeds: [thing] });
 		}
 		else if (!player) {
-			player = message.client.manager.create({
+			player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: channel.id,
 				textChannel: message.channel.id,

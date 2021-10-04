@@ -18,12 +18,12 @@ module.exports = {
 		description: 'Time s/m/h (Ex. 10s, 2m)',
 		required: true,
 	}],
-	async execute(message, args) {
+	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		}
-		const player = message.client.manager.get(message.guild.id);
+		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')

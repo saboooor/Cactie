@@ -10,8 +10,8 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	async execute(message) {
-		const player = message.client.manager.players.get(message.guild.id);
+	async execute(message, args, client) {
+		const player = client.manager.players.get(message.guild.id);
 		if (!player) return message.reply('An error has occured, please try again');
 		const embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215));
