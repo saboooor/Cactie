@@ -1,4 +1,5 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const desc = require('../../config/settingsdesc.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Pup Bot\'s settings',
@@ -293,35 +294,27 @@ module.exports = {
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 		}
 		else {
-			const desc = {
-				prefix: '*The bot\'s prefix*',
-				reactions: '*Reacts with various reactions on some words (true/false)*\nDo /reactions to see a list of them',
-				leavemessage: '*The message when someone leaves the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
-				joinmessage: '*The message when someone joins the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*',
-				maxppsize: '*Maximum pp size in boner and instaboner commands (<75)*',
-				tickets: '*Toggles the ticket system (buttons/reactions/false)*',
-				bonercmd: '*Toggles the boner command (true/false)*',
-				suggestionchannel: '*The channel where the bot puts suggestions in (false/default/channelId)*',
-				pollchannel: '*The channel where the bot puts polls in (false/default/channelId)*',
-				ticketlogchannel: '*The channel where the bot puts ticket logs (false/channelId)*',
-				ticketcategory: '*The category where the bot creates tickets in (false/categoryId)*',
-				supportrole: '*The ticket support team role (roleId)*',
-				ticketmention: '*Pings @everyone every time a new ticket is created (true/false)*',
-				muterole: '*The role for muting someone (false/roleId)*',
-				mutecmd: '*Toggles the mute command (true/false)*',
-				adminrole: '*The role to replace the ADMINISTRATOR permission (permission/roleId)*',
-				msgshortener: '*The amount of lines in a message to trigger message shortener (number [0 = false])*',
-				djrole: '*The DJ feature of the bot that limits the skip/etc commands (false/roleId)*',
-			};
 			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(message.guild.id)[prop]}\``;
 			});
-			Embed.setDescription(srvconfig.join('\n')).addField('Usage', `\`${client.settings.get(message.guild.id).prefix}settings [<Setting> <Value>]\``);
+			const maxPages = Math.ceil(srvconfig.length / 5);
+			Embed
+				.setDescription(srvconfig.slice(0, 4).join('\n'))
+				.addField('Usage', `\`${client.settings.get(message.guild.id).prefix}settings [<Setting> <Value>]\``)
+				.setFooter(`Page 1 of ${maxPages}`);
 		}
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setCustomId('reset')
+					.setCustomId('settings_prev')
+					.setLabel('◄')
+					.setStyle('PRIMARY'),
+				new MessageButton()
+					.setCustomId('settings_next')
+					.setLabel('►')
+					.setStyle('PRIMARY'),
+				new MessageButton()
+					.setCustomId('settings_reset')
 					.setLabel('Reset Settings')
 					.setStyle('DANGER'),
 			);
