@@ -1,8 +1,8 @@
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'clear',
 	description: 'Delete multiple messages at once',
 	aliases: ['purge'],
-	args: true,
 	usage: '<Message Amount>',
 	permissions: 'MANAGE_MESSAGES',
 	guildOnly: true,
@@ -16,6 +16,14 @@ module.exports = {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
+		if (!args[0]) {
+			const Usage = new MessageEmbed()
+				.setColor(3447003)
+				.setTitle('Usage')
+				.setDescription('`/clear <Message Amount>`')
+				.setFooter('Did you mean to use /clearqueue?');
+			return message.reply({ embeds: [Usage] });
 		}
 		if (args[0] > 100) return message.reply({ content: 'You can only clear 100 messages at once!', ephemeral: true });
 		if (isNaN(args[0])) return message.reply({ content: 'That is not a number!', ephemeral: true });
