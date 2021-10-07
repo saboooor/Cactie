@@ -31,33 +31,36 @@ module.exports = {
 			return `**${roles[i][1]}**`;
 		});
 		const activities = member.presence ? member.presence.activities : null;
-		const activitieslist = Object.keys(activities).map(i => {
-			if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji ? activities[i].emoji : ''} ${activities[i].state ? activities[i].state : ''}`;
-			const activitystack = [`**${activities[i].name}**`];
-			if (activities[i].details) activitystack.push(`\n${activities[i].details}`);
-			if (activities[i].state) activitystack.push(`\n${activities[i].state}`);
-			if (activities[i].timestamps && activities[i].timestamps.start && activities[i].timestamps.end) {
-				const start = new Date(activities[i].timestamps.start);
-				const current = new Date() - start;
-				const total = new Date(activities[i].timestamps.end) - start;
-				activitystack.push(`\n\`${convertTime(current)} ${progressbar(total, current, 10, '▬', '🔘')} ${convertTime(total)}\``);
-			}
-			else if (activities[i].timestamps && activities[i].timestamps.start) {
-				activitystack.push(`\n<t:${Date.parse(activities[i].timestamps.start) / 1000}:R>`);
-			}
-			else if (activities[i].timestamps && activities[i].timestamps.end) {
-				activitystack.push(`\nEnds <t:${Date.parse(activities[i].timestamps.end) / 1000}:R>`);
-			}
-			else if (activities[i].createdTimestamp) {
-				activitystack.push(`\n<t:${Date.parse(activities[i].createdTimestamp) / 1000}:R>`);
-			}
-			return activitystack.join('');
-		});
+		let activitieslist = [];
+		if (activities) {
+			activitieslist = Object.keys(activities).map(i => {
+				if (activities[i].name == 'Custom Status') return `**${activities[i].name}:**\n${activities[i].emoji ? activities[i].emoji : ''} ${activities[i].state ? activities[i].state : ''}`;
+				const activitystack = [`**${activities[i].name}**`];
+				if (activities[i].details) activitystack.push(`\n${activities[i].details}`);
+				if (activities[i].state) activitystack.push(`\n${activities[i].state}`);
+				if (activities[i].timestamps && activities[i].timestamps.start && activities[i].timestamps.end) {
+					const start = new Date(activities[i].timestamps.start);
+					const current = new Date() - start;
+					const total = new Date(activities[i].timestamps.end) - start;
+					activitystack.push(`\n\`${convertTime(current)} ${progressbar(total, current, 10, '▬', '🔘')} ${convertTime(total)}\``);
+				}
+				else if (activities[i].timestamps && activities[i].timestamps.start) {
+					activitystack.push(`\n<t:${Date.parse(activities[i].timestamps.start) / 1000}:R>`);
+				}
+				else if (activities[i].timestamps && activities[i].timestamps.end) {
+					activitystack.push(`\nEnds <t:${Date.parse(activities[i].timestamps.end) / 1000}:R>`);
+				}
+				else if (activities[i].createdTimestamp) {
+					activitystack.push(`\n<t:${Date.parse(activities[i].createdTimestamp) / 1000}:R>`);
+				}
+				return activitystack.join('');
+			});
+		}
 		const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
 		const palette = await splashy(body);
 		const Embed = new MessageEmbed()
 			.setColor(palette[3])
-			.setTitle(`${member.displayName}`)
+			.setTitle(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`)
 			.setThumbnail(member.user.avatarURL())
 			.setDescription(`${member.user}`)
 			.addField('Status', member.presence ? member.presence.status : 'Unavailable')
