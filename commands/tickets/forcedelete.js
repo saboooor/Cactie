@@ -28,7 +28,7 @@ module.exports = {
 		if (srvconfig.ticketlogchannel != 'false') client.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [Embed] });
 		users.forEach(usr => {
 			usr.send({ embeds: [Embed] })
-				.catch(error => { client.logger.error(error); });
+				.catch(error => { client.logger.warn(error); });
 		});
 		client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 		client.logger.info(`Deleted ticket #${message.channel.name}`);

@@ -172,13 +172,13 @@ module.exports = {
 			if (channel) {
 				const pp = await channel.send({ embeds: [Poll] });
 				emojis.forEach(emoji => {
-					pp.react(emoji).catch(e => { client.logger.error(e); });
+					pp.react(emoji).catch(e => { client.logger.warn(e); });
 				});
 			}
 			else {
 				const poll = message.channel.send({ embeds: [Poll] });
 				emojis.forEach(emoji => {
-					poll.react(emoji).catch(e => { client.logger.error(e); });
+					poll.react(emoji).catch(e => { client.logger.warn(e); });
 				});
 			}
 		}

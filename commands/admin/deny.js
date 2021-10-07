@@ -36,7 +36,7 @@ module.exports = {
 			if (Embed.url) {
 				client.users.cache.get(Embed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**` })
-					.catch(error => { client.logger.error(error); });
+					.catch(error => { client.logger.warn(error); });
 			}
 		}
 		else {
@@ -45,7 +45,7 @@ module.exports = {
 			if (Embed.url) {
 				client.users.cache.get(Embed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**\nResponse: ${args.slice(1).join(' ')}` })
-					.catch(error => { client.logger.error(error); });
+					.catch(error => { client.logger.warn(error); });
 			}
 		}
 		if (message.commandName) message.reply({ content: 'Suggestion Denied!', ephemeral: true });

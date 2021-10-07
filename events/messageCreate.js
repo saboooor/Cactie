@@ -35,7 +35,7 @@ module.exports = async (client, message) => {
 				if (files.length == message.attachments.size) {
 					client.channels.cache.get('849453797809455125')
 						.send({ content: `**${message.author}** > ${message.content}`, files: files })
-						.catch(error => { client.logger.error(error); });
+						.catch(error => { client.logger.warn(error); });
 				}
 			});
 		}
@@ -174,7 +174,7 @@ module.exports = async (client, message) => {
 			.addField('**INTERACTION:**', srvconfig.prefix + command.name)
 			.addField('**Error:**', `${clean(error)}`);
 		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
-		message.author.send({ embeds: [interactionFailed] });
+		message.author.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 		client.logger.error(error);
 	}
 };

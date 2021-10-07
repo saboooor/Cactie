@@ -31,7 +31,7 @@ module.exports = client => {
 				client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
 				users.forEach(usr => {
 					usr.send({ embeds: [EmbedDM] })
-						.catch(error => { client.logger.error(error); });
+						.catch(error => { client.logger.warn(error); });
 				});
 				const Embed = new MessageEmbed()
 					.setColor(15105570)

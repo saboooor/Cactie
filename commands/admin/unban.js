@@ -25,7 +25,7 @@ module.exports = {
 			.setTitle(`Unbanned ${user.tag}`);
 		await user.send({ content: `**You've been unbanned in ${message.guild.name}` })
 			.catch(e => {
-				client.logger.error(e);
+				client.logger.warn(e);
 				message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
 			});
 		message.reply({ embeds: [Embed], ephemeral: true });

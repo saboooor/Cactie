@@ -32,7 +32,7 @@ module.exports = {
 		client.memberdata.set(`${user.id}-${message.guild.id}`, 0, 'mutedUntil');
 		await user.send({ content: '**You\'ve been unmuted**' })
 			.catch(e => {
-				client.logger.error(e);
+				client.logger.warn(e);
 				message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 			});
 		client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);

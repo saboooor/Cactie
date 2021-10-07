@@ -37,7 +37,7 @@ module.exports = {
 				if (files.length == message.attachments.size) {
 					client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))
 						.send({ content: args.slice(1).join(' '), files: files })
-						.catch(error => { client.logger.error(error); });
+						.catch(error => { client.logger.warn(error); });
 				}
 			});
 			return message.reply({ embeds: [Embed] });
@@ -45,7 +45,7 @@ module.exports = {
 		if (!client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) return message.reply({ content: 'Invalid user!', ephemeral: true });
 		client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))
 			.send({ content: args.slice(1).join(' ') })
-			.catch(error => { client.logger.error(error); });
+			.catch(error => { client.logger.warn(error); });
 		message.reply({ embeds: [Embed] });
 	},
 };

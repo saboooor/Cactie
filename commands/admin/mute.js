@@ -46,7 +46,7 @@ module.exports = {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**` })
 				.catch(e => {
-					client.logger.error(e);
+					client.logger.warn(e);
 					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
@@ -56,7 +56,7 @@ module.exports = {
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`);
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args[1]}**` })
 				.catch(e => {
-					client.logger.error(e);
+					client.logger.warn(e);
 					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
 			client.logger.info({ content: `Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}` });
@@ -66,7 +66,7 @@ module.exports = {
 			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}, forever`);
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
 				.catch(e => {
-					client.logger.error(e);
+					client.logger.warn(e);
 					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
@@ -75,7 +75,7 @@ module.exports = {
 			Embed.setTitle(`Muted ${user.tag} forever.`);
 			await user.send({ content: `**You've been muted on ${message.guild.name} forever.**` })
 				.catch(e => {
-					client.logger.error(e);
+					client.logger.warn(e);
 					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} forever`);

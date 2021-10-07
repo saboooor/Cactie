@@ -12,7 +12,7 @@ module.exports = (client, interaction) => {
 			const authorPerms = interaction.member.permissions;
 			if (!authorPerms || !authorPerms.has(button.permissions)) {
 				interaction.deferUpdate();
-				return interaction.user.send({ content: 'You can\'t do that!' });
+				return interaction.user.send({ content: 'You can\'t do that!' }).catch(e => { client.logger.warn(e); });
 			}
 		}
 
@@ -30,7 +30,7 @@ module.exports = (client, interaction) => {
 				.addField('**Error:**', clean(error));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
-			interaction.user.send({ embeds: [interactionFailed] });
+			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(error);
 		}
 	}
@@ -42,7 +42,7 @@ module.exports = (client, interaction) => {
 			const authorPerms = interaction.member.permissions;
 			if (!authorPerms || !authorPerms.has(dropdown.permissions)) {
 				interaction.deferUpdate();
-				return interaction.user.send({ content: 'You can\'t do that!' });
+				return interaction.user.send({ content: 'You can\'t do that!' }).catch(e => { client.logger.warn(e); });
 			}
 		}
 
@@ -60,7 +60,7 @@ module.exports = (client, interaction) => {
 				.addField('**Error:**', clean(error));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
-			interaction.user.send({ embeds: [interactionFailed] });
+			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(error);
 		}
 	}
@@ -122,7 +122,7 @@ module.exports = (client, interaction) => {
 				.addField('**Error:**', clean(error));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
-			interaction.user.send({ embeds: [interactionFailed] });
+			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(error);
 		}
 	}
