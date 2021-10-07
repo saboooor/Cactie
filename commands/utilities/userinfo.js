@@ -45,7 +45,7 @@ module.exports = {
 					activitystack.push(`\n\`${convertTime(current)} ${progressbar(total, current, 10, '▬', '🔘')} ${convertTime(total)}\``);
 				}
 				else if (activities[i].timestamps && activities[i].timestamps.start) {
-					activitystack.push(`\n<t:${Date.parse(activities[i].timestamps.start) / 1000}:R>`);
+					activitystack.push(`\n<t:${new Date(activities[i].timestamps.start) / 1000}:R>`);
 				}
 				else if (activities[i].timestamps && activities[i].timestamps.end) {
 					activitystack.push(`\nEnds <t:${Date.parse(activities[i].timestamps.end) / 1000}:R>`);
