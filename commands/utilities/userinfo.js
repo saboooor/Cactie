@@ -56,16 +56,21 @@ module.exports = {
 				return activitystack.join('');
 			});
 		}
-		const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
-		const palette = await splashy(body);
+		member.user = await member.user.fetch();
 		const Embed = new MessageEmbed()
-			.setColor(palette[3])
-			.setTitle(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`)
-			.setThumbnail(member.user.avatarURL())
+			.setColor(member.user.accentColor)
+			.setAuthor(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, member.avatarURL() ? member.user.avatarURL() : null)
+			.setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())
 			.setDescription(`${member.user}`)
 			.addField('Status', member.presence ? member.presence.status : 'Unavailable')
 			.setTimestamp();
+		if (member.user.bannerURL()) {
+			const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
+			const palette = await splashy(body);
+			Embed.setColor(palette[3]);
+		}
 		if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
+		if (member.user.bannerURL()) Embed.setImage(member.user.bannerURL());
 		Embed
 			.addField('Joined Server At', `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>`)
 			.addField('Created Account At', `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`)
