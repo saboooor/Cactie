@@ -62,7 +62,7 @@ module.exports = {
 			.setAuthor(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, member.avatarURL() ? member.user.avatarURL() : null)
 			.setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())
 			.setDescription(`${member.user}`)
-			.addField('Status', member.presence ? member.presence.status : 'Unavailable')
+			.addField('Status', member.presence ? member.presence.status : 'offline')
 			.setTimestamp();
 		if (member.user.bannerURL()) {
 			const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
