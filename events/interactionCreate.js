@@ -3,7 +3,7 @@ function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
-module.exports = (client, interaction) => {
+module.exports = async (client, interaction) => {
 	if (interaction.isButton()) {
 		const button = client.buttons.get(interaction.customId);
 		if (!button) return;
@@ -64,10 +64,14 @@ module.exports = (client, interaction) => {
 			client.logger.error(error);
 		}
 	}
-	else if (interaction.isCommand()) {
+	else if (interaction.isCommand() || interaction.isContextMenu()) {
 		const command = client.slashcommands.get(interaction.commandName);
-		const args = interaction.options._hoistedOptions;
-		args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
+		if (interaction.isContextMenu()) {
+			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
+			interaction.message = msgs.first();
+		}
+		else { args.forEach(arg => args[args.indexOf(arg)] = arg.value); }
 		if (!command) return;
 
 		const { cooldowns } = client;

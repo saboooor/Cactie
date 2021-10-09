@@ -8,10 +8,12 @@ module.exports = async (client) => {
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
-		if (commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
-		client.logger.info(`Detected /${command.name} has some changes! Updating command...`);
+		if (command.type != 3 && commands.find(c => c.name == command.name) && commands.find(c => c.description == command.description)) return;
+		else if (commands.find(c => c.name == command.name)) return;
+		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
 		await client.application?.commands.create({
 			name: command.name,
+			type: command.type ? command.type : null,
 			description: command.description,
 			options: command.options,
 		});
