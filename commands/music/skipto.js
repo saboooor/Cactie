@@ -3,20 +3,15 @@ const { jump } = require('../../config/emoji.json');
 module.exports = {
 	name: 'skipto',
 	aliases: ['jump'],
-	description: 'Forward song',
+	description: 'Skip to a song in queue',
 	args: true,
-	usage: '<Number of song in queue>',
+	usage: '<Index of song in queue>',
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 4,
-		name: 'amount',
-		description: 'The amount of songs to skip',
-		required: true,
-	}],
+	options: require('./index.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

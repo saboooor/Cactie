@@ -1,0 +1,13 @@
+[
+	{
+		"type": 3,
+		"name": "messageid",
+		"description": "The Id of the message of the suggestion you want to approve",
+		"required": true
+	},
+	{
+		"type": 3,
+		"name": "response",
+		"description": "Response to the suggestion"
+	}
+]

@@ -9,11 +9,7 @@ module.exports = {
 	aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
 	usage: '[User]',
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to check info of',
-	}],
+	options: require('./userinfo.json'),
 	async execute(message, args) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

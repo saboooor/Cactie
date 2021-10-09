@@ -1,7 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'nsfw',
-	description: 'Toggle the NSFW role',
 	async execute(message, user, client, reaction) {
 		if (message.guild.id != '811354612547190794') return;
 		if (reaction) message.author = user;

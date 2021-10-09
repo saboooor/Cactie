@@ -6,12 +6,7 @@ module.exports = {
 	usage: '<Message Amount>',
 	permissions: 'MANAGE_MESSAGES',
 	guildOnly: true,
-	options: [{
-		type: 4,
-		name: 'amount',
-		description: 'The amount of messages to clear',
-		required: true,
-	}],
+	options: require('./clear.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

@@ -1,0 +1,8 @@
+[
+    {
+        "type": 6,
+        "name": "user",
+        "description": "User to add to ticket",
+        "required": true
+    }
+]

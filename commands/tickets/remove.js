@@ -1,16 +1,11 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'remove',
-	description: 'Remove someone from a ticket.',
+	description: 'Remove someone from a ticket',
 	args: true,
 	usage: '<User Mention or Id>',
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to add to ticket',
-		required: true,
-	}],
+	options: require('./remove.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

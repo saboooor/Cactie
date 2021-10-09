@@ -6,19 +6,14 @@ const splashy = require('splashy');
 const got = require('got');
 module.exports = {
 	name: 'playtop',
-	description: 'Plays music to the top of the queue',
-	usage: '<Song URL/Name>',
+	description: 'Play music to the top of the queue',
+	usage: '<Song URL/Name/Playlist URL>',
 	aliases: ['pt', 'ptop'],
 	args: true,
 	guildOnly: true,
 	inVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 3,
-		name: 'song',
-		description: 'Song URL/Name',
-		required: true,
-	}],
+	options: require('./play.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

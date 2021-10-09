@@ -12,40 +12,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 3,
-		name: 'type',
-		description: 'The EQ profile',
-		required: true,
-		choices: [{
-			name: 'party',
-			value: 'party',
-		},
-		{
-			name: 'bass',
-			value: 'bass',
-		},
-		{
-			name: 'radio',
-			value: 'radio',
-		},
-		{
-			name: 'pop',
-			value: 'pop',
-		},
-		{
-			name: 'treblebass',
-			value: 'treblebass',
-		},
-		{
-			name: 'soft',
-			value: 'soft',
-		},
-		{
-			name: 'off',
-			value: 'off',
-		}],
-	}],
+	options: require('./filter.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

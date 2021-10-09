@@ -2,28 +2,13 @@ const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 module.exports = {
 	name: 'mute',
-	description: 'Mute someone in the server.',
+	description: 'Mute someone in the server',
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'MANAGE_MESSAGES',
 	cooldown: 5,
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to mute',
-		required: true,
-	},
-	{
-		type: 3,
-		name: 'time',
-		description: 'Amount of time',
-	},
-	{
-		type: 3,
-		name: 'reason',
-		description: 'Reason of mute',
-	}],
+	options: require('./mute.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

@@ -1,0 +1,12 @@
+[
+    {
+        "type": 3,
+        "name": "version",
+        "description": "Specify a version"
+    },
+    {
+        "type": 3,
+        "name": "build",
+        "description": "Specify a build number"
+    }
+]

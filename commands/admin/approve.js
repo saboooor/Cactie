@@ -1,22 +1,12 @@
 module.exports = {
 	name: 'approve',
-	description: 'Approve a suggestion.',
+	description: 'Approve a suggestion',
 	aliases: ['accept'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
 	usage: '<Message ID> [Response]',
 	guildOnly: true,
-	options: [{
-		type: 3,
-		name: 'messageid',
-		description: 'The ID of the message of the suggestion you want to approve',
-		required: true,
-	},
-	{
-		type: 3,
-		name: 'response',
-		description: 'Response to the suggestion',
-	}],
+	options: require('./approve.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

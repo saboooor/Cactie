@@ -1,0 +1,8 @@
+[
+	{
+		"type": 4,
+		"name": "amount",
+		"description": "The amount of messages to clear",
+		"required": true
+	}
+]

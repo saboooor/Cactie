@@ -2,7 +2,6 @@ const { MessageEmbed } = require('discord.js');
 const pteroconfig = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'changelog',
-	description: 'Post a changelog',
 	aliases: ['cl'],
 	args: true,
 	usage: '<Server> <Changes (split with new line)>',

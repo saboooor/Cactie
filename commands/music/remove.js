@@ -14,12 +14,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 4,
-		name: 'index',
-		description: 'The number of the song in the queue',
-		required: true,
-	}],
+	options: require('./index.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

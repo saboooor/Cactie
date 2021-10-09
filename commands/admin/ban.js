@@ -2,28 +2,13 @@ const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 module.exports = {
 	name: 'ban',
-	description: 'Ban someone from the server.',
+	description: 'Ban someone from the server',
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to ban',
-		required: true,
-	},
-	{
-		type: 3,
-		name: 'time',
-		description: 'Amount of time to banned',
-	},
-	{
-		type: 3,
-		name: 'reason',
-		description: 'Reason of ban',
-	}],
+	options: require('./ban.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

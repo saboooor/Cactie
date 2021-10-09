@@ -1,23 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'kick',
-	description: 'Kick someone from the guild',
+	description: 'Kick someone from the server',
 	args: true,
 	usage: '<User> [Reason]',
 	permissions: 'KICK_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to kick',
-		required: true,
-	},
-	{
-		type: 3,
-		name: 'reason',
-		description: 'Reason of kick',
-	}],
+	options: require('./kick.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

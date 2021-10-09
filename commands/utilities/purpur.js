@@ -2,18 +2,9 @@ const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
 module.exports = {
 	name: 'purpur',
-	description: 'Get info on the latest Purpur build',
+	description: 'Get info on any Purpur build',
 	usage: '[Version] [Build]',
-	options: [{
-		type: 3,
-		name: 'version',
-		description: 'Specify a Minecraft version',
-	},
-	{
-		type: 3,
-		name: 'build',
-		description: 'Specify a Purpur build number',
-	}],
+	options: require('./minecraft.json'),
 	async execute(message, args) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

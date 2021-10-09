@@ -8,12 +8,7 @@ module.exports = {
 	args: true,
 	usage: '<Suggestion>',
 	guildOnly: true,
-	options: [{
-		type: 3,
-		name: 'suggestion',
-		description: 'What you want to suggest',
-		required: true,
-	}],
+	options: require('./suggest.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

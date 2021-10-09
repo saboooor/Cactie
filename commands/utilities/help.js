@@ -6,40 +6,7 @@ module.exports = {
 	usage: '[Type]',
 	cooldown: 10,
 	guildOnly: true,
-	options: [{
-		type: 3,
-		name: 'type',
-		description: 'The type of help you need',
-		required: false,
-		choices: [{
-			name: 'admin',
-			value: 'admin',
-		},
-		{
-			name: 'fun',
-			value: 'fun',
-		},
-		{
-			name: 'music',
-			value: 'music',
-		},
-		{
-			name: 'nsfw',
-			value: 'nsfw',
-		},
-		{
-			name: 'tickets',
-			value: 'tickets',
-		},
-		{
-			name: 'utilities',
-			value: 'utilities',
-		},
-		{
-			name: 'supportpanel',
-			value: 'supportpanel',
-		}],
-	}],
+	options: require('./help.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

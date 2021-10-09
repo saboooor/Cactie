@@ -2,15 +2,11 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'boner',
-	description: 'See your pp grow!',
+	description: 'See your boner grow!',
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 10,
-	options: [{
-		type: 3,
-		name: 'someone',
-		description: 'Pick someone for the bot to calculate the pp size of',
-	}],
+	options: require('./boner.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

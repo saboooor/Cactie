@@ -1,18 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unmute',
-	description: 'Unmute someone in the server',
+	description: 'Unmute someone that was muted in the server',
 	args: true,
 	usage: '<User>',
 	permissions: 'MANAGE_MESSAGES',
 	cooldown: 5,
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to unmute',
-		required: true,
-	}],
+	options: require('./unmute.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

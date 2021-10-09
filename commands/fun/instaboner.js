@@ -1,14 +1,10 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'instaboner',
-	description: 'See your pp grow FAST!',
+	description: 'See your boner grow INSTANTLY!',
 	usage: '[Someone]',
 	aliases: ['instapp'],
-	options: [{
-		type: 3,
-		name: 'someone',
-		description: 'Pick someone for the bot to calculate the pp size of',
-	}],
+	options: require('./boner.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

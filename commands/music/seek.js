@@ -12,12 +12,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 3,
-		name: 'time',
-		description: 'Time s/m/h (Ex. 10s, 2m)',
-		required: true,
-	}],
+	options: require('./seek.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

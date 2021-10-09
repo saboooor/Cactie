@@ -1,7 +1,6 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'link',
-	description: 'Get help on DiscordSRV linking',
 	cooldown: 10,
 	async execute(message) {
 		let e = [];

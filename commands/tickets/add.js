@@ -1,16 +1,11 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'add',
-	description: 'Add someone to a ticket.',
+	description: 'Add someone to a ticket',
 	args: true,
 	usage: '<User Mention or Id>',
 	guildOnly: true,
-	options: [{
-		type: 6,
-		name: 'user',
-		description: 'User to add to ticket',
-		required: true,
-	}],
+	options: require('./add.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

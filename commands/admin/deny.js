@@ -1,22 +1,12 @@
 module.exports = {
 	name: 'deny',
-	description: 'Deny a suggestion.',
+	description: 'Deny a suggestion',
 	aliases: ['reject', 'decline'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
 	usage: '<Message Id> [Response]',
 	guildOnly: true,
-	options: [{
-		type: 3,
-		name: 'messageid',
-		description: 'The Id of the message of the suggestion you want to approve',
-		required: true,
-	},
-	{
-		type: 3,
-		name: 'response',
-		description: 'Response to the suggestion',
-	}],
+	options: require('./deny.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

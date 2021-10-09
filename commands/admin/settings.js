@@ -2,264 +2,12 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const desc = require('../../config/settingsdesc.json');
 module.exports = {
 	name: 'settings',
-	description: 'Configure Pup Bot\'s settings',
+	description: 'Configure Pup\'s settings in the server',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
 	guildOnly: true,
-	options: [
-		{
-			type: 1,
-			name: 'get',
-			description: 'Show all settings',
-		},
-		{
-			type: 1,
-			name: 'prefix',
-			description: 'The bot\'s prefix',
-			options: [
-				{
-					type: 3,
-					name: 'prefix',
-					description: 'The bot\'s prefix',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'reactions',
-			description: 'Reacts with various reactions on some words',
-			options: [
-				{
-					type: 5,
-					name: 'value',
-					description: 'The setting value',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'leavemessage',
-			description: 'The message when someone leaves the guild',
-			options: [
-				{
-					type: 3,
-					name: 'value',
-					description: 'Must be false or the leave message. Variables: {USER MENTION} {USER TAG}',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'joinmessage',
-			description: 'The message when someone joins the guild',
-			options: [
-				{
-					type: 3,
-					name: 'value',
-					description: 'Must be false or the join message. Variables: {USER MENTION} {USER TAG}',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'maxppsize',
-			description: 'Maximum pp size in boner and instaboner commands',
-			options: [
-				{
-					type: 4,
-					name: 'size',
-					description: 'The max pp size (<75)',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'tickets',
-			description: 'Toggles the ticket system',
-			options: [
-				{
-					type: 3,
-					name: 'value',
-					description: 'The setting value',
-					choices: [{
-						name: 'buttons',
-						value: 'buttons',
-					},
-					{
-						name: 'reactions',
-						value: 'reactions',
-					},
-					{
-						name: 'false',
-						value: 'false',
-					}],
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'bonercmd',
-			description: 'Toggles the boner command',
-			options: [
-				{
-					type: 5,
-					name: 'value',
-					description: 'The setting value',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'suggestionchannel',
-			description: 'The channel where the bot puts suggestions in',
-			options: [
-				{
-					type: 7,
-					name: 'channel',
-					description: 'The suggestion channel (Hashtag icon)',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'pollchannel',
-			description: 'The channel where the bot puts polls in',
-			options: [
-				{
-					type: 7,
-					name: 'channel',
-					description: 'The poll channel (Hashtag icon)',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'ticketlogchannel',
-			description: 'The channel where the bot puts ticket logs, Must be false or a channel Id',
-			options: [
-				{
-					type: 7,
-					name: 'channel',
-					description: 'The channel (Hashtag icon)',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'ticketcategory',
-			description: 'The category where the bot creates tickets in, Must be false or a category Id',
-			options: [
-				{
-					type: 7,
-					name: 'value',
-					description: 'The category (Folder icon)',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'ticketmention',
-			description: 'Pings @everyone every time a new ticket is created',
-			options: [
-				{
-					type: 5,
-					name: 'value',
-					description: 'The setting value',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'supportrole',
-			description: 'The ticket support team role',
-			options: [
-				{
-					type: 8,
-					name: 'role',
-					description: 'The support role',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'muterole',
-			description: 'The role to give when muting someone',
-			options: [
-				{
-					type: 8,
-					name: 'role',
-					description: 'The mute role',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'mutecmd',
-			description: 'Toggles the mute command',
-			options: [
-				{
-					type: 5,
-					name: 'value',
-					description: 'The setting value',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'adminrole',
-			description: 'The role to replace the ADMINISTRATOR permission',
-			options: [
-				{
-					type: 8,
-					name: 'role',
-					description: 'The admin role',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'msgshortener',
-			description: 'The amount of lines in a message to trigger message shortener',
-			options: [
-				{
-					type: 3,
-					name: 'number',
-					description: '[0 = disabled]',
-					required: true,
-				},
-			],
-		},
-		{
-			type: 1,
-			name: 'djrole',
-			description: 'The DJ feature of the bot that limits the skip/etc commands',
-			options: [
-				{
-					type: 8,
-					name: 'role',
-					description: 'The role to use for the DJ role',
-					required: true,
-				},
-			],
-		},
-	],
+	options: require('./settings.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args[0] = args._subCommand;
@@ -277,8 +25,8 @@ module.exports = {
 			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
 			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
-			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
-			if (prop == 'ticketcategory' && value != 'false' && (!client.channels.cache.get(value) || client.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
+			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
+			if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
 			if ((prop == 'supportrole' || prop == 'muterole' || prop == 'djrole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
@@ -294,13 +42,14 @@ module.exports = {
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 		}
 		else {
-			const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
-				return `**${prop}**\n${desc[prop]}\n\`${client.settings.get(message.guild.id)[prop]}\``;
+			const srvconfig = client.settings.get(message.guild.id);
+			const configlist = Object.keys(srvconfig).map(prop => {
+				return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 			});
-			const maxPages = Math.ceil(srvconfig.length / 5);
+			const maxPages = Math.ceil(configlist.length / 5);
 			Embed
-				.setDescription(srvconfig.slice(0, 4).join('\n'))
-				.addField('Usage', `\`${client.settings.get(message.guild.id).prefix}settings [<Setting> <Value>]\``)
+				.setDescription(configlist.slice(0, 4).join('\n'))
+				.addField('Usage', `\`${srvconfig.prefix}settings [<Setting> <Value>]\``)
 				.setFooter(`Page 1 of ${maxPages}`);
 		}
 		const row = new MessageActionRow()

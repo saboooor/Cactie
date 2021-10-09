@@ -4,7 +4,6 @@ function clean(text) {
 }
 module.exports = {
 	name: 'eval',
-	description: 'Execute any code',
 	aliases: ['ec'],
 	args: true,
 	usage: '<Code>',

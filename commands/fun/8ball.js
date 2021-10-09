@@ -4,12 +4,7 @@ module.exports = {
 	description: 'Let the 8ball decide your fate!',
 	usage: '[Question]',
 	args: true,
-	options: [{
-		type: 3,
-		name: 'question',
-		description: 'Question the 8ball',
-		required: true,
-	}],
+	options: require('./8ball.json'),
 	async execute(message) {
 		const i = Math.floor(Math.random() * ball.length + 1);
 		message.reply(ball[i]);

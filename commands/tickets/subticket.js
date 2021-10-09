@@ -2,17 +2,12 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'subticket',
-	description: 'Create a subticket.',
+	description: 'Create a subticket',
 	aliases: ['subnew', 'sub'],
 	args: true,
 	usage: '<Description>',
 	guildOnly: true,
-	options: [{
-		type: 3,
-		name: 'message',
-		description: 'The message to send on the subticket',
-		required: true,
-	}],
+	options: require('./ticket.json'),
 	async execute(message, args, client, reaction) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

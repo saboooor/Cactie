@@ -9,11 +9,7 @@ module.exports = {
 	description: 'Get the status of Pup or a Minecraft Server',
 	aliases: ['status', 'mcstatus', 'mcstats'],
 	usage: '[Server]',
-	options: [{
-		type: 3,
-		name: 'server',
-		description: 'Specify a Minecraft server',
-	}],
+	options: require('./stats.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

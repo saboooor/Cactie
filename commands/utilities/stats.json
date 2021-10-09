@@ -1,0 +1,7 @@
+[
+    {
+        "type": 3,
+        "name": "server",
+        "description": "Specify a Minecraft server"
+    }
+]

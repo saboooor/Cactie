@@ -1,18 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unban',
-	description: 'Unban someone that was banned from the guild',
+	description: 'Unban someone that was banned from the server',
 	args: true,
 	usage: '<User>',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
-	options: [{
-		type: 3,
-		name: 'user',
-		description: 'User to unban',
-		required: true,
-	}],
+	options: require('./unban.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

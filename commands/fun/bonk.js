@@ -3,11 +3,7 @@ module.exports = {
 	name: 'bonk',
 	description: 'Bonk someone',
 	usage: '[Someone]',
-	options: [{
-		type: 3,
-		name: 'someone',
-		description: 'Pick someone to bonk!',
-	}],
+	options: require('./bonk.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;

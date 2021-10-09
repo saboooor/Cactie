@@ -3,11 +3,7 @@ module.exports = {
 	name: 'rate',
 	description: 'Rate someone or something!',
 	usage: '[Something or someone]',
-	options: [{
-		type: 3,
-		name: 'value',
-		description: 'Pick someone or something to rate',
-	}],
+	options: require('./rate.json'),
 	async execute(message, args) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args = args._hoistedOptions;
