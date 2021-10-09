@@ -14,10 +14,6 @@ module.exports = {
 	inVoiceChannel: true,
 	options: require('./play.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		const { channel } = message.member.voice;
 		let player = client.manager.get(message.guild.id);
 		if (player && message.member.voice.channel !== message.guild.me.voice.channel) {

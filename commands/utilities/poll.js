@@ -9,10 +9,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./poll.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		let channel = message.guild.channels.cache.find(c => c.name.includes('poll'));
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.pollchannel == 'false') channel = message.channel;

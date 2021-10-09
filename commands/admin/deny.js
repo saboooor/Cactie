@@ -8,11 +8,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./deny.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
-		else { message.delete(); }
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
 		const Embed = fetchedMsg.embeds[0];
@@ -39,5 +34,6 @@ module.exports = {
 			}
 		}
 		if (message.commandName) message.reply({ content: 'Suggestion Denied!', ephemeral: true });
+		else message.delete();
 	},
 };

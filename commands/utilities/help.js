@@ -8,10 +8,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./help.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		const srvconfig = client.settings.get(message.guild.id);
 		const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 		const Embed = new MessageEmbed()

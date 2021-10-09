@@ -10,10 +10,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./suggest.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		let channel = message.guild.channels.cache.find(c => c.name.includes('suggestions'));
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.suggestionchannel == 'false') channel = message.channel;

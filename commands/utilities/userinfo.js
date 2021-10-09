@@ -11,10 +11,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./userinfo.json'),
 	async execute(message, args) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		let member = message.member;
 		if (args[0]) member = message.guild.members.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!member) return message.reply({ content: 'Invalid member!' });

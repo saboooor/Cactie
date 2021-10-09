@@ -5,10 +5,6 @@ module.exports = {
 	usage: '[Someone]',
 	options: require('./bonk.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		let user = null;
 		if (client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) {
 			user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));

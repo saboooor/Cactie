@@ -8,10 +8,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./clear.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		if (!args[0]) {
 			const Usage = new MessageEmbed()
 				.setColor(3447003)

@@ -16,10 +16,6 @@ module.exports = {
 		required: true,
 	}],
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
 		if (!(member ? member.roles.cache.has('849452673156513813') : null)) return;
 		const Embed = new MessageEmbed()

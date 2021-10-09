@@ -5,10 +5,6 @@ module.exports = {
 	usage: '[Something or someone]',
 	options: require('./rate.json'),
 	async execute(message, args) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		if (!args[0]) args[0] == message.member.displayName;
 		const rating = Math.floor(Math.random() * (ratings.length * 10)) / 10;
 		const i = Math.floor(rating);

@@ -66,7 +66,8 @@ module.exports = (client, interaction) => {
 	}
 	else if (interaction.isCommand()) {
 		const command = client.slashcommands.get(interaction.commandName);
-		const args = interaction.options;
+		const args = interaction.options._hoistedOptions;
+		args.forEach(arg => args[args.indexOf(arg)] = arg.value);
 		if (!command) return;
 
 		const { cooldowns } = client;

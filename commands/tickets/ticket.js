@@ -8,10 +8,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./ticket.json'),
 	async execute(message, args, client, reaction) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		let author = message.member.user;
 		if (reaction) {
 			if (message.author.id != client.user.id) return;

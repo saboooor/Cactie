@@ -9,10 +9,6 @@ module.exports = {
 	guildOnly: true,
 	options: require('./ticket.json'),
 	async execute(message, args, client, reaction) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = client.settings.get(message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);

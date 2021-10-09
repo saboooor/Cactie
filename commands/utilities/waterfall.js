@@ -6,10 +6,6 @@ module.exports = {
 	usage: '[Version] [Build]',
 	options: require('./minecraft.json'),
 	async execute(message, args) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		// fetch the latest mc version
 		const a = await fetch('https://papermc.io/api/v2/projects/waterfall');
 		const b = await a.json();

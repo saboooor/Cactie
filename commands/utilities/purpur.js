@@ -6,10 +6,6 @@ module.exports = {
 	usage: '[Version] [Build]',
 	options: require('./minecraft.json'),
 	async execute(message, args) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-		}
 		// fetch the latest mc version
 		const a = await fetch('https://api.pl3x.net/v2/purpur');
 		const b = await a.json();
