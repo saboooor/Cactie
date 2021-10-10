@@ -6,7 +6,7 @@ const servers = require('../../config/pterodactyl.json');
 const protocols = require('../../config/mcprotocol.json');
 module.exports = {
 	name: 'stats',
-	description: 'Get the status of Pup or a Minecraft Server',
+	description: 'Get the status of Pup or a Server',
 	aliases: ['status', 'mcstatus', 'mcstats'],
 	usage: '[Server]',
 	options: require('./stats.json'),
