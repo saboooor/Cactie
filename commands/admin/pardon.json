@@ -2,7 +2,7 @@
     {
         "type": 6,
         "name": "user",
-        "description": "User to unmute",
+        "description": "The user to pardon",
         "required": true
     }
 ]

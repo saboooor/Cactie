@@ -1,13 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unmute',
-	description: 'Unmute someone that was muted in the server',
+	description: 'Unmute someone that was muted in the server.',
 	args: true,
 	usage: '<User>',
 	permissions: 'MANAGE_MESSAGES',
 	cooldown: 5,
 	guildOnly: true,
-	options: require('./unmute.json'),
+	options: require('./pardon.json'),
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });

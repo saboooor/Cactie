@@ -2,13 +2,13 @@ const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 module.exports = {
 	name: 'ban',
-	description: 'Ban someone from the server',
+	description: 'Ban someone from the server.',
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
-	options: require('./ban.json'),
+	options: require('./punish.json'),
 	async execute(message, args, client) {
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });

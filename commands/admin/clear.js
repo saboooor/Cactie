@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'clear',
-	description: 'Delete multiple messages at once',
+	description: 'Delete multiple messages at once.',
 	aliases: ['purge'],
 	usage: '<Message Amount>',
 	permissions: 'MANAGE_MESSAGES',

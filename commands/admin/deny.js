@@ -1,12 +1,12 @@
 module.exports = {
 	name: 'deny',
-	description: 'Deny a suggestion',
+	description: 'Deny a suggestion.',
 	aliases: ['reject', 'decline'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
 	usage: '<Message Id> [Response]',
 	guildOnly: true,
-	options: require('./deny.json'),
+	options: require('./suggestresponse.json'),
 	async execute(message, args, client) {
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();

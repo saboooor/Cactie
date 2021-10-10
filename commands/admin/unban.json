@@ -1,8 +1,0 @@
-[
-    {
-        "type": 6,
-        "name": "user",
-        "description": "User to unban",
-        "required": true
-    }
-]

@@ -1,12 +1,12 @@
 module.exports = {
 	name: 'approve',
-	description: 'Approve a suggestion',
+	description: 'Approve a suggestion.',
 	aliases: ['accept'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
 	usage: '<Message ID> [Response]',
 	guildOnly: true,
-	options: require('./approve.json'),
+	options: require('./suggestresponse.json'),
 	async execute(message, args, client) {
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
