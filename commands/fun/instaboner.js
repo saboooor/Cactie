@@ -1,10 +1,10 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'instaboner',
-	description: 'See your boner grow INSTANTLY!',
+	description: 'See your boner expand INSTANTLY!',
 	usage: '[Someone]',
 	aliases: ['instapp'],
-	options: require('./boner.json'),
+	options: require('./someone.json'),
 	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		const srvconfig = client.settings.get(message.guild.id);

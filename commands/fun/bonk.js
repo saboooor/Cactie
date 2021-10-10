@@ -1,9 +1,9 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'bonk',
-	description: 'Bonk someone',
+	description: 'Bonk someone!',
 	usage: '[Someone]',
-	options: require('./bonk.json'),
+	options: require('./someone.json'),
 	async execute(message, args, client) {
 		let user = null;
 		if (client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) {

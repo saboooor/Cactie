@@ -2,11 +2,11 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'boner',
-	description: 'See your boner grow!',
+	description: 'See your boner expand!',
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 10,
-	options: require('./boner.json'),
+	options: require('./someone.json'),
 	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		const srvconfig = client.settings.get(message.guild.id);
