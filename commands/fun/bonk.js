@@ -3,7 +3,7 @@ module.exports = {
 	name: 'bonk',
 	description: 'Bonk someone!',
 	usage: '[Someone]',
-	options: require('./someone.json'),
+	options: require('../options/someone.json'),
 	async execute(message, args, client) {
 		let user = null;
 		if (client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) {

@@ -1,13 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unban',
-	description: 'Unban someone that was banned from the server.',
+	description: 'Unban someone that was banned from the server',
 	args: true,
 	usage: '<User>',
 	permissions: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
-	options: require('./pardon.json'),
+	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });

@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['colors'],
 	args: true,
 	usage: '<Image URL>',
-	options: require('./palette.json'),
+	options: require('../options/palette.json'),
 	async execute(message, args) {
 		let reply = null;
 		if (message.type && message.type == 'APPLICATION_COMMAND') {

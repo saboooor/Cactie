@@ -7,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '<Description>',
 	guildOnly: true,
-	options: require('./ticket.json'),
+	options: require('../options/ticket.json'),
 	async execute(message, args, client, reaction) {
 		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = client.settings.get(message.guild.id);

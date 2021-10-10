@@ -9,7 +9,7 @@ module.exports = {
 	description: 'Get the status of Pup or a Server',
 	aliases: ['status', 'mcstatus', 'mcstats'],
 	usage: '[Server]',
-	options: require('./stats.json'),
+	options: require('../options/stats.json'),
 	async execute(message, args, client) {
 		const reply = message.type && message.type == 'APPLICATION_COMMAND' ? await message.deferReply() : await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
 		if (!args[0]) args = ['pup'];

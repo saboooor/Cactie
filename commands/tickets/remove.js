@@ -1,11 +1,11 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'remove',
-	description: 'Remove someone from a ticket.',
+	description: 'Remove someone from a ticket',
 	args: true,
 	usage: '<User Mention or Id>',
 	guildOnly: true,
-	options: require('./user.json'),
+	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;

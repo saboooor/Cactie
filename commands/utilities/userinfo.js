@@ -9,7 +9,7 @@ module.exports = {
 	aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
 	usage: '[User]',
 	guildOnly: true,
-	options: require('./userinfo.json'),
+	options: require('../options/user.json'),
 	async execute(message, args) {
 		let member = message.member;
 		if (args[0]) member = message.guild.members.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));

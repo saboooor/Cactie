@@ -4,7 +4,7 @@ module.exports = {
 	description: 'See your boner expand INSTANTLY!',
 	usage: '[Someone]',
 	aliases: ['instapp'],
-	options: require('./someone.json'),
+	options: require('../options/someone.json'),
 	async execute(message, args, client) {
 		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		const srvconfig = client.settings.get(message.guild.id);

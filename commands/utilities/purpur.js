@@ -4,7 +4,7 @@ module.exports = {
 	name: 'purpur',
 	description: 'Get info on any Purpur build',
 	usage: '[Version] [Build]',
-	options: require('./minecraft.json'),
+	options: require('../options/minecraft.json'),
 	async execute(message, args) {
 		// fetch the latest mc version
 		const a = await fetch('https://api.pl3x.net/v2/purpur');

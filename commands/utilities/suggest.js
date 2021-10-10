@@ -8,7 +8,7 @@ module.exports = {
 	args: true,
 	usage: '<Suggestion>',
 	guildOnly: true,
-	options: require('./suggest.json'),
+	options: require('../options/suggest.json'),
 	async execute(message, args, client) {
 		let channel = message.guild.channels.cache.find(c => c.name.includes('suggestions'));
 		const srvconfig = client.settings.get(message.guild.id);

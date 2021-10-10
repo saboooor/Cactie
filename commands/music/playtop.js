@@ -13,7 +13,7 @@ module.exports = {
 	guildOnly: true,
 	inVoiceChannel: true,
 	djRole: true,
-	options: require('./play.json'),
+	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		const { channel } = message.member.voice;
 		let player = client.manager.get(message.guild.id);

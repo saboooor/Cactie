@@ -6,7 +6,7 @@ module.exports = {
 	aliases: ['new'],
 	usage: '[Description]',
 	guildOnly: true,
-	options: require('./ticket.json'),
+	options: require('../options/ticket.json'),
 	async execute(message, args, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

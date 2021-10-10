@@ -1,8 +1,0 @@
-[
-    {
-        "type": 6,
-        "name": "user",
-        "description": "User to add to / remove from ticket",
-        "required": true
-    }
-]

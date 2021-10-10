@@ -4,7 +4,7 @@ module.exports = {
 	name: 'waterfall',
 	description: 'Get info on any Waterfall build',
 	usage: '[Version] [Build]',
-	options: require('./minecraft.json'),
+	options: require('../options/minecraft.json'),
 	async execute(message, args) {
 		// fetch the latest mc version
 		const a = await fetch('https://papermc.io/api/v2/projects/waterfall');

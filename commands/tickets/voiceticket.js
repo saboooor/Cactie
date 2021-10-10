@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'voiceticket',
-	description: 'Create a voiceticket.',
+	description: 'Create a voiceticket',
 	aliases: ['voicenew', 'voice'],
 	guildOnly: true,
 	async execute(message, args, client, reaction) {

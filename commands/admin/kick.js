@@ -1,13 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'kick',
-	description: 'Kick someone from the server.',
+	description: 'Kick someone from the server',
 	args: true,
 	usage: '<User> [Reason]',
 	permissions: 'KICK_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
-	options: require('./kick.json'),
+	options: require('../options/kick.json'),
 	async execute(message, args, client) {
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });

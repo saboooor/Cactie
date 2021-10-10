@@ -2,13 +2,13 @@ const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 module.exports = {
 	name: 'mute',
-	description: 'Mute someone in the server.',
+	description: 'Mute someone in the server',
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'MANAGE_MESSAGES',
 	cooldown: 5,
 	guildOnly: true,
-	options: require('./punish.json'),
+	options: require('../options/punish.json'),
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });

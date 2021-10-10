@@ -2,7 +2,7 @@
     {
         "type": 6,
         "name": "user",
-        "description": "The user to pardon",
+        "description": "User to use this command on",
         "required": true
     }
 ]

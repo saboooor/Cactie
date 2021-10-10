@@ -7,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '<Question>',
 	guildOnly: true,
-	options: require('./poll.json'),
+	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		let channel = message.guild.channels.cache.find(c => c.name.includes('poll'));
 		const srvconfig = client.settings.get(message.guild.id);

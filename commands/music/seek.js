@@ -12,7 +12,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: require('./seek.json'),
+	options: require('../options/seek.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {

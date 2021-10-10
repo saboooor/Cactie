@@ -3,7 +3,7 @@ module.exports = {
 	name: 'rate',
 	description: 'Rate someone or something! Or yourself.',
 	usage: '[Something or someone]',
-	options: require('./someone.json'),
+	options: require('../options/someone.json'),
 	async execute(message, args) {
 		if (!args[0]) args[0] == message.member.displayName;
 		const rating = Math.floor(Math.random() * (ratings.length * 10)) / 10;

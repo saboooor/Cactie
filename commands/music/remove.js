@@ -14,7 +14,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: require('./index.json'),
+	options: require('../options/index.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {

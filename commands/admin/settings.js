@@ -2,12 +2,12 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const desc = require('../../config/settingsdesc.json');
 module.exports = {
 	name: 'settings',
-	description: 'Configure Pup\'s settings in the server.',
+	description: 'Configure Pup\'s settings in the server',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
 	guildOnly: true,
-	options: require('./settings.json'),
+	options: require('../options/settings.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {
 			args[0] = args._subCommand;

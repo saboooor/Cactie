@@ -6,7 +6,7 @@ module.exports = {
 	usage: '[Type]',
 	cooldown: 10,
 	guildOnly: true,
-	options: require('./help.json'),
+	options: require('../options/help.json'),
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');

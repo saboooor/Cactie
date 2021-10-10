@@ -11,12 +11,7 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
-	options: [{
-		type: 4,
-		name: 'volume',
-		description: 'The volume to set (1-100)',
-		required: false,
-	}],
+	options: require('../options/volume.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
 		if (!player.queue.current) {
