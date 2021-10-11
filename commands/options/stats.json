@@ -1,7 +1,8 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "server",
-        "description": "Specify a server"
+        "description": "Specify a server",
+        "required": false
     }
 ]

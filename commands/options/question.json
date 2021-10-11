@@ -1,6 +1,6 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "question",
         "description": "The question to ask",
         "required": true

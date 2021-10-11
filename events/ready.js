@@ -9,13 +9,13 @@ module.exports = async (client) => {
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
 		const sourcecmd = commands.find(c => c.name == command.name);
-		if (!sourcecmd) return;
-		if (command.options && JSON.stringify(sourcecmd.options) == JSON.stringify(command.options)) return;
-		else if (command.description && sourcecmd.description == command.description) return;
-		else if (command.type) return;
+		const opt = sourcecmd && command.options && `${JSON.stringify(sourcecmd.options)}` == `${JSON.stringify(command.options)}`;
+		if ((opt || opt === undefined) && sourcecmd && command.description && sourcecmd.description == command.description) return;
+		if (sourcecmd && command.type) return;
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
 		await client.application?.commands.create({
 			name: command.name,
+			type: command.type ? command.type : null,
 			description: command.description,
 			options: command.options,
 		});

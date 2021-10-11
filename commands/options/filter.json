@@ -1,6 +1,6 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "type",
         "description": "The EQ profile",
         "required": true,

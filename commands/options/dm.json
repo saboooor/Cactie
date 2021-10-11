@@ -1,0 +1,14 @@
+[
+    {
+        "type": "USER",
+        "name": "user",
+        "description": "User to DM",
+        "required": true
+    },
+    {
+        "type": "STRING",
+        "name": "message",
+        "description": "Message to send",
+        "required": true
+    }
+]

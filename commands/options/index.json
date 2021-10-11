@@ -1,6 +1,6 @@
 [
     {
-        "type": 4,
+        "type": "INTEGER",
         "name": "index",
         "description": "The number of the song in the queue",
         "required": true

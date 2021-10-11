@@ -1,6 +1,6 @@
 [
 	{
-		"type": 3,
+		"type": "STRING",
 		"name": "url",
 		"description": "Image URL",
 		"required": true

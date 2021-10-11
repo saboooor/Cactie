@@ -1,12 +1,14 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "version",
-        "description": "Specify a version"
+        "description": "Specify a version",
+        "required": false
     },
     {
-        "type": 3,
+        "type": "STRING",
         "name": "build",
-        "description": "Specify a build number"
+        "description": "Specify a build number",
+        "required": false
     }
 ]

@@ -1,6 +1,6 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "song",
         "description": "Song URL/Name or Playlist URL",
         "required": true
