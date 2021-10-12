@@ -7,6 +7,7 @@ module.exports = {
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
 	guildOnly: true,
+	advancedCommand: true,
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
 		if (message.type && message.type == 'APPLICATION_COMMAND') {

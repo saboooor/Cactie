@@ -66,12 +66,15 @@ module.exports = async (client, interaction) => {
 	}
 	else if (interaction.isCommand() || interaction.isContextMenu()) {
 		const command = client.slashcommands.get(interaction.commandName);
-		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
+		let args = interaction.isContextMenu() ? client : interaction.options;
 		if (interaction.isContextMenu()) {
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
 			interaction.message = msgs.first();
 		}
-		else { args.forEach(arg => args[args.indexOf(arg)] = arg.value); }
+		else if (!command.advancedCommand) {
+			args = interaction.options._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+		}
 		if (!command) return;
 
 		const { cooldowns } = client;
