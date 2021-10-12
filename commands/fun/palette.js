@@ -9,16 +9,9 @@ module.exports = {
 	usage: '<Image URL>',
 	options: require('../options/palette.json'),
 	async execute(message, args) {
-		let reply = null;
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args = args._hoistedOptions;
-			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
-			message.deferReply();
-		}
-		else {
-			reply = await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
-		}
-		const { body } = await got(args[0], { encoding: null });
+		const slash = message.type && message.type == 'APPLICATION_COMMAND';
+		const reply = slash ? await message.deferReply() : await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
+		const { body } = await got(args[0], { encoding: null }).catch(error => { return slash ? message.editReply({ content: `${error}` }) : reply.edit({ content: `${error}` }); });
 		const palette = await splashy(body);
 		const embeds = [];
 		palette.forEach(hex => {
@@ -27,6 +20,6 @@ module.exports = {
 				.setDescription(hex);
 			embeds.push(Embed);
 		});
-		reply ? reply.edit({ content: null, embeds: embeds }) : message.editReply({ embeds: embeds });
+		slash ? message.editReply({ embeds: embeds }) : reply.edit({ content: null, embeds: embeds });
 	},
 };
