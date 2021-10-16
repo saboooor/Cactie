@@ -4,9 +4,9 @@ const { DefaultThumbnail } = require('../../config/music.json');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
-	name: 'remove',
-	description: 'Remove a song from the queue',
-	aliases: ['rem', 'rm'],
+	name: 'delete',
+	description: 'Delete a song from the queue',
+	aliases: ['del', 'rmq'],
 	args: true,
 	usage: '<Index of song in queue>',
 	guildOnly: true,
