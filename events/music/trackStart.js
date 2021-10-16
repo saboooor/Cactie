@@ -10,6 +10,7 @@ module.exports = async (client, player, track) => {
 	if (!img) img = DefaultThumbnail;
 	const { body } = await got(img, { encoding: null });
 	const palette = await splashy(body);
+	player.skipAmount = [];
 	const thing = new MessageEmbed()
 		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(img)
