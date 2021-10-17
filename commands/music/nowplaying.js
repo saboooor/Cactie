@@ -17,6 +17,7 @@ module.exports = {
 		const total = song.duration;
 		const current = player.position;
 		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		if (!song.color) {
 			const { body } = await got(img, { encoding: null });
 			const palette = await splashy(body);

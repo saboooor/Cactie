@@ -30,6 +30,7 @@ module.exports = {
 			});
 		}
 		if (player.state !== 'CONNECTED') player.connect();
+		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		player.set('autoplay', false);
 		const search = args.join(' ');
 		message.reply(`🔎 Searching for \`${search}\`...`);

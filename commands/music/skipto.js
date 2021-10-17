@@ -14,6 +14,7 @@ module.exports = {
 	options: require('../options/index.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
+		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		const position = Number(args[0]);
 		if (!position || position < 0 || position > player.queue.size) {
 			const thing = new MessageEmbed()
