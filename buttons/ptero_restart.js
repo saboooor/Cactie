@@ -5,3 +5,4 @@ module.exports = {
 		ptero(interaction, client, 'restart');
 	},
 };
+// Restart button from -ptero

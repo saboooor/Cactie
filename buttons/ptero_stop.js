@@ -5,3 +5,4 @@ module.exports = {
 		ptero(interaction, client, 'stop');
 	},
 };
+// Stop button from -ptero

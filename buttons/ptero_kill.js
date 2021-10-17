@@ -5,3 +5,4 @@ module.exports = {
 		ptero(interaction, client, 'kill');
 	},
 };
+// Kill button from -ptero
