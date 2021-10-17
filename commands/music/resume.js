@@ -14,13 +14,13 @@ module.exports = {
 	djRole: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		const song = player.queue.current;
 		if (!player.queue.current) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription('There is no music playing.');
 			return message.reply({ embeds: [thing] });
 		}
+		const song = player.queue.current;
 		if (!player.paused) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
