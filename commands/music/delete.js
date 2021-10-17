@@ -4,9 +4,9 @@ const { DefaultThumbnail } = require('../../config/music.json');
 const splashy = require('splashy');
 const got = require('got');
 module.exports = {
-	name: 'delete',
+	name: 'remqueue',
 	description: 'Delete a song from the queue',
-	aliases: ['del', 'rmq'],
+	aliases: ['removequeue', 'rmq'],
 	args: true,
 	usage: '<Index of song in queue>',
 	guildOnly: true,
@@ -32,14 +32,16 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		const song = player.queue[position];
-		let img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
 		player.queue.remove(position);
+		if (!song.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			song.color = palette[3];
+		}
 		const thing = new MessageEmbed()
 			.setDescription(`${remove} **Removed**\n[${song.title}](${song.uri})`)
-			.setColor(palette[3])
+			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(img);
 		return message.reply({ embeds: [thing] });

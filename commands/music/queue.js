@@ -20,12 +20,14 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		const queue = player.queue;
-		let img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!player.queue.current.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			player.queue.current.color = palette[3];
+		}
 		const embed = new MessageEmbed()
-			.setColor(palette[3])
+			.setColor(player.queue.current.color)
 			.setThumbnail(img);
 		const multiple = 10;
 		const page = args.length && Number(args[0]) ? Number(args[0]) : 1;

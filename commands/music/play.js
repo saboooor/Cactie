@@ -2,8 +2,6 @@ const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist } = require('../../config/emoji.json');
 const { DefaultThumbnail } = require('../../config/music.json');
-const splashy = require('splashy');
-const got = require('got');
 module.exports = {
 	name: 'play',
 	description: 'Play music from YouTube or Spotify',
@@ -59,12 +57,8 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				let img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : DefaultThumbnail;
-				if (!img) img = DefaultThumbnail;
-				const { body } = await got(img, { encoding: null });
-				const palette = await splashy(body);
+				const img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : DefaultThumbnail;
 				thing = new MessageEmbed()
-					.setColor(palette[3])
 					.setTimestamp()
 					.setThumbnail(img)
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\``);
@@ -85,12 +79,8 @@ module.exports = {
 				return player.play();
 			}
 			else {
-				let img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : DefaultThumbnail;
-				if (!img) img = DefaultThumbnail;
-				const { body } = await got(img, { encoding: null });
-				const palette = await splashy(body);
+				const img = track.displayThumbnail ? track.displayThumbnail('hqdefault') : DefaultThumbnail;
 				thing = new MessageEmbed()
-					.setColor(palette[3])
 					.setTimestamp()
 					.setThumbnail(img)
 					.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\`[${track.requester}]`);

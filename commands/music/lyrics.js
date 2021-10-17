@@ -22,14 +22,16 @@ module.exports = {
 		const song = player.queue.current;
 		const lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
 		if (!lyrics) return message.reply('Could not find lyrics for this track!');
-		let img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!song.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			song.color = palette[3];
+		}
 		const embed = new MessageEmbed()
 			.setDescription(`${music} **Lyrics**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
 			.setThumbnail(img)
-			.setColor(palette[3]);
+			.setColor(song.color);
 		return message.reply({ embeds: [embed] });
 	},
 };

@@ -33,12 +33,14 @@ module.exports = {
 		}
 		player.setTrackRepeat(!player.trackRepeat);
 		const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
-		let img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!player.queue.current.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			player.queue.current.color = palette[3];
+		}
 		const thing = new MessageEmbed()
-			.setColor(palette[3])
+			.setColor(player.queue.current.color)
 			.setThumbnail(img)
 			.setTimestamp()
 			.setDescription(`${loop} **${trackRepeat} Looping**\n[${player.queue.current.title}](${player.queue.current.uri}) \`[${convertTime(player.queue.current.duration).replace('07:12:56', 'LIVE')}]\` [${player.queue.current.requester}]`);
