@@ -7,9 +7,8 @@ module.exports = {
 			.setDescription(`**Message Latency** ${Date.now() - interaction.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`)
 			.setTimestamp();
 
-		// Get index of current string in pong.json and switch to next one
-		let newIndex = pong.indexOf(Embed.title) + 1;
-		if (newIndex == pong.length) newIndex = 0;
+		// Get next string (if last index, go to index 0)
+		const newIndex = pong.indexOf(Embed.title) == pong.length - 1 ? 0 : pong.indexOf(Embed.title) + 1;
 
 		// Set title and update message
 		Embed.setTitle(pong[newIndex]);
