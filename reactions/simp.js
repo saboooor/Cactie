@@ -1,10 +1,7 @@
 module.exports = {
 	name: 'simp',
-	triggers: ['lov', 'simp', ' ily ', ' ily', ' babe ', 'babe ', ' babe', 'kiss', 'cute'],
+	triggers: ['lov', 'simp', ' ily ', ' ily', 'kiss', 'cute'],
 	execute(message) {
-		message.react('🇸');
-		message.react('🇮');
-		message.react('🇲');
-		message.react('🇵');
+		message.react('896483408753082379');
 	},
 };
