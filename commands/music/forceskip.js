@@ -14,13 +14,6 @@ module.exports = {
 	djRole: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player) return message.reply('The bot is not playing anything!');
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		const autoplay = player.get('autoplay');
 		const song = player.queue.current;
 		if (autoplay === false) {

@@ -17,12 +17,6 @@ module.exports = {
 	options: require('../options/index.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		const position = (Number(args[0]) - 1);
 		if (position > player.queue.size) {
 			const number = (position + 1);

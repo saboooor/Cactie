@@ -14,12 +14,6 @@ module.exports = {
 	options: require('../options/volume.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		if (!args.length) {
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))

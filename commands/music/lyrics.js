@@ -13,12 +13,6 @@ module.exports = {
 	player: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply(thing);
-		}
 		const song = player.queue.current;
 		const lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
 		if (!lyrics) return message.reply('Could not find lyrics for this track!');

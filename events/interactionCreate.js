@@ -121,29 +121,29 @@ module.exports = async (client, interaction) => {
 
 		const player = client.manager.get(interaction.guild.id);
 
-		if (command.player && !player) {
-			embed.setDescription('There is no player for this guild.');
-			return interaction.reply({ embeds: [embed] });
+		if (command.player && (!player || !player.queue.current)) {
+			embed.setDescription('There is no music playing.');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (command.inVoiceChannel && !interaction.member.voice.channel) {
 			embed.setDescription('You must be in a voice channel!');
-			return interaction.reply({ embeds: [embed] });
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (command.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
 			embed.setDescription(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [embed] });
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		const srvconfig = client.settings.get(interaction.guild.id);
 
 		if (command.djRole && srvconfig.djrole != 'false') {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
-			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!' });
+			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!', ephemeral: true });
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
 				embed.setDescription(`You need the ${role} role to do that!`);
-				return interaction.reply({ embeds: [embed] });
+				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
 

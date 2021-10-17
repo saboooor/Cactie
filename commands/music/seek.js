@@ -15,12 +15,6 @@ module.exports = {
 	options: require('../options/seek.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		const song = player.queue.current;
 		const time = ms(args[0]);
 		const position = player.position;
