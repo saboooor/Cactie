@@ -7,13 +7,8 @@ module.exports = {
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
 	guildOnly: true,
-	advancedCommand: true,
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args[0] = args._subcommand;
-			args[1] = args._hoistedOptions[0] ? args._hoistedOptions[0].value : null;
-		}
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');

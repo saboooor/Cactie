@@ -71,9 +71,10 @@ module.exports = async (client, interaction) => {
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
 			interaction.message = msgs.first();
 		}
-		else if (!command.advancedCommand) {
+		else {
 			args = interaction.options._hoistedOptions;
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+			if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
 		}
 		if (!command) return;
 
@@ -158,7 +159,7 @@ module.exports = async (client, interaction) => {
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
 				.addField('**Type:**', 'Slash')
 				.addField('**Interaction:**', command.name)
-				.addField('**Error:**', clean(error));
+				.addField('**Error:**', `${clean(error)}`);
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
