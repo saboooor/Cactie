@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = async (client, player, track, payload) => {
-	console.error(payload.error);
+	client.logger.error(payload.error);
 	const channel = client.channels.cache.get(player.textChannel);
 	const thing = new MessageEmbed()
 		.setColor('RED')
