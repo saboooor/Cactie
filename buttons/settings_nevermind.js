@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'settings_nevermind',
 	async execute(interaction) {
+		// Get rid of buttons from message
 		interaction.update({ components: [] });
 	},
 };
-// This button just gets rid of buttons from the message

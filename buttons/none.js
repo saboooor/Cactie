@@ -1,7 +1,7 @@
 module.exports = {
 	name: 'none',
 	async execute(interaction) {
+		// Do absolutely nothing at all
 		interaction.deferUpdate();
 	},
 };
-// This button basically does absolutely nothing at all
