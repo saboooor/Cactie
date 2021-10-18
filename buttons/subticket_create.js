@@ -3,11 +3,16 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'subticket_create',
 	async execute(interaction, client) {
-		const srvconfig = client.settings.get(interaction.guild.id);
+		// Check if ticket is an actual ticket
 		if (!client.tickets.get(interaction.channel.id) || !client.tickets.get(interaction.channel.id).opener) return;
+
+		// Check if ticket has more than 5 subtickets
 		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
-		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
+
+		// Check if ticket is closed
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
+
+		// Create Thread for subticket
 		const subticket = await interaction.channel.threads.create({
 			name: `Subticket${client.user.username.replace('Pup', '') + ' '}${interaction.channel.threads.cache.size + 1}`,
 			autoArchiveDuration: 1440,
@@ -17,6 +22,8 @@ module.exports = {
 		client.logger.info(`Subticket created at #${subticket.name}`);
 		interaction.reply({ content: `Subticket created at #${subticket}!`, ephemeral: true });
 		await sleep(1000);
+
+		// Get users and ping them all with subticket embed
 		const users = [];
 		await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const Embed = new MessageEmbed()
@@ -24,7 +31,10 @@ module.exports = {
 			.setTitle('Subticket Created')
 			.setDescription('Please explain your issue and we\'ll be with you shortly.')
 			.addField('Description', 'Created with a button');
-		if (client.settings.get(interaction.guild.id).tickets == 'buttons') {
+
+		// Check if ticket mode is buttons or reactions and do stuff
+		const srvconfig = client.settings.get(interaction.guild.id);
+		if (srvconfig.tickets == 'buttons') {
 			Embed.setFooter(`To close this subticket do ${srvconfig.prefix}close, or click the button below`);
 			const row = new MessageActionRow()
 				.addComponents(
@@ -36,7 +46,7 @@ module.exports = {
 				);
 			await subticket.send({ content: `${users}`, embeds: [Embed], components: [row] });
 		}
-		else if (client.settings.get(interaction.guild.id).tickets == 'reactions') {
+		else if (srvconfig.tickets == 'reactions') {
 			Embed.setFooter(`To close this subticket do ${srvconfig.prefix}close, or react with 🔒`);
 			const embed = await subticket.send({ content: `${users}`, embeds: [Embed] });
 			await embed.react('🔒');

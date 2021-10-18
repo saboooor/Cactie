@@ -4,37 +4,57 @@ const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
 	async execute(interaction, client) {
-		if (!client.tickets.get(interaction.channel.id)) return interaction.reply('An error occured, please manually delete this channel.');
-		const author = interaction.user;
-		const srvconfig = client.settings.get(interaction.guild.id);
-		if (!interaction.channel.topic.startsWith('Ticket Opened by')) return interaction.reply({ content: 'This is not a valid ticket!' });
+		// Get ticket database
+		const ticket = client.tickets.get(interaction.channel.id);
+		if (!ticket) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+
+		// Check if ticket is already closed
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
-		if (client.tickets.get(interaction.channel.id).users.includes(author.id) && author.id != client.tickets.get(interaction.channel.id).opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
+
+		// Check if user is ticket author
+		const author = interaction.user;
+		if (author.id != ticket.opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
+
+		// Change channel name to closed
 		interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
+
+		// Check if bot got rate limited and ticket didn't properly close
 		await sleep(1000);
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
-		if (client.tickets.get(interaction.channel.id).voiceticket && client.tickets.get(interaction.channel.id).voiceticket !== 'false') {
-			const voiceticket = interaction.guild.channels.cache.get(client.tickets.get(interaction.channel.id).voiceticket);
+
+		// Check if there's a voice ticket and delete it
+		if (ticket.voiceticket && ticket.voiceticket !== 'false') {
+			const voiceticket = interaction.guild.channels.cache.get(ticket.voiceticket);
 			voiceticket.delete();
 			client.tickets.set(interaction.channel.id, 'false', 'voiceticket');
 		}
+
+		// Reset resolved state
 		client.tickets.set(interaction.channel.id, 'false', 'resolved');
-		client.tickets.get(interaction.channel.id).users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
+
+		// Remove permissions for each user in the ticket
+		ticket.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
+
+		// Get the transcript
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);
+		client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
+
+		// Get users and dm them all with ticket close embed
 		const users = [];
-		await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+		await ticket.users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const EmbedDM = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(`Closed ${interaction.channel.name}`)
 			.addField('**Users in ticket**', `${users}`)
 			.addField('**Transcript**', `${link}.txt`)
 			.addField('**Closed by**', `${author}`);
-		client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		users.forEach(usr => {
 			usr.send({ embeds: [EmbedDM] })
 				.catch(error => { client.logger.warn(error); });
 		});
+
+		// Reply with ticket close message
 		const Embed = new MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
@@ -55,13 +75,16 @@ module.exports = {
 				]);
 		}
 		interaction.reply({ embeds: [Embed], components: [row] });
+		client.logger.info(`Closed ticket #${interaction.channel.name}`);
+
+		// Check if ticket setting is set to reactions and add the reactions
 		if (client.settings.get(interaction.guild.id).tickets == 'reactions') {
+			const srvconfig = client.settings.get(interaction.guild.id);
 			Embed.setColor(3447003);
 			Embed.setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
 			const embed = await interaction.channel.send({ embeds: [Embed] });
 			embed.react('🔓');
 			embed.react('⛔');
 		}
-		client.logger.info(`Closed ticket #${interaction.channel.name}`);
 	},
 };
