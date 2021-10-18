@@ -18,5 +18,6 @@ module.exports = async (client, player, track) => {
 		.setThumbnail(img)
 		.setColor(track.color)
 		.setTimestamp();
+	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('07:12:56', 'LIVE')}] in ${client.guilds.cache.get(player.guild).name} (Requested by ${track.requester.tag})`);
 	return channel.send({ embeds: [thing] });
 };
