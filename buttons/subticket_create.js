@@ -4,7 +4,7 @@ module.exports = {
 	name: 'subticket_create',
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket
-		if (!client.tickets.get(interaction.channel.id) || !client.tickets.get(interaction.channel.id).opener) return;
+		if (!client.tickets.get(interaction.channel.id)) return;
 
 		// Check if ticket has more than 5 subtickets
 		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
