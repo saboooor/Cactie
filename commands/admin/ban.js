@@ -16,7 +16,7 @@ module.exports = {
 		const author = message.member;
 		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
-		const time = ms(args[1]);
+		const time = ms(args[1] ? args[1] : 'perm');
 		if (time > 31536000000) return message.reply({ content: 'You cannot ban someone for more than 1 year!' });
 		if (!isNaN(time) && args[2]) {
 			Embed.setTitle(`Banned ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
