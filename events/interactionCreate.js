@@ -66,12 +66,16 @@ module.exports = async (client, interaction) => {
 	}
 	else if (interaction.isCommand() || interaction.isContextMenu()) {
 		const command = client.slashcommands.get(interaction.commandName);
-		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
+		let args = interaction.isContextMenu() ? client : interaction.options;
 		if (interaction.isContextMenu()) {
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
 			interaction.message = msgs.first();
 		}
-		else { args.forEach(arg => args[args.indexOf(arg)] = arg.value); }
+		else {
+			args = interaction.options._hoistedOptions;
+			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+			if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
+		}
 		if (!command) return;
 
 		const { cooldowns } = client;
@@ -113,8 +117,39 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
+		const embed = new MessageEmbed()
+			.setColor('RED');
+
+		const player = client.manager.get(interaction.guild.id);
+
+		if (command.player && (!player || !player.queue.current)) {
+			embed.setDescription('There is no music playing.');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		if (command.inVoiceChannel && !interaction.member.voice.channel) {
+			embed.setDescription('You must be in a voice channel!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		if (command.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
+			embed.setDescription(`You must be in the same channel as ${client.user}!`);
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		const srvconfig = client.settings.get(interaction.guild.id);
+
+		if (command.djRole && srvconfig.djrole != 'false') {
+			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
+			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!', ephemeral: true });
+			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
+				embed.setDescription(`You need the ${role} role to do that!`);
+				return interaction.reply({ embeds: [embed], ephemeral: true });
+			}
+		}
+
 		try {
-			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name}, in ${interaction.guild.name}`);
+			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name} ${args.join(' ')}, in ${interaction.guild.name}`.replace(' ,', ','));
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
@@ -124,7 +159,7 @@ module.exports = async (client, interaction) => {
 				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
 				.addField('**Type:**', 'Slash')
 				.addField('**Interaction:**', command.name)
-				.addField('**Error:**', clean(error));
+				.addField('**Error:**', `${clean(error)}`);
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });

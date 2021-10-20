@@ -6,6 +6,11 @@
     },
     {
         "type": "SUB_COMMAND",
+        "name": "reset",
+        "description": "Reset all settings"
+    },
+    {
+        "type": "SUB_COMMAND",
         "name": "prefix",
         "description": "The bot\"s prefix",
         "options": [

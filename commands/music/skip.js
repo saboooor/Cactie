@@ -13,13 +13,8 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
+		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		if (!player) return message.reply('The bot is not playing anything!');
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		const srvconfig = client.settings.get(message.guild.id);
 		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 		if (!player.skipAmount) player.skipAmount = [];
@@ -39,13 +34,15 @@ module.exports = {
 			player.queue.clear();
 			player.set('autoplay', false);
 		}
-		let img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!song.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			song.color = palette[3];
+		}
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Skipped**\n[${song.title}](${song.uri})`)
-			.setColor(palette[3])
+			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(img);
 		return message.reply({ embeds: [thing] });

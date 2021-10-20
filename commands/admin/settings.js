@@ -9,15 +9,10 @@ module.exports = {
 	guildOnly: true,
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
-		if (message.type && message.type == 'APPLICATION_COMMAND') {
-			args[0] = args._subCommand;
-			args[1] = args._hoistedOptions[0] ? args._hoistedOptions[0].value : null;
-		}
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');
-		if (args[1] == 'get') args[1] == null;
-		if (args[1] != null) {
+		if (args[1] != null && args[0] != 'reset') {
 			const prop = args[0];
 			if (!client.settings.has(message.guild.id, prop)) return message.reply({ content: 'Invalid setting!' });
 			const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
@@ -41,6 +36,23 @@ module.exports = {
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 		}
+		else if (args[0] == 'reset') {
+			Embed.setTitle('**SETTINGS RESET**');
+			const row = new MessageActionRow()
+				.addComponents(
+					new MessageButton()
+						.setCustomId('settings_reset')
+						.setLabel('Reset Settings')
+						.setStyle('DANGER'),
+				)
+				.addComponents(
+					new MessageButton()
+						.setCustomId('settings_nevermind')
+						.setLabel('Nevermind')
+						.setStyle('PRIMARY'),
+				);
+			return message.reply({ embeds: [Embed], components: [row], ephemeral: true });
+		}
 		else {
 			const srvconfig = client.settings.get(message.guild.id);
 			const configlist = Object.keys(srvconfig).map(prop => {
@@ -62,10 +74,6 @@ module.exports = {
 					.setCustomId('settings_next')
 					.setLabel('►')
 					.setStyle('PRIMARY'),
-				new MessageButton()
-					.setCustomId('settings_reset')
-					.setLabel('Reset Settings')
-					.setStyle('DANGER'),
 			);
 		message.reply({ embeds: [Embed], components: [row], ephemeral: true });
 	},

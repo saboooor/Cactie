@@ -23,7 +23,7 @@ module.exports = async (client, reaction, user) => {
 		client.commands.get('open').execute(message, user, client, reaction);
 	}
 	else if (reaction.emoji.name == '🔒') {
-		if (!message.embeds[0].title.includes('icket Created')) return;
+		if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
 		reaction.users.remove(user.id);
 		client.commands.get('close').execute(message, user, client, reaction);
 	}

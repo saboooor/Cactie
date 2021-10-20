@@ -3,8 +3,11 @@ const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_subticket',
 	async execute(interaction, client) {
+		// Fetch messages in the channel and get the transcript link
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);
+
+		// Create Embed for close message in main ticket
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(`Closed ${interaction.channel.name}`)
@@ -13,6 +16,8 @@ module.exports = {
 		client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		interaction.channel.parent.send({ embeds: [Embed] })
 			.catch(error => { client.logger.error(error); });
+
+		// Delete thread
 		client.logger.info(`Closed subticket #${interaction.channel.name}`);
 		await interaction.channel.delete();
 	},

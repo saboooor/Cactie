@@ -14,12 +14,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
+		const song = player.queue.current;
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
 			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
@@ -33,15 +28,17 @@ module.exports = {
 		}
 		player.setTrackRepeat(!player.trackRepeat);
 		const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
-		let img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!song.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			song.color = palette[3];
+		}
 		const thing = new MessageEmbed()
-			.setColor(palette[3])
+			.setColor(song.color)
 			.setThumbnail(img)
 			.setTimestamp()
-			.setDescription(`${loop} **${trackRepeat} Looping**\n[${player.queue.current.title}](${player.queue.current.uri}) \`[${convertTime(player.queue.current.duration).replace('07:12:56', 'LIVE')}]\` [${player.queue.current.requester}]`);
+			.setDescription(`${loop} **${trackRepeat} Looping**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]`);
 		return message.reply({ embeds: [thing] });
 	},
 };

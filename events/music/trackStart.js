@@ -10,10 +10,14 @@ module.exports = async (client, player, track) => {
 	if (!img) img = DefaultThumbnail;
 	const { body } = await got(img, { encoding: null });
 	const palette = await splashy(body);
+	player.skipAmount = null; player.clearQueueAmount = null;
+	player.loopTrackAmount = null; player.loopQueueAmount = null;
+	player.shuffleAmount = null; track.color = palette[3];
 	const thing = new MessageEmbed()
 		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(img)
-		.setColor(palette[3])
+		.setColor(track.color)
 		.setTimestamp();
+	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('07:12:56', 'LIVE')}] in ${client.guilds.cache.get(player.guild).name} (Requested by ${track.requester.tag})`);
 	return channel.send({ embeds: [thing] });
 };

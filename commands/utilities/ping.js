@@ -13,7 +13,7 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Pong!')
-			.setDescription(`**Message Latency** ${message.createdTimestamp - Date.now()}ms\n**API Latency** ${client.ws.ping}ms`)
+			.setDescription(`**Message Latency** ${Date.now() - message.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`)
 			.setTimestamp();
 		message.reply({ embeds: [Embed], components: [row], ephemeral: true });
 	},

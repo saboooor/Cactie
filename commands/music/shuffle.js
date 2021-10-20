@@ -9,12 +9,6 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
 			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);

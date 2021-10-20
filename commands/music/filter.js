@@ -15,12 +15,7 @@ module.exports = {
 	options: require('../options/filter.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
+		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();

@@ -135,8 +135,8 @@ module.exports = async (client, message) => {
 
 	const player = client.manager.get(message.guild.id);
 
-	if (command.player && !player) {
-		embed.setDescription('There is no player for this guild.');
+	if (command.player && (!player || !player.queue.current)) {
+		embed.setDescription('There is no music playing.');
 		return message.reply({ embeds: [embed] });
 	}
 

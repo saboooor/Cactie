@@ -13,26 +13,23 @@ module.exports = {
 	player: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (!player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return message.reply({ embeds: [thing] });
-		}
 		const queue = player.queue;
-		let img = player.queue.current.displayThumbnail ? player.queue.current.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!img) img = DefaultThumbnail;
-		const { body } = await got(img, { encoding: null });
-		const palette = await splashy(body);
+		const song = queue.current;
+		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
+		if (!song.color) {
+			const { body } = await got(img, { encoding: null });
+			const palette = await splashy(body);
+			song.color = palette[3];
+		}
 		const embed = new MessageEmbed()
-			.setColor(palette[3])
+			.setColor(song.color)
 			.setThumbnail(img);
 		const multiple = 10;
 		const page = args.length && Number(args[0]) ? Number(args[0]) : 1;
 		const end = page * multiple;
 		const start = end - multiple;
 		const tracks = queue.slice(start, end);
-		if (queue.current) embed.addField('Now Playing', `[${queue.current.title}](${queue.current.uri}) \`[${convertTime(queue.current.duration).replace('07:12:56', 'LIVE')}]\` [${queue.current.requester}]`);
+		if (song) embed.addField('Now Playing', `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]`);
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
 		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - [${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
 		const maxPages = Math.ceil(queue.length / multiple);

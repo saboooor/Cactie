@@ -1,17 +1,9 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow } = require('discord.js');
 module.exports = {
 	name: 'settings_reset',
 	permissions: 'ADMINISTRATOR',
-	async execute(interaction) {
-		await sleep('2000');
-		const confirm = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('settings_reset_confirm')
-					.setLabel('Are you sure you want to reset ALL of your settings?')
-					.setStyle('DANGER'),
-			);
-		interaction.update({ components: [confirm] });
+	async execute(interaction, client) {
+		// Delete settings database for guild and reply
+		client.settings.delete(interaction.guild.id);
+		interaction.update({ content: 'Settings successfully reset!', components: [] });
 	},
 };
