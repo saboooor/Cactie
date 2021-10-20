@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 					method: 'GET',
 				});
 				const buffer = await response.buffer();
-				const img = new MessageAttachment(buffer, `${attachment.id}.png`);
+				const img = new MessageAttachment(buffer, `${attachment.id}.${attachment.contentType.split("/")[1]}`);
 				files.push(img);
 				if (files.length == message.attachments.size) {
 					client.channels.cache.get('849453797809455125')
