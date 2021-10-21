@@ -9,6 +9,7 @@ module.exports = {
 	aliases: ['removequeue', 'rmq'],
 	args: true,
 	usage: '<Index of song in queue>',
+	similarcmds: 'remove',
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
