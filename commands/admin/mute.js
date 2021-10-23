@@ -10,16 +10,26 @@ module.exports = {
 	guildOnly: true,
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
+		// Check if mute role is set and mute command is enabled
 		const srvconfig = client.settings.get(message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role Id>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
+
+		// Get user and check if user is valid
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
-		if (!user) return message.reply({ content: 'Invalid User!' });
+		if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
+
+		// Get member and author and check if role is lower than member's role
 		const member = message.guild.members.cache.get(user.id);
 		const author = message.member;
-		const role = await message.guild.roles.cache.get(srvconfig.muterole);
-		if (member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
 		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
+
+		// Get mute role and check if role is valid
+		const role = await message.guild.roles.cache.get(srvconfig.muterole);
+		if (!role) return message.reply({ content: 'Invalid Role! Re-set the mute role in -settings' });
+
+		// Check if user is muted
+		if (member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		const time = ms(args[1] ? args[1] : 'perm');
 		if (time > 31536000000) return message.reply({ content: 'You cannot mute someone for more than 1 year!' });
