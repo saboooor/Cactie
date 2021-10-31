@@ -3,6 +3,7 @@ module.exports = {
 	description: 'sssnake',
 	aliases: ['snakes'],
 	async execute(message, args, client) {
+		// Get from r/snake with the redditFetch function
 		require('../../functions/redditFetch.js')('snake', message, client);
 	},
 };

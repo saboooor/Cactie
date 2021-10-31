@@ -6,6 +6,7 @@ module.exports = {
 	args: true,
 	options: require('../options/question.json'),
 	async execute(message) {
+		// Get random index and reply with the string in the array of the index
 		const i = Math.floor(Math.random() * ball.length - 1);
 		message.reply(ball[i]);
 	},
