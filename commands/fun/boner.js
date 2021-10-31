@@ -8,10 +8,11 @@ module.exports = {
 	cooldown: 10,
 	options: require('../options/someone.json'),
 	async execute(message, args, client) {
-		if (client.settings.get(message.guild.id).bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
-		const srvconfig = client.settings.get(message.guild.id);
+		const srvconfig = message.guild ? client.settings.get(message.guild.id) : { bonercmd: 'true', maxppsize: '35' };
+		if (srvconfig.bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
-		let nick = args[0] ? args[0] : message.member.displayName;
+		const name = message.guild ? message.member.displayName : message.user.username;
+		let nick = args[0] ? args[0] : name;
 		if (args[0] && nick.startsWith('<@') && nick.endsWith('>')) {
 			const mention = nick.includes('!') ? nick.slice(3, -1) : nick.slice(2, -1);
 			nick = client.users.cache.get(mention).username;

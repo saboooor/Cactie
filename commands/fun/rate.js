@@ -5,7 +5,7 @@ module.exports = {
 	usage: '[Something or someone]',
 	options: require('../options/someone.json'),
 	async execute(message, args) {
-		if (!args[0]) args[0] == message.member.displayName;
+		if (!args[0]) args[0] = message.guild ? message.member.displayName : message.user.username;
 		const rating = Math.floor(Math.random() * (ratings.length * 10)) / 10;
 		const i = Math.floor(rating);
 		message.reply(ratings[i]

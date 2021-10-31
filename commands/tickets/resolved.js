@@ -2,6 +2,7 @@ module.exports = {
 	name: 'resolved',
 	description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',
 	aliases: ['resolve'],
+	guildOnly: true,
 	async execute(message, args, client) {
 		const srvconfig = client.settings.get(message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);

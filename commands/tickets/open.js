@@ -4,6 +4,7 @@ module.exports = {
 	name: 'open',
 	description: 'Repen a ticket',
 	aliases: ['reopen'],
+	guildOnly: true,
 	async execute(message, user, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

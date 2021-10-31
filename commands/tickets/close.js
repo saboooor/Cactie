@@ -4,6 +4,7 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
 	description: 'Close a ticket',
+	guildOnly: true,
 	async execute(message, user, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

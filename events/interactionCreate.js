@@ -120,7 +120,7 @@ module.exports = async (client, interaction) => {
 		const embed = new MessageEmbed()
 			.setColor('RED');
 
-		const player = client.manager.get(interaction.guild.id);
+		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
 
 		if (command.player && (!player || !player.queue.current)) {
 			embed.setDescription('There is no music playing.');
@@ -137,7 +137,7 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
-		const srvconfig = client.settings.get(interaction.guild.id);
+		const srvconfig = interaction.guild ? client.settings.get(interaction.guild.id) : null;
 
 		if (command.djRole && srvconfig.djrole != 'false') {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
@@ -149,8 +149,9 @@ module.exports = async (client, interaction) => {
 		}
 
 		try {
-			const cmdlog = args.join ? command.name + args.join() : command.name;
-			client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
+			const cmdlog = args.join ? `${command.name} ${args.join()}` : command.name;
+			const guild = interaction.guild ? interaction.guild.name : 'DMs';
+			client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${guild}`.replace(' ,', ','));
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
