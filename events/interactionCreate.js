@@ -149,7 +149,8 @@ module.exports = async (client, interaction) => {
 		}
 
 		try {
-			client.logger.info(`${interaction.user.tag} issued slash command: /${command.name} ${args.join(' ')}, in ${interaction.guild.name}`.replace(' ,', ','));
+			const cmdlog = args.join ? command.name + args.join() : command.name;
+			client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
 			command.execute(interaction, args, client);
 		}
 		catch (error) {
