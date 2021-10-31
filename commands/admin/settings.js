@@ -9,35 +9,62 @@ module.exports = {
 	guildOnly: true,
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
+		// Create Embed with title and color
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Bot Settings');
+
+		// Check if arg is set or is 'reset'
 		if (args[1] != null && args[0] != 'reset') {
+			// Set prop variable to first argument
 			const prop = args[0];
+
+			// Check if setting exists
 			if (!client.settings.has(message.guild.id, prop)) return message.reply({ content: 'Invalid setting!' });
+
+			// Set value to second argument for slash commands and the rest of the text joined for normal commands
 			const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
+
+			// Tickets setting can only be either buttons, reactions, or false
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply({ content: 'This setting must be either `buttons`, `reactions`, or `false`!' });
+			// Reactions / Bonercmd / Ticketmention / Mutecmd settings can only either be true or false
 			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
+			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
+			// Maxppsize can only be less than 76
 			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
+			// Suggestionchannel / Pollchannel / Ticketlogchannel can only be a text channel or false
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'default' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
+			// Ticketcategory can only be a category channel or false
 			if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
+			// Supportrole / Muterole / Djrole can only be a role
 			if ((prop == 'supportrole' || prop == 'muterole' || prop == 'djrole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
+			// Adminrole can only be a role or 'permission'
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
+			// Msgshortener can only be a number
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
+			// Set muterole's permissions
 			if (prop == 'muterole') {
 				const role = message.guild.roles.cache.get(value);
 				message.guild.channels.cache.forEach(channel => {
 					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
 						.catch(e => { client.logger.error(e); });
 				});
+
+				// Move the muterole under pup's highest role if not already over it
+				if (client.user.roles.highest.rawPosition > role.rawPosition) role.setPosition(client.user.roles.highest.rawPosition - 1);
 			}
+
+			// Set the setting and the embed description / log
 			client.settings.set(message.guild.id, value, prop);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 		}
 		else if (args[0] == 'reset') {
+			// Set title to 'SETTINGS RESET'
 			Embed.setTitle('**SETTINGS RESET**');
+
+			// Add buttons for reset confirm / deny
 			const row = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -51,19 +78,25 @@ module.exports = {
 						.setLabel('Nevermind')
 						.setStyle('PRIMARY'),
 				);
+
+			// Send Embed with buttons
 			return message.reply({ embeds: [Embed], components: [row], ephemeral: true });
 		}
 		else {
+			// Get settings and make an array out of it to split and make pages
 			const srvconfig = client.settings.get(message.guild.id);
 			const configlist = Object.keys(srvconfig).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 			});
 			const maxPages = Math.ceil(configlist.length / 5);
-			Embed
-				.setDescription(configlist.slice(0, 4).join('\n'))
+
+			// Set embed description with page and stuff
+			Embed.setDescription(configlist.slice(0, 4).join('\n'))
 				.addField('Usage', `\`${srvconfig.prefix}settings [<Setting> <Value>]\``)
 				.setFooter(`Page 1 of ${maxPages}`);
 		}
+
+		// Add buttons for page changing
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
@@ -75,6 +108,8 @@ module.exports = {
 					.setLabel('►')
 					.setStyle('PRIMARY'),
 			);
+
+		// Send Embed with buttons
 		message.reply({ embeds: [Embed], components: [row], ephemeral: true });
 	},
 };
