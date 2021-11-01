@@ -7,13 +7,22 @@ const got = require('got');
 const solenolyrics = require('solenolyrics');
 module.exports = {
 	name: 'lyrics',
-	description: 'Get lyrics of current song',
+	description: 'Get lyrics of a song',
 	aliases: ['l'],
 	guildOnly: true,
-	player: true,
+	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		const song = player.queue.current;
+		let song = null;
+		if (player) { song = player.queue.current; }
+		else {
+			song = {
+				title: args.join(' '),
+				uri: 'https://google.com',
+				requester: message.member.user,
+				duration: 0,
+			};
+		}
 		const lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
 		if (!lyrics) return message.reply('Could not find lyrics for this track!');
 		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
