@@ -34,7 +34,7 @@ module.exports = {
 
 		// Actually delete ticket and ticket database
 		await client.tickets.delete(interaction.channel.id);
-		await interaction.channel.delete();
 		client.logger.info(`Deleted ticket #${interaction.channel.name}`);
+		await interaction.channel.delete();
 	},
 };
