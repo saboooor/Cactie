@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
-const splashy = require('splashy');
-const got = require('got');
+const { getColor } = require('colorthief');
+const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',
@@ -9,12 +9,11 @@ module.exports = {
 	guildOnly: true,
 	async execute(message) {
 		const owner = await message.guild.fetchOwner();
-		const { body } = await got(message.guild.iconURL().replace('webp', 'png'), { encoding: null });
-		const palette = await splashy(body);
+		const color = rgb2hex(await getColor(message.guild.iconURL().replace('webp', 'png')));
 		const Embed = new MessageEmbed()
-			.setColor(palette[3])
-			.setAuthor(message.guild.name, message.guild.iconURL())
-			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL())
+			.setColor(color)
+			.setAuthor(message.guild.name, message.guild.iconURL({ dynamic : true }))
+			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL({ dynamic : true }))
 			.setTimestamp();
 		if (message.guild.description) Embed.addField('Description', message.guild.description);
 		if (message.guild.vanityURLCode) Embed.addField('Vanity URL', `discord.gg/${message.guild.vanityURLCode}`);

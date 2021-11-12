@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { progressbar } = require('../../functions/progressbar.js');
-const splashy = require('splashy');
-const got = require('got');
+const { getColor } = require('colorthief');
+const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'userinfo',
 	description: 'Discord member information',
@@ -51,18 +51,17 @@ module.exports = {
 		member.user = await member.user.fetch();
 		const Embed = new MessageEmbed()
 			.setColor(member.user.accentColor)
-			.setAuthor(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, member.avatarURL() ? member.user.avatarURL() : null)
-			.setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())
+			.setAuthor(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null)
+			.setThumbnail(member.avatarURL() ? member.avatarURL({ dynamic : true }) : member.user.avatarURL({ dynamic : true }))
 			.setDescription(`${member.user}`)
 			.addField('Status', member.presence ? member.presence.status : 'offline')
 			.setTimestamp();
 		if (member.user.bannerURL()) {
-			const { body } = await got(member.user.avatarURL().replace('webp', 'png'), { encoding: null });
-			const palette = await splashy(body);
-			Embed.setColor(palette[3]);
+			const color = rgb2hex(await getColor(member.user.bannerURL().replace('webp', 'png')));
+			Embed.setColor(color);
 		}
 		if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
-		if (member.user.bannerURL()) Embed.setImage(member.user.bannerURL());
+		if (member.user.bannerURL()) Embed.setImage(member.user.bannerURL({ dynamic : true }));
 		Embed
 			.addField('Joined Server At', `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>`)
 			.addField('Created Account At', `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`)

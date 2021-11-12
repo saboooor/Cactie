@@ -24,7 +24,7 @@ module.exports = async (client, interaction) => {
 			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
-				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
+				.setAuthor(interaction.user.tag, interaction.user.avatarURL({ dynamic : true }))
 				.addField('**Type:**', 'Button')
 				.addField('**Interaction:**', button.name)
 				.addField('**Error:**', clean(error));
@@ -54,7 +54,7 @@ module.exports = async (client, interaction) => {
 			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
-				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
+				.setAuthor(interaction.user.tag, interaction.user.avatarURL({ dynamic : true }))
 				.addField('**Type:**', 'Dropdown')
 				.addField('**Interaction:**', interaction.values[0])
 				.addField('**Error:**', clean(error));
@@ -158,7 +158,7 @@ module.exports = async (client, interaction) => {
 			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
-				.setAuthor(interaction.user.tag, interaction.user.avatarURL())
+				.setAuthor(interaction.user.tag, interaction.user.avatarURL({ dynamic : true }))
 				.addField('**Type:**', 'Slash')
 				.addField('**Interaction:**', command.name)
 				.addField('**Error:**', `${clean(error)}`);

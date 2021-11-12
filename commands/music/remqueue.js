@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const { remove } = require('../../config/emoji.json');
 const { DefaultThumbnail } = require('../../config/music.json');
-const splashy = require('splashy');
-const got = require('got');
+const { getColor } = require('colorthief');
+const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'remqueue',
 	description: 'Delete a song from the queue',
@@ -28,12 +28,7 @@ module.exports = {
 		}
 		const song = player.queue[position];
 		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		player.queue.remove(position);
-		if (!song.color) {
-			const { body } = await got(img, { encoding: null });
-			const palette = await splashy(body);
-			song.color = palette[3];
-		}
+		if (!song.color) song.color = rgb2hex(await getColor(img));
 		const thing = new MessageEmbed()
 			.setDescription(`${remove} **Removed**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)

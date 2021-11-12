@@ -2,8 +2,8 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { DefaultThumbnail } = require('../../config/music.json');
 const emoji = require('../../config/emoji.json');
-const splashy = require('splashy');
-const got = require('got');
+const { getColor } = require('colorthief');
+const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'queue',
 	description: 'Show the music queue and now playing.',
@@ -16,11 +16,7 @@ module.exports = {
 		const queue = player.queue;
 		const song = queue.current;
 		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!song.color) {
-			const { body } = await got(img, { encoding: null });
-			const palette = await splashy(body);
-			song.color = palette[3];
-		}
+		if (!song.color) song.color = rgb2hex(await getColor(img));
 		const embed = new MessageEmbed()
 			.setColor(song.color)
 			.setThumbnail(img);

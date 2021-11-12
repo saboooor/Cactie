@@ -30,7 +30,7 @@ module.exports = async (client, message) => {
 					method: 'GET',
 				});
 				const buffer = await response.buffer();
-				const img = new MessageAttachment(buffer, `${attachment.id}.${attachment.contentType.split("/")[1]}`);
+				const img = new MessageAttachment(buffer, `${attachment.id}.${attachment.contentType.split('/')[1]}`);
 				files.push(img);
 				if (files.length == message.attachments.size) {
 					client.channels.cache.get('849453797809455125')
@@ -65,7 +65,7 @@ module.exports = async (client, message) => {
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
-			.setAuthor(message.member.displayName, message.member.user.avatarURL())
+			.setAuthor(message.member.displayName, message.member.user.avatarURL({ dynamic : true }))
 			.setDescription(link)
 			.setFooter('Next time please use a paste service');
 		message.channel.send({ embeds: [Embed] });
@@ -168,7 +168,7 @@ module.exports = async (client, message) => {
 		const interactionFailed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
-			.setAuthor(message.author.tag, message.author.avatarURL())
+			.setAuthor(message.author.tag, message.author.avatarURL({ dynamic : true }))
 			.addField('**Type:**', 'Dash')
 			.addField('**Guild:**', message.guild.name)
 			.addField('**Channel:**', message.channel.name)

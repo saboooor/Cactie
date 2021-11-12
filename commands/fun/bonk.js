@@ -7,7 +7,7 @@ module.exports = {
 	async execute(message, args, client) {
 		// Create embed with bonk gif and author / footer
 		const Embed = new MessageEmbed()
-			.setAuthor(`${message.guild ? message.member.displayName : message.user.username} bonks ${args[0] ? args.join(' ') : 'themselves'}`, message.member.user.avatarURL())
+			.setAuthor(`${message.guild ? message.member.displayName : message.user.username} bonks ${args[0] ? args.join(' ') : 'themselves'}`, message.member.user.avatarURL({ dynamic: true }))
 			.setImage('https://c.tenor.com/TbLpG9NCzjkAAAAC/bonk.gif')
 			.setFooter('get bonked');
 

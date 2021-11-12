@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const { pause } = require('../../config/emoji.json');
 const { DefaultThumbnail } = require('../../config/music.json');
-const splashy = require('splashy');
-const got = require('got');
+const { getColor } = require('colorthief');
+const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'pause',
 	description: 'Pause the currently playing music',
@@ -23,11 +23,7 @@ module.exports = {
 		player.pause(true);
 		const song = player.queue.current;
 		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!song.color) {
-			const { body } = await got(img, { encoding: null });
-			const palette = await splashy(body);
-			song.color = palette[3];
-		}
+		if (!song.color) song.color = rgb2hex(await getColor(img));
 		const thing = new MessageEmbed()
 			.setDescription(`${pause} **Paused**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
