@@ -94,9 +94,9 @@ module.exports = {
 			await embed.react('🔊');
 		}
 
-		// Ping everyone if enabled
+		// Ping everyone online if enabled
 		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send({ content: '@everyone' });
+			const ping = await ticket.send({ content: '@here' });
 			await ping.delete();
 		}
 	},

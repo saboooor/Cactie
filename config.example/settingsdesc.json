@@ -11,7 +11,7 @@
     "ticketlogchannel": "*The channel where the bot puts ticket logs (false/channelId)*",
     "ticketcategory": "*The category where the bot creates tickets in (false/categoryId)*",
     "supportrole": "*The ticket support team role (roleId)*",
-    "ticketmention": "*Pings @everyone every time a new ticket is created (true/false)*",
+    "ticketmention": "*Pings @here every time a new ticket is created (true/false)*",
     "muterole": "*The role for muting someone (false/roleId)*",
     "mutecmd": "*Toggles the mute command (true/false)*",
     "adminrole": "*The role to replace the ADMINISTRATOR permission (permission/roleId)*",

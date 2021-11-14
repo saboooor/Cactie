@@ -95,7 +95,7 @@ module.exports = {
 			await embed.react('🔊');
 		}
 		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send({ content: '@everyone' });
+			const ping = await ticket.send({ content: '@here' });
 			await ping.delete();
 		}
 	},
