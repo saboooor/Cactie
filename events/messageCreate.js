@@ -57,6 +57,11 @@ module.exports = async (client, message) => {
 		});
 	}
 
+	if (message.guild.me.permissions.has('SEND_MESSAGES') || !message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) {
+		client.logger.error(`Missing Message permission in #${message.channel.name} at ${message.guild.name}`);
+		message.author.send(`I can't speak in ${message.channel}!`).catch(e => { client.logger.warn(e); });
+	}
+
 	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
