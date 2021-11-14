@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_subticket',
+	botperms: 'MANAGE_THREADS',
 	async execute(interaction, client) {
 		// Fetch messages in the channel and get the transcript link
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
@@ -14,8 +15,7 @@ module.exports = {
 			.addField('**Transcript**', `${link}.txt`)
 			.addField('**Closed by**', `${interaction.user}`);
 		client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
-		interaction.channel.parent.send({ embeds: [Embed] })
-			.catch(error => { client.logger.error(error); });
+		interaction.channel.parent.send({ embeds: [Embed] });
 
 		// Delete thread
 		client.logger.info(`Closed subticket #${interaction.channel.name}`);
