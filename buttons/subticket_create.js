@@ -2,6 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'subticket_create',
+	botperms: 'CREATE_PUBLIC_THREADS',
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket
 		if (!client.tickets.get(interaction.channel.id)) return;
@@ -17,8 +18,7 @@ module.exports = {
 			name: `Subticket${client.user.username.replace('Pup', '') + ' '}${interaction.channel.threads.cache.size + 1}`,
 			autoArchiveDuration: 1440,
 			reason: 'Created with a button',
-		})
-			.catch(error => client.logger.error(error));
+		});
 		client.logger.info(`Subticket created at #${subticket.name}`);
 		interaction.reply({ content: `Subticket created at #${subticket}!`, ephemeral: true });
 		await sleep(1000);

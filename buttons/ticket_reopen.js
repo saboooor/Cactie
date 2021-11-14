@@ -2,6 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reopen_ticket',
+	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
 		// Check if ticket is already opened
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already opened!' });

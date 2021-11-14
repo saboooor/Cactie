@@ -2,6 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'create_ticket',
+	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
 		// Check if tickets are disabled
 		const srvconfig = client.settings.get(interaction.guild.id);

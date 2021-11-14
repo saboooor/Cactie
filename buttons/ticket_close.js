@@ -3,6 +3,7 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
+	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
 		// Get ticket database
 		const ticket = client.tickets.get(interaction.channel.id);

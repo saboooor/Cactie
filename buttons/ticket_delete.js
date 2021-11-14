@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'delete_ticket',
+	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
 		// Check if ticket is still open
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
