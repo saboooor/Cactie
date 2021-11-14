@@ -19,7 +19,7 @@ module.exports = client => {
 			pollchannel: 'default',
 			ticketlogchannel: 'false',
 			ticketcategory: 'false',
-			ticketmention: 'true',
+			ticketmention: 'here',
 			supportrole: 'Not Set',
 			mutecmd: 'true',
 			muterole: 'Not Set',
