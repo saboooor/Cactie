@@ -3,6 +3,7 @@ module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
 	aliases: ['commands'],
+	botperms: 'ADD_REACTIONS',
 	usage: '[Type]',
 	cooldown: 10,
 	guildOnly: true,

@@ -5,6 +5,7 @@ module.exports = {
 	args: true,
 	usage: '<User> [Reason]',
 	permissions: 'KICK_MEMBERS',
+	botperms: 'KICK_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
 	options: require('../options/kick.json'),
@@ -47,8 +48,7 @@ module.exports = {
 		message.reply({ embeds: [Embed], ephemeral: true });
 
 		// Actually kick the dude
-		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` })
-			.catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });
 		client.logger.info({ content: `Kicked user: ${user.tag} from ${message.guild.name}` });
 	},
 };

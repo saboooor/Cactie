@@ -57,11 +57,6 @@ module.exports = async (client, message) => {
 		});
 	}
 
-	if (message.guild.me.permissions.has('SEND_MESSAGES') || !message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) {
-		client.logger.error(`Missing Message permission in #${message.channel.name} at ${message.guild.name}`);
-		message.author.send(`I can't speak in ${message.channel}!`).catch(e => { client.logger.warn(e); });
-	}
-
 	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
@@ -88,6 +83,12 @@ module.exports = async (client, message) => {
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command || !command.name) return;
+
+	if (!message.guild.me.permissions.has('SEND_MESSAGES') || !message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) {
+		client.logger.error(`Missing Message permission in #${message.channel.name} at ${message.guild.name}`);
+		message.author.send(`I can't speak in ${message.channel}!`).catch(e => { client.logger.warn(e); });
+		return;
+	}
 
 	const { cooldowns } = client;
 
@@ -128,11 +129,19 @@ module.exports = async (client, message) => {
 
 	if (command.permissions && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
-		if (command.permissions == 'ADMINISTRATOR' && client.settings.get(message.guild.id).adminrole != 'permission' && !message.member.roles.cache.has(client.settings.get(message.guild.id).adminrole)) {
-			return message.reply({ content: 'You can\'t do that!' });
+		if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
+			return message.reply({ content: `You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!` });
 		}
-		else if (!authorPerms && client.settings.get(message.guild.id).adminrole == 'permission' || !authorPerms.has(command.permissions) && client.settings.get(message.guild.id).adminrole == 'permission') {
-			return message.reply({ content: 'You can\'t do that!' });
+		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permissions) && srvconfig.adminrole == 'permission') {
+			return message.reply({ content: `You can't do that! You need the ${command.permissions} permission!` });
+		}
+	}
+
+	if (command.botperms) {
+		if (!message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms)) {
+			client.logger.error(`Missing ${command.botperms} permission in #${message.channel.name} at ${message.guild.name}`);
+			message.reply({ content: `I don't have the ${command.botperms} permission!`, ephemeral: true });
+			return;
 		}
 	}
 

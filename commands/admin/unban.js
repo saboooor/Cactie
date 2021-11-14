@@ -5,6 +5,7 @@ module.exports = {
 	args: true,
 	usage: '<User>',
 	permissions: 'BAN_MEMBERS',
+	botperms: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
 	options: require('../options/user.json'),

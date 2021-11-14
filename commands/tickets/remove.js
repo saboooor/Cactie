@@ -4,6 +4,7 @@ module.exports = {
 	description: 'Remove someone from a ticket',
 	args: true,
 	usage: '<User Mention or Id>',
+	botperms: 'MANAGE_CHANNELS',
 	similarcmds: 'remqueue',
 	guildOnly: true,
 	options: require('../options/user.json'),

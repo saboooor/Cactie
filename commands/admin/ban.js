@@ -6,6 +6,7 @@ module.exports = {
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'BAN_MEMBERS',
+	botperms: 'BAN_MEMBERS',
 	cooldown: 5,
 	guildOnly: true,
 	options: require('../options/punish.json'),
@@ -39,8 +40,7 @@ module.exports = {
 
 			// Set unban timestamp to member data for auto-unban
 			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + time, 'bannedUntil');
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}` })
-				.catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}` });
 		}
 		else if (!isNaN(time)) {
 			// Ban for amount of time, no reason
@@ -58,8 +58,7 @@ module.exports = {
 			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + time, 'bannedUntil');
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args[1]}` })
-				.catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args[1]}` });
 		}
 		else if (args[1]) {
 			// Ban forever with reason
@@ -74,8 +73,7 @@ module.exports = {
 			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever` })
-				.catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever` });
 		}
 		else {
 			// Ban forever, no reason
@@ -90,8 +88,7 @@ module.exports = {
 			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} forever`);
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} forever` })
-				.catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} forever` });
 		}
 
 		// Reply with response

@@ -4,16 +4,16 @@ const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',
+	botperms: 'ADD_REACTIONS',
 	cooldown: 10,
 	args: true,
 	usage: '<Suggestion>',
 	guildOnly: true,
 	options: require('../options/suggest.json'),
 	async execute(message, args, client) {
-		let channel = message.guild.channels.cache.find(c => c.name.includes('suggestions'));
 		const srvconfig = client.settings.get(message.guild.id);
-		if (srvconfig.suggestionchannel == 'false') channel = message.channel;
-		else if (srvconfig.suggestionchannel != 'default') channel = client.channels.cache.get(srvconfig.suggestionchannel);
+		let channel = client.channels.cache.get(srvconfig.suggestionchannel);
+		if (!channel) channel = message.channel;
 		const suggestion = args.join(' ');
 		const Embed = new MessageEmbed()
 			.setColor(3447003)
@@ -30,7 +30,7 @@ module.exports = {
 				await sleep(5000);
 				created.delete();
 			}
-			message.delete();
+			message.delete().catch(e => client.logger.warn(e));
 		}
 		else {
 			message.reply({ content: `**Suggestion Created at ${channel}!**`, ephemeral: true });

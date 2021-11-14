@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket',
+	botperms: 'MANAGE_CHANNELS',
 	args: true,
 	usage: '<User Mention or Id>',
 	guildOnly: true,

@@ -4,6 +4,7 @@ module.exports = {
 	aliases: ['accept'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
+	botperms: 'MANAGE_MESSAGES',
 	usage: '<Message ID> [Response]',
 	guildOnly: true,
 	options: require('../options/suggestresponse.json'),

@@ -7,6 +7,7 @@ module.exports = {
 	usage: '[Description]',
 	guildOnly: true,
 	options: require('../options/ticket.json'),
+	botperms: 'MANAGE_CHANNELS',
 	async execute(message, args, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

@@ -3,6 +3,7 @@ module.exports = {
 	description: 'Create a voiceticket',
 	aliases: ['voicenew', 'voice'],
 	guildOnly: true,
+	botperms: 'MANAGE_CHANNELS',
 	async execute(message, args, client, reaction) {
 		const author = client.users.cache.get(client.tickets.get(message.channel.id).opener);
 		if (reaction && message.author.id != client.user.id) return;

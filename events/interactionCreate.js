@@ -110,10 +110,21 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: 'You can only execute this command in a Discord Server!', ephemeral: true });
 		}
 
-		if (command.permissions && interaction.user.id !== '249638347306303499') {
-			const authorPerms = interaction.member.permissions;
-			if (!authorPerms || !authorPerms.has(command.permissions)) {
-				return interaction.reply({ content: 'You can\'t do that!', ephemeral: true });
+		if (command.permissions && interaction.member.user.id !== '249638347306303499') {
+			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);
+			if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
+				return interaction.reply({ content: `You can't do that, you need the ${interaction.guild.roles.cache.get(srvconfig.adminrole).name} role!`, ephemeral: true });
+			}
+			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permissions) && srvconfig.adminrole == 'permission') {
+				return interaction.reply({ content: `You can't do that! You need the ${command.permissions} permission!`, ephemeral: true });
+			}
+		}
+
+		if (command.botperms) {
+			if (!interaction.guild.me.permissions.has(command.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperms)) {
+				client.logger.error(`Missing ${command.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+				interaction.reply({ content: `I don't have the ${command.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
+				return;
 			}
 		}
 

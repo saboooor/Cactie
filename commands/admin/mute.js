@@ -6,6 +6,7 @@ module.exports = {
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'MANAGE_MESSAGES',
+	botperms: 'MANAGE_ROLES',
 	cooldown: 5,
 	guildOnly: true,
 	options: require('../options/punish.json'),
@@ -85,8 +86,7 @@ module.exports = {
 		}
 
 		// Actually mute the dude (add role)
-		await member.roles.add(role)
-			.catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+		await member.roles.add(role);
 
 		// Reply to command
 		message.reply({ embeds: [Embed], ephemeral: true });

@@ -5,6 +5,7 @@ module.exports = {
 	description: 'Force delete a ticket',
 	guildOnly: true,
 	permissions: 'ADMINISTRATOR',
+	botperms: 'MANAGE_CHANNELS',
 	async execute(message, user, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

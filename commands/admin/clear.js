@@ -6,6 +6,7 @@ module.exports = {
 	usage: '<Message Amount>',
 	similarcmds: 'clearqueue',
 	permissions: 'MANAGE_MESSAGES',
+	botperms: 'MANAGE_MESSAGES',
 	guildOnly: true,
 	options: require('../options/clear.json'),
 	async execute(message, args, client) {
@@ -15,7 +16,7 @@ module.exports = {
 
 		// Fetch the messages and bulk delete them
 		const messages = await message.channel.messages.fetch({ limit: args[0] });
-		message.channel.bulkDelete(messages).catch(e => message.channel.send({ content: `\`${`${e}`.split('at')[0]}\`` }));
+		message.channel.bulkDelete(messages);
 
 		// Reply with response
 		if (message.commandName) message.reply({ content: `Cleared ${args[0]} messages!`, ephemeral: true });
