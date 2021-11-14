@@ -27,8 +27,8 @@ module.exports = {
 
 			// Tickets setting can only be either buttons, reactions, or false
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply({ content: 'This setting must be either `buttons`, `reactions`, or `false`!' });
-			// Reactions / Bonercmd / Ticketmention / Mutecmd settings can only either be true or false
-			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'ticketmention' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
+			// Reactions / Bonercmd / Mutecmd settings can only either be true or false
+			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
 			// Maxppsize can only be less than 76
@@ -43,6 +43,8 @@ module.exports = {
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			// Msgshortener can only be a number
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
+			// Ticketmention can only be here, everyone, or a valid role
+			if ((prop == 'ticketmention') && value != 'everyone' && value != 'here' && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'This setting must be either `here`, `everyone`, or a valid role Id!' });
 			// Set muterole's permissions
 			if (prop == 'muterole') {
 				const role = message.guild.roles.cache.get(value);

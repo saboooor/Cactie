@@ -94,8 +94,12 @@ module.exports = {
 			await embed.react('📜');
 			await embed.react('🔊');
 		}
-		if (srvconfig.ticketmention == 'true') {
-			const ping = await ticket.send({ content: '@here' });
+		// Ping with the ticketmention setting if enabled
+		if (srvconfig.ticketmention != 'false') {
+			let ping = null;
+			if (srvconfig.ticketmention == 'here') ping = await ticket.send({ content: '@here' });
+			else if (srvconfig.ticketmention == 'everyone') ping = await ticket.send({ content: '@everyone' });
+			else ping = await ticket.send({ content: `<@${srvconfig.ticketmention}>` });
 			await ping.delete();
 		}
 	},
