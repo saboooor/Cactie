@@ -129,6 +129,19 @@
     },
     {
         "type": "SUB_COMMAND",
+        "name": "suggestthreads",
+        "description": "Creates a thread when a suggestion is created for discussion",
+        "options": [
+            {
+                "type": "BOOLEAN",
+                "name": "value",
+                "description": "The setting value",
+                "required": true
+            }
+        ]
+    },
+    {
+        "type": "SUB_COMMAND",
         "name": "pollchannel",
         "description": "The channel where the bot puts polls in",
         "options": [
@@ -148,7 +161,7 @@
             {
                 "type": "CHANNEL",
                 "name": "channel",
-                "description": "The channel (Hashtag icon)",
+                "description": "The ticket logging channel (Hashtag icon)",
                 "required": true
             }
         ]

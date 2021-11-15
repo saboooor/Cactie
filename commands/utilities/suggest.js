@@ -24,6 +24,13 @@ module.exports = {
 		const msg = await channel.send({ embeds: [Embed] });
 		await msg.react(yes);
 		await msg.react(no);
+		if (srvconfig.suggestthreads) {
+			await msg.startThread({
+				name: `Suggestion by ${message.member.displayName}'`,
+				autoArchiveDuration: 1440,
+				reason: suggestion,
+			});
+		}
 		if (!message.commandName) {
 			if (channel != message.channel) {
 				const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });

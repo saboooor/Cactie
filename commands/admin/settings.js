@@ -27,8 +27,8 @@ module.exports = {
 
 			// Tickets setting can only be either buttons, reactions, or false
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply({ content: 'This setting must be either `buttons`, `reactions`, or `false`!' });
-			// Reactions / Bonercmd / Mutecmd settings can only either be true or false
-			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'mutecmd') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
+			// Reactions / Bonercmd / Mutecmd // Suggestthreads settings can only either be true or false
+			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'mutecmd' || prop == 'suggestthreads') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
 			// Maxppsize can only be less than 76
