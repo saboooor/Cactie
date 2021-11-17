@@ -54,7 +54,7 @@ module.exports = {
 				}
 				else {
 					embed.setColor('RED').setDescription('No results found.');
-					return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
+					return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${warn} **Failed to search**`, embeds: [embed] });
 				}
 				track.img = 'https://i.imgur.com/cK7XIkw.png';
 			}
@@ -63,7 +63,7 @@ module.exports = {
 				const track = Searched.tracks[0];
 				if (Searched.loadType === 'NO_MATCHES') {
 					embed.setColor('RED').setDescription('No results found.');
-					return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
+					return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${warn} **Failed to search**`, embeds: [embed] });
 				}
 				else if (Searched.loadType == 'PLAYLIST_LOADED') {
 					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
@@ -87,7 +87,7 @@ module.exports = {
 			});
 			player.queue.add(songs);
 			if (!player.playing) player.play();
-			slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
+			slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] });
 		}
 		catch (e) {
 			client.logger.error(e);

@@ -1,7 +1,5 @@
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
-	const channel = newState.guild.channels.cache.get(
-		newState.channel?.id ?? newState.channelId);
 	const guildId = newState.guild.id;
 	const player = client.manager.get(guildId);
 
@@ -16,21 +14,6 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.channel === null && newState.channel === null) return;
 	if (newState.serverMute == true && oldState.serverMute == false) return player.pause(true);
 	if (newState.serverMute == false && oldState.serverMute == true) return player.pause(false);
-
-	if (newState.id == client.user.id && channel?.type == 'GUILD_STAGE_VOICE') {
-		if (!oldState.channelId) {
-			try { await newState.guild.me.voice.setSuppressed(false); }
-			catch (err) { player.pause(true); }
-		}
-		else if (oldState.suppress !== newState.suppress) {
-			player.pause(newState.suppress);
-		}
-	}
-	if (oldState.id === client.user.id) return;
-	if (!oldState.guild.members.cache.get(client.user.id).voice.channelId) return;
-
-	// Don't leave channel if 24/7 mode is active
-	if (player.twentyFourSeven) return;
 
 	// move check first as it changes type
 	if (stateChange.type === 'MOVE') {
