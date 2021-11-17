@@ -45,7 +45,7 @@ module.exports = {
 				const Searched = await node.load(search);
 				const track = Searched.tracks[0];
 				if (Searched.loadType === 'PLAYLIST_LOADED') {
-					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length}]\` [${message.member.user}]`);
+					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
 					for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i]));
 				}
 				else if (Searched.loadType.startsWith('TRACK')) {
@@ -66,7 +66,7 @@ module.exports = {
 					return slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
 				}
 				else if (Searched.loadType == 'PLAYLIST_LOADED') {
-					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length}]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
+					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
 					for (let i = 0; i < Searched.tracks.length; i++) {
 						if (Searched.tracks[i].displayThumbnail) Searched.tracks[i].img = Searched.tracks[i].displayThumbnail('hqdefault');
 						songs.push(Searched.tracks[i]);
