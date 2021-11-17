@@ -33,7 +33,8 @@ module.exports = {
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		player.set('autoplay', false);
 		const search = args.join(' '); const songs = [];
-		message.reply(`🔎 Searching for \`${search}\`...`);
+		const msg = message.reply(`🔎 Searching for \`${search}\`...`);
+		const slash = message.type && message.type == 'APPLICATION_COMMAND';
 		try {
 			const embed = new MessageEmbed().setTimestamp();
 			if (search.match(client.Lavasfy.spotifyPattern)) {
@@ -48,8 +49,8 @@ module.exports = {
 					embed.setDescription(`${playlist} **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
 				}
 				else {
-					embed.setColor('RED').setDescription('there were no results found.');
-					return message.channel.send({ embeds: [embed] });
+					embed.setColor('RED').setDescription('No results found.');
+					return slash ? message.editReply({ embeds: [embed] }) : msg.edit({ embeds: [embed] });
 				}
 				for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i]));
 				track.img = 'https://i.imgur.com/cK7XIkw.png';
@@ -58,8 +59,8 @@ module.exports = {
 				const Searched = await player.search(search);
 				const track = Searched.tracks[0];
 				if (Searched.loadType === 'NO_MATCHES') {
-					embed.setColor('RED').setDescription('there were no results found.');
-					return message.channel.send({ embeds: [embed] });
+					embed.setColor('RED').setDescription('No results found.');
+					return slash ? message.editReply({ embeds: [embed] }) : msg.edit({ embeds: [embed] });
 				}
 				else if (Searched.loadType == 'PLAYLIST_LOADED') {
 					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length}]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
@@ -77,7 +78,7 @@ module.exports = {
 			songs.forEach(song => song.requester = message.member.user);
 			player.queue.add(songs);
 			if (!player.playing) { player.play(); }
-			message.channel.send({ embeds: [embed] });
+			slash ? message.editReply({ embeds: [embed] }) : msg.edit({ embeds: [embed] });
 		}
 		catch (e) {
 			client.logger.error(e);
