@@ -1,7 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { remove } = require('../../config/emoji.json');
-const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'remqueue',
 	description: 'Delete a song from the queue',
@@ -26,7 +24,6 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		const song = player.queue[position];
-		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const thing = new MessageEmbed()
 			.setDescription(`${remove} **Removed**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)

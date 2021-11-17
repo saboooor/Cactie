@@ -1,7 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { resume } = require('../../config/emoji.json');
-const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'resume',
 	description: 'Resume currently playing music',
@@ -22,7 +20,6 @@ module.exports = {
 			return message.reply({ embeds: [thing] });
 		}
 		player.pause(false);
-		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const thing = new MessageEmbed()
 			.setDescription(`${resume} **Resumed**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)

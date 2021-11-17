@@ -1,8 +1,6 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const emoji = require('../../config/emoji.json');
-const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'queue',
 	description: 'Show the music queue and now playing.',
@@ -14,7 +12,6 @@ module.exports = {
 		const player = client.manager.get(message.guild.id);
 		const queue = player.queue;
 		const song = queue.current;
-		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const embed = new MessageEmbed()
 			.setColor(song.color)
 			.setThumbnail(song.img);

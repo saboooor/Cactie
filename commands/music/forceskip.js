@@ -1,7 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { skip } = require('../../config/emoji.json');
-const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'forceskip',
 	aliases: ['fs'],
@@ -24,7 +22,6 @@ module.exports = {
 			player.queue.clear();
 			player.set('autoplay', false);
 		}
-		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Force Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)

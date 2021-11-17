@@ -1,8 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { loop } = require('../../config/emoji.json');
-const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'loop',
 	description: 'Toggle music loop',
@@ -27,7 +25,6 @@ module.exports = {
 		}
 		player.setTrackRepeat(!player.trackRepeat);
 		const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
-		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const thing = new MessageEmbed()
 			.setColor(song.color)
 			.setThumbnail(song.img)

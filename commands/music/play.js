@@ -2,6 +2,8 @@ const { MessageEmbed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist, resume } = require('../../config/emoji.json');
+const { getColor } = require('colorthief');
+const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'play',
 	description: 'Play music from YouTube, Spotify, or Apple Music',
@@ -77,7 +79,10 @@ module.exports = {
 					songs.push(Searched.tracks[0]);
 				}
 			}
-			songs.forEach(song => song.requester = message.member.user);
+			songs.forEach(async song => {
+				song.requester = message.member.user;
+				if (song.img) song.color = rgb2hex(await getColor(song.img));
+			});
 			player.queue.add(songs);
 			if (!player.playing) player.play();
 			slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
