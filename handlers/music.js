@@ -18,6 +18,7 @@ Structure.extend(
 );
 
 module.exports = client => {
+	nodes.forEach(node => node.id = node.identifier);
 	client.Lavasfy = new LavasfyClient(
 		{
 			clientID: SpotifyID,

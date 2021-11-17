@@ -3,7 +3,7 @@ const { leave } = require('../../config/emoji.json');
 module.exports = {
 	name: 'leave',
 	description: 'Leave voice channel',
-	aliases: ['dc'],
+	aliases: ['dc', 'fuckoff'],
 	cooldown: 2,
 	guildOnly: true,
 	inVoiceChannel: true,

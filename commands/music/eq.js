@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { filter } = require('../../config/emoji.json');
 module.exports = {
 	name: 'eq',
-	description: 'Set Equalizer (Custom is only on dash commands)',
+	description: 'Set Equalizer (Custom only available with dash commands)',
 	usage: '<Party/Bass/Radio/Pop/Treblebass/Soft/Custom/Off>',
 	aliases: [ 'filter', 'equalizer' ],
 	cooldown: 10,
