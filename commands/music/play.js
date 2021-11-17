@@ -82,6 +82,7 @@ module.exports = {
 			songs.forEach(async song => {
 				song.requester = message.member.user;
 				if (song.img) song.color = rgb2hex(await getColor(song.img));
+				else song.color = Math.round(Math.random() * 16777215);
 			});
 			player.queue.add(songs);
 			if (!player.playing) player.play();
