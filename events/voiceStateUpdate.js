@@ -1,24 +1,26 @@
-const { MessageEmbed } = require('discord.js');
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, oldState, newState) => {
+	// get guild and player
 	const channel = newState.guild.channels.cache.get(
-		newState.channel?.id ?? newState.channelId,
-	);
-	// Only keep the bot in the voice channel by its self for 3 minutes
-	const player = client.manager?.players.get(newState.guild.id);
+		newState.channel?.id ?? newState.channelId);
+	const guildId = newState.guild.id;
+	const player = client.manager.get(guildId);
 
-	if (!player) return;
-	if (!newState.guild.members.cache.get(client.user.id).voice.channelId) player.destroy();
+	// check if the bot is active (playing, paused or empty does not matter (return otherwise)
+	if (!player || player.state !== 'CONNECTED') return;
 
-	// Check for stage channel audience change
+	const stateChange = {};
+
+	if (oldState.channel === null && newState.channel !== null) stateChange.type = 'JOIN';
+	if (oldState.channel !== null && newState.channel === null) stateChange.type = 'LEAVE';
+	if (oldState.channel !== null && newState.channel !== null) stateChange.type = 'MOVE';
+	if (oldState.channel === null && newState.channel === null) return;
+	if (newState.serverMute == true && oldState.serverMute == false) return player.pause(true);
+	if (newState.serverMute == false && oldState.serverMute == true) return player.pause(false);
+
 	if (newState.id == client.user.id && channel?.type == 'GUILD_STAGE_VOICE') {
 		if (!oldState.channelId) {
-			try {
-				await newState.guild.me.voice.setSuppressed(false).then(() => console.log(null));
-			}
-			catch (err) {
-				player.pause(true);
-			}
+			try { await newState.guild.me.voice.setSuppressed(false); }
+			catch (err) { player.pause(true); }
 		}
 		else if (oldState.suppress !== newState.suppress) {
 			player.pause(newState.suppress);
@@ -30,38 +32,27 @@ module.exports = async (client, oldState, newState) => {
 	// Don't leave channel if 24/7 mode is active
 	if (player.twentyFourSeven) return;
 
-	// Make sure the bot is in the voice channel that 'activated' the event
-	if (oldState.guild.members.cache.get(client.user.id).voice.channelId === oldState.channelId) {
-		if (
-			oldState.guild.me.voice?.channel &&
-				oldState.guild.me.voice.channel.members.filter((m) => !m.user.bot).size === 0
-		) {
-			const vcName = oldState.guild.me.voice.channel.name;
-			await sleep(180000);
+	// move check first as it changes type
+	if (stateChange.type === 'MOVE') {
+		if (oldState.channel.id === player.voiceChannel) stateChange.type = 'LEAVE';
+		if (newState.channel.id === player.voiceChannel) stateChange.type = 'JOIN';
+	}
+	// double triggered on purpose for MOVE events
+	if (stateChange.type === 'JOIN') stateChange.channel = newState.channel;
+	if (stateChange.type === 'LEAVE') stateChange.channel = oldState.channel;
 
-			// times up check if bot is still by themselves in VC (exluding bots)
-			const vcMembers = oldState.guild.me.voice.channel?.members.size;
-			if (!vcMembers || vcMembers === 1) {
-				const newPlayer = client.manager?.players.get(newState.guild.id);
-				newPlayer ? player.destroy() : oldState.guild.me.voice.channel.leave();
-				const embed = new MessageEmbed(client, newState.guild)
-				// eslint-disable-next-line no-inline-comments
-					.setDescription(
-						`I left 🔉 **${vcName}** because I was left alone for too long <:Stare:811372073737912320>`,
-					);
-				try {
-					const c = client.channels.cache.get(player.textChannel);
-					if (c) {
-						c.send({ embeds: [embed] }).then((m) =>
-							setTimeout(() =>
-								m.delete(), 30000),
-						);
-					}
-				}
-				catch (err) {
-					client.logger.error(err.message);
-				}
-			}
-		}
+	// check if the bot's voice channel is involved (return otherwise)
+	if (!stateChange.channel || stateChange.channel.id !== player.voiceChannel) return;
+
+	// filter current users based on being a bot
+	stateChange.members = stateChange.channel.members.filter(member => !member.user.bot);
+
+	switch (stateChange.type) {
+	case 'JOIN':
+		if (stateChange.members.size === 1 && player.paused) player.pause(false);
+		break;
+	case 'LEAVE':
+		if (stateChange.members.size === 0 && !player.paused && player.playing) player.pause(true);
+		break;
 	}
 };
