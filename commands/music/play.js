@@ -83,6 +83,7 @@ module.exports = {
 				song.requester = message.member.user;
 				if (song.img) song.color = rgb2hex(await getColor(song.img));
 				else song.color = Math.round(Math.random() * 16777215);
+				if (song.author) song.title = `${song.title} - ${song.author}`;
 			});
 			player.queue.add(songs);
 			if (!player.playing) player.play();
