@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { pause } = require('../../config/emoji.json');
-const { DefaultThumbnail } = require('../../config/music.json');
 const { getColor } = require('colorthief');
 const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
@@ -22,13 +21,12 @@ module.exports = {
 		}
 		player.pause(true);
 		const song = player.queue.current;
-		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!song.color) song.color = rgb2hex(await getColor(img));
+		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const thing = new MessageEmbed()
 			.setDescription(`${pause} **Paused**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
-			.setThumbnail(img);
+			.setThumbnail(song.img);
 		return message.reply({ embeds: [thing] });
 	},
 };

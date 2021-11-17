@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { loop } = require('../../config/emoji.json');
-const { DefaultThumbnail } = require('../../config/music.json');
 const { getColor } = require('colorthief');
 const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
@@ -28,11 +27,10 @@ module.exports = {
 		}
 		player.setTrackRepeat(!player.trackRepeat);
 		const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
-		const img = song.displayThumbnail ? song.displayThumbnail('hqdefault') : DefaultThumbnail;
-		if (!song.color) song.color = rgb2hex(await getColor(img));
+		if (!song.color) song.color = rgb2hex(await getColor(song.img));
 		const thing = new MessageEmbed()
 			.setColor(song.color)
-			.setThumbnail(img)
+			.setThumbnail(song.img)
 			.setTimestamp()
 			.setDescription(`${loop} **${trackRepeat} Looping**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]`);
 		return message.reply({ embeds: [thing] });

@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('../../functions/convert.js');
-const { addsong, playlist } = require('../../config/emoji.json');
+const { addsong, playlist, resume } = require('../../config/emoji.json');
 module.exports = {
 	name: 'play',
 	description: 'Play music from YouTube, Spotify, or Apple Music',
@@ -33,7 +33,7 @@ module.exports = {
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		player.set('autoplay', false);
 		const search = args.join(' '); const songs = [];
-		const msg = message.reply(`🔎 Searching for \`${search}\`...`);
+		const msg = await message.reply(`🔎 Searching for \`${search}\`...`);
 		const slash = message.type && message.type == 'APPLICATION_COMMAND';
 		try {
 			const embed = new MessageEmbed().setTimestamp();
@@ -44,15 +44,16 @@ module.exports = {
 				const track = Searched.tracks[0];
 				if (Searched.loadType === 'PLAYLIST_LOADED') {
 					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length}]\` [${message.member.user}]`);
+					for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i]));
 				}
 				else if (Searched.loadType.startsWith('TRACK')) {
 					embed.setDescription(`${playlist} **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
+					songs.push(Searched.tracks[0]);
 				}
 				else {
 					embed.setColor('RED').setDescription('No results found.');
-					return slash ? message.editReply({ embeds: [embed] }) : msg.edit({ embeds: [embed] });
+					return slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
 				}
-				for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i]));
 				track.img = 'https://i.imgur.com/cK7XIkw.png';
 			}
 			else {
@@ -60,25 +61,26 @@ module.exports = {
 				const track = Searched.tracks[0];
 				if (Searched.loadType === 'NO_MATCHES') {
 					embed.setColor('RED').setDescription('No results found.');
-					return slash ? message.editReply({ embeds: [embed] }) : msg.edit({ embeds: [embed] });
+					return slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
 				}
 				else if (Searched.loadType == 'PLAYLIST_LOADED') {
 					embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length}]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
+					for (let i = 0; i < Searched.tracks.length; i++) {
+						if (Searched.tracks[i].displayThumbnail) Searched.tracks[i].img = Searched.tracks[i].displayThumbnail('hqdefault');
+						songs.push(Searched.tracks[i]);
+					}
 				}
 				else {
 					if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 					embed.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${message.member.user}]`)
 						.setThumbnail(track.img);
-				}
-				for (let i = 0; i < Searched.tracks.length; i++) {
-					if (Searched.tracks[i].displayThumbnail) Searched.tracks[i].img = Searched.tracks[i].displayThumbnail('hqdefault');
-					songs.push(Searched.tracks[i]);
+					songs.push(Searched.tracks[0]);
 				}
 			}
 			songs.forEach(song => song.requester = message.member.user);
 			player.queue.add(songs);
-			if (!player.playing) { player.play(); }
-			slash ? message.editReply({ embeds: [embed] }) : msg.edit({ embeds: [embed] });
+			if (!player.playing) player.play();
+			slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`!**`, embeds: [embed] });
 		}
 		catch (e) {
 			client.logger.error(e);
