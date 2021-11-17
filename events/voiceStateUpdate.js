@@ -37,13 +37,13 @@ module.exports = async (client, oldState, newState) => {
 				oldState.guild.me.voice.channel.members.filter((m) => !m.user.bot).size === 0
 		) {
 			const vcName = oldState.guild.me.voice.channel.name;
-			await sleep(120000);
+			await sleep(180000);
+
 			// times up check if bot is still by themselves in VC (exluding bots)
 			const vcMembers = oldState.guild.me.voice.channel?.members.size;
 			if (!vcMembers || vcMembers === 1) {
 				const newPlayer = client.manager?.players.get(newState.guild.id);
-				if (!oldState.guild.me.voice.channel) return;
-				newPlayer ? player.destroy() : oldState.guild.me.voice.disconnect();
+				newPlayer ? player.destroy() : oldState.guild.me.voice.channel.leave();
 				const embed = new MessageEmbed(client, newState.guild)
 				// eslint-disable-next-line no-inline-comments
 					.setDescription(

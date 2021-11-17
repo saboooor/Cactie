@@ -1,9 +1,34 @@
-const { Manager } = require('erela.js');
-const Spotify = require('erela.js-spotify');
-const Deezer = require('erela.js-deezer');
+const { Manager, Structure } = require('erela.js');
+const { LavasfyClient } = require('lavasfy');
+const apple = require('erela.js-apple');
+const deezer = require('erela.js-deezer');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
+
+// This system from discord music bot https://github.com/SudhanPlayz
+Structure.extend(
+	'Player',
+	(Player) =>
+		class extends Player {
+			setNowplayingMessage(message) {
+				if (this.nowPlayingMessage && !this.nowPlayingMessage.deleted) {this.nowPlayingMessage.delete();}
+				return (this.nowPlayingMessage = message);
+			}
+		},
+);
+
 module.exports = client => {
+	client.Lavasfy = new LavasfyClient(
+		{
+			clientID: SpotifyID,
+			clientSecret: SpotifySecret,
+			playlistPageLoadLimit: 4,
+			filterAudioOnlyResult: true,
+			autoResolve: true,
+			useSpotifyMetadata: true,
+		},
+		nodes,
+	);
 	client.manager = new Manager({
 		nodes: nodes,
 		send: (id, payload) => {
@@ -11,11 +36,9 @@ module.exports = client => {
 			if (guild) guild.shard.send(payload);
 		},
 		autoPlay: true,
-		plugins: [new Spotify({
-			clientID: SpotifyID,
-			clientSecret: SpotifySecret,
-		}),
-		new Deezer(),
+		plugins: [
+			new deezer(),
+			new apple(),
 		],
 	});
 	client.on('raw', (d) => client.manager.updateVoiceState(d));

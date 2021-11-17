@@ -19,7 +19,7 @@ module.exports = {
 		const embed = interaction.message.embeds[0];
 
 		// Calculate total amount of pages and get current page from embed footer
-		const maxPages = Math.ceil(queue.length / 10);
+		const maxPages = Math.ceil(queue.length / 6);
 		const lastPage = parseInt(embed.footer.text.split(' ')[1]);
 
 		// Get prev page (if first page, go to last page)
@@ -32,7 +32,7 @@ module.exports = {
 		embed.fields = [];
 		if (song) embed.addField('Now Playing', `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]`);
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
-		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - [${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
+		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - ${track.title} \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
 		embed.setFooter(`Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
 		return interaction.update({ embeds: [embed], components: interaction.message.components });
 	},
