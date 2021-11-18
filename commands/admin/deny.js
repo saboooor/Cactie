@@ -1,3 +1,4 @@
+const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'deny',
 	description: 'Deny a suggestion',
@@ -23,6 +24,17 @@ module.exports = {
 		// Remove all reactions and set color to red and denied title
 		fetchedMsg.reactions.removeAll();
 		Embed.setColor(15158332).setTitle('Suggestion (Denied)');
+
+		// Get suggestion thread if exists and delete with transcript
+		const thread = message.guild.channels.cache.get(Embed.url.split('a')[2]);
+		if (thread) {
+			const messages = await thread.messages.fetch({ limit: 100 });
+			if (messages.size > 1) {
+				const link = await getTranscript(messages);
+				Embed.addField('View Discussion', link);
+			}
+			thread.delete();
+		}
 
 		// Fetch results / reactions and add field if not already added
 		const emojis = [];

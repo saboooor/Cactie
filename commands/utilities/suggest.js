@@ -25,11 +25,13 @@ module.exports = {
 		await msg.react(yes);
 		await msg.react(no);
 		if (srvconfig.suggestthreads) {
-			await msg.startThread({
+			const thread = await msg.startThread({
 				name: `Suggestion by ${message.member.displayName}'`,
 				autoArchiveDuration: 1440,
 				reason: suggestion,
 			});
+			Embed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
+			msg.edit({ embeds: [Embed] });
 		}
 		if (!message.commandName) {
 			if (channel != message.channel) {
