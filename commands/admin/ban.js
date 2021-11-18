@@ -13,8 +13,8 @@ module.exports = {
 	async execute(message, args, client) {
 		// Get user and check if user is valid
 		const member = message.guild.members.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		if (!member) return message.reply({ content: 'Invalid User! Are they in this server?' });
 		const user = member.user;
-		if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
 
 		// Get member and author and check if role is lower than member's role
 		const author = message.member;

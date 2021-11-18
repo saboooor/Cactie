@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
 const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
+const rgb2hex = require('../functions/rgbhex');
 module.exports = async (subreddit, message, client) => {
 	const slash = message.type && message.type == 'APPLICATION_COMMAND';
 	if (slash && !message.deferred) message.deferReply();
