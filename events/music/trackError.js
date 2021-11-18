@@ -4,8 +4,8 @@ module.exports = async (client, player, track, payload) => {
 	const channel = client.channels.cache.get(player.textChannel);
 	const thing = new MessageEmbed()
 		.setColor('RED')
-		.setDescription('❌ Failed to load song.');
+		.setDescription(`❌ Failed to load [${track.title}](${track.uri})`);
 	channel.send({ embeds: [thing] });
-	client.logger.error(`Failed to load song in ${client.guilds.cache.get(player.guild).name}`);
+	client.logger.error(`Failed to load ${track.title} in ${client.guilds.cache.get(player.guild).name}`);
 	if (!player.voiceChannel) player.destroy();
 };
