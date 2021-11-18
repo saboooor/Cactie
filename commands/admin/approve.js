@@ -25,6 +25,15 @@ module.exports = {
 		fetchedMsg.reactions.removeAll();
 		Embed.setColor(3066993).setTitle('Suggestion (Approved)');
 
+		// Fetch results / reactions and add field if not already added
+		const emojis = [];
+		await fetchedMsg.reactions.cache.forEach(reaction => {
+			let emoji = `<a:${reaction._emoji.name}:${reaction._emoji.id}> ${reaction.count}`;
+			if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
+			emojis.push(emoji);
+		});
+		if (!Embed.fields[0] && emojis[0]) Embed.addField('Results­', `${emojis.join(' ')}`);
+
 		// Get suggestion thread if exists and delete with transcript
 		const thread = message.guild.channels.cache.get(Embed.url.split('a')[2]);
 		if (thread) {
@@ -35,15 +44,6 @@ module.exports = {
 			}
 			thread.delete();
 		}
-
-		// Fetch results / reactions and add field if not already added
-		const emojis = [];
-		await fetchedMsg.reactions.cache.forEach(reaction => {
-			let emoji = `<a:${reaction._emoji.name}:${reaction._emoji.id}> ${reaction.count}`;
-			if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
-			emojis.push(emoji);
-		});
-		if (!Embed.fields[0] && emojis[0]) Embed.addField('Results­', `${emojis.join(' ')}`);
 
 		// Check if there's a message and put in footer and send update dm
 		if (!args[1]) {
