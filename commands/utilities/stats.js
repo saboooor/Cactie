@@ -11,8 +11,6 @@ module.exports = {
 	usage: '[Server]',
 	options: require('../options/stats.json'),
 	async execute(message, args, client) {
-		const slash = message.type && message.type == 'APPLICATION_COMMAND';
-		const reply = slash ? await message.deferReply() : await message.reply({ content: '<a:loading:826611946258038805> Pup is thinking...' });
 		if (!args[0]) args = ['pup'];
 		const srvs = [];
 		Object.keys(servers).map(i => { srvs.push(servers[i]); });
@@ -48,7 +46,7 @@ module.exports = {
 			const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
 			const pong = await json.json();
 			const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
-			if (!pong.online) return slash ? message.editReply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``) : reply.edit(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+			if (!pong.online) return message.reply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
 			if (!Embed.title && pong.hostname) Embed.setTitle(pong.hostname);
 			else if (!Embed.title && pong.port == 25565) Embed.setTitle(pong.ip);
 			else if (!Embed.title) Embed.setTitle(`${pong.ip}:${pong.port}`);
@@ -80,8 +78,6 @@ module.exports = {
 			}
 			if (!pong.debug.query) Embed.setFooter('Query disabled! If you want more info, contact the owner to enable query.');
 		}
-		slash
-			? message.editReply({ embeds: [Embed], files: iconpng })
-			: reply.edit({ content: null, embeds: [Embed], files: iconpng });
+		message.reply({ embeds: [Embed], files: iconpng });
 	},
 };

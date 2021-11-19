@@ -3,8 +3,6 @@ const { MessageEmbed } = require('discord.js');
 const { getColor } = require('colorthief');
 const rgb2hex = require('../functions/rgbhex');
 module.exports = async (subreddit, message, client) => {
-	const slash = message.type && message.type == 'APPLICATION_COMMAND';
-	if (slash && !message.deferred) message.deferReply();
 	client.logger.info(`Fetching an image from r/${subreddit}...`);
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`);
 	const pong = await json.json().catch(e => {
@@ -26,6 +24,5 @@ module.exports = async (subreddit, message, client) => {
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
 		.setImage(pong[0].data.children[0].data.url)
 		.setFooter(`Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts`);
-	if (slash && message.deferred) message.editReply({ embeds: [Embed] });
-	else message.reply({ embeds: [Embed] });
+	message.reply({ embeds: [Embed] });
 };

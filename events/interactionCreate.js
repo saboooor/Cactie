@@ -86,6 +86,8 @@ module.exports = async (client, interaction) => {
 		}
 		if (!command) return;
 
+		await interaction.deferReply();
+		interaction.reply = interaction.editReply;
 		const { cooldowns } = client;
 
 		if (!cooldowns.has(command.name)) {
