@@ -46,10 +46,12 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
 				const member = await guild.members.cache.get(data[0].split('-')[0]);
 				const role = await guild.roles.cache.get(client.settings.get(guild.id).muterole);
-				member.user.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
+				if (member) {
+					member.user.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
+					await member.roles.remove(role);
+				}
 				client.memberdata.set(data[0], 0, 'mutedUntil');
 				client.logger.info(`Unmuted ${member.user.tag} in ${guild.name}`);
-				await member.roles.remove(role);
 			}
 			else if (data[1].bannedUntil < Date.now() && data[1].bannedUntil != 0) {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
