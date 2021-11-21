@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mariadb = require('mariadb/callback');
 const { readdirSync } = require('fs');
 const { host, user, pass, db } = require('../config/mysql.json');
 
@@ -12,16 +12,11 @@ module.exports = async client => {
 	});
 
 	// create a connection to the database
-	client.con = mysql.createConnection({
+	client.con = mariadb.createConnection({
 		host: host,
 		user: user,
 		password: pass,
 		database: db,
-	});
-
-	client.con.connect(async err => {
-		if (err) throw err;
-		client.logger.info('Connected to database succesfully');
 	});
 
 	client.query = function query(args) {
