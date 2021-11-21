@@ -1,9 +1,7 @@
 const mariadb = require('mariadb/callback');
 const { readdirSync } = require('fs');
 const { host, user, pass, db } = require('../config/mysql.json');
-
 module.exports = async client => {
-
 	// Database Functions
 	readdirSync('./functions/database/').forEach(file => {
 		require(`../functions/database/${file}`)(client);
@@ -11,7 +9,7 @@ module.exports = async client => {
 		client.logger.info(`Loading Database function ${eventName}`);
 	});
 
-	// create a connection to the database
+	// Create a connection to the database
 	client.con = mariadb.createConnection({
 		host: host,
 		user: user,
@@ -19,6 +17,7 @@ module.exports = async client => {
 		database: db,
 	});
 
+	// Query function
 	client.query = function query(args) {
 		return new Promise((resolve, reject) => {
 			client.con.query(args, (err, rows, fields) =>{
@@ -29,5 +28,4 @@ module.exports = async client => {
 			});
 		});
 	};
-
 };
