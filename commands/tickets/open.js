@@ -14,7 +14,8 @@ module.exports = {
 		}
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
-		if (await client.getSettings(message.guild.id).tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
+		const srvconfig = await client.getSettings(message.guild.id);
+		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already opened!' });
 		await message.channel.setName(message.channel.name.replace('closed', 'ticket'));
 		await sleep(1000);

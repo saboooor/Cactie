@@ -56,8 +56,7 @@ module.exports = {
 		client.tickets.set(ticket.id, 'false', 'resolved');
 		client.tickets.set(ticket.id, [], 'users');
 		client.tickets.push(ticket.id, author.id, 'users');
-		if (message.commandName) message.reply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
-		else message.reply({ content: `Ticket created at ${ticket}!` });
+		message.reply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 		await sleep(1000);
 		const Embed = new MessageEmbed()
@@ -65,7 +64,7 @@ module.exports = {
 			.setTitle('Ticket Created')
 			.setDescription(`Please explain your issue and we'll be with you shortly\nIf you have multiple issues, please use the ${srvconfig.prefix}subticket command\nIf you want to create a private voice chat, please use the ${srvconfig.prefix}voiceticket command`);
 		if (args && args[0] && !reaction) Embed.addField('Description', args.join(' '));
-		if (await client.getSettings(message.guild.id).tickets == 'buttons') {
+		if (srvconfig.tickets == 'buttons') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or click the button below`);
 			const row = new MessageActionRow()
 				.addComponents(
@@ -87,7 +86,7 @@ module.exports = {
 				);
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
-		else if (await client.getSettings(message.guild.id).tickets == 'reactions') {
+		else if (srvconfig.tickets == 'reactions') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');

@@ -17,9 +17,10 @@ module.exports = {
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		const position = Number(args[0]);
 		if (!position || position < 0 || position > player.queue.size) {
+			const srvconfig = await client.getSettings(message.guild.id);
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`Usage: ${await client.getSettings(message.guild.id).prefix}skipto <Number of song in queue>`);
+				.setDescription(`Usage: ${srvconfig.prefix}skipto <Number of song in queue>`);
 			return message.reply({ embeds: [thing] });
 		}
 		player.queue.remove(0, position - 1);
