@@ -120,6 +120,8 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: 'You can only execute this command in a Discord Server!', ephemeral: true });
 		}
 
+		const srvconfig = interaction.guild ? client.settings.get(interaction.guild.id) : null;
+
 		if (command.permissions && interaction.member.user.id !== '249638347306303499') {
 			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);
 			if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
@@ -157,8 +159,6 @@ module.exports = async (client, interaction) => {
 			embed.setDescription(`You must be in the same channel as ${client.user}!`);
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
-
-		const srvconfig = interaction.guild ? client.settings.get(interaction.guild.id) : null;
 
 		if (command.djRole && srvconfig.djrole != 'false') {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
