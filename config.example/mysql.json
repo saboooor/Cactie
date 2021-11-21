@@ -1,0 +1,6 @@
+{
+    "host": "[mysql host]",
+    "user": "[mysql username]",
+    "pass": "[mysql password]",
+    "db": "[mysql db name]"
+}

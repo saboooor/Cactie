@@ -19,7 +19,7 @@ module.exports = {
 		if (!position || position < 0 || position > player.queue.size) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`Usage: ${client.settings.get(message.guild.id).prefix}skipto <Number of song in queue>`);
+				.setDescription(`Usage: ${await client.getSettings(message.guild.id).prefix}skipto <Number of song in queue>`);
 			return message.reply({ embeds: [thing] });
 		}
 		player.queue.remove(0, position - 1);

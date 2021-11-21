@@ -12,7 +12,7 @@ module.exports = {
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
 		// Check if mute role is set and mute command is enabled
-		const srvconfig = client.settings.get(message.guild.id);
+		const srvconfig = await client.getSettings(message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role Id>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
 

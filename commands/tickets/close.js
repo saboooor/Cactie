@@ -12,7 +12,7 @@ module.exports = {
 			if (message.author.id != client.user.id) return;
 			author = user;
 		}
-		const srvconfig = client.settings.get(message.guild.id);
+		const srvconfig = await client.getSettings(message.guild.id);
 		if (!client.tickets.get(message.channel.id)) return message.reply('An error occured, please manually delete this channel.');
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) &&
 		message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
@@ -65,7 +65,7 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
-		if (client.settings.get(message.guild.id).tickets == 'buttons') {
+		if (await client.getSettings(message.guild.id).tickets == 'buttons') {
 			const row = new MessageActionRow()
 				.addComponents([
 					new MessageButton()
@@ -85,7 +85,7 @@ module.exports = {
 		else {
 			message.reply({ embeds: [Embed] });
 		}
-		if (client.settings.get(message.guild.id).tickets == 'reactions') {
+		if (await client.getSettings(message.guild.id).tickets == 'reactions') {
 			Embed.setColor(3447003);
 			Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 			const embed = await message.channel.send({ embeds: [Embed] });

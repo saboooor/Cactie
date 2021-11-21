@@ -60,7 +60,7 @@ module.exports = {
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
 		let row = null;
-		if (client.settings.get(interaction.guild.id).tickets == 'buttons') {
+		if (await client.getSettings(interaction.guild.id).tickets == 'buttons') {
 			row = new MessageActionRow()
 				.addComponents([
 					new MessageButton()
@@ -79,8 +79,8 @@ module.exports = {
 		client.logger.info(`Closed ticket #${interaction.channel.name}`);
 
 		// Check if ticket setting is set to reactions and add the reactions
-		if (client.settings.get(interaction.guild.id).tickets == 'reactions') {
-			const srvconfig = client.settings.get(interaction.guild.id);
+		if (await client.getSettings(interaction.guild.id).tickets == 'reactions') {
+			const srvconfig = await client.getSettings(interaction.guild.id);
 			Embed.setColor(3447003);
 			Embed.setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
 			const embed = await interaction.channel.send({ embeds: [Embed] });

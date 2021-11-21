@@ -10,8 +10,9 @@ module.exports = {
 				client.logger.info(`Added setting to ${guild.name}: ${prop} = ${value.join(' ')}`);
 			});
 		}
-		const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop => {
-			return `**${prop}** \`${client.settings.get(message.guild.id)[prop]}\``;
+		const settings = await client.getSettings(message.guild.id);
+		const srvconfig = Object.keys(settings).map(prop2 => {
+			return `**${prop2}** \`${settings[prop2]}\``;
 		});
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))

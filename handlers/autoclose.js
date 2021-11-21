@@ -36,7 +36,7 @@ module.exports = client => {
 				const Embed = new MessageEmbed()
 					.setColor(15105570)
 					.setDescription('Automatically closed Resolved Ticket');
-				if (client.settings.get(channel.guild.id).tickets == 'buttons') {
+				if (await client.getSettings(channel.guild.id).tickets == 'buttons') {
 					const row = new MessageActionRow()
 						.addComponents([
 							new MessageButton()
@@ -55,7 +55,7 @@ module.exports = client => {
 				else {
 					channel.send({ embeds: [Embed] });
 				}
-				if (client.settings.get(channel.guild.id).tickets == 'reactions') {
+				if (await client.getSettings(channel.guild.id).tickets == 'reactions') {
 					Embed.setColor(3447003);
 					Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 					const embed = await channel.send({ embeds: [Embed] });

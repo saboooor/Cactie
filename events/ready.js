@@ -45,7 +45,7 @@ module.exports = async (client) => {
 			if (data[1].mutedUntil < Date.now() && data[1].mutedUntil != 0) {
 				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
 				const member = await guild.members.cache.get(data[0].split('-')[0]);
-				const role = await guild.roles.cache.get(client.settings.get(guild.id).muterole);
+				const role = await guild.roles.cache.get(await client.getSettings(guild.id).muterole);
 				if (member) {
 					member.user.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
 					await member.roles.remove(role);

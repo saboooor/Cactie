@@ -33,7 +33,7 @@ module.exports = {
 			.addField('Description', 'Created with a button');
 
 		// Check if ticket mode is buttons or reactions and do stuff
-		const srvconfig = client.settings.get(interaction.guild.id);
+		const srvconfig = await client.getSettings(interaction.guild.id);
 		if (srvconfig.tickets == 'buttons') {
 			Embed.setFooter(`To close this subticket do ${srvconfig.prefix}close, or click the button below`);
 			const row = new MessageActionRow()

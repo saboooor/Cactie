@@ -20,7 +20,8 @@ module.exports = {
 			const prop = args[0];
 
 			// Check if setting exists
-			if (!client.settings.has(message.guild.id, prop)) return message.reply({ content: 'Invalid setting!' });
+			const srvconfig = await client.getSettings(message.guild.id);
+			if (!srvconfig[prop]) return message.reply({ content: 'Invalid setting!' });
 
 			// Set value to second argument for slash commands and the rest of the text joined for normal commands
 			const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
@@ -58,7 +59,7 @@ module.exports = {
 			}
 
 			// Set the setting and the embed description / log
-			client.settings.set(message.guild.id, value, prop);
+			client.query(`UPDATE settings Set ${prop} = "${value}" where guildId = "${message.guild.id}"`);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 		}
@@ -86,7 +87,7 @@ module.exports = {
 		}
 		else {
 			// Get settings and make an array out of it to split and make pages
-			const srvconfig = client.settings.get(message.guild.id);
+			const srvconfig = await client.getSettings(message.guild.id);
 			const configlist = Object.keys(srvconfig).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 			});

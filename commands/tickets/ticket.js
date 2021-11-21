@@ -14,7 +14,7 @@ module.exports = {
 			if (message.author.id != client.user.id) return;
 			author = args;
 		}
-		const srvconfig = client.settings.get(message.guild.id);
+		const srvconfig = await client.getSettings(message.guild.id);
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 		const role = message.guild.roles.cache.get(srvconfig.supportrole);
@@ -65,7 +65,7 @@ module.exports = {
 			.setTitle('Ticket Created')
 			.setDescription(`Please explain your issue and we'll be with you shortly\nIf you have multiple issues, please use the ${srvconfig.prefix}subticket command\nIf you want to create a private voice chat, please use the ${srvconfig.prefix}voiceticket command`);
 		if (args && args[0] && !reaction) Embed.addField('Description', args.join(' '));
-		if (client.settings.get(message.guild.id).tickets == 'buttons') {
+		if (await client.getSettings(message.guild.id).tickets == 'buttons') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or click the button below`);
 			const row = new MessageActionRow()
 				.addComponents(
@@ -87,7 +87,7 @@ module.exports = {
 				);
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
-		else if (client.settings.get(message.guild.id).tickets == 'reactions') {
+		else if (await client.getSettings(message.guild.id).tickets == 'reactions') {
 			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');

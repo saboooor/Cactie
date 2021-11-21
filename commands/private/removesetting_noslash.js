@@ -8,8 +8,9 @@ module.exports = {
 			client.settings.delete(guild.id, prop);
 			client.logger.info(`Removed setting from ${guild.name}: ${prop}`);
 		});
-		const srvconfig = Object.keys(client.settings.get(message.guild.id)).map(prop2 => {
-			return `**${prop2}** \`${client.settings.get(message.guild.id)[prop2]}\``;
+		const settings = await client.getSettings(message.guild.id);
+		const srvconfig = Object.keys(settings).map(prop2 => {
+			return `**${prop2}** \`${settings[prop2]}\``;
 		});
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))

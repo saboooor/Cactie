@@ -42,7 +42,7 @@ module.exports = async (client, message) => {
 		return client.channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}` });
 	}
 
-	const srvconfig = client.settings.get(message.guild.id);
+	const srvconfig = await client.getSettings(message.guild.id);
 
 	if (srvconfig.reactions != 'false') {
 		client.reactions.forEach(reaction => {

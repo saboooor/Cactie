@@ -10,7 +10,7 @@ module.exports = {
 	botperms: 'ADD_REACTIONS',
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
-		const srvconfig = client.settings.get(message.guild.id);
+		const srvconfig = await client.getSettings(message.guild.id);
 		let channel = client.channels.cache.get(srvconfig.pollchannel);
 		if (!channel) channel = message.channel;
 		const Poll = new MessageEmbed()

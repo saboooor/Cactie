@@ -7,7 +7,7 @@ module.exports = {
 	options: require('../options/someone.json'),
 	async execute(message, args, client) {
 		// Get settings and check if bonercmd is enabled
-		const srvconfig = message.guild ? client.settings.get(message.guild.id) : { bonercmd: 'true', maxppsize: '35' };
+		const srvconfig = message.guild ? await client.getSettings(message.guild.id) : { bonercmd: 'true', maxppsize: '35' };
 		if (srvconfig.bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 
 		// Get name of author, or user if specified

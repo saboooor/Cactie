@@ -12,7 +12,7 @@ module.exports = {
 		const player = client.manager.get(message.guild.id);
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		if (!player) return message.reply('The bot is not playing anything!');
-		const srvconfig = client.settings.get(message.guild.id);
+		const srvconfig = await client.getSettings(message.guild.id);
 		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 		if (!player.skipAmount) player.skipAmount = [];
 		let alr = false;

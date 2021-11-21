@@ -6,7 +6,8 @@ module.exports = {
 			interaction.deferUpdate();
 			return interaction.user.send({ content: 'That is not an NSFW channel!' }).catch(e => { client.logger.warn(e); });
 		}
-		const prefix = client.settings.get(interaction.guild.id).prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
+		const srvconfig = await client.getSettings(interaction.guild.id);
+		const prefix = srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('**HELP**');
