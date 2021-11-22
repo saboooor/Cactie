@@ -4,7 +4,7 @@ module.exports = client => {
 	client.settings = new Enmap({
 		name: 'settings',
 		autoFetch: true,
-		fetchAll: false,
+		fetchAll: true,
 		cloneLevel: 'deep',
 		autoEnsure: {
 			prefix: prefix,

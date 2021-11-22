@@ -28,4 +28,17 @@ module.exports = async client => {
 			});
 		});
 	};
+
+	Array.from(client.settings).forEach(async guildData => {
+		const guildId = guildData[0];
+		let settings = await client.query(`SELECT * FROM settings WHERE guildId = ${guildId}`);
+		if(!settings[0]) {
+			client.logger.info(`Generated settings for ${client.guilds.cache.get(guildId).name}!`);
+			client.setSettings(guildId);
+			settings = await client.query(`SELECT * FROM settings WHERE guildId = ${guildId}`);
+		}
+		Object.keys(guildData[1]).forEach(key => {
+			client.query(`UPDATE settings Set ${key} = "${guildData[1][key]}" where guildId = "${guildId}"`);
+		});
+	});
 };
