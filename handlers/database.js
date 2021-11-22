@@ -1,35 +1,5 @@
 const Enmap = require('enmap');
-const { prefix } = require('../config/bot.json');
 module.exports = client => {
-	client.settings = new Enmap({
-		name: 'settings',
-		autoFetch: true,
-		fetchAll: true,
-		cloneLevel: 'deep',
-		autoEnsure: {
-			prefix: prefix,
-			reactions: 'true',
-			leavemessage: 'false',
-			joinmessage: 'false',
-			adfree: 'false',
-			maxppsize: '35',
-			tickets: 'buttons',
-			bonercmd: 'true',
-			suggestionchannel: 'false',
-			suggestthreads: 'true',
-			pollchannel: 'false',
-			ticketlogchannel: 'false',
-			ticketcategory: 'false',
-			ticketmention: 'here',
-			supportrole: 'Not Set',
-			mutecmd: 'true',
-			muterole: 'Not Set',
-			adminrole: 'permission',
-			msgshortener: '30',
-			djrole: 'false',
-		},
-	});
-	client.logger.info('Settings database loaded');
 	client.tickets = new Enmap({
 		name: 'tickets',
 		autoFetch: true,

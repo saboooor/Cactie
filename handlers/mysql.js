@@ -28,10 +28,4 @@ module.exports = async client => {
 			});
 		});
 	};
-
-	Array.from(client.settings).forEach(async guildData => {
-		const guildId = guildData[0];
-		client.settings.delete(guildId);
-		console.log(`cleared ${guildId}`);
-	});
 };
