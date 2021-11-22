@@ -3,7 +3,7 @@ module.exports = client => {
 		let memberData = await client.query(`SELECT * FROM memberdata WHERE memberId = ${args}`);
 		if(!memberData[0]) {
 			client.logger.info(`Generated member data for ${client.users.cache.get(args).tag}!`);
-			client.getMemberData(args);
+			client.setMemberData(args);
 			memberData = await client.query(`SELECT * FROM memberdata WHERE memberId = ${args}`);
 		}
 		return memberData[0];
