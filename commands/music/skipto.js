@@ -17,7 +17,7 @@ module.exports = {
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
 		const position = Number(args[0]);
 		if (!position || position < 0 || position > player.queue.size) {
-			const srvconfig = await client.getSettings(message.guild.id);
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription(`Usage: ${srvconfig.prefix}skipto <Number of song in queue>`);

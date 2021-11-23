@@ -12,7 +12,7 @@ module.exports = {
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
 		// Check if mute role is set and mute command is enabled
-		const srvconfig = await client.getSettings(message.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
 		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role Id>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
 
@@ -49,7 +49,7 @@ module.exports = {
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 
 			// Set member data for unmute time
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + time, 'mutedUntil');
+			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
 		}
 		else if (!isNaN(time) && args[1]) {
 			// Set embed title and send mute message to user
@@ -59,10 +59,10 @@ module.exports = {
 					client.logger.warn(e);
 					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
-			client.logger.info({ content: `Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}` });
+			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
 
 			// Set member data for unmute time
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + time, 'mutedUntil');
+			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
 		}
 		else if (args[1]) {
 			// Set embed title and send mute message to user

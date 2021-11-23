@@ -40,29 +40,30 @@ module.exports = async (client) => {
 		client.user.setPresence({ activities: [{ name: activity[1], type: activity[0] }] });
 	}, 5000);
 	setInterval(async () => {
-		const memberdata = Array.from(client.memberdata);
+		const memberdata = await client.query('SELECT * FROM `memberdata`');
 		memberdata.forEach(async data => {
-			if (data[1].mutedUntil < Date.now() && data[1].mutedUntil != 0) {
-				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
-				const member = await guild.members.cache.get(data[0].split('-')[0]);
-				const srvconfig = await client.getSettings(guild.id);
+			if (data.mutedUntil < Date.now() && data.mutedUntil != 0) {
+				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
+				const member = await guild.members.cache.get(data.memberId.split('-')[0]);
+				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const role = await guild.roles.cache.get(srvconfig.muterole);
 				if (member) {
 					member.user.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
 					await member.roles.remove(role);
 				}
-				client.memberdata.set(data[0], 0, 'mutedUntil');
+				await client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);
 				client.logger.info(`Unmuted ${member.user.tag} in ${guild.name}`);
 			}
-			else if (data[1].bannedUntil < Date.now() && data[1].bannedUntil != 0) {
-				const guild = await client.guilds.cache.get(data[0].split('-')[1]);
-				if (client.users.cache.get(data[0].split('-')[0])) client.users.cache.get(data[0].split('-')[0]).send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
-				client.memberdata.set(data[0], 0, 'bannedUntil');
-				client.logger.info(`Unbanned ${client.users.cache.get(data[0].split('-')[0]) ? client.users.cache.get(data[0].split('-')[0]).tag : data[0].split('-')[0]} in ${guild.name}`);
+			else if (data.bannedUntil < Date.now() && data.bannedUntil != 0) {
+				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
+				const member = await guild.members.cache.get(data.memberId.split('-')[0]);
+				if (member) member.user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
+				await client.setData('memberdata', 'memberId', data.memberId, 'bannedUntil', 0);
+				client.logger.info(`Unbanned ${member ? member.user.tag : data[0].split('-')[0]} in ${guild.name}`);
 				await guild.members.unban(data[0].split('-')[0]).catch(e => client.logger.error(e));
 			}
-			else if (data[1].mutedUntil == 0 && data[1].bannedUntil == 0) {
-				client.memberdata.delete(data[0]);
+			else if (data.mutedUntil == 0 && data.bannedUntil == 0) {
+				await client.delData('memberdata', 'memberId', data.memberId);
 			}
 		});
 	}, 10000);

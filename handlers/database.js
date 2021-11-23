@@ -6,14 +6,4 @@ module.exports = client => {
 		fetchAll: false,
 	});
 	client.logger.info('Ticket database loaded');
-	client.memberdata = new Enmap({
-		name: 'memberdata',
-		autoFetch: true,
-		fetchAll: true,
-		autoEnsure: {
-			mutedUntil: 0,
-			bannedUntil: 0,
-		},
-	});
-	client.logger.info('Ban/Mute database loaded');
 };

@@ -60,7 +60,7 @@ module.exports = {
 			.setColor(15105570)
 			.setDescription(`Ticket Closed by ${author}`);
 		let row = null;
-		const srvconfig = await client.getSettings(interaction.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		if (srvconfig.tickets == 'buttons') {
 			row = new MessageActionRow()
 				.addComponents([

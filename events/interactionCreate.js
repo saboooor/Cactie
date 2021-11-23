@@ -120,7 +120,7 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: 'You can only execute this command in a Discord Server!', ephemeral: true });
 		}
 
-		const srvconfig = interaction.guild ? await client.getSettings(interaction.guild.id) : null;
+		const srvconfig = interaction.guild ? await client.getData('settings', 'guildId', interaction.guild.id) : null;
 
 		if (command.permissions && interaction.member.user.id !== '249638347306303499') {
 			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);

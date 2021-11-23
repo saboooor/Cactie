@@ -3,7 +3,7 @@ module.exports = {
 	name: 'settings_next',
 	async execute(interaction, client) {
 		// Get list of settings and embed
-		const settings = await client.getSettings(interaction.guild.id);
+		const settings = await client.getData('settings', 'guildId', interaction.guild.id);
 		const srvconfig = Object.keys(settings).map(prop => {
 			return `**${prop}**\n${desc[prop]}\n\`${settings[prop]}\``;
 		});

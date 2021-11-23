@@ -23,7 +23,7 @@ module.exports = {
 		}
 		const volume = Number(args[0]);
 		if (!volume || volume < 0 || volume > 100) {
-			const srvconfig = await client.getSettings(message.guild.id);
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription(`Usage: ${srvconfig.prefix}volume <Number of volume between 0 - 100>`);
