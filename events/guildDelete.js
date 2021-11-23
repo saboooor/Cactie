@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = async (client, guild) => {
-	client.settings.delete(guild.id);
+	client.delData('settings', 'guildId', guild.id);
 	client.logger.info(`${client.user.username} has been removed from ${guild.name}`);
 	const owner = await guild.fetchOwner();
 	const timestamp = Math.round(guild.createdTimestamp / 1000);
