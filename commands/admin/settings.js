@@ -20,7 +20,7 @@ module.exports = {
 			const prop = args[0];
 
 			// Check if setting exists
-			const srvconfig = await client.getSettings(message.guild.id);
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (!srvconfig[prop]) return message.reply({ content: 'Invalid setting!' });
 
 			// Set value to second argument for slash commands and the rest of the text joined for normal commands
@@ -55,11 +55,12 @@ module.exports = {
 				});
 
 				// Move the muterole under pup's highest role if not already over it
-				if (client.user.roles.highest.rawPosition > role.rawPosition) role.setPosition(client.user.roles.highest.rawPosition - 1);
+				const rolepos = message.guild.members.cache.get(client.user.id).roles.highest.rawPosition;
+				if (rolepos > role.rawPosition) role.setPosition(rolepos - 1);
 			}
 
 			// Set the setting and the embed description / log
-			client.query(`UPDATE settings Set ${prop} = "${value}" where guildId = "${message.guild.id}"`);
+			await client.setData('settings', 'guildId', message.guild.id, prop, value);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 		}
@@ -87,7 +88,7 @@ module.exports = {
 		}
 		else {
 			// Get settings and make an array out of it to split and make pages
-			const srvconfig = await client.getSettings(message.guild.id);
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const configlist = Object.keys(srvconfig).map(prop => {
 				return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 			});

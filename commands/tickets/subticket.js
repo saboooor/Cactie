@@ -11,7 +11,7 @@ module.exports = {
 	botperms: 'CREATE_PUBLIC_THREADS',
 	async execute(message, args, client, reaction) {
 		if (reaction && message.author.id != client.user.id) return;
-		const srvconfig = await client.getSettings(message.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
 		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (message.channel.threads.cache.size > 5) return message.reply({ content: 'This ticket has too many subtickets!' });

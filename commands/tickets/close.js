@@ -12,7 +12,7 @@ module.exports = {
 			if (message.author.id != client.user.id) return;
 			author = user;
 		}
-		const srvconfig = await client.getSettings(message.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (!client.tickets.get(message.channel.id)) return message.reply('An error occured, please manually delete this channel.');
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) &&
 		message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {

@@ -14,7 +14,7 @@ module.exports = {
 			if (message.author.id != client.user.id) return;
 			author = args;
 		}
-		const srvconfig = await client.getSettings(message.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 		const role = message.guild.roles.cache.get(srvconfig.supportrole);

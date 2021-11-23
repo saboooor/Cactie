@@ -5,7 +5,7 @@ module.exports = {
 	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
 		// Check if tickets are disabled
-		const srvconfig = await client.getSettings(interaction.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 
 		// Find category and if no category then set it to null

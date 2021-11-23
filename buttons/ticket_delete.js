@@ -8,7 +8,7 @@ module.exports = {
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 
 		// Check if ticket log channel is set in settings
-		const srvconfig = await client.getSettings(interaction.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		if (srvconfig.ticketlogchannel != 'false') {
 			// Get transcript of ticket
 			await interaction.reply({ content: 'Creating transcript...' });

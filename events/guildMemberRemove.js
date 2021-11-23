@@ -1,5 +1,5 @@
 module.exports = async (client, member) => {
-	const srvconfig = await client.getSettings(member.guild.id);
+	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
 	if (srvconfig.leavemessage == 'false') return;
 	if (!member.guild.systemChannel) {
 		const owner = await member.guild.fetchOwner();

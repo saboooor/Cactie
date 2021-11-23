@@ -39,7 +39,7 @@ module.exports = {
 			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 
 			// Set unban timestamp to member data for auto-unban
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + time, 'bannedUntil');
+			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'bannedUntil', Date.now() + time);
 			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}` });
 		}
 		else if (!isNaN(time)) {
@@ -55,7 +55,7 @@ module.exports = {
 			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
 
 			// Set unban timestamp to member data for auto-unban
-			client.memberdata.set(`${user.id}-${message.guild.id}`, Date.now() + time, 'bannedUntil');
+			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'bannedUntil', Date.now() + time);
 
 			// Actually ban the dude
 			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args[1]}` });

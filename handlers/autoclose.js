@@ -36,7 +36,7 @@ module.exports = client => {
 				const Embed = new MessageEmbed()
 					.setColor(15105570)
 					.setDescription('Automatically closed Resolved Ticket');
-				const srvconfig = await client.getSettings(channel.guild.id);
+				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
 				if (srvconfig.tickets == 'buttons') {
 					const row = new MessageActionRow()
 						.addComponents([

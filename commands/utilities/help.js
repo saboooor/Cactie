@@ -9,7 +9,7 @@ module.exports = {
 	guildOnly: true,
 	options: require('../options/help.json'),
 	async execute(message, args, client) {
-		const srvconfig = await client.getSettings(message.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))

@@ -12,7 +12,7 @@ module.exports = {
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
 
 		// Find category and if no category then set it to null
-		const srvconfig = await client.getSettings(interaction.guild.id);
+		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
 		if (!parent) parent = { id: null };
 
