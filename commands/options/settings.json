@@ -207,26 +207,13 @@
     },
     {
         "type": "SUB_COMMAND",
-        "name": "muterole",
-        "description": "The role to give when muting someone",
+        "name": "mutecmd",
+        "description": "Toggles the mute command",
         "options": [
             {
                 "type": "ROLE",
                 "name": "role",
                 "description": "The mute role",
-                "required": true
-            }
-        ]
-    },
-    {
-        "type": "SUB_COMMAND",
-        "name": "mutecmd",
-        "description": "Toggles the mute command",
-        "options": [
-            {
-                "type": "BOOLEAN",
-                "name": "value",
-                "description": "The setting value",
                 "required": true
             }
         ]

@@ -38,25 +38,29 @@ module.exports = {
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
 			// Ticketcategory can only be a category channel or false
 			if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
-			// Supportrole / Muterole / Djrole can only be a role
-			if ((prop == 'supportrole' || prop == 'muterole' || prop == 'djrole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
+			// Supportrole / Djrole can only be a role
+			if ((prop == 'supportrole' || prop == 'djrole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			// Adminrole can only be a role or 'permission'
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			// Msgshortener can only be a number
 			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
 			// Ticketmention can only be here, everyone, or a valid role
 			if ((prop == 'ticketmention') && value != 'everyone' && value != 'here' && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'This setting must be either `here`, `everyone`, or a valid role Id!' });
-			// Set muterole's permissions
-			if (prop == 'muterole') {
+			// Set mutecmd's permissions
+			if (prop == 'mutecmd') {
+				// Check if valid role if not false
 				const role = message.guild.roles.cache.get(value);
-				message.guild.channels.cache.forEach(channel => {
-					channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
-						.catch(e => { client.logger.error(e); });
-				});
-
-				// Move the muterole under pup's highest role if not already over it
-				const rolepos = message.guild.members.cache.get(client.user.id).roles.highest.rawPosition;
-				if (rolepos > role.rawPosition) role.setPosition(rolepos - 1);
+				if (!role && value != 'false') { return message.reply('That is not a valid role Id!'); }
+				else if (value != 'false') {
+					message.guild.channels.cache.forEach(channel => {
+						channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
+							.catch(e => { client.logger.error(e); });
+					});
+	
+					// Move the mute role under pup's highest role if not already over it
+					const rolepos = message.guild.members.cache.get(client.user.id).roles.highest.rawPosition;
+					if (rolepos > role.rawPosition) role.setPosition(rolepos - 1);
+				}
 			}
 
 			// Set the setting and the embed description / log

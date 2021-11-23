@@ -46,8 +46,8 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
 				const member = await guild.members.cache.get(data.memberId.split('-')[0]);
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
-				const role = await guild.roles.cache.get(srvconfig.muterole);
-				if (member) {
+				const role = await guild.roles.cache.get(srvconfig.mutecmd);
+				if (member && role) {
 					member.user.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
 					await member.roles.remove(role);
 				}
