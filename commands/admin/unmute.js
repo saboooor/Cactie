@@ -10,10 +10,10 @@ module.exports = {
 	guildOnly: true,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
-		// Get settings and check if mutecmd is enabled and muterole is set
+		// Get settings and check if mutecmd is enabled
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-		if (srvconfig.mutecmd == 'false') return message.reply({ content: 'This command is disabled!' });
-		if (srvconfig.muterole == 'Not Set') return message.reply({ content: 'Please set a mute role with -settings muterole <Role ID>! Make sure the role is above every other role and Pup\'s role is above the mute role, or else it won\'t work!' });
+		const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
+		if (!role) return message.reply('This command is disabled!');
 
 		// Get user and check if user is valid
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
@@ -21,8 +21,6 @@ module.exports = {
 
 		// Get member and role and check if member doesn't have the role
 		const member = message.guild.members.cache.get(user.id);
-		const role = await message.guild.roles.cache.get(srvconfig.muterole);
-		if (!role) return message.reply('Please set a valid mute role with -settings muterole <Role Id>!');
 		if (!member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
 
 		// Reset the mute timer
