@@ -9,15 +9,33 @@ module.exports = {
 	guildOnly: true,
 	player: true,
 	async execute(message, args, client) {
-		const player = client.manager.get(message.guild.id);
-		const song = player.queue.current;
-		const total = song.duration;
-		const current = player.position;
+		let player = client.manager.get(message.guild.id);
+		let song = player.queue.current;
+		let total = song.duration;
+		let current = player.position;
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
-		const embed = new MessageEmbed()
+		let embed = new MessageEmbed()
 			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('07:12:56', 'LIVE')}\``)
 			.setThumbnail(song.img)
 			.setColor(song.color);
-		return message.reply({ embeds: [embed] });
+		const msg = await message.channel.send({ embeds: [embed] });
+		player.set('nowplayingMSG', msg);
+		const interval = setInterval(() => {
+			player = client.manager.get(message.guild.id);
+			song = player.queue.current;
+			if (!song) {
+				if (player?.get('nowplayingMSG')) player?.get('nowplayingMSG').delete();
+				return clearInterval(interval);
+			}
+			total = song.duration;
+			current = player.position;
+			embed = new MessageEmbed()
+				.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('07:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('07:12:56', 'LIVE')}\``)
+				.setThumbnail(song.img)
+				.setColor(song.color);
+			player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit({ embeds: [embed] }, '') :
+				message.channel.send({ embeds: [embed] }).then(msg2 => player.set('nowplayingMSG', msg2));
+		}, 5000);
+		player.set('nowplaying', interval);
 	},
 };
