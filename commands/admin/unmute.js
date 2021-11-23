@@ -22,6 +22,7 @@ module.exports = {
 		// Get member and role and check if member doesn't have the role
 		const member = message.guild.members.cache.get(user.id);
 		const role = await message.guild.roles.cache.get(srvconfig.muterole);
+		if (!role) return message.reply('Please set a valid mute role with -settings muterole <Role Id>!');
 		if (!member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
 
 		// Reset the mute timer

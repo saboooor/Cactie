@@ -27,7 +27,7 @@ module.exports = {
 
 		// Get mute role and check if role is valid
 		const role = await message.guild.roles.cache.get(srvconfig.muterole);
-		if (!role) return message.reply({ content: 'Invalid Role! Re-set the mute role in -settings' });
+		if (!role) return message.reply('Please set a valid mute role with -settings muterole <Role Id>!');
 
 		// Check if user is muted
 		if (member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
