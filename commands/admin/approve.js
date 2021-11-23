@@ -4,6 +4,7 @@ module.exports = {
 	description: 'Approve a suggestion.',
 	aliases: ['accept'],
 	args: true,
+	ephemeral: true,
 	permissions: 'ADMINISTRATOR',
 	botperms: 'MANAGE_MESSAGES',
 	usage: '<Message ID> [Response]',
