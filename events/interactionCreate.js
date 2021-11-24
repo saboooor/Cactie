@@ -86,7 +86,7 @@ module.exports = async (client, interaction) => {
 		}
 		if (!command) return;
 
-		await interaction.deferReply();
+		await interaction.deferReply({ ephemeral: command.ephemeral });
 		interaction.reply = interaction.editReply;
 		const { cooldowns } = client;
 
