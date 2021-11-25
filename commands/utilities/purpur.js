@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 module.exports = {
 	name: 'purpur',
 	description: 'Get info on any Purpur build',
+	ephemeral: true,
 	usage: '[Version] [Build]',
 	options: require('../options/minecraft.json'),
 	async execute(message, args) {

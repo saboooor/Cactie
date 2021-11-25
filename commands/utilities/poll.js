@@ -3,6 +3,7 @@ const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'poll',
 	description: 'Create a poll!\nIt is recommended to use /poll instead',
+	ephemeral: true,
 	cooldown: 10,
 	args: true,
 	usage: '<Question>',
@@ -21,7 +22,7 @@ module.exports = {
 		const msg = await channel.send({ embeds: [Poll] });
 		await msg.react(yes);
 		await msg.react(no);
-		if (channel === message.channel && message.commandName) return message.reply({ content: '**Poll Created!**', ephemeral: true });
+		if (channel === message.channel && message.commandName) return message.reply({ content: '**Poll Created!**' });
 		if (channel === message.guild.channels.cache.find(c => c.name.includes('poll'))) return message.reply({ content: `**Poll Created! Check ${channel}**` });
 	},
 };

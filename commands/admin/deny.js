@@ -2,6 +2,7 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'deny',
 	description: 'Deny a suggestion',
+	ephemeral: true,
 	aliases: ['reject', 'decline'],
 	args: true,
 	permissions: 'ADMINISTRATOR',
@@ -65,7 +66,7 @@ module.exports = {
 
 		// Update message and reply with denied
 		fetchedMsg.edit({ embeds: [Embed] });
-		if (message.commandName) message.reply({ content: 'Suggestion Denied!', ephemeral: true });
+		if (message.commandName) message.reply({ content: 'Suggestion Denied!' });
 		else message.delete();
 	},
 };

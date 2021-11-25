@@ -2,6 +2,7 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
+	ephemeral: true,
 	aliases: ['pong'],
 	cooldown: 10,
 	execute(message, args, client) {
@@ -15,6 +16,6 @@ module.exports = {
 			.setTitle('Pong!')
 			.setDescription(`**Message Latency** ${Date.now() - message.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`)
 			.setTimestamp();
-		message.reply({ embeds: [Embed], components: [row], ephemeral: true });
+		message.reply({ embeds: [Embed], components: [row] });
 	},
 };

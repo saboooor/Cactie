@@ -4,6 +4,7 @@ const { yes, no } = require('../../config/emoji.json');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',
+	ephemeral: true,
 	botperms: 'ADD_REACTIONS',
 	cooldown: 10,
 	args: true,
@@ -42,7 +43,7 @@ module.exports = {
 			message.delete().catch(e => client.logger.warn(e));
 		}
 		else {
-			message.reply({ content: `**Suggestion Created at ${channel}!**`, ephemeral: true });
+			message.reply({ content: `**Suggestion Created at ${channel}!**` });
 		}
 	},
 };

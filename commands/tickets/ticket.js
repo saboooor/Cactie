@@ -3,6 +3,7 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'ticket',
 	description: 'Create a ticket',
+	ephemeral: true,
 	aliases: ['new'],
 	usage: '[Description]',
 	guildOnly: true,
@@ -56,7 +57,7 @@ module.exports = {
 		client.tickets.set(ticket.id, 'false', 'resolved');
 		client.tickets.set(ticket.id, [], 'users');
 		client.tickets.push(ticket.id, author.id, 'users');
-		message.reply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
+		message.reply({ content: `Ticket created at ${ticket}!` });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 		await sleep(1000);
 		const Embed = new MessageEmbed()

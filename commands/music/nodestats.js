@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'nodestats',
 	description: 'Check music backend stats',
+	ephemeral: true,
 	aliases: ['ns'],
 	async execute(message, args, client) {
 		const all = client.manager.nodes.map(node =>

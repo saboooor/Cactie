@@ -114,6 +114,6 @@ module.exports = {
 					.setURL('https://paypal.me/youhavebeenyoted')
 					.setLabel('Donate')
 					.setStyle('LINK')]);
-		message.reply({ embeds: [Embed], components: [row, row2], ephemeral: true });
+		message.reply({ embeds: [Embed], components: [row, row2] });
 	},
 };

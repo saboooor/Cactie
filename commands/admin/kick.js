@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'kick',
 	description: 'Kick someone from the server',
+	ephemeral: true,
 	args: true,
 	usage: '<User> [Reason]',
 	permissions: 'KICK_MEMBERS',
@@ -29,7 +30,7 @@ module.exports = {
 			await user.send({ content: `**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**` })
 				.catch(e => {
 					client.logger.warn(e);
-					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
+					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
 				});
 		}
 		else {
@@ -40,12 +41,12 @@ module.exports = {
 			await user.send({ content: `**You've been kicked from ${message.guild.name}.**` })
 				.catch(e => {
 					client.logger.warn(e);
-					message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
+					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
 				});
 		}
 
 		// Reply with response
-		message.reply({ embeds: [Embed], ephemeral: true });
+		message.reply({ embeds: [Embed] });
 
 		// Actually kick the dude
 		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });

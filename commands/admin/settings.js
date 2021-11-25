@@ -3,6 +3,7 @@ const desc = require('../../config/settingsdesc.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Pup\'s settings in the server',
+	ephemeral: true,
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
@@ -56,7 +57,7 @@ module.exports = {
 						channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
 							.catch(e => { client.logger.error(e); });
 					});
-	
+
 					// Move the mute role under pup's highest role if not already over it
 					const rolepos = message.guild.members.cache.get(client.user.id).roles.highest.rawPosition;
 					if (rolepos > role.rawPosition) role.setPosition(rolepos - 1);
@@ -88,7 +89,7 @@ module.exports = {
 				);
 
 			// Send Embed with buttons
-			return message.reply({ embeds: [Embed], components: [row], ephemeral: true });
+			return message.reply({ embeds: [Embed], components: [row] });
 		}
 		else {
 			// Get settings and make an array out of it to split and make pages
@@ -118,6 +119,6 @@ module.exports = {
 			);
 
 		// Send Embed with buttons
-		message.reply({ embeds: [Embed], components: [row], ephemeral: true });
+		message.reply({ embeds: [Embed], components: [row] });
 	},
 };

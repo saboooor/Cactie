@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reactions',
 	description: 'See what words Pup reacts to',
+	ephemeral: true,
 	cooldown: 10,
 	execute(message, args, client) {
 		const Embed = new MessageEmbed()
@@ -10,6 +11,6 @@ module.exports = {
 		client.reactions.forEach(reaction => {
 			if (!reaction.private) Embed.addField(`${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}`);
 		});
-		message.reply({ embeds: [Embed], ephemeral: true });
+		message.reply({ embeds: [Embed] });
 	},
 };

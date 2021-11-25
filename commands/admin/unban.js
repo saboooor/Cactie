@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unban',
 	description: 'Unban someone that was banned from the server',
+	ephemeral: true,
 	args: true,
 	usage: '<User>',
 	permissions: 'BAN_MEMBERS',
@@ -18,7 +19,7 @@ module.exports = {
 		await user.send({ content: `**You've been unbanned in ${message.guild.name}**` })
 			.catch(e => {
 				client.logger.warn(e);
-				message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
+				message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
 			});
 
 		// Actually unban the dude
@@ -30,7 +31,7 @@ module.exports = {
 			.setTitle(`Unbanned ${user.tag}`);
 
 		// Reply with unban log
-		message.reply({ embeds: [Embed], ephemeral: true });
+		message.reply({ embeds: [Embed] });
 		client.logger.info(`Unbanned user: ${user.tag} in ${message.guild.name}`);
 	},
 };

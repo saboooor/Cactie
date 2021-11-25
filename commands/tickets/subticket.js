@@ -3,6 +3,7 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'subticket',
 	description: 'Create a subticket',
+	ephemeral: true,
 	aliases: ['subnew', 'sub'],
 	args: true,
 	usage: '<Description>',
@@ -23,7 +24,7 @@ module.exports = {
 			reason: args[0] ? args.join(' ') : 'Created using a reaction',
 		})
 			.catch(error => client.logger.error(error));
-		if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ content: `Subticket created at ${subticket}!`, ephemeral: true });
+		if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ content: `Subticket created at ${subticket}!` });
 		client.logger.info(`Subticket created at #${subticket.name}`);
 		await sleep(1000);
 		const users = [];

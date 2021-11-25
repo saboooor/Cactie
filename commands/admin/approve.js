@@ -2,9 +2,9 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'approve',
 	description: 'Approve a suggestion.',
+	ephemeral: true,
 	aliases: ['accept'],
 	args: true,
-	ephemeral: true,
 	permissions: 'ADMINISTRATOR',
 	botperms: 'MANAGE_MESSAGES',
 	usage: '<Message ID> [Response]',
@@ -66,7 +66,7 @@ module.exports = {
 
 		// Update message and reply with approved
 		fetchedMsg.edit({ embeds: [Embed] });
-		if (message.commandName) message.reply({ content: 'Suggestion Approved!', ephemeral: true });
+		if (message.commandName) message.reply({ content: 'Suggestion Approved!' });
 		else message.delete();
 	},
 };

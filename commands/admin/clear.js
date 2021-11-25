@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'clear',
 	description: 'Delete multiple messages at once',
+	ephemeral: true,
 	args: true,
 	aliases: ['purge'],
 	usage: '<Message Amount>',
@@ -11,15 +12,15 @@ module.exports = {
 	options: require('../options/clear.json'),
 	async execute(message, args, client) {
 		// Check if arg is a number and is more than 100
-		if (isNaN(args[0])) return message.reply({ content: 'That is not a number!', ephemeral: true });
-		if (args[0] > 100) return message.reply({ content: 'You can only clear 100 messages at once!', ephemeral: true });
+		if (isNaN(args[0])) return message.reply({ content: 'That is not a number!' });
+		if (args[0] > 100) return message.reply({ content: 'You can only clear 100 messages at once!' });
 
 		// Fetch the messages and bulk delete them
 		const messages = await message.channel.messages.fetch({ limit: args[0] });
 		message.channel.bulkDelete(messages);
 
 		// Reply with response
-		if (message.commandName) message.reply({ content: `Cleared ${args[0]} messages!`, ephemeral: true });
+		if (message.commandName) message.reply({ content: `Cleared ${args[0]} messages!` });
 		client.logger.info(`Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
 	},
 };

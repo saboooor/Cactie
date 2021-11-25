@@ -11,7 +11,7 @@ module.exports = {
 	djRole: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!', ephemeral: true });
+		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		const autoplay = player.get('autoplay');
 		const song = player.queue.current;
 		if (autoplay === false) {

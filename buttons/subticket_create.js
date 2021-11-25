@@ -8,10 +8,10 @@ module.exports = {
 		if (!client.tickets.get(interaction.channel.id)) return;
 
 		// Check if ticket has more than 5 subtickets
-		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
+		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!', ephemeral: true });
 
 		// Check if ticket is closed
-		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
+		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!', ephemeral: true });
 
 		// Create Thread for subticket
 		const subticket = await interaction.channel.threads.create({

@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'voiceticket',
 	description: 'Create a voiceticket',
+	ephemeral: true,
 	aliases: ['voicenew', 'voice'],
 	guildOnly: true,
 	botperms: 'MANAGE_CHANNELS',
@@ -38,7 +39,7 @@ module.exports = {
 				},
 			],
 		}).catch(error => client.logger.error(error));
-		message.reply({ content: `Voiceticket created at ${voiceticket}!`, ephemeral: true });
+		message.reply({ content: `Voiceticket created at ${voiceticket}!` });
 		client.logger.info(`Voiceticket created at #${voiceticket.name}`);
 		client.tickets.set(message.channel.id, voiceticket.id, 'voiceticket');
 	},

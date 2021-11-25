@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unmute',
 	description: 'Unmute someone that was muted in the server',
+	ephemeral: true,
 	args: true,
 	usage: '<User>',
 	permissions: 'MANAGE_MESSAGES',
@@ -30,7 +31,7 @@ module.exports = {
 		await user.send({ content: '**You\'ve been unmuted**' })
 			.catch(e => {
 				client.logger.warn(e);
-				message.channel.send({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
+				message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
 			});
 
 		// Actually get rid of the mute role
@@ -42,7 +43,7 @@ module.exports = {
 			.setTitle(`Unmuted ${user.tag}`);
 
 		// Reply with unban log
-		message.reply({ embeds: [Embed], ephemeral: true });
+		message.reply({ embeds: [Embed] });
 		client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);
 	},
 };

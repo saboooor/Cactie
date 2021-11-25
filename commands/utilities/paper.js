@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 module.exports = {
 	name: 'paper',
 	description: 'Get info on any Paper build',
+	ephemeral: true,
 	usage: '[Version] [Build]',
 	options: require('../options/minecraft.json'),
 	async execute(message, args) {
