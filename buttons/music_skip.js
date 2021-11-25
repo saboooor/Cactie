@@ -44,8 +44,8 @@ module.exports = {
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);
-		const msg = await interaction.reply({ embeds: [thing] });
+		await interaction.reply({ embeds: [thing] });
 		await sleep(10000);
-		msg.delete();
+		interaction.deleteReply();
 	},
 };
