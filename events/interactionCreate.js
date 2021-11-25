@@ -10,8 +10,7 @@ module.exports = async (client, interaction) => {
 
 		if (button.botperms && (!interaction.guild.me.permissions.has(button.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperms))) {
 			client.logger.error(`Missing ${button.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-			interaction.reply({ content: `I don't have the ${button.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
-			return;
+			return interaction.reply({ content: `I don't have the ${button.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
 		if (button.permissions && interaction.user.id !== '249638347306303499') {
