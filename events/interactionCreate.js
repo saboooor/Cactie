@@ -8,12 +8,10 @@ module.exports = async (client, interaction) => {
 		const button = client.buttons.get(interaction.customId);
 		if (!button) return;
 
-		if (button.botperms) {
-			if (!interaction.guild.me.permissions.has(button.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperms)) {
-				client.logger.error(`Missing ${button.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-				interaction.reply({ content: `I don't have the ${button.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
-				return;
-			}
+		if (button.botperms && (!interaction.guild.me.permissions.has(button.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperms))) {
+			client.logger.error(`Missing ${button.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+			interaction.reply({ content: `I don't have the ${button.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
+			return;
 		}
 
 		if (button.permissions && interaction.user.id !== '249638347306303499') {
