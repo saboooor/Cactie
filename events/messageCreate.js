@@ -9,16 +9,28 @@ function clean(text) {
 }
 module.exports = async (client, message) => {
 	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('master') && servers['pup'].client == true) {
-		message.reply({ content: 'Updating to latest commit...' });
+		await client.manager.players.forEach(async player => {
+			const embed = message.embeds[0];
+			embed.setAuthor('The bot is updating! Sorry for the inconvenience!')
+				.setFooter('You\'ll be able to play music again in a few seconds!');
+			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
+		});
+		await message.reply({ content: 'Updating to latest commit...' });
 		const server = servers['pup'];
 		const Client = new NodeactylClient(server.url, server.apikey);
-		Client.restartServer(server.id);
+		await Client.restartServer(server.id);
 	}
 	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('dev') && servers['pup dev'].client == true) {
-		message.reply({ content: 'Updating to latest commit...' });
+		await client.manager.players.forEach(async player => {
+			const embed = message.embeds[0];
+			embed.setAuthor('The bot is updating! Sorry for the inconvenience!')
+				.setFooter('You\'ll be able to play music again in a few seconds!');
+			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
+		});
+		await message.reply({ content: 'Updating to latest commit...' });
 		const server = servers['pup dev'];
 		const Client = new NodeactylClient(server.url, server.apikey);
-		Client.restartServer(server.id);
+		await Client.restartServer(server.id);
 	}
 	if (message.author.bot) return;
 	if (message.channel.type == 'DM') {
