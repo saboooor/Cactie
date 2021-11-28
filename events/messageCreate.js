@@ -86,9 +86,12 @@ module.exports = async (client, message) => {
 		message.channel.send({ embeds: [Embed] });
 	}
 
-	if (!message.content.startsWith(srvconfig.prefix) && client.tickets.get(message.channel.id) && client.tickets.get(message.channel.id).resolved == 'true') {
-		client.tickets.set(message.channel.id, 'false', 'resolved');
-		return client.logger.info(`Unresolved #${message.channel.name}`);
+	if (!message.content.startsWith(srvconfig.prefix)) {
+		if (client.tickets.get(message.channel.id) && client.tickets.get(message.channel.id).resolved == 'true') {
+			client.tickets.set(message.channel.id, 'false', 'resolved');
+			client.logger.info(`Unresolved #${message.channel.name}`);
+		}
+		return;
 	}
 
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
