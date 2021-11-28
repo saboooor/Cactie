@@ -4,6 +4,6 @@ module.exports = {
 	async execute(interaction, client) {
 		// Delete settings database for guild and reply
 		client.delData('settings', 'guildId', interaction.guild.id);
-		interaction.update({ content: 'Settings successfully reset!', components: [] });
+		interaction.reply({ content: 'Settings successfully reset!', components: [] });
 	},
 };

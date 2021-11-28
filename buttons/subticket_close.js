@@ -4,7 +4,6 @@ module.exports = {
 	name: 'close_subticket',
 	botperms: 'MANAGE_THREADS',
 	async execute(interaction, client) {
-		interaction.deferUpdate();
 		// Fetch messages in the channel and get the transcript link
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);

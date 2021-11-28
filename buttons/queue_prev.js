@@ -10,7 +10,7 @@ module.exports = {
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription('There is no music playing.');
-			return interaction.update({ embeds: [thing] });
+			return interaction.reply({ embeds: [thing] });
 		}
 
 		// Get queue and embed
@@ -34,6 +34,6 @@ module.exports = {
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
 		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - ${track.title} \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
 		embed.setFooter(`Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
-		return interaction.update({ embeds: [embed], components: interaction.message.components });
+		return interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };

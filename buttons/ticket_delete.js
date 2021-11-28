@@ -3,16 +3,16 @@ const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'delete_ticket',
 	botperms: 'MANAGE_CHANNELS',
+	deferReply: true,
 	async execute(interaction, client) {
-		interaction.deferReply();
 		// Check if ticket is still open
-		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'This ticket needs to be closed first!' });
+		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 
 		// Check if ticket log channel is set in settings
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		if (srvconfig.logchannel != 'false') {
 			// Get transcript of ticket
-			await interaction.editReply({ content: 'Creating transcript...' });
+			await interaction.reply({ content: 'Creating transcript...' });
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
 
@@ -32,7 +32,7 @@ module.exports = {
 			await client.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		}
-		else { interaction.editReply({ content: 'Deleting Ticket...' }); }
+		else { interaction.reply({ content: 'Deleting Ticket...' }); }
 
 		// Actually delete ticket and ticket database
 		await client.tickets.delete(interaction.channel.id);
