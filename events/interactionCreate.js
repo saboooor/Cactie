@@ -9,6 +9,7 @@ module.exports = async (client, interaction) => {
 		if (!button) return;
 
 		button.deferReply ? await interaction.deferReply({ ephemeral: button.ephemeral }) : await interaction.deferUpdate({ ephemeral: button.ephemeral });
+		interaction.reply = interaction.editReply;
 
 		if (button.botperms && (!interaction.guild.me.permissions.has(button.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperms))) {
 			client.logger.error(`Missing ${button.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);

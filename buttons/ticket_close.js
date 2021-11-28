@@ -6,7 +6,6 @@ module.exports = {
 	botperms: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
-		interaction.deferReply();
 		// Get ticket database
 		const ticket = client.tickets.get(interaction.channel.id);
 		if (!ticket) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
