@@ -4,10 +4,10 @@ module.exports = {
 	name: 'create_ticket',
 	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
-		interaction.deferUpdate();
+		interaction.deferReply();
 		// Check if tickets are disabled
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!', ephemeral: true });
+		if (srvconfig.tickets == 'false') return interaction.editReply({ content: 'Tickets are disabled!', ephemeral: true });
 
 		// Find category and if no category then set it to null
 		let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
@@ -16,14 +16,14 @@ module.exports = {
 
 		// Find role and if no role then reply with error
 		const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
+		if (!role) return interaction.editReply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
 
 		// Check if ticket already exists
 		const author = interaction.user;
 		const channel = interaction.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
 		if (channel) {
 			interaction.guild.channels.cache.get(channel.id).send({ content: `❗ **${author} Ticket already exists!**` });
-			return interaction.reply({ content: `You've already created a ticket at ${channel}!`, ephemeral: true });
+			return interaction.editReply({ content: `You've already created a ticket at ${channel}!`, ephemeral: true });
 		}
 
 		// Create ticket and set database
@@ -54,7 +54,7 @@ module.exports = {
 		client.tickets.set(ticket.id, 'false', 'resolved');
 		client.tickets.set(ticket.id, [], 'users');
 		client.tickets.push(ticket.id, author.id, 'users');
-		interaction.reply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
+		interaction.editReply({ content: `Ticket created at ${ticket}!`, ephemeral: true });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 
 		// Create embed

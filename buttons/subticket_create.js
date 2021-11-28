@@ -4,15 +4,15 @@ module.exports = {
 	name: 'subticket_create',
 	botperms: 'CREATE_PUBLIC_THREADS',
 	async execute(interaction, client) {
-		interaction.deferUpdate();
+		interaction.deferReply();
 		// Check if ticket is an actual ticket
 		if (!client.tickets.get(interaction.channel.id)) return;
 
 		// Check if ticket has more than 5 subtickets
-		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!', ephemeral: true });
+		if (interaction.channel.threads.cache.size > 5) return interaction.editReply({ content: 'This ticket has too many subtickets!', ephemeral: true });
 
 		// Check if ticket is closed
-		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!', ephemeral: true });
+		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'This ticket is closed!', ephemeral: true });
 
 		// Create Thread for subticket
 		const subticket = await interaction.channel.threads.create({
@@ -21,7 +21,7 @@ module.exports = {
 			reason: 'Created with a button',
 		});
 		client.logger.info(`Subticket created at #${subticket.name}`);
-		interaction.reply({ content: `Subticket created at #${subticket}!`, ephemeral: true });
+		interaction.editReply({ content: `Subticket created at #${subticket}!`, ephemeral: true });
 		await sleep(1000);
 
 		// Get users and ping them all with subticket embed

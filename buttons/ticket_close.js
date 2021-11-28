@@ -5,24 +5,24 @@ module.exports = {
 	name: 'close_ticket',
 	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
-		interaction.deferUpdate();
+		interaction.deferReply();
 		// Get ticket database
 		const ticket = client.tickets.get(interaction.channel.id);
-		if (!ticket) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (!ticket) return interaction.editReply('Could not find this ticket in the database, please manually delete this channel.');
 
 		// Check if ticket is already closed
-		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
+		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'This ticket is already closed!' });
 
 		// Check if user is ticket author
 		const author = interaction.user;
-		if (author.id != ticket.opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
+		if (author.id != ticket.opener) return interaction.editReply({ content: 'You can\'t close this ticket!' });
 
 		// Change channel name to closed
 		interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
 
 		// Check if bot got rate limited and ticket didn't properly close
 		await sleep(1000);
-		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 
 		// Check if there's a voice ticket and delete it
 		if (ticket.voiceticket && ticket.voiceticket !== 'false') {
@@ -77,7 +77,7 @@ module.exports = {
 						.setStyle('PRIMARY'),
 				]);
 		}
-		interaction.reply({ embeds: [Embed], components: [row] });
+		interaction.editReply({ embeds: [Embed], components: [row] });
 		client.logger.info(`Closed ticket #${interaction.channel.name}`);
 
 		// Check if ticket setting is set to reactions and add the reactions
