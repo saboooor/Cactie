@@ -3,11 +3,12 @@ const { readdirSync } = require('fs');
 const { host, user, pass, db } = require('../config/mysql.json');
 module.exports = async client => {
 	// Database Functions
+	let amount = 0;
 	readdirSync('./functions/database/').forEach(file => {
 		require(`../functions/database/${file}`)(client);
-		const eventName = file.split('.')[0];
-		client.logger.info(`Loading Database function ${eventName}`);
+		amount = amount + 1;
 	});
+	client.logger.info(`${amount} database functions loaded `);
 
 	// Create a connection to the database
 	client.con = mariadb.createConnection({
@@ -28,4 +29,5 @@ module.exports = async client => {
 			});
 		});
 	};
+	client.logger.info('MySQL database loaded');
 };

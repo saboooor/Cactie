@@ -45,12 +45,16 @@ module.exports = client => {
 	client.on('raw', (d) => client.manager.updateVoiceState(d));
 	fs.readdir('./events/music/', (err, files) => {
 		if (err) return client.logger.error(err);
+		// go through all the files in the events/music folder and register them
+		let amount = 0;
 		files.forEach(file => {
 			if (!file.endsWith('.js')) return;
 			const event = require(`../events/music/${file}`);
 			const eventName = file.split('.')[0];
 			client.manager.on(eventName, event.bind(null, client));
+			amount = amount + 1;
 		});
-		// goes through all the files in the events folder and registers them
+		client.logger.info(`${amount} lavalink event listeners loaded`);
 	});
+	client.logger.info('Music handler loaded');
 };

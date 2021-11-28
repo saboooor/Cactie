@@ -26,5 +26,4 @@ module.exports = client => {
 	app.listen(webhookport, () => {
 		client.logger.info(`Webhook server loaded on port ${webhookport}`);
 	});
-
 };

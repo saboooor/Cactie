@@ -13,5 +13,5 @@ module.exports = client => {
 			amount = amount + 1;
 		}
 	}
-	client.logger.info(`${amount} commands loaded`);
+	client.logger.info(`${amount} dash commands loaded`);
 };
