@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
@@ -53,6 +54,13 @@ module.exports = async (client) => {
 				}
 				await client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);
 				client.logger.info(`Unmuted ${member.user.tag} in ${guild.name}`);
+
+				// Check if log channel exists and send message
+				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
+				if (logchannel) {
+					const Embed = new MessageEmbed().setTitle(`${member.user.tag} has been unmuted`);
+					logchannel.send({ embeds: [Embed] });
+				}
 			}
 			else if (data.bannedUntil < Date.now() && data.bannedUntil != 0) {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
@@ -61,6 +69,14 @@ module.exports = async (client) => {
 				await client.setData('memberdata', 'memberId', data.memberId, 'bannedUntil', 0);
 				client.logger.info(`Unbanned ${member ? member.user.tag : data[0].split('-')[0]} in ${guild.name}`);
 				await guild.members.unban(data[0].split('-')[0]).catch(e => client.logger.error(e));
+
+				// Check if log channel exists and send message
+				const srvconfig = await client.getData('settings', 'guildId', guild.id);
+				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
+				if (logchannel) {
+					const Embed = new MessageEmbed().setTitle(`${member.user.tag} has been unbanned`);
+					logchannel.send({ embeds: [Embed] });
+				}
 			}
 			else if (data.mutedUntil == 0 && data.bannedUntil == 0) {
 				await client.delData('memberdata', 'memberId', data.memberId);

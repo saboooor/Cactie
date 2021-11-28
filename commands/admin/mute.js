@@ -87,5 +87,12 @@ module.exports = {
 
 		// Reply to command
 		message.reply({ embeds: [Embed] });
+
+		// Check if log channel exists and send message
+		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+		if (logchannel) {
+			Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+			logchannel.send({ embeds: [Embed] });
+		}
 	},
 };

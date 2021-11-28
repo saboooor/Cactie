@@ -15,7 +15,7 @@ module.exports = {
 			.replace(/-r/g, `${rating}/${ratings.length - 1}`)
 			.replace(/-m/g, args.join(' '))
 			.replace(/<@&.?[0-9]*?>/g, 'that')
-			.replace(/@everyone/g, 'everyone here')
+			.replace(/@everyone/g, 'everyone')
 			.replace(/@here/g, 'everyone online'),
 		);
 	},

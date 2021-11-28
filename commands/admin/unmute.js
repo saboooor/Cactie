@@ -45,5 +45,12 @@ module.exports = {
 		// Reply with unban log
 		message.reply({ embeds: [Embed] });
 		client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);
+
+		// Check if log channel exists and send message
+		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+		if (logchannel) {
+			Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+			logchannel.send({ embeds: [Embed] });
+		}
 	},
 };

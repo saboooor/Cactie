@@ -33,5 +33,13 @@ module.exports = {
 		// Reply with unban log
 		message.reply({ embeds: [Embed] });
 		client.logger.info(`Unbanned user: ${user.tag} in ${message.guild.name}`);
+
+		// Check if log channel exists and send message
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+		if (logchannel) {
+			Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+			logchannel.send({ embeds: [Embed] });
+		}
 	},
 };

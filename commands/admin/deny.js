@@ -72,5 +72,14 @@ module.exports = {
 		fetchedMsg.edit({ embeds: [Embed] });
 		if (message.commandName) message.reply({ content: 'Suggestion Denied!' });
 		else message.delete();
+
+		// Check if log channel exists and send message
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+		if (logchannel) {
+			Embed.setTitle(`${message.member.user.tag} denied a suggestion`)
+				.addField('Link to message', `[Click here](${fetchedMsg.url})`);
+			logchannel.send({ embeds: [Embed] });
+		}
 	},
 };

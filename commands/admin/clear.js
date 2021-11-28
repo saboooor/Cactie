@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'clear',
 	description: 'Delete multiple messages at once',
@@ -22,5 +24,16 @@ module.exports = {
 		// Reply with response
 		if (message.commandName) message.reply({ content: `Cleared ${args[0]} messages!` });
 		client.logger.info(`Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
+
+		// Check if log channel exists and send message
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+		if (logchannel) {
+			const Embed = new MessageEmbed()
+				.setTitle(`${message.member.user.tag} cleared ${args[0]} messages`)
+				.addField('Channel', `${message.channel}`)
+				.addField('Transcript', `${await getTranscript(messages)}`);
+			logchannel.send({ embeds: [Embed] });
+		}
 	},
 };

@@ -68,6 +68,13 @@ module.exports = {
 			await client.setData('settings', 'guildId', message.guild.id, prop, value);
 			Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
+
+			// Check if log channel exists and send message
+			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+			if (logchannel) {
+				Embed.setDescription(`${message.member.user.tag} ${Embed.title}`);
+				logchannel.send({ embeds: [Embed] });
+			}
 		}
 		else if (args[0] == 'reset') {
 			// Set title to 'SETTINGS RESET'

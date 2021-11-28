@@ -51,5 +51,13 @@ module.exports = {
 		// Actually kick the dude
 		await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });
 		client.logger.info({ content: `Kicked user: ${user.tag} from ${message.guild.name}` });
+
+		// Check if log channel exists and send message
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+		if (logchannel) {
+			Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+			logchannel.send({ embeds: [Embed] });
+		}
 	},
 };
