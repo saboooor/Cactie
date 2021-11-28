@@ -1,17 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const { webhookport, topggauth } = require('../config/bot.json');
 module.exports = client => {
-
-	const port = client.config.webhook_port;
-
+	const port = webhookport;
 	app.use(bodyParser.json());
-
 	// on post to server check if authorization matches
 	app.post('/', function(req, res) {
 		const body = req.body;
 		const headers = req.headers;
-		if (headers.authorization === client.config.topgg_webhook_auth) {
+		if (headers.authorization === topggauth) {
 			res.statusCode = 200;
 			res.json({
 				message: 'ok got it!',
@@ -24,14 +22,9 @@ module.exports = client => {
 				message: 'Error unauthorized!',
 			});
 		}
-
-
 	});
-
 	app.listen(port, () => {
-
 		client.logger.info(`Webhook server loaded on port ${port}`);
-
 	});
 
 };
