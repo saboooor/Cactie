@@ -4,6 +4,7 @@ module.exports = async (client, oldState, newState) => {
 	const player = client.manager.get(guildId);
 
 	// check if the bot is active (playing, paused or empty does not matter (return otherwise)
+	if (oldState.id != client.user.id) return;
 	if (!player || player.state !== 'CONNECTED') return;
 
 	const stateChange = {};
