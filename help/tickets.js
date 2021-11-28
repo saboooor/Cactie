@@ -20,7 +20,7 @@ ${commandlist.join('\n')}
 **How to create support tickets:**
 **1.** Set the support team / staff role by doing ${prefix}settings supportrole <Role Id>
 **2.** Set the ticket's category channel by doing ${prefix}settings ticketcategory <Category Id> (Optional)
-**3.** Set a log channel by doing ${prefix}settings ticketlogchannel <Channel Id> (Optional)
+**3.** Set a log channel by doing ${prefix}settings logchannel <Channel Id> (Optional)
 **4.** Execute ${prefix}help supportpanel if you want to use a reaction or button to create a ticket
 **5.** You're done!
 `);

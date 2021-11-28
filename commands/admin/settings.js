@@ -33,8 +33,8 @@ module.exports = {
 			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'suggestthreads') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
-			// Suggestionchannel / Pollchannel / Ticketlogchannel can only be a text channel or false
-			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
+			// Suggestionchannel / Pollchannel / Logchannel can only be a text channel or false
+			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'logchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
 			// Ticketcategory can only be a category channel or false
 			if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
 			// Supportrole / Djrole can only be a role

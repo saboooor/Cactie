@@ -155,13 +155,13 @@
     },
     {
         "type": "SUB_COMMAND",
-        "name": "ticketlogchannel",
-        "description": "The channel where the bot puts ticket logs, Must be false or a channel Id",
+        "name": "logchannel",
+        "description": "The channel where the bot puts various logs, Must be false or a channel Id",
         "options": [
             {
                 "type": "CHANNEL",
                 "name": "channel",
-                "description": "The ticket logging channel (Hashtag icon)",
+                "description": "The logging channel (Hashtag icon)",
                 "required": true
             }
         ]

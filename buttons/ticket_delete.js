@@ -9,7 +9,7 @@ module.exports = {
 
 		// Check if ticket log channel is set in settings
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-		if (srvconfig.ticketlogchannel != 'false') {
+		if (srvconfig.logchannel != 'false') {
 			// Get transcript of ticket
 			await interaction.reply({ content: 'Creating transcript...' });
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });
@@ -28,7 +28,7 @@ module.exports = {
 				.addField('**Deleted by**', `${interaction.user}`);
 
 			// Send embed to ticket log channel
-			await client.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [Embed] });
+			await client.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		}
 		else { interaction.reply({ content: 'Deleting Ticket...' }); }
