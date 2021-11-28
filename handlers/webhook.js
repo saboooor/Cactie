@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const { webhookport, topggauth } = require('../config/bot.json');
 module.exports = client => {
-	const port = webhookport;
+	if (!webhookport) return client.logger.info('Skipped webhook server loading!');
 	app.use(bodyParser.json());
 	// on post to server check if authorization matches
 	app.post('/', function(req, res) {
@@ -23,8 +23,8 @@ module.exports = client => {
 			});
 		}
 	});
-	app.listen(port, () => {
-		client.logger.info(`Webhook server loaded on port ${port}`);
+	app.listen(webhookport, () => {
+		client.logger.info(`Webhook server loaded on port ${webhookport}`);
 	});
 
 };
