@@ -39,6 +39,6 @@ module.exports = {
 			.setThumbnail(song.img);
 		const msg = await message.reply({ embeds: [thing] });
 		await sleep(10000);
-		message.commandName ? message.deleteReply() : msg.edit({ content: '**Skipped**', embeds: null });
+		message.commandName ? message.deleteReply() : msg.edit({ content: '**Skipped**', embeds: [] });
 	},
 };
