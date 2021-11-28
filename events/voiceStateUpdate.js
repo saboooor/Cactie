@@ -13,8 +13,14 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.channel !== null && newState.channel === null) stateChange.type = 'LEAVE';
 	if (oldState.channel !== null && newState.channel !== null) stateChange.type = 'MOVE';
 	if (oldState.channel === null && newState.channel === null) return;
-	if (newState.serverMute == true && oldState.serverMute == false) return player.pause(true);
-	if (newState.serverMute == false && oldState.serverMute == true) return player.pause(false);
+	if (newState.serverMute == true && oldState.serverMute == false) {
+		client.logger.info(`Paused player in ${newState.guild.name} because of server mute`);
+		return player.pause(true);
+	}
+	if (newState.serverMute == false && oldState.serverMute == true) {
+		client.logger.info(`Resumed player in ${newState.guild.name} because of server unmute`);
+		return player.pause(false);
+	}
 
 	// move check first as it changes type
 	if (stateChange.type === 'MOVE') {
