@@ -129,12 +129,10 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
-		if (command.botperms) {
-			if (!interaction.guild.me.permissions.has(command.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperms)) {
-				client.logger.error(`Missing ${command.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-				interaction.reply({ content: `I don't have the ${command.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
-				return;
-			}
+		if (command.botperms && (!interaction.guild.me.permissions.has(command.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperms))) {
+			client.logger.error(`Missing ${command.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+			interaction.reply({ content: `I don't have the ${command.botperms} permission!`, ephemeral: true });
+			return;
 		}
 
 		const embed = new MessageEmbed()

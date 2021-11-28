@@ -153,7 +153,7 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	if (command.botperms && !message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms)) {
+	if (command.botperms && (!message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms))) {
 		client.logger.error(`Missing ${command.botperms} permission in #${message.channel.name} at ${message.guild.name}`);
 		message.reply({ content: `I don't have the ${command.botperms} permission!` });
 		return;
