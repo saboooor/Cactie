@@ -9,10 +9,10 @@ module.exports = {
 	options: require('../options/imgurl.json'),
 	async execute(message, args, client) {
 		// Get the color from the img url
-		const colors = rgb2hex(await getPalette(args[0])).catch(e => {
+		const colors = rgb2hex(await getPalette(args[0]).catch(e => {
 			client.logger.error(e);
 			message.reply(e);
-		});
+		}));
 		const embeds = [];
 		colors.forEach(color => {
 			// Create embed with color and push it into the list of embeds

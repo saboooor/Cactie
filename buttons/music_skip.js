@@ -46,6 +46,6 @@ module.exports = {
 			.setThumbnail(song.img);
 		await interaction.reply({ embeds: [thing] });
 		await sleep(10000);
-		interaction.deleteReply();
+		interaction.deleteReply().catch((e) => { client.logger.error(e); });
 	},
 };

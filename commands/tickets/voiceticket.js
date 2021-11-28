@@ -6,11 +6,11 @@ module.exports = {
 	guildOnly: true,
 	botperms: 'MANAGE_CHANNELS',
 	async execute(message, args, client, reaction) {
+		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		const author = client.users.cache.get(client.tickets.get(message.channel.id).opener);
 		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
-		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (client.tickets.get(message.channel.id).voiceticket && client.tickets.get(message.channel.id).voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
