@@ -26,6 +26,10 @@ module.exports = {
 		await msg.react(yes);
 		await msg.react(no);
 		if (srvconfig.suggestthreads) {
+			if (!message.guild.me.permissions.has('CREATE_PUBLIC_THREADS') || !message.guild.me.permissionsIn(channel).has('CREATE_PUBLIC_THREADS')) {
+				client.logger.error(`Missing CREATE_PUBLIC_THREADS permission in #${channel.name} at ${message.guild.name}`);
+				return message.reply({ content: 'I don\'t have the CREATE_PUBLIC_THREADS permission!' });
+			}
 			const thread = await msg.startThread({
 				name: `Suggestion by ${message.member.displayName}'`,
 				autoArchiveDuration: 1440,

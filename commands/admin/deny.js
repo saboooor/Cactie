@@ -38,6 +38,10 @@ module.exports = {
 		// Get suggestion thread if exists and delete with transcript
 		const thread = message.guild.channels.cache.get(Embed.url.split('a')[2]);
 		if (thread) {
+			if (!message.guild.me.permissions.has('MANAGE_THREADS') || !message.guild.me.permissionsIn(message.channel).has('MANAGE_THREADS')) {
+				client.logger.error(`Missing MANAGE_THREADS permission in #${message.channel.name} at ${message.guild.name}`);
+				return message.reply({ content: 'I don\'t have the MANAGE_THREADS permission!' });
+			}
 			const messages = await thread.messages.fetch({ limit: 100 });
 			if (messages.size > 1) {
 				const link = await getTranscript(messages);
