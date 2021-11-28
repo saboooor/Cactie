@@ -7,6 +7,7 @@ function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, message) => {
 	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('master') && servers['pup'].client == true) {
 		await client.manager.players.forEach(async player => {
@@ -16,6 +17,7 @@ module.exports = async (client, message) => {
 			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
 		});
 		await message.reply({ content: 'Updating to latest commit...' });
+		await sleep(5000);
 		const server = servers['pup'];
 		const Client = new NodeactylClient(server.url, server.apikey);
 		await Client.restartServer(server.id);
@@ -28,6 +30,7 @@ module.exports = async (client, message) => {
 			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
 		});
 		await message.reply({ content: 'Updating to latest commit...' });
+		await sleep(5000);
 		const server = servers['pup dev'];
 		const Client = new NodeactylClient(server.url, server.apikey);
 		await Client.restartServer(server.id);
@@ -83,12 +86,9 @@ module.exports = async (client, message) => {
 		message.channel.send({ embeds: [Embed] });
 	}
 
-	if (!message.content.startsWith(srvconfig.prefix)) {
-		if (client.tickets.get(message.channel.id) && client.tickets.get(message.channel.id).resolved == 'true') {
-			client.tickets.set(message.channel.id, 'false', 'resolved');
-			client.logger.info(`Unresolved #${message.channel.name}`);
-		}
-		return;
+	if (!message.content.startsWith(srvconfig.prefix) && client.tickets.get(message.channel.id) && client.tickets.get(message.channel.id).resolved == 'true') {
+		client.tickets.set(message.channel.id, 'false', 'resolved');
+		return client.logger.info(`Unresolved #${message.channel.name}`);
 	}
 
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
@@ -150,12 +150,10 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	if (command.botperms) {
-		if (!message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms)) {
-			client.logger.error(`Missing ${command.botperms} permission in #${message.channel.name} at ${message.guild.name}`);
-			message.reply({ content: `I don't have the ${command.botperms} permission!` });
-			return;
-		}
+	if (command.botperms && !message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms)) {
+		client.logger.error(`Missing ${command.botperms} permission in #${message.channel.name} at ${message.guild.name}`);
+		message.reply({ content: `I don't have the ${command.botperms} permission!` });
+		return;
 	}
 
 	const embed = new MessageEmbed()
