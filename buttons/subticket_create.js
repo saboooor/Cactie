@@ -4,6 +4,7 @@ module.exports = {
 	name: 'subticket_create',
 	botperms: 'CREATE_PUBLIC_THREADS',
 	async execute(interaction, client) {
+		interaction.deferUpdate();
 		// Check if ticket is an actual ticket
 		if (!client.tickets.get(interaction.channel.id)) return;
 

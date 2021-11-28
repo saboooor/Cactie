@@ -4,6 +4,7 @@ module.exports = {
 	name: 'create_ticket',
 	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
+		interaction.deferUpdate();
 		// Check if tickets are disabled
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!', ephemeral: true });

@@ -2,6 +2,7 @@ module.exports = {
 	name: 'voiceticket_create',
 	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
+		interaction.deferUpdate();
 		// Check if ticket is an actual ticket
 		if (!client.tickets.get(interaction.channel.id)) return;
 

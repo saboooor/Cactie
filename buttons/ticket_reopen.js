@@ -4,6 +4,7 @@ module.exports = {
 	name: 'reopen_ticket',
 	botperms: 'MANAGE_CHANNELS',
 	async execute(interaction, client) {
+		interaction.deferUpdate();
 		// Check if ticket is already opened
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already opened!' });
 
