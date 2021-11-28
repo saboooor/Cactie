@@ -6,7 +6,7 @@ const protocols = require('../config/mcprotocol.json');
 module.exports = {
 	name: 'stats_refresh',
 	async execute(interaction, client) {
-		interaction.deferReply();
+		interaction.deferUpdate();
 		const srvs = [];
 		Object.keys(servers).map(i => { srvs.push(servers[i]); });
 		const Embed = interaction.message.embeds[0];
