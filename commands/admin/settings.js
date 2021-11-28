@@ -33,8 +33,6 @@ module.exports = {
 			if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'suggestthreads') && value != 'true' && value != 'false') return message.reply({ content: 'This setting must be either `true` or `false`!' });
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') return message.reply({ content: 'Please set a system channel in your server settings first!' });
-			// Maxppsize can only be less than 76
-			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
 			// Suggestionchannel / Pollchannel / Ticketlogchannel can only be a text channel or false
 			if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'ticketlogchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) return message.reply({ content: 'That is not a valid text channel Id!' });
 			// Ticketcategory can only be a category channel or false
@@ -44,7 +42,9 @@ module.exports = {
 			// Adminrole can only be a role or 'permission'
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			// Msgshortener can only be a number
-			if ((prop == 'msgshortener') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
+			if ((prop == 'msgshortener' || prop == 'maxppsize') && isNaN(value)) return message.reply({ content: 'That is not a valid number!' });
+			// Maxppsize can only be less than 76
+			if (prop == 'maxppsize' && value > 76) return message.reply({ content: 'maxppsize must be less than 76!' });
 			// Ticketmention can only be here, everyone, or a valid role
 			if ((prop == 'ticketmention') && value != 'everyone' && value != 'here' && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'This setting must be either `here`, `everyone`, or a valid role Id!' });
 			// Set mutecmd's permissions
