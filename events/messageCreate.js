@@ -9,7 +9,7 @@ function clean(text) {
 }
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, message) => {
-	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('master') && servers['pup'].client == true) {
+	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.startsWith('[Pup:master]') && servers['pup'].client == true) {
 		await client.manager.players.forEach(async player => {
 			const embed = message.embeds[0];
 			embed.setAuthor('The bot is updating! Sorry for the inconvenience!')
@@ -22,7 +22,7 @@ module.exports = async (client, message) => {
 		const Client = new NodeactylClient(server.url, server.apikey);
 		await Client.restartServer(server.id);
 	}
-	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.includes('dev') && servers['pup dev'].client == true) {
+	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.startsWith('[Pup:dev]') && servers['pup dev'].client == true) {
 		await client.manager.players.forEach(async player => {
 			const embed = message.embeds[0];
 			embed.setAuthor('The bot is updating! Sorry for the inconvenience!')
