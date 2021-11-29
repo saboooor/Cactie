@@ -123,8 +123,12 @@ module.exports = {
 					.setCustomId('settings_next')
 					.setLabel('►')
 					.setStyle('PRIMARY'),
+				new MessageButton()
+					.setURL('https://pup.smhsmh.club')
+					.setLabel('Dashboard')
+					.setStyle('LINK'),
 			);
-
+		Embed.addField('Too confusing?', 'Use the dashboard!');
 		// Send Embed with buttons
 		message.reply({ embeds: [Embed], components: [row] });
 	},
