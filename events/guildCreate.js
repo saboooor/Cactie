@@ -11,6 +11,7 @@ module.exports = async (client, guild) => {
 		.setDescription(`This guild has ${guild.memberCount} members`)
 		.addField('Created At', `<t:${timestamp}>\n<t:${timestamp}:R>`);
 	client.channels.cache.get('865682839616618506').send({ embeds: [Embed] });
-	if (!guild.systemChannel) owner.send('**Thanks for adding me to your server!**\nMy prefix is `-`, you can change this with -settings\nType -help for help, and join the support discord at https://pup.smhsmh.club/discord \nDo -invite to invite me to other servers!\nThere is also a dashboard at https://pup.smhsmh.club!').catch(e => { client.logger.warn(e); });
-	else guild.systemChannel.send('**Thanks for adding me to your server!**\nMy prefix is `-`, you can change this with -settings\nType -help for help, and join the support discord at https://pup.smhsmh.club/discord \nDo -invite to invite me to other servers!\nThere is also a dashboard at https://pup.smhsmh.club!');
+	const srvconfig = await client.getData('settings', 'guildId', guild.id);
+	if (!guild.systemChannel) owner.send(`**Thanks for adding me to your server!**\nMy prefix is \`${srvconfig.prefix}\`, you can change this with ${srvconfig.prefix}settings\nType ${srvconfig.prefix}help for help, and join the support discord at https://pup.smhsmh.club/discord \nDo ${srvconfig.prefix}invite to invite me to other servers!\nThere is also a dashboard at https://pup.smhsmh.club!`).catch(e => { client.logger.warn(e); });
+	else guild.systemChannel.send(`**Thanks for adding me to your server!**\nMy prefix is \`${srvconfig.prefix}\`, you can change this with ${srvconfig.prefix}settings\nType ${srvconfig.prefix}help for help, and join the support discord at https://pup.smhsmh.club/discord \nDo ${srvconfig.prefix}invite to invite me to other servers!\nThere is also a dashboard at https://pup.smhsmh.club!`).catch(e => { client.logger.warn(e); });
 };
