@@ -99,7 +99,7 @@ module.exports = async (client, message) => {
 	}
 
 	message.channel.sendTyping();
-	await sleep(500)
+	await sleep(500);
 	const { cooldowns } = client;
 
 	if (!cooldowns.has(command.name)) {
