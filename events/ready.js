@@ -67,8 +67,8 @@ module.exports = async (client) => {
 				const member = await guild.members.cache.get(data.memberId.split('-')[0]);
 				if (member) member.user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
 				await client.setData('memberdata', 'memberId', data.memberId, 'bannedUntil', 0);
-				client.logger.info(`Unbanned ${member ? member.user.tag : data[0].split('-')[0]} in ${guild.name}`);
-				await guild.members.unban(data[0].split('-')[0]).catch(e => client.logger.error(e));
+				client.logger.info(`Unbanned ${member ? member.user.tag : data.memberId.split('-')[0]} in ${guild.name}`);
+				await guild.members.unban(data.memberId.split('-')[0]).catch(e => client.logger.error(e));
 
 				// Check if log channel exists and send message
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
