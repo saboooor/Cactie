@@ -1,4 +1,5 @@
 {
     "token": "[BOT TOKEN HERE]",
-    "webhookport": "[WEBHOOK PORT HERE]"
+    "webhookport": "[WEBHOOK PORT HERE]",
+    "gitauth": "[GITHUB WEBHOOK AUTH HERE]"
 }
