@@ -28,7 +28,7 @@ module.exports = {
 			const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
 
 			// Avoid users from setting guildId and reactroles
-			if (prop == 'guildId' || prop == 'reactroles') return message.reply('You cannot change that!')
+			if (prop == 'guildId' || prop == 'reactroles') return message.reply('You cannot change that!');
 			// Tickets setting can only be either buttons, reactions, or false
 			if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return message.reply({ content: 'This setting must be either `buttons`, `reactions`, or `false`!' });
 			// Reactions / Bonercmd / Suggestthreads settings can only either be true or false
