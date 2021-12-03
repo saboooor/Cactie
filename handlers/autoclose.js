@@ -3,25 +3,26 @@ const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
-	schedule('0 0 * * *', () => {
-		client.channels.cache.forEach(async channel => {
-			if (client.tickets.get(channel.id) && client.tickets.get(channel.id).resolved == 'true' && channel.name.includes('ticket-')) {
+	schedule('0 0 * * *', async () => {
+		// Get all tickets
+		const ticketData = await client.query('SELECT * FROM ticketdata');
+		ticketData.forEach(async data => {
+			if (data.resolved == 'true') {
+				const channel = await client.channels.cache.get(data.channelId);
 				channel.setName(channel.name.replace('ticket', 'closed'));
 				await sleep(1000);
 				if (channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return channel.send({ content: 'Failed to close ticket, please try again in 10 minutes' });
-				if (client.tickets.get(channel.id).voiceticket && client.tickets.get(channel.id).voiceticket !== 'false') {
-					const voiceticket = channel.guild.channels.cache.get(client.tickets.get(channel.id).voiceticket);
+				if (data.voiceticket !== 'false') {
+					const voiceticket = await channel.guild.channels.cache.get(data.voiceticket);
 					voiceticket.delete();
-					client.tickets.set(channel.id, 'false', 'voiceticket');
+					await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 				}
-				client.tickets.set(channel.id, 'false', 'resolved');
-				client.tickets.get(channel.id).users.forEach(userid => {
-					channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false });
-				});
+				await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
+				data.users.forEach(userid => channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }));
 				const messages = await channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const users = [];
-				await client.tickets.get(channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+				await data.users.forEach(userid => users.push(client.users.cache.get(userid)));
 				const EmbedDM = new MessageEmbed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
@@ -53,10 +54,7 @@ module.exports = client => {
 						]);
 					channel.send({ embeds: [Embed], components: [row] });
 				}
-				else {
-					channel.send({ embeds: [Embed] });
-				}
-				if (srvconfig.tickets == 'reactions') {
+				else if (srvconfig.tickets == 'reactions') {
 					Embed.setColor(3447003);
 					Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 					const embed = await channel.send({ embeds: [Embed] });

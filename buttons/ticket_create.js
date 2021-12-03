@@ -21,9 +21,10 @@ module.exports = {
 
 		// Check if ticket already exists
 		const author = interaction.user;
-		const channel = interaction.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
-		if (channel) {
-			interaction.guild.channels.cache.get(channel.id).send({ content: `❗ **${author} Ticket already exists!**` });
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}'`))[0];
+		if (ticketData) {
+			const channel = interaction.guild.channels.cache.get(ticketData.channelId);
+			channel.send({ content: `❗ **${author} Ticket already exists!**` });
 			return interaction.reply({ content: `You've already created a ticket at ${channel}!` });
 		}
 
@@ -51,10 +52,8 @@ module.exports = {
 				},
 			],
 		}).catch(error => client.logger.error(error));
-		client.tickets.set(ticket.id, author.id, 'opener');
-		client.tickets.set(ticket.id, 'false', 'resolved');
-		client.tickets.set(ticket.id, [], 'users');
-		client.tickets.push(ticket.id, author.id, 'users');
+		await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
+		await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
 		interaction.reply({ content: `Ticket created at ${ticket}!` });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 

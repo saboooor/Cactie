@@ -79,7 +79,7 @@ module.exports = async (client) => {
 				}
 			}
 			else if (data.mutedUntil == 0 && data.bannedUntil == 0) {
-				await client.delData('memberdata', 'memberId', data.memberId);
+				client.delData('memberdata', 'memberId', data.memberId);
 			}
 		});
 	}, 10000);

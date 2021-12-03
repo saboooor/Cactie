@@ -14,7 +14,10 @@ module.exports = {
 		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
-		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
+		// Check if ticket is an actual ticket
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
+		if (!ticketData) return;
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
 		if (message.channel.threads.cache.size > 5) return message.reply({ content: 'This ticket has too many subtickets!' });
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
@@ -28,7 +31,7 @@ module.exports = {
 		client.logger.info(`Subticket created at #${subticket.name}`);
 		await sleep(1000);
 		const users = [];
-		await client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+		await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const Embed = new MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Subticket Created')

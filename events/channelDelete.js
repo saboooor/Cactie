@@ -1,8 +1,13 @@
-module.exports = (client, channel) => {
-	if (client.tickets.get(channel.id) && client.tickets.get(channel.id).voiceticket && client.tickets.get(channel.id).voiceticket !== 'false') {
-		const voiceticket = channel.guild.channels.cache.get(client.tickets.get(channel.id).voiceticket);
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+module.exports = async (client, channel) => {
+	// Check if channel is a ticket
+	sleep(1000);
+	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${channel.id}'`))[0];
+	if (!ticketData) return;
+	if (ticketData.voiceticket !== 'false') {
+		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket);
 		voiceticket.delete();
-		client.tickets.set(channel.id, 'false', 'voiceticket');
+		await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 	}
-	client.tickets.delete(channel.id);
+	client.delData('ticketdata', 'channelId', channel.id);
 };

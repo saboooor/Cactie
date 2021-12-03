@@ -4,10 +4,11 @@ module.exports = {
 	deferReply: true,
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket
-		if (!client.tickets.get(interaction.channel.id)) return;
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
+		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
 
 		// Check if ticket already has a voiceticket
-		if (client.tickets.get(interaction.channel.id).voiceticket && client.tickets.get(interaction.channel.id).voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
+		if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
 
 		// Check if ticket is closed
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
@@ -22,7 +23,7 @@ module.exports = {
 		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
 
 		// Create voice channel for voiceticket
-		const author = client.users.cache.get(client.tickets.get(interaction.channel.id).opener);
+		const author = client.users.cache.get(ticketData.opener);
 		const voiceticket = await interaction.guild.channels.create(`Voiceticket${client.user.username.replace('Pup', '')} ${author.username}`, {
 			type: 'GUILD_VOICE',
 			parent: parent.id,
@@ -47,7 +48,7 @@ module.exports = {
 		}).catch(error => client.logger.error(error));
 
 		// Add voiceticket to ticket database
-		client.tickets.set(interaction.channel.id, voiceticket.id, 'voiceticket');
+		await client.setData('ticketdata', 'channelId', interaction.channel.id, 'voiceticket', voiceticket.id);
 
 		// Reply with voiceticket open message
 		interaction.reply({ content: `Voiceticket created at ${voiceticket}!` });

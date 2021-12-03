@@ -7,7 +7,9 @@ module.exports = {
 	ephemeral: true,
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket
-		if (!client.tickets.get(interaction.channel.id)) return;
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
+		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 		// Check if ticket has more than 5 subtickets
 		if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
@@ -27,7 +29,7 @@ module.exports = {
 
 		// Get users and ping them all with subticket embed
 		const users = [];
-		await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+		await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const Embed = new MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Subticket Created')

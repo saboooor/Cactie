@@ -5,6 +5,11 @@ module.exports = {
 	botperms: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
+		// Check if ticket is an actual ticket
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
+		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
+
 		// Check if ticket is already opened
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already opened!' });
 
@@ -16,7 +21,7 @@ module.exports = {
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
 
 		// Add permissions for each user in the ticket
-		client.tickets.get(interaction.channel.id).users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true }); });
+		ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true }); });
 
 		// Reply with ticket open message
 		const Embed = new MessageEmbed()

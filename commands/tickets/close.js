@@ -12,8 +12,11 @@ module.exports = {
 			if (message.author.id != client.user.id) return;
 			author = user;
 		}
+		// Check if ticket is an actual ticket
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
+		if (!ticketData) return;
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-		if (!client.tickets.get(message.channel.id)) return message.reply('An error occured, please manually delete this channel.');
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) &&
 		message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
 			const messages = await message.channel.messages.fetch({ limit: 100 });
@@ -29,28 +32,25 @@ module.exports = {
 			client.logger.info(`Closed subticket #${message.channel.name}`);
 			return message.channel.delete();
 		}
-		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
-		if (client.tickets.get(message.channel.id).users.includes(author.id)) {
-			if (author.id != client.tickets.get(message.channel.id).opener) return message.reply({ content: 'You can\'t close this ticket!' });
-		}
+		if (ticketData.users.includes(author.id) && author.id != ticketData.opener) return message.reply({ content: 'You can\'t close this ticket!' });
 		message.channel.setName(message.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
 		if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
-		if (client.tickets.get(message.channel.id).voiceticket && client.tickets.get(message.channel.id).voiceticket !== 'false') {
-			const voiceticket = message.guild.channels.cache.get(client.tickets.get(message.channel.id).voiceticket);
+		if (ticketData.voiceticket !== 'false') {
+			const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
 			voiceticket.delete();
-			client.tickets.set(message.channel.id, 'false', 'voiceticket');
+			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', 'false');
 		}
-		client.tickets.set(message.channel.id, 'false', 'resolved');
-		client.tickets.get(message.channel.id).users.forEach(userid => {
+		await client.setData('ticketdata', 'channelId', message.channel.id, 'resolved', 'false');
+		ticketData.users.forEach(userid => {
 			message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false });
 		});
 		const messages = await message.channel.messages.fetch({ limit: 100 });
 		const link = await getTranscript(messages);
 		const users = [];
-		await client.tickets.get(message.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+		await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const EmbedDM = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(`Closed ${message.channel.name}`)

@@ -13,14 +13,17 @@ module.exports = {
 			author = user;
 		}
 		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
-		if (!client.tickets.get(message.channel.id) || !client.tickets.get(message.channel.id).opener) return;
+		// Check if ticket is an actual ticket
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
+		if (!ticketData) return;
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already opened!' });
 		await message.channel.setName(message.channel.name.replace('closed', 'ticket'));
 		await sleep(1000);
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
-		client.tickets.get(message.channel.id).users.forEach(userid => {
+		ticketData.users.forEach(userid => {
 			message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 		});
 		const Embed = new MessageEmbed()

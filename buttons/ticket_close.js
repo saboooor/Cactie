@@ -7,15 +7,16 @@ module.exports = {
 	deferReply: true,
 	async execute(interaction, client) {
 		// Get ticket database
-		const ticket = client.tickets.get(interaction.channel.id);
-		if (!ticket) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
+		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 		// Check if ticket is already closed
 		if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
 
 		// Check if user is ticket author
 		const author = interaction.user;
-		if (author.id != ticket.opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
+		if (author.id != ticketData.opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
 
 		// Change channel name to closed
 		interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
@@ -25,17 +26,17 @@ module.exports = {
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 
 		// Check if there's a voice ticket and delete it
-		if (ticket.voiceticket && ticket.voiceticket !== 'false') {
-			const voiceticket = interaction.guild.channels.cache.get(ticket.voiceticket);
+		if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
+			const voiceticket = interaction.guild.channels.cache.get(ticketData.voiceticket);
 			voiceticket.delete();
-			client.tickets.set(interaction.channel.id, 'false', 'voiceticket');
+			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'voiceticket', 'false');
 		}
 
 		// Reset resolved state
-		client.tickets.set(interaction.channel.id, 'false', 'resolved');
+		await client.setData('ticketdata', 'channelId', interaction.channel.id, 'resolved', 'false');
 
 		// Remove permissions for each user in the ticket
-		ticket.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
+		ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
 
 		// Get the transcript
 		const messages = await interaction.channel.messages.fetch({ limit: 100 });
@@ -44,7 +45,7 @@ module.exports = {
 
 		// Get users and dm them all with ticket close embed
 		const users = [];
-		await ticket.users.forEach(userid => users.push(client.users.cache.get(userid)));
+		await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
 		const EmbedDM = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(`Closed ${interaction.channel.name}`)

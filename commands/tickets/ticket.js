@@ -19,13 +19,11 @@ module.exports = {
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 		const role = message.guild.roles.cache.get(srvconfig.supportrole);
-		const channel = message.guild.channels.cache.find(c => c.name.toLowerCase() == `ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`);
-		if (channel) {
-			message.guild.channels.cache.get(channel.id).send({ content: `❗ **${author} Ticket already exists!**` });
-			const msg = await message.reply({ content: `You've already created a ticket at ${channel}!` });
-			await sleep(5000);
-			await msg.delete();
-			return;
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}'`))[0];
+		if (ticketData) {
+			const channel = message.guild.channels.cache.get(ticketData.channelId);
+			channel.send({ content: `❗ **${author} Ticket already exists!**` });
+			return message.reply({ content: `You've already created a ticket at ${channel}!` });
 		}
 		if (!role) return message.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
 		if (!parent) parent = { id: null };
@@ -53,10 +51,8 @@ module.exports = {
 				},
 			],
 		}).catch(error => client.logger.error(error));
-		client.tickets.set(ticket.id, author.id, 'opener');
-		client.tickets.set(ticket.id, 'false', 'resolved');
-		client.tickets.set(ticket.id, [], 'users');
-		client.tickets.push(ticket.id, author.id, 'users');
+		await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
+		await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
 		message.reply({ content: `Ticket created at ${ticket}!` });
 		client.logger.info(`Ticket created at #${ticket.name}`);
 		await sleep(1000);

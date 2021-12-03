@@ -5,6 +5,11 @@ module.exports = {
 	botperms: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
+		// Check if ticket is an actual ticket
+		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
+		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (ticketData.users) ticketData.users = ticketData.users.split(',');
+
 		// Check if ticket is still open
 		if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 
@@ -18,7 +23,7 @@ module.exports = {
 
 			// Get list of users for embed
 			const users = [];
-			await client.tickets.get(interaction.channel.id).users.forEach(userid => users.push(client.users.cache.get(userid)));
+			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
 
 			// Create embed
 			const Embed = new MessageEmbed()
@@ -35,7 +40,7 @@ module.exports = {
 		else { interaction.reply({ content: 'Deleting Ticket...' }); }
 
 		// Actually delete ticket and ticket database
-		await client.tickets.delete(interaction.channel.id);
+		client.delData('ticketdata', 'channelId', interaction.channel.id);
 		client.logger.info(`Deleted ticket #${interaction.channel.name}`);
 		await interaction.channel.delete();
 	},
