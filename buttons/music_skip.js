@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
 const { skip } = require('../config/emoji.json');
 module.exports = {
@@ -47,7 +46,5 @@ module.exports = {
 			.setTimestamp()
 			.setThumbnail(song.img);
 		await interaction.reply({ embeds: [thing] });
-		await sleep(10000);
-		interaction.deleteReply().catch((e) => { client.logger.error(e); });
 	},
 };
