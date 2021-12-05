@@ -9,31 +9,22 @@ function clean(text) {
 }
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, message) => {
-	if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.startsWith('[Pup:master]') && servers['pup'].client == true) {
+	const embed = message.embeds[0];
+	if (message.webhookId && message.channel.id == '812082273393704960' && embed) {
 		await client.manager.players.forEach(async player => {
-			const embed = message.embeds[0];
 			embed.setAuthor('The bot is updating! Sorry for the inconvenience!')
 				.setFooter('You\'ll be able to play music again in a few seconds!');
 			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
 		});
 		await message.reply({ content: 'Updating to latest commit...' });
 		await sleep(5000);
-		const server = servers['pup'];
-		const Client = new NodeactylClient(server.url, server.apikey);
-		await Client.restartServer(server.id);
-	}
-	else if (message.webhookId && message.channel.id == '812082273393704960' && message.embeds[0].title.startsWith('[Pup:dev]') && servers['pup dev'].client == true) {
-		await client.manager.players.forEach(async player => {
-			const embed = message.embeds[0];
-			embed.setAuthor('The bot is updating! Sorry for the inconvenience!')
-				.setFooter('You\'ll be able to play music again in a few seconds!');
-			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
-		});
-		await message.reply({ content: 'Updating to latest commit...' });
-		await sleep(5000);
-		const server = servers['pup dev'];
-		const Client = new NodeactylClient(server.url, server.apikey);
-		await Client.restartServer(server.id);
+		let server = null;
+		if (embed.title.startsWith('[Pup:master]') && servers['pup'].client) server = servers['pup'];
+		else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
+		if (server) {
+			const Client = new NodeactylClient(server.url, server.apikey);
+			await Client.restartServer(server.id);
+		}
 	}
 	if (message.author.bot) return;
 	if (message.channel.type == 'DM') {
@@ -108,6 +99,7 @@ module.exports = async (client, message) => {
 	}
 
 	message.channel.sendTyping();
+	await sleep(500);
 	const { cooldowns } = client;
 
 	if (!cooldowns.has(command.name)) {
@@ -161,24 +153,24 @@ module.exports = async (client, message) => {
 		return;
 	}
 
-	const embed = new MessageEmbed()
+	const errEmbed = new MessageEmbed()
 		.setColor('RED');
 
 	const player = client.manager.get(message.guild.id);
 
 	if (command.player && (!player || !player.queue.current)) {
 		embed.setDescription('There is no music playing.');
-		return message.reply({ embeds: [embed] });
+		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.inVoiceChannel && !message.member.voice.channel) {
 		embed.setDescription('You must be in a voice channel!');
-		return message.reply({ embeds: [embed] });
+		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
 		embed.setDescription(`You must be in the same channel as ${client.user}!`);
-		return message.reply({ embeds: [embed] });
+		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.djRole && srvconfig.djrole != 'false') {
@@ -186,7 +178,7 @@ module.exports = async (client, message) => {
 		if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
 		if (!message.member.roles.cache.has(srvconfig.djrole)) {
 			embed.setDescription(`You need the ${role} role to do that!`);
-			return message.reply({ embeds: [embed] });
+			return message.reply({ embeds: [errEmbed] });
 		}
 	}
 
