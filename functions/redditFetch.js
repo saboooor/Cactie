@@ -16,7 +16,7 @@ module.exports = async (subreddit, message, client) => {
 	if (pong[0].data.children[0].data.selftext) return require('./redditFetch.js')(subreddit, message, client);
 	client.logger.info(`Image URL: ${pong[0].data.children[0].data.url}`);
 	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditFetch.js')(subreddit, message, client);
-	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞');
+	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
 	const Embed = new MessageEmbed()
 		.setColor(rgb2hex(await getColor(pong[0].data.children[0].data.url)))
 		.setAuthor(`u/${pong[0].data.children[0].data.author}`)

@@ -124,7 +124,7 @@ module.exports = async (client, message) => {
 		const messages = ['Do I look like Usain Bolt to u?', 'BRUH IM JUST A DOG SLOW DOWN', 'can u not', 'leave me alone ;-;', 'my name is pup, not sanic >:(', 'why do you do this to me'];
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			if ((expirationTime - now) < 1200) return message.react('⏱️');
+			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
 			const Embed = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(messages[random])
