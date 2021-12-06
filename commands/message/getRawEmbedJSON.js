@@ -1,6 +1,7 @@
 const { createPaste } = require('hastebin');
 module.exports = {
 	name: 'Get Raw Embed JSON',
+	ephemeral: true,
 	type: 3,
 	async execute(interaction) {
 		const embed = interaction.message.embeds[0];
