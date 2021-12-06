@@ -159,17 +159,17 @@ module.exports = async (client, message) => {
 	const player = client.manager.get(message.guild.id);
 
 	if (command.player && (!player || !player.queue.current)) {
-		embed.setDescription('There is no music playing.');
+		errEmbed.setDescription('There is no music playing.');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.inVoiceChannel && !message.member.voice.channel) {
-		embed.setDescription('You must be in a voice channel!');
+		errEmbed.setDescription('You must be in a voice channel!');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
-		embed.setDescription(`You must be in the same channel as ${client.user}!`);
+		errEmbed.setDescription(`You must be in the same channel as ${client.user}!`);
 		return message.reply({ embeds: [errEmbed] });
 	}
 
@@ -177,7 +177,7 @@ module.exports = async (client, message) => {
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
 		if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
 		if (!message.member.roles.cache.has(srvconfig.djrole)) {
-			embed.setDescription(`You need the ${role} role to do that!`);
+			errEmbed.setDescription(`You need the ${role} role to do that!`);
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}
