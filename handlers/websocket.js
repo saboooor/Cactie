@@ -68,6 +68,26 @@ module.exports = client => {
 					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) player.stop();
 				});
 			}
+			else if (`${data}`.startsWith('skip to:')) {
+				const userid = `${data}`.replace('skip to: ', '').split(' / ')[0];
+				const index = `${data}`.replace('skip to: ', '').split(' / ')[1];
+				client.manager.players.forEach(player => {
+					const guild = client.guilds.cache.get(player.guild);
+					const member = guild.members.cache.get(userid);
+					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) {
+						player.queue.remove(0, index);
+						player.stop();
+					}
+				});
+			}
+			else if (`${data}`.startsWith('shuffle queue:')) {
+				const userid = `${data}`.replace('shuffle queue: ', '').split(' / ')[0];
+				client.manager.players.forEach(player => {
+					const guild = client.guilds.cache.get(player.guild);
+					const member = guild.members.cache.get(userid);
+					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) player.queue.shuffle();
+				});
+			}
 		});
 	});
 };
