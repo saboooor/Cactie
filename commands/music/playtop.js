@@ -83,7 +83,7 @@ module.exports = {
 			songs.forEach(async song => {
 				song.requester = message.member.user;
 				if (!song.img) {
-					const Searched = await player.search(song.title);
+					const Searched = await player.search(song.title + song.artist ? ` ${song.artist}` : '');
 					const a = Searched.tracks[0];
 					if (a && a.displayThumbnail) {
 						song.img = a.displayThumbnail('hqdefault');
@@ -92,7 +92,7 @@ module.exports = {
 				}
 				else if (song.img) { song.color = rgb2hex(await getColor(song.img)); }
 				else { song.color = Math.round(Math.random() * 16777215); }
-				if (song.author) song.title = `${song.title} - ${song.author}`;
+				if (song.author) song.title = `${song.title}\n${song.author}`;
 			});
 			songs.reverse();
 			player.queue.reverse();
