@@ -23,7 +23,7 @@ module.exports = {
 			if (time > position) {
 				player.seek(time);
 				const thing = new MessageEmbed()
-					.setDescription(`${forward} **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('07:12:56', 'LIVE')}\``)
+					.setDescription(`${forward} **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				return message.reply({ embeds: [thing] });
@@ -31,7 +31,7 @@ module.exports = {
 			else {
 				player.seek(time);
 				const thing = new MessageEmbed()
-					.setDescription(`${rewind} **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('07:12:56', 'LIVE')}\``)
+					.setDescription(`${rewind} **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				return message.reply({ embeds: [thing] });
@@ -40,7 +40,7 @@ module.exports = {
 		else {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${convertTime(duration).replace('07:12:56', 'LIVE')}\``);
+				.setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			return message.reply({ embeds: [thing] });
 		}
 	},

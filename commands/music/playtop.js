@@ -75,7 +75,7 @@ module.exports = {
 				}
 				else {
 					if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
-					embed.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('07:12:56', 'LIVE')}]\` [${message.member.user}]`)
+					embed.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
 						.setThumbnail(track.img);
 					songs.push(Searched.tracks[0]);
 				}
