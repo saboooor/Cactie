@@ -74,8 +74,8 @@ module.exports = client => {
 				client.manager.players.forEach(player => {
 					const guild = client.guilds.cache.get(player.guild);
 					const member = guild.members.cache.get(userid);
-					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) {
-						player.queue.remove(0, index).catch(e => client.logger.error(e));
+					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel && index <= player.queue.length) {
+						player.queue.remove(0, index);
 						player.stop();
 					}
 				});
