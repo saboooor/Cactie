@@ -83,7 +83,7 @@ module.exports = {
 			songs.forEach(async song => {
 				song.requester = message.member.user;
 				if (!song.img) {
-					const Searched = await player.search(song.title + song.artist ? ` ${song.artist}` : '');
+					const Searched = await player.search(song.title + song.author ? ` ${song.author}` : '');
 					const a = Searched.tracks[0];
 					if (a && a.displayThumbnail) {
 						song.img = a.displayThumbnail('hqdefault');
