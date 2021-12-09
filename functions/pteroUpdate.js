@@ -18,5 +18,5 @@ module.exports = async function pteroUpdate(interaction, Client) {
 	if (usages.resources.memory_bytes) Embed.addField('**RAM Usage:**', `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, true);
 	if (usages.resources.network_tx_bytes) Embed.addField('**Network Sent:**', `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, true);
 	if (usages.resources.network_rx_bytes) Embed.addField('**Network Recieved:**', `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, true);
-	interaction.update({ embeds: [Embed], components: interaction.message.components });
+	interaction.reply({ embeds: [Embed], components: interaction.message.components });
 };
