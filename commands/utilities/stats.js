@@ -78,7 +78,7 @@ module.exports = {
 			}
 			if (!pong.debug.query) Embed.setFooter('Query disabled! If you want more info, contact the owner to enable query.');
 		}
-		Embed.setURL(`https://${args[0]}.pup`).setTimestamp();
+		Embed.setURL(`https://${args[0].replace(':', 'colon')}.pup`).setTimestamp();
 		const row = new MessageActionRow().addComponents(
 			new MessageButton()
 				.setCustomId('stats_refresh')
