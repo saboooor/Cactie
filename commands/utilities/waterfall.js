@@ -24,6 +24,7 @@ module.exports = {
 		// initial embed creation
 		const Embed = new MessageEmbed()
 			.setColor(16777215)
+			.setURL(`https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}`)
 			.setTitle(`Waterfall ${h.version} build ${h.build}`)
 			.setThumbnail('https://avatars.githubusercontent.com/u/7608950?s=200&v=4')
 			.setDescription(`${h.changes.length} commit(s)`)
