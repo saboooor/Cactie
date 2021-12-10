@@ -3,8 +3,9 @@ const { MessageEmbed } = require('discord.js');
 const { skip } = require('../../config/emoji.json');
 module.exports = {
 	name: 'skip',
-	aliases: ['s'],
+	aliases: ['s', 'skipto'],
 	description: 'Skip the currently playing song',
+	usage: '[Index of song in queue]',
 	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
@@ -14,6 +15,27 @@ module.exports = {
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		if (!player) return message.reply('The bot is not playing anything!');
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		if (args[0]) {
+			const position = Number(args[0]);
+			if (position < 0 || position > player.queue.size) {
+				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+				const errEmbed = new MessageEmbed()
+					.setColor('RED')
+					.setDescription(`Usage: ${srvconfig.prefix}skip [Number of song in queue]`);
+				return message.reply({ embeds: [errEmbed] });
+			}
+			else if (position) {
+				player.queue.remove(0, position - 1);
+				player.stop();
+				const thing = new MessageEmbed()
+					.setDescription(`${jump} Skipped **${position}** Songs`)
+					.setColor(Math.round(Math.random() * 16777215))
+					.setTimestamp();
+				const msg = await message.reply({ embeds: [thing] });
+				await sleep(10000);
+				return msg.delete();
+			}
+		}
 		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 		if (!player.skipAmount) player.skipAmount = [];
 		let alr = false;
