@@ -1,4 +1,5 @@
-module.exports = async (client, player) => {
+module.exports = async (client, player, track) => {
+	player.queue.history.push(track);
 	const autoplay = player.get('autoplay');
 	if (autoplay === true) {
 		const requester = player.get('requester');
