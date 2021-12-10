@@ -10,10 +10,18 @@ module.exports = async (client, reaction, user) => {
 		reaction.users.remove(user.id);
 		client.commands.get('nsfw').execute(message, user, client, reaction);
 	}
+	if (client.user.id == '765287593762881616' && message.channel.id == '918728935687221248' && reaction.emoji.name == '🗨️') {
+		reaction.users.remove(user.id);
+		client.commands.get('quotes').execute(message, user, client, reaction);
+	}
+	if (client.user.id == '765287593762881616' && message.channel.id == '865522706506186782' && reaction.emoji.name == '🗨️') {
+		reaction.users.remove(user.id);
+		client.commands.get('pluginupdates').execute(message, user, client, reaction);
+	}
 	if (reaction.emoji.name == '🎫') {
 		if (message.embeds[0].title !== 'Need help? No problem!') return;
 		reaction.users.remove(user.id);
-		client.commands.get('nsfw').execute(message, user, client, reaction);
+		client.commands.get('ticket').execute(message, user, client, reaction);
 	}
 	else if (reaction.emoji.name == '⛔') {
 		client.commands.get('delete').execute(message, user, client, reaction);
