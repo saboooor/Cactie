@@ -26,12 +26,11 @@ module.exports = {
 		player.prevAmount = null;
 		player.queue.reverse();
 		player.queue.add(player.queue.current);
-		player.queue.reverse();
 		player.queue.history.reverse();
-		console.log(player.queue.history);
 		player.queue.add(player.queue.history[1]);
 		player.queue.history.pop();
 		player.queue.history.reverse();
+		player.queue.reverse();
 		player.stop();
 		const song = player.queue.current;
 		const thing = new MessageEmbed()
