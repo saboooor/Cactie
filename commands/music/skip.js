@@ -16,7 +16,7 @@ module.exports = {
 		if (!player) return message.reply('The bot is not playing anything!');
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const errEmbed = new MessageEmbed()
-		.setColor('RED');
+			.setColor('RED');
 		if (args[0]) {
 			if (srvconfig.djrole != 'false') {
 				const role = message.guild.roles.cache.get(srvconfig.djrole);
@@ -40,7 +40,7 @@ module.exports = {
 					.setTimestamp();
 				const msg = await message.reply({ embeds: [thing] });
 				await sleep(10000);
-				return msg.delete();
+				return message.commandName ? message.deleteReply() : msg.edit({ content: '**Skipped**', embeds: [] });
 			}
 		}
 		const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);

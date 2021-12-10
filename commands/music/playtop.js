@@ -12,18 +12,13 @@ module.exports = {
 	args: true,
 	guildOnly: true,
 	inVoiceChannel: true,
+	sameVoiceChanne: true,
 	djRole: true,
 	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		const { channel } = message.member.voice;
 		let player = client.manager.get(message.guild.id);
-		if (player && message.member.voice.channel !== message.guild.me.voice.channel) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription(`You must be in the same channel as ${client.user}`);
-			return message.reply({ embeds: [thing] });
-		}
-		else if (!player) {
+		if (!player) {
 			player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: channel.id,
