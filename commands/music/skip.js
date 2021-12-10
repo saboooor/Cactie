@@ -15,13 +15,20 @@ module.exports = {
 		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		if (!player) return message.reply('The bot is not playing anything!');
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		const errEmbed = new MessageEmbed()
+		.setColor('RED');
 		if (args[0]) {
+			if (srvconfig.djrole != 'false') {
+				const role = message.guild.roles.cache.get(srvconfig.djrole);
+				if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
+				if (!message.member.roles.cache.has(srvconfig.djrole)) {
+					errEmbed.setDescription(`You need the ${role} role to do that!`);
+					return message.reply({ embeds: [errEmbed] });
+				}		
+			}
 			const position = Number(args[0]);
 			if (position < 0 || position > player.queue.size) {
-				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-				const errEmbed = new MessageEmbed()
-					.setColor('RED')
-					.setDescription(`Usage: ${srvconfig.prefix}skip [Number of song in queue]`);
+				errEmbed.setDescription(`Usage: ${srvconfig.prefix}skip [Number of song in queue]`);
 				return message.reply({ embeds: [errEmbed] });
 			}
 			else if (position) {
