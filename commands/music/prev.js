@@ -27,7 +27,7 @@ module.exports = {
 		player.queue.reverse();
 		player.queue.add(player.queue.current);
 		player.queue.history.reverse();
-		player.queue.add(player.queue.history[1]);
+		player.queue.add(player.queue.history[0]);
 		player.queue.history.pop();
 		player.queue.history.reverse();
 		player.queue.reverse();
