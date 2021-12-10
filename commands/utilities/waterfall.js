@@ -14,8 +14,10 @@ module.exports = {
 		// fetch the latest build for mc version specified or latest
 		const d = await fetch(`https://papermc.io/api/v2/projects/waterfall/versions/${c}`);
 		const e = await d.json();
+		// check if error
+		if (e.error) return message.reply(e.error);
 		const build = e.builds[e.builds.length - 1];
-		// fetc the build specified
+		// fetch the build specified
 		const f = args[1] ? args[1] : build;
 		const g = await fetch(`https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}`);
 		const h = await g.json();
