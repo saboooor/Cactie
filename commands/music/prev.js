@@ -32,6 +32,7 @@ module.exports = {
 		player.queue.history.pop();
 		player.queue.history.reverse();
 		player.stop();
+		const song = player.queue.current;
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Previous song**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
