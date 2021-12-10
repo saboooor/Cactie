@@ -28,7 +28,8 @@ module.exports = {
 		player.queue.add(player.queue.current);
 		player.queue.reverse();
 		player.queue.history.reverse();
-		player.queue.add(player.queue.history[0]);
+		console.log(player.queue.history);
+		player.queue.add(player.queue.history[1]);
 		player.queue.history.pop();
 		player.queue.history.reverse();
 		player.stop();
