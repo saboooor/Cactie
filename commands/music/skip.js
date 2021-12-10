@@ -24,7 +24,7 @@ module.exports = {
 				if (!message.member.roles.cache.has(srvconfig.djrole)) {
 					errEmbed.setDescription(`You need the ${role} role to do that!`);
 					return message.reply({ embeds: [errEmbed] });
-				}		
+				}
 			}
 			const position = Number(args[0]);
 			if (position < 0 || position > player.queue.size) {
