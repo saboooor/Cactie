@@ -10,10 +10,6 @@ module.exports = {
 	djRole: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		const autoplay = player.get('autoplay');
-		if (autoplay === true) {
-			player.set('autoplay', false);
-		}
 		player.stop();
 		player.queue.clear();
 		const thing = new MessageEmbed()

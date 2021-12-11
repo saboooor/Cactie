@@ -51,16 +51,8 @@ module.exports = {
 		player.skipAmount.push(message.member.id);
 		if (player.skipAmount.length < requiredAmount) return message.reply(`**Skipping?** \`${player.skipAmount.length} / ${requiredAmount}\` Use \`${srvconfig.prefix}forceskip\` to force skip`);
 		player.skipAmount = null;
-		const autoplay = player.get('autoplay');
 		const song = player.queue.current;
-		if (autoplay === false) {
-			player.stop();
-		}
-		else {
-			player.stop();
-			player.queue.clear();
-			player.set('autoplay', false);
-		}
+		player.stop();
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
