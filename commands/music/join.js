@@ -9,7 +9,7 @@ module.exports = {
 	inVoiceChannel: true,
 	async execute(message, args, client) {
 		const { channel } = message.member.voice;
-		if(!message.guild.me.voice.channel) {
+		if (!message.guild.me.voice.channel) {
 			const player = client.manager.create({
 				guild: message.guild.id,
 				voiceChannel: channel.id,
@@ -21,12 +21,6 @@ module.exports = {
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`${join} **Joined VC**\nJoined ${channel} and bound to ${message.channel}`);
-			return message.reply({ embeds: [thing] });
-		}
-		else if (message.guild.me.voice.channel !== channel) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription(`You must be in the same channel as ${client.user}`);
 			return message.reply({ embeds: [thing] });
 		}
 	},

@@ -29,7 +29,7 @@ module.exports = {
 			.setColor(song.color)
 			.setThumbnail(song.img)
 			.setTimestamp()
-			.setDescription(`${loop} **${trackRepeat} Looping**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
+			.setDescription(`${loop} **${trackRepeat} Looping the track**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
 		return message.reply({ embeds: [thing] });
 	},
 };
