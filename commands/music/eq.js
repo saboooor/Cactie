@@ -9,13 +9,13 @@ module.exports = {
 	args: true,
 	guildOnly: true,
 	player: true,
+	serverUnmute: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
 	options: require('../options/filter.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();

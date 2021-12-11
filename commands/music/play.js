@@ -10,6 +10,7 @@ module.exports = {
 	usage: '<Song URL/Name/Playlist URL>',
 	aliases: ['p'],
 	args: true,
+	serverUnmute: true,
 	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChanne: true,
@@ -27,7 +28,6 @@ module.exports = {
 			});
 		}
 		if (player.state != 'CONNECTED') player.connect();
-		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		const search = args.join(' '); const songs = [];
 		const msg = await message.reply(`🔎 Searching for \`${search}\`...`);
 		const slash = message.type && message.type == 'APPLICATION_COMMAND';

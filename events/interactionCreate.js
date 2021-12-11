@@ -148,6 +148,11 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		if (command.serverUnmute && interaction.guild.me.voice.serverMute) {
+			embed.setDescription('I\'m server muted!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
 		if (command.inVoiceChannel && !interaction.member.voice.channel) {
 			embed.setDescription('You must be in a voice channel!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });

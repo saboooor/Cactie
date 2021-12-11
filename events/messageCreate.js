@@ -163,6 +163,11 @@ module.exports = async (client, message) => {
 		return message.reply({ embeds: [errEmbed] });
 	}
 
+	if (command.serverUnmute && message.guild.me.voice.serverMute) {
+		errEmbed.setDescription('I\'m server muted!');
+		return message.reply({ embeds: [errEmbed] });
+	}
+
 	if (command.inVoiceChannel && !message.member.voice.channel) {
 		errEmbed.setDescription('You must be in a voice channel!');
 		return message.reply({ embeds: [errEmbed] });

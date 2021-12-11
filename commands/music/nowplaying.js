@@ -7,13 +7,13 @@ module.exports = {
 	description: 'Show now playing song',
 	aliases: ['playing', 'np'],
 	guildOnly: true,
+	serverUnmute: true,
 	player: true,
 	async execute(message, args, client) {
 		let player = client.manager.get(message.guild.id);
 		let song = player.queue.current;
 		let total = song.duration;
 		let current = player.position;
-		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		let embed = new MessageEmbed()
 			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
 			.setThumbnail(song.img)

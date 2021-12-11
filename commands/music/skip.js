@@ -7,12 +7,12 @@ module.exports = {
 	description: 'Skip the currently playing song',
 	usage: '[Index of song in queue]',
 	guildOnly: true,
+	serverUnmute: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		if (message.guild.me.voice.serverMute) return message.reply({ content: 'I\'m server muted!' });
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const errEmbed = new MessageEmbed()
 			.setColor('RED');
