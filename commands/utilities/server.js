@@ -12,7 +12,8 @@ module.exports = {
 		const color = rgb2hex(await getColor(message.guild.iconURL().replace('webp', 'png')));
 		const Embed = new MessageEmbed()
 			.setColor(color)
-			.setAuthor(message.guild.name, message.guild.iconURL({ dynamic : true }))
+			.setTitle(message.guild.name)
+			.setThumbnail(message.guild.iconURL({ dynamic : true }))
 			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL({ dynamic : true }))
 			.setTimestamp();
 		if (message.guild.description) Embed.addField('Description', message.guild.description);
