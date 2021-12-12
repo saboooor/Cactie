@@ -29,7 +29,7 @@ module.exports = async (client) => {
 	setInterval(async () => {
 		const activities = [
 			['PLAYING', 'with you ;)'],
-			['PLAYING', '-help'],
+			['PLAYING', '/help'],
 			['WATCHING', 'pup.smhsmh.club'],
 			['COMPETING', 'taking over the world'],
 			['COMPETING', `${client.guilds.cache.size} Servers`],
