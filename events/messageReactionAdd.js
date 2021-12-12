@@ -1,46 +1,60 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, reaction, user) => {
 	if (user.bot) return;
 	const message = await reaction.message.fetch();
 	if (message.channel.type == 'DM') return;
-	if (client.user.id == '765287593762881616' && (message.channel.id == '717262907712471080' || message.channel.id == '865522706506186782' || message.channel.id == '851385490821087252') && reaction.emoji.name == '❗') {
-		reaction.users.remove(user.id);
-		client.commands.get('alerts').execute(message, user, client, reaction);
+	let emojiId = reaction.emoji.id;
+	if (!emojiId) emojiId = reaction.emoji.name;
+	const reactionrole = (await client.query(`SELECT * FROM reactionroles WHERE messageId = '${message.id}' AND emojiId = '${emojiId}'`))[0];
+	if (reactionrole) {
+		const role = message.guild.roles.cache.get(reactionrole.roleId);
+		if (!role) return message.reply({ content: 'Error: The role can\'t be found!' });
+		const member = await message.guild.members.cache.find(m => m.id === user.id);
+		let msg = null;
+		if (reactionrole.type == 'toggle') {
+			reaction.users.remove(user.id);
+			if (!member.roles.cache.has(role.id)) {
+				await member.roles.add(role);
+				msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${user}**` });
+				client.logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
+			}
+			else {
+				await member.roles.remove(role);
+				msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
+				client.logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
+			}
+		}
+		else {
+			await member.roles.add(role);
+			msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${user}**` });
+			client.logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
+		}
+		await sleep(1000);
+		await msg.delete();
 	}
-	if (client.user.id == '765287593762881616' && message.channel.id == '851385490821087252' && reaction.emoji.name == '🚫') {
-		reaction.users.remove(user.id);
-		client.commands.get('nsfw').execute(message, user, client, reaction);
-	}
-	if (client.user.id == '765287593762881616' && message.channel.id == '918728935687221248' && reaction.emoji.name == '🗨️') {
-		reaction.users.remove(user.id);
-		client.commands.get('quotes').execute(message, user, client, reaction);
-	}
-	if (client.user.id == '765287593762881616' && message.channel.id == '865522706506186782' && reaction.emoji.name == '🗨️') {
-		reaction.users.remove(user.id);
-		client.commands.get('pluginupdates').execute(message, user, client, reaction);
-	}
-	if (reaction.emoji.name == '🎫') {
+	if (emojiId == '🎫') {
 		if (message.embeds[0].title !== 'Need help? No problem!') return;
 		reaction.users.remove(user.id);
 		client.commands.get('ticket').execute(message, user, client, reaction);
 	}
-	else if (reaction.emoji.name == '⛔') {
+	else if (emojiId == '⛔') {
 		client.commands.get('delete').execute(message, user, client, reaction);
 	}
-	else if (reaction.emoji.name == '🔓') {
+	else if (emojiId == '🔓') {
 		reaction.users.remove(user.id);
 		client.commands.get('open').execute(message, user, client, reaction);
 	}
-	else if (reaction.emoji.name == '🔒') {
+	else if (emojiId == '🔒') {
 		if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
 		reaction.users.remove(user.id);
 		client.commands.get('close').execute(message, user, client, reaction);
 	}
-	else if (reaction.emoji.name == '📜') {
+	else if (emojiId == '📜') {
 		if (message.embeds[0].title !== 'Ticket Created') return;
 		reaction.users.remove(user.id);
 		client.commands.get('subticket').execute(message, user, client, reaction);
 	}
-	else if (reaction.emoji.name == '🔊') {
+	else if (emojiId == '🔊') {
 		if (message.embeds[0].title !== 'Ticket Created') return;
 		reaction.users.remove(user.id);
 		client.commands.get('voiceticket').execute(message, user, client, reaction);

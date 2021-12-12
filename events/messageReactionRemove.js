@@ -1,0 +1,19 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+module.exports = async (client, reaction, user) => {
+	if (user.bot) return;
+	const message = await reaction.message.fetch();
+	if (message.channel.type == 'DM') return;
+	let emojiId = reaction.emoji.id;
+	if (!emojiId) emojiId = reaction.emoji.name;
+	const reactionrole = (await client.query(`SELECT * FROM reactionroles WHERE messageId = '${message.id}' AND emojiId = '${emojiId}'`))[0];
+	if (reactionrole && reactionrole.type != 'toggle') {
+		const role = message.guild.roles.cache.get(reactionrole.roleId);
+		if (!role) return message.reply({ content: 'Error: The role can\'t be found!' });
+		const member = await message.guild.members.cache.find(m => m.id === user.id);
+		await member.roles.remove(role);
+		const msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
+		client.logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
+		await sleep(1000);
+		await msg.delete();
+	}
+};
