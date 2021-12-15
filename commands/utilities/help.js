@@ -26,7 +26,7 @@ module.exports = {
 			require('../../help/music.js')(prefix, Embed);
 		}
 		else if (arg == 'nsfw') {
-			if (!message.channel.nsfw) return message.react('🔞');
+			if (!message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
 			require('../../help/nsfw.js')(prefix, Embed);
 		}
 		else if (arg == 'tickets') {
