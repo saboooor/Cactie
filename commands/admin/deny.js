@@ -15,6 +15,9 @@ module.exports = {
 		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
 		const fetchedMsg = approving.first();
 
+		// Check if the message exists
+		if (!fetchedMsg) return message.reply({ content: 'Could not find the message, try doing the command in the channel the suggestion was sent in?' });
+
 		// Check if message was sent by the bot
 		if (fetchedMsg.author != client.user) return;
 
