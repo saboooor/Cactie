@@ -11,7 +11,7 @@ module.exports = {
 		const i = Math.floor(Math.random() * ball.length - 1);
 		const embed = new MessageEmbed()
 			.setTitle(`🎱 ${args.join()}?`)
-			.setDescription(ball[i]);
+			.setDescription(`${ball[i]}`);
 		message.reply({ embeds: [embed] });
 	},
 };
