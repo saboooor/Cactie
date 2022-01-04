@@ -43,7 +43,7 @@ module.exports = {
 			}
 			else if (Searched.loadType.startsWith('TRACK')) {
 				embed.setDescription(`${playlist} **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
-				songs.push(Searched.tracks[0]);
+				songs.push(TrackUtils.build(track));
 			}
 			else {
 				embed.setColor('RED').setDescription('No results found.');
