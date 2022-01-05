@@ -211,9 +211,9 @@
         "description": "Toggles the mute command",
         "options": [
             {
-                "type": "ROLE",
-                "name": "role",
-                "description": "The mute role",
+                "type": "STRING",
+                "name": "value",
+                "description": "The mute role Id, 'false', or 'timeout'",
                 "required": true
             }
         ]

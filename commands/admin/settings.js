@@ -50,11 +50,11 @@ module.exports = {
 			// Ticketmention can only be here, everyone, or a valid role
 			if ((prop == 'ticketmention') && value != 'everyone' && value != 'here' && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'This setting must be either `here`, `everyone`, or a valid role Id!' });
 			// Set mutecmd's permissions
-			if (prop == 'mutecmd') {
+			if (prop == 'mutecmd' && value != 'timeout' && value != 'false') {
 				// Check if valid role if not false
 				const role = message.guild.roles.cache.get(value);
-				if (!role && value != 'false') { return message.reply('That is not a valid role Id!'); }
-				else if (value != 'false') {
+				if (!role) { return message.reply('That is not a valid role Id!'); }
+				else {
 					message.guild.channels.cache.forEach(channel => {
 						channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
 							.catch(e => { client.logger.error(e); });
