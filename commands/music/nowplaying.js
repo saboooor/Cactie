@@ -9,6 +9,7 @@ module.exports = {
 	guildOnly: true,
 	serverUnmute: true,
 	player: true,
+	ephemeral: true,
 	async execute(message, args, client) {
 		let player = client.manager.get(message.guild.id);
 		let song = player.queue.current;
@@ -20,6 +21,7 @@ module.exports = {
 			.setColor(song.color);
 		const msg = await message.channel.send({ embeds: [embed] });
 		player.set('nowplayingMSG', msg);
+		if (message.commandName) message.reply('Message sent.');
 		const interval = setInterval(() => {
 			player = client.manager.get(message.guild.id);
 			song = player.queue.current;
