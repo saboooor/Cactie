@@ -15,7 +15,7 @@ module.exports = {
 		// Get mute role and check if role is valid
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
-		if (!role) return message.reply('This command is disabled!');
+		if (!role && srvconfig.mutecmd != 'timeout') return message.reply('This command is disabled!');
 
 		// Get user and check if user is valid
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
@@ -27,11 +27,12 @@ module.exports = {
 		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 
 		// Check if user is muted
-		if (member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
+		if (role && member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
 
 		// Check if duration is set and if it's more than a year
 		const time = ms(args[1] ? args[1] : 'perm');
-		if (time > 31536000000) return message.reply({ content: 'You cannot mute someone for more than 1 year!' });
+		if (role && time > 31536000000) return message.reply({ content: 'You cannot mute someone for more than 1 year!' });
+		else if (time > 2592000000) return message.reply({ content: 'You cannot mute someone for more than 30 days with the timeout feature turned on!' });
 
 		// Create embed and check if duration / reason are set and do stuff
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
@@ -46,7 +47,7 @@ module.exports = {
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
 
 			// Set member data for unmute time
-			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
+			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
 		}
 		else if (!isNaN(time) && args[1]) {
 			// Set embed title and send mute message to user
@@ -59,9 +60,12 @@ module.exports = {
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
 
 			// Set member data for unmute time
-			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
+			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
 		}
 		else if (args[1]) {
+			// Timeout feature can't mute someone forever
+			if (srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
+
 			// Set embed title and send mute message to user
 			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}, forever`);
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
@@ -72,6 +76,9 @@ module.exports = {
 			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
 		}
 		else {
+			// Timeout feature can't mute someone forever
+			if (srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
+
 			// Set embed title and send mute message to user
 			Embed.setTitle(`Muted ${user.tag} forever.`);
 			await user.send({ content: `**You've been muted on ${message.guild.name} forever.**` })
@@ -83,7 +90,8 @@ module.exports = {
 		}
 
 		// Actually mute the dude (add role)
-		await member.roles.add(role);
+		if (role) await member.roles.add(role);
+		else await member.timeout(time, `Muted by ${message.member.user.tag} for ${args.slice(1).join(' ')}`);
 
 		// Reply to command
 		message.reply({ embeds: [Embed] });

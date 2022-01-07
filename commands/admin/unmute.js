@@ -14,18 +14,22 @@ module.exports = {
 		// Get settings and check if mutecmd is enabled
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
-		if (!role) return message.reply('This command is disabled!');
+		if (!role && srvconfig.mutecmd != 'timeout') return message.reply('This command is disabled!');
 
 		// Get user and check if user is valid
 		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });
 
-		// Get member and role and check if member doesn't have the role
+		// Get member and author and check if role is lower than member's role
 		const member = message.guild.members.cache.get(user.id);
-		if (!member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
+		const author = message.member;
+		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
+
+		// Check if user is unmuted
+		if (role && !member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
 
 		// Reset the mute timer
-		await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', 0);
+		if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', 0);
 
 		// Send unmute message to user
 		await user.send({ content: '**You\'ve been unmuted**' })
@@ -34,8 +38,9 @@ module.exports = {
 				message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
 			});
 
-		// Actually get rid of the mute role
-		await member.roles.remove(role);
+		// Actually get rid of the mute role or untimeout
+		if (role) await member.roles.remove(role);
+		else await member.timeout(0);
 
 		// Create embed with color and title
 		const Embed = new MessageEmbed()
