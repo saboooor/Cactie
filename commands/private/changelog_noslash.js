@@ -12,7 +12,7 @@ module.exports = {
 		const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].short} (${servers[i].name})`; });
 		const server = servers.find(srv => args[0].toLowerCase() == srv.short);
 		const Embed = new MessageEmbed()
-			.setAuthor('Changelog', 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png')
+			.setAuthor({ name: 'Changelog', iconURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png' })
 			.setFooter({ text: `By ${message.author.username}`, iconURL: message.author.avatarURL({ dynamic : true }) });
 		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
 		if (!client.guilds.cache.get(server.guildid).members.cache.get(message.member.id) || !client.guilds.cache.get(server.guildid).members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });

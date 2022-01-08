@@ -51,7 +51,7 @@ module.exports = {
 		member.user = await member.user.fetch();
 		const Embed = new MessageEmbed()
 			.setColor(member.user.accentColor)
-			.setAuthor(`${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null)
+			.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null })
 			.setThumbnail(member.avatarURL() ? member.avatarURL({ dynamic : true }) : member.user.avatarURL({ dynamic : true }))
 			.setDescription(`${member.user}`)
 			.addField('Status', member.presence ? member.presence.status : 'offline')

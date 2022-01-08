@@ -19,7 +19,7 @@ module.exports = async (subreddit, message, client) => {
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
 	const Embed = new MessageEmbed()
 		.setColor(rgb2hex(await getColor(pong[0].data.children[0].data.url)))
-		.setAuthor(`u/${pong[0].data.children[0].data.author}`)
+		.setAuthor({ name: `u/${pong[0].data.children[0].data.author}` })
 		.setTitle(`${pong[0].data.children[0].data.title} (${pong[0].data.children[0].data.ups} Upvotes)`)
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
 		.setImage(pong[0].data.children[0].data.url)

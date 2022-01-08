@@ -17,7 +17,7 @@ module.exports = async (client, message) => {
 		if (server && !server.client) return;
 		if (!server) return;
 		await client.manager.players.forEach(async player => {
-			embed.setAuthor('Pup is updating and will restart in 5sec! Sorry for the inconvenience!')
+			embed.setAuthor({ name: 'Pup is updating and will restart in 5sec! Sorry for the inconvenience!' })
 				.setFooter({ text: 'You\'ll be able to play music again in about 10sec!' });
 			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
 		});
@@ -71,7 +71,7 @@ module.exports = async (client, message) => {
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
-			.setAuthor(message.member.displayName, message.member.user.avatarURL({ dynamic : true }))
+			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 			.setDescription(link)
 			.setFooter({ text: 'Next time please use a paste service' });
 		message.channel.send({ embeds: [Embed] });
@@ -195,7 +195,7 @@ module.exports = async (client, message) => {
 		const interactionFailed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
-			.setAuthor(message.author.tag, message.author.avatarURL({ dynamic : true }))
+			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL({ dynamic : true }) })
 			.addField('**Type:**', 'Dash')
 			.addField('**Guild:**', message.guild.name)
 			.addField('**Channel:**', message.channel.name)

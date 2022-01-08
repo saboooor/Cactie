@@ -18,7 +18,7 @@ module.exports = {
 		const suggestion = args.join(' ');
 		const Embed = new MessageEmbed()
 			.setColor(3447003)
-			.setAuthor(message.member.displayName, message.member.user.avatarURL({ dynamic : true }))
+			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 			.setTitle('Suggestion')
 			.setDescription(suggestion)
 			.setURL(`https://a${message.member.user.id}a.pup`);
