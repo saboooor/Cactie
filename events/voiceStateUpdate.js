@@ -53,7 +53,7 @@ module.exports = async (client, oldState, newState) => {
 				client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
 			}
 			if (!player.twentyFourSeven) {
-				await sleep(10000);
+				await sleep(300000);
 				const channel = client.channels.cache.get(player.textChannel);
 				const Embed = new MessageEmbed()
 					.setColor(Math.round(Math.random() * 16777215))
