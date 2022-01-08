@@ -12,10 +12,19 @@ module.exports = {
 	options: require('../options/suggestresponse.json'),
 	async execute(message, args, client) {
 		// Fetch the message
-		const approving = await message.channel.messages.fetch({ around: args[0], limit: 1 });
-		const fetchedMsg = approving.first();
+		let approving = !isNaN(args[0]) ? await message.channel.messages.fetch({ around: args[0], limit: 1 }) : null;
+		let fetchedMsg = approving ? approving.first() : null;
 
-		// Check if the message exists
+		// Check if the message exists, if not, check in suggestionchannel, if not, check if it's in thread, if not, return
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+		if (!fetchedMsg) {
+			approving = !isNaN(args[0]) ? await message.guild.channels.get(srvconfig.suggestionchannel).messages.fetch({ around: args[0], limit: 1 }) : null;
+			fetchedMsg = approving ? approving.first() : null;
+		}
+		if (!fetchedMsg && message.channel.parent.type == 'GUILD_TEXT') {
+			approving = await message.channel.parent.messages.fetch({ around: message.channel.id, limit: 1 });
+			fetchedMsg = approving ? approving.first() : null;
+		}
 		if (!fetchedMsg) return message.reply({ content: 'Could not find the message, try doing the command in the channel the suggestion was sent in?' });
 
 		// Check if message was sent by the bot
@@ -38,6 +47,9 @@ module.exports = {
 		});
 		if (!Embed.fields[0] && emojis[0]) Embed.addField('Results­', `${emojis.join(' ')}`);
 
+		// Delete command message
+		if (!message.commandName) message.delete();
+
 		// Get suggestion thread if exists and delete with transcript
 		const thread = message.guild.channels.cache.get(Embed.url.split('a')[2]);
 		if (thread) {
@@ -55,7 +67,7 @@ module.exports = {
 
 		// Check if there's a message and put in footer and send update dm
 		if (!args[1]) {
-			Embed.setFooter('No response.');
+			Embed.setFooter(`Approved by ${message.member.user.tag}.`, message.member.user.avatarURL({ dynamic : true }));
 			if (Embed.url) {
 				client.users.cache.get(Embed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**` })
@@ -63,10 +75,11 @@ module.exports = {
 			}
 		}
 		else {
-			Embed.setFooter(`Response: ${args.slice(1).join(' ')}`);
+			if (!isNaN(args[0])) args = args.slice(1);
+			Embed.setFooter(`${message.member.user.tag}: ${args.join(' ')}`, message.member.user.avatarURL({ dynamic : true }));
 			if (Embed.url) {
 				client.users.cache.get(Embed.url.split('a')[1])
-					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**\nResponse: ${args.slice(1).join(' ')}` })
+					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**\nResponse: ${args.join(' ')}` })
 					.catch(error => { client.logger.warn(error); });
 			}
 		}
@@ -74,10 +87,8 @@ module.exports = {
 		// Update message and reply with approved
 		fetchedMsg.edit({ embeds: [Embed] });
 		if (message.commandName) message.reply({ content: 'Suggestion Approved!' });
-		else message.delete();
 
 		// Check if log channel exists and send message
-		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 		if (logchannel) {
 			Embed.setTitle(`${message.member.user.tag} approved a suggestion`)
