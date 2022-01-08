@@ -14,7 +14,7 @@ module.exports = {
 			.setColor(color)
 			.setTitle(message.guild.name)
 			.setThumbnail(message.guild.iconURL({ dynamic : true }))
-			.setFooter(`Owner: ${owner.user.username}`, owner.user.avatarURL({ dynamic : true }))
+			.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL({ dynamic : true }) })
 			.setTimestamp();
 		if (message.guild.description) Embed.addField('Description', message.guild.description);
 		if (message.guild.vanityURLCode) Embed.addField('Vanity URL', `discord.gg/${message.guild.vanityURLCode}`);

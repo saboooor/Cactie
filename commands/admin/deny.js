@@ -67,7 +67,7 @@ module.exports = {
 
 		// Check if there's a message and put in footer and send update dm
 		if (!args[1]) {
-			Embed.setFooter(`Denied by ${message.member.user.tag}.`, message.member.user.avatarURL({ dynamic : true }));
+			Embed.setFooter({ text: `Denied by ${message.member.user.tag}.`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
 			if (Embed.url) {
 				client.users.cache.get(Embed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**` })
@@ -76,7 +76,7 @@ module.exports = {
 		}
 		else {
 			if (!isNaN(args[0])) args = args.slice(1);
-			Embed.setFooter(`${message.member.user.tag}: ${args.join(' ')}`, message.member.user.avatarURL({ dynamic : true }));
+			Embed.setFooter({ text: `${message.member.user.tag}: ${args.join(' ')}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
 			if (Embed.url) {
 				client.users.cache.get(Embed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**\nResponse: ${args.join(' ')}` })

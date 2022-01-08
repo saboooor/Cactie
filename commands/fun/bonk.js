@@ -9,7 +9,7 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setAuthor(`${message.guild ? message.member.displayName : message.user.username} bonks ${args[0] ? args.join(' ') : 'themselves'}`, message.member.user.avatarURL({ dynamic: true }))
 			.setImage('https://c.tenor.com/TbLpG9NCzjkAAAAC/bonk.gif')
-			.setFooter('get bonked');
+			.setFooter({ text: 'get bonked' });
 
 		// Check if arg is a user
 		let user = null;

@@ -18,7 +18,7 @@ module.exports = async (client, message) => {
 		if (!server) return;
 		await client.manager.players.forEach(async player => {
 			embed.setAuthor('Pup is updating and will restart in 5sec! Sorry for the inconvenience!')
-				.setFooter('You\'ll be able to play music again in about 10sec!');
+				.setFooter({ text: 'You\'ll be able to play music again in about 10sec!' });
 			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
 		});
 		await message.reply({ content: 'Updating to latest commit...' });
@@ -73,7 +73,7 @@ module.exports = async (client, message) => {
 			.setTitle('Shortened long message')
 			.setAuthor(message.member.displayName, message.member.user.avatarURL({ dynamic : true }))
 			.setDescription(link)
-			.setFooter('Next time please use a paste service');
+			.setFooter({ text: 'Next time please use a paste service' });
 		message.channel.send({ embeds: [Embed] });
 	}
 
@@ -133,7 +133,7 @@ module.exports = async (client, message) => {
 			.setColor(3447003)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
-		if (command.similarcmds) Usage.setFooter(`Did you mean to use ${srvconfig.prefix}${command.similarcmds}?`);
+		if (command.similarcmds) Usage.setFooter({ text: `Did you mean to use ${srvconfig.prefix}${command.similarcmds}?` });
 		return message.reply({ embeds: [Usage] });
 	}
 

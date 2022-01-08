@@ -31,13 +31,13 @@ module.exports = {
 
 		// Chance of getting a SIKE u have no pp
 		if (Math.round(Math.random() * 10) == 5) {
-			Embed.setDescription('SIKE').setFooter(`${nick} has no pp`);
+			Embed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
 			return message.reply({ embeds: [Embed] });
 		}
 
 		// Get random number out of the maxppsize for the amount of inches and set the description and footer to size then reply
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
-		Embed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter(`${hardtxt} pp size = ${random}"`);
+		Embed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hardtxt} pp size = ${random}"` });
 		message.reply({ embeds: [Embed] });
 	},
 };

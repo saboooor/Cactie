@@ -5,7 +5,7 @@ module.exports = async (client, player) => {
 	const thing = new MessageEmbed()
 		.setColor(Math.round(Math.random() * 16777215))
 		.setDescription(`${warn} **Music session ended**`)
-		.setFooter(client.user.username, client.user.avatarURL({ dynamic : true }));
+		.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
 	const NowPlaying = await channel.send({ embeds: [thing] });
 	player.setNowplayingMessage(NowPlaying);
 };

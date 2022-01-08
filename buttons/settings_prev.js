@@ -20,7 +20,7 @@ module.exports = {
 
 		// Update embed description with new page and reply
 		embed.setDescription(srvconfig.slice(start, end).join('\n'))
-			.setFooter(`Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
+			.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
 		return interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };

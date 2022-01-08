@@ -23,6 +23,6 @@ module.exports = async (subreddit, message, client) => {
 		.setTitle(`${pong[0].data.children[0].data.title} (${pong[0].data.children[0].data.ups} Upvotes)`)
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
 		.setImage(pong[0].data.children[0].data.url)
-		.setFooter(`Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts`);
+		.setFooter({ text: `Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts` });
 	message.reply({ embeds: [Embed] });
 };

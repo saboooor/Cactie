@@ -62,7 +62,7 @@ module.exports = {
 			.setDescription(`Please explain your issue and we'll be with you shortly\nIf you have multiple issues, please use the ${srvconfig.prefix}subticket command\nIf you want to create a private voice chat, please use the ${srvconfig.prefix}voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.`);
 		if (args && args[0] && !reaction) Embed.addField('Description', args.join(' '));
 		if (srvconfig.tickets == 'buttons') {
-			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or click the button below`);
+			Embed.setFooter({ text: `To close this ticket do ${srvconfig.prefix}close, or click the button below` });
 			const row = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -84,7 +84,7 @@ module.exports = {
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
 		else if (srvconfig.tickets == 'reactions') {
-			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
+			Embed.setFooter({ text: `To close this ticket do ${srvconfig.prefix}close, or react with 🔒` });
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');
 			await embed.react('📜');

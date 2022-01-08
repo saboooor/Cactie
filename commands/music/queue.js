@@ -27,7 +27,7 @@ module.exports = {
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
 		else embed.addField(`${emoji.queue} Queue List`, mapped);
 		const maxPages = Math.ceil(queue.length / multiple);
-		embed.setFooter(`Page ${page > maxPages ? maxPages : page} of ${maxPages}`);
+		embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()

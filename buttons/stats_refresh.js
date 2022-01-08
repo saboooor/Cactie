@@ -63,7 +63,7 @@ module.exports = {
 				const link = await createPaste(pong.plugins.raw.join('\n'), { server: 'https://bin.birdflop.com' });
 				Embed.addField('**Plugins:**', `[Click Here](${link})`, true);
 			}
-			if (!pong.debug.query) Embed.setFooter('Query disabled! If you want more info, contact the owner to enable query.');
+			if (!pong.debug.query) Embed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 		}
 		Embed.setTimestamp();
 		interaction.reply({ embeds: [Embed], components: interaction.message.components });

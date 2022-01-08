@@ -45,12 +45,12 @@ module.exports = {
 
 		// Chance of getting a SIKE u have no pp
 		if (Math.round(Math.random() * 10) == 5) {
-			Embed.setDescription('SIKE').setFooter(`${nick} has no pp`);
+			Embed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
 			return message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 		}
 
 		// Set pp size inches to footer and edit message to final result
-		Embed.setFooter(`pp size = ${random}"`);
+		Embed.setFooter({ text: `pp size = ${random}"` });
 		message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 	},
 };

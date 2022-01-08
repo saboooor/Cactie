@@ -66,7 +66,7 @@ module.exports = {
 
 		// Check if ticket mode is buttons or reactions and send embed
 		if (srvconfig.tickets == 'buttons') {
-			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or click the button below`);
+			Embed.setFooter({ text: `To close this ticket do ${srvconfig.prefix}close, or click the button below` });
 			const row = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -88,7 +88,7 @@ module.exports = {
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
 		else if (srvconfig.tickets == 'reactions') {
-			Embed.setFooter(`To close this ticket do ${srvconfig.prefix}close, or react with 🔒`);
+			Embed.setFooter({ text: `To close this ticket do ${srvconfig.prefix}close, or react with 🔒` });
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');
 			await embed.react('📜');

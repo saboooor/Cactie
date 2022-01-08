@@ -111,7 +111,7 @@ module.exports = {
 			// Set embed description with page and stuff
 			Embed.setDescription(configlist.slice(0, 4).join('\n'))
 				.addField('Usage', `\`${srvconfig.prefix}settings [<Setting> <Value>]\``)
-				.setFooter(`Page 1 of ${maxPages}`);
+				.setFooter({ text: `Page 1 of ${maxPages}` });
 		}
 
 		// Add buttons for page changing
