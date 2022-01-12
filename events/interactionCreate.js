@@ -116,9 +116,9 @@ module.exports = async (client, interaction) => {
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
-		if (!interaction.guild) return interaction.reply({ content: 'You can\'t execute commands in DMs!', ephemeral: true });
+		if (interaction.channel.type == 'DM') return interaction.reply({ content: 'You can\'t execute commands in DMs!', ephemeral: true });
 
-		const srvconfig = interaction.guild ? await client.getData('settings', 'guildId', interaction.guild.id) : null;
+		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
 		if (command.permissions && interaction.member.user.id !== '249638347306303499') {
 			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);

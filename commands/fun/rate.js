@@ -6,7 +6,7 @@ module.exports = {
 	options: require('../options/someone.json'),
 	async execute(message, args) {
 		// If arg isn't set, set it to the author's name/nick
-		if (!args[0]) args[0] = message.guild ? message.member.displayName : message.user.username;
+		if (!args[0]) args[0] = message.member.displayName;
 
 		// Get random rating and reply with that
 		const rating = Math.floor(Math.random() * (ratings.length * 10)) / 10;

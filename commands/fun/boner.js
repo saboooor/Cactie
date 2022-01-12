@@ -9,14 +9,14 @@ module.exports = {
 	options: require('../options/someone.json'),
 	async execute(message, args, client) {
 		// Get settings and check if bonercmd is enabled
-		const srvconfig = message.guild ? await client.getData('settings', 'guildId', message.guild.id) : { bonercmd: 'true', maxppsize: '35' };
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (srvconfig.bonercmd == 'false') return message.reply({ content: 'This command is disabled!' });
 
 		// Get random number out of the maxppsize for the amount of inches
 		const random = Math.round(Math.random() * srvconfig.maxppsize);
 
 		// Get name of author, or user if specified
-		const name = message.guild ? message.member.displayName : message.user.username;
+		const name = message.member.displayName;
 		let nick = args[0] ? args[0] : name;
 
 		// Check if arg is set and is a mention and fetch that user for the name
