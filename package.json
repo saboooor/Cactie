@@ -29,6 +29,7 @@
     "node-cron": "^3.0.0",
     "nodeactyl": "^3.2.1",
     "solenolyrics": "^5.0.0",
-    "winston": "^3.3.3"
+    "winston": "^3.3.3",
+    "yaml": "^1.10.2"
   }
 }
