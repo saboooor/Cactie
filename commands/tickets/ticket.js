@@ -6,7 +6,6 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['new'],
 	usage: '[Description]',
-	guildOnly: true,
 	options: require('../options/ticket.json'),
 	botperms: 'MANAGE_CHANNELS',
 	async execute(message, args, client, reaction) {

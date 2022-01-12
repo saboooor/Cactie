@@ -6,7 +6,6 @@ module.exports = {
 	description: 'Change volume of currently playing music',
 	usage: '[Volume]',
 	cooldown: 5,
-	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

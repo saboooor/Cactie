@@ -3,7 +3,6 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'delete',
 	description: 'Delete a ticket',
-	guildOnly: true,
 	permissions: 'ADMINISTRATOR',
 	botperms: 'MANAGE_CHANNELS',
 	async execute(message, user, client, reaction) {

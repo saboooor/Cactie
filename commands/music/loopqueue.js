@@ -4,7 +4,6 @@ module.exports = {
 	name: 'loopqueue',
 	description: 'Toggle queue loop',
 	aliases: ['lq'],
-	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

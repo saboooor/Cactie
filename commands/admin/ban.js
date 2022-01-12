@@ -9,7 +9,6 @@ module.exports = {
 	permissions: 'BAN_MEMBERS',
 	botperms: 'BAN_MEMBERS',
 	cooldown: 5,
-	guildOnly: true,
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
 		// Get user and check if user is valid

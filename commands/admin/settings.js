@@ -7,7 +7,6 @@ module.exports = {
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permissions: 'ADMINISTRATOR',
-	guildOnly: true,
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
 		// Create Embed with title and color

@@ -4,7 +4,6 @@ module.exports = {
 	name: 'resume',
 	description: 'Resume currently playing music',
 	aliases: ['r'],
-	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

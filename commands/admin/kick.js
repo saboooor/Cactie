@@ -8,7 +8,6 @@ module.exports = {
 	permissions: 'KICK_MEMBERS',
 	botperms: 'KICK_MEMBERS',
 	cooldown: 5,
-	guildOnly: true,
 	options: require('../options/kick.json'),
 	async execute(message, args, client) {
 		// Get user and check if user is valid

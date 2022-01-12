@@ -5,7 +5,6 @@ module.exports = {
 	description: 'Join voice channel',
 	aliases: ['j'],
 	cooldown: 2,
-	guildOnly: true,
 	inVoiceChannel: true,
 	async execute(message, args, client) {
 		const { channel } = message.member.voice;

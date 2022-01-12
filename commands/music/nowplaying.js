@@ -6,7 +6,6 @@ module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
 	aliases: ['playing', 'np'],
-	guildOnly: true,
 	serverUnmute: true,
 	player: true,
 	ephemeral: true,

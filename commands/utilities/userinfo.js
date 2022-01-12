@@ -8,7 +8,6 @@ module.exports = {
 	description: 'Discord member information',
 	aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
 	usage: '[User]',
-	guildOnly: true,
 	options: require('../options/user.json'),
 	async execute(message, args) {
 		let member = message.member;

@@ -8,7 +8,6 @@ module.exports = {
 	permissions: 'MANAGE_MESSAGES',
 	botperms: 'MANAGE_ROLES',
 	cooldown: 5,
-	guildOnly: true,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		// Get settings and check if mutecmd is enabled

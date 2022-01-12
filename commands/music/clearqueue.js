@@ -6,7 +6,6 @@ module.exports = {
 	aliases: ['cq'],
 	cooldown: 5,
 	player: true,
-	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message, args, client) {

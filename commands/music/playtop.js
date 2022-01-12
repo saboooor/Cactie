@@ -11,7 +11,6 @@ module.exports = {
 	aliases: ['pt', 'ptop'],
 	args: true,
 	serverUnmute: true,
-	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChanne: true,
 	djRole: true,

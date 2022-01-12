@@ -7,7 +7,6 @@ module.exports = {
 	description: 'Seek through the playing song',
 	args: true,
 	usage: '<Time s/m/h>',
-	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

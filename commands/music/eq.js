@@ -4,7 +4,6 @@ module.exports = {
 	description: 'Set Equalizer',
 	aliases: [ 'filter', 'equalizer' ],
 	cooldown: 10,
-	guildOnly: true,
 	player: true,
 	serverUnmute: true,
 	inVoiceChannel: true,

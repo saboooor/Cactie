@@ -116,9 +116,7 @@ module.exports = async (client, interaction) => {
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
-		if (!interaction.guild && command.guildOnly) {
-			return interaction.reply({ content: 'You can only execute this command in a Discord Server!', ephemeral: true });
-		}
+		if (!interaction.guild) return interaction.reply({ content: 'You can\'t execute commands in DMs!', ephemeral: true });
 
 		const srvconfig = interaction.guild ? await client.getData('settings', 'guildId', interaction.guild.id) : null;
 

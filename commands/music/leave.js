@@ -6,7 +6,6 @@ module.exports = {
 	aliases: ['dc', 'fuckoff'],
 	cooldown: 2,
 	player: true,
-	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,

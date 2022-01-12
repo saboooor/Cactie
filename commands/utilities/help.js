@@ -6,7 +6,6 @@ module.exports = {
 	botperms: 'ADD_REACTIONS',
 	usage: '[Type]',
 	cooldown: 10,
-	guildOnly: true,
 	options: require('../options/help.json'),
 	async execute(message, args, client) {
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

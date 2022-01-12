@@ -28,7 +28,6 @@ module.exports = async (client, message) => {
 	}
 	if (message.author.bot) return;
 	if (message.channel.type == 'DM') {
-		if (message.content.startsWith('-')) return message.reply({ content: 'You can only execute dash (-) commands in a Discord Server!\nTry using slash (/) commands instead' });
 		if (message.attachments && message.attachments.size >= 1 && !message.commandName) {
 			const files = [];
 			await message.attachments.forEach(async attachment => {

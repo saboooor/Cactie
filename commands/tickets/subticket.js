@@ -7,7 +7,6 @@ module.exports = {
 	aliases: ['subnew', 'sub'],
 	args: true,
 	usage: '<Description>',
-	guildOnly: true,
 	options: require('../options/ticket.json'),
 	botperms: 'CREATE_PUBLIC_THREADS',
 	async execute(message, args, client, reaction) {

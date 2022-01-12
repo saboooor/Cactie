@@ -7,7 +7,6 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Question>',
-	guildOnly: true,
 	botperms: 'ADD_REACTIONS',
 	options: require('../options/question.json'),
 	async execute(message, args, client) {

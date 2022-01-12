@@ -11,7 +11,6 @@ module.exports = {
 	aliases: ['p'],
 	args: true,
 	serverUnmute: true,
-	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChanne: true,
 	options: require('../options/play.json'),

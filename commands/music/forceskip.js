@@ -5,7 +5,6 @@ module.exports = {
 	name: 'forceskip',
 	aliases: ['fs'],
 	description: 'Force skip the currently playing song',
-	guildOnly: true,
 	player: true,
 	serverUnmute: true,
 	inVoiceChannel: true,

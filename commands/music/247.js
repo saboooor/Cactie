@@ -6,7 +6,6 @@ module.exports = {
 	aliases: ['24h', '24/7'],
 	cooldown: 5,
 	player: true,
-	guildOnly: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,

@@ -3,7 +3,6 @@ module.exports = {
 	description: 'Create a voiceticket',
 	ephemeral: true,
 	aliases: ['voicenew', 'voice'],
-	guildOnly: true,
 	botperms: 'MANAGE_CHANNELS',
 	async execute(message, args, client, reaction) {
 		// Check if ticket is an actual ticket

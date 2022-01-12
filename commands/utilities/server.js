@@ -6,7 +6,6 @@ module.exports = {
 	description: 'Discord server info',
 	aliases: ['s', 'srv', 'guild'],
 	cooldown: 10,
-	guildOnly: true,
 	async execute(message) {
 		const owner = await message.guild.fetchOwner();
 		const color = rgb2hex(await getColor(message.guild.iconURL().replace('webp', 'png')));

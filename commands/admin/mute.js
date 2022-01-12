@@ -9,7 +9,6 @@ module.exports = {
 	permissions: 'MANAGE_MESSAGES',
 	botperms: 'MANAGE_ROLES',
 	cooldown: 5,
-	guildOnly: true,
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
 		// Get mute role and check if role is valid

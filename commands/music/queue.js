@@ -7,7 +7,6 @@ module.exports = {
 	description: 'Show the music queue and now playing.',
 	aliases: ['q'],
 	cooldown: 4,
-	guildOnly: true,
 	player: true,
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);

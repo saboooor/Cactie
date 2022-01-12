@@ -8,7 +8,6 @@ module.exports = {
 	permissions: 'ADMINISTRATOR',
 	botperms: 'MANAGE_MESSAGES',
 	usage: '<Message Id> [Response]',
-	guildOnly: true,
 	options: require('../options/suggestresponse.json'),
 	async execute(message, args, client) {
 		// Fetch the message

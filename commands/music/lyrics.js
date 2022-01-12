@@ -7,7 +7,6 @@ module.exports = {
 	name: 'lyrics',
 	description: 'Get lyrics of a song',
 	aliases: ['l'],
-	guildOnly: true,
 	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);

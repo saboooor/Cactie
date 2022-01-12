@@ -5,7 +5,6 @@ module.exports = {
 	name: 'loop',
 	description: 'Toggle music loop',
 	aliases: ['l'],
-	guildOnly: true,
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,

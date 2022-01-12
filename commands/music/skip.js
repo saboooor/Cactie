@@ -6,7 +6,6 @@ module.exports = {
 	aliases: ['s', 'skipto'],
 	description: 'Skip the currently playing song',
 	usage: '[Index of song in queue]',
-	guildOnly: true,
 	serverUnmute: true,
 	player: true,
 	inVoiceChannel: true,

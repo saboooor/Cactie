@@ -4,7 +4,6 @@ module.exports = {
 	name: 'open',
 	description: 'Repen a ticket',
 	aliases: ['reopen'],
-	guildOnly: true,
 	botperms: 'MANAGE_CHANNELS',
 	async execute(message, user, client, reaction) {
 		let author = message.member.user;
