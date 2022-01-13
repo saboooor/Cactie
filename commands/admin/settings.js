@@ -39,7 +39,7 @@ module.exports = {
 			// Ticketcategory can only be a category channel or false
 			if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) return message.reply({ content: 'That is not a valid category Id!' });
 			// Supportrole / Djrole can only be a role
-			if ((prop == 'supportrole' || prop == 'djrole') && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
+			if ((prop == 'supportrole' || prop == 'djrole') && value != 'false' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			// Adminrole can only be a role or 'permission'
 			if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) return message.reply({ content: 'That is not a valid role Id!' });
 			// Msgshortener can only be a number
