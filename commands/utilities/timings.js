@@ -3,11 +3,36 @@ const fetch = require('node-fetch');
 const YAML = require('yaml');
 const fs = require('fs');
 function create_field(option) {
-	const field = { name: option.name, value: option.value };
+	const field = { name: option.name, value: option.value, inline: true };
 	if (option.prefix) field.name = option.prefix + ' ' + field.name;
 	if (option.suffix) field.name = field.name + option.suffix;
 	if (option.inline) field.inline = option.inline;
 	return field;
+}
+function eval_field(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client) {
+	const dict_of_vars = { 'plugins': plugins, 'server_properties': server_properties, 'bukkit': bukkit, 'spigot': spigot, 'paper': paper, 'purpur': purpur };
+	option.forEach(option_data => {
+		let add_to_field = true;
+		option_data.expressions.forEach(expression => {
+			Object.keys(dict_of_vars).forEach(config_name => {
+				if (expression.includes(config_name) && !dict_of_vars[config_name]) add_to_field = false;
+			});
+			try {
+				if (add_to_field && !eval(expression)) add_to_field = false;
+			}
+			catch (e) {
+				client.logger.warn(e);
+				add_to_field = false;
+			}
+		});
+		Object.keys(dict_of_vars).forEach(config_name => {
+			if (add_to_field && option_data.value.includes(config_name) && !dict_of_vars[config_name]) add_to_field = false;
+		});
+		if (add_to_field) {
+			option_data.name = option_name;
+			Embed.addFields(create_field(option_data));
+		}
+	});
 }
 module.exports = {
 	name: 'timings',
@@ -22,7 +47,7 @@ module.exports = {
 			.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
 			.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 
-		const url = args[0].replace('/d=', '/?id=').split('#')[0];
+		const url = args[0].replace('/d=', '/?id=').split('#')[0].split('\n')[0];
 
 		if (url.startsWith('https://www.spigotmc.org/go/timings?url=') || args[0].startsWith('https://spigotmc.org/go/timings?url=')) {
 			Embed.addField('❌ Spigot', 'Spigot timings have limited information. Switch to [Purpur](https://purpur.pl3x.net/downloads) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.')
@@ -159,7 +184,30 @@ module.exports = {
 		const spigot = request.timingsMaster.config ? request.timingsMaster.config.spigot : null;
 		const paper = request.timingsMaster.config ? request.timingsMaster.config.paper : null;
 		const purpur = request.timingsMaster.config ? request.timingsMaster.config.purpur : null;
-		// LINE 216 PY
+
+		if (TIMINGS_CHECK.plugins) {
+			Object.keys(TIMINGS_CHECK.plugins).forEach(server_name => {
+				if (Object.keys(request.timingsMaster.config).includes(server_name)) {
+					plugins.forEach(plugin => {
+						Object.keys(TIMINGS_CHECK.plugins[server_name]).forEach(plugin_name => {
+							if (plugin.name == plugin_name) {
+								const stored_plugin = TIMINGS_CHECK.plugins[server_name][plugin_name];
+								stored_plugin.name = plugin_name;
+								Embed.addFields(create_field(stored_plugin));
+							}
+						});
+					});
+				}
+			});
+		}
+		if (TIMINGS_CHECK.config) {
+			Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i]; }).forEach(config => {
+				Object.keys(config).forEach(option_name => {
+					const option = config[option_name];
+					eval_field(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client);
+				});
+			});
+		}
 
 		plugins.forEach(plugin => {
 			if (plugin.authors && plugin.authors.toLowerCase().includes('songoda')) {
@@ -169,7 +217,7 @@ module.exports = {
 			}
 		});
 
-		const worlds = Object.keys(request_raw.worlds).map(i => { return request_raw.worlds[i]; });
+		const worlds = request_raw.worlds ? Object.keys(request_raw.worlds).map(i => { return request_raw.worlds[i]; }) : [];
 		let high_mec = false;
 		worlds.forEach(world => {
 			const max_entity_cramming = parseInt(world.gamerules.maxEntityCramming);
@@ -177,7 +225,30 @@ module.exports = {
 		});
 		if (high_mec) Embed.addField('❌ maxEntityCramming', 'Decrease this by running the /gamerule command in each world. Recommended: 8.', true);
 
-		// LINE 273 PY
+		const normal_ticks = request.timingsMaster.data[0].totalTicks;
+		let worst_tps = 20;
+		request.timingsMaster.data.forEach(data => {
+			const total_ticks = data.totalTicks;
+			if (total_ticks == normal_ticks) {
+				const end_time = data.end;
+				const start_time = data.start;
+				let tps = null;
+				if (end_time == start_time) tps = 20;
+				else tps = total_ticks / (end_time - start_time);
+				if (tps < worst_tps) worst_tps = tps;
+			}
+		});
+		let red = 0;
+		let green = 0;
+		if (worst_tps < 10) {
+			red = 255;
+			green = 255 * (0.1 * worst_tps);
+		}
+		else {
+			red = 255 * (-0.1 * worst_tps + 2);
+			green = 255;
+		}
+		Embed.setColor([Math.round(red), Math.round(green), 0]);
 
 		const issue_count = Embed.fields.length;
 		if (issue_count == 0) {
@@ -194,11 +265,11 @@ module.exports = {
 						new MessageButton()
 							.setCustomId('timings_prev')
 							.setLabel('◄')
-							.setStyle('PRIMARY'),
+							.setStyle('SECONDARY'),
 						new MessageButton()
 							.setCustomId('timings_next')
 							.setLabel('►')
-							.setStyle('PRIMARY'),
+							.setStyle('SECONDARY'),
 						new MessageButton()
 							.setURL('https://github.com/pemigrade/botflop')
 							.setLabel('Botflop')
