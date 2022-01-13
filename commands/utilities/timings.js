@@ -50,7 +50,7 @@ module.exports = {
 		const url = args[0].replace('/d=', '/?id=').split('#')[0].split('\n')[0];
 
 		if (url.startsWith('https://www.spigotmc.org/go/timings?url=') || args[0].startsWith('https://spigotmc.org/go/timings?url=')) {
-			Embed.addField('❌ Spigot', 'Spigot timings have limited information. Switch to [Purpur](https://purpur.pl3x.net/downloads) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.')
+			Embed.addField('❌ Spigot', 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.')
 				.setURL(url);
 			return message.reply({ embeds: [Embed] });
 		}
