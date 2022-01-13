@@ -13,7 +13,6 @@ module.exports = {
 	options: require('../options/url.json'),
 	async execute(message, args, client) {
 		const Embed = new MessageEmbed()
-			.setTitle('Timings Analysis')
 			.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
 			.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 
@@ -28,8 +27,6 @@ module.exports = {
 		if (!url.startsWith('https://timin')) return message.reply({ content: 'Invalid Timings URL.' });
 		if (!url.includes('?id=')) return message.reply({ content: 'Invalid Timings URL.' });
 
-		Embed.setURL(url);
-
 		client.logger.info(`Timings analyzed from ${message.member.user.tag} (${message.member.user.id}): ${url}`);
 
 		const timings_host = url.split('?id=')[0];
@@ -42,6 +39,9 @@ module.exports = {
 		const request_raw = await response_raw.json();
 		const response_json = await fetch(timings_json);
 		const request = await response_json.json();
+
+		const server_icon = timings_host + 'image.php?id=' + request_raw.icon;
+		Embed.setAuthor({ name: 'Timings Analysis', iconURL: server_icon, url: url });
 
 		if (!request_raw || !request) {
 			Embed.addFields('❌ Invalid report', 'Create a new timings report.', true);
