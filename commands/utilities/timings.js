@@ -2,38 +2,8 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const fetch = require('node-fetch');
 const YAML = require('yaml');
 const fs = require('fs');
-function create_field(option) {
-	const field = { name: option.name, value: option.value, inline: true };
-	if (option.prefix) field.name = option.prefix + ' ' + field.name;
-	if (option.suffix) field.name = field.name + option.suffix;
-	if (option.inline) field.inline = option.inline;
-	return field;
-}
-function eval_field(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client) {
-	const dict_of_vars = { 'plugins': plugins, 'server_properties': server_properties, 'bukkit': bukkit, 'spigot': spigot, 'paper': paper, 'purpur': purpur };
-	option.forEach(option_data => {
-		let add_to_field = true;
-		option_data.expressions.forEach(expression => {
-			Object.keys(dict_of_vars).forEach(config_name => {
-				if (expression.includes(config_name) && !dict_of_vars[config_name]) add_to_field = false;
-			});
-			try {
-				if (add_to_field && !eval(expression)) add_to_field = false;
-			}
-			catch (e) {
-				client.logger.warn(e);
-				add_to_field = false;
-			}
-		});
-		Object.keys(dict_of_vars).forEach(config_name => {
-			if (add_to_field && option_data.value.includes(config_name) && !dict_of_vars[config_name]) add_to_field = false;
-		});
-		if (add_to_field) {
-			option_data.name = option_name;
-			Embed.addFields(create_field(option_data));
-		}
-	});
-}
+const createField = require('../../functions/createField.js');
+const evalField = require('../../functions/evalField.js');
 module.exports = {
 	name: 'timings',
 	description: 'Analyze Paper timings to optimize the Paper server.',
@@ -95,7 +65,7 @@ module.exports = {
 
 		if (TIMINGS_CHECK.servers) {
 			TIMINGS_CHECK.servers.forEach(server => {
-				if (version.includes(server.name)) Embed.addFields(create_field(server));
+				if (version.includes(server.name)) Embed.addFields(createField(server));
 			});
 		}
 
@@ -193,7 +163,7 @@ module.exports = {
 							if (plugin.name == plugin_name) {
 								const stored_plugin = TIMINGS_CHECK.plugins[server_name][plugin_name];
 								stored_plugin.name = plugin_name;
-								Embed.addFields(create_field(stored_plugin));
+								Embed.addFields(createField(stored_plugin));
 							}
 						});
 					});
@@ -204,7 +174,7 @@ module.exports = {
 			Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i]; }).forEach(config => {
 				Object.keys(config).forEach(option_name => {
 					const option = config[option_name];
-					eval_field(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client);
+					evalField(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client);
 				});
 			});
 		}
@@ -258,7 +228,8 @@ module.exports = {
 		const components = [];
 		if (issue_count >= 13) {
 			Embed.fields.splice(12, issue_count);
-			Embed.addField(`Plus ${issue_count - 12} more recommendations`, 'Click the buttons below to see more');
+			Embed.addField(`Plus ${issue_count - 12} more recommendations`, 'Click the buttons below to see more')
+				.setFooter({ text: `Requested by ${message.member.user.tag} • Page 1 of ${Math.ceil(issue_count / 12)} • Buttons are not functional atm`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 			components.push(
 				new MessageActionRow()
 					.addComponents(
