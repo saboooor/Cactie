@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const { webhookport, topggauth, dblauth, gitauth } = require('../config/bot.json');
+const { webhookport, voteauth, gitauth } = require('../config/bot.json');
 const addVote = require('../functions/addVote');
 const gitUpdate = require('../functions/gitUpdate');
 module.exports = client => {
@@ -9,7 +9,7 @@ module.exports = client => {
 	app.use(bodyParser.json());
 	// on post to server check if authorization matches
 	app.post('/', async function(req, res) {
-		if (req.headers.authorization === dblauth || req.headers.authorization === topggauth) {
+		if (req.headers.authorization === voteauth) {
 			res.json({ message: 'pog' });
 			await addVote(req.body, client);
 		}
