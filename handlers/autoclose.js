@@ -4,6 +4,14 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
 	schedule('0 0 * * *', async () => {
+		// Get all users who have voted recently
+		const voteData = await client.query('SELECT * FROM lastvoted');
+		voteData.forEach(async data => {
+			if (data.timestamp + 86400000 < Date.now()) {
+				// If the user has not voted in 24 hours, remove them from the vote database
+				await client.delData('lastvoted', 'userId', data.userId);
+			}
+		});
 		// Get all tickets
 		const ticketData = await client.query('SELECT * FROM ticketdata');
 		ticketData.forEach(async data => {
