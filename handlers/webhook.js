@@ -8,10 +8,10 @@ module.exports = client => {
 	if (!webhookport) return client.logger.info('Skipped webhook server loading!');
 	app.use(bodyParser.json());
 	// on post to server check if authorization matches
-	app.post('/', function(req, res) {
+	app.post('/', async function(req, res) {
 		if (req.headers.authorization === dblauth || req.headers.authorization === topggauth) {
 			res.json({ message: 'pog' });
-			addVote(req.body, client);
+			await addVote(req.body, client);
 		}
 		else if (req.headers.authorization === gitauth) {
 			res.json({ message: 'pog' });
