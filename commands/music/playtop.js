@@ -3,7 +3,6 @@ const { TrackUtils } = require('erela.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist, resume, warn } = require('../../config/emoji.json');
 const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'playtop',
 	description: 'Play music to the top of the queue',
@@ -79,10 +78,10 @@ module.exports = {
 				const a = Searched.tracks[0];
 				if (a && a.displayThumbnail) {
 					song.img = a.displayThumbnail('hqdefault');
-					song.color = rgb2hex(await getColor(song.img));
+					song.color = await getColor(song.img);
 				}
 			}
-			else if (song.img) { song.color = rgb2hex(await getColor(song.img)); }
+			else if (song.img) { song.color = await getColor(song.img); }
 			else { song.color = Math.round(Math.random() * 16777215); }
 			if (song.author) song.title = `${song.title}\n${song.author}`;
 		});

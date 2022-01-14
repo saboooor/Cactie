@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { getColor } = require('colorthief');
-const rgb2hex = require('../../functions/rgbhex');
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',
@@ -8,7 +7,7 @@ module.exports = {
 	cooldown: 10,
 	async execute(message) {
 		const owner = await message.guild.fetchOwner();
-		const color = rgb2hex(await getColor(message.guild.iconURL().replace('webp', 'png')));
+		const color = await getColor(message.guild.iconURL().replace('webp', 'png'));
 		const Embed = new MessageEmbed()
 			.setColor(color)
 			.setTitle(message.guild.name)
