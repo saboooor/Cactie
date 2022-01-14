@@ -8,6 +8,7 @@ module.exports = client => {
 		const ticketData = await client.query('SELECT * FROM ticketdata');
 		ticketData.forEach(async data => {
 			if (data.resolved == 'true') {
+				data.users = data.users.split(',');
 				const channel = await client.channels.cache.get(data.channelId);
 				channel.setName(channel.name.replace('ticket', 'closed'));
 				await sleep(1000);
@@ -18,7 +19,7 @@ module.exports = client => {
 					await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 				}
 				await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
-				data.users.forEach(userid => channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }));
+				await data.users.forEach(userid => channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }));
 				const messages = await channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const users = [];
