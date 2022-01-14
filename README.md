@@ -8,3 +8,4 @@ SUGGESTIONS AND ISSUES WILL ONLY BE TAKEN ON THE DISCORD
 [![Discord](https://discord.com/api/guilds/811354612547190794/widget.png)](https://discord.gg/Bsefgbaedz)
 [![CodeFactor](https://www.codefactor.io/repository/github/saboooor/pup/badge/master)](https://www.codefactor.io/repository/github/saboooor/pup/overview/master)
 ![Lines](https://tokei.rs/b1/github/saboooor/pup)
+[![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)(https://top.gg/bot/765287593762881616)
