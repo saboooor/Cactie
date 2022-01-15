@@ -16,12 +16,15 @@ module.exports = async (subreddit, message, client) => {
 	client.logger.info(`Image URL: ${pong[0].data.children[0].data.url}`);
 	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditFetch.js')(subreddit, message, client);
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
+	let color = Math.floor(Math.random() * 16777215);
+	try { color = await getColor(pong[0].data.children[0].data.url.replace('gifv', 'gif')); }
+	catch (e) { client.logger.error(e); }
 	const Embed = new MessageEmbed()
-		.setColor(await getColor(pong[0].data.children[0].data.url).catch(e => { client.logger.error(e); }))
+		.setColor(color)
 		.setAuthor({ name: `u/${pong[0].data.children[0].data.author}` })
 		.setTitle(`${pong[0].data.children[0].data.title} (${pong[0].data.children[0].data.ups} Upvotes)`)
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)
-		.setImage(pong[0].data.children[0].data.url)
+		.setImage(pong[0].data.children[0].data.url.replace('gifv', 'gif'))
 		.setFooter({ text: `Fetched from r/${pong[0].data.children[0].data.subreddit}, Pup is not responsible for any of these posts` });
 	message.reply({ embeds: [Embed] });
 };
