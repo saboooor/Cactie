@@ -12,7 +12,8 @@ module.exports = async function gitUpdate(client, message) {
 	else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
 	if (!server || !server.client) return;
 
-	// send a notice to everyone currently playing music
+	// send a notice to everyone currently playing music and log
+	client.logger.info('Detected a new commit on GitHub, updating...');
 	await client.manager.players.forEach(async player => {
 		embed.setAuthor({ name: 'Pup is updating and will restart in 5sec! Sorry for the inconvenience!' })
 			.setFooter({ text: 'You\'ll be able to play music again in about 10sec!' });
