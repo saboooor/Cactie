@@ -232,12 +232,15 @@ module.exports = async function analyzeTimings(message, client, args) {
 			const index = page * 12;
 			Embed.fields.splice(0, index - 12);
 			Embed.fields.splice(index, issue_count);
+			const footer = message.message.embeds[0].footer.text.split(' • ');
+			footer[1] = `Page ${page} of ${Math.ceil(issue_count / 12)}`;
+			Embed.setFooter({ text: footer.join(' • '), iconURL: message.message.embeds[0].footer.iconURL });
 		}
 		else {
 			Embed.fields.splice(12, issue_count);
 			Embed.addField(`Plus ${issue_count - 12} more recommendations`, 'Click the buttons below to see more');
+			Embed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 		}
-		Embed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 		components.push(
 			new MessageActionRow()
 				.addComponents(
