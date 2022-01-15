@@ -1,4 +1,4 @@
-const { MessageAttachment, MessageEmbed, Collection } = require('discord.js');
+const { MessageAttachment, MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
 const fetch = require('node-fetch');
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -119,24 +119,48 @@ module.exports = async (client, message) => {
 		return message.reply({ embeds: [Usage] });
 	}
 
+	const errEmbed = new MessageEmbed()
+		.setColor('RED');
+
+	if (command.voteOnly && client.user.id == '765287593762881616') {
+		const vote = await client.getData('lastvoted', 'userId', message.author.id);
+		if (Date.now() > vote.timestamp + 86400000) {
+			errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
+				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
+			const row = new MessageActionRow()
+				.addComponents(
+					new MessageButton()
+						.setURL('https://top.gg/bot/765287593762881616/vote')
+						.setLabel('top.gg')
+						.setStyle('LINK'),
+				)
+				.addComponents(
+					new MessageButton()
+						.setURL('https://discordbotlist.com/bots/pup/upvote')
+						.setLabel('dbl.com')
+						.setStyle('LINK'),
+				);
+			return message.reply({ embeds: [errEmbed], components: [row] });
+		}
+	}
+
 	if (command.permissions && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
-			return message.reply({ content: `You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!` });
+			errEmbed.setDescription(`You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
+			return message.reply({ embeds: [errEmbed] });
 		}
 		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permissions) && srvconfig.adminrole == 'permission') {
-			return message.reply({ content: `You can't do that! You need the ${command.permissions} permission!` });
+			errEmbed.setDescription(`You can't do that! You need the ${command.permissions} permission!`);
+			return message.reply({ embeds: [errEmbed] });
 		}
 	}
 
 	if (command.botperms && (!message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms))) {
 		client.logger.error(`Missing ${command.botperms} permission in #${message.channel.name} at ${message.guild.name}`);
-		message.reply({ content: `I don't have the ${command.botperms} permission!` });
-		return;
+		errEmbed.setDescription(`I don't have the ${command.botperms} permission!`);
+		return message.reply({ embeds: [errEmbed] });
 	}
-
-	const errEmbed = new MessageEmbed()
-		.setColor('RED');
 
 	const player = client.manager.get(message.guild.id);
 

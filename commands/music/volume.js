@@ -4,6 +4,7 @@ module.exports = {
 	name: 'volume',
 	aliases: ['v', 'vol'],
 	description: 'Change volume of currently playing music',
+	voteOnly: true,
 	usage: '[Volume]',
 	cooldown: 5,
 	player: true,

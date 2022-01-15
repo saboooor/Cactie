@@ -3,6 +3,7 @@ const { loop } = require('../../config/emoji.json');
 module.exports = {
 	name: '247',
 	description: 'Toggle 24/7 in voice channel',
+	voteOnly: true,
 	aliases: ['24h', '24/7'],
 	cooldown: 5,
 	player: true,

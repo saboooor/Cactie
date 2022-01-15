@@ -3,6 +3,7 @@ const { rewind } = require('../../config/emoji.json');
 module.exports = {
 	name: 'reverse',
 	description: 'Reverse queue',
+	voteOnly: true,
 	aliases: ['rv'],
 	cooldown: 2,
 	player: true,

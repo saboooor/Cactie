@@ -2,6 +2,7 @@ const insults = require('../../config/insults.json');
 module.exports = {
 	name: 'insult',
 	description: 'Insult someone, or insult yourself!',
+	voteOnly: true,
 	usage: '[Someone]',
 	args: true,
 	options: require('../options/user.json'),

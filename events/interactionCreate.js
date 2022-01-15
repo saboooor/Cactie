@@ -1,4 +1,4 @@
-const { MessageEmbed, Collection } = require('discord.js');
+const { MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -141,48 +141,75 @@ module.exports = async (client, interaction) => {
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
-		if (interaction.channel.type == 'DM') return interaction.reply({ content: 'You can\'t execute commands in DMs!', ephemeral: true });
+		const embed = new MessageEmbed()
+			.setColor('RED');
+
+		if (interaction.channel.type == 'DM') {
+			embed.setTitle('You can\'t execute commands in DMs!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
 
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+
+		if (command.voteOnly && client.user.id == '765287593762881616') {
+			const vote = await client.getData('lastvoted', 'userId', interaction.member.user.id);
+			if (Date.now() > vote.timestamp + 86400000) {
+				embed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
+					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
+				const row = new MessageActionRow()
+					.addComponents(
+						new MessageButton()
+							.setURL('https://top.gg/bot/765287593762881616/vote')
+							.setLabel('top.gg')
+							.setStyle('LINK'),
+					)
+					.addComponents(
+						new MessageButton()
+							.setURL('https://discordbotlist.com/bots/pup/upvote')
+							.setLabel('dbl.com')
+							.setStyle('LINK'),
+					);
+				return interaction.reply({ embeds: [embed], components: [row] });
+			}
+		}
 
 		if (command.permissions && interaction.member.user.id !== '249638347306303499') {
 			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);
 			if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
-				return interaction.reply({ content: `You can't do that, you need the ${interaction.guild.roles.cache.get(srvconfig.adminrole).name} role!`, ephemeral: true });
+				embed.setTitle(`You can't do that, you need the ${interaction.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
+				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permissions) && srvconfig.adminrole == 'permission') {
-				return interaction.reply({ content: `You can't do that! You need the ${command.permissions} permission!`, ephemeral: true });
+				embed.setTitle(`You can't do that! You need the ${command.permissions} permission!`);
+				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
 
 		if (command.botperms && (!interaction.guild.me.permissions.has(command.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperms))) {
 			client.logger.error(`Missing ${command.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-			interaction.reply({ content: `I don't have the ${command.botperms} permission!`, ephemeral: true });
-			return;
+			embed.setTitle(`I don't have the ${command.botperms} permission!`);
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
-
-		const embed = new MessageEmbed()
-			.setColor('RED');
 
 		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
 
 		if (command.player && (!player || !player.queue.current)) {
-			embed.setDescription('There is no music playing.');
+			embed.setTitle('There is no music playing.');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (command.serverUnmute && interaction.guild.me.voice.serverMute) {
-			embed.setDescription('I\'m server muted!');
+			embed.setTitle('I\'m server muted!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (command.inVoiceChannel && !interaction.member.voice.channel) {
-			embed.setDescription('You must be in a voice channel!');
+			embed.setTitle('You must be in a voice channel!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (command.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			embed.setDescription(`You must be in the same channel as ${client.user}!`);
+			embed.setTitle(`You must be in the same channel as ${client.user}!`);
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
@@ -190,7 +217,7 @@ module.exports = async (client, interaction) => {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
 			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!', ephemeral: true });
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
-				embed.setDescription(`You need the ${role} role to do that!`);
+				embed.setTitle(`You need the ${role} role to do that!`);
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}

@@ -6,6 +6,7 @@ const solenolyrics = require('solenolyrics');
 module.exports = {
 	name: 'lyrics',
 	description: 'Get lyrics of a song',
+	voteOnly: true,
 	aliases: ['l'],
 	options: require('../options/play.json'),
 	async execute(message, args, client) {

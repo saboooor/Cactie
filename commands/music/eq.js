@@ -2,6 +2,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 module.exports = {
 	name: 'eq',
 	description: 'Set Equalizer',
+	voteOnly: true,
 	aliases: [ 'filter', 'equalizer' ],
 	cooldown: 10,
 	player: true,

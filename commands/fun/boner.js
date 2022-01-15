@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'boner',
 	description: 'See your boner expand!',
+	voteOnly: true,
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 10,
