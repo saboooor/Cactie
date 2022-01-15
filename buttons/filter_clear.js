@@ -2,6 +2,7 @@ const { filter } = require('../config/emoji.json');
 module.exports = {
 	name: 'filter_clear',
 	player: true,
+	serverUnmute: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(interaction, client) {

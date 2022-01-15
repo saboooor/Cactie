@@ -3,6 +3,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'filter_soft',
 	player: true,
+	serverUnmute: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(interaction, client) {
