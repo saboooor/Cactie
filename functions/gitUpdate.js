@@ -10,7 +10,7 @@ module.exports = async function gitUpdate(client, message) {
 	let server = null;
 	if (embed.title.startsWith('[Pup:master]') && servers['pup'].client) server = servers['pup'];
 	else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
-	if (server && !server.client) return;
+	if (!server || !server.client) return;
 
 	// send a notice to everyone currently playing music
 	await client.manager.players.forEach(async player => {
