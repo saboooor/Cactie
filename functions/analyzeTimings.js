@@ -224,7 +224,8 @@ module.exports = async function analyzeTimings(message, client, args) {
 	if (issue_count >= 13) {
 		let page = 1;
 		if (message.customId) {
-			page = parseInt(message.message.embeds[0].footer.text.split(' • Page ')[1].split(' of ')[0]);
+			const footer = message.message.embeds[0].footer.text.split(' • ');
+			page = parseInt(footer[footer.length - 1].split('Page ')[1].split(' ')[0]);
 			if (message.customId == 'timings_next') page = page + 1;
 			if (message.customId == 'timings_prev') page = page - 1;
 			if (page == 0) page = Math.ceil(issue_count / 12);
@@ -232,8 +233,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 			const index = page * 12;
 			Embed.fields.splice(0, index - 12);
 			Embed.fields.splice(index, issue_count);
-			const footer = message.message.embeds[0].footer.text.split(' • ');
-			footer[1] = `Page ${page} of ${Math.ceil(issue_count / 12)}`;
+			footer[footer.length - 1] = `Page ${page} of ${Math.ceil(issue_count / 12)}`;
 			Embed.setFooter({ text: footer.join(' • '), iconURL: message.message.embeds[0].footer.iconURL });
 		}
 		else {
