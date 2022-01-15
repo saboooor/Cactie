@@ -119,11 +119,11 @@ module.exports = {
 				new MessageButton()
 					.setCustomId('settings_prev')
 					.setLabel('◄')
-					.setStyle('PRIMARY'),
+					.setStyle('SECONDARY'),
 				new MessageButton()
 					.setCustomId('settings_next')
 					.setLabel('►')
-					.setStyle('PRIMARY'),
+					.setStyle('SECONDARY'),
 				new MessageButton()
 					.setURL('https://pup.smhsmh.club')
 					.setLabel('Dashboard')

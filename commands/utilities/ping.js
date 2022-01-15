@@ -10,7 +10,7 @@ module.exports = {
 			.addComponents(new MessageButton()
 				.setCustomId('ping_again')
 				.setLabel('Click here to ping again!')
-				.setStyle('PRIMARY'));
+				.setStyle('SECONDARY'));
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Pong!')

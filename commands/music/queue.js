@@ -32,11 +32,11 @@ module.exports = {
 				new MessageButton()
 					.setCustomId('queue_prev')
 					.setLabel('◄')
-					.setStyle('PRIMARY'),
+					.setStyle('SECONDARY'),
 				new MessageButton()
 					.setCustomId('queue_next')
 					.setLabel('►')
-					.setStyle('PRIMARY'),
+					.setStyle('SECONDARY'),
 			);
 		return message.reply({ embeds: [embed], components: [row] });
 	},
