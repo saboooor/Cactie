@@ -237,7 +237,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 			Embed.fields.splice(12, issue_count);
 			Embed.addField(`Plus ${issue_count - 12} more recommendations`, 'Click the buttons below to see more');
 		}
-		Embed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)} • Buttons are not functional atm`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
+		Embed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 		components.push(
 			new MessageActionRow()
 				.addComponents(
