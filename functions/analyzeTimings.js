@@ -229,6 +229,9 @@ module.exports = async function analyzeTimings(message, client, args) {
 			if (message.customId == 'timings_prev') page = page - 1;
 			if (page == 0) page = Math.ceil(issue_count / 12);
 			if (page > Math.ceil(issue_count / 12)) page = 1;
+			const index = page * 12;
+			Embed.fields.splice(0, index - 12);
+			Embed.fields.splice(index, issue_count);
 		}
 		else {
 			Embed.fields.splice(12, issue_count);
