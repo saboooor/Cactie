@@ -1,19 +1,11 @@
-const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../functions/convert.js');
 const emoji = require('../config/emoji.json');
 module.exports = {
 	name: 'queue_next',
+	player: true,
 	async execute(interaction) {
-		// Check for if music is playing
+		// Get the player, queue, and embed
 		const player = interaction.client.manager.get(interaction.guild.id);
-		if (!player || !player.queue.current) {
-			const thing = new MessageEmbed()
-				.setColor('RED')
-				.setDescription('There is no music playing.');
-			return interaction.reply({ embeds: [thing] });
-		}
-
-		// Get queue and embed
 		const queue = player.queue;
 		const song = queue.current;
 		const embed = interaction.message.embeds[0];

@@ -24,6 +24,31 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
+		const embed = new MessageEmbed()
+			.setColor('RED');
+
+		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
+
+		if (button.player && (!player || !player.queue.current)) {
+			embed.setDescription('There is no music playing.');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		if (button.serverUnmute && interaction.guild.me.voice.serverMute) {
+			embed.setDescription('I\'m server muted!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		if (button.inVoiceChannel && !interaction.member.voice.channel) {
+			embed.setDescription('You must be in a voice channel!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
+		if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
+			embed.setDescription(`You must be in the same channel as ${client.user}!`);
+			return interaction.reply({ embeds: [embed], ephemeral: true });
+		}
+
 		try {
 			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
 			button.execute(interaction, client);

@@ -4,21 +4,12 @@ module.exports = {
 	name: 'music_skip',
 	deferReply: true,
 	ephemeral: true,
+	player: true,
+	serverUnmute: true,
+	inVoiceChannel: true,
+	sameVoiceChannel: true,
 	async execute(interaction, client) {
 		const player = client.manager.get(interaction.guild.id);
-		const error = new MessageEmbed().setColor('RED');
-		if ((!player || !player.queue.current)) {
-			error.setDescription('There is no music playing.');
-			return interaction.reply({ embeds: [error] });
-		}
-		if (!interaction.member.voice.channel) {
-			error.setDescription('You must be in a voice channel!');
-			return interaction.reply({ embeds: [error] });
-		}
-		if (interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			error.setDescription(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [error] });
-		}
 		if (interaction.guild.me.voice.serverMute) return interaction.reply({ content: 'I\'m server muted!' });
 		if (!player) return interaction.reply({ content: 'The bot is not playing anything!' });
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);

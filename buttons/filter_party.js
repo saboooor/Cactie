@@ -1,23 +1,12 @@
-const { MessageEmbed } = require('discord.js');
 const { filter } = require('../config/emoji.json');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'filter_party',
+	player: true,
+	inVoiceChannel: true,
+	sameVoiceChannel: true,
 	async execute(interaction, client) {
 		const player = client.manager.get(interaction.guild.id);
-		const error = new MessageEmbed().setColor('RED');
-		if ((!player || !player.queue.current)) {
-			error.setDescription('There is no music playing.');
-			return interaction.reply({ embeds: [error] });
-		}
-		if (!interaction.member.voice.channel) {
-			error.setDescription('You must be in a voice channel!');
-			return interaction.reply({ embeds: [error] });
-		}
-		if (interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			error.setDescription(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [error] });
-		}
 		if (interaction.guild.me.voice.serverMute) return interaction.reply({ content: 'I\'m server muted!' });
 		await player.clearEQ();
 		await sleep(1000);
