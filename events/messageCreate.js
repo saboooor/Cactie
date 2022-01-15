@@ -1,31 +1,14 @@
 const { MessageAttachment, MessageEmbed, Collection } = require('discord.js');
-const { NodeactylClient } = require('nodeactyl');
 const fetch = require('node-fetch');
 const { createPaste } = require('hastebin');
-const servers = require('../config/pterodactyl.json');
+const gitUpdate = require('../functions/gitUpdate');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, message) => {
-	const embed = message.embeds[0];
-	if (message.webhookId && message.channel.id == '812082273393704960' && embed) {
-		let server = null;
-		if (embed.title.startsWith('[Pup:master]') && servers['pup'].client) server = servers['pup'];
-		else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
-		if (server && !server.client) return;
-		if (!server) return;
-		await client.manager.players.forEach(async player => {
-			embed.setAuthor({ name: 'Pup is updating and will restart in 5sec! Sorry for the inconvenience!' })
-				.setFooter({ text: 'You\'ll be able to play music again in about 10sec!' });
-			await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
-		});
-		await message.reply({ content: 'Updating to latest commit...' });
-		await sleep(5000);
-		const Client = new NodeactylClient(server.url, server.apikey);
-		await Client.restartServer(server.id);
-	}
+	await gitUpdate(client, message);
 	if (message.author.bot) return;
 	if (message.channel.type == 'DM') {
 		if (message.attachments && message.attachments.size >= 1 && !message.commandName) {
