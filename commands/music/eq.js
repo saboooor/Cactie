@@ -24,8 +24,9 @@ module.exports = {
 		const but6 = new MessageButton().setCustomId('filter_treb').setLabel('Treblebass').setStyle('PRIMARY');
 		const but7 = new MessageButton().setCustomId('filter_boost').setLabel('Boost').setStyle('PRIMARY');
 		const but8 = new MessageButton().setCustomId('filter_soft').setLabel('Soft').setStyle('PRIMARY');
+		const but9 = new MessageButton().setCustomId('filter_maxed').setLabel('Maxed').setStyle('PRIMARY');
 		const row = new MessageActionRow().addComponents(but, but2, but3, but4, but5);
-		const row2 = new MessageActionRow().addComponents(but6, but7, but8);
+		const row2 = new MessageActionRow().addComponents(but6, but7, but8, but9);
 		await message.reply({ embeds: [embed], components: [row, row2] });
 	},
 };
