@@ -17,7 +17,7 @@ plugins:
     ClearLag:
       prefix: "❌"
       value: |-
-        Plugins that claim to remove lag actually cause more lag. 
+        Plugins that claim to remove lag actually cause more lag.
     LagAssist:
       prefix: "❌"
       value: |-
@@ -30,11 +30,11 @@ plugins:
     ServerBooster:
       prefix: "❌"
       value: |-
-        Plugins that claim to remove lag actually cause more lag. 
+        Plugins that claim to remove lag actually cause more lag.
     AntiLag:
       prefix: "❌"
       value: |-
-        Plugins that claim to remove lag actually cause more lag. 
+        Plugins that claim to remove lag actually cause more lag.
     BookLimiter:
       prefix: "❌"
       value: |-
@@ -87,17 +87,17 @@ plugins:
     GroupManager:
       prefix: "❌"
       value: |-
-        GroupManager is an outdated permission plugin. 
+        GroupManager is an outdated permission plugin.
         Consider replacing it with [LuckPerms](https://luckperms.net/download).
     PermissionsEx:
       prefix: "❌"
       value: |-
-        PermissionsEx is an outdated permission plugin. 
+        PermissionsEx is an outdated permission plugin.
         Consider replacing it with [LuckPerms](https://luckperms.net/download).
     bPermissions:
       prefix: "❌"
       value: |-
-        bPermissions is an outdated permission plugin. 
+        bPermissions is an outdated permission plugin.
         Consider replacing it with [LuckPerms](https://luckperms.net/download).
     PhantomSMP:
     - expressions:
@@ -119,15 +119,15 @@ plugins:
     SilkSpawners:
       prefix: "❌"
       value: |-
-        You probably don't need SilkSpawners as Purpur already has its features. 
+        You probably don't need SilkSpawners as Purpur already has its features.
     MineableSpawners:
       prefix: "❌"
       value: |-
-        You probably don't need MineableSpawners as Purpur already has its features. 
+        You probably don't need MineableSpawners as Purpur already has its features.
     VillagerLobotomizatornator:
       prefix: "❌"
       value: |-
-        You probably don't need VillagerLobotomizatornator as Purpur already adds its features. 
+        You probably don't need VillagerLobotomizatornator as Purpur already adds its features.
         Enable villager.lobotomize.enabled in purpur.yml.
 config:
   server.properties:
