@@ -11,7 +11,7 @@ module.exports = {
 	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
-		let song = null;
+		let song = player ? player.queue.current : null;
 		if (args[0]) {
 			song = {
 				title: args.join(' '),
