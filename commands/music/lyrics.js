@@ -12,8 +12,7 @@ module.exports = {
 	async execute(message, args, client) {
 		const player = client.manager.get(message.guild.id);
 		let song = null;
-		if (player) { song = player.queue.current; }
-		else {
+		if (args[0]) {
 			song = {
 				title: args.join(' '),
 				uri: 'https://google.com',
@@ -21,7 +20,7 @@ module.exports = {
 				duration: 0,
 			};
 		}
-		let lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
+		let lyrics = player ? player.lyrics : await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
 		if (!lyrics) return message.reply('Could not find lyrics for this track!');
 		if (lyrics.length > 3500) lyrics = await createPaste(lyrics, { server: 'https://bin.birdflop.com' });
 		const embed = new MessageEmbed()

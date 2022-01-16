@@ -26,6 +26,8 @@ module.exports = client => {
 							playing: player.playing,
 							paused: player.paused,
 							volume: player.volume,
+							bands: player.bands,
+							lyrics: player.lyrics,
 						};
 						players.push(playerjson);
 					}
