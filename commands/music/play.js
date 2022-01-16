@@ -3,6 +3,7 @@ const { TrackUtils } = require('erela.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist, resume, warn } = require('../../config/emoji.json');
 const { getColor } = require('colorthief');
+const getlfmCover = require('../../functions/getlfmCover.js');
 module.exports = {
 	name: 'play',
 	description: 'Play music from YouTube, Spotify, or Apple Music',
@@ -72,20 +73,21 @@ module.exports = {
 		}
 		songs.forEach(async song => {
 			song.requester = message.member.user;
+			if (!song.img && song.author) {
+				const img = await getlfmCover(song.title, song.author, client).catch(e => client.logger.warn(e));
+				if (img) song.img = img;
+			}
 			if (!song.img) {
 				const Searched = await player.search(song.title + song.author ? ` ${song.author}` : '');
 				const a = Searched.tracks[0];
-				if (a && a.displayThumbnail) {
-					song.img = a.displayThumbnail('hqdefault');
-					song.color = await getColor(song.img);
-				}
+				if (a && a.displayThumbnail) song.img = a.displayThumbnail('hqdefault');
 			}
-			else if (song.img) { song.color = await getColor(song.img); }
-			else { song.color = Math.round(Math.random() * 16777215); }
+			if (song.img) song.color = await getColor(song.img);
+			else song.color = Math.round(Math.random() * 16777215);
 			if (song.author) song.title = `${song.title}\n${song.author}`;
 		});
-		player.queue.add(songs);
-		if (!player.playing) player.play();
+		await player.queue.add(songs);
+		if (!player.playing) await player.play();
 		slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] });
 	},
 };

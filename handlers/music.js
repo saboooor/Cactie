@@ -11,7 +11,7 @@ Structure.extend(
 	(Player) =>
 		class extends Player {
 			setNowplayingMessage(message) {
-				if (this.nowPlayingMessage && !this.nowPlayingMessage.deleted) {this.nowPlayingMessage.delete();}
+				if (this.nowPlayingMessage) { this.nowPlayingMessage.delete().catch(e => console.error(e));}
 				return (this.nowPlayingMessage = message);
 			}
 		},

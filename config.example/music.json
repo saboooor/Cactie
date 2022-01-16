@@ -1,6 +1,7 @@
 {
     "SpotifyID": "[SPOTIFY ID HERE]",
     "SpotifySecret": "[SPOTIFY SECRET HERE]",
+    "LastFMKey": "[LASTFM KEY HERE]",
     "nodes": [
       {
         "host": "[LAVALINK IP HERE]",
