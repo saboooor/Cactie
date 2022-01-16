@@ -74,7 +74,7 @@ module.exports = {
 		songs.forEach(async song => {
 			song.requester = message.member.user;
 			if (!song.img && song.author) {
-				const img = await getlfmCover(song.title, song.author, client).catch(e => client.logger.warn(e));
+				const img = await getlfmCover(song.title, song.author.split(',')[0], client).catch(e => client.logger.warn(e));
 				if (img) song.img = img;
 			}
 			if (!song.img) {
