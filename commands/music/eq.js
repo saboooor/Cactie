@@ -15,7 +15,7 @@ module.exports = {
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle('Equalizer')
 			.setDescription('Choose a mode to set the equalizer to.')
-			.addField('Want a more precise equalizer?', '[Use the dashboard!](https://pup.smhsmh.com/music)');
+			.addField('Want a more precise equalizer?', '[Use the dashboard!](https://pup.smhsmh.club/music)');
 		const but = new MessageButton().setCustomId('filter_clear').setLabel('Clear').setStyle('DANGER');
 		const but2 = new MessageButton().setCustomId('filter_bass').setLabel('Bass').setStyle('PRIMARY');
 		const but3 = new MessageButton().setCustomId('filter_party').setLabel('Party').setStyle('PRIMARY');
