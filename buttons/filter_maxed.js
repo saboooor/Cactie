@@ -29,7 +29,7 @@ module.exports = {
 			{ band: 14, gain: 1 },
 		];
 		await player.setEQ(...bands);
-		const embed = interaction.message.embeds[0].setDescription(`${filter} Equalizer mode is now set to **Bass**.`);
+		const embed = interaction.message.embeds[0].setDescription(`${filter} Equalizer mode is now set to **Maxed**.`);
 		await interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };
