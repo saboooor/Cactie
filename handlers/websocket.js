@@ -12,7 +12,7 @@ module.exports = client => {
 				client.manager.players.forEach(player => {
 					const guild = client.guilds.cache.get(player.guild);
 					const member = guild.members.cache.get(userid);
-					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) {
+					if (member && member.voice && member.voice.channel && member.voice.channel.id === player.options.voiceChannel) {
 						const playerjson = {
 							voiceChannelId: player.options.voiceChannel,
 							voiceChannelName: `#${client.channels.cache.get(player.options.voiceChannel).name}`,
