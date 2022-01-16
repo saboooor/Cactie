@@ -20,7 +20,8 @@ module.exports = {
 				duration: 0,
 			};
 		}
-		let lyrics = player ? player.lyrics : await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
+		let lyrics = player ? player.lyrics : null;
+		if (song) lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
 		if (!lyrics) return message.reply('Could not find lyrics for this track!');
 		if (lyrics.length > 3500) lyrics = await createPaste(lyrics, { server: 'https://bin.birdflop.com' });
 		const embed = new MessageEmbed()
