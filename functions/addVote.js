@@ -7,6 +7,6 @@ module.exports = async function addVote(body, client) {
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle('Vote Received!')
 		.setDescription(`Thank you for voting, ${user || body.id || body.user}!`);
-	client.guilds.cache.get('811354612547190794').channels.cache.get('931848198773948427').send(Embed);
+	client.guilds.cache.get('811354612547190794').channels.cache.get('931848198773948427').send({ embeds: [Embed] });
 	await client.setData('lastvoted', 'userId', `${body.id || body.user}`, 'timestamp', Date.now());
 };
