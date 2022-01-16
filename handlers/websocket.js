@@ -1,5 +1,6 @@
 const { WebSocketServer } = require('ws');
 const { wsport } = require('../config/bot.json');
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = client => {
 	if (!wsport) return client.logger.info('Skipped websocket server loading!');
 	const wss = new WebSocketServer({ port: wsport });
@@ -86,6 +87,36 @@ module.exports = client => {
 					const guild = client.guilds.cache.get(player.guild);
 					const member = guild.members.cache.get(userid);
 					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) player.queue.shuffle();
+				});
+			}
+			else if (`${data}`.startsWith('eq:')) {
+				const userid = `${data}`.replace('eq: ', '').split(' / ')[0];
+				let bands = `${data}`.replace('eq: ', '').split(' / ')[1].split(',');
+				client.manager.players.forEach(async player => {
+					const guild = client.guilds.cache.get(player.guild);
+					const member = guild.members.cache.get(userid);
+					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) {
+						await player.clearEQ();
+						await sleep(1000);
+						bands = [
+							{ band: 0, gain: bands[0] },
+							{ band: 1, gain: bands[1] },
+							{ band: 2, gain: bands[2] },
+							{ band: 3, gain: bands[3] },
+							{ band: 4, gain: bands[4] },
+							{ band: 5, gain: bands[5] },
+							{ band: 6, gain: bands[6] },
+							{ band: 7, gain: bands[7] },
+							{ band: 8, gain: bands[8] },
+							{ band: 9, gain: bands[9] },
+							{ band: 10, gain: bands[10] },
+							{ band: 11, gain: bands[11] },
+							{ band: 12, gain: bands[12] },
+							{ band: 13, gain: bands[13] },
+							{ band: 14, gain: bands[14] },
+						];
+						await player.setEQ(...bands);
+					}
 				});
 			}
 		});
