@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const recoverPlayers = require('../functions/recoverPlayers.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
@@ -80,6 +81,7 @@ module.exports = async (client) => {
 		});
 	}, 10000);
 	client.manager.init(client.user.id);
+	recoverPlayers(client);
 	const timer = (Date.now() - client.startTimestamp) / 1000;
 	client.logger.info(`Done (${timer}s)! I am running!`);
 };
