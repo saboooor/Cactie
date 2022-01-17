@@ -99,7 +99,7 @@ module.exports = client => {
 					const member = guild.members.cache.get(userid);
 					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) {
 						await player.clearEQ();
-						await sleep(1000);
+						await sleep(30);
 						bands = [
 							{ band: 0, gain: bands[0] },
 							{ band: 1, gain: bands[1] },

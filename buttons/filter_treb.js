@@ -10,7 +10,7 @@ module.exports = {
 		const player = client.manager.get(interaction.guild.id);
 		if (interaction.guild.me.voice.serverMute) return interaction.reply({ content: 'I\'m server muted!' });
 		await player.clearEQ();
-		await sleep(1000);
+		await sleep(30);
 		const bands = [
 			{ band: 0, gain: 0.6 },
 			{ band: 1, gain: 0.67 },
