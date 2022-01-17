@@ -6,7 +6,7 @@ module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
 	player.shuffleAmount = null;
-	player.lyrics = await solenolyrics.requestLyricsFor(track.title.split('(')[0]);
+	player.lyrics = track.title.split('(')[0] ? await solenolyrics.requestLyricsFor(track.title.split('(')[0]) : await solenolyrics.requestLyricsFor(track.title);
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	const thing = new MessageEmbed()
 		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
