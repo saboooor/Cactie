@@ -3,7 +3,6 @@ const fetch = require('node-fetch');
 module.exports = {
 	name: 'dm',
 	description: 'DM someone through Pup bot.',
-	options: require('../options/dm.json'),
 	async execute(message, args, client) {
 		const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
 		if (!(member ? member.roles.cache.has('849452673156513813') : null)) return;

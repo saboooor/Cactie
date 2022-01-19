@@ -1,5 +1,6 @@
 const { NodeactylClient } = require('nodeactyl');
 const servers = require('../config/pterodactyl.json');
+const fs = require('fs');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async function gitUpdate(client, message) {
 	// get embed and check if it's an embed in the git channel
@@ -12,12 +13,27 @@ module.exports = async function gitUpdate(client, message) {
 	else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
 	if (!server || !server.client) return;
 
-	// send a notice to everyone currently playing music and log
+	// send a notice to everyone currently playing music and log and save music queues
 	client.logger.info('Detected a new commit on GitHub, updating...');
+	embed.setAuthor({ name: 'Pup is updating! Sorry for the inconvenience!' })
+		.setFooter({ text: 'I\'ll be back up in a few seconds to keep your music playing!' });
 	await client.manager.players.forEach(async player => {
-		embed.setAuthor({ name: 'Pup is updating and will restart in 5sec! Sorry for the inconvenience!' })
-			.setFooter({ text: 'You\'ll be able to play music again in about 10sec!' });
 		await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
+		player.queue.unshift(player.queue.current);
+		const playerjson = {
+			voiceChannel: player.options.voiceChannel,
+			textChannel: player.textChannel,
+			guild: player.guild,
+			queue: player.queue,
+			trackRepeat: player.trackRepeat,
+			queueRepeat: player.queueRepeat,
+			position: player.position,
+			volume: player.volume,
+			paused: player.paused,
+		};
+		const prevlines = fs.readFileSync('playercache.txt');
+		fs.writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
+		player.destroy();
 	});
 
 	// wait 5sec and restart the bot

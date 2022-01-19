@@ -5,7 +5,7 @@ module.exports = client => {
 	client.slashcommands = new Collection();
 	const slashcommandFolders = readdirSync('./commands');
 	for (const folder of slashcommandFolders) {
-		const slashcommandFiles = readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js') && !file.endsWith('_noslash.js') && folder != 'nsfw');
+		const slashcommandFiles = readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js') && folder != 'nsfw' && folder != 'private' && folder != 'reaction');
 		for (const file of slashcommandFiles) {
 			const slashcommand = require(`../commands/${folder}/${file}`);
 			client.slashcommands.set(slashcommand.name, slashcommand);
