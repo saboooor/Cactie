@@ -39,10 +39,14 @@ module.exports = {
 			const track = Searched.tracks[0];
 			if (Searched.loadType === 'PLAYLIST_LOADED') {
 				embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
-				for (let i = 0; i < Searched.tracks.length; i++) songs.push(TrackUtils.build(Searched.tracks[i]));
+				await Searched.tracks.forEach(song => {
+					if (!song.info.uri) song.info.uri = 'https://google.com';
+					songs.push(TrackUtils.build(song));
+				});
 			}
 			else if (Searched.loadType.startsWith('TRACK')) {
 				embed.setDescription(`${playlist} **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
+				if (!track.info.uri) track.info.uri = 'https://google.com';
 				songs.push(TrackUtils.build(track));
 			}
 			else {
@@ -60,10 +64,10 @@ module.exports = {
 			}
 			else if (Searched.loadType == 'PLAYLIST_LOADED') {
 				embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
-				for (let i = 0; i < Searched.tracks.length; i++) {
-					if (Searched.tracks[i].displayThumbnail) Searched.tracks[i].img = Searched.tracks[i].displayThumbnail('hqdefault');
-					songs.push(Searched.tracks[i]);
-				}
+				await Searched.tracks.forEach(song => {
+					if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
+					songs.push(song);
+				});
 			}
 			else {
 				if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
