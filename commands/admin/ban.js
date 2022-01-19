@@ -28,7 +28,8 @@ module.exports = {
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		if (!isNaN(time) && args[2]) {
 			// Ban for amount of time with reason
-			Embed.setTitle(`Banned ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
+			Embed.setTitle(`Banned ${user.tag} for ${args[1]}.`)
+				.addField('Reason', args.slice(2).join(' '));
 
 			// Send ban message to target
 			await user.send({ content: `**You've been banned from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**` })
@@ -62,7 +63,8 @@ module.exports = {
 		}
 		else if (args[1]) {
 			// Ban forever with reason
-			Embed.setTitle(`Banned ${user.tag} for ${args.slice(1).join(' ')}`);
+			Embed.setTitle(`Banned ${user.tag} for ${args.slice(1).join(' ')}`)
+				.addField('Reason', args.slice(2).join(' '));
 
 			// Send ban message to target
 			await user.send({ content: `**You've been banned on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
