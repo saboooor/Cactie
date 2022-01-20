@@ -78,7 +78,10 @@ module.exports = {
 				// Check if log channel exists and send message
 				const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const logEmbed = Embed.setTitle(`Setting changed by ${message.author.tag}`);
+					const logEmbed = new MessageEmbed()
+						.setAuthor({ name: `${message.author.tag} changed a setting`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
+						.addField('Setting', prop)
+						.addField('Value', value);
 					logchannel.send({ embeds: [logEmbed] });
 				}
 			}
