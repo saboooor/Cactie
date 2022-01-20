@@ -10,7 +10,7 @@ module.exports = {
 		// Get random index and reply with the string in the array of the index
 		const i = Math.floor(Math.random() * ball.length - 1);
 		const embed = new MessageEmbed()
-			.setTitle(`🎱 ${args.join()}?`)
+			.setTitle(`🎱 ${args.join(' ')}?`)
 			.setDescription(`${ball[i]}`);
 		message.reply({ embeds: [embed] });
 	},
