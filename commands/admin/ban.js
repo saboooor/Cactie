@@ -63,8 +63,8 @@ module.exports = {
 		}
 		else if (args[1]) {
 			// Ban forever with reason
-			Embed.setTitle(`Banned ${user.tag} for ${args.slice(1).join(' ')}`)
-				.addField('Reason', args.slice(2).join(' '));
+			Embed.setTitle(`Banned ${user.tag} forever.`)
+				.addField('Reason', args.slice(1).join(' '));
 
 			// Send ban message to target
 			await user.send({ content: `**You've been banned on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
