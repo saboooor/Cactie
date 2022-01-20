@@ -24,7 +24,7 @@ module.exports = {
 		embed.fields = [];
 		if (song) embed.addField('Now Playing', `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
-		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `${start + (++i)} - ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
+		else embed.addField(`${emoji.queue} Queue List`, tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n'));
 		embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
 		return interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
