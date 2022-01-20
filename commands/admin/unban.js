@@ -22,7 +22,7 @@ module.exports = {
 			});
 
 		// Actually unban the dude
-		message.guild.members.unban(args[0]);
+		message.guild.members.unban(user.id);
 
 		// Create embed with color and title
 		const Embed = new MessageEmbed()
