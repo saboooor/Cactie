@@ -23,7 +23,8 @@ module.exports = {
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		if (args[1]) {
 			// Kick with reason
-			Embed.setTitle(`Kicked ${user.tag} for ${args.slice(1).join(' ')}`);
+			Embed.setTitle(`Kicked ${user.tag}.`)
+				.addField('Reason', args.slice(1).join(' '));
 
 			// Send kick message to target
 			await user.send({ content: `**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**` })

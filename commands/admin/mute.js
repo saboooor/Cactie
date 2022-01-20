@@ -37,7 +37,10 @@ module.exports = {
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		if (!isNaN(time) && args[2]) {
 			// Set embed title and send mute message to user
-			Embed.setTitle(`Muted ${user.tag} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
+			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`)
+				.addField('Reason', args.slice(2).join(' '));
+
+			// Send mute message to target
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**` })
 				.catch(e => {
 					client.logger.warn(e);
@@ -51,6 +54,8 @@ module.exports = {
 		else if (!isNaN(time) && args[1]) {
 			// Set embed title and send mute message to user
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`);
+
+			// Send mute message to target
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args[1]}**` })
 				.catch(e => {
 					client.logger.warn(e);
@@ -66,7 +71,10 @@ module.exports = {
 			if (srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
 
 			// Set embed title and send mute message to user
-			Embed.setTitle(`Muted ${user.tag} for ${args.slice(1).join(' ')}, forever`);
+			Embed.setTitle(`Muted ${user.tag} forever.`)
+				.addField('Reason', args.slice(1).join(' '));
+
+			// Send mute message to target
 			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
 				.catch(e => {
 					client.logger.warn(e);
