@@ -64,23 +64,14 @@ module.exports = {
 			thread.delete();
 		}
 
-		// Check if there's a message and put in footer and send update dm
-		if (!args[1]) {
-			Embed.setFooter({ text: `Denied by ${message.member.user.tag}.`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
-			if (Embed.url) {
-				client.users.cache.get(Embed.url.split('a')[1])
-					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**` })
-					.catch(error => { client.logger.warn(error); });
-			}
-		}
-		else {
-			if (!isNaN(args[0])) args = args.slice(1);
-			Embed.setFooter({ text: `${message.member.user.tag}: ${args.join(' ')}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
-			if (Embed.url) {
-				client.users.cache.get(Embed.url.split('a')[1])
-					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**\nResponse: ${args.join(' ')}` })
-					.catch(error => { client.logger.warn(error); });
-			}
+		// Check if there's a message and put in new field and send update dm
+		if (!isNaN(args[0])) args = args.slice(1);
+		if (args.join(' ')) Embed.addField('Response', args.join(' '));
+		Embed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
+		if (Embed.url) {
+			client.users.cache.get(Embed.url.split('a')[1])
+				.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
+				.catch(error => { client.logger.warn(error); });
 		}
 
 		// Update message and reply with denied
