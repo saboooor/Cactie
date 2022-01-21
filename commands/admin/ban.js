@@ -26,40 +26,26 @@ module.exports = {
 
 		// Create embed and check if bqn has a reason / time period
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
-		if (!isNaN(time) && args[2]) {
-			// Ban for amount of time with reason
-			Embed.setTitle(`Banned ${user.tag} for ${args[1]}.`)
-				.addField('Reason', args.slice(2).join(' '));
-
-			// Send ban message to target
-			await user.send({ content: `**You've been banned from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
-				});
-			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
-
-			// Set unban timestamp to member data for auto-unban
-			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'bannedUntil', Date.now() + time);
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}` });
-		}
-		else if (!isNaN(time)) {
+		if (!isNaN(time)) {
 			// Ban for amount of time, no reason
 			Embed.setTitle(`Banned ${user.tag} for ${args[1]}.`);
 
+			// Add reason if specified
+			if (args[2]) Embed.addField('Reason', args.slice(2).join(' '));
+
 			// Send ban message to target
-			await user.send({ content: `**You've been banned on ${message.guild.name} for ${args[1]}.**` })
+			await user.send({ content: `**You've been banned from ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
+			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}`);
 
 			// Set unban timestamp to member data for auto-unban
 			await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'bannedUntil', Date.now() + time);
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args[1]}` });
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}` });
 		}
 		else if (args[1]) {
 			// Ban forever with reason
@@ -67,30 +53,30 @@ module.exports = {
 				.addField('Reason', args.slice(1).join(' '));
 
 			// Send ban message to target
-			await user.send({ content: `**You've been banned on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
+			await user.send({ content: `**You've been banned from ${message.guild.name} for ${args.slice(1).join(' ')}**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
+			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever` });
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args.slice(1).join(' ')} forever` });
 		}
 		else {
 			// Ban forever, no reason
 			Embed.setTitle(`Banned ${user.tag} forever.`);
 
 			// Send ban message to target
-			await user.send({ content: `**You've been banned on ${message.guild.name} forever.**` })
+			await user.send({ content: `**You've been banned from ${message.guild.name} forever.**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			client.logger.info(`Banned user: ${user.tag} on ${message.guild.name} forever`);
+			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} forever`);
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} on ${message.guild.name} forever` });
+			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} forever` });
 		}
 
 		// Reply with response

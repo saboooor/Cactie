@@ -35,33 +35,20 @@ module.exports = {
 
 		// Create embed and check if duration / reason are set and do stuff
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
-		if (!isNaN(time) && args[2]) {
-			// Set embed title and send mute message to user
-			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`)
-				.addField('Reason', args.slice(2).join(' '));
-
-			// Send mute message to target
-			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
-				});
-			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}. Reason: ${args.slice(2).join(' ')}`);
-
-			// Set member data for unmute time
-			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
-		}
-		else if (!isNaN(time) && args[1]) {
+		if (!isNaN(time)) {
 			// Set embed title and send mute message to user
 			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`);
 
+			// Add reason if specified
+			if (args[2]) Embed.addField('Reason', args.slice(2).join(' '));
+
 			// Send mute message to target
-			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args[1]}**` })
+			await user.send({ content: `**You've been muted in ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
-			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args[1]}`);
+			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}`);
 
 			// Set member data for unmute time
 			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
@@ -75,12 +62,12 @@ module.exports = {
 				.addField('Reason', args.slice(1).join(' '));
 
 			// Send mute message to target
-			await user.send({ content: `**You've been muted on ${message.guild.name} for ${args.slice(1).join(' ')}**` })
+			await user.send({ content: `**You've been muted in ${message.guild.name} for ${args.slice(1).join(' ')}**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
-			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
+			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
 		}
 		else {
 			// Timeout feature can't mute someone forever
@@ -88,12 +75,12 @@ module.exports = {
 
 			// Set embed title and send mute message to user
 			Embed.setTitle(`Muted ${user.tag} forever.`);
-			await user.send({ content: `**You've been muted on ${message.guild.name} forever.**` })
+			await user.send({ content: `**You've been muted in ${message.guild.name} forever.**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
 				});
-			client.logger.info(`Muted user: ${user.tag} on ${message.guild.name} forever`);
+			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} forever`);
 		}
 
 		// Actually mute the dude (add role)

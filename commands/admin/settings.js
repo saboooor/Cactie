@@ -18,6 +18,7 @@ module.exports = {
 			// Set prop variable to first argument
 			const prop = args[0];
 
+			// Embed for possible error
 			const errEmbed = new MessageEmbed()
 				.setColor('RED')
 				.addField('Too confusing?', 'Use the dashboard!');

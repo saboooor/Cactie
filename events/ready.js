@@ -41,7 +41,8 @@ module.exports = async (client) => {
 		memberdata.forEach(async data => {
 			if (data.mutedUntil < Date.now() && data.mutedUntil != 0) {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
-				const member = await guild.members.cache.get(data.memberId.split('-')[0]);
+				const userId = data.memberId.split('-')[0];
+				const member = await guild.members.cache.get(userId);
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const role = await guild.roles.cache.get(srvconfig.mutecmd);
 				if (member && role) {
@@ -49,28 +50,29 @@ module.exports = async (client) => {
 					await member.roles.remove(role);
 				}
 				await client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);
-				client.logger.info(`Unmuted ${member.user.tag} in ${guild.name}`);
+				client.logger.info(`Unmuted ${member ? member.user.tag : userId} in ${guild.name}`);
 
 				// Check if log channel exists and send message
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const Embed = new MessageEmbed().setTitle(`${member.user.tag} has been unmuted`);
+					const Embed = new MessageEmbed().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
 					logchannel.send({ embeds: [Embed] });
 				}
 			}
 			else if (data.bannedUntil < Date.now() && data.bannedUntil != 0) {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
-				const member = await guild.members.cache.get(data.memberId.split('-')[0]);
-				if (member) member.user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
+				const userId = data.memberId.split('-')[0];
+				const user = await client.users.cache.get(userId);
+				if (user) user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
 				await client.setData('memberdata', 'memberId', data.memberId, 'bannedUntil', 0);
-				client.logger.info(`Unbanned ${member ? member.user.tag : data.memberId.split('-')[0]} in ${guild.name}`);
-				await guild.members.unban(data.memberId.split('-')[0]).catch(e => client.logger.error(e));
+				client.logger.info(`Unbanned ${user ? user.tag : userId} in ${guild.name}`);
+				await guild.members.unban(userId).catch(e => client.logger.error(e));
 
 				// Check if log channel exists and send message
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const Embed = new MessageEmbed().setTitle(`${member.user.tag} has been unbanned`);
+					const Embed = new MessageEmbed().setTitle(`${user ? user.tag : userId} has been unbanned`);
 					logchannel.send({ embeds: [Embed] });
 				}
 			}
