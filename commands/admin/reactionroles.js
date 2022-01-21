@@ -5,7 +5,7 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['rr'],
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
-	permissions: 'ADMINISTRATOR',
+	permission: 'ADMINISTRATOR',
 	options: require('../options/reactionroles.json'),
 	async execute(message, args, client) {
 		// Create Embed with title and color

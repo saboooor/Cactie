@@ -1,7 +1,7 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'settings_reset',
-	permissions: 'ADMINISTRATOR',
+	permission: 'ADMINISTRATOR',
 	async execute(interaction, client) {
 		// Delete settings database for guild and reply
 		client.delData('settings', 'guildId', interaction.guild.id);

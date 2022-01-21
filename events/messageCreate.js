@@ -144,14 +144,14 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	if (command.permissions && message.author.id !== '249638347306303499') {
+	if (command.permission && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
-		if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
+		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
 			errEmbed.setDescription(`You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
 			return message.reply({ embeds: [errEmbed] });
 		}
-		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permissions) && srvconfig.adminrole == 'permission') {
-			errEmbed.setDescription(`You can't do that! You need the ${command.permissions} permission!`);
+		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
+			errEmbed.setDescription(`You can't do that! You need the ${command.permission} permission!`);
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}

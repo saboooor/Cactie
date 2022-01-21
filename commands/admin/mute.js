@@ -6,7 +6,7 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User> [Time and/or Reason]',
-	permissions: 'MANAGE_MESSAGES',
+	permission: 'MANAGE_MESSAGES',
 	botperm: 'MANAGE_ROLES',
 	cooldown: 5,
 	options: require('../options/punish.json'),

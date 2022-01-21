@@ -5,7 +5,7 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User>',
-	permissions: 'BAN_MEMBERS',
+	permission: 'BAN_MEMBERS',
 	botperm: 'BAN_MEMBERS',
 	cooldown: 5,
 	options: require('../options/user.json'),

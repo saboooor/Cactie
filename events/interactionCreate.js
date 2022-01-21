@@ -16,9 +16,9 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
-		if (button.permissions && interaction.user.id !== '249638347306303499') {
+		if (button.permission && interaction.user.id !== '249638347306303499') {
 			const authorPerms = interaction.member.permissions;
-			if (!authorPerms || !authorPerms.has(button.permissions)) {
+			if (!authorPerms || !authorPerms.has(button.permission)) {
 				interaction.deferUpdate();
 				return interaction.user.send({ content: 'You can\'t do that!' }).catch(e => { client.logger.warn(e); });
 			}
@@ -173,14 +173,14 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
-		if (command.permissions && interaction.member.user.id !== '249638347306303499') {
+		if (command.permission && interaction.member.user.id !== '249638347306303499') {
 			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);
-			if (command.permissions == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
+			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
 				embed.setTitle(`You can't do that, you need the ${interaction.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
-			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permissions) && srvconfig.adminrole == 'permission') {
-				embed.setTitle(`You can't do that! You need the ${command.permissions} permission!`);
+			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
+				embed.setTitle(`You can't do that! You need the ${command.permission} permission!`);
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
