@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'delete_ticket',
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket

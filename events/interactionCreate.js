@@ -11,9 +11,9 @@ module.exports = async (client, interaction) => {
 		button.deferReply ? await interaction.deferReply({ ephemeral: button.ephemeral }) : await interaction.deferUpdate({ ephemeral: button.ephemeral });
 		interaction.reply = interaction.editReply;
 
-		if (button.botperms && (!interaction.guild.me.permissions.has(button.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperms))) {
-			client.logger.error(`Missing ${button.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return interaction.reply({ content: `I don't have the ${button.botperms} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
+		if (button.botperm && (!interaction.guild.me.permissions.has(button.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperm))) {
+			client.logger.error(`Missing ${button.botperm} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+			return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
 		if (button.permissions && interaction.user.id !== '249638347306303499') {
@@ -71,9 +71,9 @@ module.exports = async (client, interaction) => {
 		const dropdown = client.dropdowns.get(interaction.values[0]);
 		if (!dropdown) return;
 
-		if (dropdown.permissions && interaction.user.id !== '249638347306303499') {
+		if (dropdown.permission && interaction.user.id !== '249638347306303499') {
 			const authorPerms = interaction.member.permissions;
-			if (!authorPerms || !authorPerms.has(dropdown.permissions)) {
+			if (!authorPerms || !authorPerms.has(dropdown.permission)) {
 				interaction.deferUpdate();
 				return interaction.user.send({ content: 'You can\'t do that!' }).catch(e => { client.logger.warn(e); });
 			}
@@ -185,9 +185,9 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
-		if (command.botperms && (!interaction.guild.me.permissions.has(command.botperms) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperms))) {
-			client.logger.error(`Missing ${command.botperms} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-			embed.setTitle(`I don't have the ${command.botperms} permission!`);
+		if (command.botperm && (!interaction.guild.me.permissions.has(command.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperm))) {
+			client.logger.error(`Missing ${command.botperm} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+			embed.setTitle(`I don't have the ${command.botperm} permission!`);
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 

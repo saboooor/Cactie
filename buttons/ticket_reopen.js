@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reopen_ticket',
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket

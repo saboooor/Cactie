@@ -9,7 +9,7 @@ module.exports = {
 	usage: '<Message Amount>',
 	similarcmds: 'clearqueue',
 	permissions: 'MANAGE_MESSAGES',
-	botperms: 'MANAGE_MESSAGES',
+	botperm: 'MANAGE_MESSAGES',
 	options: require('../options/clear.json'),
 	async execute(message, args, client) {
 		// Check if arg is a number and is more than 100

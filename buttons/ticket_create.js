@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'create_ticket',
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	deferReply: true,
 	ephemeral: true,
 	async execute(interaction, client) {

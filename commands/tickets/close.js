@@ -4,7 +4,7 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
 	description: 'Close a ticket',
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	async execute(message, user, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

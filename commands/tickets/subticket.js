@@ -8,7 +8,7 @@ module.exports = {
 	args: true,
 	usage: '<Description>',
 	options: require('../options/ticket.json'),
-	botperms: 'CREATE_PUBLIC_THREADS',
+	botperm: 'CREATE_PUBLIC_THREADS',
 	async execute(message, args, client, reaction) {
 		if (reaction && message.author.id != client.user.id) return;
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

@@ -4,7 +4,7 @@ module.exports = {
 	name: 'delete',
 	description: 'Delete a ticket',
 	permissions: 'ADMINISTRATOR',
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	async execute(message, user, client, reaction) {
 		let author = message.member.user;
 		if (reaction) {

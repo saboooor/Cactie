@@ -7,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '<User> [Time and/or Reason]',
 	permissions: 'MANAGE_MESSAGES',
-	botperms: 'MANAGE_ROLES',
+	botperm: 'MANAGE_ROLES',
 	cooldown: 5,
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {

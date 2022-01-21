@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Create a voiceticket',
 	ephemeral: true,
 	aliases: ['voicenew', 'voice'],
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	async execute(message, args, client, reaction) {
 		// Check if ticket is an actual ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];

@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'voiceticket_create',
-	botperms: 'MANAGE_CHANNELS',
+	botperm: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket

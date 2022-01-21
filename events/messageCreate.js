@@ -156,9 +156,9 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	if (command.botperms && (!message.guild.me.permissions.has(command.botperms) || !message.guild.me.permissionsIn(message.channel).has(command.botperms))) {
-		client.logger.error(`Missing ${command.botperms} permission in #${message.channel.name} at ${message.guild.name}`);
-		errEmbed.setDescription(`I don't have the ${command.botperms} permission!`);
+	if (command.botperm && (!message.guild.me.permissions.has(command.botperm) || !message.guild.me.permissionsIn(message.channel).has(command.botperm))) {
+		client.logger.error(`Missing ${command.botperm} permission in #${message.channel.name} at ${message.guild.name}`);
+		errEmbed.setDescription(`I don't have the ${command.botperm} permission!`);
 		return message.reply({ embeds: [errEmbed] });
 	}
 

@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'react',
-	botperms: 'ADD_REACTIONS',
+	botperm: 'ADD_REACTIONS',
 	args: true,
 	async execute(message, args) {
 		if (message.author.id !== '249638347306303499') return message.reply({ content: 'You can\'t do that!' });

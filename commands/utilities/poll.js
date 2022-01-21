@@ -7,7 +7,7 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Question>',
-	botperms: 'ADD_REACTIONS',
+	botperm: 'ADD_REACTIONS',
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

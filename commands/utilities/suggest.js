@@ -5,7 +5,7 @@ module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',
 	ephemeral: true,
-	botperms: 'ADD_REACTIONS',
+	botperm: 'ADD_REACTIONS',
 	cooldown: 10,
 	args: true,
 	usage: '<Suggestion>',

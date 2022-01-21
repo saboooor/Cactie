@@ -6,7 +6,7 @@ module.exports = {
 	args: true,
 	usage: '<User>',
 	permissions: 'BAN_MEMBERS',
-	botperms: 'BAN_MEMBERS',
+	botperm: 'BAN_MEMBERS',
 	cooldown: 5,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
