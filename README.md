@@ -1,4 +1,8 @@
-# Pup
+# Pup Discord Bot
+<p align="center">
+  <img src="https://pup.smhsmh.club/assets/images/pup.png" width="20%" alt="Pup">
+</p>
+
 THIS IS NOT MEANT OR WILL EVER BE MEANT TO BE USED AS A FULL-ON SEPARATE BOT.
 
 THIS REPO IS ONLY MEANT TO BE FOR LEARNING / INSPIRATION.
@@ -9,3 +13,6 @@ SUPPORT WILL NOT BE GIVEN FOR PEOPLE THAT USE THIS REPO AS A COMPLETELY SEPARATE
 [![CodeFactor](https://www.codefactor.io/repository/github/saboooor/pup/badge/master)](https://www.codefactor.io/repository/github/saboooor/pup/overview/master)
 ![Lines](https://tokei.rs/b1/github/saboooor/pup)
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
+
+### Contributors
+![Contributors](https://contrib.rocks/image?repo=saboooor/Pup)
