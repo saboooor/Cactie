@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { progressbar } = require('../../functions/progressbar.js');
-const { getColor } = require('colorthief');
 module.exports = {
 	name: 'userinfo',
 	description: 'Discord member information',
@@ -54,10 +53,6 @@ module.exports = {
 			.setDescription(`${member.user}`)
 			.addField('Status', member.presence ? member.presence.status : 'offline')
 			.setTimestamp();
-		if (member.user.bannerURL()) {
-			const color = await getColor(member.user.bannerURL().replace('webp', 'png'));
-			Embed.setColor(color);
-		}
 		if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
 		if (member.user.bannerURL()) Embed.setImage(member.user.bannerURL({ dynamic : true }));
 		Embed

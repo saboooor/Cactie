@@ -1,6 +1,5 @@
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { MessageEmbed } = require('discord.js');
-const { getColor } = require('colorthief');
 module.exports = async (subreddits, message, client) => {
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}...`);
@@ -17,11 +16,8 @@ module.exports = async (subreddits, message, client) => {
 	client.logger.info(`Image URL: ${pong[0].data.children[0].data.url}`);
 	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditFetch.js')(subreddits, message, client);
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
-	let color = Math.floor(Math.random() * 16777215);
-	try { color = await getColor(pong[0].data.children[0].data.url.replace('gifv', 'gif')); }
-	catch (e) { client.logger.error(e); }
 	const Embed = new MessageEmbed()
-		.setColor(color)
+		.setColor(Math.floor(Math.random() * 16777215))
 		.setAuthor({ name: `u/${pong[0].data.children[0].data.author}` })
 		.setTitle(`${pong[0].data.children[0].data.title} (${pong[0].data.children[0].data.ups} Upvotes)`)
 		.setURL(`https://reddit.com${pong[0].data.children[0].data.permalink}`)

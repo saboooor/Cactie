@@ -2,7 +2,6 @@ const { MessageEmbed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('../../functions/convert.js');
 const { addsong, playlist, resume, warn } = require('../../config/emoji.json');
-const { getColor } = require('colorthief');
 const getlfmCover = require('../../functions/getlfmCover.js');
 module.exports = {
 	name: 'playtop',
@@ -87,8 +86,7 @@ module.exports = {
 				const a = Searched.tracks[0];
 				if (a && a.displayThumbnail) song.img = a.displayThumbnail('hqdefault');
 			}
-			if (song.img) song.color = await getColor(song.img);
-			else song.color = Math.round(Math.random() * 16777215);
+			song.color = Math.round(Math.random() * 16777215);
 			if (song.author) song.title = `${song.title}\n${song.author}`;
 		});
 		songs.reverse();

@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { getColor } = require('colorthief');
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',
@@ -7,9 +6,8 @@ module.exports = {
 	cooldown: 10,
 	async execute(message) {
 		const owner = await message.guild.fetchOwner();
-		const color = await getColor(message.guild.iconURL().replace('webp', 'png'));
 		const Embed = new MessageEmbed()
-			.setColor(color)
+			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle(message.guild.name)
 			.setThumbnail(message.guild.iconURL({ dynamic : true }))
 			.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL({ dynamic : true }) })
