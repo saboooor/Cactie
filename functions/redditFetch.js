@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 const { MessageEmbed } = require('discord.js');
 const { getColor } = require('colorthief');
-module.exports = async (subreddit, message, client) => {
+module.exports = async (subreddits, message, client) => {
+	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}...`);
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`);
 	const pong = await json.json().catch(e => {
@@ -12,9 +13,9 @@ module.exports = async (subreddit, message, client) => {
 	if (!pong) return;
 	if (pong.message == 'Not Found') return message.reply({ content: 'Invalid subreddit!' });
 	if (!pong[0]) return message.reply({ content: 'Couldn\'t get data! Try again later.' });
-	if (pong[0].data.children[0].data.selftext) return require('./redditFetch.js')(subreddit, message, client);
+	if (pong[0].data.children[0].data.selftext) return require('./redditFetch.js')(subreddits, message, client);
 	client.logger.info(`Image URL: ${pong[0].data.children[0].data.url}`);
-	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditFetch.js')(subreddit, message, client);
+	if (!pong[0].data.children[0].data.url.includes('i.redd.it') && !pong[0].data.children[0].data.url.includes('i.imgur.com')) return require('./redditFetch.js')(subreddits, message, client);
 	if (!message.channel.nsfw && pong[0].data.children[0].data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
 	let color = Math.floor(Math.random() * 16777215);
 	try { color = await getColor(pong[0].data.children[0].data.url.replace('gifv', 'gif')); }
