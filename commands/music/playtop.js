@@ -86,7 +86,7 @@ module.exports = {
 				const a = Searched.tracks[0];
 				if (a && a.displayThumbnail) song.img = a.displayThumbnail('hqdefault');
 			}
-			song.color = Math.round(Math.random() * 16777215);
+			song.color = [Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255)];
 			if (song.author) song.title = `${song.title}\n${song.author}`;
 		});
 		songs.reverse();
