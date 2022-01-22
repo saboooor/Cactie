@@ -32,8 +32,8 @@ module.exports = async (client, message) => {
 
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
-	if (srvconfig.reactions != 'false') {
-		client.reactions.forEach(reaction => {
+	client.reactions.forEach(reaction => {
+		if (srvconfig.reactions != 'false' || reaction.private) {
 			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) {
 				reaction.execute(message);
 				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
@@ -42,8 +42,8 @@ module.exports = async (client, message) => {
 				reaction.execute(message);
 				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
 			}
-		});
-	}
+		}
+	});
 
 	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 
