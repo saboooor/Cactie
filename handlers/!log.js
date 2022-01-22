@@ -4,6 +4,7 @@ const date = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-$
 const time = `${minTwoDigits(rn.getHours())}-${minTwoDigits(rn.getMinutes())}`;
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = client => {
+	require('pretty-error').start();
 	client.logger = createLogger({
 		format: format.combine(
 			format.colorize(),
