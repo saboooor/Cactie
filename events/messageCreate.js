@@ -33,15 +33,11 @@ module.exports = async (client, message) => {
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
 	client.reactions.forEach(reaction => {
-		if (srvconfig.reactions != 'false' || reaction.private) {
-			if (reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word)) && reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word))) {
-				reaction.execute(message);
-				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
-			}
-			else if (!reaction.additionaltriggers && reaction.triggers.some(word => message.content.toLowerCase().includes(word))) {
-				reaction.execute(message);
-				client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
-			}
+		if ((srvconfig.reactions != 'false' || reaction.private)
+		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
+		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
+			reaction.execute(message);
+			client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
 		}
 	});
 
