@@ -4,6 +4,6 @@ module.exports = {
 	aliases: ['memes'],
 	async execute(message, args, client) {
 		// Get from r/memes with the redditFetch function
-		require('../../functions/redditFetch.js')('memes', message, client);
+		require('../../functions/redditFetch.js')(['memes', 'meme', 'dankmemes', 'funny'], message, client);
 	},
 };

@@ -4,6 +4,6 @@ module.exports = {
 	aliases: ['cat', 'kitten'],
 	async execute(message, args, client) {
 		// Get from r/kitty with the redditFetch function
-		require('../../functions/redditFetch.js')('kitty', message, client);
+		require('../../functions/redditFetch.js')(['kitty', 'cat', 'blurrypicturesofcats'], message, client);
 	},
 };
