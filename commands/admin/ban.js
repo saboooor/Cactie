@@ -27,7 +27,7 @@ module.exports = {
 		// Create embed and check if bqn has a reason / time period
 		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
 		if (!isNaN(time)) {
-			// Ban for amount of time, no reason
+			// Set embed title
 			Embed.setTitle(`Banned ${user.tag} for ${args[1]}.`);
 
 			// Add reason if specified
@@ -48,7 +48,7 @@ module.exports = {
 			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}` });
 		}
 		else if (args[1]) {
-			// Ban forever with reason
+			// Set embed title
 			Embed.setTitle(`Banned ${user.tag} forever.`)
 				.addField('Reason', args.slice(1).join(' '));
 
@@ -64,7 +64,7 @@ module.exports = {
 			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} for ${args.slice(1).join(' ')} forever` });
 		}
 		else {
-			// Ban forever, no reason
+			// Set embed title
 			Embed.setTitle(`Banned ${user.tag} forever.`);
 
 			// Send ban message to target

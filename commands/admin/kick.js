@@ -19,31 +19,20 @@ module.exports = {
 		const author = message.member;
 		if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 
-		// Create embed and check if kick has a reason
-		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
-		if (args[1]) {
-			// Kick with reason
-			Embed.setTitle(`Kicked ${user.tag}.`)
-				.addField('Reason', args.slice(1).join(' '));
+		// Create embed
+		const Embed = new MessageEmbed()
+			.setColor(Math.round(Math.random() * 16777215))
+			.setTitle(`Kicked ${user.tag}.`);
 
-			// Send kick message to target
-			await user.send({ content: `**You've been kicked from ${message.guild.name} for ${args.slice(1).join(' ')}**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
-				});
-		}
-		else {
-			// Kick without reason
-			Embed.setTitle(`Kicked ${user.tag}.`);
+		// Add reason if specified
+		if (args[2]) Embed.addField('Reason', args.slice(2).join(' '));
 
-			// Send kick message to target
-			await user.send({ content: `**You've been kicked from ${message.guild.name}.**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
-				});
-		}
+		// Send kick message to target
+		await user.send({ content: `**You've been kicked from ${message.guild.name}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
+			.catch(e => {
+				client.logger.warn(e);
+				message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
+			});
 
 		// Reply with response
 		message.reply({ embeds: [Embed] });
