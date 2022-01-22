@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { MessageEmbed } = require('discord.js');
 const { getColor } = require('colorthief');
 module.exports = async (subreddits, message, client) => {

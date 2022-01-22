@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const YAML = require('yaml');
 const fs = require('fs');
 const createField = require('./createField.js');

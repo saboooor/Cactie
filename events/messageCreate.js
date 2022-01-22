@@ -1,5 +1,5 @@
 const { MessageAttachment, MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
 function clean(text) {
@@ -11,23 +11,14 @@ module.exports = async (client, message) => {
 	await gitUpdate(client, message);
 	if (message.author.bot) return;
 	if (message.channel.type == 'DM') {
-		if (message.attachments && message.attachments.size >= 1 && !message.commandName) {
-			const files = [];
-			await message.attachments.forEach(async attachment => {
-				const response = await fetch(attachment.url, {
-					method: 'GET',
-				});
-				const buffer = await response.buffer();
-				const img = new MessageAttachment(buffer, `${attachment.id}.${attachment.contentType.split('/')[1]}`);
-				files.push(img);
-				if (files.length == message.attachments.size) {
-					client.channels.cache.get('849453797809455125')
-						.send({ content: `**${message.author}** > ${message.content}`, files: files })
-						.catch(error => { client.logger.warn(error); });
-				}
-			});
+		const files = [];
+		for (const attachment of message.attachments) {
+			const response = await fetch(attachment[1].url, { method: 'GET' });
+			const arrayBuffer = await response.arrayBuffer();
+			const img = new MessageAttachment(Buffer.from(arrayBuffer), attachment[1].name);
+			files.push(img);
 		}
-		return client.channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}` });
+		return client.channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}`, files: files });
 	}
 
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

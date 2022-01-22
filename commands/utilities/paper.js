@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'paper',
 	description: 'Get info on any Paper build',

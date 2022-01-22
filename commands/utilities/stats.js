@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const servers = require('../../config/pterodactyl.json');
 const protocols = require('../../config/mcprotocol.json');
 module.exports = {

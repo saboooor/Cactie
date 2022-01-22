@@ -1,6 +1,6 @@
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
-const fetch = require('node-fetch');
+const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const servers = require('../config/pterodactyl.json');
 const protocols = require('../config/mcprotocol.json');
 module.exports = {
@@ -66,6 +66,6 @@ module.exports = {
 			if (!pong.debug.query) Embed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 		}
 		Embed.setTimestamp();
-		interaction.reply({ embeds: [Embed], components: interaction.message.components });
+		interaction.reply({ embeds: [Embed], components: interaction.message.components, files: [] });
 	},
 };
