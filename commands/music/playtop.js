@@ -52,7 +52,6 @@ module.exports = {
 				embed.setColor('RED').setDescription('No results found.');
 				return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${warn} **Failed to search**`, embeds: [embed] });
 			}
-			track.img = 'https://i.imgur.com/cK7XIkw.png';
 		}
 		else {
 			const Searched = await player.search(search);
@@ -79,13 +78,14 @@ module.exports = {
 			song.requester = message.member.user;
 			if (!song.img && song.author) {
 				const img = await getlfmCover(song.title, song.author.split(',')[0], client).catch(e => client.logger.warn(e));
-				if (img) song.img = img;
+				if (img && typeof img === 'string') song.img = img;
 			}
 			if (!song.img) {
 				const Searched = await player.search(song.title + song.author ? ` ${song.author}` : '');
 				const a = Searched.tracks[0];
 				if (a && a.displayThumbnail) song.img = a.displayThumbnail('hqdefault');
 			}
+			if (!song.img) song.img = 'https://pup.smhsmh.club/assets/images/musicplaceholder.png';
 			song.color = [Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255)];
 			if (song.author) song.title = `${song.title}\n${song.author}`;
 		});
