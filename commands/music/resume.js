@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { resume } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'resume',
 	description: 'Resume currently playing music',
@@ -14,13 +13,13 @@ module.exports = {
 		if (!player.paused) {
 			const thing = new MessageEmbed()
 				.setColor('RED')
-				.setDescription(`${resume} The player is already **resumed**.`)
+				.setDescription('▶️ The player is already **resumed**.')
 				.setTimestamp();
 			return message.reply({ embeds: [thing] });
 		}
 		player.pause(false);
 		const thing = new MessageEmbed()
-			.setDescription(`${resume} **Resumed**\n[${song.title}](${song.uri})`)
+			.setDescription(`▶️ **Resumed**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);

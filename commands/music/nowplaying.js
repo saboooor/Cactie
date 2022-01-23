@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
-const { music } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
@@ -15,7 +14,7 @@ module.exports = {
 		let total = song.duration;
 		let current = player.position;
 		let embed = new MessageEmbed()
-			.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
+			.setDescription(`🎵 **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
 			.setThumbnail(song.img)
 			.setColor(song.color);
 		const msg = await message.channel.send({ embeds: [embed] });
@@ -31,7 +30,7 @@ module.exports = {
 			total = song.duration;
 			current = player.position;
 			embed = new MessageEmbed()
-				.setDescription(`${music} **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
+				.setDescription(`🎵 **Now Playing**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
 				.setThumbnail(song.img)
 				.setColor(song.color);
 			player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit({ embeds: [embed] }, '') :

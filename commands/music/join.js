@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { join } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'join',
 	description: 'Join voice channel',
@@ -19,7 +18,7 @@ module.exports = {
 			player.connect();
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
-				.setDescription(`${join} **Joined VC**\nJoined ${channel} and bound to ${message.channel}`);
+				.setDescription(`📥 **Joined VC**\nJoined ${channel} and bound to ${message.channel}`);
 			return message.reply({ embeds: [thing] });
 		}
 	},

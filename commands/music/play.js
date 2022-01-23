@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const { addsong, playlist, resume, warn } = require('../../lang/int/emoji.json');
 const getlfmCover = require('../../functions/music/getlfmCover.js');
 module.exports = {
 	name: 'play',
@@ -36,20 +35,20 @@ module.exports = {
 			const Searched = await node.load(search);
 			const track = Searched.tracks[0];
 			if (Searched.loadType === 'PLAYLIST_LOADED') {
-				embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
+				embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
 				await Searched.tracks.forEach(song => {
 					if (!song.info.uri) song.info.uri = 'https://google.com';
 					songs.push(TrackUtils.build(song));
 				});
 			}
 			else if (Searched.loadType.startsWith('TRACK')) {
-				embed.setDescription(`${playlist} **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
+				embed.setDescription(`🎶 **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
 				if (!track.info.uri) track.info.uri = 'https://google.com';
 				songs.push(TrackUtils.build(track));
 			}
 			else {
 				embed.setColor('RED').setDescription('No results found.');
-				return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${warn} **Failed to search**`, embeds: [embed] });
+				return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
 			}
 		}
 		else {
@@ -57,10 +56,10 @@ module.exports = {
 			const track = Searched.tracks[0];
 			if (Searched.loadType === 'NO_MATCHES') {
 				embed.setColor('RED').setDescription('No results found.');
-				return slash ? message.editReply({ content: `${warn} **Failed to search**`, embeds: [embed] }) : msg.edit({ content: `${warn} **Failed to search**`, embeds: [embed] });
+				return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
 			}
 			else if (Searched.loadType == 'PLAYLIST_LOADED') {
-				embed.setDescription(`${playlist} **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
+				embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
 				await Searched.tracks.forEach(song => {
 					if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
 					songs.push(song);
@@ -68,7 +67,7 @@ module.exports = {
 			}
 			else {
 				if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
-				embed.setDescription(`${addsong} **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
+				embed.setDescription(`🎵 **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
 					.setThumbnail(track.img);
 				songs.push(Searched.tracks[0]);
 			}
@@ -90,6 +89,6 @@ module.exports = {
 		});
 		await player.queue.add(songs);
 		if (!player.playing) await player.play();
-		slash ? message.editReply({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `${resume} **Found result for \`${search}\`**`, embeds: [embed] });
+		slash ? message.editReply({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] });
 	},
 };

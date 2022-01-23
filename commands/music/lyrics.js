@@ -1,7 +1,6 @@
 const { createPaste } = require('hastebin');
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const { music } = require('../../lang/int/emoji.json');
 const solenolyrics = require('solenolyrics');
 module.exports = {
 	name: 'lyrics',
@@ -25,7 +24,7 @@ module.exports = {
 		if (!lyrics) return message.reply('Could not find lyrics for this track!');
 		if (lyrics.length > 3500) lyrics = await createPaste(lyrics, { server: 'https://bin.birdflop.com' });
 		const embed = new MessageEmbed()
-			.setDescription(`${music} **Lyrics**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
+			.setDescription(`🎵 **Lyrics**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
 			.setThumbnail(song.img)
 			.setColor(song.color);
 		return message.reply({ embeds: [embed] });

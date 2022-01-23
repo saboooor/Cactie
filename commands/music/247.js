@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { loop } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: '247',
 	description: 'Toggle 24/7 in voice channel',
@@ -15,7 +14,7 @@ module.exports = {
 		const player = client.manager.players.get(message.guild.id);
 		const embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`${loop} 24/7 mode is now **o${!player.twentyFourSeven ? 'n' : 'ff'}**.`);
+			.setDescription(`🔁 24/7 mode is now **o${!player.twentyFourSeven ? 'n' : 'ff'}**.`);
 		player.twentyFourSeven = !player.twentyFourSeven;
 		message.reply({ embeds: [embed] });
 	},

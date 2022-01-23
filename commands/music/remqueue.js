@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { remove } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'remqueue',
 	description: 'Delete a song from the queue',
@@ -24,7 +23,7 @@ module.exports = {
 		}
 		const song = player.queue[position];
 		const thing = new MessageEmbed()
-			.setDescription(`${remove} **Removed**\n[${song.title}](${song.uri})`)
+			.setDescription(`⏏️ **Removed**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);

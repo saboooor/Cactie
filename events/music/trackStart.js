@@ -1,6 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const { play } = require('../../lang/int/emoji.json');
 const solenolyrics = require('solenolyrics');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
@@ -9,7 +8,7 @@ module.exports = async (client, player, track) => {
 	player.lyrics = track.title.split('(')[0] ? await solenolyrics.requestLyricsFor(track.title.split('(')[0]) : await solenolyrics.requestLyricsFor(track.title);
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	const thing = new MessageEmbed()
-		.setDescription(`${play} **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
+		.setDescription(`▶️ **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(track.img)
 		.setColor(track.color)
 		.setTimestamp();

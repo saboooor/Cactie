@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { shuffle } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'shuffle',
 	description: 'Shuffle queue',
@@ -21,7 +20,7 @@ module.exports = {
 		}
 		player.queue.shuffle();
 		const thing = new MessageEmbed()
-			.setDescription(`${shuffle} Shuffled the queue`)
+			.setDescription('🔀 Shuffled the queue')
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTimestamp();
 		return message.reply({ embeds: [thing] }).catch(error => client.logger.error(error));

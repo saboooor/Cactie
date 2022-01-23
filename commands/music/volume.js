@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { volumehigh, volumelow } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'volume',
 	aliases: ['v', 'vol'],
@@ -18,7 +17,7 @@ module.exports = {
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription(`${volumehigh} The current volume is: **${player.volume}%**`);
+				.setDescription(`🔊 The current volume is: **${player.volume}%**`);
 			return message.reply({ embeds: [thing] });
 		}
 		const volume = Number(args[0]);
@@ -34,21 +33,21 @@ module.exports = {
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription(`${volumehigh} Volume set to: **${volume}%**`);
+				.setDescription(`🔊 Volume set to: **${volume}%**`);
 			return message.reply({ embeds: [thing] });
 		}
 		else if (volume < player.volume) {
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription(`${volumelow} Volume set to: **${volume}%**`);
+				.setDescription(`🔈 Volume set to: **${volume}%**`);
 			return message.reply({ embeds: [thing] });
 		}
 		else {
 			const thing = new MessageEmbed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription(`${volumehigh} Volume set to: **${volume}%**`);
+				.setDescription(`🔊 Volume set to: **${volume}%**`);
 			return message.reply({ embeds: [thing] });
 		}
 	},

@@ -1,6 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
-const { skip } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'forceskip',
 	aliases: ['fs'],
@@ -18,7 +17,7 @@ module.exports = {
 		player.stop();
 		const song = player.queue.current;
 		const thing = new MessageEmbed()
-			.setDescription(`${skip} **Force Skipped**\n[${song.title}](${song.uri})`)
+			.setDescription(`⏭️ **Force Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);

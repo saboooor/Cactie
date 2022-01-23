@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { skip } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'music_skip',
 	deferReply: true,
@@ -29,7 +28,7 @@ module.exports = {
 		player.stop();
 		const song = player.queue.current;
 		const thing = new MessageEmbed()
-			.setDescription(`${skip} **Skipped**\n[${song.title}](${song.uri})`)
+			.setDescription(`⏭️ **Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);

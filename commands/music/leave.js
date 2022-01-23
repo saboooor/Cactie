@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { leave } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'leave',
 	description: 'Leave voice channel',
@@ -14,7 +13,7 @@ module.exports = {
 		player.destroy();
 		const thing = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`${leave} **Left VC**\nThank you for using ${client.user.username}!`);
+			.setDescription(`📤 **Left VC**\nThank you for using ${client.user.username}!`);
 		return message.reply({ embeds: [thing] });
 	},
 };

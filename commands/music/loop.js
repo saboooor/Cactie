@@ -1,6 +1,5 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const { loop } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'loop',
 	description: 'Toggle music loop',
@@ -28,7 +27,7 @@ module.exports = {
 			.setColor(song.color)
 			.setThumbnail(song.img)
 			.setTimestamp()
-			.setDescription(`${loop} **${trackRepeat} Looping the track**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
+			.setDescription(`🔁 **${trackRepeat} Looping the track**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
 		return message.reply({ embeds: [thing] });
 	},
 };

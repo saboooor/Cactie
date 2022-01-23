@@ -1,6 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const emoji = require('../../lang/int/emoji.json');
 const { createPaste } = require('hastebin');
 module.exports = {
 	name: 'queue',
@@ -24,7 +23,7 @@ module.exports = {
 		let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 		if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped)}`;
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
-		else embed.addField(`${emoji.queue} Queue List`, mapped);
+		else embed.addField('🎶 Queue List', mapped);
 		const maxPages = Math.ceil(queue.length / multiple);
 		embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
 		const row = new MessageActionRow()

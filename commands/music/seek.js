@@ -1,7 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const ms = require('ms');
-const { forward, rewind } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'seek',
 	description: 'Seek through the playing song',
@@ -22,7 +21,7 @@ module.exports = {
 			if (time > position) {
 				player.seek(time);
 				const thing = new MessageEmbed()
-					.setDescription(`${forward} **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
+					.setDescription(`⏩ **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				return message.reply({ embeds: [thing] });
@@ -30,7 +29,7 @@ module.exports = {
 			else {
 				player.seek(time);
 				const thing = new MessageEmbed()
-					.setDescription(`${rewind} **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
+					.setDescription(`⏪ **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				return message.reply({ embeds: [thing] });

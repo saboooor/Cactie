@@ -1,4 +1,3 @@
-const { filter } = require('../lang/int/emoji.json');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = {
 	name: 'filter_party',
@@ -27,7 +26,7 @@ module.exports = {
 		await player.setEQ(...bands);
 
 		// Update the message with the new EQ
-		const embed = interaction.message.embeds[0].setDescription(`${filter} Equalizer mode is now set to **Party**.`);
+		const embed = interaction.message.embeds[0].setDescription('🎛️ Equalizer mode is now set to **Party**.');
 		await interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };

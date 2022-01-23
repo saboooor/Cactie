@@ -1,6 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
-const { warn } = require('../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	const guildId = newState.guild.id;
@@ -58,7 +57,7 @@ module.exports = async (client, oldState, newState) => {
 				const channel = client.channels.cache.get(player.textChannel);
 				const Embed = new MessageEmbed()
 					.setColor(Math.round(Math.random() * 16777215))
-					.setDescription(`${warn} **Left because of 5 minutes of inactivity!**`)
+					.setDescription('⚠️ **Left because of 5 minutes of inactivity!**')
 					.addField('Tired of me leaving?', 'Enable the **24/7** mode with the /247 command!')
 					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
 				const NowPlaying = await channel.send({ embeds: [Embed] });
