@@ -5,20 +5,19 @@ module.exports = {
 	usage: '[Someone]',
 	options: require('../options/someone.json'),
 	async execute(message, args, client) {
+		// Check if arg is a user and set it
+		if (args[0]) {
+			const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+			if (user) args[0] = user;
+		}
+
 		// Create embed with bonk gif and author / footer
 		const Embed = new MessageEmbed()
-			.setAuthor({ name: `${message.member.displayName} bonks ${args[0] ? args.join(' ') : 'themselves'}`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
+			.setAuthor({ name: `${message.member.displayName} bonks ${args[0] ? args[0].username ? args[0].username : args.join(' ') : 'themselves'}`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
 			.setImage('https://c.tenor.com/TbLpG9NCzjkAAAAC/bonk.gif')
 			.setFooter({ text: 'get bonked' });
 
-		// Check if arg is a user
-		let user = null;
-		if (args[0] && client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) {
-			user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
-			args[0] = user.username;
-		}
-
 		// Reply with bonk message, if user is set then mention the user
-		message.reply({ content: user ? `${user}` : null, embeds: [Embed] });
+		message.reply({ content: args[0].username ? args[0] : null, embeds: [Embed] });
 	},
 };
