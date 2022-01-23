@@ -11,6 +11,8 @@ module.exports = {
 	async execute(interaction, client) {
 		// Get the player
 		const player = client.manager.get(interaction.guild.id);
+
+		// Check if djrole is set, if so, vote for skip instead of skipping
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 		if (srvconfig.djrole != 'false') {
 			const requiredAmount = Math.floor((interaction.guild.me.voice.channel.members.size - 1) / 2);
@@ -22,8 +24,10 @@ module.exports = {
 			if (player.skipAmount.length < requiredAmount) return interaction.reply(`**Skipping?** \`${player.skipAmount.length} / ${requiredAmount}\` Use \`/skip\` to skip or \`/forceskip\` to force skip`);
 			player.skipAmount = null;
 		}
-		const song = player.queue.current;
+
+		// Skip the song and reply with song that was skipped
 		player.stop();
+		const song = player.queue.current;
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)

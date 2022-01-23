@@ -8,7 +8,7 @@ module.exports = {
 		const Embed = interaction.message.embeds[0].setDescription('Settings successfully reset!');
 		interaction.reply({ components: [], embeds: [Embed] });
 
-		// Delete message
+		// Delete message after 5 seconds
 		await sleep(5000);
 		await interaction.message.delete();
 		if (interaction.message.reference && interaction.message.reference.messageId) {
