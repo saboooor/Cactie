@@ -1,4 +1,4 @@
-const ptero = require('../functions/ptero.js');
+const ptero = require('../functions/ptero/ptero.js');
 module.exports = {
 	name: 'ptero_start',
 	async execute(interaction, client) {

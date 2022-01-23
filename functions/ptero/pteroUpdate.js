@@ -1,4 +1,4 @@
-const servers = require('../config/pterodactyl.json');
+const servers = require('../../config/pterodactyl.json');
 const srvs = Object.keys(servers).map(i => { return servers[i]; });
 const { MessageEmbed } = require('discord.js');
 module.exports = async function pteroUpdate(interaction, Client) {

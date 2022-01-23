@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const pteroUpdate = require('../functions/pteroUpdate.js');
+const pteroUpdate = require('../functions/ptero/ptero.js');
 const servers = require('../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero_update',

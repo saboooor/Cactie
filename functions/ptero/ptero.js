@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const servers = require('../config/pterodactyl.json');
+const servers = require('../../config/pterodactyl.json');
 const srvs = Object.keys(servers).map(i => { return servers[i]; });
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const pteroUpdate = require('./pteroUpdate.js');
