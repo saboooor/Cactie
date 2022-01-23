@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
-const { loop } = require('../../config/emoji.json');
+const { loop } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'loop',
 	description: 'Toggle music loop',

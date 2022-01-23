@@ -1,6 +1,8 @@
 {
-	"yes": "[YES EMOJI ID HERE]",
-	"no": "[NO EMOJI ID HERE]",
+	"yes": "849782788500226068",
+	"no": "849782811556839434",
+	"upvote": "934678051437051976",
+	"downvote": "934678051365736500",
 	"mute": "🔇",
 	"volumemiddle": "🔉",
 	"volumelow": "🔈",

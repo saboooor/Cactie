@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { shuffle } = require('../../config/emoji.json');
+const { shuffle } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'shuffle',
 	description: 'Shuffle queue',

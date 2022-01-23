@@ -1,4 +1,4 @@
-const desc = require('../config/settingsdesc.json');
+const desc = require('../lang/en/settingsdesc.json');
 module.exports = {
 	name: 'settings_prev',
 	async execute(interaction, client) {

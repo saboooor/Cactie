@@ -1,9 +1,0 @@
-[
-    "I rate -m a bad -r",
-    "I rate -m a medium -r",
-    "I rate -m a good -r",
-    "-m = the thing to rate",
-    "-r = the rating",
-    "the rating is out of the amount of lines minus 1",
-    "so this config file has a rating out of 6"
-]

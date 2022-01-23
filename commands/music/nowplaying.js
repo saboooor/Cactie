@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const { progressbar } = require('../../functions/progressbar.js');
-const { music } = require('../../config/emoji.json');
+const { music } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',

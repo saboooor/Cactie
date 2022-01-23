@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { skip } = require('../config/emoji.json');
+const { skip } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'music_skip',
 	deferReply: true,

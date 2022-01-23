@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { remove } = require('../../config/emoji.json');
+const { remove } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'clearqueue',
 	description: 'Clear Queue',

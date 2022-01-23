@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { pause } = require('../../config/emoji.json');
+const { pause } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'pause',
 	description: 'Pause the currently playing music',

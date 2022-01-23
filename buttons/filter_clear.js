@@ -1,4 +1,4 @@
-const { filter } = require('../config/emoji.json');
+const { filter } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'filter_clear',
 	player: true,

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { rewind } = require('../../config/emoji.json');
+const { rewind } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'reverse',
 	description: 'Reverse queue',

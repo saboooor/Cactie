@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { leave } = require('../../config/emoji.json');
+const { leave } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'leave',
 	description: 'Leave voice channel',

@@ -1,5 +1,5 @@
 const { convertTime } = require('../functions/convert.js');
-const emoji = require('../config/emoji.json');
+const emoji = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'queue_prev',
 	player: true,

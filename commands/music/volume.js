@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { volumehigh, volumelow } = require('../../config/emoji.json');
+const { volumehigh, volumelow } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'volume',
 	aliases: ['v', 'vol'],

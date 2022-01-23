@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
-const { warn } = require('../../config/emoji.json');
+const { warn } = require('../../lang/int/emoji.json');
 module.exports = async (client, player) => {
 	const channel = client.channels.cache.get(player.textChannel);
 	const thing = new MessageEmbed()

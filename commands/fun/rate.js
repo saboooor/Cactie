@@ -1,4 +1,4 @@
-const ratings = require('../../config/rate.json');
+const ratings = require('../../lang/en/rate.json');
 module.exports = {
 	name: 'rate',
 	description: 'Rate someone or something! Or yourself.',

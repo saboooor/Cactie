@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
-const { upvote, downvote } = require('../../config/emoji.json');
+const { upvote, downvote } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',

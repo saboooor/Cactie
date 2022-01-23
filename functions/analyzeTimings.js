@@ -48,7 +48,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 
-	const TIMINGS_CHECK = await YAML.parse(fs.readFileSync('./config/timings_check.yml', 'utf8'));
+	const TIMINGS_CHECK = await YAML.parse(fs.readFileSync('./lang/int/timings_check.yml', 'utf8'));
 
 	if (TIMINGS_CHECK.version && version) {
 		// ghetto version check

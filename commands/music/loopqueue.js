@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { loop } = require('../../config/emoji.json');
+const { loop } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'loopqueue',
 	description: 'Toggle queue loop',

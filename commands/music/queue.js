@@ -1,6 +1,6 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
-const emoji = require('../../config/emoji.json');
+const emoji = require('../../lang/int/emoji.json');
 const { createPaste } = require('hastebin');
 module.exports = {
 	name: 'queue',

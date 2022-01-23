@@ -1,5 +1,5 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
-const desc = require('../../config/settingsdesc.json');
+const desc = require('../../lang/en/settingsdesc.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Pup\'s settings in the server',

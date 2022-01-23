@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
-const { warn } = require('../config/emoji.json');
+const { warn } = require('../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	const guildId = newState.guild.id;

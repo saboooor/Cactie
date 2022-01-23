@@ -1,4 +1,4 @@
-const insults = require('../../config/insults.json');
+const insults = require('../../lang/en/insults.json');
 module.exports = {
 	name: 'insult',
 	description: 'Insult someone, or insult yourself!',

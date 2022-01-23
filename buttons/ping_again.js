@@ -1,4 +1,4 @@
-const pong = require('../config/pong.json');
+const pong = require('../lang/en/pong.json');
 module.exports = {
 	name: 'ping_again',
 	async execute(interaction, client) {

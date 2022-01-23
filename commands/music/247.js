@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { loop } = require('../../config/emoji.json');
+const { loop } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: '247',
 	description: 'Toggle 24/7 in voice channel',

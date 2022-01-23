@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/convert.js');
 const ms = require('ms');
-const { forward, rewind } = require('../../config/emoji.json');
+const { forward, rewind } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'seek',
 	description: 'Seek through the playing song',
