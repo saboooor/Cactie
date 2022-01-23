@@ -11,6 +11,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	djRole: true,
 	async execute(message) {
+		// Add embed and buttons to message and send, the eq will be set in the buttons or dashboard
 		const embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setTitle('Equalizer')

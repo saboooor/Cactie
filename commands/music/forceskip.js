@@ -11,15 +11,20 @@ module.exports = {
 	sameVoiceChannel: true,
 	djRole: true,
 	async execute(message, args, client) {
+		// Get player
 		const player = client.manager.get(message.guild.id);
-		const song = player.queue.current;
+
+		// Skip the song and reply with song that was skipped
 		player.stop();
+		const song = player.queue.current;
 		const thing = new MessageEmbed()
 			.setDescription(`${skip} **Force Skipped**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);
 		const msg = await message.reply({ embeds: [thing] });
+
+		// Wait 10 seconds and compress the message
 		await sleep(10000);
 		message.commandName ? message.deleteReply() : msg.edit({ content: '**Skipped**', embeds: [] });
 	},
