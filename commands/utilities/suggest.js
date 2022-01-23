@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
-const { yes, no } = require('../../config/emoji.json');
+const { upvote, downvote } = require('../../config/emoji.json');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',
@@ -22,8 +22,8 @@ module.exports = {
 			.setDescription(suggestion)
 			.setURL(`https://a${message.member.user.id}a.pup`);
 		const msg = await channel.send({ embeds: [Embed] });
-		await msg.react(yes);
-		await msg.react(no);
+		await msg.react(upvote);
+		await msg.react(downvote);
 		if (srvconfig.suggestthreads) {
 			if (!message.guild.me.permissions.has('CREATE_PUBLIC_THREADS') || !message.guild.me.permissionsIn(channel).has('CREATE_PUBLIC_THREADS')) {
 				client.logger.error(`Missing CREATE_PUBLIC_THREADS permission in #${channel.name} at ${message.guild.name}`);
