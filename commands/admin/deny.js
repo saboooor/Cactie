@@ -66,7 +66,16 @@ module.exports = {
 
 		// Check if there's a message and put in new field and send update dm
 		if (!isNaN(args[0])) args = args.slice(1);
-		if (args.join(' ')) Embed.addField('Response', args.join(' '));
+		if (args.join(' ')) {
+			let newField = true;
+			Embed.fields.forEach(field => {
+				if (field.name == 'Response') {
+					newField = false;
+					field.value = args.join(' ');
+				}
+			});
+			if (newField) Embed.addField('Response', args.join(' '));
+		}
 		Embed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
 		if (Embed.url) {
 			client.users.cache.get(Embed.url.split('a')[1])
