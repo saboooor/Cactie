@@ -18,7 +18,7 @@ module.exports = async function gitUpdate(client, message) {
 	embed.setAuthor({ name: 'Pup is updating! Sorry for the inconvenience!' })
 		.setFooter({ text: 'I\'ll be back up in a few seconds to keep your music playing!' });
 	await client.manager.players.forEach(async player => {
-		await client.channels.cache.get(player.textChannel).send({ embeds: [embed] });
+		await client.guilds.cache.get(player.guild).channels.cache.get(player.textChannel).send({ embeds: [embed] });
 		player.queue.unshift(player.queue.current);
 		const playerjson = {
 			voiceChannel: player.options.voiceChannel,

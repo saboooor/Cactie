@@ -10,7 +10,7 @@ module.exports = async (client, guild) => {
 		.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL({ dynamic : true }) })
 		.setDescription(`This guild has ${guild.memberCount} members\nPup is now in ${client.guilds.cache.size} servers`)
 		.addField('Created At', `<t:${timestamp}>\n<t:${timestamp}:R>`);
-	client.channels.cache.get('865682839616618506').send({ embeds: [Embed] });
+	client.guilds.cache.get('811354612547190794').cache.get('865682839616618506').send({ embeds: [Embed] });
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const row = new MessageActionRow()
 		.addComponents(

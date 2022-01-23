@@ -1,7 +1,8 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
 module.exports = async (client, player) => {
-	const channel = client.channels.cache.get(player.textChannel);
+	const guild = client.guilds.cache.get(player.guild);
+	const channel = guild.channels.cache.get(player.textChannel);
 	const thing = new MessageEmbed()
 		.setColor(Math.round(Math.random() * 16777215))
 		.setDescription('⚠️ **Music session ended**')
@@ -18,7 +19,7 @@ module.exports = async (client, player) => {
 			.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
 		const LeaveMsg = await channel.send({ embeds: [Embed] });
 		player.setNowplayingMessage(LeaveMsg);
-		client.logger.info(`Destroyed player in ${client.guilds.cache.get(player.guild).name} because of queue end`);
+		client.logger.info(`Destroyed player in ${guild.name} because of queue end`);
 		player.destroy();
 	}
 };

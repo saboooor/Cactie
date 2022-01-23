@@ -12,7 +12,7 @@ module.exports = {
 	options: require('../options/suggest.json'),
 	async execute(message, args, client) {
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-		let channel = client.channels.cache.get(srvconfig.suggestionchannel);
+		let channel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
 		if (!channel) channel = message.channel;
 		const suggestion = args.join(' ');
 		const Embed = new MessageEmbed()

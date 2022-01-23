@@ -54,7 +54,7 @@ module.exports = async (client, oldState, newState) => {
 			if (!player.twentyFourSeven) {
 				await sleep(300000);
 				if (stateChange.channel.members.filter(member => !member.user.bot).size >= 1) return;
-				const channel = client.channels.cache.get(player.textChannel);
+				const channel = newState.guild.channels.cache.get(player.textChannel);
 				const Embed = new MessageEmbed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setDescription('⚠️ **Left because of 5 minutes of inactivity!**')

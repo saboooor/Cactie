@@ -16,7 +16,7 @@ module.exports = client => {
 					if (member && member.voice && member.voice.channel && member.voice.channel.id === player.options.voiceChannel) {
 						const playerjson = {
 							voiceChannelId: player.options.voiceChannel,
-							voiceChannelName: client.channels.cache.get(player.options.voiceChannel).name,
+							voiceChannelName: guild.channels.cache.get(player.options.voiceChannel).name,
 							guild: player.guild,
 							queue: player.queue,
 							current: player.queue.current,

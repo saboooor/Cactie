@@ -11,7 +11,7 @@ module.exports = {
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-		let channel = client.channels.cache.get(srvconfig.pollchannel);
+		let channel = message.guild.channels.cache.get(srvconfig.pollchannel);
 		if (!channel) channel = message.channel;
 		const Poll = new MessageEmbed()
 			.setColor(3447003)

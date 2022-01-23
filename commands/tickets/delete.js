@@ -32,7 +32,7 @@ module.exports = {
 				.addField('**Users in ticket**', `${users}`)
 				.addField('**Transcript**', `${link}.txt`)
 				.addField('**Deleted by**', `${author}`);
-			await client.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
+			await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
 			await trans.delete();
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 		}

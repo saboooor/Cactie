@@ -29,7 +29,7 @@ module.exports = {
 			.addField('**Users in ticket**', `${users}`)
 			.addField('**Transcript**', `${link}.txt`)
 			.addField('**Deleted by**', `${author}`);
-		if (srvconfig.logchannel != 'false') client.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
+		if (srvconfig.logchannel != 'false') message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
 		users.forEach(usr => {
 			usr.send({ embeds: [Embed] })
 				.catch(error => { client.logger.warn(error); });

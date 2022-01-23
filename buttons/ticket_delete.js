@@ -34,7 +34,7 @@ module.exports = {
 				.addField('**Deleted by**', `${interaction.user}`);
 
 			// Send embed to ticket log channel
-			await client.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
+			await interaction.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 		}
 		else { interaction.reply({ content: 'Deleting Ticket...' }); }

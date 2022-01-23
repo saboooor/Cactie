@@ -9,7 +9,7 @@ module.exports = {
 		if (!client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))) return message.reply({ content: 'Invalid user!' });
 		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args.slice(1).join(' ')}\nTo see the response, see ${client.channels.cache.get('849453797809455125')}`);
+			.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''))}!**\n**Content:** ${args.slice(1).join(' ')}`);
 		const files = [];
 		for (const attachment of message.attachments) {
 			const response = await fetch(attachment[1].url, { method: 'GET' });
