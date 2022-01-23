@@ -37,7 +37,7 @@ module.exports = {
 			.setDescription('Please explain your issue and we\'ll be with you shortly.')
 			.addField('Description', args[0] ? args.join(' ') : 'Created using a reaction');
 		if (srvconfig.tickets == 'buttons') {
-			Embed.setFooter({ text: `To close this subticket do ${srvconfig.prefix}close, or click the button below` });
+			Embed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 			const row = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -49,7 +49,7 @@ module.exports = {
 			await subticket.send({ content: `${users}`, embeds: [Embed], components: [row] });
 		}
 		else if (srvconfig.tickets == 'reactions') {
-			Embed.setFooter({ text: `To close this subticket do ${srvconfig.prefix}close, or react with 🔒` });
+			Embed.setFooter({ text: 'To close this subticket do /close, or react with 🔒' });
 			const embed = await subticket.send({ content: `${users}`, embeds: [Embed] });
 			await embed.react('🔒');
 		}

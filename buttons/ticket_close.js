@@ -84,7 +84,7 @@ module.exports = {
 		// Check if ticket setting is set to reactions and add the reactions
 		if (srvconfig.tickets == 'reactions') {
 			Embed.setColor(3447003);
-			Embed.setDescription(`🔓 Reopen Ticket \`${srvconfig.prefix}open\` \`/open\`\n⛔ Delete Ticket \`${srvconfig.prefix}delete\` \`/delete\``);
+			Embed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
 			const embed = await interaction.channel.send({ embeds: [Embed] });
 			embed.react('🔓');
 			embed.react('⛔');

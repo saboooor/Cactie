@@ -117,7 +117,7 @@ module.exports = {
 
 			// Set embed description with page and stuff
 			Embed.setDescription(configlist.slice(0, 4).join('\n'))
-				.addField('Usage', `\`${srvconfig.prefix}settings [<Setting> <Value>]\``)
+				.addField('Usage', '`/settings [<Setting> <Value>]`')
 				.addField('Too confusing?', 'Use the dashboard!')
 				.setFooter({ text: `Page 1 of ${maxPages}` });
 

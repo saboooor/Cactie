@@ -17,7 +17,7 @@ module.exports = {
 
 		// Find role and if no role then reply with error
 		const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
+		if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 
 		// Check if ticket already exists
 		const author = interaction.user;
@@ -62,11 +62,11 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setColor(3447003)
 			.setTitle('Ticket Created')
-			.setDescription(`Please explain your issue and we'll be with you shortly\nIf you have multiple issues, please use the ${srvconfig.prefix}subticket command\nIf you want to create a private voice chat, please use the ${srvconfig.prefix}voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.`);
+			.setDescription('Please explain your issue and we\'ll be with you shortly\nIf you have multiple issues, please use the /subticket command\nIf you want to create a private voice chat, please use the /voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.');
 
 		// Check if ticket mode is buttons or reactions and send embed
 		if (srvconfig.tickets == 'buttons') {
-			Embed.setFooter({ text: `To close this ticket do ${srvconfig.prefix}close, or click the button below` });
+			Embed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 			const row = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -88,7 +88,7 @@ module.exports = {
 			await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
 		}
 		else if (srvconfig.tickets == 'reactions') {
-			Embed.setFooter({ text: `To close this ticket do ${srvconfig.prefix}close, or react with 🔒` });
+			Embed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
 			const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
 			await embed.react('🔒');
 			await embed.react('📜');

@@ -25,7 +25,7 @@ module.exports = {
 			}
 			const position = Number(args[0]);
 			if (position < 0 || position > player.queue.size) {
-				errEmbed.setDescription(`Usage: ${srvconfig.prefix}skip [Number of song in queue]`);
+				errEmbed.setDescription('Usage: /skip [Number of song in queue]');
 				return message.reply({ embeds: [errEmbed] });
 			}
 			else if (position) {

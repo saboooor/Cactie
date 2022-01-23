@@ -20,7 +20,7 @@ module.exports = {
 
 		// Find role and if no role then reply with error
 		const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-		if (!role) return interaction.reply({ content: `You need to set a role with ${srvconfig.prefix}settings supportrole <Role Id>!` });
+		if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 
 		// Create voice channel for voiceticket
 		const author = client.users.cache.get(ticketData.opener);
