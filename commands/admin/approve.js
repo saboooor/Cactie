@@ -44,7 +44,7 @@ module.exports = {
 			if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
 			emojis.push(emoji);
 		});
-		if (!Embed.fields[0] && emojis[0]) Embed.addField('Results­', `${emojis.join(' ')}`);
+		if (!Embed.fields[0] && emojis[0]) Embed.addField('Results', `${emojis.join(' ')}`);
 
 		// Delete command message
 		if (!message.commandName) message.delete();
