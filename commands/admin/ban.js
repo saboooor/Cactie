@@ -25,10 +25,9 @@ module.exports = {
 		if (time > 31536000000) return message.reply({ content: 'You cannot ban someone for more than 1 year!' });
 
 		// Create embed and check if bqn has a reason / time period
-		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
-
-		// Set embed title
-		Embed.setTitle(`Banned ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+		const Embed = new MessageEmbed()
+			.setColor(Math.round(Math.random() * 16777215))
+			.setTitle(`Banned ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 		// Add reason if specified
 		const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');

@@ -31,57 +31,30 @@ module.exports = {
 		// Check if duration is set and if it's more than a year
 		const time = ms(args[1] ? args[1] : 'perm');
 		if (role && time > 31536000000) return message.reply({ content: 'You cannot mute someone for more than 1 year!' });
+
+		// Timeout feature can't mute someone for more than 30 days
 		else if (time > 2592000000) return message.reply({ content: 'You cannot mute someone for more than 30 days with the timeout feature turned on!' });
+		if (isNaN(time) && srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
 
 		// Create embed and check if duration / reason are set and do stuff
-		const Embed = new MessageEmbed().setColor(Math.round(Math.random() * 16777215));
-		if (!isNaN(time)) {
-			// Set embed title and send mute message to user
-			Embed.setTitle(`Muted ${user.tag} for ${args[1]}.`);
+		const Embed = new MessageEmbed()
+			.setColor(Math.round(Math.random() * 16777215))
+			.setTitle(`Muted ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
-			// Add reason if specified
-			if (args[2]) Embed.addField('Reason', args.slice(2).join(' '));
+		// Add reason if specified
+		const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
+		if (reason) Embed.addField('Reason', reason);
 
-			// Send mute message to target
-			await user.send({ content: `**You've been muted in ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
-				});
-			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} for ${args[1]}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}`);
+		// Send mute message to target
+		await user.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+			.catch(e => {
+				client.logger.warn(e);
+				message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+			});
+		client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
-			// Set member data for unmute time
-			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
-		}
-		else if (args[1]) {
-			// Timeout feature can't mute someone forever
-			if (srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
-
-			// Set embed title and send mute message to user
-			Embed.setTitle(`Muted ${user.tag} forever.`)
-				.addField('Reason', args.slice(1).join(' '));
-
-			// Send mute message to target
-			await user.send({ content: `**You've been muted in ${message.guild.name} for ${args.slice(1).join(' ')}**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
-				});
-			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} for ${args.slice(1).join(' ')} forever`);
-		}
-		else {
-			// Timeout feature can't mute someone forever
-			if (srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
-
-			// Set embed title and send mute message to user
-			Embed.setTitle(`Muted ${user.tag} forever.`);
-			await user.send({ content: `**You've been muted in ${message.guild.name} forever.**` })
-				.catch(e => {
-					client.logger.warn(e);
-					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
-				});
-			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} forever`);
-		}
+		// Set member data for unmute time if set
+		if (!isNaN(time) && role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
 
 		// Actually mute the dude (add role)
 		if (role) await member.roles.add(role);
