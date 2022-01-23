@@ -1,4 +1,4 @@
-const analyzeTimings = require('../functions/analyzeTimings');
+const analyzeTimings = require('../functions/timings/analyzeTimings');
 module.exports = {
 	name: 'timings_next',
 	async execute(interaction, client) {
