@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const { convertTime } = require('../../functions/convert.js');
+const { convertTime } = require('../../functions/music/convert.js');
 const { play } = require('../../lang/int/emoji.json');
 const solenolyrics = require('solenolyrics');
 module.exports = async (client, player, track) => {

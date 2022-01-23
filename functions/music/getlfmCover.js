@@ -1,5 +1,5 @@
 const LastFM = require('last-fm');
-const { LastFMKey } = require('../config/music.json');
+const { LastFMKey } = require('../../config/music.json');
 const lastfm = new LastFM(LastFMKey, { userAgent: 'Pup/1.0.0 (https://pup.smhsmh.club)' });
 module.exports = async function getlfmCover(title, author) {
 	return new Promise((resolve, reject) => {

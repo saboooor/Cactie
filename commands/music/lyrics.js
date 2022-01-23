@@ -1,6 +1,6 @@
 const { createPaste } = require('hastebin');
 const { MessageEmbed } = require('discord.js');
-const { convertTime } = require('../../functions/convert.js');
+const { convertTime } = require('../../functions/music/convert.js');
 const { music } = require('../../lang/int/emoji.json');
 const solenolyrics = require('solenolyrics');
 module.exports = {

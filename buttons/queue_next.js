@@ -1,4 +1,4 @@
-const { convertTime } = require('../functions/convert.js');
+const { convertTime } = require('../functions/music/convert.js');
 const emoji = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'queue_next',

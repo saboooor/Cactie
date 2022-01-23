@@ -1,8 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
-const { convertTime } = require('../../functions/convert.js');
+const { convertTime } = require('../../functions/music/convert.js');
 const { addsong, playlist, resume, warn } = require('../../lang/int/emoji.json');
-const getlfmCover = require('../../functions/getlfmCover.js');
+const getlfmCover = require('../../functions/music/getlfmCover.js');
 module.exports = {
 	name: 'playtop',
 	description: 'Play music to the top of the queue',
