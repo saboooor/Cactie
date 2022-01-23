@@ -4,9 +4,11 @@ module.exports = {
 	ephemeral: true,
 	type: 3,
 	async execute(interaction) {
+		// Get embed and check if it exists
 		const embed = interaction.message.embeds[0];
 		if (!embed) return interaction.reply({ content: 'There is no embed in this message!', ephemeral: true });
-		if (!embed.description) embed.setDescription('\u200b');
+
+		// If the json string is too long, put it in hastebin, otherwise just send it
 		if (`\`\`\`json\n${JSON.stringify(embed, null, 2)}\n\`\`\``.length > 2000) interaction.reply({ content: await createPaste(JSON.stringify(embed, null, 2), { server: 'https://bin.birdflop.com' }), embeds: [embed], ephemeral: true });
 		else interaction.reply({ content: `\`\`\`json\n${JSON.stringify(embed, null, 2)}\n\`\`\``, embeds: [embed], ephemeral: true });
 	},
