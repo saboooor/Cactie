@@ -11,11 +11,15 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
+		// Get player and server config and create error embed
 		const player = client.manager.get(message.guild.id);
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const errEmbed = new MessageEmbed()
 			.setColor('RED');
+
+		// If arg is set, force skip to index (This requires dj role)
 		if (args[0]) {
+			// If djrole is set, check if user has dj role
 			if (srvconfig.djrole != 'false') {
 				const role = message.guild.roles.cache.get(srvconfig.djrole);
 				if (!role) return message.reply({ content: msg.music.dj.notfound });
@@ -24,12 +28,15 @@ module.exports = {
 					return message.reply({ embeds: [errEmbed] });
 				}
 			}
+
+			// Parse index from arg and if index isn't found in queue, send an error
 			const position = Number(args[0]);
 			if (position < 0 || position > player.queue.size) {
 				errEmbed.setDescription(msg.music.queue.indexnotfound);
 				return message.reply({ embeds: [errEmbed] });
 			}
 			else if (position) {
+				// Skip to the position and reply
 				player.queue.remove(0, position - 1);
 				player.stop();
 				const thing = new MessageEmbed()
@@ -37,10 +44,14 @@ module.exports = {
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				const skipmsg = await message.reply({ embeds: [thing] });
+
+				// After 10 seconds, delete or compress message
 				await sleep(10000);
 				return message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
 			}
 		}
+
+		// Check if djrole is set, if so, check if user has djrole, if not, vote for skip instead of skipping
 		if (srvconfig.djrole != 'false') {
 			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 			if (!player.skipAmount) player.skipAmount = [];
@@ -51,6 +62,8 @@ module.exports = {
 			if (player.skipAmount.length < requiredAmount) return message.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
 			player.skipAmount = null;
 		}
+
+		// Get last song, skip and reply
 		const song = player.queue.current;
 		player.stop();
 		const thing = new MessageEmbed()
@@ -59,6 +72,8 @@ module.exports = {
 			.setTimestamp()
 			.setThumbnail(song.img);
 		const skipmsg = await message.reply({ embeds: [thing] });
+
+		// After 10 seconds, delete or compress message
 		await sleep(10000);
 		message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
 	},

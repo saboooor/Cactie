@@ -1,6 +1,7 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'link',
+	description: 'Sends a linking guide for DiscordSRV (Config will be moved to pterodactyl.json)',
 	cooldown: 10,
 	async execute(message) {
 		let e = [];

@@ -1,5 +1,6 @@
 module.exports = {
 	name: 'react',
+	description: 'Adds a reaction to a message',
 	botperm: 'ADD_REACTIONS',
 	args: true,
 	async execute(message, args) {

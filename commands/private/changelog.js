@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const pteroconfig = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'changelog',
+	description: 'Sends a changelog and broadcasts it to console/changelog channels',
 	aliases: ['cl'],
 	args: true,
 	usage: '<Server> <Changes (split with new line)>',

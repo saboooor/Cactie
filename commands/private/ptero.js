@@ -3,6 +3,7 @@ const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero',
+	description: 'Controls pterodactyl servers on godzillagroin',
 	async execute(message, args) {
 		const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
 		if (!args[0]) {

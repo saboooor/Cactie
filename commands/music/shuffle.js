@@ -6,7 +6,10 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
+		// Get player
 		const player = client.manager.get(message.guild.id);
+
+		// Check if djrole is set, if so, check if user has djrole, if not, vote for shuffle queue instead of shuffling queue
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
 			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
@@ -18,6 +21,8 @@ module.exports = {
 			if (player.shuffleAmount.length < requiredAmount) return message.reply(`**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\``);
 			player.shuffleAmount = null;
 		}
+
+		// Shuffle queue and reply
 		player.queue.shuffle();
 		const thing = new MessageEmbed()
 			.setDescription('🔀 Shuffled the queue')
