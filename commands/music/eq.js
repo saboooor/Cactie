@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
-const msg = require('../../lang/en/music.json');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'eq',
 	description: 'Set Equalizer',
