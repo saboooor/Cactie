@@ -12,6 +12,7 @@ module.exports = async (client, player) => {
 	if (!player.twentyFourSeven) {
 		await sleep(300000);
 		if (player.queue.current) return;
+		if (!player.voiceChannel) return;
 		const Embed = new MessageEmbed()
 			.setColor(Math.round(Math.random() * 16777215))
 			.setDescription('⚠️ **Left because of 5 minutes of inactivity!**')
