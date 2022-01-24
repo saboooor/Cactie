@@ -29,8 +29,8 @@ module.exports = {
 		// Check if time is less than duration, if so, then seek forward or backward and reply, or else send an error
 		if (time <= duration) {
 			player.seek(time);
-			if (time > position) embed.setDescription(`⏩ **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
-			else embed.setDescription(`⏪ **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``)
+			if (time > position) embed.setDescription(`⏩ **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+			else embed.setDescription(`⏪ **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 		}
 		else {
 			embed.setColor('RED')
