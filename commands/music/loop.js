@@ -8,8 +8,10 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(message, args, client) {
+		// Get the player
 		const player = client.manager.get(message.guild.id);
-		const song = player.queue.current;
+
+		// Check if djrole is set, if so, check if user has djrole, if not, vote for loop instead of looping
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
 			const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
@@ -21,7 +23,12 @@ module.exports = {
 			if (player.loopTrackAmount.length < requiredAmount) return message.reply(`**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\``);
 			player.loopTrackAmount = null;
 		}
+
+		// Toggle loop
 		player.setTrackRepeat(!player.trackRepeat);
+
+		// Send message to channel with current song looped
+		const song = player.queue.current;
 		const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
 		const thing = new MessageEmbed()
 			.setColor(song.color)

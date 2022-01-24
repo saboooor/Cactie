@@ -5,11 +5,11 @@ module.exports = {
 		const hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 		seconds = (seconds < 10) ? '0' + seconds : seconds;
 		if (duration < 3600000) {
-			return minutes + ':' + seconds ;
+			return minutes + ':' + seconds;
 		}
 		else {
 			minutes = (minutes < 10) ? '0' + minutes : minutes;
-			return hours + ':' + minutes + ':' + seconds ;
+			return hours + ':' + minutes + ':' + seconds;
 		}
 	},
 };
