@@ -12,6 +12,7 @@ module.exports = {
 	djRole: true,
 	options: require('../options/index.json'),
 	async execute(message, args, client) {
+		// Get player and index from arg and check if index exists
 		const player = client.manager.get(message.guild.id);
 		const position = (Number(args[0]) - 1);
 		if (position > player.queue.size) {
@@ -21,7 +22,10 @@ module.exports = {
 				.setDescription(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`);
 			return message.reply({ embeds: [thing] });
 		}
+
+		// Get song from index and remove it and reply
 		const song = player.queue[position];
+		player.queue.remove(position);
 		const thing = new MessageEmbed()
 			.setDescription(`⏏️ **Removed**\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
