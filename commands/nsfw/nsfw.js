@@ -1,7 +1,8 @@
+const redditFetch = require('../../functions/redditFetch.js');
 module.exports = {
 	name: 'nsfw',
 	async execute(message, args, client) {
-		require('../../functions/redditFetch.js')([
+		redditFetch([
 			'nsfw',
 			'dicks',
 			'DickPics4Freedom',

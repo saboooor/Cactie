@@ -1,6 +1,7 @@
+const redditFetch = require('../../functions/redditFetch.js');
 module.exports = {
 	name: 'furryporn',
 	async execute(message, args, client) {
-		require('../../functions/redditFetch.js')(['furryporn', 'FurryPornSubreddit', 'yiff'], message, client);
+		redditFetch(['furryporn', 'FurryPornSubreddit', 'yiff'], message, client);
 	},
 };

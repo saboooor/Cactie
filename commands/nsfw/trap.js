@@ -1,6 +1,7 @@
+const redditFetch = require('../../functions/redditFetch.js');
 module.exports = {
 	name: 'trap',
 	async execute(message, args, client) {
-		require('../../functions/redditFetch.js')(['traps', 'trapsarentgay', 'FemBoys'], message, client);
+		redditFetch(['traps', 'trapsarentgay', 'FemBoys'], message, client);
 	},
 };

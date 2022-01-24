@@ -1,9 +1,10 @@
+const redditFetch = require('../../functions/redditFetch.js');
 module.exports = {
 	name: 'fish',
 	description: 'fishies swim',
 	aliases: ['fishes'],
 	async execute(message, args, client) {
 		// Get from r/fish with the redditFetch function
-		require('../../functions/redditFetch.js')(['fish', 'bettafish'], message, client);
+		redditFetch(['fish', 'bettafish'], message, client);
 	},
 };
