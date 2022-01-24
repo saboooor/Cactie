@@ -2,6 +2,7 @@ const { NodeactylClient } = require('nodeactyl');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'proxy',
+	description: 'Sends a command to Nether Depths Proxy',
 	aliases: ['b'],
 	args: true,
 	usage: '<Command>',
