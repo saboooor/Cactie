@@ -37,6 +37,6 @@ module.exports = {
 			.setColor(Math.round(Math.random() * 16777215))
 			.setDescription(`🔊 Volume set to: **${volume}%**`)
 			.setTimestamp();
-		message.reply({ embeds: [embed] })
+		message.reply({ embeds: [embed] });
 	},
 };
