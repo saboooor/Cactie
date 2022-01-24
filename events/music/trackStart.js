@@ -8,6 +8,7 @@ module.exports = async (client, player, track) => {
 	player.shuffleAmount = null;
 	player.lyrics = track.title.split('(')[0] ? await solenolyrics.requestLyricsFor(track.title.split('(')[0]) : await solenolyrics.requestLyricsFor(track.title);
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
+	if (!player.voiceChannel) return;
 	const thing = new MessageEmbed()
 		.setDescription(`▶️ **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(track.img)
