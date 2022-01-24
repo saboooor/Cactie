@@ -1,0 +1,19 @@
+{
+    "dashboard": "Use the dashboard!",
+    "off": "Off",
+    "on": "On",
+    "eq": {
+        "name": "Equalizer",
+        "btn": "🎛️ Equalizer mode is now set to **-m**.",
+        "choose": "Choose a mode to set the equalizer to.",
+        "precise": "Want a more precise equalizer?",
+        "bass": "Bass",
+        "boost": "Boost",
+        "maxed": "Maxed",
+        "party": "Party",
+        "pop": "Pop",
+        "radio": "Radio",
+        "soft": "Soft",
+        "treb": "Treble-Bass"
+    }
+}

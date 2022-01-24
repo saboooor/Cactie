@@ -32,7 +32,8 @@ module.exports = {
 		await player.setEQ(...bands);
 
 		// Update the message with the new EQ
-		const embed = interaction.message.embeds[0].setDescription('🎛️ Equalizer mode is now set to **Soft**.');
+		const msg = require('../lang/en/msg.json');
+		const embed = interaction.message.embeds[0].setDescription(msg.eq.btn.replace('-m', msg.eq.soft));
 		await interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };

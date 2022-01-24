@@ -10,7 +10,8 @@ module.exports = {
 		await player.clearEQ();
 
 		// Update the message with the new EQ
-		const embed = interaction.message.embeds[0].setDescription('🎛️ Equalizer mode is now **OFF**.');
+		const msg = require('../lang/en/msg.json');
+		const embed = interaction.message.embeds[0].setDescription(msg.eq.btn.replace('-m', msg.off));
 		await interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };
