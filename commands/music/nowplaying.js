@@ -9,6 +9,7 @@ module.exports = {
 	player: true,
 	ephemeral: true,
 	async execute(message, args, client) {
+		// Get player, current song, and song position / length and send embed
 		let player = client.manager.get(message.guild.id);
 		let song = player.queue.current;
 		let total = song.duration;
@@ -18,15 +19,22 @@ module.exports = {
 			.setThumbnail(song.img)
 			.setColor(song.color);
 		const msg = await message.channel.send({ embeds: [embed] });
+
+		// Set the now playing message and update it every 5 seconds
 		player.set('nowplayingMSG', msg);
 		if (message.commandName) message.reply('Message sent.');
 		const interval = setInterval(() => {
+			// Get the player and current song
 			player = client.manager.get(message.guild.id);
 			song = player.queue.current;
+
+			// If there's no song playing, clear the interval and delete the message
 			if (!song) {
-				if (player?.get('nowplayingMSG')) player?.get('nowplayingMSG').delete();
+				if (player?.get('nowplayingMSG')) player?.get('nowplayingMSG').delete().catch(e => client.logger.error(e));
 				return clearInterval(interval);
 			}
+
+			// Get the song position / length and edit the embed
 			total = song.duration;
 			current = player.position;
 			embed = new MessageEmbed()
