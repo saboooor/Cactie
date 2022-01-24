@@ -2,18 +2,34 @@
     "dashboard": "Use the dashboard!",
     "off": "Off",
     "on": "On",
-    "eq": {
-        "name": "Equalizer",
-        "btn": "🎛️ Equalizer mode is now set to **-m**.",
-        "choose": "Choose a mode to set the equalizer to.",
-        "precise": "Want a more precise equalizer?",
-        "bass": "Bass",
-        "boost": "Boost",
-        "maxed": "Maxed",
-        "party": "Party",
-        "pop": "Pop",
-        "radio": "Radio",
-        "soft": "Soft",
-        "treb": "Treble-Bass"
+    "music": {
+        "dj": {
+            "notfound": "The DJ role can't be found!",
+            "required": "You need the -r role to use this command!"
+        },
+        "eq": {
+            "name": "Equalizer",
+            "btn": "🎛️ Equalizer mode is now set to **-m**.",
+            "choose": "Choose a mode to set the equalizer to.",
+            "precise": "Want a more precise equalizer?",
+            "bass": "Bass",
+            "boost": "Boost",
+            "maxed": "Maxed",
+            "party": "Party",
+            "pop": "Pop",
+            "radio": "Radio",
+            "soft": "Soft",
+            "treb": "Treble-Bass"
+        },
+        "skip": {
+            "name": "Skip",
+            "alrvoted": "You've already voted to skip this song!",
+            "skipping": "⏭️ **Skipping?** `-f` Use `/skip` to skip or `/forceskip` to force skip.",
+            "skipped": "⏭️ **Skipped**",
+            "skipto": "⏭️ **Skipped -i songs**"
+        },
+        "queue": {
+            "indexnotfound": "That song number isn't in the queue!"
+        }
     }
 }

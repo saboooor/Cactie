@@ -1,4 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'filter_pop',
 	player: true,
@@ -32,8 +33,7 @@ module.exports = {
 		await player.setEQ(...bands);
 
 		// Update the message with the new EQ
-		const msg = require('../lang/en/msg.json');
-		const embed = interaction.message.embeds[0].setDescription(msg.eq.btn.replace('-m', msg.eq.pop));
+		const embed = interaction.message.embeds[0].setDescription(msg.music.eq.btn.replace('-m', msg.music.eq.pop));
 		await interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };

@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js');
+const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_skip',
 	deferReply: true,
@@ -18,9 +19,9 @@ module.exports = {
 			if (!player.skipAmount) player.skipAmount = [];
 			let alr = false;
 			player.skipAmount.forEach(i => { if (i == interaction.member.id) alr = true; });
-			if (alr) return interaction.reply({ content: 'You\'ve already voted to skip this song!' });
+			if (alr) return interaction.reply({ content: msg.music.skip.alrvoted });
 			player.skipAmount.push(interaction.member.id);
-			if (player.skipAmount.length < requiredAmount) return interaction.reply(`**Skipping?** \`${player.skipAmount.length} / ${requiredAmount}\` Use \`/skip\` to skip or \`/forceskip\` to force skip`);
+			if (player.skipAmount.length < requiredAmount) return interaction.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
 			player.skipAmount = null;
 		}
 
@@ -28,7 +29,7 @@ module.exports = {
 		player.stop();
 		const song = player.queue.current;
 		const thing = new MessageEmbed()
-			.setDescription(`⏭️ **Skipped**\n[${song.title}](${song.uri})`)
+			.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);

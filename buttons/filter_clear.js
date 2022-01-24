@@ -1,3 +1,4 @@
+const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'filter_clear',
 	player: true,
@@ -10,8 +11,7 @@ module.exports = {
 		await player.clearEQ();
 
 		// Update the message with the new EQ
-		const msg = require('../lang/en/msg.json');
-		const embed = interaction.message.embeds[0].setDescription(msg.eq.btn.replace('-m', msg.off));
+		const embed = interaction.message.embeds[0].setDescription(msg.music.eq.btn.replace('-m', msg.off));
 		await interaction.reply({ embeds: [embed], components: interaction.message.components });
 	},
 };

@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
+const msg = require('../../lang/en/music.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
@@ -19,7 +20,7 @@ module.exports = async (client, player, track) => {
 			new MessageButton()
 				.setCustomId('music_skip')
 				.setEmoji('⏭️')
-				.setLabel('Skip')
+				.setLabel(msg.skip.name)
 				.setStyle('SECONDARY'),
 		);
 	const guild = client.guilds.cache.get(player.guild);

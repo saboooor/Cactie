@@ -1,5 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'forceskip',
 	aliases: ['fs'],
@@ -17,14 +18,14 @@ module.exports = {
 		player.stop();
 		const song = player.queue.current;
 		const thing = new MessageEmbed()
-			.setDescription(`⏭️ **Force Skipped**\n[${song.title}](${song.uri})`)
+			.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 			.setColor(song.color)
 			.setTimestamp()
 			.setThumbnail(song.img);
-		const msg = await message.reply({ embeds: [thing] });
+		const skipmsg = await message.reply({ embeds: [thing] });
 
 		// Wait 10 seconds and compress the message
 		await sleep(10000);
-		message.commandName ? message.deleteReply() : msg.edit({ content: '**Skipped**', embeds: [] });
+		message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
 	},
 };
