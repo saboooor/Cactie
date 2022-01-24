@@ -3,7 +3,6 @@ const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...ar
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
 const fs = require('fs');
-const retry = require('./redditFetch.js');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
 	if (attempts == 2) message.channel.send({ content: 'This is taking a while, please wait...' });
@@ -22,9 +21,9 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		return message.reply({ content: 'Couldn\'t get data! Try again later.' });
 	}
 	const data = pong[0].data.children[0].data;
-	if (data.selftext) return retry(subreddits, message, client, attempts + 1);
+	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
-	if (!data.url.includes('i.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return retry(subreddits, message, client, attempts + 1);
+	if (!data.url.includes('i.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
 	if (!message.channel.nsfw && data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
 	const Embed = new MessageEmbed()
 		.setColor(Math.floor(Math.random() * 16777215))
@@ -37,7 +36,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.url.includes('redgifs.com/watch/')) {
 		const gif = await fetch(`https://api.redgifs.com/v2/gifs/${data.url.split('redgifs.com/watch/')[1]}`);
 		const gifData = await gif.json();
-		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return retry(subreddits, message, client, attempts + 1);
+		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return redditFetch(subreddits, message, client, attempts + 1);
 		data.url = gifData.gif.urls.sd;
 		client.logger.info(`Redgifs URL: ${data.url}`);
 		Embed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})`, url: gifData.user.profileUrl.startsWith('http') ? gifData.user.profileUrl : null })
@@ -55,7 +54,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	Embed.setImage(data.url);
 	message.reply({ embeds: [Embed], files: files }).catch(e => {
 		client.logger.error(e);
-		return retry(subreddits, message, client, attempts + 1);
+		return redditFetch(subreddits, message, client, attempts + 1);
 	});
 	await sleep(5000);
 	if (fs.existsSync(path)) fs.unlinkSync(path);
