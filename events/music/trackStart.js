@@ -20,7 +20,7 @@ module.exports = async (client, player, track) => {
 			new MessageButton()
 				.setCustomId('music_skip')
 				.setEmoji('⏭️')
-				.setLabel(msg.skip.name)
+				.setLabel(msg.music.skip.name)
 				.setStyle('SECONDARY'),
 		);
 	const guild = client.guilds.cache.get(player.guild);
