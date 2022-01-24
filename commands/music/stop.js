@@ -7,6 +7,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	djRole: true,
 	async execute(message, args, client) {
+		// Get player and skip and clear the queue and reply
 		const player = client.manager.get(message.guild.id);
 		player.stop();
 		player.queue.clear();
