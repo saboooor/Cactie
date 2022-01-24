@@ -125,8 +125,8 @@ module.exports = async (client, interaction) => {
 
 		if (timestamps.has(interaction.user.id)) {
 			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
-			const random = Math.floor(Math.random() * 4);
-			const messages = ['Do I look like Usain Bolt to u?', 'BRUH IM JUST A DOG SLOW DOWN', 'can u not', 'leave me alone ;-;'];
+			const messages = require('../lang/en/cooldown.json');
+			const random = Math.floor(Math.random() * messages.length - 1);
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
 				if ((expirationTime - now) < 1200) return;

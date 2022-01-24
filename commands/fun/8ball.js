@@ -2,7 +2,7 @@ const ball = require('../../lang/en/8ball.json');
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: '8ball',
-	description: 'Let the 8ball decide your fate!',
+	description: 'Let the 8 ball decide your fate!',
 	args: true,
 	usage: '[Question]',
 	options: require('../options/question.json'),
