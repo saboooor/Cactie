@@ -29,7 +29,7 @@ module.exports = {
 				}
 			}
 
-			// Parse index from arg and if index isn't found in queue, send an error 
+			// Parse index from arg and if index isn't found in queue, send an error
 			const position = Number(args[0]);
 			if (position < 0 || position > player.queue.size) {
 				errEmbed.setDescription(msg.music.queue.indexnotfound);
@@ -44,7 +44,7 @@ module.exports = {
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTimestamp();
 				const skipmsg = await message.reply({ embeds: [thing] });
-				
+
 				// After 10 seconds, delete or compress message
 				await sleep(10000);
 				return message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
@@ -62,7 +62,7 @@ module.exports = {
 			if (player.skipAmount.length < requiredAmount) return message.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
 			player.skipAmount = null;
 		}
-		
+
 		// Get last song, skip and reply
 		const song = player.queue.current;
 		player.stop();
