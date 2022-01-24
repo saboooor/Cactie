@@ -5,7 +5,7 @@ const ffmpegSync = require('./ffmpegSync.js');
 const fs = require('fs');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
-	if (attempts == 2) message.channel.send({ content: 'This is taking a while, please wait...' });
+	if (attempts > 1) message.channel.send({ content: `This is taking a while, please wait... (attempt ${attempts})` });
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}... (attempt ${attempts})`);
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`);
