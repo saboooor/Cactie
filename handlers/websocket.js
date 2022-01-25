@@ -10,9 +10,11 @@ module.exports = client => {
 			if (`${data}`.startsWith('music info for:')) {
 				const userid = `${data}`.replace('music info for: ', '');
 				const players = [];
-				client.manager.players.forEach(player => {
-					const guild = client.guilds.cache.get(player.guild);
-					const member = guild.members.cache.get(userid);
+				client.manager.players.forEach(async player => {
+					const guild = await client.guilds.cache.get(player.guild);
+					const member = await guild.members.cache.get(userid);
+					const srvconfig = await client.getData('settings', 'guildId', player.guild);
+					const role = guild.roles.cache.get(srvconfig.djrole);
 					if (member && member.voice && member.voice.channel && member.voice.channel.id === player.options.voiceChannel) {
 						const playerjson = {
 							voiceChannelId: player.options.voiceChannel,
@@ -28,6 +30,8 @@ module.exports = client => {
 							volume: player.volume,
 							bands: player.bands,
 							lyrics: player.lyrics,
+							hasdj: srvconfig.djrole == 'false' ? true : member.roles.cache.has(srvconfig.djrole),
+							djrole: role ? role.name : null,
 						};
 						players.push(playerjson);
 					}
