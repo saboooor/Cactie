@@ -40,18 +40,18 @@ module.exports = {
 
 		// Check if tickets are disabled
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-		
+
 		// Check if ticket is already closed
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
-		
+
 		// Check if user is a user that has been added with -add
 		if (ticketData.users.includes(author.id) && author.id != ticketData.opener) return message.reply({ content: 'You can\'t close this ticket!' });
-		
+
 		// Set the name to closed and check if bot has been rate limited
 		message.channel.setName(message.channel.name.replace('ticket', 'closed'));
 		await sleep(1000);
 		if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
-		
+
 		// If voiceticket is set, delete the voiceticket
 		if (ticketData.voiceticket !== 'false') {
 			const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
@@ -61,7 +61,7 @@ module.exports = {
 
 		// Unresolve ticket
 		await client.setData('ticketdata', 'channelId', message.channel.id, 'resolved', 'false');
-		
+
 		// Get rid of the permissions of the users in the tickets from the ticket itself
 		ticketData.users.forEach(userid => {
 			message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false });
