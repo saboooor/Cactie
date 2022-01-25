@@ -11,7 +11,7 @@ module.exports = {
 	options: require('../options/kick.json'),
 	async execute(message, args, client) {
 		// Get user and check if user is valid
-		const member = message.guild.members.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		const member = message.guild.members.cache.get(args[0].replace(/\D/g,''));
 		const user = member.user;
 		if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
 

@@ -18,9 +18,17 @@ module.exports = {
 		const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
 
 		if (args[0] == 'add') {
+			if (!args[3]) {
+				Embed.setDescription('Usage: /reactionroles add <Emoji> <Message Link> <Role Id>');
+				return message.reply({ embeds: [Embed] });
+			}
 			Embed.setDescription('Coming soon');
 		}
 		else if (args[0] == 'remove') {
+			if (!args[2]) {
+				Embed.setDescription('Usage: /reactionroles remove <Emoji> <Message Link>');
+				return message.reply({ embeds: [Embed] });
+			}
 			Embed.setDescription('Coming soon');
 		}
 		else {

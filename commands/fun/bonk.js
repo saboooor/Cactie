@@ -7,7 +7,7 @@ module.exports = {
 	async execute(message, args, client) {
 		// Check if arg is a user and set it
 		if (args[0]) {
-			const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+			const user = client.users.cache.get(args[0].replace(/\D/g,''));
 			if (user) args[0] = user;
 		}
 

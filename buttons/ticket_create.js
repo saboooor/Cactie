@@ -100,7 +100,7 @@ module.exports = {
 			let ping = null;
 			if (srvconfig.ticketmention == 'here') ping = await ticket.send({ content: '@here' });
 			else if (srvconfig.ticketmention == 'everyone') ping = await ticket.send({ content: '@everyone' });
-			else ping = await ticket.send({ content: `<@${srvconfig.ticketmention}>` });
+			else ping = await ticket.send({ content: `<@&${srvconfig.ticketmention}>` });
 			await ping.delete();
 		}
 	},

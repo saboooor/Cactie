@@ -17,7 +17,7 @@ module.exports = {
 
 		// Check if arg is set and is a mention and fetch that user for the name
 		if (args[0] && nick.startsWith('<@') && nick.endsWith('>')) {
-			const mention = nick.includes('!') ? nick.slice(3, -1) : nick.slice(2, -1);
+			const mention = nick.replace(/\D/g,'');
 			nick = client.users.cache.get(mention).username;
 		}
 

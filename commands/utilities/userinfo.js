@@ -9,7 +9,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args) {
 		let member = message.member;
-		if (args[0]) member = message.guild.members.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g,''));
 		if (!member) return message.reply({ content: 'Invalid member!' });
 		const roles = Array.from(member.roles.cache).sort(function(a, b) {
 			if (b[1].rawPosition < a[1].rawPosition) return -1;

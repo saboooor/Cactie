@@ -17,7 +17,7 @@ module.exports = {
 		if (!role && srvconfig.mutecmd != 'timeout') return message.reply('This command is disabled!');
 
 		// Get user and check if user is valid
-		const user = client.users.cache.get(args[0].replace('<@', '').replace('!', '').replace('>', ''));
+		const user = client.users.cache.get(args[0].replace(/\D/g,''));
 		if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
 
 		// Get member and author and check if role is lower than member's role
