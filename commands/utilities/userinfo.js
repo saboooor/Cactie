@@ -37,7 +37,7 @@ module.exports = {
 					activitystack.push(`\n<t:${Math.round(Date.parse(activities[i].timestamps.start) / 1000)}:R>`);
 				}
 				else if (activities[i].timestamps && activities[i].timestamps.end) {
-					activitystack.push(`\nEnds <t:${Math.round(Date.parse(activities[i].timestamps.end)/ 1000)}:R>`);
+					activitystack.push(`\nEnds <t:${Math.round(Date.parse(activities[i].timestamps.end) / 1000)}:R>`);
 				}
 				else if (activities[i].createdTimestamp) {
 					activitystack.push(`\n<t:${Math.round(Date.parse(activities[i].createdTimestamp) / 1000)}:R>`);
