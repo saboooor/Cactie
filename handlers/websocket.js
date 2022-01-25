@@ -9,7 +9,6 @@ module.exports = client => {
 		ws.on('message', async function message(data) {
 			if (`${data}`.startsWith('music info for:')) {
 				const userid = `${data}`.replace('music info for: ', '');
-				const players = [];
 				await client.manager.players.forEach(async player => {
 					const guild = await client.guilds.cache.get(player.guild);
 					const member = await guild.members.cache.get(userid);
@@ -33,10 +32,9 @@ module.exports = client => {
 							hasdj: srvconfig.djrole == 'false' ? true : member.roles.cache.has(srvconfig.djrole),
 							djrole: role ? role.name : null,
 						};
-						players.push(playerjson);
+						ws.send(JSON.stringify(playerjson));
 					}
 				});
-				ws.send(JSON.stringify(players[0]));
 			}
 			else if (`${data}`.startsWith('volume change:')) {
 				const userid = `${data}`.replace('volume change: ', '').split(' / ')[0];
