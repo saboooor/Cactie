@@ -6,11 +6,11 @@ module.exports = client => {
 	const wss = new WebSocketServer({ port: wsport });
 	client.logger.info(`Websocket server loaded on port ${wsport}`);
 	wss.on('connection', function connection(ws) {
-		ws.on('message', function message(data) {
+		ws.on('message', async function message(data) {
 			if (`${data}`.startsWith('music info for:')) {
 				const userid = `${data}`.replace('music info for: ', '');
 				const players = [];
-				client.manager.players.forEach(async player => {
+				await client.manager.players.forEach(async player => {
 					const guild = await client.guilds.cache.get(player.guild);
 					const member = await guild.members.cache.get(userid);
 					const srvconfig = await client.getData('settings', 'guildId', player.guild);
