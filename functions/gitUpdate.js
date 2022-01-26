@@ -13,6 +13,14 @@ module.exports = async function gitUpdate(client, message) {
 	else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
 	if (!server || !server.client) return;
 
+	// Check if all commits in message skip the update
+	const commits = embed.description.split('\n');
+	let update = false;
+	commits.forEach(commit => {
+		if (!commit.split(') ')[1].startsWith('[skip]')) update = true;
+	});
+	if (!update) return;
+
 	// send a notice to everyone currently playing music and log and save music queues
 	client.logger.info('Detected a new commit on GitHub, updating...');
 	embed.setAuthor({ name: 'Pup is updating! Sorry for the inconvenience!' })
