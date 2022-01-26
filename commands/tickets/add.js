@@ -23,7 +23,7 @@ module.exports = {
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 
 		// Check if user is valid
-		const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g,''));
+		const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
 		if (!user) return message.reply('Invalid User!');
 
 		// Check if user is already in the ticket, if not, add them to the ticket data

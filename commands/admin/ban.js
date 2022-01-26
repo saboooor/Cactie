@@ -12,7 +12,7 @@ module.exports = {
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
 		// Get user and check if user is valid
-		const member = message.guild.members.cache.get(args[0].replace(/\D/g,''));
+		const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) return message.reply({ content: 'Invalid User! Are they in this server?' });
 		const user = member.user;
 

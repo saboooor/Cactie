@@ -9,7 +9,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args) {
 		let member = message.member;
-		if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g,''));
+		if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) return message.reply({ content: 'Invalid member!' });
 		const roles = Array.from(member.roles.cache).sort(function(a, b) {
 			if (b[1].rawPosition < a[1].rawPosition) return -1;
@@ -34,13 +34,13 @@ module.exports = {
 					activitystack.push(`\n\`${convertTime(current)} ${progressbar(total, current, 10, '▬', '🔘')} ${convertTime(total)}\``);
 				}
 				else if (activities[i].timestamps && activities[i].timestamps.start) {
-					activitystack.push(`\n<t:${Math.round(new Date(activities[i].timestamps.start) / 1000)}:R>`);
+					activitystack.push(`\nStarted <t:${Math.round(Date.parse(activities[i].timestamps.start) / 1000)}:R>`);
 				}
 				else if (activities[i].timestamps && activities[i].timestamps.end) {
 					activitystack.push(`\nEnds <t:${Math.round(Date.parse(activities[i].timestamps.end) / 1000)}:R>`);
 				}
 				else if (activities[i].createdTimestamp) {
-					activitystack.push(`\n<t:${Math.round(Date.parse(activities[i].createdTimestamp) / 1000)}:R>`);
+					activitystack.push(`\nCreated <t:${Math.round(Date.parse(activities[i].createdTimestamp) / 1000)}:R>`);
 				}
 				return activitystack.join('');
 			});

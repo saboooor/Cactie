@@ -11,7 +11,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		// Get user from arg and check if user is valid
-		const user = client.users.cache.get(args[0].replace(/\D/g,''));
+		const user = client.users.cache.get(args[0].replace(/\D/g, ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });
 
 		// Send unban message to user
