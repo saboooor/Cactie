@@ -82,7 +82,7 @@ module.exports = async (client, message) => {
 	if (timestamps.has(message.author.id)) {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 		const messages = require('../lang/en/cooldown.json');
-		const random = Math.floor(Math.random() * messages.length - 1);
+		const random = Math.floor(Math.random() * messages.length);
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
@@ -134,40 +134,40 @@ module.exports = async (client, message) => {
 	if (command.permission && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
-			errEmbed.setDescription(`You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
+			errEmbed.setTitle(`You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
 			return message.reply({ embeds: [errEmbed] });
 		}
 		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
-			errEmbed.setDescription(`You can't do that! You need the ${command.permission} permission!`);
+			errEmbed.setTitle(`You can't do that! You need the ${command.permission} permission!`);
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}
 
 	if (command.botperm && (!message.guild.me.permissions.has(command.botperm) || !message.guild.me.permissionsIn(message.channel).has(command.botperm))) {
 		client.logger.error(`Missing ${command.botperm} permission in #${message.channel.name} at ${message.guild.name}`);
-		errEmbed.setDescription(`I don't have the ${command.botperm} permission!`);
+		errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
 		return message.reply({ embeds: [errEmbed] });
 	}
 
 	const player = client.manager.get(message.guild.id);
 
 	if (command.player && (!player || !player.queue.current)) {
-		errEmbed.setDescription('There is no music playing.');
+		errEmbed.setTitle('There is no music playing.');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.serverUnmute && message.guild.me.voice.serverMute) {
-		errEmbed.setDescription('I\'m server muted!');
+		errEmbed.setTitle('I\'m server muted!');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.inVoiceChannel && !message.member.voice.channel) {
-		errEmbed.setDescription('You must be in a voice channel!');
+		errEmbed.setTitle('You must be in a voice channel!');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
 	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
-		errEmbed.setDescription(`You must be in the same channel as ${client.user}!`);
+		errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
 		return message.reply({ embeds: [errEmbed] });
 	}
 
@@ -175,7 +175,7 @@ module.exports = async (client, message) => {
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
 		if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
 		if (!message.member.roles.cache.has(srvconfig.djrole)) {
-			errEmbed.setDescription(`You need the ${role} role to do that!`);
+			errEmbed.setTitle(`You need the ${role.name} role to do that!`);
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}

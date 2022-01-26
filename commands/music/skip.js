@@ -24,7 +24,7 @@ module.exports = {
 				const role = message.guild.roles.cache.get(srvconfig.djrole);
 				if (!role) return message.reply({ content: msg.music.dj.notfound });
 				if (!message.member.roles.cache.has(srvconfig.djrole)) {
-					errEmbed.setDescription(msg.music.dj.required.replace('-r', `${role}`));
+					errEmbed.setDescription(msg.rolereq.replace('-r', `${role}`));
 					return message.reply({ embeds: [errEmbed] });
 				}
 			}

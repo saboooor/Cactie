@@ -1,5 +1,6 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const desc = require('../../lang/en/settingsdesc.json');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Pup\'s settings in the server',
@@ -21,7 +22,7 @@ module.exports = {
 			// Embed for possible error
 			const errEmbed = new MessageEmbed()
 				.setColor('RED')
-				.addField('Too confusing?', 'Use the dashboard!');
+				.addField('Too confusing?', msg.dashboard);
 
 			// Check if setting exists
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -80,7 +81,7 @@ module.exports = {
 				const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
 					const logEmbed = new MessageEmbed()
-						.setAuthor({ name: `${message.author.tag} changed a setting`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
+						.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
 						.addField('Setting', prop)
 						.addField('Value', value);
 					logchannel.send({ embeds: [logEmbed] });
@@ -118,7 +119,7 @@ module.exports = {
 			// Set embed description with page and stuff
 			Embed.setDescription(configlist.slice(0, 4).join('\n'))
 				.addField('Usage', '`/settings [<Setting> <Value>]`')
-				.addField('Too confusing?', 'Use the dashboard!')
+				.addField('Too confusing?', msg.dashboard)
 				.setFooter({ text: `Page 1 of ${maxPages}` });
 
 			// Add buttons for page changing

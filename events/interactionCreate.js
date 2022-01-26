@@ -3,6 +3,7 @@ function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
+const msg = require('../lang/en/msg.json');
 module.exports = async (client, interaction) => {
 	if (interaction.isButton()) {
 		const button = client.buttons.get(interaction.customId);
@@ -30,22 +31,22 @@ module.exports = async (client, interaction) => {
 		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
 
 		if (button.player && (!player || !player.queue.current)) {
-			embed.setDescription('There is no music playing.');
+			embed.setTitle('There is no music playing.');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (button.serverUnmute && interaction.guild.me.voice.serverMute) {
-			embed.setDescription('I\'m server muted!');
+			embed.setTitle('I\'m server muted!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (button.inVoiceChannel && !interaction.member.voice.channel) {
-			embed.setDescription('You must be in a voice channel!');
+			embed.setTitle('You must be in a voice channel!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			embed.setDescription(`You must be in the same channel as ${client.user}!`);
+			embed.setTitle(`You must be in the same channel as ${client.user}!`);
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
@@ -126,7 +127,7 @@ module.exports = async (client, interaction) => {
 		if (timestamps.has(interaction.user.id)) {
 			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 			const messages = require('../lang/en/cooldown.json');
-			const random = Math.floor(Math.random() * messages.length - 1);
+			const random = Math.floor(Math.random() * messages.length);
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
 				if ((expirationTime - now) < 1200) return;
@@ -176,7 +177,7 @@ module.exports = async (client, interaction) => {
 		if (command.permission && interaction.member.user.id !== '249638347306303499') {
 			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);
 			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
-				embed.setTitle(`You can't do that, you need the ${interaction.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
+				embed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
@@ -217,7 +218,7 @@ module.exports = async (client, interaction) => {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
 			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!', ephemeral: true });
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
-				embed.setTitle(`You need the ${role} role to do that!`);
+				embed.setTitle(`You need the ${role.name} role to do that!`);
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}

@@ -2,10 +2,10 @@
     "dashboard": "Use the dashboard!",
     "off": "Off",
     "on": "On",
+    "rolereq": "You need the -r role to do that!",
     "music": {
         "dj": {
-            "notfound": "The DJ role can't be found!",
-            "required": "You need the -r role to use this command!"
+            "notfound": "The DJ role can't be found!"
         },
         "eq": {
             "name": "Equalizer",

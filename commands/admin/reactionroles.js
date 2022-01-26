@@ -1,4 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
 	description: 'Configure Pup\'s reaction roles in the server',
@@ -69,7 +70,7 @@ module.exports = {
 				components.push(row);
 			}
 		}
-		Embed.addField('Too confusing?', 'Use the dashboard! REACTION ROLES COMING SOON');
+		Embed.addField('Too confusing?', `${msg.dashboard} REACTION ROLES COMING SOON`);
 
 		// If there aren't any buttons, add a button for dashboard
 		if (!components[0]) {

@@ -31,8 +31,8 @@ module.exports = async (client) => {
 			['COMPETING', `${client.guilds.cache.size} Servers`],
 			['PLAYING', '{GUILD}'],
 		];
-		const activitynumber = Math.round(Math.random() * (activities.length - 1));
-		const activity = activities[activitynumber];
+		const i = Math.floor(Math.random() * activities.length);
+		const activity = activities[i];
 		if (activity[1] == '{GUILD}') activity[1] = `in ${client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name}`;
 		client.user.setPresence({ activities: [{ name: activity[1], type: activity[0] }] });
 	}, 5000);
