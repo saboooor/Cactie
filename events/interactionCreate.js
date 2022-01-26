@@ -218,7 +218,7 @@ module.exports = async (client, interaction) => {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
 			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!', ephemeral: true });
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
-				embed.setTitle(`You need the ${role.name} role to do that!`);
+				embed.setTitle(msg.rolereq.replace('-r', role.name));
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}

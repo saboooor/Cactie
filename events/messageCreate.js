@@ -7,6 +7,7 @@ function clean(text) {
 	else return text;
 }
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+const msg = require('../functions/msg.json');
 module.exports = async (client, message) => {
 	await gitUpdate(client, message);
 	if (message.author.bot) return;
@@ -134,7 +135,7 @@ module.exports = async (client, message) => {
 	if (command.permission && message.author.id !== '249638347306303499') {
 		const authorPerms = message.channel.permissionsFor(message.author);
 		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
-			errEmbed.setTitle(`You can't do that, you need the ${message.guild.roles.cache.get(srvconfig.adminrole).name} role!`);
+			errEmbed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
 			return message.reply({ embeds: [errEmbed] });
 		}
 		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
@@ -175,7 +176,7 @@ module.exports = async (client, message) => {
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
 		if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
 		if (!message.member.roles.cache.has(srvconfig.djrole)) {
-			errEmbed.setTitle(`You need the ${role.name} role to do that!`);
+			errEmbed.setTitle(msg.rolereq.replace('-r', role.name));
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}
