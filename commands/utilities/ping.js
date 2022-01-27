@@ -1,4 +1,5 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
@@ -9,12 +10,12 @@ module.exports = {
 		const row = new MessageActionRow()
 			.addComponents(new MessageButton()
 				.setCustomId('ping_again')
-				.setLabel('Click here to ping again!')
+				.setLabel(msg.ping.again)
 				.setStyle('SECONDARY'));
 		const Embed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
-			.setTitle('Pong!')
-			.setDescription(`**Message Latency** ${Date.now() - message.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`)
+			.setTitle(msg.ping.pong)
+			.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`)
 			.setTimestamp();
 		message.reply({ embeds: [Embed], components: [row] });
 	},
