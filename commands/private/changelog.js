@@ -18,12 +18,12 @@ module.exports = {
 		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
 		const guild = client.guilds.cache.get(server.guildid);
 		if (!guild.members.cache.get(message.member.id) || !guild.members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
-		server.clconsolechannels.forEach(channelid => {
+		server.changelogs.consolechannels.forEach(channelid => {
 			changes.forEach(change => {
-				guild.channels.cache.get(channelid).send(`${server.clcommand}${change}`);
+				guild.channels.cache.get(channelid).send(`${server.changelogs.consolecmd}${change}`);
 			});
 		});
-		server.clmainchannels.forEach(channelid => {
+		server.changelogs.mainchannels.forEach(channelid => {
 			changes.forEach(change => {
 				Embed.setColor(Math.floor(Math.random() * 16777215));
 				Embed.setDescription(change);
