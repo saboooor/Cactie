@@ -79,11 +79,6 @@ module.exports = {
 				const img = await getlfmCover(song.title, song.author.split(',')[0], client).catch(e => client.logger.warn(e));
 				if (img && typeof img === 'string') song.img = img;
 			}
-			if (!song.img) {
-				const Searched = await player.search(song.title + song.author ? ` ${song.author}` : '');
-				const a = Searched.tracks[0];
-				if (a && a.displayThumbnail) song.img = a.displayThumbnail('hqdefault');
-			}
 			if (!song.img) song.img = 'https://pup.smhsmh.club/assets/images/musicplaceholder.png';
 			song.color = [Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255)];
 			if (song.author) song.title = `${song.title}\n${song.author}`;
