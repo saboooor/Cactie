@@ -181,7 +181,7 @@ module.exports = async (client, interaction) => {
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
-				embed.setTitle(`You can't do that! You need the ${command.permission} permission!`);
+				embed.setTitle(msg.permreq.replace('-p', command.permission));
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
@@ -216,7 +216,7 @@ module.exports = async (client, interaction) => {
 
 		if (command.djRole && srvconfig.djrole != 'false') {
 			const role = interaction.guild.roles.cache.get(srvconfig.djrole);
-			if (!role) return interaction.reply({ content: 'Error: The DJ role can\'t be found!', ephemeral: true });
+			if (!role) return interaction.reply({ content: msg.dj.notfound, ephemeral: true });
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
 				embed.setTitle(msg.rolereq.replace('-r', role.name));
 				return interaction.reply({ embeds: [embed], ephemeral: true });

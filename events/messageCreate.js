@@ -139,7 +139,7 @@ module.exports = async (client, message) => {
 			return message.reply({ embeds: [errEmbed] });
 		}
 		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
-			errEmbed.setTitle(`You can't do that! You need the ${command.permission} permission!`);
+			errEmbed.setTitle(msg.permreq.replace('-p', command.permission));
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}
@@ -174,7 +174,7 @@ module.exports = async (client, message) => {
 
 	if (command.djRole && srvconfig.djrole != 'false') {
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
-		if (!role) return message.reply({ content: 'Error: The DJ role can\'t be found!' });
+		if (!role) return message.reply({ content: msg.dj.notfound });
 		if (!message.member.roles.cache.has(srvconfig.djrole)) {
 			errEmbed.setTitle(msg.rolereq.replace('-r', role.name));
 			return message.reply({ embeds: [errEmbed] });

@@ -3,6 +3,7 @@
     "off": "Off",
     "on": "On",
     "rolereq": "You need the -r role to do that!",
+    "permreq": "You need the -p permission to do that!",
     "music": {
         "dj": {
             "notfound": "The DJ role can't be found!"
