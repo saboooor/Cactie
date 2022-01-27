@@ -7,7 +7,7 @@ function clean(text) {
 	else return text;
 }
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const msg = require('../functions/msg.json');
+const msg = require('../lang/en/msg.json');
 module.exports = async (client, message) => {
 	await gitUpdate(client, message);
 	if (message.author.bot) return;
