@@ -44,8 +44,8 @@ module.exports = async function gitUpdate(client, message) {
 		player.destroy();
 	});
 
-	// wait 5sec and restart the bot
-	await sleep(5000);
+	// wait 1 sec and restart the bot
+	await sleep(1000);
 	const Client = new NodeactylClient(server.url, server.apikey);
 	await Client.restartServer(server.id);
 };
