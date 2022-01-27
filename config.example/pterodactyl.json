@@ -9,10 +9,15 @@
         "id": "[server id]",
         "ip": "[minecraft ip (optional)]",
         "client": "[is this the bot itself]",
-        "changelogs": "[does this server use changelogs, if so, use the 3 settings below]",
-        "clconsolechannels": ["[channel 1]", "[channel 2]", "[and so on]"],
-        "clmainchannels": ["[channel 1]", "[channel 2]", "[and so on]"],
-        "clcommand": "[the command to put before the changelog]"
+        "changelogs": {
+            "consolechannels": ["[console channel 1]", "[console channel 2"],
+            "mainchannels": ["[global channel 1]", "[global channel 2]"],
+            "consolecmd": "[command prefix]"
+        },
+        "link": {
+            "botid": "[discordsrv bot id]",
+            "botname": "[discordsrv bot name]"
+        }
     },
     "example1": {
         "name": "Example1",
@@ -24,10 +29,15 @@
         "id": "53e410dc",
         "ip": "play.netherdepths.com",
         "client": false,
-        "changelogs": true,
-        "clconsolechannels": ["865525620950564864", "865525653738749983", "865525634780758056", "865525676693913660"],
-        "clmainchannels": ["865522730270326794"],
-        "clcommand": "bcast &4&lNEW UPDATE &#444444•&c "
+        "changelogs": {
+            "consolechannels": ["865525620950564864", "865525653738749983", "865525634780758056", "865525676693913660"],
+            "mainchannels": ["865522730270326794"],
+            "consolecmd": "bcast &4&lNEW UPDATE &#444444•&c "
+        },
+        "link": {
+            "botid": "661797951223627787",
+            "botname": "Warden"
+        }
     },
     "example2": {
         "name": "Example2",
@@ -39,6 +49,7 @@
         "id": "bdb8b04c",
         "ip": null,
         "client": true,
-        "changelogs": false
+        "changelogs": false,
+        "link": false
     }
 }
