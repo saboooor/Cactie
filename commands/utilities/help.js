@@ -15,26 +15,11 @@ module.exports = {
 			.setTitle('**HELP**');
 		let arg = args[0];
 		if (arg) arg = arg.toLowerCase();
-		if (arg == 'admin') {
-			require('../../help/admin.js')(prefix, Embed, srvconfig);
+		if (arg == 'admin' || arg == 'fun' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities') {
+			if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
+			require(`../../help/${arg}.js`)(prefix, Embed, srvconfig);
 		}
-		else if (arg == 'fun') {
-			require('../../help/fun.js')(prefix, Embed);
-		}
-		else if (arg == 'music') {
-			require('../../help/music.js')(prefix, Embed);
-		}
-		else if (arg == 'nsfw') {
-			if (!message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
-			require('../../help/nsfw.js')(prefix, Embed);
-		}
-		else if (arg == 'tickets') {
-			require('../../help/tickets.js')(prefix, Embed);
-		}
-		else if (arg == 'utilities') {
-			require('../../help/utilities.js')(prefix, Embed);
-		}
-		else if (arg == 'supportpanel') {
+		if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
 			Embed.setDescription('Created support panel! You may now delete this message');
 			const Panel = new MessageEmbed()
