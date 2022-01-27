@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'queue',
 	description: 'Show the music queue and now playing.',
@@ -24,7 +25,7 @@ module.exports = {
 		const tracks = queue.slice(start, end);
 
 		// Add current song as a field and queue list
-		if (song) embed.addField('Now Playing', `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
+		if (song) embed.addField(msg.music.np, `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
 		let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 		if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped)}`;
 		if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
@@ -32,7 +33,7 @@ module.exports = {
 
 		// Get max pages and add it to footer and reply with buttons
 		const maxPages = Math.ceil(queue.length / 10);
-		embed.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
+		embed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()

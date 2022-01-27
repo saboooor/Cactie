@@ -4,6 +4,7 @@
     "on": "On",
     "rolereq": "You need the -r role to do that!",
     "permreq": "You need the -p permission to do that!",
+    "page": "Page -1 of -2",
     "ping": {
         "pong": "Pong!",
         "latency": "Message Latency",
@@ -11,6 +12,7 @@
         "again": "Click here to ping again!"
     },
     "music": {
+        "np": "🎶 **Now Playing**",
         "dj": {
             "notfound": "The DJ role can't be found!"
         },
