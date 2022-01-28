@@ -19,7 +19,7 @@ module.exports = {
 			if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
 			require(`../../help/${arg}.js`)(prefix, Embed, srvconfig);
 		}
-		if (arg == 'supportpanel') {
+		else if (arg == 'supportpanel') {
 			if (!message.member.permissions.has('ADMINISTRATOR')) return;
 			Embed.setDescription('Created support panel! You may now delete this message');
 			const Panel = new MessageEmbed()

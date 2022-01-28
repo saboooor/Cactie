@@ -9,7 +9,7 @@ module.exports = {
 		if (!content) return interaction.reply({ content: 'There is no text in this message!', ephemeral: true });
 
 		// If the json string is too long, put it in hastebin, otherwise just send it
-		if (`\`\`\`json\n${content}\n\`\`\``.length > 2000) interaction.reply({ content: await createPaste(content, { server: 'https://bin.birdflop.com' }), ephemeral: true });
-		else interaction.reply({ content: `\`\`\`json\n${content}\n\`\`\``, ephemeral: true });
+		if (`\`\`\`md\n${content}\n\`\`\``.length > 2000) interaction.reply({ content: await createPaste(content, { server: 'https://bin.birdflop.com' }), ephemeral: true });
+		else interaction.reply({ content: `\`\`\`md\n${content}\n\`\`\``, ephemeral: true });
 	},
 };
