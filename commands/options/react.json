@@ -1,0 +1,14 @@
+[
+	{
+		"type": "STRING",
+		"name": "url",
+		"description": "The link to the message to add the reaction to",
+		"required": true
+	},
+	{
+		"type": "STRING",
+		"name": "emoji",
+		"description": "The emoji to react with",
+		"required": true
+	}
+]
