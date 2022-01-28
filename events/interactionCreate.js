@@ -9,7 +9,13 @@ module.exports = async (client, interaction) => {
 		const button = client.buttons.get(interaction.customId);
 		if (!button) return;
 
-		button.deferReply ? await interaction.deferReply({ ephemeral: button.ephemeral }) : await interaction.deferUpdate({ ephemeral: button.ephemeral });
+		try {
+			button.deferReply ? await interaction.deferReply({ ephemeral: button.ephemeral }) : await interaction.deferUpdate({ ephemeral: button.ephemeral });
+		}
+		catch (e) {
+			client.logger.error(e);
+		}
+
 		interaction.reply = interaction.editReply;
 
 		if (button.botperm && (!interaction.guild.me.permissions.has(button.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperm))) {
