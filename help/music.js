@@ -1,21 +1,14 @@
 const fs = require('fs');
 module.exports = (prefix, Embed) => {
 	const musicCommands = fs.readdirSync('./commands/music').filter(file => file.endsWith('.js'));
-	const commands = [];
 	for (const file of musicCommands) {
 		const command = require(`../commands/music/${file}`);
-		if (!command.usage) command.usage = '';
-		commands.push(command);
+		Embed.addField(`${prefix}${command.name} ${command.usage ? command.usage : ''}`, `${command.aliases ? `\n(Aliases: ${command.aliases.join(', ')})` : ''}\n${command.description}`);
 	}
-	const commandlist = Object.keys(commands).map(i => {
-		return `**${prefix}${commands[i].name} ${commands[i].usage}**${commands[i].aliases ? `\n(Aliases: ${commands[i].aliases.join(', ')})` : ''}\n${commands[i].description}`;
-	});
 	Embed.setDescription(`
 **MUSIC COMMANDS:**
 *These commands play music in your voice chat.*
 [] = Optional
 <> = Required
-
-${commandlist.join('\n')}
 `);
 };

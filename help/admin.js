@@ -1,20 +1,15 @@
 const fs = require('fs');
 module.exports = (prefix, Embed, srvconfig) => {
 	const adminCommands = fs.readdirSync('./commands/admin').filter(file => file.endsWith('.js'));
-	const commands = [];
 	for (const file of adminCommands) {
 		const command = require(`../commands/admin/${file}`);
-		commands.push(command);
+		if (srvconfig.adminrole != 'permission' && command.permission == 'ADMINISTRATOR') command.permission = `<@&${srvconfig.adminrole}>`;
+		Embed.addField(`${prefix}${command.name} ${command.usage}`, `${command.aliases ? `\n(Aliases: ${command.aliases.join(', ')})` : ''}\n${command.description}\n*Permission: ${command.permission}*`);
 	}
-	const commandlist = Object.keys(commands).map(i => {
-		return `**${prefix}${commands[i].name} ${commands[i].usage}**${commands[i].aliases ? `\n(Aliases: ${commands[i].aliases.join(', ')})` : ''}\n${commands[i].description}\n*Permission: ${commands[i].permission}*`;
-	});
 	Embed.setDescription(`
 **ADMIN COMMANDS:**
 *These commands require the member to have specified permissions.*
 [] = Optional
 <> = Required
-
-${srvconfig.adminrole != 'permission' ? commandlist.join('\n').replace(/ADMINISTRATOR/g, `<@&${srvconfig.adminrole}>`) : commandlist.join('\n')}
 `);
 };
