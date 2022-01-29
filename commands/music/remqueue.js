@@ -14,9 +14,9 @@ module.exports = {
 	async execute(message, args, client) {
 		// Get player and index from arg and check if index exists
 		const player = client.manager.get(message.guild.id);
-		const position = (Number(args[0]) - 1);
-		if (position > player.queue.size) {
-			const number = (position + 1);
+		const position = Number(args[0]) - 1;
+		if (isNaN(position) || position > player.queue.size) {
+			const number = isNaN(position) ? args[0] : position + 1;
 			const thing = new MessageEmbed()
 				.setColor('RED')
 				.setDescription(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`);
