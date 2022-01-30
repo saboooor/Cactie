@@ -61,6 +61,8 @@ module.exports = {
 			'boobs',
 			'tit',
 			'Fingering',
+			'dilf',
+			'milf',
 		], message, client);
 	},
 };
