@@ -24,6 +24,9 @@ module.exports = async (client, message) => {
 
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
+	if (!message.guild.me.permissions.has('SEND_MESSAGES') || !message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
+	|| !message.guild.me.permissions.has('READ_MESSAGE_HISTORY') || !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
+
 	client.reactions.forEach(reaction => {
 		if ((srvconfig.reactions != 'false' || reaction.private)
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
@@ -61,12 +64,6 @@ module.exports = async (client, message) => {
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command || !command.name) return;
-
-	if (!message.guild.me.permissions.has('SEND_MESSAGES') || !message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')) {
-		client.logger.error(`Missing Message permission in #${message.channel.name} at ${message.guild.name}`);
-		message.author.send({ content: `I can't speak in ${message.channel}!` }).catch(e => { client.logger.warn(e); });
-		return;
-	}
 
 	message.channel.sendTyping();
 	await sleep(500);
