@@ -24,8 +24,8 @@ module.exports = async (client, message) => {
 
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
-	if (!message.guild.me.permissions.has('SEND_MESSAGES') || !message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
-	|| !message.guild.me.permissions.has('READ_MESSAGE_HISTORY') || !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
+	if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
+	|| !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
 
 	client.reactions.forEach(reaction => {
 		if ((srvconfig.reactions != 'false' || reaction.private)
