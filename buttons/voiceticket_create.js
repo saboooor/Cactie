@@ -5,7 +5,7 @@ module.exports = {
 	async execute(interaction, client) {
 		// Check if ticket is an actual ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
 
 		// Check if ticket already has a voiceticket
 		if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });

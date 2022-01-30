@@ -16,9 +16,9 @@ module.exports = {
 			if (!player.shuffleAmount) player.shuffleAmount = [];
 			let alr = false;
 			player.shuffleAmount.forEach(i => { if (i == message.member.id) alr = true; });
-			if (alr) return message.reply('You\'ve already voted to shuffle the queue!');
+			if (alr) return message.reply({ content: 'You\'ve already voted to shuffle the queue!' });
 			player.shuffleAmount.push(message.member.id);
-			if (player.shuffleAmount.length < requiredAmount) return message.reply(`**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\``);
+			if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
 			player.shuffleAmount = null;
 		}
 

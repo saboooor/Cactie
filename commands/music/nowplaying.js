@@ -23,7 +23,7 @@ module.exports = {
 
 		// Set the now playing message and update it every 5 seconds
 		player.set('nowplayingMSG', npmsg);
-		if (message.commandName) message.reply('Message sent.');
+		if (message.commandName) message.reply({ content: 'Message sent.' });
 		const interval = setInterval(() => {
 			// Get the player and current song
 			player = client.manager.get(message.guild.id);

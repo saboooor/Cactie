@@ -18,9 +18,9 @@ module.exports = {
 			if (!player.loopTrackAmount) player.loopTrackAmount = [];
 			let alr = false;
 			player.loopTrackAmount.forEach(i => { if (i == message.member.id) alr = true; });
-			if (alr) return message.reply('You\'ve already voted to toggle the Track Loop!');
+			if (alr) return message.reply({ content: 'You\'ve already voted to toggle the Track Loop!' });
 			player.loopTrackAmount.push(message.member.id);
-			if (player.loopTrackAmount.length < requiredAmount) return message.reply(`**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\``);
+			if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
 			player.loopTrackAmount = null;
 		}
 

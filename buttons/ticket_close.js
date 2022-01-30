@@ -8,7 +8,7 @@ module.exports = {
 	async execute(interaction, client) {
 		// Get ticket database
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-		if (!ticketData) return interaction.reply('Could not find this ticket in the database, please manually delete this channel.');
+		if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
 		if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 		// Check if ticket is already closed

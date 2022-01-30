@@ -19,9 +19,9 @@ module.exports = {
 			if (!player.reverseAmount) player.reverseAmount = [];
 			let alr = false;
 			player.reverseAmount.forEach(i => { if (i == message.member.id) alr = true; });
-			if (alr) return message.reply('You\'ve already voted to reverse the queue!');
+			if (alr) return message.reply({ content: 'You\'ve already voted to reverse the queue!' });
 			player.reverseAmount.push(message.member.id);
-			if (player.reverseAmount.length < requiredAmount) return message.reply(`**Reverse Queue?** \`${player.reverseAmount.length} / ${requiredAmount}\``);
+			if (player.reverseAmount.length < requiredAmount) return message.reply({ content: `**Reverse Queue?** \`${player.reverseAmount.length} / ${requiredAmount}\`` });
 			player.reverseAmount = null;
 		}
 

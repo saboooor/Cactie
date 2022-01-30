@@ -27,7 +27,7 @@ module.exports = {
 		}
 		if (player.state != 'CONNECTED') player.connect();
 		const search = args.join(' '); const songs = [];
-		const msg = await message.reply(`🔎 Searching for \`${search}\`...`);
+		const msg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
 		const slash = message.type && message.type == 'APPLICATION_COMMAND';
 		const embed = new MessageEmbed().setTimestamp();
 		if (search.match(client.Lavasfy.spotifyPattern)) {

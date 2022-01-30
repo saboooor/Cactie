@@ -8,7 +8,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		// Check if channel is a subticket, if so tell the user to use the command in the ticket itself instead
-		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
+		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 
 		// Check if ticket is an actual ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
@@ -24,7 +24,7 @@ module.exports = {
 
 		// Check if user is valid
 		const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
-		if (!user) return message.reply('Invalid User!');
+		if (!user) return message.reply({ content: 'Invalid User!' });
 
 		// Check if user is already in the ticket, if not, add them to the ticket data
 		if (ticketData.users.includes(user.id)) return message.reply({ content: 'This user has already been added!' });

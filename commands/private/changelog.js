@@ -15,12 +15,12 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setAuthor({ name: 'Changelog', iconURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png' })
 			.setFooter({ text: `By ${message.author.username}`, iconURL: message.author.avatarURL({ dynamic : true }) });
-		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+		if (!server) return message.reply({ content: `**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
 		const guild = client.guilds.cache.get(server.guildid);
 		if (!guild.members.cache.get(message.member.id) || !guild.members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
 		server.changelogs.consolechannels.forEach(channelid => {
 			changes.forEach(change => {
-				guild.channels.cache.get(channelid).send(`${server.changelogs.consolecmd}${change}`);
+				guild.channels.cache.get(channelid).send({ content: `${server.changelogs.consolecmd}${change}` });
 			});
 		});
 		server.changelogs.mainchannels.forEach(channelid => {
@@ -30,6 +30,6 @@ module.exports = {
 				guild.channels.cache.get(channelid).send({ embeds: [Embed] });
 			});
 		});
-		message.reply(`${changes.length} Changelog(s) sent to ${server.name}!`);
+		message.reply({ content: `${changes.length} Changelog(s) sent to ${server.name}!` });
 	},
 };

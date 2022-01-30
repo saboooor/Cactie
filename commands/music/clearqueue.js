@@ -18,9 +18,9 @@ module.exports = {
 			if (!player.clearQueueAmount) player.clearQueueAmount = [];
 			let alr = false;
 			player.clearQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
-			if (alr) return message.reply('You\'ve already voted to clear the queue!');
+			if (alr) return message.reply({ content: 'You\'ve already voted to clear the queue!' });
 			player.clearQueueAmount.push(message.member.id);
-			if (player.clearQueueAmount.length < requiredAmount) return message.reply(`**Clear Queue?** \`${player.clearQueueAmount.length} / ${requiredAmount}\``);
+			if (player.clearQueueAmount.length < requiredAmount) return message.reply({ content: `**Clear Queue?** \`${player.clearQueueAmount.length} / ${requiredAmount}\`` });
 			player.clearQueueAmount = null;
 		}
 

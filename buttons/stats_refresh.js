@@ -41,7 +41,7 @@ module.exports = {
 			const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
 			const pong = await json.json();
 			const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
-			if (!pong.online) return interaction.reply(`**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+			if (!pong.online) return interaction.reply({ content: `**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
 			if (!Embed.title && pong.hostname) Embed.setTitle(pong.hostname);
 			else if (!Embed.title && pong.port == 25565) Embed.setTitle(pong.ip);
 			else if (!Embed.title) Embed.setTitle(`${pong.ip}:${pong.port}`);

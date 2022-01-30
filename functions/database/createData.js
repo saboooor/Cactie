@@ -5,7 +5,7 @@ module.exports = client => {
 			client.logger.info(`Created ${table} ${id}: ${args}`);
 		}
 		catch (error) {
-			await client.users.cache.get('249638347306303499').send(`${error}`);
+			await client.users.cache.get('249638347306303499').send({ content: `${error}` });
 			client.logger.error(`Error creating ${table}: ${error}`);
 		}
 	};

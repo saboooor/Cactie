@@ -13,7 +13,7 @@ module.exports = {
 		// Get settings and check if mutecmd is enabled
 		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 		const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
-		if (!role && srvconfig.mutecmd != 'timeout') return message.reply('This command is disabled!');
+		if (!role && srvconfig.mutecmd != 'timeout') return message.reply({ content: 'This command is disabled!' });
 
 		// Get user and check if user is valid
 		const user = client.users.cache.get(args[0].replace(/\D/g, ''));

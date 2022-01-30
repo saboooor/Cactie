@@ -18,7 +18,7 @@ module.exports = {
 		const srvs = Object.keys(servers).map(i => { return servers[i]; });
 		let server = servers[args.join(' ').toLowerCase()];
 		if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
-		if (!server) return message.reply(`**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\``);
+		if (!server) return message.reply({ content: `**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
 		const Client = new NodeactylClient(server.url, server.apikey);
 		const info = await Client.getServerDetails(server.id);
 		const usages = await Client.getServerUsages(server.id);

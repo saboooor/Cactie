@@ -8,7 +8,7 @@ module.exports = {
 	similarcmds: 'remqueue',
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
-		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply(`This is a subticket!\nYou must use this command in ${message.channel.parent}`);
+		if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 		// Check if ticket is an actual ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 		if (!ticketData) return;
@@ -17,7 +17,7 @@ module.exports = {
 		if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 		if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 		const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
-		if (!user) return message.reply('Invalid User!');
+		if (!user) return message.reply({ content: 'Invalid User!' });
 		if (!ticketData.users.includes(user.id)) return message.reply({ content: 'This user isn\'t in this ticket!' });
 		if (user.id == ticketData.opener) return message.reply({ content: 'You can\'t remove the ticket opener!' });
 		ticketData.users.remove(user.id);

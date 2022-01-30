@@ -26,7 +26,7 @@ module.exports = {
 		if (song) lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
 
 		// If there is no lyrics, say so
-		if (!lyrics) return message.reply('Could not find lyrics for this track!');
+		if (!lyrics) return message.reply({ content: 'Could not find lyrics for this track!' });
 
 		// If the lyrics are too long for the embed, send it to hastebin
 		if (lyrics.length > 3500) lyrics = await createPaste(lyrics, { server: 'https://bin.birdflop.com' });

@@ -17,9 +17,9 @@ module.exports = {
 			if (!player.loopQueueAmount) player.loopQueueAmount = [];
 			let alr = false;
 			player.loopQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
-			if (alr) return message.reply('You\'ve already voted to toggle the Queue Loop!');
+			if (alr) return message.reply({ content: 'You\'ve already voted to toggle the Queue Loop!' });
 			player.loopQueueAmount.push(message.member.id);
-			if (player.loopQueueAmount.length < requiredAmount) return message.reply(`**Toggle Queue Loop?** \`${player.loopQueueAmount.length} / ${requiredAmount}\``);
+			if (player.loopQueueAmount.length < requiredAmount) return message.reply({ content: `**Toggle Queue Loop?** \`${player.loopQueueAmount.length} / ${requiredAmount}\`` });
 			player.loopQueueAmount = null;
 		}
 
