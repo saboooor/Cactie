@@ -47,7 +47,7 @@ module.exports = {
 			client.logger.info(`Added ${user.username} to #${message.channel.name}`);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

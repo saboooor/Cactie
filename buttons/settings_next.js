@@ -25,7 +25,7 @@ module.exports = {
 			interaction.reply({ embeds: [embed], components: interaction.message.components });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

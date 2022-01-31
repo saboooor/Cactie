@@ -11,7 +11,7 @@ module.exports = {
 			await message.reply(await analyzeTimings(message, client, args));
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

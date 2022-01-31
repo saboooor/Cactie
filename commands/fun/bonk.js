@@ -22,7 +22,7 @@ module.exports = {
 			message.reply({ content: args[0].username ? args[0] : null, embeds: [Embed] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

@@ -34,7 +34,7 @@ module.exports = {
 			client.logger.info(`Reopened ticket #${message.channel.name}`);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

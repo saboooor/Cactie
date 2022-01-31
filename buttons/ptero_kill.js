@@ -7,7 +7,7 @@ module.exports = {
 			ptero(interaction, client, 'kill');
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

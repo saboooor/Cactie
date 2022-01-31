@@ -33,7 +33,7 @@ module.exports = {
 			await message.reply({ embeds: [embed], components: [row, row2] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

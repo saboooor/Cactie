@@ -7,7 +7,7 @@ module.exports = {
 			await interaction.reply(await analyzeTimings(interaction, client, [interaction.message.embeds[0].author.url]));
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

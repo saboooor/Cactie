@@ -56,7 +56,7 @@ module.exports = {
 			client.logger.info(`Voiceticket created at #${voiceticket.name}`);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

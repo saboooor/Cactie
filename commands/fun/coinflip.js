@@ -12,7 +12,7 @@ module.exports = {
 			message.reply({ content: `<a:coinflip:908779062644867123> **${text}s!**` });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

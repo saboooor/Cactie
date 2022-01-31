@@ -92,7 +92,7 @@ module.exports = {
 			slash ? message.editReply({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

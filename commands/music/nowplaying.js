@@ -49,7 +49,7 @@ module.exports = {
 			player.set('nowplaying', interval);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

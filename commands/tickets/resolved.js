@@ -21,7 +21,7 @@ module.exports = {
 			client.logger.info(`Marked ticket #${message.channel.name} as resolved`);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

@@ -6,7 +6,7 @@ module.exports = {
 			redditFetch(['furryporn', 'FurryPornSubreddit', 'yiff'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

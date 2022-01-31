@@ -16,7 +16,7 @@ module.exports = {
 			message.reply({ content: `${user ? `${user}, ` : ''}${insults[i]}` });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

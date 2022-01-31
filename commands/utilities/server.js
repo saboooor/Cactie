@@ -23,7 +23,7 @@ module.exports = {
 			await message.reply({ embeds: [Embed] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

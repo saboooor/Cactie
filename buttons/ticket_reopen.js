@@ -32,7 +32,7 @@ module.exports = {
 			client.logger.info(`Reopened ticket #${interaction.channel.name}`);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

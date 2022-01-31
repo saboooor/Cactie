@@ -89,7 +89,7 @@ module.exports = {
 			message.reply({ embeds: [Embed], files: iconpng, components: [row] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

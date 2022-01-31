@@ -36,7 +36,7 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 			message.reply({ embeds: [Embed], components: [row] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

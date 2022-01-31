@@ -37,7 +37,7 @@ module.exports = {
 			await interaction.reply({ embeds: [thing] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

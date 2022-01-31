@@ -56,7 +56,7 @@ module.exports = {
 			message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

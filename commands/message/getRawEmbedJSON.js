@@ -14,7 +14,7 @@ module.exports = {
 			else interaction.reply({ content: `\`\`\`json\n${JSON.stringify(embed, null, 2)}\n\`\`\``, embeds: [embed], ephemeral: true });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

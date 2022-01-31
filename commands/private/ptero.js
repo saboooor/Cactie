@@ -62,7 +62,7 @@ module.exports = {
 			message.reply({ embeds: [Embed], components: [row] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

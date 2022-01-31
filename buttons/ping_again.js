@@ -17,7 +17,7 @@ module.exports = {
 			interaction.reply({ embeds: [Embed] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

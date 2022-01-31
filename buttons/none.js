@@ -6,7 +6,7 @@ module.exports = {
 			interaction.reply();
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

@@ -9,7 +9,7 @@ module.exports = {
 			redditFetch(['kitty', 'cat', 'blurrypicturesofcats'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

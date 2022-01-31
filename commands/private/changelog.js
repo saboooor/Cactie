@@ -34,7 +34,7 @@ module.exports = {
 			message.reply({ content: `${changes.length} Changelog(s) sent to ${server.name}!` });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

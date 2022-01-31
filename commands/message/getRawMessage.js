@@ -14,7 +14,7 @@ module.exports = {
 			else interaction.reply({ content: `\`\`\`md\n${content}\n\`\`\``, ephemeral: true });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

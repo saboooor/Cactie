@@ -70,7 +70,7 @@ module.exports = {
 			interaction.reply({ embeds: [Embed], components: interaction.message.components, files: [] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

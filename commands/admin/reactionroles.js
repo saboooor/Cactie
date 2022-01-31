@@ -117,7 +117,7 @@ module.exports = {
 			message.reply({ embeds: [Embed], components: components });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

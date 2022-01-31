@@ -6,7 +6,7 @@ module.exports = {
 			redditFetch(['milf'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

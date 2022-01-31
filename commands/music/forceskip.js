@@ -30,7 +30,7 @@ module.exports = {
 			message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

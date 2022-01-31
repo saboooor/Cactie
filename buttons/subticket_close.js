@@ -23,7 +23,7 @@ module.exports = {
 			await interaction.channel.delete();
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

@@ -15,7 +15,7 @@ module.exports = {
 			pteroUpdate(interaction, Client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, interaction);
 		}
 	},
 };

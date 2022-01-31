@@ -6,7 +6,7 @@ module.exports = {
 			redditFetch(['dicks', 'DickPics4Freedom', 'penis', 'ThickDick'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

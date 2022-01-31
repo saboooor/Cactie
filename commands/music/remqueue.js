@@ -35,7 +35,7 @@ module.exports = {
 			message.reply({ embeds: [thing] });
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

@@ -7,7 +7,7 @@ module.exports = {
 			redditFetch(['wallpaper', 'wallpapers', 'wallpaperdump'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

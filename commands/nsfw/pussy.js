@@ -6,7 +6,7 @@ module.exports = {
 			redditFetch(['pussy', 'pussyrating', 'shavedpussies', 'grool', 'GodPussy', 'Fingering'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

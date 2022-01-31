@@ -35,7 +35,7 @@ module.exports = {
 			client.logger.info(`Removed ${user.username} from #${message.channel.name}`);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };

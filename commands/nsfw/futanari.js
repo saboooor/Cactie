@@ -6,7 +6,7 @@ module.exports = {
 			redditFetch(['futanari', 'cutefutanari', 'traphentai', 'FutanariPegging', 'FutanariGifs'], message, client);
 		}
 		catch (err) {
-			client.logger.error(err);
+			client.error(err, message);
 		}
 	},
 };
