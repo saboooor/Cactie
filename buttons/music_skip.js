@@ -9,30 +9,35 @@ module.exports = {
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	async execute(interaction, client) {
-		// Get the player
-		const player = client.manager.get(interaction.guild.id);
+		try {
+			// Get the player
+			const player = client.manager.get(interaction.guild.id);
 
-		// Check if djrole is set, if so, vote for skip instead of skipping
-		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-		if (srvconfig.djrole != 'false') {
-			const requiredAmount = Math.floor((interaction.guild.me.voice.channel.members.size - 1) / 2);
-			if (!player.skipAmount) player.skipAmount = [];
-			let alr = false;
-			player.skipAmount.forEach(i => { if (i == interaction.member.id) alr = true; });
-			if (alr) return interaction.reply({ content: msg.music.skip.alrvoted });
-			player.skipAmount.push(interaction.member.id);
-			if (player.skipAmount.length < requiredAmount) return interaction.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
-			player.skipAmount = null;
+			// Check if djrole is set, if so, vote for skip instead of skipping
+			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+			if (srvconfig.djrole != 'false') {
+				const requiredAmount = Math.floor((interaction.guild.me.voice.channel.members.size - 1) / 2);
+				if (!player.skipAmount) player.skipAmount = [];
+				let alr = false;
+				player.skipAmount.forEach(i => { if (i == interaction.member.id) alr = true; });
+				if (alr) return interaction.reply({ content: msg.music.skip.alrvoted });
+				player.skipAmount.push(interaction.member.id);
+				if (player.skipAmount.length < requiredAmount) return interaction.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
+				player.skipAmount = null;
+			}
+
+			// Skip the song and reply with song that was skipped
+			player.stop();
+			const song = player.queue.current;
+			const thing = new MessageEmbed()
+				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
+				.setColor(song.color)
+				.setTimestamp()
+				.setThumbnail(song.img);
+			await interaction.reply({ embeds: [thing] });
 		}
-
-		// Skip the song and reply with song that was skipped
-		player.stop();
-		const song = player.queue.current;
-		const thing = new MessageEmbed()
-			.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
-			.setColor(song.color)
-			.setTimestamp()
-			.setThumbnail(song.img);
-		await interaction.reply({ embeds: [thing] });
+		catch (err) {
+			client.logger.error(err);
+		}
 	},
 };

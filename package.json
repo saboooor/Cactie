@@ -18,7 +18,7 @@
     "erela.js": "^2.3.3",
     "erela.js-apple": "^1.2.6",
     "erela.js-deezer": "^1.0.7",
-    "eslint": "^8.7.0",
+    "eslint": "^8.8.0",
     "express": "^4.17.2",
     "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.1-security",
