@@ -7,6 +7,11 @@ module.exports = {
 	usage: '<Timings Link>',
 	options: require('../options/url.json'),
 	async execute(message, args, client) {
-		await message.reply(await analyzeTimings(message, client, args));
+		try {
+			await message.reply(await analyzeTimings(message, client, args));
+		}
+		catch (err) {
+			client.logger.error(err);
+		}
 	},
 };
