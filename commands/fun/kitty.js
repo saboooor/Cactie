@@ -4,7 +4,12 @@ module.exports = {
 	description: 'kitty meow meow',
 	aliases: ['cat', 'kitten'],
 	async execute(message, args, client) {
-		// Get from r/kitty with the redditFetch function
-		redditFetch(['kitty', 'cat', 'blurrypicturesofcats'], message, client);
+		try {
+			// Get from r/kitty with the redditFetch function
+			redditFetch(['kitty', 'cat', 'blurrypicturesofcats'], message, client);
+		}
+		catch (err) {
+			client.logger.error(err);
+		}
 	},
 };

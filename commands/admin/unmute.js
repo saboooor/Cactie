@@ -11,7 +11,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		try {
-		// Get settings and check if mutecmd is enabled
+			// Get settings and check if mutecmd is enabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
 			if (!role && srvconfig.mutecmd != 'timeout') return message.reply({ content: 'This command is disabled!' });
