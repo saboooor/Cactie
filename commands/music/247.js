@@ -10,12 +10,17 @@ module.exports = {
 	sameVoiceChannel: true,
 	djRole: true,
 	async execute(message, args, client) {
-		// Get player and set 24/7 to the opposite of current state and send message
-		const player = client.manager.players.get(message.guild.id);
-		const embed = new MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`🔁 24/7 mode is now **o${!player.twentyFourSeven ? 'n' : 'ff'}**.`);
-		player.twentyFourSeven = !player.twentyFourSeven;
-		message.reply({ embeds: [embed] });
+		try {
+			// Get player and set 24/7 to the opposite of current state and send message
+			const player = client.manager.players.get(message.guild.id);
+			const embed = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
+				.setDescription(`🔁 24/7 mode is now **o${!player.twentyFourSeven ? 'n' : 'ff'}**.`);
+			player.twentyFourSeven = !player.twentyFourSeven;
+			message.reply({ embeds: [embed] });
+		}
+		catch (err) {
+			client.logger.error(err);
+		}
 	},
 };

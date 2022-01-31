@@ -9,14 +9,19 @@ module.exports = {
 	sameVoiceChannel: true,
 	djRole: true,
 	async execute(message, args, client) {
-		// Get the player and destroy it
-		const player = client.manager.get(message.guild.id);
-		player.destroy();
+		try {
+			// Get the player and destroy it
+			const player = client.manager.get(message.guild.id);
+			player.destroy();
 
-		// Send message to channel
-		const thing = new MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215))
-			.setDescription(`📤 **Left VC**\nThank you for using ${client.user.username}!`);
-		return message.reply({ embeds: [thing] });
+			// Send message to channel
+			const thing = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
+				.setDescription(`📤 **Left VC**\nThank you for using ${client.user.username}!`);
+			return message.reply({ embeds: [thing] });
+		}
+		catch (err) {
+			client.logger.error(err);
+		}
 	},
 };

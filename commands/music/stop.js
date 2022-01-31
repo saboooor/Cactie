@@ -7,14 +7,19 @@ module.exports = {
 	sameVoiceChannel: true,
 	djRole: true,
 	async execute(message, args, client) {
-		// Get player and skip and clear the queue and reply
-		const player = client.manager.get(message.guild.id);
-		player.stop();
-		player.queue.clear();
-		const thing = new MessageEmbed()
-			.setColor(Math.round(Math.random() * 16777215))
-			.setTimestamp()
-			.setDescription('⏹️ Stopped the music');
-		message.reply({ embeds: [thing] });
+		try {
+			// Get player and skip and clear the queue and reply
+			const player = client.manager.get(message.guild.id);
+			player.stop();
+			player.queue.clear();
+			const thing = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
+				.setTimestamp()
+				.setDescription('⏹️ Stopped the music');
+			message.reply({ embeds: [thing] });
+		}
+		catch (err) {
+			client.logger.error(err);
+		}
 	},
 };
