@@ -68,6 +68,17 @@ module.exports = {
 					Embed.setDescription('Usage: /reactionroles remove <Emoji> <Message Link>');
 					return message.reply({ embeds: [Embed], components: [dashbtn] });
 				}
+				if (!reactionroles[0]) {
+					Embed.setDescription('You don\'t have any reaction roles! Create one with /reactionsroles create <Emoji> <Message Link> <Role Id>');
+					return message.reply({ embeds: [Embed], components: [dashbtn] });
+				}
+				if (args[1].replace(/\D/g, '')) args[1] = args[1].replace(/\D/g, '');
+				const messagelink = args[2].split('/');
+				const reactionrole = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}' AND channelId = '${messagelink[5]}' AND messageId = '${messagelink[6]}' AND emojiId = '${args[1]}'`);
+				if (!reactionrole[0]) {
+					Embed.setDescription('That reaction role doesn\'t exist!')
+					return message.reply({ embeds: [Embed], components: [dashbtn] });
+				}
 				Embed.setDescription('Coming soon');
 			}
 			else {
