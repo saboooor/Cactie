@@ -19,7 +19,7 @@ module.exports = {
 			const Embed = new MessageEmbed()
 				.setAuthor({ name: 'Changelog', iconURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png' })
 				.setFooter({ text: `By ${message.author.username}`, iconURL: message.author.avatarURL({ dynamic : true }) });
-			
+
 			// Get the server from the first arg
 			const server = servers.find(srv => args[0].toLowerCase() == srv.short);
 
@@ -37,7 +37,7 @@ module.exports = {
 					guild.channels.cache.get(channelid).send({ content: `${server.changelogs.consolecmd}${change}` });
 				});
 			});
-			
+
 			// Send changelog embeds to the main channels and reply with response
 			server.changelogs.mainchannels.forEach(channelid => {
 				changes.forEach(change => {
