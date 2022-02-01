@@ -20,7 +20,7 @@ module.exports = {
 
 			// If arg is set, force skip to index (This requires dj role)
 			if (args[0]) {
-			// If djrole is set, check if user has dj role
+				// If djrole is set, check if user has dj role
 				if (srvconfig.djrole != 'false') {
 					const role = message.guild.roles.cache.get(srvconfig.djrole);
 					if (!role) return message.reply({ content: msg.music.dj.notfound });
@@ -37,7 +37,7 @@ module.exports = {
 					return message.reply({ embeds: [errEmbed] });
 				}
 				else if (position) {
-				// Skip to the position and reply
+					// Skip to the position and reply
 					player.queue.remove(0, position - 1);
 					player.stop();
 					const thing = new MessageEmbed()

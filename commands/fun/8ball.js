@@ -8,7 +8,7 @@ module.exports = {
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		try {
-		// Get random index and reply with the string in the array of the index
+			// Get random index and reply with the string in the array of the index
 			const i = Math.floor(Math.random() * ball.length);
 			const embed = new MessageEmbed()
 				.setTitle(`🎱 ${args.join(' ')}?`)
