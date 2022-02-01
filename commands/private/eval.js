@@ -10,6 +10,7 @@ module.exports = {
 	usage: '<Code>',
 	// eslint-disable-next-line no-unused-vars
 	async execute(message, args, client) {
+		// Check if user is sab lolololol
 		if (message.author.id !== '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
 		try {
 			const code = args.join(' ');
