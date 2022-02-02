@@ -4,7 +4,7 @@ module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been removed from ${guild.name}`);
 	const owner = await guild.fetchOwner();
 	const timestamp = Math.round(guild.createdTimestamp / 1000);
-	console.log(guild)
+	console.log(guild);
 	const Embed = new MessageEmbed()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`${client.user.username} has been removed from ${guild.name}`)
