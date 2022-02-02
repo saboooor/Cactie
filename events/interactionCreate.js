@@ -116,7 +116,7 @@ module.exports = async (client, interaction) => {
 
 		// Make args variable from interaction options for compatibility with dash command code
 		// If command is context menu, set it to client instead since it's (interaction, client)
-		let args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
+		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
 		if (interaction.isContextMenu()) {
 			// Set message variable to the message of the context menu
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
