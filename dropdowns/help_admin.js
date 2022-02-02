@@ -10,6 +10,6 @@ module.exports = {
 		require('../help/admin.js')(prefix, Embed, await client.getData('settings', 'guildId', interaction.guild.id));
 		interaction.message.components[0].components[0].options.forEach(option => option.default = false);
 		interaction.message.components[0].components[0].options[0].default = true;
-		interaction.update({ embeds: [Embed], components: interaction.message.components });
+		interaction.reply({ embeds: [Embed], components: interaction.message.components });
 	},
 };
