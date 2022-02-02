@@ -3,7 +3,7 @@ module.exports = {
 	name: 'Get Raw Message',
 	ephemeral: true,
 	type: 3,
-	async execute(interaction, args, client) {
+	async execute(interaction, client) {
 		try {
 		// Get embed and check if it exists
 			const content = interaction.message.content;
