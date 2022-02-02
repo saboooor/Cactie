@@ -7,7 +7,7 @@ module.exports = {
 			// Delete settings database for guild and reply
 			client.delData('settings', 'guildId', interaction.guild.id);
 			const Embed = interaction.message.embeds[0].setDescription('Settings successfully reset!');
-			interaction.editReply({ components: [], embeds: [Embed] });
+			interaction.reply({ components: [], embeds: [Embed] });
 
 			// Delete message after 5 seconds
 			await sleep(5000);

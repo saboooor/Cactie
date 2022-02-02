@@ -8,17 +8,17 @@ module.exports = {
 		try {
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-			if (!ticketData) return interaction.editReply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is still open
-			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'This ticket needs to be closed first!' });
+			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 
 			// Check if ticket log channel is set in settings
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.logchannel != 'false') {
 				// Get transcript of ticket
-				await interaction.editReply({ content: 'Creating transcript...' });
+				await interaction.reply({ content: 'Creating transcript...' });
 				const messages = await interaction.channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 
@@ -38,7 +38,7 @@ module.exports = {
 				await interaction.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
 				client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 			}
-			else { interaction.editReply({ content: 'Deleting Ticket...' }); }
+			else { interaction.reply({ content: 'Deleting Ticket...' }); }
 
 			// Actually delete ticket and ticket database
 			client.delData('ticketdata', 'channelId', interaction.channel.id);

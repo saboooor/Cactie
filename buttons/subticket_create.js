@@ -9,14 +9,14 @@ module.exports = {
 		try {
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-			if (!ticketData) return interaction.editReply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket has more than 5 subtickets
-			if (interaction.channel.threads.cache.size > 5) return interaction.editReply({ content: 'This ticket has too many subtickets!' });
+			if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
 
 			// Check if ticket is closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'This ticket is closed!' });
+			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
 
 			// Create Thread for subticket
 			const subticket = await interaction.channel.threads.create({
@@ -25,7 +25,7 @@ module.exports = {
 				reason: 'Created with a button',
 			});
 			client.logger.info(`Subticket created at #${subticket.name}`);
-			interaction.editReply({ content: `Subticket created at #${subticket}!` });
+			interaction.reply({ content: `Subticket created at #${subticket}!` });
 			await sleep(1000);
 
 			// Get users and ping them all with subticket embed

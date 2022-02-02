@@ -9,7 +9,7 @@ module.exports = {
 		try {
 			// Check if tickets are disabled
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			if (srvconfig.tickets == 'false') return interaction.editReply({ content: 'Tickets are disabled!' });
+			if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
 
 			// Find category and if no category then set it to null
 			let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
@@ -18,7 +18,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return interaction.editReply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+			if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 
 			// Check if ticket already exists
 			const author = interaction.user;
@@ -26,7 +26,7 @@ module.exports = {
 			if (ticketData) {
 				const channel = interaction.guild.channels.cache.get(ticketData.channelId);
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
-				return interaction.editReply({ content: `You've already created a ticket at ${channel}!` });
+				return interaction.reply({ content: `You've already created a ticket at ${channel}!` });
 			}
 
 			// Create ticket and set database
@@ -55,7 +55,7 @@ module.exports = {
 			});
 			await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
 			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
-			interaction.editReply({ content: `Ticket created at ${ticket}!` });
+			interaction.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
 
 			// Create embed

@@ -20,9 +20,9 @@ module.exports = {
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.editReply({ content: msg.music.skip.alrvoted });
+				if (alr) return interaction.reply({ content: msg.music.skip.alrvoted });
 				player.skipAmount.push(interaction.member.id);
-				if (player.skipAmount.length < requiredAmount) return interaction.editReply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
+				if (player.skipAmount.length < requiredAmount) return interaction.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });
 				player.skipAmount = null;
 			}
 
@@ -34,7 +34,7 @@ module.exports = {
 				.setColor(song.color)
 				.setTimestamp()
 				.setThumbnail(song.img);
-			await interaction.editReply({ embeds: [thing] });
+			await interaction.reply({ embeds: [thing] });
 		}
 		catch (err) {
 			client.error(err, interaction);

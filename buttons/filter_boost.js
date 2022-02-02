@@ -19,7 +19,7 @@ module.exports = {
 
 			// Update the message with the new EQ
 			const embed = interaction.message.embeds[0].setDescription(msg.music.eq.btn.replace('-m', msg.music.eq.boost));
-			await interaction.editReply({ embeds: [embed], components: interaction.message.components });
+			await interaction.reply({ embeds: [embed], components: interaction.message.components });
 		}
 		catch (err) {
 			client.error(err, interaction);
