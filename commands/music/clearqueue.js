@@ -18,7 +18,7 @@ module.exports = {
 				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 				if (!player.clearQueueAmount) player.clearQueueAmount = [];
 				let alr = false;
-				player.clearQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
+				for (const i of player.clearQueueAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return message.reply({ content: 'You\'ve already voted to clear the queue!' });
 				player.clearQueueAmount.push(message.member.id);
 				if (player.clearQueueAmount.length < requiredAmount) return message.reply({ content: `**Clear Queue?** \`${player.clearQueueAmount.length} / ${requiredAmount}\`` });

@@ -18,7 +18,7 @@ module.exports = {
 				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 				if (!player.loopTrackAmount) player.loopTrackAmount = [];
 				let alr = false;
-				player.loopTrackAmount.forEach(i => { if (i == message.member.id) alr = true; });
+				for (const i of player.loopTrackAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return message.reply({ content: 'You\'ve already voted to toggle the Track Loop!' });
 				player.loopTrackAmount.push(message.member.id);
 				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });

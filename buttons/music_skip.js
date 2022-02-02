@@ -19,7 +19,7 @@ module.exports = {
 				const requiredAmount = Math.floor((interaction.guild.me.voice.channel.members.size - 1) / 2);
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
-				player.skipAmount.forEach(i => { if (i == interaction.member.id) alr = true; });
+				for (const i of player.skipAmount) { if (i == interaction.member.id) alr = true; }
 				if (alr) return interaction.reply({ content: msg.music.skip.alrvoted });
 				player.skipAmount.push(interaction.member.id);
 				if (player.skipAmount.length < requiredAmount) return interaction.reply({ content: msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`) });

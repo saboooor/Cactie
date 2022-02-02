@@ -53,9 +53,7 @@ module.exports = {
 				.addField('**Users in ticket**', `${users}`)
 				.addField('**Transcript**', `${link}.txt`)
 				.addField('**Closed by**', `${author}`);
-			users.forEach(usr => {
-				usr.send({ embeds: [EmbedDM] });
-			});
+			users.forEach(usr => { usr.send({ embeds: [EmbedDM] }); });
 
 			// Reply with ticket close message
 			const Embed = new MessageEmbed()

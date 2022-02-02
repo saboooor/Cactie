@@ -17,7 +17,7 @@ module.exports = {
 				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 				if (!player.loopQueueAmount) player.loopQueueAmount = [];
 				let alr = false;
-				player.loopQueueAmount.forEach(i => { if (i == message.member.id) alr = true; });
+				for (const i of player.loopQueueAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return message.reply({ content: 'You\'ve already voted to toggle the Queue Loop!' });
 				player.loopQueueAmount.push(message.member.id);
 				if (player.loopQueueAmount.length < requiredAmount) return message.reply({ content: `**Toggle Queue Loop?** \`${player.loopQueueAmount.length} / ${requiredAmount}\`` });

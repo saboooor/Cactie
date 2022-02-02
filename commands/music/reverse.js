@@ -19,7 +19,7 @@ module.exports = {
 				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 				if (!player.reverseAmount) player.reverseAmount = [];
 				let alr = false;
-				player.reverseAmount.forEach(i => { if (i == message.member.id) alr = true; });
+				for (const i of player.reverseAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return message.reply({ content: 'You\'ve already voted to reverse the queue!' });
 				player.reverseAmount.push(message.member.id);
 				if (player.reverseAmount.length < requiredAmount) return message.reply({ content: `**Reverse Queue?** \`${player.reverseAmount.length} / ${requiredAmount}\`` });

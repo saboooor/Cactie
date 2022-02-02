@@ -16,7 +16,7 @@ module.exports = {
 				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
-				player.shuffleAmount.forEach(i => { if (i == message.member.id) alr = true; });
+				for (const i of player.shuffleAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return message.reply({ content: 'You\'ve already voted to shuffle the queue!' });
 				player.shuffleAmount.push(message.member.id);
 				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
