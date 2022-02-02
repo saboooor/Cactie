@@ -77,7 +77,7 @@ module.exports = async (client, interaction) => {
 	}
 	// Dropdown Handling
 	else if (interaction.isSelectMenu()) {
-		// Get the dropdown from the available drop in the bot, if there isn't one, just return because discord will throw an error itself
+		// Get the dropdown from the available dropdowns in the bot, if there isn't one, just return because discord will throw an error itself
 		const dropdown = client.dropdowns.get(interaction.values[0]);
 		if (!dropdown) return;
 
@@ -108,32 +108,33 @@ module.exports = async (client, interaction) => {
 			client.logger.error(err);
 		}
 	}
+	// Slash Command / Context Menu Handling
 	else if (interaction.isCommand() || interaction.isContextMenu()) {
+		// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
 		const command = client.slashcommands.get(interaction.commandName);
-		let args = interaction.isContextMenu() ? client : interaction.options;
+		if (!command) return;
+
+		// Make args variable from interaction options for compatibility with dash command code
+		// If command is context menu, set it to client instead since it's (interaction, client)
+		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
 		if (interaction.isContextMenu()) {
+			// Set message variable to the message of the context menu
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
 			interaction.message = msgs.first();
 		}
 		else {
-			args = interaction.options._hoistedOptions;
+			// Set args to value of options
 			args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+
+			// If subcommand exists, set the subcommand to args[0]
 			if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
 		}
-		if (!command) return;
 
-		await interaction.deferReply({ ephemeral: command.ephemeral });
-		interaction.reply = interaction.editReply;
 		const { cooldowns } = client;
-
-		if (!cooldowns.has(command.name)) {
-			cooldowns.set(command.name, new Collection());
-		}
-
+		if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
 		const now = Date.now();
 		const timestamps = cooldowns.get(command.name);
 		const cooldownAmount = (command.cooldown || 3) * 1200;
-
 		if (timestamps.has(interaction.user.id)) {
 			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
 			const messages = require('../lang/en/cooldown.json');
@@ -202,7 +203,7 @@ module.exports = async (client, interaction) => {
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
-		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
+		const player = client.manager.get(interaction.guild.id);
 
 		if (command.player && (!player || !player.queue.current)) {
 			embed.setTitle('There is no music playing.');
@@ -235,8 +236,9 @@ module.exports = async (client, interaction) => {
 
 		try {
 			const cmdlog = args.join ? `${command.name} ${args.join(' ')}` : command.name;
-			const guild = interaction.guild ? interaction.guild.name : 'DMs';
-			client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${guild}`.replace(' ,', ','));
+			client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
+			await interaction.deferReply({ ephemeral: command.ephemeral });
+			interaction.reply = interaction.editReply;
 			command.execute(interaction, args, client);
 		}
 		catch (err) {
@@ -246,8 +248,8 @@ module.exports = async (client, interaction) => {
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
 				.addField('**Type:**', 'Slash')
 				.addField('**Interaction:**', command.name)
-				.addField('**Error:**', `${clean(err)}`);
-			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+				.addField('**Error:**', `${clean(err)}`)
+				.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);
