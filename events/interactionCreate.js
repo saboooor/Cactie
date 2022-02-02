@@ -16,17 +16,16 @@ module.exports = async (client, interaction) => {
 			return client.error(err, interaction);
 		}
 
-		interaction.reply = interaction.editReply;
-
 		if (button.botperm && (!interaction.guild.me.permissions.has(button.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperm))) {
 			client.logger.error(`Missing ${button.botperm} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
+			return interaction.editReply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
+
+		interaction.reply = interaction.editReply;
 
 		if (button.permission && interaction.user.id !== '249638347306303499') {
 			const authorPerms = interaction.member.permissions;
 			if (!authorPerms || !authorPerms.has(button.permission)) {
-				interaction.deferUpdate();
 				return interaction.user.send({ content: 'You can\'t do that!' }).catch(e => { client.logger.warn(e); });
 			}
 		}
@@ -38,22 +37,22 @@ module.exports = async (client, interaction) => {
 
 		if (button.player && (!player || !player.queue.current)) {
 			embed.setTitle('There is no music playing.');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		if (button.serverUnmute && interaction.guild.me.voice.serverMute) {
 			embed.setTitle('I\'m server muted!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		if (button.inVoiceChannel && !interaction.member.voice.channel) {
 			embed.setTitle('You must be in a voice channel!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
 			embed.setTitle(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			return interaction.reply({ embeds: [embed] });
 		}
 
 		try {
