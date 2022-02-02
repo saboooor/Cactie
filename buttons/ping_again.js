@@ -14,7 +14,7 @@ module.exports = {
 
 			// Set title and update message
 			Embed.setTitle(pong[newIndex]);
-			interaction.reply({ embeds: [Embed] });
+			interaction.editReply({ embeds: [Embed] });
 		}
 		catch (err) {
 			client.error(err, interaction);

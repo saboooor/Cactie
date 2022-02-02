@@ -6,13 +6,13 @@ module.exports = {
 		try {
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return interaction.editReply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
 
 			// Check if ticket already has a voiceticket
-			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
+			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return interaction.editReply({ content: 'This ticket already has a voiceticket!' });
 
 			// Check if ticket is closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
+			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.editReply({ content: 'This ticket is closed!' });
 
 			// Find category and if no category then set it to null
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
@@ -21,7 +21,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+			if (!role) return interaction.editReply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 
 			// Create voice channel for voiceticket
 			const author = client.users.cache.get(ticketData.opener);
@@ -52,7 +52,7 @@ module.exports = {
 			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'voiceticket', voiceticket.id);
 
 			// Reply with voiceticket open message
-			interaction.reply({ content: `Voiceticket created at ${voiceticket}!` });
+			interaction.editReply({ content: `Voiceticket created at ${voiceticket}!` });
 			client.logger.info(`Voiceticket created at #${voiceticket.name}`);
 		}
 		catch (err) {

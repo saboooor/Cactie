@@ -22,7 +22,7 @@ module.exports = {
 			// Update embed description with new page and reply
 			embed.setDescription(srvconfig.slice(start, end).join('\n'))
 				.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
-			interaction.reply({ embeds: [embed], components: interaction.message.components });
+			interaction.editReply({ embeds: [embed], components: interaction.message.components });
 		}
 		catch (err) {
 			client.error(err, interaction);

@@ -3,7 +3,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Do absolutely nothing at all
-			interaction.reply();
+			interaction.editReply();
 		}
 		catch (err) {
 			client.error(err, interaction);

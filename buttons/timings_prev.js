@@ -4,7 +4,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Analyze timings with the url in the author field
-			await interaction.reply(await analyzeTimings(interaction, client, [interaction.message.embeds[0].author.url]));
+			await interaction.editReply(await analyzeTimings(interaction, client, [interaction.message.embeds[0].author.url]));
 		}
 		catch (err) {
 			client.error(err, interaction);

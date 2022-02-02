@@ -4,6 +4,7 @@ const servers = require('../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero_update',
 	async execute(interaction, client) {
+		interaction.reply = interaction.editReply;
 		try {
 			// Convert servers to array and find the server by id
 			const srvs = Object.keys(servers).map(i => { return servers[i]; });
