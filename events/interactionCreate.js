@@ -5,12 +5,11 @@ function clean(text) {
 }
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, interaction) => {
-	if (interaction.isButton()) {
+	if (interaction.isButton() && client.buttons.get(interaction.customId)) {
 		const button = client.buttons.get(interaction.customId);
-		if (!button) return;
 
 		try {
-			button.deferReply ? await interaction.deferReply({ ephemeral: button.ephemeral }) : await interaction.deferUpdate({ ephemeral: button.ephemeral });
+			await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
 		}
 		catch (e) {
 			client.logger.error(e);

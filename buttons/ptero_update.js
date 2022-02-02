@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const pteroUpdate = require('../functions/ptero/ptero.js');
+const pteroUpdate = require('../functions/ptero/pteroUpdate.js');
 const servers = require('../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero_update',
@@ -11,6 +11,7 @@ module.exports = {
 
 			// Create a nodeactyl client from creds provided because the function doesn't do it
 			const Client = new NodeactylClient(server.url, server.apikey);
+
 			// Call the pteroUpdate function
 			pteroUpdate(interaction, Client);
 		}
