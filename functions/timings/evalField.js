@@ -10,8 +10,8 @@ module.exports = function eval_field(Embed, option, option_name, plugins, server
 			try {
 				if (add_to_field && !eval(expression)) add_to_field = false;
 			}
-			catch (e) {
-				client.logger.warn(e);
+			catch (err) {
+				client.logger.warn(err);
 				add_to_field = false;
 			}
 		});

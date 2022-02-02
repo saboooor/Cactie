@@ -4,9 +4,9 @@ module.exports = client => {
 			await client.query(`DELETE FROM ${table} WHERE ${id} = '${args}'`);
 			client.logger.info(`${table} deleted for ${args}!`);
 		}
-		catch (error) {
-			await client.users.cache.get('249638347306303499').send({ content: `${error}` });
-			client.logger.error(`Error deleting ${table}: ${error}`);
+		catch (err) {
+			await client.users.cache.get('249638347306303499').send({ content: `${err}` });
+			client.logger.error(`Error deleting ${table}: ${err}`);
 		}
 		return;
 	};

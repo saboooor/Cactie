@@ -51,10 +51,10 @@ module.exports = {
 				try {
 					await fetchedMsg.react(args[1]);
 				}
-				catch (e) {
-					Embed.setDescription(`\`${e}\`\nUse an emote from a server that Pup is in or an emoji.`);
+				catch (err) {
+					Embed.setDescription(`\`${err}\`\nUse an emote from a server that Pup is in or an emoji.`);
 					message.reply({ embeds: [Embed], components: [dashbtn] });
-					return client.logger.error(e);
+					return client.logger.error(err);
 				}
 				const role = await message.guild.roles.cache.get(args[3]);
 				if (!role) {

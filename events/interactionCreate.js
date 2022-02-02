@@ -5,14 +5,15 @@ function clean(text) {
 }
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, interaction) => {
-	if (interaction.isButton() && client.buttons.get(interaction.customId)) {
+	if (interaction.isButton()) {
 		const button = client.buttons.get(interaction.customId);
+		if (!button) return;
 
 		try {
 			await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
 		}
-		catch (e) {
-			client.logger.error(e);
+		catch (err) {
+			return client.error(err, interaction);
 		}
 
 		interaction.reply = interaction.editReply;
@@ -59,18 +60,18 @@ module.exports = async (client, interaction) => {
 			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
 			button.execute(interaction, client);
 		}
-		catch (error) {
+		catch (err) {
 			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
 				.addField('**Type:**', 'Button')
 				.addField('**Interaction:**', button.name)
-				.addField('**Error:**', clean(error));
+				.addField('**Error:**', clean(err));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
-			client.logger.error(error);
+			client.logger.error(err);
 		}
 	}
 	else if (interaction.isSelectMenu()) {
@@ -89,18 +90,18 @@ module.exports = async (client, interaction) => {
 			client.logger.info(`${interaction.user.tag} clicked dropdown: ${interaction.values[0]}, in ${interaction.guild.name}`);
 			dropdown.execute(interaction, client);
 		}
-		catch (error) {
+		catch (err) {
 			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
 				.addField('**Type:**', 'Dropdown')
 				.addField('**Interaction:**', interaction.values[0])
-				.addField('**Error:**', clean(error));
+				.addField('**Error:**', clean(err));
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
-			client.logger.error(error);
+			client.logger.error(err);
 		}
 	}
 	else if (interaction.isCommand() || interaction.isContextMenu()) {
@@ -234,18 +235,18 @@ module.exports = async (client, interaction) => {
 			client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${guild}`.replace(' ,', ','));
 			command.execute(interaction, args, client);
 		}
-		catch (error) {
+		catch (err) {
 			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
 				.addField('**Type:**', 'Slash')
 				.addField('**Interaction:**', command.name)
-				.addField('**Error:**', `${clean(error)}`);
+				.addField('**Error:**', `${clean(err)}`);
 			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
-			client.logger.error(error);
+			client.logger.error(err);
 		}
 	}
 };

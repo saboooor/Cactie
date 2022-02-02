@@ -182,7 +182,7 @@ module.exports = async (client, message) => {
 		client.logger.info(`${message.author.tag} issued dash command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client);
 	}
-	catch (error) {
+	catch (err) {
 		const interactionFailed = new MessageEmbed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
@@ -191,9 +191,9 @@ module.exports = async (client, message) => {
 			.addField('**Guild:**', message.guild.name)
 			.addField('**Channel:**', message.channel.name)
 			.addField('**INTERACTION:**', srvconfig.prefix + command.name)
-			.addField('**Error:**', `${clean(error)}`);
+			.addField('**Error:**', `${clean(err)}`);
 		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
-		client.logger.error(error);
+		client.logger.error(err);
 	}
 };
