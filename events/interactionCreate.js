@@ -6,46 +6,54 @@ function clean(text) {
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, interaction) => {
 	if (interaction.isButton()) {
+		// Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
 		const button = client.buttons.get(interaction.customId);
 		if (!button) return;
 
+		// Check if bot has the permissions necessary to run the button
 		if (button.botperm && (!interaction.guild.me.permissions.has(button.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperm))) {
-			client.logger.error(`Missing ${button.botperm} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+			client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
-		if (button.permission && interaction.user.id !== '249638347306303499') {
-			const authorPerms = interaction.member.permissions;
-			if (!authorPerms || !authorPerms.has(button.permission)) {
-				return interaction.reply({ content: 'You can\'t do that!', ephemeral: true }).catch(e => { client.logger.warn(e); });
-			}
+		// Check if user has the permissions necessary to use the button
+		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(button.permission))) {
+			client.logger.error(`User is missing ${button.permission} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
+			return interaction.reply({ content: msg.permreq.replace('-p', button.permission), ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
+		// Create error embed
 		const embed = new MessageEmbed()
 			.setColor('RED');
 
+		// Get player
 		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
 
+		// Check if player exists and button needs it
 		if (button.player && (!player || !player.queue.current)) {
 			embed.setTitle('There is no music playing.');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		// Check if bot is server muted and button needs unmute
 		if (button.serverUnmute && interaction.guild.me.voice.serverMute) {
 			embed.setTitle('I\'m server muted!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		// Check if user is in vc and button needs user to be in vc
 		if (button.inVoiceChannel && !interaction.member.voice.channel) {
 			embed.setTitle('You must be in a voice channel!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		// Check if user is in the same vc as bot and button needs it
 		if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
 			embed.setTitle(`You must be in the same channel as ${client.user}!`);
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		// Defer and execute the button
 		try {
 			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
 			await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
