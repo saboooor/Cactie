@@ -10,6 +10,6 @@ module.exports = {
 		require('../help/fun.js')(prefix, Embed);
 		interaction.message.components[0].components[0].options.forEach(option => option.default = false);
 		interaction.message.components[0].components[0].options[1].default = true;
-		interaction.update({ embeds: [Embed], components: interaction.message.components });
+		interaction.reply({ embeds: [Embed], components: interaction.message.components });
 	},
 };

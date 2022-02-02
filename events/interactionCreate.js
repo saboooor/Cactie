@@ -5,6 +5,7 @@ function clean(text) {
 }
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, interaction) => {
+	// Button Handling
 	if (interaction.isButton()) {
 		// Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
 		const button = client.buttons.get(interaction.customId);
@@ -74,20 +75,23 @@ module.exports = async (client, interaction) => {
 			client.logger.error(err);
 		}
 	}
+	// Dropdown Handling
 	else if (interaction.isSelectMenu()) {
+		// Get the dropdown from the available drop in the bot, if there isn't one, just return because discord will throw an error itself
 		const dropdown = client.dropdowns.get(interaction.values[0]);
 		if (!dropdown) return;
 
-		if (dropdown.permission && interaction.user.id !== '249638347306303499') {
-			const authorPerms = interaction.member.permissions;
-			if (!authorPerms || !authorPerms.has(dropdown.permission)) {
-				interaction.deferUpdate();
-				return interaction.user.send({ content: 'You can\'t do that!' }).catch(e => { client.logger.warn(e); });
-			}
+		// Check if user has the permissions necessary to use the dropdown
+		if (dropdown.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(dropdown.permission))) {
+			client.logger.error(`User is missing ${dropdown.permission} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
+			return interaction.reply({ content: msg.permreq.replace('-p', dropdown.permission), ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
+		// Defer and execute the button
 		try {
 			client.logger.info(`${interaction.user.tag} clicked dropdown: ${interaction.values[0]}, in ${interaction.guild.name}`);
+			await interaction.deferUpdate();
+			interaction.reply = interaction.editReply;
 			dropdown.execute(interaction, client);
 		}
 		catch (err) {

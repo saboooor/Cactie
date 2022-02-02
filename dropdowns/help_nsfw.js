@@ -14,6 +14,6 @@ module.exports = {
 		require('../help/nsfw.js')(prefix, Embed);
 		interaction.message.components[0].components[0].options.forEach(option => option.default = false);
 		interaction.message.components[0].components[0].options[3].default = true;
-		interaction.update({ embeds: [Embed], components: interaction.message.components });
+		interaction.reply({ embeds: [Embed], components: interaction.message.components });
 	},
 };
