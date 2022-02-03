@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
 	// If message has the bot's Id, reply with prefix
 	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 
-	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com 
+	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
@@ -81,7 +81,7 @@ module.exports = async (client, message) => {
 
 	// Start typing (basically to mimic the defer of interactions)
 	await message.channel.sendTyping();
-	
+
 	// Get cooldowns and check if cooldown exists, if not, create it
 	const { cooldowns } = client;
 	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
