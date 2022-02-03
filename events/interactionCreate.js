@@ -18,7 +18,7 @@ module.exports = async (client, interaction) => {
 		}
 
 		// Check if user has the permissions necessary to use the button
-		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(button.permission))) {
+		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(button.permission) || !interaction.member.permissionsIn(interaction.channel).has(button.botperm))) {
 			client.logger.error(`User is missing ${button.permission} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: msg.permreq.replace('-p', button.permission), ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
@@ -28,7 +28,7 @@ module.exports = async (client, interaction) => {
 			.setColor('RED');
 
 		// Get player
-		const player = interaction.guild ? client.manager.get(interaction.guild.id) : null;
+		const player = client.manager.get(interaction.guild.id);
 
 		// Check if player exists and button needs it
 		if (button.player && (!player || !player.queue.current)) {
@@ -83,7 +83,7 @@ module.exports = async (client, interaction) => {
 
 		// Check if user has the permissions necessary to use the dropdown
 		if (dropdown.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(dropdown.permission))) {
-			client.logger.error(`User is missing ${dropdown.permission} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
+			client.logger.error(`User is missing ${dropdown.permission} permission from ${interaction.values[0]} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: msg.permreq.replace('-p', dropdown.permission), ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
@@ -130,18 +130,29 @@ module.exports = async (client, interaction) => {
 			if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
 		}
 
+		// Get cooldowns and check if cooldown exists, if not, create it
 		const { cooldowns } = client;
 		if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
+
+		// Get current timestamp and the command's last used timestamps
 		const now = Date.now();
 		const timestamps = cooldowns.get(command.name);
+
+		// Calculate the cooldown in milliseconds (default is 3600 miliseconds, idk why)
 		const cooldownAmount = (command.cooldown || 3) * 1200;
+
+		// Check if user is in the last used timestamp
 		if (timestamps.has(interaction.user.id)) {
-			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
+			// Get a random cooldown message
 			const messages = require('../lang/en/cooldown.json');
 			const random = Math.floor(Math.random() * messages.length);
+
+			// Get cooldown expiration timestamp
+			const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
+
+			// If cooldown expiration hasn't passed, send cooldown message
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				if ((expirationTime - now) < 1200) return;
 				const Embed = new MessageEmbed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])
@@ -150,21 +161,29 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
+		// Set last used timestamp to now for user and delete the timestamp after cooldown passes
 		timestamps.set(interaction.user.id, now);
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
+		// Create Error Embed
 		const embed = new MessageEmbed()
 			.setColor('RED');
 
+		// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
 		if (interaction.channel.type == 'DM') {
 			embed.setTitle('You can\'t execute commands in DMs!');
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
+		// Get current settings for the guild
 		const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
+		// Check if command can be ran only if the user voted since the past 24 hours
 		if (command.voteOnly && client.user.id == '765287593762881616') {
+			// Get vote data for user
 			const vote = await client.getData('lastvoted', 'userId', interaction.member.user.id);
+
+			// If user has not voted since the past 24 hours, send error message with vote buttons
 			if (Date.now() > vote.timestamp + 86400000) {
 				embed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
@@ -185,20 +204,25 @@ module.exports = async (client, interaction) => {
 			}
 		}
 
-		if (command.permission && interaction.member.user.id !== '249638347306303499') {
-			const authorPerms = interaction.channel.permissionsFor(interaction.member.user);
-			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !interaction.member.roles.cache.has(srvconfig.adminrole)) {
+		// Check if user has the permissions necessary to use the command
+		client.logger.info(interaction.member.permissions);
+		client.logger.info(command.permission);
+		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(command.permission) && !interaction.member.permissionsIn(interaction.channel).has(command.permission) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
+			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
+				client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 				embed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
-			else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
+			else {
+				client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 				embed.setTitle(msg.permreq.replace('-p', command.permission));
 				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
 
-		if (command.botperm && (!interaction.guild.me.permissions.has(command.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperm))) {
-			client.logger.error(`Missing ${command.botperm} permission in #${interaction.channel.name} at ${interaction.guild.name}`);
+		// Check if bot has the permissions necessary to run the command
+		if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(command.botperm) && !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperm)))) {
+			client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			embed.setTitle(`I don't have the ${command.botperm} permission!`);
 			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
