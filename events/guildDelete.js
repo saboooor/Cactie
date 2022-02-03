@@ -10,6 +10,7 @@ module.exports = async (client, guild) => {
 		.setTitle(`${client.user.username} has been removed from ${guild.name}`)
 		.setThumbnail(guild.iconURL({ dynamic : true }))
 		.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL({ dynamic : true }) })
+		.setDescription(`Pup is now in ${client.guilds.cache.size} servers`)
 		.addField('Created At', `<t:${timestamp}>\n<t:${timestamp}:R>`);
 	client.guilds.cache.get('811354612547190794').channels.cache.get('865682839616618506').send({ embeds: [Embed] });
 };
