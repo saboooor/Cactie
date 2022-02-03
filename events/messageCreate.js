@@ -9,8 +9,10 @@ function clean(text) {
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, message) => {
-	await gitUpdate(client, message);
-	if (message.author.bot) return;
+	// Check if message is from a bot and if so return and also check if message is a github update
+	if (message.author.bot) return await gitUpdate(client, message);
+
+	// If channel is DM,send the dm to the dms channel
 	if (message.channel.type == 'DM') {
 		const files = [];
 		for (const attachment of message.attachments) {
@@ -22,11 +24,14 @@ module.exports = async (client, message) => {
 		return client.guilds.cache.get('811354612547190794').channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}`, files: files });
 	}
 
-	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-
+	// If the bot can't read message history or send messages, don't execute a command
 	if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
 	|| !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
 
+	// Get current settings for the guild
+	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+
+	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
 		if ((srvconfig.reactions != 'false' || reaction.private)
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
@@ -36,8 +41,10 @@ module.exports = async (client, message) => {
 		}
 	});
 
+	// If message has the bot's Id, reply with prefix
 	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
 
+	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com 
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
@@ -46,10 +53,12 @@ module.exports = async (client, message) => {
 			.setTitle('Shortened long message')
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 			.setDescription(link)
-			.setFooter({ text: 'Next time please use a paste service' });
+			.setFooter({ text: 'Next time please use a paste service for long messages' });
 		message.channel.send({ embeds: [Embed] });
 	}
 
+	// If message doesn't start with the prefix, if so, return
+	// Also unresolve the ticket if channel is a resolved ticket
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// Check if channel is a ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
@@ -60,27 +69,40 @@ module.exports = async (client, message) => {
 		return;
 	}
 
+	// Get args by splitting the message by the spaces and getting rid of the prefix
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
+
+	// Get the command name from the fist arg and get rid of the first arg
 	const commandName = args.shift().toLowerCase();
+
+	// Get the command from the commandName, if it doesn't exist, return
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command || !command.name) return;
 
-	message.channel.sendTyping();
-	await sleep(500);
+	// Start typing (basically to mimic the defer of interactions)
+	await message.channel.sendTyping();
+	
+	// Get cooldowns and check if cooldown exists, if not, create it
 	const { cooldowns } = client;
+	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
 
-	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Collection());
-	}
-
+	// Get current timestamp and the command's last used timestamps
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.name);
-	const cooldownAmount = (command.cooldown || 1) * 1200;
 
+	// Calculate the cooldown in milliseconds (default is 3600 miliseconds, idk why)
+	const cooldownAmount = (command.cooldown || 3) * 1200;
+
+	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
-		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+		// Get a random cooldown message
 		const messages = require('../lang/en/cooldown.json');
 		const random = Math.floor(Math.random() * messages.length);
+
+		// Get cooldown expiration timestamp
+		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
