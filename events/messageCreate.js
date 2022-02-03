@@ -114,9 +114,11 @@ module.exports = async (client, message) => {
 		}
 	}
 
+	// Set last used timestamp to now for user and delete the timestamp after cooldown passes
 	timestamps.set(message.author.id, now);
 	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
+	// Check if args are required and see if args are there, if not, send error
 	if (command.args && args.length < 1) {
 		const Usage = new MessageEmbed()
 			.setColor(3447003)
@@ -126,11 +128,16 @@ module.exports = async (client, message) => {
 		return message.reply({ embeds: [Usage] });
 	}
 
+	// Create Error Embed
 	const errEmbed = new MessageEmbed()
 		.setColor('RED');
 
+	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '765287593762881616') {
+		// Get vote data for user
 		const vote = await client.getData('lastvoted', 'userId', message.author.id);
+
+		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (Date.now() > vote.timestamp + 86400000) {
 			errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
@@ -151,22 +158,27 @@ module.exports = async (client, message) => {
 		}
 	}
 
-	if (command.permission && message.author.id !== '249638347306303499') {
-		const authorPerms = message.channel.permissionsFor(message.author);
-		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission' && !message.member.roles.cache.has(srvconfig.adminrole)) {
-			errEmbed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
-			return message.reply({ embeds: [errEmbed] });
+	// Check if user has the permissions necessary to use the command
+	client.logger.info(message.member.permissions);
+	client.logger.info(command.permission);
+	if (command.permission && (!message.member.permissions || (!message.member.permissions.has(command.permission) && !message.member.permissionsIn(message.channel).has(command.permission) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
+		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
+			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
+			embed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
+			return message.reply({ embeds: [embed] });
 		}
-		else if (!authorPerms && srvconfig.adminrole == 'permission' || !authorPerms.has(command.permission) && srvconfig.adminrole == 'permission') {
-			errEmbed.setTitle(msg.permreq.replace('-p', command.permission));
-			return message.reply({ embeds: [errEmbed] });
+		else {
+			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
+			embed.setTitle(msg.permreq.replace('-p', command.permission));
+			return message.reply({ embeds: [embed] });
 		}
 	}
 
-	if (command.botperm && (!message.guild.me.permissions.has(command.botperm) || !message.guild.me.permissionsIn(message.channel).has(command.botperm))) {
-		client.logger.error(`Missing ${command.botperm} permission in #${message.channel.name} at ${message.guild.name}`);
-		errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
-		return message.reply({ embeds: [errEmbed] });
+	// Check if bot has the permissions necessary to run the command
+	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(command.botperm) && !message.guild.me.permissionsIn(message.channel).has(command.botperm)))) {
+		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
+		embed.setTitle(`I don't have the ${command.botperm} permission!`);
+		return message.reply({ embeds: [embed] });
 	}
 
 	const player = client.manager.get(message.guild.id);
