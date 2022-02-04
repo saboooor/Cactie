@@ -163,12 +163,12 @@ module.exports = async (client, message) => {
 	if (command.permission && (!message.member.permissions || (!message.member.permissions.has(command.permission) && !message.member.permissionsIn(message.channel).has(command.permission) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
 		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			embed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
+			errEmbed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
 			return message.reply({ embeds: [errEmbed] });
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			embed.setTitle(msg.permreq.replace('-p', command.permission));
+			errEmbed.setTitle(msg.permreq.replace('-p', command.permission));
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}
@@ -176,7 +176,7 @@ module.exports = async (client, message) => {
 	// Check if bot has the permissions necessary to run the command
 	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(command.botperm) && !message.guild.me.permissionsIn(message.channel).has(command.botperm)))) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
-		embed.setTitle(`I don't have the ${command.botperm} permission!`);
+		errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
 		return message.reply({ embeds: [errEmbed] });
 	}
 
