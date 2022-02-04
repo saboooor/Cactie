@@ -6,7 +6,6 @@ function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return and also check if message is a github update
@@ -165,12 +164,12 @@ module.exports = async (client, message) => {
 		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			embed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
-			return message.reply({ embeds: [embed] });
+			return message.reply({ embeds: [errEmbed] });
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			embed.setTitle(msg.permreq.replace('-p', command.permission));
-			return message.reply({ embeds: [embed] });
+			return message.reply({ embeds: [errEmbed] });
 		}
 	}
 
@@ -178,7 +177,7 @@ module.exports = async (client, message) => {
 	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(command.botperm) && !message.guild.me.permissionsIn(message.channel).has(command.botperm)))) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
 		embed.setTitle(`I don't have the ${command.botperm} permission!`);
-		return message.reply({ embeds: [embed] });
+		return message.reply({ embeds: [errEmbed] });
 	}
 
 	// Get player for music checks
