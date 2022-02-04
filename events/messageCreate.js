@@ -181,37 +181,47 @@ module.exports = async (client, message) => {
 		return message.reply({ embeds: [embed] });
 	}
 
+	// Get player for music checks
 	const player = client.manager.get(message.guild.id);
 
+	// Check if player exists and command needs it
 	if (command.player && (!player || !player.queue.current)) {
 		errEmbed.setTitle('There is no music playing.');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
+	// Check if bot is server muted and command needs unmute
 	if (command.serverUnmute && message.guild.me.voice.serverMute) {
 		errEmbed.setTitle('I\'m server muted!');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
+	// Check if user is in vc and command needs user to be in vc
 	if (command.inVoiceChannel && !message.member.voice.channel) {
 		errEmbed.setTitle('You must be in a voice channel!');
 		return message.reply({ embeds: [errEmbed] });
 	}
 
+	// Check if user is in the same vc as bot and command needs it
 	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
 		errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
 		return message.reply({ embeds: [errEmbed] });
 	}
 
+	// Check if user has dj role and command needs user to have it
 	if (command.djRole && srvconfig.djrole != 'false') {
+		// Get dj role, if it doesn't exist, send error message because invalid setting value
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
 		if (!role) return message.reply({ content: msg.dj.notfound });
+
+		// Check if user has role, if not, send error message
 		if (!message.member.roles.cache.has(srvconfig.djrole)) {
 			errEmbed.setTitle(msg.rolereq.replace('-r', role.name));
 			return message.reply({ embeds: [errEmbed] });
 		}
 	}
 
+	// execute the command
 	try {
 		client.logger.info(`${message.author.tag} issued dash command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client);
