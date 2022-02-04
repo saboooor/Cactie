@@ -230,7 +230,7 @@ module.exports = async (client, interaction) => {
 		// Get player for music checks
 		const player = client.manager.get(interaction.guild.id);
 
-		
+
 		// Check if player exists and command needs it
 		if (command.player && (!player || !player.queue.current)) {
 			embed.setTitle('There is no music playing.');
