@@ -24,7 +24,10 @@ module.exports = {
 
 			// Set the lyrics if current song lyrics are set, if not, make a request for lyrics
 			let lyrics = player ? player.lyrics : null;
-			if (song) lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0]);
+			if (song) {
+				lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0] ? song.title.split('(')[0] : song.title)
+					.catch(err => { client.logger.warn(err); });
+			}
 
 			// If there is no lyrics, say so
 			if (!lyrics) return message.reply({ content: 'Could not find lyrics for this track!' });
