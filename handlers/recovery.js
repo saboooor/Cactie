@@ -5,7 +5,7 @@ module.exports = client => {
 		const Embed = new MessageEmbed()
 			.setColor('#ff0000')
 			.setTitle('Crash Detected')
-			.setURL('https://panel.netherdepths.com/server/41769d86')
+			.setURL(`https://panel.netherdepths.com/server/41769d86/files/edit#/logs/${client.date}.log`)
 			.addField('Error', `\`\`\`${reason}\`\`\``.replace(/: /g, '\n'));
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [Embed] });
 		Embed.setDescription('This error has been logged and will be fixed soon.\nPup will be back up in a few seconds and keep your music playing!\nSorry for the inconvenience.');

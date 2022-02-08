@@ -5,6 +5,7 @@ module.exports = client => {
 		const errEmbed = new MessageEmbed()
 			.setColor('RED')
 			.setTitle('Error Detected')
+			.setURL(`https://panel.netherdepths.com/server/41769d86/files/edit#/logs/${client.date}.log`)
 			.setDescription(`\`\`\`\n${err}\n\`\`\``)
 			.setFooter({ text: 'Please report this at the Pup Support Discord Server!' });
 		const row = new MessageActionRow()
