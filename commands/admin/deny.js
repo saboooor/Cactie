@@ -58,7 +58,7 @@ module.exports = {
 					return message.reply({ content: 'I don\'t have the MANAGE_THREADS permission!' });
 				}
 				const messages = await thread.messages.fetch({ limit: 100 });
-				if (messages.size > 1) {
+				if (messages.size > 2) {
 					const link = await getTranscript(messages);
 					Embed.addField('View Discussion', link);
 				}
