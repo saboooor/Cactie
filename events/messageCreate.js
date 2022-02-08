@@ -41,7 +41,15 @@ module.exports = async (client, message) => {
 	});
 
 	// If message has the bot's Id, reply with prefix
-	if (message.content.includes(client.user.id)) message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
+	try {
+		if (message.content.includes(client.user.id)) {
+			const prefix = await message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
+			setTimeout(() => { prefix.delete(); }, 10000);
+		}
+	}
+	catch (err) {
+		client.logger.error(err);
+	}
 
 	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
