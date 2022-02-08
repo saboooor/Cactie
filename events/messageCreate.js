@@ -31,9 +31,9 @@ module.exports = async (client, message) => {
 	// this is to send the message to the channel without a reply if reply fails
 	message.msgreply = message.reply;
 	message.reply = function reply(object) {
-		message.msgreply(object).catch(err => {
+		return message.msgreply(object).catch(err => {
 			client.logger.warn(err);
-			message.channel.send(object).catch(err => {
+			return message.channel.send(object).catch(err => {
 				client.logger.error(err);
 			});
 		});
