@@ -27,6 +27,18 @@ module.exports = async (client, message) => {
 	if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
 	|| !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
 
+	// make a custom function to replace message.reply
+	// this is to send the message to the channel without a reply if reply fails
+	message.msgreply = message.reply;
+	message.reply = function reply(object) {
+		message.msgreply(object).catch(err => {
+			client.logger.warn(err);
+			message.channel.send(object).catch(err => {
+				client.logger.error(err);
+			});
+		});
+	};
+
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
