@@ -3,6 +3,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...ar
 module.exports = {
 	name: 'dm',
 	description: 'DM someone through Pup bot.',
+	cooldown: 0.1,
 	async execute(message, args, client) {
 		try {
 			const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
