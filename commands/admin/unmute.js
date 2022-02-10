@@ -22,8 +22,6 @@ module.exports = {
 
 			// Get member and author and check if role is lower than member's role
 			const member = message.guild.members.cache.get(user.id);
-			const author = message.member;
-			if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 
 			// Check if user is unmuted
 			if (role && !member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
