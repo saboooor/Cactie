@@ -1,28 +1,28 @@
 [
     {
-        "type": "SUB_COMMAND",
+        "type": 1,
         "name": "get",
         "description": "Show all reaction roles"
     },
     {
-        "type": "SUB_COMMAND",
+        "type": 1,
         "name": "add",
         "description": "Add a reaction role",
         "options": [
             {
-                "type": "STRING",
+                "type": 3,
                 "name": "emoji",
                 "description": "The reaction emoji",
                 "required": true
             },
             {
-                "type": "STRING",
+                "type": 3,
                 "name": "url",
                 "description": "The link to the message to add the reaction to",
                 "required": true
             },
             {
-                "type": "ROLE",
+                "type": 8,
                 "name": "role",
                 "description": "The role to remove/add the user to",
                 "required": true
@@ -30,18 +30,18 @@
         ]
     },
     {
-        "type": "SUB_COMMAND",
+        "type": 1,
         "name": "remove",
         "description": "remove a reaction role",
         "options": [
             {
-                "type": "STRING",
+                "type": 3,
                 "name": "emoji",
                 "description": "The reaction emoji",
                 "required": true
             },
             {
-                "type": "STRING",
+                "type": 3,
                 "name": "url",
                 "description": "The link to the message to add the reaction to",
                 "required": true

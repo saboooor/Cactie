@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed, ApplicationCommandType } = require('discord.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
@@ -12,7 +12,7 @@ module.exports = async (client) => {
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
 		await client.application?.commands.create({
 			name: command.name,
-			type: command.type ? command.type : 'CHAT_INPUT',
+			type: command.type ? command.type : ApplicationCommandType.ChatInput,
 			description: command.description,
 			options: command.options,
 		});
@@ -55,8 +55,8 @@ module.exports = async (client) => {
 				// Check if log channel exists and send message
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const Embed = new MessageEmbed().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
-					logchannel.send({ embeds: [Embed] });
+					const UnmuteEmbed = new Embed().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
+					logchannel.send({ embeds: [UnmuteEmbed] });
 				}
 			}
 			else if (data.bannedUntil < Date.now() && data.bannedUntil != 0) {
@@ -72,8 +72,8 @@ module.exports = async (client) => {
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const Embed = new MessageEmbed().setTitle(`${user ? user.tag : userId} has been unbanned`);
-					logchannel.send({ embeds: [Embed] });
+					const UnbanEmbed = new Embed().setTitle(`${user ? user.tag : userId} has been unbanned`);
+					logchannel.send({ embeds: [UnbanEmbed] });
 				}
 			}
 			else if (data.mutedUntil == 0 && data.bannedUntil == 0) {
