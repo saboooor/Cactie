@@ -89,11 +89,11 @@ module.exports = {
 					if (!emoji) emoji = reactionrole.emojiId;
 
 					// add reaction role to embed
-					RREmbed.addField('\u200b', `${emoji} **<@&${reactionrole.roleId}>**\n[Go to message](https://discord.com/channels/${reactionrole.guildId}/${reactionrole.channelId}/${reactionrole.messageId})\n\u200b`, true);
+					RREmbed.addField({ name: '\u200b', value: `${emoji} **<@&${reactionrole.roleId}>**\n[Go to message](https://discord.com/channels/${reactionrole.guildId}/${reactionrole.channelId}/${reactionrole.messageId})\n\u200b`, inline: true });
 				});
 
 				// check if there are any reaction roles set
-				if (!RREmbed.fields.length) RREmbed.addField('No reaction roles set!', 'Add one with /reactionroles add <emoji> <role> <message link>');
+				if (!RREmbed.fields.length) RREmbed.addField({ name: 'No reaction roles set!', value: 'Add one with /reactionroles add <emoji> <role> <message link>' });
 
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.fields.length > 12) {
@@ -119,7 +119,7 @@ module.exports = {
 					components.push(btns);
 				}
 			}
-			RREmbed.addField('Too confusing?', `${msg.dashboard} REACTION ROLES COMING SOON`);
+			RREmbed.addField({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
 
 			// If there aren't any buttons, add a button for dashboard
 			if (!components[0]) components.push(dashbtn);

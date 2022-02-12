@@ -45,7 +45,7 @@ module.exports = {
 				if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
 				emojis.push(emoji);
 			});
-			if (!DenyEmbed.fields[0] && emojis[0]) DenyEmbed.addField('Results', `${emojis.join(' ')}`);
+			if (!DenyEmbed.fields[0] && emojis[0]) DenyEmbed.addField({ name: 'Results', value: `${emojis.join(' ')}` });
 
 			// Delete command message
 			if (!message.commandName) message.delete();
@@ -60,7 +60,7 @@ module.exports = {
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {
 					const link = await getTranscript(messages);
-					DenyEmbed.addField('View Discussion', link);
+					DenyEmbed.addField({ name: 'View Discussion', value: link });
 				}
 				thread.delete();
 			}
@@ -76,7 +76,7 @@ module.exports = {
 						field.value = args.join(' ');
 					}
 				});
-				if (newField) DenyEmbed.addField('Response', args.join(' '));
+				if (newField) DenyEmbed.addField({ name: 'Response', value: args.join(' ') });
 			}
 			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
 			if (DenyEmbed.url) {
@@ -93,7 +93,7 @@ module.exports = {
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				DenyEmbed.setTitle(`${message.member.user.tag} denied a suggestion`)
-					.addField('Link to message', `[Click here](${fetchedMsg.url})`);
+					.addField({ name: 'Link to message', value: `[Click here](${fetchedMsg.url})` });
 				logchannel.send({ embeds: [DenyEmbed] });
 			}
 		}

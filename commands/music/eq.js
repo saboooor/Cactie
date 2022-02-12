@@ -18,7 +18,7 @@ module.exports = {
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(msg.music.eq.name)
 				.setDescription(msg.music.eq.choose)
-				.addField(msg.music.eq.precise, `[${msg.dashboard}](https://pup.smhsmh.club/music)`);
+				.addField({ name: msg.music.eq.precise, value: `[${msg.dashboard}](https://pup.smhsmh.club/music)` });
 			const but = new ButtonComponent().setCustomId('filter_clear').setLabel(msg.off).setStyle(ButtonStyle.Danger);
 			const but2 = new ButtonComponent().setCustomId('filter_bass').setLabel(msg.music.eq.bass).setStyle(ButtonStyle.Primary);
 			const but3 = new ButtonComponent().setCustomId('filter_party').setLabel(msg.music.eq.party).setStyle(ButtonStyle.Primary);

@@ -30,8 +30,8 @@ module.exports = {
 				const CloseEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${message.channel.name}`)
-					.addField('**Transcript**', `${link}.txt`)
-					.addField('**Closed by**', `${message.member.user}`);
+					.addField({ name: '**Transcript**', value: `${link}.txt` })
+					.addField({ name: '**Closed by**', value: `${message.member.user}` });
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 				message.channel.parent.send({ embeds: [CloseEmbed] })
 					.catch(error => { client.logger.error(error); });
@@ -78,9 +78,9 @@ module.exports = {
 			const EmbedDM = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)
-				.addField('**Users in ticket**', `${users}`)
-				.addField('**Transcript**', `${link}.txt`)
-				.addField('**Closed by**', `${author}`);
+				.addField({ name: '**Users in ticket**', value: `${users}` })
+				.addField({ name: '**Transcript**', value: `${link}.txt` })
+				.addField({ name: '**Closed by**', value: `${author}` });
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			users.forEach(usr => {
 				usr.send({ embeds: [EmbedDM] })

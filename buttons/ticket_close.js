@@ -50,9 +50,9 @@ module.exports = {
 			const EmbedDM = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
-				.addField('**Users in ticket**', `${users}`)
-				.addField('**Transcript**', `${link}.txt`)
-				.addField('**Closed by**', `${author}`);
+				.addField({ name: '**Users in ticket**', value: `${users}` })
+				.addField({ name: '**Transcript**', value: `${link}.txt` })
+				.addField({ name: '**Closed by**', value: `${author}` });
 			users.forEach(usr => { usr.send({ embeds: [EmbedDM] }); });
 
 			// Reply with ticket close message

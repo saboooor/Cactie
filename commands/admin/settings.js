@@ -23,7 +23,7 @@ module.exports = {
 				// Embed for possible error
 				const errEmbed = new Embed()
 					.setColor(0xE74C3C)
-					.addField('Too confusing?', msg.dashboard);
+					.addField({ name: 'Too confusing?', value: msg.dashboard });
 
 				// Check if setting exists
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -83,8 +83,8 @@ module.exports = {
 					if (logchannel) {
 						const logEmbed = new Embed()
 							.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
-							.addField('Setting', prop)
-							.addField('Value', value);
+							.addField({ name: 'Setting', value: prop })
+							.addField({ name: 'Value', value: value });
 						logchannel.send({ embeds: [logEmbed] });
 					}
 				}
@@ -119,8 +119,8 @@ module.exports = {
 
 				// Set embed description with page and stuff
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
-					.addField('Usage', '`/settings [<Setting> <Value>]`')
-					.addField('Too confusing?', msg.dashboard)
+					.addField({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
+					.addField({ name: 'Too confusing?', value: msg.dashboard })
 					.setFooter({ text: `Page 1 of ${maxPages}` });
 
 				// Add buttons for page changing

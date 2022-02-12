@@ -66,10 +66,10 @@ module.exports = async (client, interaction) => {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
-				.addField('**Type:**', 'Button')
-				.addField('**Interaction:**', button.name)
-				.addField('**Error:**', clean(err));
-			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+				.addField({ name: '**Type:**', value: 'Button' })
+				.addField({ name: '**Interaction:**', value: button.name })
+				.addField({ name: '**Error:**', value: clean(err) });
+			if (interaction.guild) interactionFailed.addField({ name: '**Guild:**', value: interaction.guild.name }).addField({ name: '**Channel:**', value: interaction.channel.name });
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);
@@ -99,10 +99,10 @@ module.exports = async (client, interaction) => {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
-				.addField('**Type:**', 'Dropdown')
-				.addField('**Interaction:**', interaction.values[0])
-				.addField('**Error:**', clean(err));
-			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+				.addField({ name: '**Type:**', value: 'Dropdown' })
+				.addField({ name: '**Interaction:**', value: interaction.values[0] })
+				.addField({ name: '**Error:**', value: clean(err) });
+			if (interaction.guild) interactionFailed.addField({ name: '**Guild:**', value: interaction.guild.name }).addField({ name: '**Channel:**', value: interaction.channel.name });
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);
@@ -281,10 +281,11 @@ module.exports = async (client, interaction) => {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
-				.addField('**Type:**', 'Slash')
-				.addField('**Interaction:**', command.name)
-				.addField('**Error:**', `${clean(err)}`)
-				.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
+				.addField({ name: '**Type:**', value: 'Slash' })
+				.addField({ name: '**Interaction:**', value: command.name })
+				.addField({ name: '**Error:**', value: `${clean(err)}` })
+				.addField({ name: '**Guild:**', value: interaction.guild.name })
+				.addField({ name: '**Channel:**', value: interaction.channel.name });
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);

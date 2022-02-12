@@ -45,7 +45,7 @@ module.exports = {
 				if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
 				emojis.push(emoji);
 			});
-			if (!ApproveEmbed.fields[0] && emojis[0]) ApproveEmbed.addField('Results', `${emojis.join(' ')}`);
+			if (!ApproveEmbed.fields[0] && emojis[0]) ApproveEmbed.addField({ name: 'Results', value: `${emojis.join(' ')}` });
 
 			// Delete command message
 			if (!message.commandName) message.delete();
@@ -60,7 +60,7 @@ module.exports = {
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {
 					const link = await getTranscript(messages);
-					ApproveEmbed.addField('View Discussion', link);
+					ApproveEmbed.addField({ name: 'View Discussion', value: link });
 				}
 				thread.delete();
 			}
@@ -76,7 +76,7 @@ module.exports = {
 						field.value = args.join(' ');
 					}
 				});
-				if (newField) ApproveEmbed.addField('Response', args.join(' '));
+				if (newField) ApproveEmbed.addField({ name: 'Response', value: args.join(' ') });
 			}
 			ApproveEmbed.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
 			if (ApproveEmbed.url) {
@@ -93,7 +93,7 @@ module.exports = {
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				ApproveEmbed.setTitle(`${message.member.user.tag} approved a suggestion`)
-					.addField('Link to message', `[Click here](${fetchedMsg.url})`);
+					.addField({ name: 'Link to message', value: `[Click here](${fetchedMsg.url})` });
 				logchannel.send({ embeds: [ApproveEmbed] });
 			}
 		}

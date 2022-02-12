@@ -35,7 +35,7 @@ module.exports = {
 				.setColor(0x5662f6)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
-				.addField('Description', 'Created with a button');
+				.addField({ name: 'Description', value: 'Created with a button' });
 
 			// Check if ticket mode is buttons or reactions and do stuff
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);

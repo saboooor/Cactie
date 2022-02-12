@@ -36,7 +36,7 @@ module.exports = {
 				.setColor(0x5662f6)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
-				.addField('Description', args[0] ? args.join(' ') : 'Created using a reaction');
+				.addField({ name: 'Description', value: args[0] ? args.join(' ') : 'Created using a reaction' });
 			if (srvconfig.tickets == 'buttons') {
 				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 				const row = new ActionRow()
