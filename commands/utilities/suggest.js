@@ -16,13 +16,13 @@ module.exports = {
 			let channel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
 			if (!channel) channel = message.channel;
 			const suggestion = args.join(' ');
-			const Embed = new Embed()
+			const SuggestEmbed = new Embed()
 				.setColor(0x5662f6)
 				.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 				.setTitle('Suggestion')
 				.setDescription(suggestion)
 				.setURL(`https://a${message.member.user.id}a.pup`);
-			const msg = await channel.send({ embeds: [Embed] });
+			const msg = await channel.send({ embeds: [SuggestEmbed] });
 			await msg.react(upvote);
 			await msg.react(downvote);
 			if (srvconfig.suggestthreads) {
@@ -35,8 +35,8 @@ module.exports = {
 					autoArchiveDuration: 1440,
 					reason: suggestion,
 				});
-				Embed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
-				msg.edit({ embeds: [Embed] });
+				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
+				msg.edit({ embeds: [SuggestEmbed] });
 			}
 			if (!message.commandName) {
 				if (channel != message.channel) {
