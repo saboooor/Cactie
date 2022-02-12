@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const { Embed, MessageButton, ActionRow } = require('discord.js');
+const { Embed, ButtonComponent, ActionRow } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero',
@@ -38,23 +38,23 @@ module.exports = {
 			if (usages.resources.network_rx_bytes) PteroEmbed.addField('**Network Recieved:**', `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, true);
 			const row = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('ptero_start')
 						.setLabel('Start')
 						.setStyle('PRIMARY'),
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('ptero_restart')
 						.setLabel('Restart')
 						.setStyle('SECONDARY'),
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('ptero_stop')
 						.setLabel('Stop')
 						.setStyle('DANGER'),
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('ptero_kill')
 						.setLabel('Kill')
 						.setStyle('DANGER'),
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('ptero_update')
 						.setLabel('Update')
 						.setStyle('SUCCESS'),

@@ -1,4 +1,4 @@
-const { Embed, Collection, MessageButton, ActionRow } = require('discord.js');
+const { Embed, Collection, ButtonComponent, ActionRow } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -189,13 +189,13 @@ module.exports = async (client, interaction) => {
 					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
 				const row = new ActionRow()
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setURL('https://top.gg/bot/765287593762881616/vote')
 							.setLabel('top.gg')
 							.setStyle('LINK'),
 					)
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setURL('https://discordbotlist.com/bots/pup/upvote')
 							.setLabel('dbl.com')
 							.setStyle('LINK'),

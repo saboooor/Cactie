@@ -1,4 +1,4 @@
-const { Embed, ActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const YAML = require('yaml');
 const fs = require('fs');
@@ -244,15 +244,15 @@ module.exports = async function analyzeTimings(message, client, args) {
 		components.push(
 			new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('timings_prev')
 						.setLabel('◄')
 						.setStyle('SECONDARY'),
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('timings_next')
 						.setLabel('►')
 						.setStyle('SECONDARY'),
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://github.com/pemigrade/botflop')
 						.setLabel('Botflop')
 						.setStyle('LINK'),

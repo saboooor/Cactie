@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ActionRow, Embed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
@@ -64,12 +64,12 @@ module.exports = {
 			if (srvconfig.tickets == 'buttons') {
 				row = new ActionRow()
 					.addComponents([
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
 							.setEmoji('⛔')
 							.setStyle('DANGER'),
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('reopen_ticket')
 							.setLabel('Reopen Ticket')
 							.setEmoji('🔓')

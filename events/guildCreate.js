@@ -1,4 +1,4 @@
-const { Embed, ActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent } = require('discord.js');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
@@ -14,15 +14,15 @@ module.exports = async (client, guild) => {
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const row = new ActionRow()
 		.addComponents(
-			new MessageButton()
+			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club')
 				.setLabel('Dashboard')
 				.setStyle('LINK'),
-			new MessageButton()
+			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club/discord')
 				.setLabel('Support Server')
 				.setStyle('LINK'),
-			new MessageButton()
+			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club/discord')
 				.setLabel('Vote on top.gg')
 				.setStyle('LINK'),

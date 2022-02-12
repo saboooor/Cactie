@@ -1,5 +1,5 @@
 const { schedule } = require('node-cron');
-const { MessageButton, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ActionRow, Embed } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
@@ -50,12 +50,12 @@ module.exports = client => {
 				if (srvconfig.tickets == 'buttons') {
 					const row = new ActionRow()
 						.addComponents([
-							new MessageButton()
+							new ButtonComponent()
 								.setCustomId('delete_ticket')
 								.setLabel('Delete Ticket')
 								.setEmoji('⛔')
 								.setStyle('DANGER'),
-							new MessageButton()
+							new ButtonComponent()
 								.setCustomId('reopen_ticket')
 								.setLabel('Reopen Ticket')
 								.setEmoji('🔓')

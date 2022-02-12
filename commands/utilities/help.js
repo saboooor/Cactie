@@ -1,4 +1,4 @@
-const { MessageButton, ActionRow, Embed, MessageSelectMenu } = require('discord.js');
+const { ButtonComponent, ActionRow, Embed, MessageSelectMenu } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -31,7 +31,7 @@ module.exports = {
 					Panel.setDescription('Click the button below to open a ticket!');
 					const row = new ActionRow()
 						.addComponents(
-							new MessageButton()
+							new ButtonComponent()
 								.setCustomId('create_ticket')
 								.setLabel('Open Ticket')
 								.setEmoji('🎫')
@@ -91,11 +91,11 @@ module.exports = {
 				]);
 			const row2 = new ActionRow()
 				.addComponents([
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://pup.smhsmh.club/discord')
 						.setLabel('Support Discord')
 						.setStyle('LINK'),
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
 						.setStyle('LINK')]);

@@ -1,4 +1,4 @@
-const { Embed, ActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent } = require('discord.js');
 module.exports = client => {
 	client.error = function error(err, message) {
 		client.logger.error(err);
@@ -10,7 +10,7 @@ module.exports = client => {
 			.setFooter({ text: 'Please report this at the Pup Support Discord Server!' });
 		const row = new ActionRow()
 			.addComponents(
-				new MessageButton()
+				new ButtonComponent()
 					.setURL('https://pup.smhsmh.club/discord')
 					.setLabel('Support Server')
 					.setStyle('LINK'),

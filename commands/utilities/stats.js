@@ -1,4 +1,4 @@
-const { Embed, MessageAttachment, ActionRow, MessageButton } = require('discord.js');
+const { Embed, MessageAttachment, ActionRow, ButtonComponent } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
@@ -81,7 +81,7 @@ module.exports = {
 			}
 			StatsEmbed.setURL(`https://${args[0].replace(':', 'colon')}.pup`).setTimestamp();
 			const row = new ActionRow().addComponents(
-				new MessageButton()
+				new ButtonComponent()
 					.setCustomId('stats_refresh')
 					.setLabel('Refresh')
 					.setStyle('SUCCESS'),

@@ -1,4 +1,4 @@
-const { MessageButton, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ActionRow, Embed } = require('discord.js');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -96,13 +96,13 @@ module.exports = {
 				// Add buttons for reset confirm / deny
 				const row = new ActionRow()
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('settings_reset')
 							.setLabel('Reset Settings')
 							.setStyle('DANGER'),
 					)
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('settings_nevermind')
 							.setLabel('Nevermind')
 							.setStyle('PRIMARY'),
@@ -126,15 +126,15 @@ module.exports = {
 				// Add buttons for page changing
 				const row = new ActionRow()
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('settings_prev')
 							.setLabel('◄')
 							.setStyle('SECONDARY'),
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('settings_next')
 							.setLabel('►')
 							.setStyle('SECONDARY'),
-						new MessageButton()
+						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel('Dashboard')
 							.setStyle('LINK'),
@@ -146,7 +146,7 @@ module.exports = {
 			if (!components[0]) {
 				const row = new ActionRow()
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel('Dashboard')
 							.setStyle('LINK'),

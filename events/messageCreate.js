@@ -1,4 +1,4 @@
-const { MessageAttachment, Embed, Collection, MessageButton, ActionRow } = require('discord.js');
+const { MessageAttachment, Embed, Collection, ButtonComponent, ActionRow } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -162,13 +162,13 @@ module.exports = async (client, message) => {
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
 			const row = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://top.gg/bot/765287593762881616/vote')
 						.setLabel('top.gg')
 						.setStyle('LINK'),
 				)
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://discordbotlist.com/bots/pup/upvote')
 						.setLabel('dbl.com')
 						.setStyle('LINK'),

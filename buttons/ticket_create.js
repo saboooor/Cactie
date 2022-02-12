@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ActionRow, Embed } = require('discord.js');
 module.exports = {
 	name: 'create_ticket',
 	botperm: 'MANAGE_CHANNELS',
@@ -70,17 +70,17 @@ module.exports = {
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 				const row = new ActionRow()
 					.addComponents(
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('close_ticket')
 							.setLabel('Close Ticket')
 							.setEmoji('🔒')
 							.setStyle('DANGER'),
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('subticket_create')
 							.setLabel('Create Subticket')
 							.setEmoji('📜')
 							.setStyle('PRIMARY'),
-						new MessageButton()
+						new ButtonComponent()
 							.setCustomId('voiceticket_create')
 							.setLabel('Create Voiceticket')
 							.setEmoji('🔊')

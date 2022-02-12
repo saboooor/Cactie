@@ -1,4 +1,4 @@
-const { Embed, ActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
@@ -21,7 +21,7 @@ module.exports = {
 
 			const dashbtn = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://pup.smhsmh.club')
 						.setLabel('Dashboard')
 						.setStyle('LINK'),
@@ -103,15 +103,15 @@ module.exports = {
 					// Add buttons for page changing
 					const btns = new ActionRow()
 						.addComponents(
-							new MessageButton()
+							new ButtonComponent()
 								.setCustomId('rr_prev')
 								.setLabel('◄')
 								.setStyle('SECONDARY'),
-							new MessageButton()
+							new ButtonComponent()
 								.setCustomId('rr_next')
 								.setLabel('►')
 								.setStyle('SECONDARY'),
-							new MessageButton()
+							new ButtonComponent()
 								.setURL('https://pup.smhsmh.club')
 								.setLabel('Dashboard')
 								.setStyle('LINK'),

@@ -1,4 +1,4 @@
-const { Embed, MessageButton, ActionRow } = require('discord.js');
+const { Embed, ButtonComponent, ActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
 const msg = require('../../lang/en/msg.json');
@@ -37,11 +37,11 @@ module.exports = {
 			QueueEmbed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
 			const row = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('queue_prev')
 						.setLabel('◄')
 						.setStyle('SECONDARY'),
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('queue_next')
 						.setLabel('►')
 						.setStyle('SECONDARY'),

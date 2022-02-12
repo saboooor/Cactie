@@ -1,4 +1,4 @@
-const { Embed, ActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
 const msg = require('../../lang/en/msg.json');
@@ -19,7 +19,7 @@ module.exports = async (client, player, track) => {
 	// Add button for skip
 	const row = new ActionRow()
 		.addComponents(
-			new MessageButton()
+			new ButtonComponent()
 				.setCustomId('music_skip')
 				.setEmoji('⏭️')
 				.setLabel(msg.music.skip.name)
