@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
 const msg = require('../../lang/en/msg.json');
@@ -23,7 +23,7 @@ module.exports = async (client, player, track) => {
 				.setCustomId('music_skip')
 				.setEmoji('⏭️')
 				.setLabel(msg.music.skip.name)
-				.setStyle('SECONDARY'),
+				.setStyle(ButtonStyle.Secondary),
 		);
 	const guild = client.guilds.cache.get(player.guild);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);

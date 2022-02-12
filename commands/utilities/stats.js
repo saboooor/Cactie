@@ -1,4 +1,4 @@
-const { Embed, MessageAttachment, ActionRow, ButtonComponent } = require('discord.js');
+const { Embed, MessageAttachment, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
@@ -84,7 +84,7 @@ module.exports = {
 				new ButtonComponent()
 					.setCustomId('stats_refresh')
 					.setLabel('Refresh')
-					.setStyle('SUCCESS'),
+					.setStyle(ButtonStyle.Success),
 			);
 			message.reply({ embeds: [StatsEmbed], files: iconpng, components: [row] });
 		}

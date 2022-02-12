@@ -1,4 +1,4 @@
-const { Embed, ButtonComponent, ActionRow } = require('discord.js');
+const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
 const msg = require('../../lang/en/msg.json');
@@ -40,11 +40,11 @@ module.exports = {
 					new ButtonComponent()
 						.setCustomId('queue_prev')
 						.setLabel('◄')
-						.setStyle('SECONDARY'),
+						.setStyle(ButtonStyle.Secondary),
 					new ButtonComponent()
 						.setCustomId('queue_next')
 						.setLabel('►')
-						.setStyle('SECONDARY'),
+						.setStyle(ButtonStyle.Secondary),
 				);
 			message.reply({ embeds: [QueueEmbed], components: [row] });
 		}

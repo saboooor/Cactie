@@ -1,4 +1,4 @@
-const { Embed, Collection, ButtonComponent, ActionRow } = require('discord.js');
+const { Embed, Collection, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -192,13 +192,13 @@ module.exports = async (client, interaction) => {
 						new ButtonComponent()
 							.setURL('https://top.gg/bot/765287593762881616/vote')
 							.setLabel('top.gg')
-							.setStyle('LINK'),
+							.setStyle(ButtonStyle.Link),
 					)
 					.addComponents(
 						new ButtonComponent()
 							.setURL('https://discordbotlist.com/bots/pup/upvote')
 							.setLabel('dbl.com')
-							.setStyle('LINK'),
+							.setStyle(ButtonStyle.Link),
 					);
 				return interaction.reply({ embeds: [errEmbed], components: [row] });
 			}

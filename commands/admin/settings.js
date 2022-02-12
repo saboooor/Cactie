@@ -1,4 +1,4 @@
-const { ButtonComponent, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -99,13 +99,13 @@ module.exports = {
 						new ButtonComponent()
 							.setCustomId('settings_reset')
 							.setLabel('Reset Settings')
-							.setStyle('DANGER'),
+							.setStyle(ButtonStyle.Danger),
 					)
 					.addComponents(
 						new ButtonComponent()
 							.setCustomId('settings_nevermind')
 							.setLabel('Nevermind')
-							.setStyle('PRIMARY'),
+							.setStyle(ButtonStyle.Primary),
 					);
 				components.push(row);
 			}
@@ -129,15 +129,15 @@ module.exports = {
 						new ButtonComponent()
 							.setCustomId('settings_prev')
 							.setLabel('◄')
-							.setStyle('SECONDARY'),
+							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
 							.setCustomId('settings_next')
 							.setLabel('►')
-							.setStyle('SECONDARY'),
+							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel('Dashboard')
-							.setStyle('LINK'),
+							.setStyle(ButtonStyle.Link),
 					);
 				components.push(row);
 			}
@@ -149,7 +149,7 @@ module.exports = {
 						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel('Dashboard')
-							.setStyle('LINK'),
+							.setStyle(ButtonStyle.Link),
 					);
 				components.push(row);
 			}

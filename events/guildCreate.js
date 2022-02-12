@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
@@ -17,15 +17,15 @@ module.exports = async (client, guild) => {
 			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club')
 				.setLabel('Dashboard')
-				.setStyle('LINK'),
+				.setStyle(ButtonStyle.Link),
 			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club/discord')
 				.setLabel('Support Server')
-				.setStyle('LINK'),
+				.setStyle(ButtonStyle.Link),
 			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club/discord')
 				.setLabel('Vote on top.gg')
-				.setStyle('LINK'),
+				.setStyle(ButtonStyle.Link),
 		);
 	const greetingEmbed = new Embed()
 		.setColor(AddEmbed.color)

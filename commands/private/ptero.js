@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const { Embed, ButtonComponent, ActionRow } = require('discord.js');
+const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero',
@@ -41,19 +41,19 @@ module.exports = {
 					new ButtonComponent()
 						.setCustomId('ptero_start')
 						.setLabel('Start')
-						.setStyle('PRIMARY'),
+						.setStyle(ButtonStyle.Primary),
 					new ButtonComponent()
 						.setCustomId('ptero_restart')
 						.setLabel('Restart')
-						.setStyle('SECONDARY'),
+						.setStyle(ButtonStyle.Secondary),
 					new ButtonComponent()
 						.setCustomId('ptero_stop')
 						.setLabel('Stop')
-						.setStyle('DANGER'),
+						.setStyle(ButtonStyle.Danger),
 					new ButtonComponent()
 						.setCustomId('ptero_kill')
 						.setLabel('Kill')
-						.setStyle('DANGER'),
+						.setStyle(ButtonStyle.Danger),
 					new ButtonComponent()
 						.setCustomId('ptero_update')
 						.setLabel('Update')

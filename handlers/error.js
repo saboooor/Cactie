@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 module.exports = client => {
 	client.error = function error(err, message) {
 		client.logger.error(err);
@@ -13,7 +13,7 @@ module.exports = client => {
 				new ButtonComponent()
 					.setURL('https://pup.smhsmh.club/discord')
 					.setLabel('Support Server')
-					.setStyle('LINK'),
+					.setStyle(ButtonStyle.Link),
 			);
 		message.channel.send({ embeds: [errEmbed], components: [row] });
 	};

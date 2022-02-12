@@ -1,7 +1,7 @@
-const { ButtonComponent, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
-	name: 'link',
+	name: ButtonStyle.Link,
 	description: 'Sends a linking guide for DiscordSRV (Config will be moved to pterodactyl.json)',
 	cooldown: 10,
 	async execute(message, args, client) {
@@ -31,7 +31,7 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 					new ButtonComponent()
 						.setCustomId('create_ticket')
 						.setLabel('Still have an issue? Create a ticket by clicking here!')
-						.setStyle('SECONDARY'),
+						.setStyle(ButtonStyle.Secondary),
 				);
 			message.reply({ embeds: [LinkEmbed], components: [row] });
 		}

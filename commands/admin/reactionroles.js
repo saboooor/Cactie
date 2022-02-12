@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
@@ -24,7 +24,7 @@ module.exports = {
 					new ButtonComponent()
 						.setURL('https://pup.smhsmh.club')
 						.setLabel('Dashboard')
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 				);
 
 			if (args[0] == 'add') {
@@ -106,15 +106,15 @@ module.exports = {
 							new ButtonComponent()
 								.setCustomId('rr_prev')
 								.setLabel('◄')
-								.setStyle('SECONDARY'),
+								.setStyle(ButtonStyle.Secondary),
 							new ButtonComponent()
 								.setCustomId('rr_next')
 								.setLabel('►')
-								.setStyle('SECONDARY'),
+								.setStyle(ButtonStyle.Secondary),
 							new ButtonComponent()
 								.setURL('https://pup.smhsmh.club')
 								.setLabel('Dashboard')
-								.setStyle('LINK'),
+								.setStyle(ButtonStyle.Link),
 						);
 					components.push(btns);
 				}

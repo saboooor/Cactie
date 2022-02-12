@@ -1,4 +1,4 @@
-const { ButtonComponent, ActionRow, Embed, SelectMenuComponent } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed, SelectMenuComponent } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -35,7 +35,7 @@ module.exports = {
 								.setCustomId('create_ticket')
 								.setLabel('Open Ticket')
 								.setEmoji('🎫')
-								.setStyle('PRIMARY'),
+								.setStyle(ButtonStyle.Primary),
 						);
 					message.channel.send({ embeds: [Panel], components: [row] });
 				}
@@ -94,11 +94,12 @@ module.exports = {
 					new ButtonComponent()
 						.setURL('https://pup.smhsmh.club/discord')
 						.setLabel('Support Discord')
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 					new ButtonComponent()
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
-						.setStyle('LINK')]);
+						.setStyle(ButtonStyle.Link),
+				]);
 			message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 		}
 		catch (err) {

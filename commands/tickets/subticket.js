@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
 module.exports = {
 	name: 'subticket',
 	description: 'Create a subticket',
@@ -45,7 +45,7 @@ module.exports = {
 							.setCustomId('close_subticket')
 							.setLabel('Close Subticket')
 							.setEmoji('🔒')
-							.setStyle('DANGER'),
+							.setStyle(ButtonStyle.Danger),
 					);
 				await subticket.send({ content: `${users}`, embeds: [CreateEmbed], components: [row] });
 			}

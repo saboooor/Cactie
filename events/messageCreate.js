@@ -1,4 +1,4 @@
-const { MessageAttachment, Embed, Collection, ButtonComponent, ActionRow } = require('discord.js');
+const { MessageAttachment, Embed, Collection, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -165,13 +165,13 @@ module.exports = async (client, message) => {
 					new ButtonComponent()
 						.setURL('https://top.gg/bot/765287593762881616/vote')
 						.setLabel('top.gg')
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 				)
 				.addComponents(
 					new ButtonComponent()
 						.setURL('https://discordbotlist.com/bots/pup/upvote')
 						.setLabel('dbl.com')
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 				);
 			return message.reply({ embeds: [errEmbed], components: [row] });
 		}
