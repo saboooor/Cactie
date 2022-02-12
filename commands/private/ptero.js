@@ -26,10 +26,10 @@ module.exports = {
 			const PteroEmbed = new Embed()
 				.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
 				.setURL(`${server.url}/server/${server.id}`);
-			if (usages.current_state == 'running') PteroEmbed.setColor(65280);
-			if (usages.current_state == 'stopping') PteroEmbed.setColor(16737280);
-			if (usages.current_state == 'offline') PteroEmbed.setColor(16711680);
-			if (usages.current_state == 'starting') PteroEmbed.setColor(16737280);
+			if (usages.current_state == 'running') PteroEmbed.setColor(0x2ECC71);
+			if (usages.current_state == 'stopping') PteroEmbed.setColor(0xFF6400);
+			if (usages.current_state == 'offline') PteroEmbed.setColor(0xE74C3C);
+			if (usages.current_state == 'starting') PteroEmbed.setColor(0xFF6400);
 			if (info.node) PteroEmbed.addField('**Node:**', info.node, true);
 			if (info.docker_image) PteroEmbed.addField('**Docker Image:**', info.docker_image, true);
 			if (usages.resources.cpu_absolute) PteroEmbed.addField('**CPU Usage:**', `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, true);

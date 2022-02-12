@@ -17,7 +17,7 @@ module.exports = {
 			if (!channel) channel = message.channel;
 			const suggestion = args.join(' ');
 			const Embed = new Embed()
-				.setColor(3447003)
+				.setColor(0x5662f6)
 				.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 				.setTitle('Suggestion')
 				.setDescription(suggestion)

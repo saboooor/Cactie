@@ -41,7 +41,7 @@ module.exports = {
 			// Give permissions to the user and reply
 			message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
 			const AddEmbed = new Embed()
-				.setColor(15105570)
+				.setColor(0xFF6400)
 				.setDescription(`${message.member.user} added ${user} to the ticket`);
 			message.reply({ embeds: [AddEmbed] });
 			client.logger.info(`Added ${user.username} to #${message.channel.name}`);

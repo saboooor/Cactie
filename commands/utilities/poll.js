@@ -15,7 +15,7 @@ module.exports = {
 			let channel = message.guild.channels.cache.get(srvconfig.pollchannel);
 			if (!channel) channel = message.channel;
 			const Poll = new Embed()
-				.setColor(3447003)
+				.setColor(0x5662f6)
 				.setTitle('Poll')
 				.setAuthor({ name: message.member.user.username, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 				.setDescription(args.join(' '));

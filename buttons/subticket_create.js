@@ -32,7 +32,7 @@ module.exports = {
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
 			const CreateEmbed = new Embed()
-				.setColor(3447003)
+				.setColor(0x5662f6)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
 				.addField('Description', 'Created with a button');

@@ -16,7 +16,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const errEmbed = new Embed()
-				.setColor('RED');
+				.setColor(0xE74C3C);
 
 			// If arg is set, force skip to index (This requires dj role)
 			if (args[0]) {

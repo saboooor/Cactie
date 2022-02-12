@@ -14,7 +14,7 @@ module.exports = {
 			const song = player.queue.current;
 			if (!player.paused) {
 				const ResEmbed = new Embed()
-					.setColor('RED')
+					.setColor(0xE74C3C)
 					.setDescription('▶️ The player is already **resumed**.')
 					.setTimestamp();
 				return message.reply({ embeds: [ResEmbed] });

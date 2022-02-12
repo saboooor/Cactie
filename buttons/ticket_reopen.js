@@ -26,7 +26,7 @@ module.exports = {
 
 			// Reply with ticket open message
 			const OpenEmbed = new Embed()
-				.setColor(15105570)
+				.setColor(0xFF6400)
 				.setDescription(`Ticket Opened by ${interaction.user}`);
 			interaction.reply({ embeds: [OpenEmbed] });
 			client.logger.info(`Reopened ticket #${interaction.channel.name}`);

@@ -18,10 +18,10 @@ module.exports = {
 				const Client = new NodeactylClient(server.url, server.apikey);
 				const info = await Client.getServerDetails(server.id);
 				const usages = await Client.getServerUsages(server.id);
-				if (usages.current_state == 'running') StatsEmbed.setColor(65280);
-				if (usages.current_state == 'stopping') StatsEmbed.setColor(16737280);
-				if (usages.current_state == 'offline') StatsEmbed.setColor(16711680);
-				if (usages.current_state == 'starting') StatsEmbed.setColor(16737280);
+				if (usages.current_state == 'running') StatsEmbed.setColor(0x2ECC71);
+				if (usages.current_state == 'stopping') StatsEmbed.setColor(0xFF6400);
+				if (usages.current_state == 'offline') StatsEmbed.setColor(0xE74C3C);
+				if (usages.current_state == 'starting') StatsEmbed.setColor(0xFF6400);
 				if (server.client) {
 					const duration = `<t:${Math.round((Date.now() - client.uptime) / 1000)}:R>`;
 					if (duration) StatsEmbed.addField('**Last Started:**', duration, true);

@@ -27,7 +27,7 @@ module.exports = {
 			const volume = Number(args[0]);
 			if (!volume || volume < 0 || volume > 100) {
 				const VolEmbed = new Embed()
-					.setColor('RED')
+					.setColor(0xE74C3C)
 					.setDescription('Usage: /volume <Number of volume between 0 - 100>');
 				return message.reply({ embeds: [VolEmbed] });
 			}

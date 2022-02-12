@@ -89,7 +89,7 @@ module.exports = {
 
 			// Create embed
 			const CloseEmbed = new Embed()
-				.setColor(15105570)
+				.setColor(0xFF6400)
 				.setDescription(`Ticket Closed by ${author}`);
 
 			// If the ticket mode is set to buttons, add the buttons, if not, don't
@@ -116,7 +116,7 @@ module.exports = {
 
 			// Add reaction panel if ticket mode is set to reactions
 			if (srvconfig.tickets == 'reactions') {
-				CloseEmbed.setColor(3447003);
+				CloseEmbed.setColor(0x5662f6);
 				CloseEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 				const embed = await message.channel.send({ embeds: [CloseEmbed] });
 				embed.react('🔓');

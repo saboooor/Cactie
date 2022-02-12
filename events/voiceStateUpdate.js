@@ -56,12 +56,12 @@ module.exports = async (client, oldState, newState) => {
 				if (stateChange.channel.members.filter(member => !member.user.bot).size >= 1) return;
 				if (!player.voiceChannel) return;
 				const channel = newState.guild.channels.cache.get(player.textChannel);
-				const Embed = new Embed()
+				const AlertEmbed = new Embed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setDescription('⚠️ **Left because of 5 minutes of inactivity!**')
 					.addField('Tired of me leaving?', 'Enable the **24/7** mode with the /247 command!')
 					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
-				const NowPlaying = await channel.send({ embeds: [Embed] });
+				const NowPlaying = await channel.send({ embeds: [AlertEmbed] });
 				player.setNowplayingMessage(NowPlaying);
 				player.destroy();
 				client.logger.info(`Destroyed player in ${newState.guild.name} because of empty channel`);

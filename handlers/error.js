@@ -3,7 +3,7 @@ module.exports = client => {
 	client.error = function error(err, message) {
 		client.logger.error(err);
 		const errEmbed = new Embed()
-			.setColor('RED')
+			.setColor(0xE74C3C)
 			.setTitle('Error Detected')
 			.setURL(`https://panel.netherdepths.com/server/41769d86/files/edit#/logs/${client.date}.log`)
 			.setDescription(`\`\`\`\n${err}\n\`\`\``)

@@ -25,7 +25,7 @@ module.exports = {
 			if (h.error) return message.reply({ content: h.error });
 			// initial embed creation
 			const Embed = new Embed()
-				.setColor(9790364)
+				.setColor(0x95639C)
 				.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
 				.setURL(`https://api.pl3x.net/v2/purpur/${c}/${f}`)
 				.setThumbnail('https://cdn.discordapp.com/attachments/742476351012864162/865391752675065896/purpur.png')

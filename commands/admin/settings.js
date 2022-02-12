@@ -22,7 +22,7 @@ module.exports = {
 
 				// Embed for possible error
 				const errEmbed = new Embed()
-					.setColor('RED')
+					.setColor(0xE74C3C)
 					.addField('Too confusing?', msg.dashboard);
 
 				// Check if setting exists

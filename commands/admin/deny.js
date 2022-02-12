@@ -36,7 +36,7 @@ module.exports = {
 
 			// Remove all reactions and set color to red and denied title
 			fetchedMsg.reactions.removeAll();
-			DenyEmbed.setColor(15158332).setTitle('Suggestion (Denied)');
+			DenyEmbed.setColor(0xE74C3C).setTitle('Suggestion (Denied)');
 
 			// Fetch results / reactions and add field if not already added
 			const emojis = [];

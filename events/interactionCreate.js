@@ -24,34 +24,34 @@ module.exports = async (client, interaction) => {
 		}
 
 		// Create error embed
-		const embed = new Embed()
-			.setColor('RED');
+		const errEmbed = new Embed()
+			.setColor(0xE74C3C);
 
 		// Get player
 		const player = client.manager.get(interaction.guild.id);
 
 		// Check if player exists and button needs it
 		if (button.player && (!player || !player.queue.current)) {
-			embed.setTitle('There is no music playing.');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('There is no music playing.');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if bot is server muted and button needs unmute
 		if (button.serverUnmute && interaction.guild.me.voice.serverMute) {
-			embed.setTitle('I\'m server muted!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('I\'m server muted!');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if user is in vc and button needs user to be in vc
 		if (button.inVoiceChannel && !interaction.member.voice.channel) {
-			embed.setTitle('You must be in a voice channel!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('You must be in a voice channel!');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if user is in the same vc as bot and button needs it
 		if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			embed.setTitle(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Defer and execute the button
@@ -153,11 +153,11 @@ module.exports = async (client, interaction) => {
 			// If cooldown expiration hasn't passed, send cooldown message
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				const Embed = new Embed()
+				const cooldownEmbed = new Embed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])
 					.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-				return interaction.reply({ embeds: [Embed], ephemeral: true });
+				return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });
 			}
 		}
 
@@ -166,13 +166,13 @@ module.exports = async (client, interaction) => {
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		// Create Error Embed
-		const embed = new Embed()
-			.setColor('RED');
+		const errEmbed = new Embed()
+			.setColor(0xE74C3C);
 
 		// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
 		if (interaction.channel.type == 'DM') {
-			embed.setTitle('You can\'t execute commands in DMs!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('You can\'t execute commands in DMs!');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Get current settings for the guild
@@ -185,7 +185,7 @@ module.exports = async (client, interaction) => {
 
 			// If user has not voted since the past 24 hours, send error message with vote buttons
 			if (Date.now() > vote.timestamp + 86400000) {
-				embed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
+				errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
 				const row = new MessageActionRow()
 					.addComponents(
@@ -200,7 +200,7 @@ module.exports = async (client, interaction) => {
 							.setLabel('dbl.com')
 							.setStyle('LINK'),
 					);
-				return interaction.reply({ embeds: [embed], components: [row] });
+				return interaction.reply({ embeds: [errEmbed], components: [row] });
 			}
 		}
 
@@ -210,21 +210,21 @@ module.exports = async (client, interaction) => {
 		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(command.permission) && !interaction.member.permissionsIn(interaction.channel).has(command.permission) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
 			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
 				client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-				embed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
-				return interaction.reply({ embeds: [embed], ephemeral: true });
+				errEmbed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
+				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 			}
 			else {
 				client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-				embed.setTitle(msg.permreq.replace('-p', command.permission));
-				return interaction.reply({ embeds: [embed], ephemeral: true });
+				errEmbed.setTitle(msg.permreq.replace('-p', command.permission));
+				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 			}
 		}
 
 		// Check if bot has the permissions necessary to run the command
 		if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(command.botperm) && !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperm)))) {
 			client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			embed.setTitle(`I don't have the ${command.botperm} permission!`);
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Get player for music checks
@@ -233,26 +233,26 @@ module.exports = async (client, interaction) => {
 
 		// Check if player exists and command needs it
 		if (command.player && (!player || !player.queue.current)) {
-			embed.setTitle('There is no music playing.');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('There is no music playing.');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if bot is server muted and command needs unmute
 		if (command.serverUnmute && interaction.guild.me.voice.serverMute) {
-			embed.setTitle('I\'m server muted!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('I\'m server muted!');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if user is in vc and command needs user to be in vc
 		if (command.inVoiceChannel && !interaction.member.voice.channel) {
-			embed.setTitle('You must be in a voice channel!');
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle('You must be in a voice channel!');
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if user is in the same vc as bot and command needs it
 		if (command.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			embed.setTitle(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [embed], ephemeral: true });
+			errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
+			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
 
 		// Check if user has dj role and command needs user to have it
@@ -263,8 +263,8 @@ module.exports = async (client, interaction) => {
 
 			// Check if user has role, if not, send error message
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
-				embed.setTitle(msg.rolereq.replace('-r', role.name));
-				return interaction.reply({ embeds: [embed], ephemeral: true });
+				errEmbed.setTitle(msg.rolereq.replace('-r', role.name));
+				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 			}
 		}
 

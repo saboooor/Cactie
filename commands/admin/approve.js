@@ -36,7 +36,7 @@ module.exports = {
 
 			// Remove all reactions and set color to green and approved title
 			fetchedMsg.reactions.removeAll();
-			ApproveEmbed.setColor(3066993).setTitle('Suggestion (Approved)');
+			ApproveEmbed.setColor(0x2ECC71).setTitle('Suggestion (Approved)');
 
 			// Fetch results / reactions and add field if not already added
 			const emojis = [];

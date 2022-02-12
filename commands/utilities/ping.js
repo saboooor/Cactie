@@ -13,12 +13,12 @@ module.exports = {
 					.setCustomId('ping_again')
 					.setLabel(msg.ping.again)
 					.setStyle('SECONDARY'));
-			const Embed = new Embed()
+			const PingEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(msg.ping.pong)
 				.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`)
 				.setTimestamp();
-			message.reply({ embeds: [Embed], components: [row] });
+			message.reply({ embeds: [PingEmbed], components: [row] });
 		}
 		catch (err) {
 			client.error(err, message);

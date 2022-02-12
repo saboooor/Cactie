@@ -24,7 +24,7 @@ module.exports = {
 				if (!message.member.permissions.has('ADMINISTRATOR')) return;
 				HelpEmbed.setDescription('Created support panel! You may now delete this message');
 				const Panel = new Embed()
-					.setColor(3447003)
+					.setColor(0x5662f6)
 					.setTitle('Need help? No problem!')
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL({ dynamic : true }) });
 				if (srvconfig.tickets == 'buttons') {

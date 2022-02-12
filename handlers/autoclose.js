@@ -44,7 +44,7 @@ module.exports = client => {
 						.catch(error => { client.logger.warn(error); });
 				});
 				const Embed = new Embed()
-					.setColor(15105570)
+					.setColor(0xFF6400)
 					.setDescription('Automatically closed Resolved Ticket');
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
 				if (srvconfig.tickets == 'buttons') {
@@ -64,7 +64,7 @@ module.exports = client => {
 					channel.send({ embeds: [Embed], components: [row] });
 				}
 				else if (srvconfig.tickets == 'reactions') {
-					Embed.setColor(3447003);
+					Embed.setColor(0x5662f6);
 					Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 					const embed = await channel.send({ embeds: [Embed] });
 					embed.react('🔓');

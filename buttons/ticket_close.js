@@ -57,7 +57,7 @@ module.exports = {
 
 			// Reply with ticket close message
 			const CloseEmbed = new Embed()
-				.setColor(15105570)
+				.setColor(0xFF6400)
 				.setDescription(`Ticket Closed by ${author}`);
 			let row = null;
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
@@ -81,7 +81,7 @@ module.exports = {
 
 			// Check if ticket setting is set to reactions and add the reactions
 			if (srvconfig.tickets == 'reactions') {
-				Embed.setColor(3447003);
+				Embed.setColor(0x5662f6);
 				Embed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
 				const embed = await interaction.channel.send({ embeds: [CloseEmbed] });
 				embed.react('🔓');

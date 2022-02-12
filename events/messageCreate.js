@@ -67,13 +67,13 @@ module.exports = async (client, message) => {
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
-		const Embed = new Embed()
+		const shortEmbed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 			.setDescription(link)
 			.setFooter({ text: 'Next time please use a paste service for long messages' });
-		message.channel.send({ embeds: [Embed] });
+		message.channel.send({ embeds: [shortEmbed] });
 	}
 
 	// If message doesn't start with the prefix, if so, return
@@ -125,11 +125,11 @@ module.exports = async (client, message) => {
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
-			const Embed = new Embed()
+			const cooldownEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-			return message.reply({ embeds: [Embed] });
+			return message.reply({ embeds: [cooldownEmbed] });
 		}
 	}
 
@@ -140,7 +140,7 @@ module.exports = async (client, message) => {
 	// Check if args are required and see if args are there, if not, send error
 	if (command.args && args.length < 1) {
 		const Usage = new Embed()
-			.setColor(3447003)
+			.setColor(0x5662f6)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
 		if (command.similarcmds) Usage.setFooter({ text: `Did you mean to use ${srvconfig.prefix}${command.similarcmds}?` });
@@ -149,7 +149,7 @@ module.exports = async (client, message) => {
 
 	// Create Error Embed
 	const errEmbed = new Embed()
-		.setColor('RED');
+		.setColor(0xE74C3C);
 
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '765287593762881616') {

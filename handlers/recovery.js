@@ -3,7 +3,7 @@ const fs = require('fs');
 module.exports = client => {
 	process.on('unhandledRejection', async (reason) => {
 		const CrashEmbed = new Embed()
-			.setColor('#ff0000')
+			.setColor(0xE74C3C)
 			.setTitle('Crash Detected')
 			.setURL(`https://panel.netherdepths.com/server/41769d86/files/edit#/logs/${client.date}.log`)
 			.addField('Error', `\`\`\`${reason}\`\`\``.replace(/: /g, '\n'));

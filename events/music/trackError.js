@@ -4,7 +4,7 @@ module.exports = async (client, player, track, payload) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);
 	const thing = new Embed()
-		.setColor('RED')
+		.setColor(0xE74C3C)
 		.setDescription('❌ Failed to load track');
 	const msg = await channel.send({ embeds: [thing] });
 	client.logger.error(payload.error);

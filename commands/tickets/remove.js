@@ -29,7 +29,7 @@ module.exports = {
 			}
 			message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
 			const RemEmbed = new Embed()
-				.setColor(15105570)
+				.setColor(0xFF6400)
 				.setDescription(`${message.member.user} removed ${user} from the ticket`);
 			message.reply({ embeds: [RemEmbed] });
 			client.logger.info(`Removed ${user.username} from #${message.channel.name}`);

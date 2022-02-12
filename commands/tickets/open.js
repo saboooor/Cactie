@@ -27,7 +27,7 @@ module.exports = {
 				message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 			});
 			const OpenEmbed = new Embed()
-				.setColor(15105570)
+				.setColor(0xFF6400)
 				.setDescription(`Ticket Opened by ${author}`);
 			message.reply({ embeds: [OpenEmbed] });
 			await sleep(1000);

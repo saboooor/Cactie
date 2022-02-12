@@ -61,7 +61,7 @@ module.exports = {
 			// Create embed
 			await sleep(1000);
 			const CreateEmbed = new Embed()
-				.setColor(3447003)
+				.setColor(0x5662f6)
 				.setTitle('Ticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly\nIf you have multiple issues, please use the /subticket command\nIf you want to create a private voice chat, please use the /voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.');
 

@@ -27,7 +27,7 @@ module.exports = {
 			if (h.error) return message.reply(h.error);
 			// initial embed creation
 			const Embed = new Embed()
-				.setColor(16777215)
+				.setColor(0xFFFFFF)
 				.setTitle(`Paper ${h.version} build ${h.build}`)
 				.setURL(`https://papermc.io/api/v2/projects/paper/versions/${c}/builds/${f}`)
 				.setThumbnail('https://avatars.githubusercontent.com/u/7608950?s=200&v=4')

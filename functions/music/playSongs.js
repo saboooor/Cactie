@@ -56,7 +56,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else {
 			// There's no result for the search, send error message
-			embed.setColor('RED').setDescription('No results found.');
+			embed.setColor(0xE74C3C).setDescription('No results found.');
 			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
 		}
 	}
@@ -67,7 +67,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'NO_MATCHES') {
 			// There's no result for the search, send error message
-			embed.setColor('RED').setDescription('No results found.');
+			embed.setColor(0xE74C3C).setDescription('No results found.');
 			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {

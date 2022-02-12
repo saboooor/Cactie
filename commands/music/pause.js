@@ -12,7 +12,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			if (player.paused) {
 				const PauseEmbed = new Embed()
-					.setColor('RED')
+					.setColor(0xE74C3C)
 					.setDescription('⏸️ The player is already paused.')
 					.setTimestamp();
 				return message.reply({ embeds: [PauseEmbed] });
