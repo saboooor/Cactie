@@ -1,4 +1,4 @@
-const { ButtonComponent, ActionRow, Embed, MessageSelectMenu } = require('discord.js');
+const { ButtonComponent, ActionRow, Embed, SelectMenuComponent } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -53,7 +53,7 @@ module.exports = {
 			}
 			const row = new ActionRow()
 				.addComponents([
-					new MessageSelectMenu()
+					new SelectMenuComponent()
 						.setCustomId('select')
 						.setPlaceholder('Select a help category!')
 						.addOptions([
