@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 module.exports = {
 	name: 'create_ticket',
 	botperm: 'MANAGE_CHANNELS',
@@ -68,7 +68,7 @@ module.exports = {
 			// Check if ticket mode is buttons or reactions and send embed
 			if (srvconfig.tickets == 'buttons') {
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents(
 						new MessageButton()
 							.setCustomId('close_ticket')

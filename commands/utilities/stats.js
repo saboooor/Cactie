@@ -1,4 +1,4 @@
-const { Embed, MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, MessageAttachment, ActionRow, MessageButton } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
@@ -80,7 +80,7 @@ module.exports = {
 				if (!pong.debug.query) StatsEmbed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 			}
 			StatsEmbed.setURL(`https://${args[0].replace(':', 'colon')}.pup`).setTimestamp();
-			const row = new MessageActionRow().addComponents(
+			const row = new ActionRow().addComponents(
 				new MessageButton()
 					.setCustomId('stats_refresh')
 					.setLabel('Refresh')

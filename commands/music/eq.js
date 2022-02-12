@@ -1,4 +1,4 @@
-const { Embed, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, MessageButton, ActionRow } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'eq',
@@ -28,8 +28,8 @@ module.exports = {
 			const but7 = new MessageButton().setCustomId('filter_boost').setLabel(msg.music.eq.boost).setStyle('PRIMARY');
 			const but8 = new MessageButton().setCustomId('filter_soft').setLabel(msg.music.eq.soft).setStyle('PRIMARY');
 			const but9 = new MessageButton().setCustomId('filter_maxed').setLabel(msg.music.eq.maxed).setStyle('PRIMARY');
-			const row = new MessageActionRow().addComponents(but, but2, but3, but4, but5);
-			const row2 = new MessageActionRow().addComponents(but6, but7, but8, but9);
+			const row = new ActionRow().addComponents(but, but2, but3, but4, but5);
+			const row2 = new ActionRow().addComponents(but6, but7, but8, but9);
 			await message.reply({ embeds: [EQEmbed], components: [row, row2] });
 		}
 		catch (err) {

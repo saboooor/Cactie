@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 module.exports = {
 	name: 'subticket',
 	description: 'Create a subticket',
@@ -39,7 +39,7 @@ module.exports = {
 				.addField('Description', args[0] ? args.join(' ') : 'Created using a reaction');
 			if (srvconfig.tickets == 'buttons') {
 				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents(
 						new MessageButton()
 							.setCustomId('close_subticket')

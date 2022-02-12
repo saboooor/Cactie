@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, Embed, MessageSelectMenu } = require('discord.js');
+const { MessageButton, ActionRow, Embed, MessageSelectMenu } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -29,7 +29,7 @@ module.exports = {
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL({ dynamic : true }) });
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
-					const row = new MessageActionRow()
+					const row = new ActionRow()
 						.addComponents(
 							new MessageButton()
 								.setCustomId('create_ticket')
@@ -51,7 +51,7 @@ module.exports = {
 			else {
 				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
 			}
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents([
 					new MessageSelectMenu()
 						.setCustomId('select')
@@ -89,7 +89,7 @@ module.exports = {
 							},
 						]),
 				]);
-			const row2 = new MessageActionRow()
+			const row2 = new ActionRow()
 				.addComponents([
 					new MessageButton()
 						.setURL('https://pup.smhsmh.club/discord')

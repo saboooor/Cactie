@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
@@ -62,7 +62,7 @@ module.exports = {
 			let row = null;
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.tickets == 'buttons') {
-				row = new MessageActionRow()
+				row = new ActionRow()
 					.addComponents([
 						new MessageButton()
 							.setCustomId('delete_ticket')

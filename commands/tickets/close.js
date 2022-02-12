@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
@@ -94,7 +94,7 @@ module.exports = {
 
 			// If the ticket mode is set to buttons, add the buttons, if not, don't
 			if (srvconfig.tickets == 'buttons') {
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents([
 						new MessageButton()
 							.setCustomId('delete_ticket')

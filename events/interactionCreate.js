@@ -1,4 +1,4 @@
-const { Embed, Collection, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, Collection, MessageButton, ActionRow } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -187,7 +187,7 @@ module.exports = async (client, interaction) => {
 			if (Date.now() > vote.timestamp + 86400000) {
 				errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents(
 						new MessageButton()
 							.setURL('https://top.gg/bot/765287593762881616/vote')

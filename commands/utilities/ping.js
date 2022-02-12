@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'ping',
@@ -8,7 +8,7 @@ module.exports = {
 	cooldown: 10,
 	execute(message, args, client) {
 		try {
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents(new MessageButton()
 					.setCustomId('ping_again')
 					.setLabel(msg.ping.again)

@@ -1,4 +1,4 @@
-const { Embed, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, MessageButton } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
@@ -19,7 +19,7 @@ module.exports = {
 			// Get reaction roles and pages
 			const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
 
-			const dashbtn = new MessageActionRow()
+			const dashbtn = new ActionRow()
 				.addComponents(
 					new MessageButton()
 						.setURL('https://pup.smhsmh.club')
@@ -101,7 +101,7 @@ module.exports = {
 					RREmbed.setFooter({ text: `Page 1 of ${Math.ceil(RREmbed.fields.length / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 
 					// Add buttons for page changing
-					const btns = new MessageActionRow()
+					const btns = new ActionRow()
 						.addComponents(
 							new MessageButton()
 								.setCustomId('rr_prev')

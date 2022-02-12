@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const { Embed, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, MessageButton, ActionRow } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero',
@@ -36,7 +36,7 @@ module.exports = {
 			if (usages.resources.memory_bytes) PteroEmbed.addField('**RAM Usage:**', `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, true);
 			if (usages.resources.network_tx_bytes) PteroEmbed.addField('**Network Sent:**', `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, true);
 			if (usages.resources.network_rx_bytes) PteroEmbed.addField('**Network Recieved:**', `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, true);
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents(
 					new MessageButton()
 						.setCustomId('ptero_start')

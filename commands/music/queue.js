@@ -1,4 +1,4 @@
-const { Embed, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, MessageButton, ActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
 const msg = require('../../lang/en/msg.json');
@@ -35,7 +35,7 @@ module.exports = {
 			// Get max pages and add it to footer and reply with buttons
 			const maxPages = Math.ceil(queue.length / 10);
 			QueueEmbed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents(
 					new MessageButton()
 						.setCustomId('queue_prev')

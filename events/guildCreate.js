@@ -1,4 +1,4 @@
-const { Embed, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, MessageButton } = require('discord.js');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
@@ -12,7 +12,7 @@ module.exports = async (client, guild) => {
 		.addField('Created At', `<t:${timestamp}>\n<t:${timestamp}:R>`);
 	client.guilds.cache.get('811354612547190794').channels.cache.get('865682839616618506').send({ embeds: [AddEmbed] });
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
-	const row = new MessageActionRow()
+	const row = new ActionRow()
 		.addComponents(
 			new MessageButton()
 				.setURL('https://pup.smhsmh.club')

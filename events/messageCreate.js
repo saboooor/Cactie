@@ -1,4 +1,4 @@
-const { MessageAttachment, Embed, Collection, MessageButton, MessageActionRow } = require('discord.js');
+const { MessageAttachment, Embed, Collection, MessageButton, ActionRow } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -160,7 +160,7 @@ module.exports = async (client, message) => {
 		if (Date.now() > vote.timestamp + 86400000) {
 			errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents(
 					new MessageButton()
 						.setURL('https://top.gg/bot/765287593762881616/vote')

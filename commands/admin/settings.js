@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -94,7 +94,7 @@ module.exports = {
 				Embed.setTitle('**SETTINGS RESET**');
 
 				// Add buttons for reset confirm / deny
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents(
 						new MessageButton()
 							.setCustomId('settings_reset')
@@ -124,7 +124,7 @@ module.exports = {
 					.setFooter({ text: `Page 1 of ${maxPages}` });
 
 				// Add buttons for page changing
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents(
 						new MessageButton()
 							.setCustomId('settings_prev')
@@ -144,7 +144,7 @@ module.exports = {
 
 			// If there aren't any buttons, add a button for dashboard
 			if (!components[0]) {
-				const row = new MessageActionRow()
+				const row = new ActionRow()
 					.addComponents(
 						new MessageButton()
 							.setURL('https://pup.smhsmh.club')

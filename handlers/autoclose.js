@@ -1,5 +1,5 @@
 const { schedule } = require('node-cron');
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
@@ -48,7 +48,7 @@ module.exports = client => {
 					.setDescription('Automatically closed Resolved Ticket');
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
 				if (srvconfig.tickets == 'buttons') {
-					const row = new MessageActionRow()
+					const row = new ActionRow()
 						.addComponents([
 							new MessageButton()
 								.setCustomId('delete_ticket')

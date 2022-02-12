@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, Embed } = require('discord.js');
+const { MessageButton, ActionRow, Embed } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'link',
@@ -26,7 +26,7 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 **1.** On your list of Discord servers in the left-hand servers tab, you should see the ${srvs[0].name} logo. Right click it.
 **2.** Click Privacy \`Settings\`
 **3.** Enable the setting labeled \`Allow direct messages from server members\`.`);
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents(
 					new MessageButton()
 						.setCustomId('create_ticket')

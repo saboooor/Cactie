@@ -1,4 +1,4 @@
-const { Embed, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, MessageButton } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const YAML = require('yaml');
 const fs = require('fs');
@@ -242,7 +242,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 			Embed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 		}
 		components.push(
-			new MessageActionRow()
+			new ActionRow()
 				.addComponents(
 					new MessageButton()
 						.setCustomId('timings_prev')
