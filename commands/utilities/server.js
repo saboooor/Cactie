@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',
@@ -7,7 +7,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			const owner = await message.guild.fetchOwner();
-			const Embed = new MessageEmbed()
+			const Embed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(message.guild.name)
 				.setThumbnail(message.guild.iconURL({ dynamic : true }))

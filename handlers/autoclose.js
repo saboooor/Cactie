@@ -1,5 +1,5 @@
 const { schedule } = require('node-cron');
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
@@ -32,7 +32,7 @@ module.exports = client => {
 				const link = await getTranscript(messages);
 				const users = [];
 				await data.users.forEach(userid => users.push(client.users.cache.get(userid)));
-				const EmbedDM = new MessageEmbed()
+				const EmbedDM = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
 					.addField('**Users in ticket**', `${users}`)
@@ -43,7 +43,7 @@ module.exports = client => {
 					usr.send({ embeds: [EmbedDM] })
 						.catch(error => { client.logger.warn(error); });
 				});
-				const Embed = new MessageEmbed()
+				const Embed = new Embed()
 					.setColor(15105570)
 					.setDescription('Automatically closed Resolved Ticket');
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'forcedelete',
@@ -24,15 +24,15 @@ module.exports = {
 			const link = await getTranscript(messages);
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const Embed = new MessageEmbed()
+			const DelEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${message.channel.name}`)
 				.addField('**Users in ticket**', `${users}`)
 				.addField('**Transcript**', `${link}.txt`)
 				.addField('**Deleted by**', `${author}`);
-			if (srvconfig.logchannel != 'false') message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
+			if (srvconfig.logchannel != 'false') message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
 			users.forEach(usr => {
-				usr.send({ embeds: [Embed] })
+				usr.send({ embeds: [DelEmbed] })
 					.catch(error => { client.logger.warn(error); });
 			});
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
@@ -27,7 +27,7 @@ module.exports = async function playSongs(message, args, client, top) {
 	const slash = message.type && message.type == 'APPLICATION_COMMAND';
 
 	// Create embed for responses
-	const embed = new MessageEmbed().setTimestamp();
+	const embed = new Embed().setTimestamp();
 
 	// Check if search is a spotify link, if not, search YouTube
 	if (search.match(client.Lavasfy.spotifyPattern)) {

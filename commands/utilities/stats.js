@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, MessageAttachment, MessageActionRow, MessageButton } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
@@ -17,7 +17,7 @@ module.exports = {
 			Object.keys(servers).map(i => { srvs.push(servers[i]); });
 			let server = servers[args.join(' ').toLowerCase()];
 			if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
-			const Embed = new MessageEmbed().setColor(Math.floor(Math.random() * 16777215));
+			const Embed = new Embed().setColor(Math.floor(Math.random() * 16777215));
 			if (server && server.id) {
 				const Client = new NodeactylClient(server.url, server.apikey);
 				const info = await Client.getServerDetails(server.id);

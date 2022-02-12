@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'shuffle',
 	description: 'Shuffle queue',
@@ -25,11 +25,11 @@ module.exports = {
 
 			// Shuffle queue and reply
 			player.queue.shuffle();
-			const thing = new MessageEmbed()
+			const ShuffleEmbed = new Embed()
 				.setDescription('🔀 Shuffled the queue')
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp();
-			message.reply({ embeds: [thing] });
+			message.reply({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

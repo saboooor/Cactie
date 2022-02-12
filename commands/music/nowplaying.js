@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 const msg = require('../../lang/en/msg.json');
@@ -16,11 +16,11 @@ module.exports = {
 			let song = player.queue.current;
 			let total = song.duration;
 			let current = player.position;
-			let embed = new MessageEmbed()
+			let NPEmbed = new Embed()
 				.setDescription(`${msg.music.np}\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
 				.setThumbnail(song.img)
 				.setColor(song.color);
-			const npmsg = await message.channel.send({ embeds: [embed] });
+			const npmsg = await message.channel.send({ embeds: [NPEmbed] });
 
 			// Set the now playing message and update it every 5 seconds
 			player.set('nowplayingMSG', npmsg);
@@ -39,12 +39,12 @@ module.exports = {
 				// Get the song position / length and edit the embed
 				total = song.duration;
 				current = player.position;
-				embed = new MessageEmbed()
+				NPEmbed = new Embed()
 					.setDescription(`${msg.music.np}\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
 					.setThumbnail(song.img)
 					.setColor(song.color);
-				player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit({ embeds: [embed] }, '') :
-					message.channel.send({ embeds: [embed] }).then(msg2 => player.set('nowplayingMSG', msg2));
+				player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit({ embeds: [NPEmbed] }, '') :
+					message.channel.send({ embeds: [NPEmbed] }).then(msg2 => player.set('nowplayingMSG', msg2));
 			}, 5000);
 			player.set('nowplaying', interval);
 		}

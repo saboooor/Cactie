@@ -1,9 +1,9 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, MessageActionRow, MessageButton } = require('discord.js');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
 	const timestamp = Math.round(guild.createdTimestamp / 1000);
-	const Embed = new MessageEmbed()
+	const Embed = new Embed()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`${client.user.username} has been added to ${guild.name}`)
 		.setThumbnail(guild.iconURL({ dynamic : true }))
@@ -27,7 +27,7 @@ module.exports = async (client, guild) => {
 				.setLabel('Vote on top.gg')
 				.setStyle('LINK'),
 		);
-	const greetingEmbed = new MessageEmbed()
+	const greetingEmbed = new Embed()
 		.setColor(Embed.color)
 		.setTitle(`Thanks for adding me to ${guild.name}!`)
 		.setDescription(`My prefix is \`${srvconfig.prefix}\`, you can change this with \`${srvconfig.prefix}settings\`\nType \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!\nThis bot has reactions to messages with keywords which at times may be annoying. To turn them off, do \`${srvconfig.prefix}settings reactions false\``)

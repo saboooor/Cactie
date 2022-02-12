@@ -1,4 +1,4 @@
-const { MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, Collection, MessageButton, MessageActionRow } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -24,7 +24,7 @@ module.exports = async (client, interaction) => {
 		}
 
 		// Create error embed
-		const embed = new MessageEmbed()
+		const embed = new Embed()
 			.setColor('RED');
 
 		// Get player
@@ -62,7 +62,7 @@ module.exports = async (client, interaction) => {
 			button.execute(interaction, client);
 		}
 		catch (err) {
-			const interactionFailed = new MessageEmbed()
+			const interactionFailed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
@@ -95,7 +95,7 @@ module.exports = async (client, interaction) => {
 			dropdown.execute(interaction, client);
 		}
 		catch (err) {
-			const interactionFailed = new MessageEmbed()
+			const interactionFailed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
@@ -153,7 +153,7 @@ module.exports = async (client, interaction) => {
 			// If cooldown expiration hasn't passed, send cooldown message
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				const Embed = new MessageEmbed()
+				const Embed = new Embed()
 					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])
 					.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -166,7 +166,7 @@ module.exports = async (client, interaction) => {
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		// Create Error Embed
-		const embed = new MessageEmbed()
+		const embed = new Embed()
 			.setColor('RED');
 
 		// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
@@ -277,7 +277,7 @@ module.exports = async (client, interaction) => {
 			command.execute(interaction, args, client);
 		}
 		catch (err) {
-			const interactionFailed = new MessageEmbed()
+			const interactionFailed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })

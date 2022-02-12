@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'help_nsfw',
 	async execute(interaction, client) {
@@ -6,7 +6,7 @@ module.exports = {
 			if (!interaction.channel.nsfw) return interaction.user.send({ content: 'That is not an NSFW channel!' });
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			const prefix = srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
-			const Embed = new MessageEmbed()
+			const Embed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
 			require('../help/nsfw.js')(prefix, Embed);

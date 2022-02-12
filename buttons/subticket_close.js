@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_subticket',
@@ -10,13 +10,13 @@ module.exports = {
 			const link = await getTranscript(messages);
 
 			// Create Embed for close message in main ticket
-			const Embed = new MessageEmbed()
+			const CloseEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
 				.addField('**Transcript**', `${link}.txt`)
 				.addField('**Closed by**', `${interaction.user}`);
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
-			interaction.channel.parent.send({ embeds: [Embed] });
+			interaction.channel.parent.send({ embeds: [CloseEmbed] });
 
 			// Delete thread
 			client.logger.info(`Closed subticket #${interaction.channel.name}`);

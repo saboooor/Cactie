@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'clear',
@@ -29,11 +29,11 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				const Embed = new MessageEmbed()
+				const ClearEmbed = new Embed()
 					.setTitle(`${message.member.user.tag} cleared ${args[0]} messages`)
 					.addField('Channel', `${message.channel}`)
 					.addField('Transcript', `${await getTranscript(messages)}`);
-				logchannel.send({ embeds: [Embed] });
+				logchannel.send({ embeds: [ClearEmbed] });
 			}
 		}
 		catch (err) {

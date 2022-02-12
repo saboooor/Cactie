@@ -1,11 +1,11 @@
 const servers = require('../../config/pterodactyl.json');
 const srvs = Object.keys(servers).map(i => { return servers[i]; });
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = async function pteroUpdate(interaction, Client) {
 	const server = srvs.find(srv => interaction.message.embeds[0].url.split('server/')[1] == srv.id);
 	const info = await Client.getServerDetails(server.id);
 	const usages = await Client.getServerUsages(server.id);
-	const Embed = new MessageEmbed()
+	const Embed = new Embed()
 		.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
 		.setURL(`${server.url}/server/${server.id}`);
 	if (usages.current_state == 'running') Embed.setColor(65280);

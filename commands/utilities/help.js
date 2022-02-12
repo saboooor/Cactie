@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, MessageEmbed, MessageSelectMenu } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed, MessageSelectMenu } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -11,19 +11,19 @@ module.exports = {
 		try {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
-			const Embed = new MessageEmbed()
+			const HelpEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
 			if (arg == 'admin' || arg == 'fun' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities') {
 				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
-				require(`../../help/${arg}.js`)(prefix, Embed, srvconfig);
+				require(`../../help/${arg}.js`)(prefix, HelpEmbed, srvconfig);
 			}
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has('ADMINISTRATOR')) return;
-				Embed.setDescription('Created support panel! You may now delete this message');
-				const Panel = new MessageEmbed()
+				HelpEmbed.setDescription('Created support panel! You may now delete this message');
+				const Panel = new Embed()
 					.setColor(3447003)
 					.setTitle('Need help? No problem!')
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL({ dynamic : true }) });
@@ -49,7 +49,7 @@ module.exports = {
 				}
 			}
 			else {
-				Embed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
+				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
 			}
 			const row = new MessageActionRow()
 				.addComponents([
@@ -99,7 +99,7 @@ module.exports = {
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
 						.setStyle('LINK')]);
-			message.reply({ embeds: [Embed], components: [row, row2] });
+			message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 		}
 		catch (err) {
 			client.error(err, message);

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'remove',
 	description: 'Remove someone from a ticket',
@@ -28,10 +28,10 @@ module.exports = {
 				voiceticket.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
 			}
 			message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
-			const Embed = new MessageEmbed()
+			const RemEmbed = new Embed()
 				.setColor(15105570)
 				.setDescription(`${message.member.user} removed ${user} from the ticket`);
-			message.reply({ embeds: [Embed] });
+			message.reply({ embeds: [RemEmbed] });
 			client.logger.info(`Removed ${user.username} from #${message.channel.name}`);
 		}
 		catch (err) {

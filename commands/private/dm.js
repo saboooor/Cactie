@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageAttachment } = require('discord.js');
+const { Embed, MessageAttachment } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'dm',
@@ -9,7 +9,7 @@ module.exports = {
 			const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
 			if (member ? !member.roles.cache.has('849452673156513813') : true) return;
 			if (!client.users.cache.get(args[0].replace(/\D/g, ''))) return message.reply({ content: 'Invalid user!' });
-			const Embed = new MessageEmbed()
+			const DMEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace(/\D/g, ''))}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			const files = [];
@@ -22,7 +22,7 @@ module.exports = {
 			client.users.cache.get(args[0].replace(/\D/g, ''))
 				.send({ content: args.slice(1).join(' '), files: files })
 				.catch(error => { client.logger.warn(error); });
-			message.reply({ embeds: [Embed] });
+			message.reply({ embeds: [DMEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const ms = require('ms');
 module.exports = {
@@ -23,21 +23,21 @@ module.exports = {
 			const duration = song.duration;
 
 			// Create embed
-			const embed = new MessageEmbed()
+			const SeekEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp();
 
 			// Check if time is less than duration, if so, then seek forward or backward and reply, or else send an error
 			if (time <= duration) {
 				player.seek(time);
-				if (time > position) embed.setDescription(`⏩ **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
-				else embed.setDescription(`⏪ **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+				if (time > position) SeekEmbed.setDescription(`⏩ **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+				else SeekEmbed.setDescription(`⏪ **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
 			else {
-				embed.setColor('RED')
+				SeekEmbed.setColor('RED')
 					.setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
-			message.reply({ embeds: [embed] });
+			message.reply({ embeds: [SeekEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

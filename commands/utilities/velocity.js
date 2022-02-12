@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'velocity',
@@ -26,7 +26,7 @@ module.exports = {
 			// check if error
 			if (h.error) return message.reply(h.error);
 			// initial embed creation
-			const Embed = new MessageEmbed()
+			const Embed = new Embed()
 				.setColor(16777215)
 				.setTitle(`Velocity ${h.version} build ${h.build}`)
 				.setURL(`https://papermc.io/api/v2/projects/velocity/versions/${c}/builds/${f}`)

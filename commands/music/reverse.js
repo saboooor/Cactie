@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'reverse',
 	description: 'Reverse queue',
@@ -28,11 +28,11 @@ module.exports = {
 
 			// Reverse queue and reply
 			player.queue.reverse();
-			const thing = new MessageEmbed()
+			const ReverseEmbed = new Embed()
 				.setDescription('⏪ Reversed the queue')
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp();
-			message.reply({ embeds: [thing] }).catch(error => client.logger.error(error));
+			message.reply({ embeds: [ReverseEmbed] }).catch(error => client.logger.error(error));
 		}
 		catch (err) {
 			client.error(err, message);

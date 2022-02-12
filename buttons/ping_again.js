@@ -5,16 +5,16 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Get the embed from the message
-			const Embed = interaction.message.embeds[0]
+			const PingEmbed = interaction.message.embeds[0]
 				.setDescription(`**${msg.ping.latency}** ${Date.now() - interaction.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`)
 				.setTimestamp();
 
 			// Get next string (if last index, go to index 0)
-			const newIndex = pong.indexOf(Embed.title) == pong.length - 1 ? 0 : pong.indexOf(Embed.title) + 1;
+			const newIndex = pong.indexOf(PingEmbed.title) == pong.length - 1 ? 0 : pong.indexOf(PingEmbed.title) + 1;
 
 			// Set title and update message
-			Embed.setTitle(pong[newIndex]);
-			interaction.reply({ embeds: [Embed] });
+			PingEmbed.setTitle(pong[newIndex]);
+			interaction.reply({ embeds: [PingEmbed] });
 		}
 		catch (err) {
 			client.error(err, interaction);

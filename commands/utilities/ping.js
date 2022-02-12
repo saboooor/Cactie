@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'ping',
@@ -13,7 +13,7 @@ module.exports = {
 					.setCustomId('ping_again')
 					.setLabel(msg.ping.again)
 					.setStyle('SECONDARY'));
-			const Embed = new MessageEmbed()
+			const Embed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(msg.ping.pong)
 				.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`)

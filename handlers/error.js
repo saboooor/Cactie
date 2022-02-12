@@ -1,8 +1,8 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, MessageActionRow, MessageButton } = require('discord.js');
 module.exports = client => {
 	client.error = function error(err, message) {
 		client.logger.error(err);
-		const errEmbed = new MessageEmbed()
+		const errEmbed = new Embed()
 			.setColor('RED')
 			.setTitle('Error Detected')
 			.setURL(`https://panel.netherdepths.com/server/41769d86/files/edit#/logs/${client.date}.log`)

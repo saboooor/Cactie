@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
@@ -27,13 +27,13 @@ module.exports = {
 			message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
 				const messages = await message.channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
-				const Embed = new MessageEmbed()
+				const CloseEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${message.channel.name}`)
 					.addField('**Transcript**', `${link}.txt`)
 					.addField('**Closed by**', `${message.member.user}`);
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
-				message.channel.parent.send({ embeds: [Embed] })
+				message.channel.parent.send({ embeds: [CloseEmbed] })
 					.catch(error => { client.logger.error(error); });
 				client.logger.info(`Closed subticket #${message.channel.name}`);
 				return message.channel.delete();
@@ -75,7 +75,7 @@ module.exports = {
 			// Get all the users and send the embed to their DMs
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const EmbedDM = new MessageEmbed()
+			const EmbedDM = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)
 				.addField('**Users in ticket**', `${users}`)
@@ -88,7 +88,7 @@ module.exports = {
 			});
 
 			// Create embed
-			const Embed = new MessageEmbed()
+			const CloseEmbed = new Embed()
 				.setColor(15105570)
 				.setDescription(`Ticket Closed by ${author}`);
 
@@ -107,7 +107,7 @@ module.exports = {
 							.setEmoji('🔓')
 							.setStyle('PRIMARY'),
 					]);
-				if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [Embed], components: [row] });
+				if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [CloseEmbed], components: [row] });
 				else message.reply({ embeds: [Embed], components: [row] });
 			}
 			else {
@@ -116,9 +116,9 @@ module.exports = {
 
 			// Add reaction panel if ticket mode is set to reactions
 			if (srvconfig.tickets == 'reactions') {
-				Embed.setColor(3447003);
-				Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
-				const embed = await message.channel.send({ embeds: [Embed] });
+				CloseEmbed.setColor(3447003);
+				CloseEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
+				const embed = await message.channel.send({ embeds: [CloseEmbed] });
 				embed.react('🔓');
 				embed.react('⛔');
 			}

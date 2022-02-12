@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, MessageButton, MessageActionRow } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'eq',
@@ -14,7 +14,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Add embed and buttons to message and send, the eq will be set in the buttons or dashboard
-			const embed = new MessageEmbed()
+			const EQEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(msg.music.eq.name)
 				.setDescription(msg.music.eq.choose)
@@ -30,7 +30,7 @@ module.exports = {
 			const but9 = new MessageButton().setCustomId('filter_maxed').setLabel(msg.music.eq.maxed).setStyle('PRIMARY');
 			const row = new MessageActionRow().addComponents(but, but2, but3, but4, but5);
 			const row2 = new MessageActionRow().addComponents(but6, but7, but8, but9);
-			await message.reply({ embeds: [embed], components: [row, row2] });
+			await message.reply({ embeds: [EQEmbed], components: [row, row2] });
 		}
 		catch (err) {
 			client.error(err, message);

@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed } = require('discord.js');
 module.exports = {
 	name: 'ticket',
 	description: 'Create a ticket',
@@ -56,13 +56,13 @@ module.exports = {
 			message.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
 			await sleep(1000);
-			const Embed = new MessageEmbed()
+			const CreateEmbed = new Embed()
 				.setColor(3447003)
 				.setTitle('Ticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly\nIf you have multiple issues, please use the /subticket command\nIf you want to create a private voice chat, please use the /voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.');
-			if (args && args[0] && !reaction) Embed.addField('Description', args.join(' '));
+			if (args && args[0] && !reaction) CreateEmbed.addField('Description', args.join(' '));
 			if (srvconfig.tickets == 'buttons') {
-				Embed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
+				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 				const row = new MessageActionRow()
 					.addComponents(
 						new MessageButton()
@@ -81,11 +81,11 @@ module.exports = {
 							.setEmoji('🔊')
 							.setStyle('SECONDARY'),
 					);
-				await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
+				await ticket.send({ content: `${author}`, embeds: [CreateEmbed], components: [row] });
 			}
 			else if (srvconfig.tickets == 'reactions') {
-				Embed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
-				const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
+				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
+				const embed = await ticket.send({ content: `${author}`, embeds: [CreateEmbed] });
 				await embed.react('🔒');
 				await embed.react('📜');
 				await embed.react('🔊');

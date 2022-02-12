@@ -1,4 +1,4 @@
-const { MessageAttachment, MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
+const { MessageAttachment, Embed, Collection, MessageButton, MessageActionRow } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -67,7 +67,7 @@ module.exports = async (client, message) => {
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
-		const Embed = new MessageEmbed()
+		const Embed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
@@ -125,7 +125,7 @@ module.exports = async (client, message) => {
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
-			const Embed = new MessageEmbed()
+			const Embed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -139,7 +139,7 @@ module.exports = async (client, message) => {
 
 	// Check if args are required and see if args are there, if not, send error
 	if (command.args && args.length < 1) {
-		const Usage = new MessageEmbed()
+		const Usage = new Embed()
 			.setColor(3447003)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
@@ -148,7 +148,7 @@ module.exports = async (client, message) => {
 	}
 
 	// Create Error Embed
-	const errEmbed = new MessageEmbed()
+	const errEmbed = new Embed()
 		.setColor('RED');
 
 	// Check if command can be ran only if the user voted since the past 24 hours
@@ -248,7 +248,7 @@ module.exports = async (client, message) => {
 		command.execute(message, args, client);
 	}
 	catch (err) {
-		const interactionFailed = new MessageEmbed()
+		const interactionFailed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL({ dynamic : true }) })

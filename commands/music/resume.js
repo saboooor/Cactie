@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'resume',
 	description: 'Resume currently playing music',
@@ -13,21 +13,21 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			const song = player.queue.current;
 			if (!player.paused) {
-				const thing = new MessageEmbed()
+				const ResEmbed = new Embed()
 					.setColor('RED')
 					.setDescription('▶️ The player is already **resumed**.')
 					.setTimestamp();
-				return message.reply({ embeds: [thing] });
+				return message.reply({ embeds: [ResEmbed] });
 			}
 
 			// Unpause player and reply
 			player.pause(false);
-			const thing = new MessageEmbed()
+			const ResEmbed = new Embed()
 				.setDescription(`▶️ **Resumed**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setTimestamp()
 				.setThumbnail(song.img);
-			return message.reply({ embeds: [thing] });
+			return message.reply({ embeds: [ResEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

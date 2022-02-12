@@ -1,4 +1,4 @@
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'link',
@@ -11,7 +11,7 @@ module.exports = {
 				if (servers[i] && servers[i].guildid == message.guild.id && servers[i].link) srvs.push(servers[i]);
 			});
 			if (!srvs[0]) return;
-			const Embed = new MessageEmbed()
+			const LinkEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('DISCORD LINKING')
 				.setDescription(`**Follow these steps to link your Discord and Minecraft accounts**
@@ -33,7 +33,7 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 						.setLabel('Still have an issue? Create a ticket by clicking here!')
 						.setStyle('SECONDARY'),
 				);
-			message.reply({ embeds: [Embed], components: [row] });
+			message.reply({ embeds: [LinkEmbed], components: [row] });
 		}
 		catch (err) {
 			client.error(err, message);

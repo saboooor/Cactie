@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { MessageButton, MessageActionRow, Embed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
@@ -47,7 +47,7 @@ module.exports = {
 			// Get users and dm them all with ticket close embed
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const EmbedDM = new MessageEmbed()
+			const EmbedDM = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
 				.addField('**Users in ticket**', `${users}`)
@@ -56,7 +56,7 @@ module.exports = {
 			users.forEach(usr => { usr.send({ embeds: [EmbedDM] }); });
 
 			// Reply with ticket close message
-			const Embed = new MessageEmbed()
+			const CloseEmbed = new Embed()
 				.setColor(15105570)
 				.setDescription(`Ticket Closed by ${author}`);
 			let row = null;
@@ -76,14 +76,14 @@ module.exports = {
 							.setStyle('PRIMARY'),
 					]);
 			}
-			interaction.reply({ embeds: [Embed], components: [row] });
+			interaction.reply({ embeds: [CloseEmbed], components: [row] });
 			client.logger.info(`Closed ticket #${interaction.channel.name}`);
 
 			// Check if ticket setting is set to reactions and add the reactions
 			if (srvconfig.tickets == 'reactions') {
 				Embed.setColor(3447003);
 				Embed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
-				const embed = await interaction.channel.send({ embeds: [Embed] });
+				const embed = await interaction.channel.send({ embeds: [CloseEmbed] });
 				embed.react('🔓');
 				embed.react('⛔');
 			}

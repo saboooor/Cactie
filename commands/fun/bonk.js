@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'bonk',
 	description: 'Bonk someone!',
@@ -13,13 +13,13 @@ module.exports = {
 			}
 
 			// Create embed with bonk gif and author / footer
-			const Embed = new MessageEmbed()
+			const BonkEmbed = new Embed()
 				.setAuthor({ name: `${message.member.displayName} bonks ${args[0] ? args[0].username ? args[0].username : args.join(' ') : 'themselves'}`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
 				.setImage('https://c.tenor.com/TbLpG9NCzjkAAAAC/bonk.gif')
 				.setFooter({ text: 'get bonked' });
 
 			// Reply with bonk message, if user is set then mention the user
-			message.reply({ content: args[0].username ? args[0] : null, embeds: [Embed] });
+			message.reply({ content: args[0].username ? args[0] : null, embeds: [BonkEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

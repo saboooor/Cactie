@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const ms = require('ms');
 module.exports = {
 	name: 'mute',
@@ -38,13 +38,13 @@ module.exports = {
 			if (isNaN(time) && srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
 
 			// Create embed and check if duration / reason are set and do stuff
-			const Embed = new MessageEmbed()
+			const MuteEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`Muted ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 			// Add reason if specified
 			const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
-			if (reason) Embed.addField('Reason', reason);
+			if (reason) MuteEmbed.addField('Reason', reason);
 
 			// Send mute message to target
 			await user.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
@@ -62,13 +62,13 @@ module.exports = {
 			else await member.timeout(time, `Muted by ${message.member.user.tag} for ${args.slice(1).join(' ')}`);
 
 			// Reply to command
-			message.reply({ embeds: [Embed] });
+			message.reply({ embeds: [MuteEmbed] });
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
-				logchannel.send({ embeds: [Embed] });
+				Embed.setTitle(`${message.member.user.tag} ${MuteEmbed.title}`);
+				logchannel.send({ embeds: [MuteEmbed] });
 			}
 		}
 		catch (err) {

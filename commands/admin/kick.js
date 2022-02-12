@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'kick',
 	description: 'Kick someone from the server',
@@ -21,12 +21,12 @@ module.exports = {
 			if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 
 			// Create embed
-			const Embed = new MessageEmbed()
+			const KickEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`Kicked ${user.tag}.`);
 
 			// Add reason if specified
-			if (args[2]) Embed.addField('Reason', args.slice(2).join(' '));
+			if (args[2]) KickEmbed.addField('Reason', args.slice(2).join(' '));
 
 			// Send kick message to target
 			await user.send({ content: `**You've been kicked from ${message.guild.name}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
@@ -36,7 +36,7 @@ module.exports = {
 				});
 
 			// Reply with response
-			message.reply({ embeds: [Embed] });
+			message.reply({ embeds: [KickEmbed] });
 
 			// Actually kick the dude
 			await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });
