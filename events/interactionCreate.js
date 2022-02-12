@@ -109,15 +109,15 @@ module.exports = async (client, interaction) => {
 		}
 	}
 	// Slash Command / Context Menu Handling
-	else if (interaction.isCommand() || interaction.isContextMenu()) {
+	else if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
 		// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
 		const command = client.slashcommands.get(interaction.commandName);
 		if (!command) return;
 
 		// Make args variable from interaction options for compatibility with dash command code
 		// If command is context menu, set it to client instead since it's (interaction, client)
-		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
-		if (interaction.isContextMenu()) {
+		const args = interaction.isContextMenuCommand() ? client : interaction.options._hoistedOptions;
+		if (interaction.isContextMenuCommand()) {
 			// Set message variable to the message of the context menu
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
 			interaction.message = msgs.first();
