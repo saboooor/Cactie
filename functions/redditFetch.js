@@ -8,7 +8,10 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (attempts > 1) message.channel.send({ content: `This is taking a while, please wait... (attempt ${attempts})` });
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}... (attempt ${attempts})`);
-	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`);
+	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(e => {
+		client.logger.error(e);
+		return message.reply({ content: `Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json` });
+	});
 	const pong = await json.json().catch(e => {
 		client.logger.error(e);
 		return message.reply({ content: `Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json` });
@@ -17,7 +20,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (pong.message == 'Not Found') return message.reply({ content: 'Invalid subreddit!' });
 	if (!pong[0]) {
 		client.logger.error('Couldn\'t get data!');
-		client.logger.error(pong);
+		client.logger.error(JSON.stringify(pong));
 		return message.reply({ content: 'Couldn\'t get data! Try again later.' });
 	}
 	const data = pong[0].data.children[0].data;
