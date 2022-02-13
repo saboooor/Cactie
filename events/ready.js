@@ -1,7 +1,7 @@
-const { Embed, ApplicationCommandType } = require('discord.js');
+const { Embed, ApplicationCommandType, ActivityType } = require('discord.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
-	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
+	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Game }], status: 'dnd' });
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
@@ -24,12 +24,13 @@ module.exports = async (client) => {
 	});
 	setInterval(async () => {
 		const activities = [
-			['PLAYING', 'I am unstable and might crash and burn!!'],
-			['PLAYING', 'Use Pup Dev at your own risk!!'],
-			['WATCHING', 'Pup Dev is under heavy development!'],
-			['COMPETING', 'Please report any bugs to the developer!'],
-			['COMPETING', `${client.guilds.cache.size} Servers`],
-			['PLAYING', '{GUILD}'],
+			[ActivityType.Game, 'I am unstable and might crash and burn!!'],
+			[ActivityType.Game, 'Use Pup Dev at your own risk!!'],
+			[ActivityType.Watching, 'Pup Dev is under heavy development!'],
+			[ActivityType.Competing, 'Please report any bugs to the developer!'],
+			[ActivityType.Competing, `${client.guilds.cache.size} Servers`],
+			[ActivityType.Listening, '3 big balls'],
+			[ActivityType.Game, '{GUILD}'],
 		];
 		const i = Math.floor(Math.random() * activities.length);
 		const activity = activities[i];
