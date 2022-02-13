@@ -1,7 +1,7 @@
 const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
-	name: ButtonStyle.Link,
+	name: 'link',
 	description: 'Sends a linking guide for DiscordSRV (Config will be moved to pterodactyl.json)',
 	cooldown: 10,
 	async execute(message, args, client) {

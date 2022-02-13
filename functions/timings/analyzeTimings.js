@@ -213,7 +213,12 @@ module.exports = async function analyzeTimings(message, client, args) {
 		red = 255 * (-0.1 * worst_tps + 2);
 		green = 255;
 	}
-	TimingsEmbed.setColor([Math.round(red), Math.round(green), 0]);
+
+	function componentToHex(c) {
+		const hex = c.toString(16);
+		return hex.length == 1 ? '0' + hex : hex;
+	}
+	TimingsEmbed.setColor(parseInt('0x' + componentToHex(Math.round(red)) + componentToHex(Math.round(green)) + '00'));
 
 	const issue_count = TimingsEmbed.fields.length;
 	if (issue_count == 0) {

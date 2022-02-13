@@ -32,7 +32,7 @@ module.exports = {
 			if (usages.current_state == 'starting') PteroEmbed.setColor(0xFF6400);
 			if (info.node) PteroEmbed.addField({ name: '**Node:**', value: info.node, inline: true });
 			if (info.docker_image) PteroEmbed.addField({ name: '**Docker Image:**', value: info.docker_image, inline: true });
-			if (usages.resources.cpu_absolute) PteroEmbed.addField({ name: '**CPU Usage:**', value: `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`,inline: true });
+			if (usages.resources.cpu_absolute) PteroEmbed.addField({ name: '**CPU Usage:**', value: `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, inline: true });
 			if (usages.resources.memory_bytes) PteroEmbed.addField({ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true });
 			if (usages.resources.network_tx_bytes) PteroEmbed.addField({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
 			if (usages.resources.network_rx_bytes) PteroEmbed.addField({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
@@ -57,7 +57,7 @@ module.exports = {
 					new ButtonComponent()
 						.setCustomId('ptero_update')
 						.setLabel('Update')
-						.setStyle('SUCCESS'),
+						.setStyle(ButtonStyle.Success),
 				);
 			message.reply({ embeds: [PteroEmbed], components: [row] });
 		}
