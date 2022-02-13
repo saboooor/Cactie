@@ -30,7 +30,7 @@ module.exports = {
 			// Send message to channel
 			const queueRepeat = player.queueRepeat ? 'Now' : 'No Longer';
 			const LoopEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`🔁 **${queueRepeat} Looping the queue**`);
 			return message.reply({ embeds: [LoopEmbed] });

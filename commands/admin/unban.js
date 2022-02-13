@@ -27,7 +27,7 @@ module.exports = {
 
 			// Create embed with color and title
 			const UnbanEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Unbanned ${user.tag}`);
 
 			// Reply with unban log

@@ -22,7 +22,7 @@ module.exports = {
 
 			// Create embed
 			const KickEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Kicked ${user.tag}.`);
 
 			// Add reason if specified

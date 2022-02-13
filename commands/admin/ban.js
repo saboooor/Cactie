@@ -27,7 +27,7 @@ module.exports = {
 
 			// Create embed and check if bqn has a reason / time period
 			const BanEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Banned ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 			// Add reason if specified

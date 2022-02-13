@@ -22,7 +22,7 @@ module.exports = {
 
 			// Send message to channel
 			const JoinEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`📥 **Joined VC**\nJoined ${channel} and bound to ${message.channel}`);
 			return message.reply({ embeds: [JoinEmbed] });
 		}

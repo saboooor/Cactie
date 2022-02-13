@@ -24,7 +24,7 @@ module.exports = {
 
 			// Create embed
 			const SeekEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp();
 
 			// Check if time is less than duration, if so, then seek forward or backward and reply, or else send an error

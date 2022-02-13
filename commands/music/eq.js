@@ -15,7 +15,7 @@ module.exports = {
 		try {
 			// Add embed and buttons to message and send, the eq will be set in the buttons or dashboard
 			const EQEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(msg.music.eq.name)
 				.setDescription(msg.music.eq.choose)
 				.addField({ name: msg.music.eq.precise, value: `[${msg.dashboard}](https://pup.smhsmh.club/music)` });

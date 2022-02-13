@@ -27,7 +27,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
 				.setDescription('🔀 Shuffled the queue')
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp();
 			message.reply({ embeds: [ShuffleEmbed] });
 		}

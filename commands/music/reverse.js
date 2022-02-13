@@ -30,7 +30,7 @@ module.exports = {
 			player.queue.reverse();
 			const ReverseEmbed = new Embed()
 				.setDescription('⏪ Reversed the queue')
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp();
 			message.reply({ embeds: [ReverseEmbed] }).catch(error => client.logger.error(error));
 		}

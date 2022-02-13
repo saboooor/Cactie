@@ -154,7 +154,7 @@ module.exports = async (client, interaction) => {
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
 				const cooldownEmbed = new Embed()
-					.setColor(Math.round(Math.random() * 16777215))
+					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(messages[random])
 					.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
 				return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });

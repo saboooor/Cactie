@@ -17,7 +17,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			if (!args.length) {
 				const VolEmbed = new Embed()
-					.setColor(Math.round(Math.random() * 16777215))
+					.setColor(Math.floor(Math.random() * 16777215))
 					.setDescription(`🔊 The current volume is: **${player.volume}%**`)
 					.setTimestamp();
 				return message.reply({ embeds: [VolEmbed] });
@@ -35,7 +35,7 @@ module.exports = {
 			// Set the volume and reply
 			player.setVolume(volume);
 			const VolEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`🔊 Volume set to: **${volume}%**`)
 				.setTimestamp();
 			message.reply({ embeds: [VolEmbed] });

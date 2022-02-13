@@ -29,7 +29,7 @@ module.exports = {
 
 			// Create initial embed and reply with it
 			const ppEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${nick}'s pp size`)
 				.setDescription('<a:loading:826611946258038805> Calculating...');
 			const pp = await message.reply({ embeds: [ppEmbed] });

@@ -10,7 +10,7 @@ module.exports = {
 			if (member ? !member.roles.cache.has('849452673156513813') : true) return;
 			if (!client.users.cache.get(args[0].replace(/\D/g, ''))) return message.reply({ content: 'Invalid user!' });
 			const DMEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace(/\D/g, ''))}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			const files = [];
 			for (const attachment of message.attachments) {

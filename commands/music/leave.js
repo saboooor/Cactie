@@ -16,7 +16,7 @@ module.exports = {
 
 			// Send message to channel
 			const LeaveEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`📤 **Left VC**\nThank you for using ${client.user.username}!`);
 			return message.reply({ embeds: [LeaveEmbed] });
 		}

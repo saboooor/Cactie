@@ -42,7 +42,7 @@ module.exports = {
 					player.stop();
 					const SkipEmbed = new Embed()
 						.setDescription(msg.music.skip.skipto.replace('-i', `${position}`))
-						.setColor(Math.round(Math.random() * 16777215))
+						.setColor(Math.floor(Math.random() * 16777215))
 						.setTimestamp();
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 

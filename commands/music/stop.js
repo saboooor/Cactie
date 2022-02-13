@@ -13,7 +13,7 @@ module.exports = {
 			player.stop();
 			player.queue.clear();
 			const StopMusic = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription('⏹️ Stopped the music');
 			message.reply({ embeds: [StopMusic] });

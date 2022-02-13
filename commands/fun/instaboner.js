@@ -28,7 +28,7 @@ module.exports = {
 
 			// Create initial embed
 			const ppEmbed = new Embed()
-				.setColor(Math.round(Math.random() * 16777215))
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${nick}'s ${hardtxt} pp size`);
 
 			// Chance of getting a SIKE u have no pp
