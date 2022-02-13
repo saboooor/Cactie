@@ -82,7 +82,7 @@ module.exports = {
 					const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 					if (logchannel) {
 						const logEmbed = new Embed()
-							.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
+							.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL() })
 							.addField({ name: 'Setting', value: prop })
 							.addField({ name: 'Value', value: value });
 						logchannel.send({ embeds: [logEmbed] });

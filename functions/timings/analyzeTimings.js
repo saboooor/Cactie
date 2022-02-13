@@ -7,7 +7,7 @@ const evalField = require('./evalField.js');
 module.exports = async function analyzeTimings(message, client, args) {
 	const TimingsEmbed = new Embed()
 		.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
-		.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
+		.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 
 	let url = null;
 
@@ -239,7 +239,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		else {
 			TimingsEmbed.fields.splice(12, issue_count);
 			TimingsEmbed.addField({ name: `Plus ${issue_count - 12} more recommendations`, value: 'Click the buttons below to see more' });
-			TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
+			TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL() });
 		}
 		components.push(
 			new ActionRow()

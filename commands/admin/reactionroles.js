@@ -98,7 +98,7 @@ module.exports = {
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.fields.length > 12) {
 					RREmbed.fields.splice(12, RREmbed.fields.length);
-					RREmbed.setFooter({ text: `Page 1 of ${Math.ceil(RREmbed.fields.length / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
+					RREmbed.setFooter({ text: `Page 1 of ${Math.ceil(RREmbed.fields.length / 12)}`, iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
 					const btns = new ActionRow()

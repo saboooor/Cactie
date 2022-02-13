@@ -14,7 +14,7 @@ module.exports = {
 
 			// Create embed with bonk gif and author / footer
 			const BonkEmbed = new Embed()
-				.setAuthor({ name: `${message.member.displayName} bonks ${args[0] ? args[0].username ? args[0].username : args.join(' ') : 'themselves'}`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
+				.setAuthor({ name: `${message.member.displayName} bonks ${args[0] ? args[0].username ? args[0].username : args.join(' ') : 'themselves'}`, iconURL: message.member.user.avatarURL() })
 				.setImage('https://c.tenor.com/TbLpG9NCzjkAAAAC/bonk.gif')
 				.setFooter({ text: 'get bonked' });
 
