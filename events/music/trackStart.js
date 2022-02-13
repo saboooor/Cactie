@@ -21,7 +21,7 @@ module.exports = async (client, player, track) => {
 		.addComponents(
 			new ButtonComponent()
 				.setCustomId('music_skip')
-				.setEmoji('⏭️')
+				.setEmoji({ name: '⏭️' })
 				.setLabel(msg.music.skip.name)
 				.setStyle(ButtonStyle.Secondary),
 		);

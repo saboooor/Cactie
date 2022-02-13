@@ -99,12 +99,12 @@ module.exports = {
 						new ButtonComponent()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
-							.setEmoji('⛔')
+							.setEmoji({ name: '⛔' })
 							.setStyle(ButtonStyle.Danger),
 						new ButtonComponent()
 							.setCustomId('reopen_ticket')
 							.setLabel('Reopen Ticket')
-							.setEmoji('🔓')
+							.setEmoji({ name: '🔓' })
 							.setStyle(ButtonStyle.Primary),
 					]);
 				if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [CloseEmbed], components: [row] });

@@ -68,17 +68,17 @@ module.exports = {
 						new ButtonComponent()
 							.setCustomId('close_ticket')
 							.setLabel('Close Ticket')
-							.setEmoji('🔒')
+							.setEmoji({ name: '🔒' })
 							.setStyle(ButtonStyle.Danger),
 						new ButtonComponent()
 							.setCustomId('subticket_create')
 							.setLabel('Create Subticket')
-							.setEmoji('📜')
+							.setEmoji({ name: '📜' })
 							.setStyle(ButtonStyle.Primary),
 						new ButtonComponent()
 							.setCustomId('voiceticket_create')
 							.setLabel('Create Voiceticket')
-							.setEmoji('🔊')
+							.setEmoji({ name: '🔊' })
 							.setStyle(ButtonStyle.Secondary),
 					);
 				await ticket.send({ content: `${author}`, embeds: [CreateEmbed], components: [row] });

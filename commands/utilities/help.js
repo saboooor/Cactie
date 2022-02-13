@@ -34,7 +34,7 @@ module.exports = {
 							new ButtonComponent()
 								.setCustomId('create_ticket')
 								.setLabel('Open Ticket')
-								.setEmoji('🎫')
+								.setEmoji({ name: '🎫' })
 								.setStyle(ButtonStyle.Primary),
 						);
 					message.channel.send({ embeds: [Panel], components: [row] });

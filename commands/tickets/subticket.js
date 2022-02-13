@@ -44,7 +44,7 @@ module.exports = {
 						new ButtonComponent()
 							.setCustomId('close_subticket')
 							.setLabel('Close Subticket')
-							.setEmoji('🔒')
+							.setEmoji({ name: '🔒' })
 							.setStyle(ButtonStyle.Danger),
 					);
 				await subticket.send({ content: `${users}`, embeds: [CreateEmbed], components: [row] });
