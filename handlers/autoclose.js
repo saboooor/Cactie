@@ -32,7 +32,7 @@ module.exports = client => {
 				const link = await getTranscript(messages);
 				const users = [];
 				await data.users.forEach(userid => users.push(client.users.cache.get(userid)));
-				const EmbedDM = new Embed()
+				const CloseDMEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
 					.addField({ name: '**Users in ticket**', value: `${users}` })
@@ -40,10 +40,10 @@ module.exports = client => {
 					.addField({ name: '**Closed by**', value: 'Automatically closed' });
 				client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
 				users.forEach(usr => {
-					usr.send({ embeds: [EmbedDM] })
+					usr.send({ embeds: [CloseDMEmbed] })
 						.catch(error => { client.logger.warn(error); });
 				});
-				const Embed = new Embed()
+				const resolveEmbed = new Embed()
 					.setColor(0xFF6400)
 					.setDescription('Automatically closed Resolved Ticket');
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
@@ -61,14 +61,14 @@ module.exports = client => {
 								.setEmoji({ name: '🔓' })
 								.setStyle(ButtonStyle.Primary),
 						]);
-					channel.send({ embeds: [Embed], components: [row] });
+					channel.send({ embeds: [resolveEmbed], components: [row] });
 				}
 				else if (srvconfig.tickets == 'reactions') {
 					Embed.setColor(0x5662f6);
 					Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
-					const embed = await channel.send({ embeds: [Embed] });
-					embed.react('🔓');
-					embed.react('⛔');
+					const Panel = await channel.send({ embeds: [Embed] });
+					Panel.react('🔓');
+					Panel.react('⛔');
 				}
 				client.logger.info(`Closed resolved ticket #${channel.name}`);
 			}

@@ -5,7 +5,7 @@ const fs = require('fs');
 const createField = require('./createField.js');
 const evalField = require('./evalField.js');
 module.exports = async function analyzeTimings(message, client, args) {
-	const Embed = new Embed()
+	const TimingsEmbed = new Embed()
 		.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
 		.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 
@@ -14,9 +14,9 @@ module.exports = async function analyzeTimings(message, client, args) {
 	args.forEach(arg => {
 		if (arg.startsWith('https://timin') && arg.includes('?id=')) url = arg.replace('/d=', '/?id=').split('#')[0].split('\n')[0];
 		if (arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url=')) {
-			Embed.addField({ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' })
+			TimingsEmbed.addField({ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' })
 				.setURL(url);
-			return { embeds: [Embed] };
+			return { embeds: [TimingsEmbed] };
 		}
 	});
 
@@ -36,11 +36,11 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const request = await response_json.json();
 
 	const server_icon = timings_host + 'image.php?id=' + request_raw.icon;
-	Embed.setAuthor({ name: 'Timings Analysis', iconURL: server_icon, url: url });
+	TimingsEmbed.setAuthor({ name: 'Timings Analysis', iconURL: server_icon, url: url });
 
 	if (!request_raw || !request) {
-		Embed.addField({ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true });
-		return { embeds: [Embed] };
+		TimingsEmbed.addField({ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true });
+		return { embeds: [TimingsEmbed] };
 	}
 
 	let version = request.timingsMaster.version;
@@ -54,18 +54,18 @@ module.exports = async function analyzeTimings(message, client, args) {
 		// ghetto version check
 		if (version.split('(MC: ')[1].split(')')[0] != TIMINGS_CHECK.version) {
 			version = version.replace('git-', '').replace('MC: ', '');
-			Embed.addField({ name: '❌ Outdated', value: `You are using \`${version}\`. Update to \`${TIMINGS_CHECK.version}\`.`, inline: true });
+			TimingsEmbed.addField({ name: '❌ Outdated', value: `You are using \`${version}\`. Update to \`${TIMINGS_CHECK.version}\`.`, inline: true });
 		}
 	}
 
 	if (TIMINGS_CHECK.servers) {
 		TIMINGS_CHECK.servers.forEach(server => {
-			if (version.includes(server.name)) Embed.addField(createField(server));
+			if (version.includes(server.name)) TimingsEmbed.addField(createField(server));
 		});
 	}
 
 	const timing_cost = parseInt(request.timingsMaster.system.timingcost);
-	if (timing_cost > 300) Embed.addField({ name: '❌ Timingcost', value: `Your timingcost is ${timing_cost}. Your cpu is overloaded and/or slow. Find a [better host](https://www.birdflop.com).`, inline: true });
+	if (timing_cost > 300) TimingsEmbed.addField({ name: '❌ Timingcost', value: `Your timingcost is ${timing_cost}. Your cpu is overloaded and/or slow. Find a [better host](https://www.birdflop.com).`, inline: true });
 
 	const flags = request.timingsMaster.system.flags;
 	const jvm_version = request.timingsMaster.system.jvmversion;
@@ -78,14 +78,14 @@ module.exports = async function analyzeTimings(message, client, args) {
 				max_mem = max_mem.replace('M', '');
 				max_mem = max_mem.replace('g', '000');
 				max_mem = max_mem.replace('m', '');
-				if (parseInt(max_mem) < 10000) Embed.addField({ name: '❌ Low Memory', value:'ZGC is only good with a lot of memory.', inline: true });
+				if (parseInt(max_mem) < 10000) TimingsEmbed.addField({ name: '❌ Low Memory', value:'ZGC is only good with a lot of memory.', inline: true });
 			}
 		});
 	}
 	else if (flags.includes('-Daikars.new.flags=true')) {
-		if (!flags.includes('-XX:+PerfDisableSharedMem')) Embed.addField({ name: '❌ Outdated Flags', value: 'Add `-XX:+PerfDisableSharedMem` to flags.', inline: true });
-		if (!flags.includes('-XX:G1MixedGCCountTarget=4')) Embed.addField({ name: '❌ Outdated Flags', value: 'Add `XX:G1MixedGCCountTarget=4` to flags.', inline: true });
-		if (!flags.includes('-XX:+UseG1GC') && jvm_version.startswith('1.8.')) Embed.addField({ name: '❌ Aikar\'s Flags', value: 'You must use G1GC when using Aikar\'s flags.', inline: true });
+		if (!flags.includes('-XX:+PerfDisableSharedMem')) TimingsEmbed.addField({ name: '❌ Outdated Flags', value: 'Add `-XX:+PerfDisableSharedMem` to flags.', inline: true });
+		if (!flags.includes('-XX:G1MixedGCCountTarget=4')) TimingsEmbed.addField({ name: '❌ Outdated Flags', value: 'Add `XX:G1MixedGCCountTarget=4` to flags.', inline: true });
+		if (!flags.includes('-XX:+UseG1GC') && jvm_version.startswith('1.8.')) TimingsEmbed.addField({ name: '❌ Aikar\'s Flags', value: 'You must use G1GC when using Aikar\'s flags.', inline: true });
 		if (flags.includes('-Xmx')) {
 			let max_mem = 0;
 			const flaglist = flags.split(' ');
@@ -98,7 +98,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 					max_mem = max_mem.replace('m', '');
 				}
 			});
-			if (parseInt(max_mem) < 5400) Embed.addField({ name: '❌ Low Memory', value: 'Allocate at least 6-10GB of ram to your server if you can afford it.', inline: true });
+			if (parseInt(max_mem) < 5400) TimingsEmbed.addField({ name: '❌ Low Memory', value: 'Allocate at least 6-10GB of ram to your server if you can afford it.', inline: true });
 			let index = 0;
 			let max_online_players = 0;
 			while (index < request.timingsMaster.data.length) {
@@ -108,7 +108,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 				max_online_players = Math.max(players, max_online_players);
 				index = index + 1;
 			}
-			if (1000 * max_online_players / parseInt(max_mem) > 6 && parseInt(max_mem) < 10000) Embed.addField({ name: '❌ Low Memory', value: 'You should be using more RAM with this many players.', inline: true });
+			if (1000 * max_online_players / parseInt(max_mem) > 6 && parseInt(max_mem) < 10000) TimingsEmbed.addField({ name: '❌ Low Memory', value: 'You should be using more RAM with this many players.', inline: true });
 			if (flags.includes('-Xms')) {
 				let min_mem = 0;
 				flaglist.forEach(flag => {
@@ -120,26 +120,26 @@ module.exports = async function analyzeTimings(message, client, args) {
 						min_mem = min_mem.replace('m', '');
 					}
 				});
-				if (min_mem != max_mem) Embed.addField({ name: '❌ Aikar\'s Flags', value: 'Your Xmx and Xms values should be equal when using Aikar\'s flags.', inline: true });
+				if (min_mem != max_mem) TimingsEmbed.addField({ name: '❌ Aikar\'s Flags', value: 'Your Xmx and Xms values should be equal when using Aikar\'s flags.', inline: true });
 			}
 		}
 	}
 	else if (flags.includes('-Dusing.aikars.flags=mcflags.emc.gs')) {
-		Embed.addField({ name: '❌ Outdated Flags', value: 'Update [Aikar\'s flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/).', inline: true });
+		TimingsEmbed.addField({ name: '❌ Outdated Flags', value: 'Update [Aikar\'s flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/).', inline: true });
 	}
 	else {
-		Embed.addField({ name: '❌ Aikar\'s Flags', value: 'Use [Aikar\'s flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/).', inline: true });
+		TimingsEmbed.addField({ name: '❌ Aikar\'s Flags', value: 'Use [Aikar\'s flags](https://aikar.co/2018/07/02/tuning-the-jvm-g1gc-garbage-collector-flags-for-minecraft/).', inline: true });
 	}
 
 	const cpu = parseInt(request.timingsMaster.system.cpu);
-	if (cpu <= 2) Embed.addField({ name: '❌ Threads', value: `You only have ${cpu} thread(s). Find a [better host](https://www.birdflop.com).`, inline: true });
+	if (cpu <= 2) TimingsEmbed.addField({ name: '❌ Threads', value: `You only have ${cpu} thread(s). Find a [better host](https://www.birdflop.com).`, inline: true });
 
 	const handlers = Object.keys(request_raw.idmap.handlers).map(i => { return request_raw.idmap.handlers[i]; });
 	handlers.forEach(handler => {
 		let handler_name = handler[1];
 		if (handler_name.startsWith('Command Function - ') && handler_name.endsWith(':tick')) {
 			handler_name = handler_name.split('Command Function - ')[1].split(':tick')[0];
-			Embed.addField({ name: `❌ ${handler_name}`, value: 'This datapack uses command functions which are laggy.', inline: true });
+			TimingsEmbed.addField({ name: `❌ ${handler_name}`, value: 'This datapack uses command functions which are laggy.', inline: true });
 		}
 	});
 
@@ -158,7 +158,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 						if (plugin.name == plugin_name) {
 							const stored_plugin = TIMINGS_CHECK.plugins[server_name][plugin_name];
 							stored_plugin.name = plugin_name;
-							Embed.addField(createField(stored_plugin));
+							TimingsEmbed.addField(createField(stored_plugin));
 						}
 					});
 				});
@@ -169,16 +169,16 @@ module.exports = async function analyzeTimings(message, client, args) {
 		Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i]; }).forEach(config => {
 			Object.keys(config).forEach(option_name => {
 				const option = config[option_name];
-				evalField(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client);
+				evalField(TimingsEmbed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client);
 			});
 		});
 	}
 
 	plugins.forEach(plugin => {
 		if (plugin.authors && plugin.authors.toLowerCase().includes('songoda')) {
-			if (plugin.name == 'EpicHeads') Embed.addField({ name: '❌ EpicHeads', value: 'This plugin was made by Songoda. Songoda is sketchy. You should find an alternative such as [HeadsPlus](https://spigotmc.org/resources/headsplus-»-1-8-1-16-4.40265/) or [HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/).', inline: true });
-			else if (plugin.name == 'UltimateStacker') Embed.addField({ name: '❌ UltimateStacker', value: 'Stacking plugins actually causes more lag.\nRemove UltimateStacker.', inline: true });
-			else Embed.addField({ name: `❌ ${plugin.name}`, value: 'This plugin was made by Songoda. Songoda is sketchy. You should find an alternative.', inline: true });
+			if (plugin.name == 'EpicHeads') TimingsEmbed.addField({ name: '❌ EpicHeads', value: 'This plugin was made by Songoda. Songoda is sketchy. You should find an alternative such as [HeadsPlus](https://spigotmc.org/resources/headsplus-»-1-8-1-16-4.40265/) or [HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/).', inline: true });
+			else if (plugin.name == 'UltimateStacker') TimingsEmbed.addField({ name: '❌ UltimateStacker', value: 'Stacking plugins actually causes more lag.\nRemove UltimateStacker.', inline: true });
+			else TimingsEmbed.addField({ name: `❌ ${plugin.name}`, value: 'This plugin was made by Songoda. Songoda is sketchy. You should find an alternative.', inline: true });
 		}
 	});
 
@@ -188,7 +188,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		const max_entity_cramming = parseInt(world.gamerules.maxEntityCramming);
 		if (max_entity_cramming >= 24) high_mec = true;
 	});
-	if (high_mec) Embed.addField({ name: '❌ maxEntityCramming', value: 'Decrease this by running the /gamerule command in each world. Recommended: 8.', inline: true });
+	if (high_mec) TimingsEmbed.addField({ name: '❌ maxEntityCramming', value: 'Decrease this by running the /gamerule command in each world. Recommended: 8.', inline: true });
 
 	const normal_ticks = request.timingsMaster.data[0].totalTicks;
 	let worst_tps = 20;
@@ -213,12 +213,12 @@ module.exports = async function analyzeTimings(message, client, args) {
 		red = 255 * (-0.1 * worst_tps + 2);
 		green = 255;
 	}
-	Embed.setColor([Math.round(red), Math.round(green), 0]);
+	TimingsEmbed.setColor([Math.round(red), Math.round(green), 0]);
 
-	const issue_count = Embed.fields.length;
+	const issue_count = TimingsEmbed.fields.length;
 	if (issue_count == 0) {
-		Embed.addField({ name: '✅ All good', value: 'Analyzed with no recommendations.' });
-		return { embeds: [Embed] };
+		TimingsEmbed.addField({ name: '✅ All good', value: 'Analyzed with no recommendations.' });
+		return { embeds: [TimingsEmbed] };
 	}
 	const components = [];
 	if (issue_count >= 13) {
@@ -231,15 +231,15 @@ module.exports = async function analyzeTimings(message, client, args) {
 			if (page == 0) page = Math.ceil(issue_count / 12);
 			if (page > Math.ceil(issue_count / 12)) page = 1;
 			const index = page * 12;
-			Embed.fields.splice(0, index - 12);
-			Embed.fields.splice(index, issue_count);
+			TimingsEmbed.fields.splice(0, index - 12);
+			TimingsEmbed.fields.splice(index, issue_count);
 			footer[footer.length - 1] = `Page ${page} of ${Math.ceil(issue_count / 12)}`;
-			Embed.setFooter({ text: footer.join(' • '), iconURL: message.message.embeds[0].footer.iconURL });
+			TimingsEmbed.setFooter({ text: footer.join(' • '), iconURL: message.message.embeds[0].footer.iconURL });
 		}
 		else {
-			Embed.fields.splice(12, issue_count);
-			Embed.addField({ name: `Plus ${issue_count - 12} more recommendations`, value: 'Click the buttons below to see more' });
-			Embed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
+			TimingsEmbed.fields.splice(12, issue_count);
+			TimingsEmbed.addField({ name: `Plus ${issue_count - 12} more recommendations`, value: 'Click the buttons below to see more' });
+			TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL({ dynamic: true }) });
 		}
 		components.push(
 			new ActionRow()
@@ -259,5 +259,5 @@ module.exports = async function analyzeTimings(message, client, args) {
 				),
 		);
 	}
-	return { embeds: [Embed], components: components };
+	return { embeds: [TimingsEmbed], components: components };
 };

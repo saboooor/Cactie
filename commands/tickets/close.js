@@ -75,7 +75,7 @@ module.exports = {
 			// Get all the users and send the embed to their DMs
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const EmbedDM = new Embed()
+			const CloseDMEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)
 				.addField({ name: '**Users in ticket**', value: `${users}` })
@@ -83,7 +83,7 @@ module.exports = {
 				.addField({ name: '**Closed by**', value: `${author}` });
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			users.forEach(usr => {
-				usr.send({ embeds: [EmbedDM] })
+				usr.send({ embeds: [CloseDMEmbed] })
 					.catch(error => { client.logger.warn(error); });
 			});
 
@@ -118,9 +118,9 @@ module.exports = {
 			if (srvconfig.tickets == 'reactions') {
 				CloseEmbed.setColor(0x5662f6);
 				CloseEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
-				const embed = await message.channel.send({ embeds: [CloseEmbed] });
-				embed.react('🔓');
-				embed.react('⛔');
+				const Panel = await message.channel.send({ embeds: [CloseEmbed] });
+				Panel.react('🔓');
+				Panel.react('⛔');
 			}
 
 			// Log

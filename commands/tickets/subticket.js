@@ -51,8 +51,8 @@ module.exports = {
 			}
 			else if (srvconfig.tickets == 'reactions') {
 				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or react with 🔒' });
-				const embed = await subticket.send({ content: `${users}`, embeds: [CreateEmbed] });
-				await embed.react('🔒');
+				const Panel = await subticket.send({ content: `${users}`, embeds: [CreateEmbed] });
+				await Panel.react('🔒');
 			}
 		}
 		catch (err) {

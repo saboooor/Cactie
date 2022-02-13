@@ -90,10 +90,10 @@ module.exports = {
 			}
 			else if (srvconfig.tickets == 'reactions') {
 				Embed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
-				const embed = await ticket.send({ content: `${author}`, embeds: [Embed] });
-				await embed.react('🔒');
-				await embed.react('📜');
-				await embed.react('🔊');
+				const Panel = await ticket.send({ content: `${author}`, embeds: [Embed] });
+				await Panel.react('🔒');
+				await Panel.react('📜');
+				await Panel.react('🔊');
 			}
 
 			// Ping with the ticketmention setting if enabled

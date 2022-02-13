@@ -27,7 +27,7 @@ module.exports = async function playSongs(message, args, client, top) {
 	const slash = message.type && message.type == 'APPLICATION_COMMAND';
 
 	// Create embed for responses
-	const embed = new Embed().setTimestamp();
+	const PlayEmbed = new Embed().setTimestamp();
 
 	// Check if search is a spotify link, if not, search YouTube
 	if (search.match(client.Lavasfy.spotifyPattern)) {
@@ -40,7 +40,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'PLAYLIST_LOADED') {
 			// Add description to embed and build every song in the playlist
-			embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
+			PlayEmbed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
 			await Searched.tracks.forEach(song => {
 				// Some songs don't have a url, just use google lol
 				if (!song.info.uri) song.info.uri = 'https://google.com';
@@ -49,15 +49,15 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else if (Searched.loadType.startsWith('TRACK')) {
 			// Add description to embed and build the song
-			embed.setDescription(`🎶 **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
+			PlayEmbed.setDescription(`🎶 **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
 			// Some songs don't have a url, just use google lol
 			if (!track.info.uri) track.info.uri = 'https://google.com';
 			songs.push(TrackUtils.build(track));
 		}
 		else {
 			// There's no result for the search, send error message
-			embed.setColor(0xE74C3C).setDescription('No results found.');
-			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
+			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
+			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] });
 		}
 	}
 	else {
@@ -67,12 +67,12 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'NO_MATCHES') {
 			// There's no result for the search, send error message
-			embed.setColor(0xE74C3C).setDescription('No results found.');
-			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
+			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
+			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
-			embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
+			PlayEmbed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
 			await Searched.tracks.forEach(song => {
 				// Set image if thumbnail exists
 				if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
@@ -84,7 +84,7 @@ module.exports = async function playSongs(message, args, client, top) {
 			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
 			// Add description to embed and the song
-			embed.setDescription(`🎵 **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
+			PlayEmbed.setDescription(`🎵 **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
 		}
@@ -131,5 +131,5 @@ module.exports = async function playSongs(message, args, client, top) {
 	if (!player.playing && top) await player.play();
 
 	// Send embed
-	slash ? message.editReply({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] });
+	slash ? message.editReply({ content: `▶️ **Found result for \`${search}\`**`, embeds: [PlayEmbed] }) : msg.edit({ content: `▶️ **Found result for \`${search}\`**`, embeds: [PlayEmbed] });
 };

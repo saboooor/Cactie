@@ -47,13 +47,13 @@ module.exports = {
 			// Get users and dm them all with ticket close embed
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const EmbedDM = new Embed()
+			const CloseDMEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
 				.addField({ name: '**Users in ticket**', value: `${users}` })
 				.addField({ name: '**Transcript**', value: `${link}.txt` })
 				.addField({ name: '**Closed by**', value: `${author}` });
-			users.forEach(usr => { usr.send({ embeds: [EmbedDM] }); });
+			users.forEach(usr => { usr.send({ embeds: [CloseDMEmbed] }); });
 
 			// Reply with ticket close message
 			const CloseEmbed = new Embed()
@@ -83,9 +83,9 @@ module.exports = {
 			if (srvconfig.tickets == 'reactions') {
 				Embed.setColor(0x5662f6);
 				Embed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
-				const embed = await interaction.channel.send({ embeds: [CloseEmbed] });
-				embed.react('🔓');
-				embed.react('⛔');
+				const Panel = await interaction.channel.send({ embeds: [CloseEmbed] });
+				Panel.react('🔓');
+				Panel.react('⛔');
 			}
 		}
 		catch (err) {

@@ -25,7 +25,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
 	if (!message.channel.nsfw && data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
-	const Embed = new Embed()
+	const PostEmbed = new Embed()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setAuthor({ name: `u/${data.author}`, url: `https://reddit.com/u/${data.author}` })
 		.setTitle(data.title)
@@ -39,7 +39,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return redditFetch(subreddits, message, client, attempts + 1);
 		data.url = gifData.gif.urls.sd;
 		client.logger.info(`Redgifs URL: ${data.url}`);
-		Embed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})`, url: gifData.user.profileUrl.startsWith('http') ? gifData.user.profileUrl : null })
+		PostEmbed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})`, url: gifData.user.profileUrl.startsWith('http') ? gifData.user.profileUrl : null })
 			.setColor(gifData.gif.avgColor)
 			.setURL(data.url);
 	}
@@ -51,7 +51,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		files.push(new MessageAttachment(path));
 		data.url = `attachment://${timestamp}.gif`;
 	}
-	Embed.setImage(data.url);
+	PostEmbed.setImage(data.url);
 	message.reply({ embeds: [Embed], files: files }).catch(e => {
 		client.logger.error(e);
 		return redditFetch(subreddits, message, client, attempts + 1);

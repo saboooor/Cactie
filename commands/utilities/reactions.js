@@ -7,11 +7,11 @@ module.exports = {
 	cooldown: 10,
 	execute(message, args, client) {
 		try {
-			const Embed = new Embed()
+			const ReactionEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Here are my reactions');
 			client.reactions.forEach(reaction => {
-				if (!reaction.private) Embed.addField({ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` });
+				if (!reaction.private) ReactionEmbed.addField({ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` });
 			});
 			message.reply({ embeds: [Embed] });
 		}
