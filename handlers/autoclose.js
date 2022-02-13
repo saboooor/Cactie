@@ -64,9 +64,9 @@ module.exports = client => {
 					channel.send({ embeds: [resolveEmbed], components: [row] });
 				}
 				else if (srvconfig.tickets == 'reactions') {
-					Embed.setColor(0x5662f6);
-					Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
-					const Panel = await channel.send({ embeds: [Embed] });
+					resolveEmbed.setColor(0x5662f6);
+					resolveEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
+					const Panel = await channel.send({ embeds: [resolveEmbed] });
 					Panel.react('🔓');
 					Panel.react('⛔');
 				}

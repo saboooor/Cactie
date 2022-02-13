@@ -108,10 +108,10 @@ module.exports = {
 							.setStyle(ButtonStyle.Primary),
 					]);
 				if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [CloseEmbed], components: [row] });
-				else message.reply({ embeds: [Embed], components: [row] });
+				else message.reply({ embeds: [CloseEmbed], components: [row] });
 			}
 			else {
-				message.reply({ embeds: [Embed] });
+				message.reply({ embeds: [CloseEmbed] });
 			}
 
 			// Add reaction panel if ticket mode is set to reactions

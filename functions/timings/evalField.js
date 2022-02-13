@@ -1,5 +1,5 @@
 const createField = require('./createField.js');
-module.exports = function eval_field(Embed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client) {
+module.exports = function eval_field(TimingsEmbed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client) {
 	const dict_of_vars = { 'plugins': plugins, 'server_properties': server_properties, 'bukkit': bukkit, 'spigot': spigot, 'paper': paper, 'purpur': purpur };
 	option.forEach(option_data => {
 		let add_to_field = true;
@@ -20,7 +20,7 @@ module.exports = function eval_field(Embed, option, option_name, plugins, server
 		});
 		if (add_to_field) {
 			option_data.name = option_name;
-			Embed.addField(createField(option_data));
+			TimingsEmbed.addField(createField(option_data));
 		}
 	});
 };

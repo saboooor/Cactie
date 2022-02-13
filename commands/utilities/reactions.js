@@ -13,7 +13,7 @@ module.exports = {
 			client.reactions.forEach(reaction => {
 				if (!reaction.private) ReactionEmbed.addField({ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` });
 			});
-			message.reply({ embeds: [Embed] });
+			message.reply({ embeds: [ReactionEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

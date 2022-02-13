@@ -72,10 +72,10 @@ module.exports = {
 				}
 
 				// If there's no error, set the setting
-				if (Embed != errEmbed) {
+				if (SettingsEmbed != errEmbed) {
 				// Set the setting and the embed description / log
 					await client.setData('settings', 'guildId', message.guild.id, prop, value);
-					Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
+					SettingsEmbed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 					client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 
 					// Check if log channel exists and send message
@@ -91,7 +91,7 @@ module.exports = {
 			}
 			else if (args[0] == 'reset') {
 			// Set title to 'SETTINGS RESET'
-				Embed.setTitle('**SETTINGS RESET**');
+				SettingsEmbed.setTitle('**SETTINGS RESET**');
 
 				// Add buttons for reset confirm / deny
 				const row = new ActionRow()

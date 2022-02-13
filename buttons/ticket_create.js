@@ -86,11 +86,11 @@ module.exports = {
 							.setEmoji({ name: '🔊' })
 							.setStyle(ButtonStyle.Secondary),
 					);
-				await ticket.send({ content: `${author}`, embeds: [Embed], components: [row] });
+				await ticket.send({ content: `${author}`, embeds: [CreateEmbed], components: [row] });
 			}
 			else if (srvconfig.tickets == 'reactions') {
-				Embed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
-				const Panel = await ticket.send({ content: `${author}`, embeds: [Embed] });
+				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
+				const Panel = await ticket.send({ content: `${author}`, embeds: [CreateEmbed] });
 				await Panel.react('🔒');
 				await Panel.react('📜');
 				await Panel.react('🔊');

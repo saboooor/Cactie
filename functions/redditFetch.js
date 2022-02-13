@@ -52,7 +52,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		data.url = `attachment://${timestamp}.gif`;
 	}
 	PostEmbed.setImage(data.url);
-	message.reply({ embeds: [Embed], files: files }).catch(e => {
+	message.reply({ embeds: [PostEmbed], files: files }).catch(e => {
 		client.logger.error(e);
 		return redditFetch(subreddits, message, client, attempts + 1);
 	});
