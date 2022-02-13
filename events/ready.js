@@ -24,18 +24,18 @@ module.exports = async (client) => {
 	});
 	setInterval(async () => {
 		const activities = [
-			[ActivityType.Game, 'I am unstable and might crash and burn!!'],
-			[ActivityType.Game, 'Use Pup Dev at your own risk!!'],
-			[ActivityType.Watching, 'Pup Dev is under heavy development!'],
-			[ActivityType.Competing, 'Please report any bugs to the developer!'],
-			[ActivityType.Competing, `${client.guilds.cache.size} Servers`],
-			[ActivityType.Listening, '3 big balls'],
-			[ActivityType.Game, '{GUILD}'],
+			['Game', 'I am unstable and might crash and burn!!'],
+			['Game', 'Use Pup Dev at your own risk!!'],
+			['Watching', 'Pup Dev is under heavy development!'],
+			['Competing', 'Please report any bugs to the developer!'],
+			['Competing', `${client.guilds.cache.size} Servers`],
+			['Listening', '3 big balls'],
+			['Game', '{GUILD}'],
 		];
 		const i = Math.floor(Math.random() * activities.length);
 		const activity = activities[i];
 		if (activity[1] == '{GUILD}') activity[1] = `in ${client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name}`;
-		client.user.setPresence({ activities: [{ name: activity[1], type: activity[0] }] });
+		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }] });
 	}, 5000);
 	setInterval(async () => {
 		const memberdata = await client.query('SELECT * FROM `memberdata`');
