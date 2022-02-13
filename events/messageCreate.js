@@ -1,4 +1,4 @@
-const { MessageAttachment, Embed, Collection, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
+const { MessageAttachment, Embed, Collection, ButtonComponent, ButtonStyle, ActionRow, PermissionsBitField } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -24,8 +24,8 @@ module.exports = async (client, message) => {
 	}
 
 	// If the bot can't read message history or send messages, don't execute a command
-	if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
-	|| !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
+	if (!message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)
+	|| !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)) return;
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
@@ -182,8 +182,8 @@ module.exports = async (client, message) => {
 		client.logger.info(JSON.stringify(message.member.permissions));
 		client.logger.info(command.permission);
 	}
-	if (command.permission && (!message.member.permissions || (!message.member.permissions.has(command.permission) && !message.member.permissionsIn(message.channel).has(command.permission) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
-		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
+	if (command.permission && (!message.member.permissions || (!message.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission]) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
+		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			errEmbed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
 			return message.reply({ embeds: [errEmbed] });
@@ -196,7 +196,7 @@ module.exports = async (client, message) => {
 	}
 
 	// Check if bot has the permissions necessary to run the command
-	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(command.botperm) && !message.guild.me.permissionsIn(message.channel).has(command.botperm)))) {
+	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])))) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
 		errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
 		return message.reply({ embeds: [errEmbed] });

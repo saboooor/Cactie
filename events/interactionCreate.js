@@ -1,4 +1,4 @@
-const { Embed, Collection, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
+const { Embed, Collection, ButtonComponent, ButtonStyle, ActionRow, PermissionsBitField } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -12,13 +12,13 @@ module.exports = async (client, interaction) => {
 		if (!button) return;
 
 		// Check if bot has the permissions necessary to run the button
-		if (button.botperm && (!interaction.guild.me.permissions.has(button.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperm))) {
+		if (button.botperm && (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[button.botperm]) || !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm]))) {
 			client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
 		// Check if user has the permissions necessary to use the button
-		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(button.permission) || !interaction.member.permissionsIn(interaction.channel).has(button.botperm))) {
+		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(PermissionsBitField.Flags[button.permission]) || !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.permission]))) {
 			client.logger.error(`User is missing ${button.permission} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: msg.permreq.replace('-p', button.permission), ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
@@ -207,8 +207,8 @@ module.exports = async (client, interaction) => {
 		// Check if user has the permissions necessary to use the command
 		client.logger.info(interaction.member.permissions);
 		client.logger.info(command.permission);
-		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(command.permission) && !interaction.member.permissionsIn(interaction.channel).has(command.permission) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
-			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
+		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.permission]) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
+			if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 				client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 				errEmbed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
 				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
@@ -221,7 +221,7 @@ module.exports = async (client, interaction) => {
 		}
 
 		// Check if bot has the permissions necessary to run the command
-		if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(command.botperm) && !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperm)))) {
+		if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.botperm])))) {
 			client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
 			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
