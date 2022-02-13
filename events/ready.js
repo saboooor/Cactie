@@ -24,10 +24,10 @@ module.exports = async (client) => {
 	});
 	setInterval(async () => {
 		const activities = [
-			['PLAYING', 'with you ;)'],
-			['PLAYING', '/help'],
-			['WATCHING', 'pup.smhsmh.club'],
-			['COMPETING', 'taking over the world'],
+			['PLAYING', 'I am unstable and might crash and burn!!'],
+			['PLAYING', 'Use Pup Dev at your own risk!!'],
+			['WATCHING', 'Pup Dev is under heavy development!'],
+			['COMPETING', 'Please report any bugs to the developer!'],
 			['COMPETING', `${client.guilds.cache.size} Servers`],
 			['PLAYING', '{GUILD}'],
 		];
