@@ -63,7 +63,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.tickets == 'buttons') {
 				row = new ActionRow()
-					.addComponents([
+					.addComponents(
 						new ButtonComponent()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
@@ -74,7 +74,7 @@ module.exports = {
 							.setLabel('Reopen Ticket')
 							.setEmoji({ name: '🔓' })
 							.setStyle(ButtonStyle.Primary),
-					]);
+					);
 			}
 			interaction.reply({ embeds: [CloseEmbed], components: [row] });
 			client.logger.info(`Closed ticket #${interaction.channel.name}`);

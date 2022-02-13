@@ -49,7 +49,7 @@ module.exports = client => {
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
 				if (srvconfig.tickets == 'buttons') {
 					const row = new ActionRow()
-						.addComponents([
+						.addComponents(
 							new ButtonComponent()
 								.setCustomId('delete_ticket')
 								.setLabel('Delete Ticket')
@@ -60,7 +60,7 @@ module.exports = client => {
 								.setLabel('Reopen Ticket')
 								.setEmoji({ name: '🔓' })
 								.setStyle(ButtonStyle.Primary),
-						]);
+						);
 					channel.send({ embeds: [resolveEmbed], components: [row] });
 				}
 				else if (srvconfig.tickets == 'reactions') {

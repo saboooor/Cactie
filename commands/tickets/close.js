@@ -95,7 +95,7 @@ module.exports = {
 			// If the ticket mode is set to buttons, add the buttons, if not, don't
 			if (srvconfig.tickets == 'buttons') {
 				const row = new ActionRow()
-					.addComponents([
+					.addComponents(
 						new ButtonComponent()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
@@ -106,7 +106,7 @@ module.exports = {
 							.setLabel('Reopen Ticket')
 							.setEmoji({ name: '🔓' })
 							.setStyle(ButtonStyle.Primary),
-					]);
+					);
 				if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ embeds: [CloseEmbed], components: [row] });
 				else message.reply({ embeds: [CloseEmbed], components: [row] });
 			}

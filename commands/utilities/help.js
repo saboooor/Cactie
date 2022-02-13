@@ -52,7 +52,7 @@ module.exports = {
 				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
 			}
 			const row = new ActionRow()
-				.addComponents([
+				.addComponents(
 					new SelectMenuComponent()
 						.setCustomId('select')
 						.setPlaceholder('Select a help category!')
@@ -88,9 +88,9 @@ module.exports = {
 								value: 'help_utilities',
 							},
 						]),
-				]);
+				);
 			const row2 = new ActionRow()
-				.addComponents([
+				.addComponents(
 					new ButtonComponent()
 						.setURL('https://pup.smhsmh.club/discord')
 						.setLabel('Support Discord')
@@ -99,7 +99,7 @@ module.exports = {
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
 						.setStyle(ButtonStyle.Link),
-				]);
+				);
 			message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 		}
 		catch (err) {
