@@ -3,8 +3,8 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'delete',
 	description: 'Delete a ticket',
-	permission: 'ADMINISTRATOR',
-	botperm: 'MANAGE_CHANNELS',
+	permission: 'Administrator',
+	botperm: 'ManageChannels',
 	async execute(message, user, client, reaction) {
 		try {
 			let author = message.member.user;

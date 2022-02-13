@@ -4,7 +4,7 @@ module.exports = {
 	name: 'open',
 	description: 'Repen a ticket',
 	aliases: ['reopen'],
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	async execute(message, user, client, reaction) {
 		try {
 			let author = message.member.user;

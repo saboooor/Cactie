@@ -5,8 +5,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<Message Link / Id (only in channel)> <Emoji>',
-	botperm: 'ADD_REACTIONS',
-	permission: 'ADMINISTRATOR',
+	botperm: 'AddReactions',
+	permission: 'Administrator',
 	options: require('../options/react.json'),
 	async execute(message, args, client) {
 		try {

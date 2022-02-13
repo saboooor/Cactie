@@ -5,8 +5,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User> [Reason]',
-	permission: 'KICK_MEMBERS',
-	botperm: 'KICK_MEMBERS',
+	permission: 'KickMembers',
+	botperm: 'KickMembers',
 	cooldown: 5,
 	options: require('../options/kick.json'),
 	async execute(message, args, client) {

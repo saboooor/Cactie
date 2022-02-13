@@ -2,7 +2,7 @@ const { Embed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_subticket',
-	botperm: 'MANAGE_THREADS',
+	botperm: 'ManageThreads',
 	async execute(interaction, client) {
 		try {
 			// Fetch messages in the channel and get the transcript link

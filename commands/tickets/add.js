@@ -2,7 +2,7 @@ const { Embed } = require('discord.js');
 module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket',
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	args: true,
 	usage: '<User Mention or Id>',
 	options: require('../options/user.json'),

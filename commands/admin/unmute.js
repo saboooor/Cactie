@@ -5,8 +5,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User>',
-	permission: 'MANAGE_MESSAGES',
-	botperm: 'MANAGE_ROLES',
+	permission: 'ManageMessages',
+	botperm: 'ManageRoles',
 	cooldown: 5,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {

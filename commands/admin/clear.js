@@ -8,8 +8,8 @@ module.exports = {
 	aliases: ['purge'],
 	usage: '<Message Amount>',
 	similarcmds: 'clearqueue',
-	permission: 'MANAGE_MESSAGES',
-	botperm: 'MANAGE_MESSAGES',
+	permission: 'ManageMessages',
+	botperm: 'ManageMessages',
 	options: require('../options/clear.json'),
 	async execute(message, args, client) {
 		try {

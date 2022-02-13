@@ -5,8 +5,8 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['reject', 'decline'],
 	args: true,
-	permission: 'ADMINISTRATOR',
-	botperm: 'MANAGE_MESSAGES',
+	permission: 'Administrator',
+	botperm: 'ManageMessages',
 	usage: '<Message Id> [Response]',
 	options: require('../options/suggestresponse.json'),
 	async execute(message, args, client) {

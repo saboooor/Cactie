@@ -3,7 +3,7 @@ const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js')
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	deferReply: true,
 	async execute(interaction, client) {
 		try {

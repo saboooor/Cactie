@@ -4,7 +4,7 @@ const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
 	description: 'Close a ticket',
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	async execute(message, user, client, reaction) {
 		try {
 			// Set author to reaction author if the command is a reaction

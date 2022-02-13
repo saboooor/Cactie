@@ -8,7 +8,7 @@ module.exports = {
 	args: true,
 	usage: '<Description>',
 	options: require('../options/ticket.json'),
-	botperm: 'CREATE_PUBLIC_THREADS',
+	botperm: 'CreatePublicThreads',
 	async execute(message, args, client, reaction) {
 		try {
 			if (reaction && message.author.id != client.user.id) return;

@@ -3,7 +3,7 @@ module.exports = {
 	description: 'Create a voiceticket',
 	ephemeral: true,
 	aliases: ['voicenew', 'voice'],
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	async execute(message, args, client, reaction) {
 		try {
 			// Check if ticket is an actual ticket

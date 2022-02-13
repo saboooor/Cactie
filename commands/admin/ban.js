@@ -6,8 +6,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User> [Time and/or Reason]',
-	permission: 'BAN_MEMBERS',
-	botperm: 'BAN_MEMBERS',
+	permission: 'BanMembers',
+	botperm: 'BanMembers',
 	cooldown: 5,
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {

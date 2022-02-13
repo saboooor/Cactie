@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed } = require('discord.js');
 module.exports = {
 	name: 'reopen_ticket',
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	deferReply: true,
 	async execute(interaction, client) {
 		try {

@@ -3,7 +3,7 @@ module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
 	aliases: ['commands'],
-	botperm: 'ADD_REACTIONS',
+	botperm: 'AddReactions',
 	usage: '[Type]',
 	cooldown: 10,
 	options: require('../options/help.json'),

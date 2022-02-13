@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Configure Pup\'s settings in the server',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
-	permission: 'ADMINISTRATOR',
+	permission: 'Administrator',
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
 		try {

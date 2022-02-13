@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['new'],
 	usage: '[Description]',
 	options: require('../options/ticket.json'),
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	async execute(message, args, client, reaction) {
 		try {
 			let author = message.member.user;
