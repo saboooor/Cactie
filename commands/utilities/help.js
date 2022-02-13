@@ -1,4 +1,4 @@
-const { ButtonComponent, ButtonStyle, ActionRow, Embed, SelectMenuComponent } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed, UnsafeSelectMenuComponent, SelectMenuOption } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -53,41 +53,35 @@ module.exports = {
 			}
 			const row = new ActionRow()
 				.addComponents(
-					new SelectMenuComponent()
+					new UnsafeSelectMenuComponent()
 						.setCustomId('select')
 						.setPlaceholder('Select a help category!')
-						.addOptions([
-							{
-								label: 'Admin',
-								description: 'These commands require specific permissions.',
-								value: 'help_admin',
-							},
-							{
-								label: 'Fun',
-								description: 'These commands are made just for fun!',
-								value: 'help_fun',
-							},
-							{
-								label: 'Music',
-								description: 'These commands play music in your voice chat!',
-								value: 'help_music',
-							},
-							{
-								label: 'NSFW',
-								description: 'These commands have sensitive content that is NSFW',
-								value: 'help_nsfw',
-							},
-							{
-								label: 'Tickets',
-								description: 'These commands are related to Pup\'s tickets system',
-								value: 'help_tickets',
-							},
-							{
-								label: 'Utilities',
-								description: 'These commands are useful for some situations',
-								value: 'help_utilities',
-							},
-						]),
+						.setOptions(
+							new SelectMenuOption()
+								.setLabel('Admin')
+								.setDescription('These commands require specific permissions')
+								.setValue('help_admin'),
+							new SelectMenuOption()
+								.setLabel('Fun')
+								.setDescription('These commands are made just for fun')
+								.setValue('help_fun'),
+							new SelectMenuOption()
+								.setLabel('Music')
+								.setDescription('These commands play music in your voice chat')
+								.setValue('help_music'),
+							new SelectMenuOption()
+								.setLabel('NSFW')
+								.setDescription('These commands have sensitive content that is NSFW')
+								.setValue('help_nsfw'),
+							new SelectMenuOption()
+								.setLabel('Tickets')
+								.setDescription('These commands are related to Pup\'s tickets system')
+								.setValue('help_tickets'),
+							new SelectMenuOption()
+								.setLabel('Utilities')
+								.setDescription('These commands are useful for some situations')
+								.setValue('help_utilities'),
+						),
 				);
 			const row2 = new ActionRow()
 				.addComponents(
