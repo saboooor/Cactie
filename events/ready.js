@@ -24,17 +24,21 @@ module.exports = async (client) => {
 	});
 	setInterval(async () => {
 		const activities = [
-			['Game', 'I am unstable and might crash and burn!!'],
-			['Game', 'Use Pup Dev at your own risk!!'],
-			['Watching', 'Pup Dev is under heavy development!'],
-			['Competing', 'Please report any bugs to the developer!'],
-			['Competing', `${client.guilds.cache.size} Servers`],
-			['Listening', '3 big balls'],
-			['Game', '{GUILD}'],
+			['Game', 'With you ;)'],
+			['Game', '/help'],
+			['Watching', 'pup.smhsmh.club'],
+			['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
+			['Competing', `${client.guilds.cache.size} servers!`],
+			['Listening', '3 Big Balls'],
+			['Listening', 'Never Gonna Give You Up'],
+			['Listening', 'Fortnite Battle Pass'],
+			['Game', 'in {GUILD}'],
+			['Competing', '{GUILD}'],
+			['Watching', '{GUILD}'],
 		];
 		const i = Math.floor(Math.random() * activities.length);
 		const activity = activities[i];
-		if (activity[1] == '{GUILD}') activity[1] = `in ${client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name}`;
+		if (activity[1].includes('{GUILD}')) activity[1] = activity[1].replace('{GUILD}', client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name);
 		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }] });
 	}, 5000);
 	setInterval(async () => {
