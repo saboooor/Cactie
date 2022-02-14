@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { Embed, ActivityType } = require('discord.js');
 const fs = require('fs');
 module.exports = client => {
 	process.on('unhandledRejection', async (reason) => {
@@ -27,5 +27,6 @@ module.exports = client => {
 			fs.writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
 			player.destroy();
 		});
+		client.user.setPresence({ activities: [{ name: 'Bot crashed! Sorry for the inconvenience', type: ActivityType.Game }] });
 	});
 };
