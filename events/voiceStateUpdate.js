@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	const guildId = newState.guild.id;
@@ -56,12 +56,12 @@ module.exports = async (client, oldState, newState) => {
 				if (stateChange.channel.members.filter(member => !member.user.bot).size >= 1) return;
 				if (!player.voiceChannel) return;
 				const channel = newState.guild.channels.cache.get(player.textChannel);
-				const AlertEmbed = new Embed()
-					.setColor(Math.floor(Math.random() * 16777215))
+				const Embed = new MessageEmbed()
+					.setColor(Math.round(Math.random() * 16777215))
 					.setDescription('⚠️ **Left because of 5 minutes of inactivity!**')
-					.addField({ name: 'Tired of me leaving?', value: 'Enable the **24/7** mode with the /247 command!' })
+					.addField('Tired of me leaving?', 'Enable the **24/7** mode with the /247 command!')
 					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
-				const NowPlaying = await channel.send({ embeds: [AlertEmbed] });
+				const NowPlaying = await channel.send({ embeds: [Embed] });
 				player.setNowplayingMessage(NowPlaying);
 				player.destroy();
 				client.logger.info(`Destroyed player in ${newState.guild.name} because of empty channel`);

@@ -1,4 +1,4 @@
-const { Embed, Collection, ButtonComponent, ButtonStyle, ActionRow, PermissionsBitField } = require('discord.js');
+const { MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -12,46 +12,46 @@ module.exports = async (client, interaction) => {
 		if (!button) return;
 
 		// Check if bot has the permissions necessary to run the button
-		if (button.botperm && (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[button.botperm]) || !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm]))) {
+		if (button.botperm && (!interaction.guild.me.permissions.has(button.botperm) || !interaction.guild.me.permissionsIn(interaction.channel).has(button.botperm))) {
 			client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
 		// Check if user has the permissions necessary to use the button
-		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(PermissionsBitField.Flags[button.permission]) || !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.permission]))) {
+		if (button.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || !interaction.member.permissions.has(button.permission) || !interaction.member.permissionsIn(interaction.channel).has(button.botperm))) {
 			client.logger.error(`User is missing ${button.permission} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return interaction.reply({ content: msg.permreq.replace('-p', button.permission), ephemeral: true }).catch(e => { client.logger.warn(e); });
 		}
 
 		// Create error embed
-		const errEmbed = new Embed()
-			.setColor(0xE74C3C);
+		const embed = new MessageEmbed()
+			.setColor('RED');
 
 		// Get player
 		const player = client.manager.get(interaction.guild.id);
 
 		// Check if player exists and button needs it
 		if (button.player && (!player || !player.queue.current)) {
-			errEmbed.setTitle('There is no music playing.');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('There is no music playing.');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if bot is server muted and button needs unmute
 		if (button.serverUnmute && interaction.guild.me.voice.serverMute) {
-			errEmbed.setTitle('I\'m server muted!');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('I\'m server muted!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if user is in vc and button needs user to be in vc
 		if (button.inVoiceChannel && !interaction.member.voice.channel) {
-			errEmbed.setTitle('You must be in a voice channel!');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('You must be in a voice channel!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if user is in the same vc as bot and button needs it
 		if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle(`You must be in the same channel as ${client.user}!`);
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Defer and execute the button
@@ -62,14 +62,14 @@ module.exports = async (client, interaction) => {
 			button.execute(interaction, client);
 		}
 		catch (err) {
-			const interactionFailed = new Embed()
+			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
-				.addField({ name: '**Type:**', value: 'Button' })
-				.addField({ name: '**Interaction:**', value: button.name })
-				.addField({ name: '**Error:**', value: clean(err) });
-			if (interaction.guild) interactionFailed.addField({ name: '**Guild:**', value: interaction.guild.name }).addField({ name: '**Channel:**', value: interaction.channel.name });
+				.addField('**Type:**', 'Button')
+				.addField('**Interaction:**', button.name)
+				.addField('**Error:**', clean(err));
+			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);
@@ -95,29 +95,29 @@ module.exports = async (client, interaction) => {
 			dropdown.execute(interaction, client);
 		}
 		catch (err) {
-			const interactionFailed = new Embed()
+			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
-				.addField({ name: '**Type:**', value: 'Dropdown' })
-				.addField({ name: '**Interaction:**', value: interaction.values[0] })
-				.addField({ name: '**Error:**', value: clean(err) });
-			if (interaction.guild) interactionFailed.addField({ name: '**Guild:**', value: interaction.guild.name }).addField({ name: '**Channel:**', value: interaction.channel.name });
+				.addField('**Type:**', 'Dropdown')
+				.addField('**Interaction:**', interaction.values[0])
+				.addField('**Error:**', clean(err));
+			if (interaction.guild) interactionFailed.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);
 		}
 	}
 	// Slash Command / Context Menu Handling
-	else if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
+	else if (interaction.isCommand() || interaction.isContextMenu()) {
 		// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
 		const command = client.slashcommands.get(interaction.commandName);
 		if (!command) return;
 
 		// Make args variable from interaction options for compatibility with dash command code
 		// If command is context menu, set it to client instead since it's (interaction, client)
-		const args = interaction.isContextMenuCommand() ? client : interaction.options._hoistedOptions;
-		if (interaction.isContextMenuCommand()) {
+		const args = interaction.isContextMenu() ? client : interaction.options._hoistedOptions;
+		if (interaction.isContextMenu()) {
 			// Set message variable to the message of the context menu
 			const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
 			interaction.message = msgs.first();
@@ -153,11 +153,11 @@ module.exports = async (client, interaction) => {
 			// If cooldown expiration hasn't passed, send cooldown message
 			if (now < expirationTime) {
 				const timeLeft = (expirationTime - now) / 1000;
-				const cooldownEmbed = new Embed()
-					.setColor(Math.floor(Math.random() * 16777215))
+				const Embed = new MessageEmbed()
+					.setColor(Math.round(Math.random() * 16777215))
 					.setTitle(messages[random])
 					.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-				return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });
+				return interaction.reply({ embeds: [Embed], ephemeral: true });
 			}
 		}
 
@@ -166,13 +166,13 @@ module.exports = async (client, interaction) => {
 		setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 		// Create Error Embed
-		const errEmbed = new Embed()
-			.setColor(0xE74C3C);
+		const embed = new MessageEmbed()
+			.setColor('RED');
 
 		// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
 		if (interaction.channel.type == 'DM') {
-			errEmbed.setTitle('You can\'t execute commands in DMs!');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('You can\'t execute commands in DMs!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Get current settings for the guild
@@ -185,46 +185,46 @@ module.exports = async (client, interaction) => {
 
 			// If user has not voted since the past 24 hours, send error message with vote buttons
 			if (Date.now() > vote.timestamp + 86400000) {
-				errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
+				embed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
-				const row = new ActionRow()
+				const row = new MessageActionRow()
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setURL('https://top.gg/bot/765287593762881616/vote')
 							.setLabel('top.gg')
-							.setStyle(ButtonStyle.Link),
+							.setStyle('LINK'),
 					)
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setURL('https://discordbotlist.com/bots/pup/upvote')
 							.setLabel('dbl.com')
-							.setStyle(ButtonStyle.Link),
+							.setStyle('LINK'),
 					);
-				return interaction.reply({ embeds: [errEmbed], components: [row] });
+				return interaction.reply({ embeds: [embed], components: [row] });
 			}
 		}
 
 		// Check if user has the permissions necessary to use the command
 		client.logger.info(interaction.member.permissions);
 		client.logger.info(command.permission);
-		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.permission]) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
-			if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
+		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(command.permission) && !interaction.member.permissionsIn(interaction.channel).has(command.permission) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
+			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
 				client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-				errEmbed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
-				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+				embed.setTitle(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name));
+				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 			else {
 				client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-				errEmbed.setTitle(msg.permreq.replace('-p', command.permission));
-				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+				embed.setTitle(msg.permreq.replace('-p', command.permission));
+				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
 
 		// Check if bot has the permissions necessary to run the command
-		if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.botperm])))) {
+		if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(command.botperm) && !interaction.guild.me.permissionsIn(interaction.channel).has(command.botperm)))) {
 			client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle(`I don't have the ${command.botperm} permission!`);
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Get player for music checks
@@ -233,26 +233,26 @@ module.exports = async (client, interaction) => {
 
 		// Check if player exists and command needs it
 		if (command.player && (!player || !player.queue.current)) {
-			errEmbed.setTitle('There is no music playing.');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('There is no music playing.');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if bot is server muted and command needs unmute
 		if (command.serverUnmute && interaction.guild.me.voice.serverMute) {
-			errEmbed.setTitle('I\'m server muted!');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('I\'m server muted!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if user is in vc and command needs user to be in vc
 		if (command.inVoiceChannel && !interaction.member.voice.channel) {
-			errEmbed.setTitle('You must be in a voice channel!');
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle('You must be in a voice channel!');
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if user is in the same vc as bot and command needs it
 		if (command.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) {
-			errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
-			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+			embed.setTitle(`You must be in the same channel as ${client.user}!`);
+			return interaction.reply({ embeds: [embed], ephemeral: true });
 		}
 
 		// Check if user has dj role and command needs user to have it
@@ -263,8 +263,8 @@ module.exports = async (client, interaction) => {
 
 			// Check if user has role, if not, send error message
 			if (!interaction.member.roles.cache.has(srvconfig.djrole)) {
-				errEmbed.setTitle(msg.rolereq.replace('-r', role.name));
-				return interaction.reply({ embeds: [errEmbed], ephemeral: true });
+				embed.setTitle(msg.rolereq.replace('-r', role.name));
+				return interaction.reply({ embeds: [embed], ephemeral: true });
 			}
 		}
 
@@ -277,15 +277,14 @@ module.exports = async (client, interaction) => {
 			command.execute(interaction, args, client);
 		}
 		catch (err) {
-			const interactionFailed = new Embed()
+			const interactionFailed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
-				.addField({ name: '**Type:**', value: 'Slash' })
-				.addField({ name: '**Interaction:**', value: command.name })
-				.addField({ name: '**Error:**', value: `${clean(err)}` })
-				.addField({ name: '**Guild:**', value: interaction.guild.name })
-				.addField({ name: '**Channel:**', value: interaction.channel.name });
+				.addField('**Type:**', 'Slash')
+				.addField('**Interaction:**', command.name)
+				.addField('**Error:**', `${clean(err)}`)
+				.addField('**Guild:**', interaction.guild.name).addField('**Channel:**', interaction.channel.name);
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 			client.logger.error(err);

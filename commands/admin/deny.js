@@ -5,8 +5,8 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['reject', 'decline'],
 	args: true,
-	permission: 'Administrator',
-	botperm: 'ManageMessages',
+	permission: 'ADMINISTRATOR',
+	botperm: 'MANAGE_MESSAGES',
 	usage: '<Message Id> [Response]',
 	options: require('../options/suggestresponse.json'),
 	async execute(message, args, client) {
@@ -31,12 +31,12 @@ module.exports = {
 			if (fetchedMsg.author != client.user) return;
 
 			// Get embed and check if embed is a suggestion
-			const DenyEmbed = fetchedMsg.embeds[0];
-			if (!DenyEmbed || !DenyEmbed.author || !DenyEmbed.title.startsWith('Suggestion')) return;
+			const Embed = fetchedMsg.embeds[0];
+			if (!Embed || !Embed.author || !Embed.title.startsWith('Suggestion')) return;
 
 			// Remove all reactions and set color to red and denied title
 			fetchedMsg.reactions.removeAll();
-			DenyEmbed.setColor(0xE74C3C).setTitle('Suggestion (Denied)');
+			Embed.setColor(15158332).setTitle('Suggestion (Denied)');
 
 			// Fetch results / reactions and add field if not already added
 			const emojis = [];
@@ -45,13 +45,13 @@ module.exports = {
 				if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
 				emojis.push(emoji);
 			});
-			if (!DenyEmbed.fields[0] && emojis[0]) DenyEmbed.addField({ name: 'Results', value: `${emojis.join(' ')}` });
+			if (!Embed.fields[0] && emojis[0]) Embed.addField('Results', `${emojis.join(' ')}`);
 
 			// Delete command message
 			if (!message.commandName) message.delete();
 
 			// Get suggestion thread if exists and delete with transcript
-			const thread = message.guild.channels.cache.get(DenyEmbed.url.split('a')[2]);
+			const thread = message.guild.channels.cache.get(Embed.url.split('a')[2]);
 			if (thread) {
 				if (!message.guild.me.permissions.has('MANAGE_THREADS') || !message.guild.me.permissionsIn(message.channel).has('MANAGE_THREADS')) {
 					client.logger.error(`Missing MANAGE_THREADS permission in #${message.channel.name} at ${message.guild.name}`);
@@ -60,7 +60,7 @@ module.exports = {
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {
 					const link = await getTranscript(messages);
-					DenyEmbed.addField({ name: 'View Discussion', value: link });
+					Embed.addField('View Discussion', link);
 				}
 				thread.delete();
 			}
@@ -70,31 +70,31 @@ module.exports = {
 			if (args.join(' ')) {
 			// check if there's a response already, if so, edit the field and don't add a new field
 				let newField = true;
-				DenyEmbed.fields.forEach(field => {
+				Embed.fields.forEach(field => {
 					if (field.name == 'Response') {
 						newField = false;
 						field.value = args.join(' ');
 					}
 				});
-				if (newField) DenyEmbed.addField({ name: 'Response', value: args.join(' ') });
+				if (newField) Embed.addField('Response', args.join(' '));
 			}
-			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
-			if (DenyEmbed.url) {
-				client.users.cache.get(DenyEmbed.url.split('a')[1])
+			Embed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
+			if (Embed.url) {
+				client.users.cache.get(Embed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
 					.catch(error => { client.logger.warn(error); });
 			}
 
 			// Update message and reply with denied
-			fetchedMsg.edit({ embeds: [DenyEmbed] });
+			fetchedMsg.edit({ embeds: [Embed] });
 			if (message.commandName) message.reply({ content: 'Suggestion Denied!' });
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				DenyEmbed.setTitle(`${message.member.user.tag} denied a suggestion`)
-					.addField({ name: 'Link to message', value: `[Click here](${fetchedMsg.url})` });
-				logchannel.send({ embeds: [DenyEmbed] });
+				Embed.setTitle(`${message.member.user.tag} denied a suggestion`)
+					.addField('Link to message', `[Click here](${fetchedMsg.url})`);
+				logchannel.send({ embeds: [Embed] });
 			}
 		}
 		catch (err) {

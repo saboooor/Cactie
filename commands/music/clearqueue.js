@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'clearqueue',
 	description: 'Clear Queue',
@@ -27,11 +27,11 @@ module.exports = {
 
 			// Clear the queue and send message
 			player.queue.clear();
-			const ClearEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const thing = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription('⏏️ Cleared all songs from the queue');
-			return message.reply({ embeds: [ClearEmbed] });
+			return message.reply({ embeds: [thing] });
 		}
 		catch (err) {
 			client.error(err, message);

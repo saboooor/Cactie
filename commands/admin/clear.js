@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'clear',
@@ -8,8 +8,8 @@ module.exports = {
 	aliases: ['purge'],
 	usage: '<Message Amount>',
 	similarcmds: 'clearqueue',
-	permission: 'ManageMessages',
-	botperm: 'ManageMessages',
+	permission: 'MANAGE_MESSAGES',
+	botperm: 'MANAGE_MESSAGES',
 	options: require('../options/clear.json'),
 	async execute(message, args, client) {
 		try {
@@ -29,11 +29,11 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				const ClearEmbed = new Embed()
+				const Embed = new MessageEmbed()
 					.setTitle(`${message.member.user.tag} cleared ${args[0]} messages`)
-					.addField({ name: 'Channel', value: `${message.channel}` })
-					.addField({ name: 'Transcript', value: `${await getTranscript(messages)}` });
-				logchannel.send({ embeds: [ClearEmbed] });
+					.addField('Channel', `${message.channel}`)
+					.addField('Transcript', `${await getTranscript(messages)}`);
+				logchannel.send({ embeds: [Embed] });
 			}
 		}
 		catch (err) {

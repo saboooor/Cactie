@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'join',
 	description: 'Join voice channel',
@@ -21,10 +21,10 @@ module.exports = {
 			player.connect();
 
 			// Send message to channel
-			const JoinEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const thing = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`📥 **Joined VC**\nJoined ${channel} and bound to ${message.channel}`);
-			return message.reply({ embeds: [JoinEmbed] });
+			return message.reply({ embeds: [thing] });
 		}
 		catch (err) {
 			client.error(err, message);

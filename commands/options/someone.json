@@ -1,6 +1,6 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "someone",
         "description": "Pick someone or something to use this command on!",
         "required": false

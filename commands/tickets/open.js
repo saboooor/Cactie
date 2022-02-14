@@ -1,10 +1,10 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'open',
 	description: 'Repen a ticket',
 	aliases: ['reopen'],
-	botperm: 'ManageChannels',
+	botperm: 'MANAGE_CHANNELS',
 	async execute(message, user, client, reaction) {
 		try {
 			let author = message.member.user;
@@ -26,10 +26,10 @@ module.exports = {
 			ticketData.users.forEach(userid => {
 				message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true });
 			});
-			const OpenEmbed = new Embed()
-				.setColor(0xFF6400)
+			const Embed = new MessageEmbed()
+				.setColor(15105570)
 				.setDescription(`Ticket Opened by ${author}`);
-			message.reply({ embeds: [OpenEmbed] });
+			message.reply({ embeds: [Embed] });
 			await sleep(1000);
 			client.logger.info(`Reopened ticket #${message.channel.name}`);
 		}

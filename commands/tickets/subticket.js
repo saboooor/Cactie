@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'subticket',
 	description: 'Create a subticket',
@@ -8,7 +8,7 @@ module.exports = {
 	args: true,
 	usage: '<Description>',
 	options: require('../options/ticket.json'),
-	botperm: 'CreatePublicThreads',
+	botperm: 'CREATE_PUBLIC_THREADS',
 	async execute(message, args, client, reaction) {
 		try {
 			if (reaction && message.author.id != client.user.id) return;
@@ -32,27 +32,27 @@ module.exports = {
 			await sleep(1000);
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const CreateEmbed = new Embed()
-				.setColor(0x5662f6)
+			const Embed = new MessageEmbed()
+				.setColor(3447003)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
-				.addField({ name: 'Description', value: args[0] ? args.join(' ') : 'Created using a reaction' });
+				.addField('Description', args[0] ? args.join(' ') : 'Created using a reaction');
 			if (srvconfig.tickets == 'buttons') {
-				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
-				const row = new ActionRow()
+				Embed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
+				const row = new MessageActionRow()
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setCustomId('close_subticket')
 							.setLabel('Close Subticket')
-							.setEmoji({ name: '🔒' })
-							.setStyle(ButtonStyle.Danger),
+							.setEmoji('🔒')
+							.setStyle('DANGER'),
 					);
-				await subticket.send({ content: `${users}`, embeds: [CreateEmbed], components: [row] });
+				await subticket.send({ content: `${users}`, embeds: [Embed], components: [row] });
 			}
 			else if (srvconfig.tickets == 'reactions') {
-				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or react with 🔒' });
-				const Panel = await subticket.send({ content: `${users}`, embeds: [CreateEmbed] });
-				await Panel.react('🔒');
+				Embed.setFooter({ text: 'To close this subticket do /close, or react with 🔒' });
+				const embed = await subticket.send({ content: `${users}`, embeds: [Embed] });
+				await embed.react('🔒');
 			}
 		}
 		catch (err) {

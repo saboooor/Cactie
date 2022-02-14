@@ -18,8 +18,8 @@ module.exports = {
 			await player.setEQ(...bands);
 
 			// Update the message with the new EQ
-			const EQEmbed = interaction.message.embeds[0].setDescription(msg.music.eq.btn.replace('-m', msg.music.eq.boost));
-			await interaction.reply({ embeds: [EQEmbed], components: interaction.message.components });
+			const embed = interaction.message.embeds[0].setDescription(msg.music.eq.btn.replace('-m', msg.music.eq.boost));
+			await interaction.reply({ embeds: [embed], components: interaction.message.components });
 		}
 		catch (err) {
 			client.error(err, interaction);

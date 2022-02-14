@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const ms = require('ms');
 module.exports = {
 	name: 'ban',
@@ -6,8 +6,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User> [Time and/or Reason]',
-	permission: 'BanMembers',
-	botperm: 'BanMembers',
+	permission: 'BAN_MEMBERS',
+	botperm: 'BAN_MEMBERS',
 	cooldown: 5,
 	options: require('../options/punish.json'),
 	async execute(message, args, client) {
@@ -26,13 +26,13 @@ module.exports = {
 			if (time > 31536000000) return message.reply({ content: 'You cannot ban someone for more than 1 year!' });
 
 			// Create embed and check if bqn has a reason / time period
-			const BanEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const Embed = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`Banned ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 			// Add reason if specified
 			const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
-			if (reason) BanEmbed.addField({ name: 'Reason', value: reason });
+			if (reason) Embed.addField('Reason', reason);
 
 			// Send ban message to target
 			await user.send({ content: `**You've been banned from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
@@ -49,14 +49,14 @@ module.exports = {
 			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
 
 			// Reply with response
-			message.reply({ embeds: [BanEmbed] });
+			message.reply({ embeds: [Embed] });
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				BanEmbed.setTitle(`${message.member.user.tag} ${BanEmbed.title}`);
-				logchannel.send({ embeds: [BanEmbed] });
+				Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+				logchannel.send({ embeds: [Embed] });
 			}
 		}
 		catch (err) {

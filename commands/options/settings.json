@@ -1,21 +1,21 @@
 [
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "get",
         "description": "Show all settings"
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "reset",
         "description": "Reset all settings"
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "prefix",
         "description": "The bot\"s prefix",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "prefix",
                 "description": "The bot\"s prefix",
                 "required": true
@@ -23,12 +23,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "reactions",
         "description": "Reacts with various reactions on some words",
         "options": [
             {
-                "type": 5,
+                "type": "BOOLEAN",
                 "name": "value",
                 "description": "The setting value",
                 "required": true
@@ -36,12 +36,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "leavemessage",
         "description": "The message when someone leaves the guild",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "value",
                 "description": "Must be false or the leave message. Variables: {USER MENTION} {USER TAG}",
                 "required": true
@@ -49,12 +49,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "joinmessage",
         "description": "The message when someone joins the guild",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "value",
                 "description": "Must be false or the join message. Variables: {USER MENTION} {USER TAG}",
                 "required": true
@@ -62,12 +62,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "maxppsize",
         "description": "Maximum pp size in boner and instaboner commands",
         "options": [
             {
-                "type": 4,
+                "type": "INTEGER",
                 "name": "size",
                 "description": "The max pp size (<75)",
                 "required": true
@@ -75,12 +75,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "tickets",
         "description": "Toggles the ticket system",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "value",
                 "description": "The setting value",
                 "required": true,
@@ -102,12 +102,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "bonercmd",
         "description": "Toggles the boner command",
         "options": [
             {
-                "type": 5,
+                "type": "BOOLEAN",
                 "name": "value",
                 "description": "The setting value",
                 "required": true
@@ -115,12 +115,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "suggestionchannel",
         "description": "The channel where the bot puts suggestions in",
         "options": [
             {
-                "type": 7,
+                "type": "CHANNEL",
                 "name": "channel",
                 "description": "The suggestion channel (Hashtag icon)",
                 "required": true
@@ -128,12 +128,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "suggestthreads",
         "description": "Creates a thread when a suggestion is created for discussion",
         "options": [
             {
-                "type": 5,
+                "type": "BOOLEAN",
                 "name": "value",
                 "description": "The setting value",
                 "required": true
@@ -141,12 +141,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "pollchannel",
         "description": "The channel where the bot puts polls in",
         "options": [
             {
-                "type": 7,
+                "type": "CHANNEL",
                 "name": "channel",
                 "description": "The poll channel (Hashtag icon)",
                 "required": true
@@ -154,12 +154,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "logchannel",
         "description": "The channel where the bot puts various logs, Must be false or a channel Id",
         "options": [
             {
-                "type": 7,
+                "type": "CHANNEL",
                 "name": "channel",
                 "description": "The logging channel (Hashtag icon)",
                 "required": true
@@ -167,12 +167,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "ticketcategory",
         "description": "The category where the bot creates tickets in, Must be false or a category Id",
         "options": [
             {
-                "type": 7,
+                "type": "CHANNEL",
                 "name": "value",
                 "description": "The category (Folder icon)",
                 "required": true
@@ -180,12 +180,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "ticketmention",
         "description": "Pings every time a new ticket is created",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "value",
                 "description": "Must be 'here', 'everyone', or a valid role Id",
                 "required": true
@@ -193,12 +193,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "supportrole",
         "description": "The ticket support team role",
         "options": [
             {
-                "type": 8,
+                "type": "ROLE",
                 "name": "role",
                 "description": "The support role",
                 "required": true
@@ -206,12 +206,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "mutecmd",
         "description": "Toggles the mute command",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "value",
                 "description": "The mute role Id, 'false', or 'timeout'",
                 "required": true
@@ -219,12 +219,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "adminrole",
         "description": "The role to replace the ADMINISTRATOR permission",
         "options": [
             {
-                "type": 8,
+                "type": "ROLE",
                 "name": "role",
                 "description": "The admin role",
                 "required": true
@@ -232,12 +232,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "msgshortener",
         "description": "The amount of lines in a message to trigger message shortener",
         "options": [
             {
-                "type": 3,
+                "type": "STRING",
                 "name": "number",
                 "description": "[0 = disabled]",
                 "required": true
@@ -245,12 +245,12 @@
         ]
     },
     {
-        "type": 1,
+        "type": "SUB_COMMAND",
         "name": "djrole",
         "description": "The DJ feature of the bot that limits the skip/etc commands",
         "options": [
             {
-                "type": 8,
+                "type": "ROLE",
                 "name": "role",
                 "description": "The role to use for the DJ role",
                 "required": true

@@ -1,6 +1,6 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "suggestion",
         "description": "What you want to suggest",
         "required": true

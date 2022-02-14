@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_skip',
@@ -29,12 +29,12 @@ module.exports = {
 			// Skip the song and reply with song that was skipped
 			player.stop();
 			const song = player.queue.current;
-			const SkipEmbed = new Embed()
+			const thing = new MessageEmbed()
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setTimestamp()
 				.setThumbnail(song.img);
-			await interaction.reply({ embeds: [SkipEmbed] });
+			await interaction.reply({ embeds: [thing] });
 		}
 		catch (err) {
 			client.error(err, interaction);

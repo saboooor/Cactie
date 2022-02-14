@@ -1,12 +1,12 @@
 [
     {
-        "type": 6,
+        "type": "USER",
         "name": "user",
         "description": "User to kick",
         "required": true
     },
     {
-        "type": 3,
+        "type": "STRING",
         "name": "reason",
         "description": "Reason of kick",
         "required": false

@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'stop',
 	description: 'Stops the music',
@@ -12,11 +12,11 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			player.stop();
 			player.queue.clear();
-			const StopMusic = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const thing = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription('⏹️ Stopped the music');
-			message.reply({ embeds: [StopMusic] });
+			message.reply({ embeds: [thing] });
 		}
 		catch (err) {
 			client.error(err, message);

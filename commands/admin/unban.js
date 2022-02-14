@@ -1,12 +1,12 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unban',
 	description: 'Unban someone that was banned from the server',
 	ephemeral: true,
 	args: true,
 	usage: '<User>',
-	permission: 'BanMembers',
-	botperm: 'BanMembers',
+	permission: 'BAN_MEMBERS',
+	botperm: 'BAN_MEMBERS',
 	cooldown: 5,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
@@ -26,20 +26,20 @@ module.exports = {
 			message.guild.members.unban(user.id);
 
 			// Create embed with color and title
-			const UnbanEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const Embed = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`Unbanned ${user.tag}`);
 
 			// Reply with unban log
-			message.reply({ embeds: [UnbanEmbed] });
+			message.reply({ embeds: [Embed] });
 			client.logger.info(`Unbanned user: ${user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				UnbanEmbed.setTitle(`${message.member.user.tag} ${UnbanEmbed.title}`);
-				logchannel.send({ embeds: [UnbanEmbed] });
+				Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+				logchannel.send({ embeds: [Embed] });
 			}
 		}
 		catch (err) {

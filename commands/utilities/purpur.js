@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'purpur',
@@ -24,8 +24,8 @@ module.exports = {
 			// check if error
 			if (h.error) return message.reply({ content: h.error });
 			// initial embed creation
-			const PurpurEmbed = new Embed()
-				.setColor(0x95639C)
+			const Embed = new MessageEmbed()
+				.setColor(9790364)
 				.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
 				.setURL(`https://api.pl3x.net/v2/purpur/${c}/${f}`)
 				.setThumbnail('https://cdn.discordapp.com/attachments/742476351012864162/865391752675065896/purpur.png')
@@ -34,13 +34,13 @@ module.exports = {
 			// add fields for commits
 			h.commits.forEach(commit => {
 			// check if commit description is more than 1000, if so, split it into multiple fields
-				if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { PurpurEmbed.addField({ name: commit.author, value: `${chunk}` }); });
-				else PurpurEmbed.addField({ name: commit.author, value: `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` });
+				if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { Embed.addField(commit.author, `${chunk}`); });
+				else Embed.addField(commit.author, `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*`);
 			});
 			// add field for download
-			PurpurEmbed.addField({ name: 'Download', value: `[Click Here](https://api.pl3x.net/v2/purpur/${c}/${f}/download)` });
+			Embed.addField('Download', `[Click Here](https://api.pl3x.net/v2/purpur/${c}/${f}/download)`);
 			// send embed
-			message.reply({ embeds: [PurpurEmbed] });
+			message.reply({ embeds: [Embed] });
 		}
 		catch (err) {
 			client.error(err, message);

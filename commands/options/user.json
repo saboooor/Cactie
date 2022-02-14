@@ -1,6 +1,6 @@
 [
     {
-        "type": 6,
+        "type": "USER",
         "name": "user",
         "description": "User to use this command on",
         "required": true

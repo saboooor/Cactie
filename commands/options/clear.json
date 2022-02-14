@@ -1,6 +1,6 @@
 [
 	{
-		"type": 4,
+		"type": "INTEGER",
 		"name": "amount",
 		"description": "The amount of messages to clear",
 		"required": true

@@ -1,5 +1,5 @@
 const { schedule } = require('node-cron');
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
@@ -32,43 +32,43 @@ module.exports = client => {
 				const link = await getTranscript(messages);
 				const users = [];
 				await data.users.forEach(userid => users.push(client.users.cache.get(userid)));
-				const CloseDMEmbed = new Embed()
+				const EmbedDM = new MessageEmbed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
-					.addField({ name: '**Users in ticket**', value: `${users}` })
-					.addField({ name: '**Transcript**', value: `${link}.txt` })
-					.addField({ name: '**Closed by**', value: 'Automatically closed' });
+					.addField('**Users in ticket**', `${users}`)
+					.addField('**Transcript**', `${link}.txt`)
+					.addField('**Closed by**', 'Automatically closed');
 				client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
 				users.forEach(usr => {
-					usr.send({ embeds: [CloseDMEmbed] })
+					usr.send({ embeds: [EmbedDM] })
 						.catch(error => { client.logger.warn(error); });
 				});
-				const resolveEmbed = new Embed()
-					.setColor(0xFF6400)
+				const Embed = new MessageEmbed()
+					.setColor(15105570)
 					.setDescription('Automatically closed Resolved Ticket');
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
 				if (srvconfig.tickets == 'buttons') {
-					const row = new ActionRow()
-						.addComponents(
-							new ButtonComponent()
+					const row = new MessageActionRow()
+						.addComponents([
+							new MessageButton()
 								.setCustomId('delete_ticket')
 								.setLabel('Delete Ticket')
-								.setEmoji({ name: '⛔' })
-								.setStyle(ButtonStyle.Danger),
-							new ButtonComponent()
+								.setEmoji('⛔')
+								.setStyle('DANGER'),
+							new MessageButton()
 								.setCustomId('reopen_ticket')
 								.setLabel('Reopen Ticket')
-								.setEmoji({ name: '🔓' })
-								.setStyle(ButtonStyle.Primary),
-						);
-					channel.send({ embeds: [resolveEmbed], components: [row] });
+								.setEmoji('🔓')
+								.setStyle('PRIMARY'),
+						]);
+					channel.send({ embeds: [Embed], components: [row] });
 				}
 				else if (srvconfig.tickets == 'reactions') {
-					resolveEmbed.setColor(0x5662f6);
-					resolveEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
-					const Panel = await channel.send({ embeds: [resolveEmbed] });
-					Panel.react('🔓');
-					Panel.react('⛔');
+					Embed.setColor(3447003);
+					Embed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
+					const embed = await channel.send({ embeds: [Embed] });
+					embed.react('🔓');
+					embed.react('⛔');
 				}
 				client.logger.info(`Closed resolved ticket #${channel.name}`);
 			}

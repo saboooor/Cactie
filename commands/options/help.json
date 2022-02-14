@@ -1,6 +1,6 @@
 [
     {
-        "type": 3,
+        "type": "STRING",
         "name": "type",
         "description": "The type of help you need",
         "required": false,

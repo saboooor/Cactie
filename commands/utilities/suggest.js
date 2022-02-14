@@ -1,11 +1,11 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { upvote, downvote } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'suggest',
 	description: 'Suggest something!',
 	ephemeral: true,
-	botperm: 'AddReactions',
+	botperm: 'ADD_REACTIONS',
 	cooldown: 10,
 	args: true,
 	usage: '<Suggestion>',
@@ -16,13 +16,13 @@ module.exports = {
 			let channel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
 			if (!channel) channel = message.channel;
 			const suggestion = args.join(' ');
-			const SuggestEmbed = new Embed()
-				.setColor(0x5662f6)
+			const Embed = new MessageEmbed()
+				.setColor(3447003)
 				.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 				.setTitle('Suggestion')
 				.setDescription(suggestion)
 				.setURL(`https://a${message.member.user.id}a.pup`);
-			const msg = await channel.send({ embeds: [SuggestEmbed] });
+			const msg = await channel.send({ embeds: [Embed] });
 			await msg.react(upvote);
 			await msg.react(downvote);
 			if (srvconfig.suggestthreads) {
@@ -35,8 +35,8 @@ module.exports = {
 					autoArchiveDuration: 1440,
 					reason: suggestion,
 				});
-				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
-				msg.edit({ embeds: [SuggestEmbed] });
+				Embed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
+				msg.edit({ embeds: [Embed] });
 			}
 			if (!message.commandName) {
 				if (channel != message.channel) {

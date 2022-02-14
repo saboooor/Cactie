@@ -1,12 +1,12 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'unmute',
 	description: 'Unmute someone that was muted in the server',
 	ephemeral: true,
 	args: true,
 	usage: '<User>',
-	permission: 'ManageMessages',
-	botperm: 'ManageRoles',
+	permission: 'MANAGE_MESSAGES',
+	botperm: 'MANAGE_ROLES',
 	cooldown: 5,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
@@ -41,19 +41,19 @@ module.exports = {
 			else await member.timeout(0);
 
 			// Create embed with color and title
-			const UnmuteEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const Embed = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`Unmuted ${user.tag}`);
 
 			// Reply with unban log
-			message.reply({ embeds: [UnmuteEmbed] });
+			message.reply({ embeds: [Embed] });
 			client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				UnmuteEmbed.setTitle(`${message.member.user.tag} ${UnmuteEmbed.title}`);
-				logchannel.send({ embeds: [UnmuteEmbed] });
+				Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+				logchannel.send({ embeds: [Embed] });
 			}
 		}
 		catch (err) {

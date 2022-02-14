@@ -1,9 +1,9 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
-	botperm: 'ManageChannels',
+	botperm: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
 		try {
@@ -47,45 +47,45 @@ module.exports = {
 			// Get users and dm them all with ticket close embed
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-			const CloseDMEmbed = new Embed()
+			const EmbedDM = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
-				.addField({ name: '**Users in ticket**', value: `${users}` })
-				.addField({ name: '**Transcript**', value: `${link}.txt` })
-				.addField({ name: '**Closed by**', value: `${author}` });
-			users.forEach(usr => { usr.send({ embeds: [CloseDMEmbed] }); });
+				.addField('**Users in ticket**', `${users}`)
+				.addField('**Transcript**', `${link}.txt`)
+				.addField('**Closed by**', `${author}`);
+			users.forEach(usr => { usr.send({ embeds: [EmbedDM] }); });
 
 			// Reply with ticket close message
-			const CloseEmbed = new Embed()
-				.setColor(0xFF6400)
+			const Embed = new MessageEmbed()
+				.setColor(15105570)
 				.setDescription(`Ticket Closed by ${author}`);
 			let row = null;
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.tickets == 'buttons') {
-				row = new ActionRow()
-					.addComponents(
-						new ButtonComponent()
+				row = new MessageActionRow()
+					.addComponents([
+						new MessageButton()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
-							.setEmoji({ name: '⛔' })
-							.setStyle(ButtonStyle.Danger),
-						new ButtonComponent()
+							.setEmoji('⛔')
+							.setStyle('DANGER'),
+						new MessageButton()
 							.setCustomId('reopen_ticket')
 							.setLabel('Reopen Ticket')
-							.setEmoji({ name: '🔓' })
-							.setStyle(ButtonStyle.Primary),
-					);
+							.setEmoji('🔓')
+							.setStyle('PRIMARY'),
+					]);
 			}
-			interaction.reply({ embeds: [CloseEmbed], components: [row] });
+			interaction.reply({ embeds: [Embed], components: [row] });
 			client.logger.info(`Closed ticket #${interaction.channel.name}`);
 
 			// Check if ticket setting is set to reactions and add the reactions
 			if (srvconfig.tickets == 'reactions') {
-				CloseEmbed.setColor(0x5662f6);
-				CloseEmbed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
-				const Panel = await interaction.channel.send({ embeds: [CloseEmbed] });
-				Panel.react('🔓');
-				Panel.react('⛔');
+				Embed.setColor(3447003);
+				Embed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
+				const embed = await interaction.channel.send({ embeds: [Embed] });
+				embed.react('🔓');
+				embed.react('⛔');
 			}
 		}
 		catch (err) {

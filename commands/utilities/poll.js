@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { yes, no } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'poll',
@@ -7,15 +7,15 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Question>',
-	botperm: 'AddReactions',
+	botperm: 'ADD_REACTIONS',
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		try {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			let channel = message.guild.channels.cache.get(srvconfig.pollchannel);
 			if (!channel) channel = message.channel;
-			const Poll = new Embed()
-				.setColor(0x5662f6)
+			const Poll = new MessageEmbed()
+				.setColor(3447003)
 				.setTitle('Poll')
 				.setAuthor({ name: message.member.user.username, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 				.setDescription(args.join(' '));

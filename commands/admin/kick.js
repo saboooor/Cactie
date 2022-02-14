@@ -1,12 +1,12 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'kick',
 	description: 'Kick someone from the server',
 	ephemeral: true,
 	args: true,
 	usage: '<User> [Reason]',
-	permission: 'KickMembers',
-	botperm: 'KickMembers',
+	permission: 'KICK_MEMBERS',
+	botperm: 'KICK_MEMBERS',
 	cooldown: 5,
 	options: require('../options/kick.json'),
 	async execute(message, args, client) {
@@ -21,12 +21,12 @@ module.exports = {
 			if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 
 			// Create embed
-			const KickEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const Embed = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`Kicked ${user.tag}.`);
 
 			// Add reason if specified
-			if (args[2]) KickEmbed.addField({ name: 'Reason', value: args.slice(2).join(' ') });
+			if (args[2]) Embed.addField('Reason', args.slice(2).join(' '));
 
 			// Send kick message to target
 			await user.send({ content: `**You've been kicked from ${message.guild.name}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
@@ -36,7 +36,7 @@ module.exports = {
 				});
 
 			// Reply with response
-			message.reply({ embeds: [KickEmbed] });
+			message.reply({ embeds: [Embed] });
 
 			// Actually kick the dude
 			await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });
@@ -46,8 +46,8 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				KickEmbed.setTitle(`${message.member.user.tag} ${KickEmbed.title}`);
-				logchannel.send({ embeds: [KickEmbed] });
+				Embed.setTitle(`${message.member.user.tag} ${Embed.title}`);
+				logchannel.send({ embeds: [Embed] });
 			}
 		}
 		catch (err) {

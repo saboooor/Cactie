@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'boner',
 	description: 'See your boner expand!',
@@ -28,11 +28,11 @@ module.exports = {
 			}
 
 			// Create initial embed and reply with it
-			const ppEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
+			const Embed = new MessageEmbed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(`${nick}'s pp size`)
 				.setDescription('<a:loading:826611946258038805> Calculating...');
-			const pp = await message.reply({ embeds: [ppEmbed] });
+			const pp = await message.reply({ embeds: [Embed] });
 
 			// For pushing equals signs
 			const shaft = [];
@@ -40,20 +40,20 @@ module.exports = {
 			// Add equal signs to shaft every second and edit the message
 			for (let step = 0; step < random; step++) {
 				await sleep(1200);
-				ppEmbed.setDescription('8' + shaft.join('') + 'D');
-				message.commandName ? message.editReply({ embeds: [ppEmbed] }) : pp.edit({ embeds: [ppEmbed] });
+				Embed.setDescription('8' + shaft.join('') + 'D');
+				message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 				shaft.push('=');
 			}
 
 			// Chance of getting a SIKE u have no pp
 			if (Math.round(Math.random() * 10) == 5) {
-				ppEmbed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
-				return message.commandName ? message.editReply({ embeds: [ppEmbed] }) : pp.edit({ embeds: [ppEmbed] });
+				Embed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
+				return message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 			}
 
 			// Set pp size inches to footer and edit message to final result
-			ppEmbed.setFooter({ text: `pp size = ${random}"` });
-			message.commandName ? message.editReply({ embeds: [ppEmbed] }) : pp.edit({ embeds: [ppEmbed] });
+			Embed.setFooter({ text: `pp size = ${random}"` });
+			message.commandName ? message.editReply({ embeds: [Embed] }) : pp.edit({ embeds: [Embed] });
 		}
 		catch (err) {
 			client.error(err, message);

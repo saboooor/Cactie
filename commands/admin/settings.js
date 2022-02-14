@@ -1,4 +1,4 @@
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -6,12 +6,12 @@ module.exports = {
 	description: 'Configure Pup\'s settings in the server',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
-	permission: 'Administrator',
+	permission: 'ADMINISTRATOR',
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
 		try {
 			// Create Embed with title and color
-			let SettingsEmbed = new Embed()
+			let Embed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Bot Settings');
 			const components = [];
@@ -21,44 +21,44 @@ module.exports = {
 				const prop = args[0];
 
 				// Embed for possible error
-				const errEmbed = new Embed()
-					.setColor(0xE74C3C)
-					.addField({ name: 'Too confusing?', value: msg.dashboard });
+				const errEmbed = new MessageEmbed()
+					.setColor('RED')
+					.addField('Too confusing?', msg.dashboard);
 
 				// Check if setting exists
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-				if (!srvconfig[prop]) SettingsEmbed = errEmbed.setTitle('Invalid setting!');
+				if (!srvconfig[prop]) Embed = errEmbed.setTitle('Invalid setting!');
 
 				// Set value to second argument for slash commands and the rest of the text joined for normal commands
 				const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
 
 				// Avoid users from setting guildId
-				if (prop == 'guildId') SettingsEmbed = errEmbed.setTitle('You cannot change that!');
+				if (prop == 'guildId') Embed = errEmbed.setTitle('You cannot change that!');
 				// Tickets setting can only be either buttons, reactions, or false
-				if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') SettingsEmbed = errEmbed.setTitle('This setting must be either `buttons`, `reactions`, or `false`!');
+				if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') Embed = errEmbed.setTitle('This setting must be either `buttons`, `reactions`, or `false`!');
 				// Reactions / Bonercmd / Suggestthreads settings can only either be true or false
-				if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'suggestthreads') && value != 'true' && value != 'false') SettingsEmbed = errEmbed.setTitle('This setting must be either `true` or `false`!');
+				if ((prop == 'reactions' || prop == 'bonercmd' || prop == 'suggestthreads') && value != 'true' && value != 'false') Embed = errEmbed.setTitle('This setting must be either `true` or `false`!');
 				// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
-				if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') SettingsEmbed = errEmbed.setTitle('Please set a system channel in your server settings first!');
+				if ((prop == 'leavemessage' || prop == 'joinmessage') && !message.guild.systemChannel && value != 'false') Embed = errEmbed.setTitle('Please set a system channel in your server settings first!');
 				// Suggestionchannel / Pollchannel / Logchannel can only be a text channel or false
-				if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'logchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) SettingsEmbed = errEmbed.setTitle('That is not a valid text channel Id!');
+				if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'logchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_TEXT')) Embed = errEmbed.setTitle('That is not a valid text channel Id!');
 				// Ticketcategory can only be a category channel or false
-				if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) SettingsEmbed = errEmbed.setTitle('That is not a valid category Id!');
+				if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || message.guild.channels.cache.get(value).type != 'GUILD_CATEGORY')) Embed = errEmbed.setTitle('That is not a valid category Id!');
 				// Supportrole / Djrole can only be a role
-				if ((prop == 'supportrole' || prop == 'djrole') && value != 'false' && !message.guild.roles.cache.get(value)) SettingsEmbed = errEmbed.setTitle('That is not a valid role Id!');
+				if ((prop == 'supportrole' || prop == 'djrole') && value != 'false' && !message.guild.roles.cache.get(value)) Embed = errEmbed.setTitle('That is not a valid role Id!');
 				// Adminrole can only be a role or 'permission'
-				if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) SettingsEmbed = errEmbed.setTitle('That is not a valid role Id!');
+				if ((prop == 'adminrole') && value != 'permission' && !message.guild.roles.cache.get(value)) Embed = errEmbed.setTitle('That is not a valid role Id!');
 				// Msgshortener can only be a number
-				if ((prop == 'msgshortener' || prop == 'maxppsize') && isNaN(value)) SettingsEmbed = errEmbed.setTitle('That is not a valid number!');
+				if ((prop == 'msgshortener' || prop == 'maxppsize') && isNaN(value)) Embed = errEmbed.setTitle('That is not a valid number!');
 				// Maxppsize can only be less than 76
-				if (prop == 'maxppsize' && value > 76) SettingsEmbed = errEmbed.setTitle('maxppsize must be less than 76!');
+				if (prop == 'maxppsize' && value > 76) errEmbed.setTitle('maxppsize must be less than 76!');
 				// Ticketmention can only be here, everyone, or a valid role
-				if ((prop == 'ticketmention') && value != 'everyone' && value != 'here' && value != 'false' && !message.guild.roles.cache.get(value)) SettingsEmbed = errEmbed.setTitle('This setting must be either `here`, `everyone`, or a valid role Id!');
+				if ((prop == 'ticketmention') && value != 'everyone' && value != 'here' && value != 'false' && !message.guild.roles.cache.get(value)) Embed = errEmbed.setTitle('This setting must be either `here`, `everyone`, or a valid role Id!');
 				// Set mutecmd's permissions
 				if (prop == 'mutecmd' && value != 'timeout' && value != 'false') {
 				// Check if valid role if not false
 					const role = message.guild.roles.cache.get(value);
-					if (!role) { SettingsEmbed = errEmbed.setTitle('That is not a valid role Id!'); }
+					if (!role) { Embed = errEmbed.setTitle('That is not a valid role Id!'); }
 					else {
 						message.guild.channels.cache.forEach(channel => {
 							channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
@@ -72,40 +72,40 @@ module.exports = {
 				}
 
 				// If there's no error, set the setting
-				if (SettingsEmbed != errEmbed) {
+				if (Embed != errEmbed) {
 				// Set the setting and the embed description / log
 					await client.setData('settings', 'guildId', message.guild.id, prop, value);
-					SettingsEmbed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
+					Embed.setDescription(`Successfully set \`${prop}\` to \`${value}\``);
 					client.logger.info(`Successfully set ${prop} to ${value} in ${message.guild.name}`);
 
 					// Check if log channel exists and send message
 					const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 					if (logchannel) {
-						const logEmbed = new Embed()
-							.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL() })
-							.addField({ name: 'Setting', value: prop })
-							.addField({ name: 'Value', value: value });
+						const logEmbed = new MessageEmbed()
+							.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL({ dynamic: true }) })
+							.addField('Setting', prop)
+							.addField('Value', value);
 						logchannel.send({ embeds: [logEmbed] });
 					}
 				}
 			}
 			else if (args[0] == 'reset') {
 			// Set title to 'SETTINGS RESET'
-				SettingsEmbed.setTitle('**SETTINGS RESET**');
+				Embed.setTitle('**SETTINGS RESET**');
 
 				// Add buttons for reset confirm / deny
-				const row = new ActionRow()
+				const row = new MessageActionRow()
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setCustomId('settings_reset')
 							.setLabel('Reset Settings')
-							.setStyle(ButtonStyle.Danger),
+							.setStyle('DANGER'),
 					)
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setCustomId('settings_nevermind')
 							.setLabel('Nevermind')
-							.setStyle(ButtonStyle.Primary),
+							.setStyle('PRIMARY'),
 					);
 				components.push(row);
 			}
@@ -118,44 +118,44 @@ module.exports = {
 				const maxPages = Math.ceil(configlist.length / 5);
 
 				// Set embed description with page and stuff
-				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
-					.addField({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
-					.addField({ name: 'Too confusing?', value: msg.dashboard })
+				Embed.setDescription(configlist.slice(0, 4).join('\n'))
+					.addField('Usage', '`/settings [<Setting> <Value>]`')
+					.addField('Too confusing?', msg.dashboard)
 					.setFooter({ text: `Page 1 of ${maxPages}` });
 
 				// Add buttons for page changing
-				const row = new ActionRow()
+				const row = new MessageActionRow()
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setCustomId('settings_prev')
 							.setLabel('◄')
-							.setStyle(ButtonStyle.Secondary),
-						new ButtonComponent()
+							.setStyle('SECONDARY'),
+						new MessageButton()
 							.setCustomId('settings_next')
 							.setLabel('►')
-							.setStyle(ButtonStyle.Secondary),
-						new ButtonComponent()
+							.setStyle('SECONDARY'),
+						new MessageButton()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel('Dashboard')
-							.setStyle(ButtonStyle.Link),
+							.setStyle('LINK'),
 					);
 				components.push(row);
 			}
 
 			// If there aren't any buttons, add a button for dashboard
 			if (!components[0]) {
-				const row = new ActionRow()
+				const row = new MessageActionRow()
 					.addComponents(
-						new ButtonComponent()
+						new MessageButton()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel('Dashboard')
-							.setStyle(ButtonStyle.Link),
+							.setStyle('LINK'),
 					);
 				components.push(row);
 			}
 
 			// Send Embed with buttons
-			message.reply({ embeds: [SettingsEmbed], components: components });
+			message.reply({ embeds: [Embed], components: components });
 		}
 		catch (err) {
 			client.error(err, message);

@@ -1,8 +1,8 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reopen_ticket',
-	botperm: 'ManageChannels',
+	botperm: 'MANAGE_CHANNELS',
 	deferReply: true,
 	async execute(interaction, client) {
 		try {
@@ -25,10 +25,10 @@ module.exports = {
 			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true }); });
 
 			// Reply with ticket open message
-			const OpenEmbed = new Embed()
-				.setColor(0xFF6400)
+			const Embed = new MessageEmbed()
+				.setColor(15105570)
 				.setDescription(`Ticket Opened by ${interaction.user}`);
-			interaction.reply({ embeds: [OpenEmbed] });
+			interaction.reply({ embeds: [Embed] });
 			client.logger.info(`Reopened ticket #${interaction.channel.name}`);
 		}
 		catch (err) {

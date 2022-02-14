@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reactions',
 	description: 'See what words Pup reacts to',
@@ -7,13 +7,13 @@ module.exports = {
 	cooldown: 10,
 	execute(message, args, client) {
 		try {
-			const ReactionEmbed = new Embed()
+			const Embed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Here are my reactions');
 			client.reactions.forEach(reaction => {
-				if (!reaction.private) ReactionEmbed.addField({ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` });
+				if (!reaction.private) Embed.addField(`${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}`);
 			});
-			message.reply({ embeds: [ReactionEmbed] });
+			message.reply({ embeds: [Embed] });
 		}
 		catch (err) {
 			client.error(err, message);

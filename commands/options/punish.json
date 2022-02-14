@@ -1,18 +1,18 @@
 [
 	{
-		"type": 6,
+		"type": "USER",
 		"name": "user",
 		"description": "User to punish",
 		"required": true
 	},
 	{
-		"type": 3,
+		"type": "STRING",
 		"name": "time",
 		"description": "Amount of time to temporarily punish s/m/h (Ex. 10s, 2m)",
         "required": false
 	},
 	{
-		"type": 3,
+		"type": "STRING",
 		"name": "reason",
 		"description": "Reason of punish",
         "required": false
