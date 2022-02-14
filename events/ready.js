@@ -1,7 +1,7 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed, ApplicationCommandType, ActivityType } = require('discord.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
-	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
+	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Game }], status: 'dnd' });
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
@@ -12,7 +12,7 @@ module.exports = async (client) => {
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
 		await client.application?.commands.create({
 			name: command.name,
-			type: command.type ? command.type : 'CHAT_INPUT',
+			type: command.type ? command.type : ApplicationCommandType.ChatInput,
 			description: command.description,
 			options: command.options,
 		});
@@ -24,17 +24,22 @@ module.exports = async (client) => {
 	});
 	setInterval(async () => {
 		const activities = [
-			['PLAYING', 'with you ;)'],
-			['PLAYING', '/help'],
-			['WATCHING', 'pup.smhsmh.club'],
-			['COMPETING', 'taking over the world'],
-			['COMPETING', `${client.guilds.cache.size} Servers`],
-			['PLAYING', '{GUILD}'],
+			['Game', 'With you ;)'],
+			['Game', '/help'],
+			['Watching', 'pup.smhsmh.club'],
+			['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
+			['Competing', `${client.guilds.cache.size} servers!`],
+			['Listening', '3 Big Balls'],
+			['Listening', 'Never Gonna Give You Up'],
+			['Listening', 'Fortnite Battle Pass'],
+			['Game', 'in {GUILD}'],
+			['Competing', '{GUILD}'],
+			['Watching', '{GUILD}'],
 		];
 		const i = Math.floor(Math.random() * activities.length);
 		const activity = activities[i];
-		if (activity[1] == '{GUILD}') activity[1] = `in ${client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name}`;
-		client.user.setPresence({ activities: [{ name: activity[1], type: activity[0] }] });
+		if (activity[1].includes('{GUILD}')) activity[1] = activity[1].replace('{GUILD}', client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name);
+		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }] });
 	}, 5000);
 	setInterval(async () => {
 		const memberdata = await client.query('SELECT * FROM `memberdata`');
@@ -55,8 +60,8 @@ module.exports = async (client) => {
 				// Check if log channel exists and send message
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const Embed = new MessageEmbed().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
-					logchannel.send({ embeds: [Embed] });
+					const UnmuteEmbed = new Embed().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
+					logchannel.send({ embeds: [UnmuteEmbed] });
 				}
 			}
 			else if (data.bannedUntil < Date.now() && data.bannedUntil != 0) {
@@ -72,8 +77,8 @@ module.exports = async (client) => {
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const Embed = new MessageEmbed().setTitle(`${user ? user.tag : userId} has been unbanned`);
-					logchannel.send({ embeds: [Embed] });
+					const UnbanEmbed = new Embed().setTitle(`${user ? user.tag : userId} has been unbanned`);
+					logchannel.send({ embeds: [UnbanEmbed] });
 				}
 			}
 			else if (data.mutedUntil == 0 && data.bannedUntil == 0) {

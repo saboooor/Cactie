@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
 const msg = require('../../lang/en/msg.json');
@@ -10,20 +10,20 @@ module.exports = async (client, player, track) => {
 		.catch(err => { client.logger.warn(err); });
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
-	const thing = new MessageEmbed()
+	const thing = new Embed()
 		.setDescription(`▶️ **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(track.img)
 		.setColor(track.color)
 		.setTimestamp();
 
 	// Add button for skip
-	const row = new MessageActionRow()
+	const row = new ActionRow()
 		.addComponents(
-			new MessageButton()
+			new ButtonComponent()
 				.setCustomId('music_skip')
-				.setEmoji('⏭️')
+				.setEmoji({ name: '⏭️' })
 				.setLabel(msg.music.skip.name)
-				.setStyle('SECONDARY'),
+				.setStyle(ButtonStyle.Secondary),
 		);
 	const guild = client.guilds.cache.get(player.guild);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);

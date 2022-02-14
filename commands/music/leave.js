@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'leave',
 	description: 'Leave voice channel',
@@ -15,10 +15,10 @@ module.exports = {
 			player.destroy();
 
 			// Send message to channel
-			const thing = new MessageEmbed()
-				.setColor(Math.round(Math.random() * 16777215))
+			const LeaveEmbed = new Embed()
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`📤 **Left VC**\nThank you for using ${client.user.username}!`);
-			return message.reply({ embeds: [thing] });
+			return message.reply({ embeds: [LeaveEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

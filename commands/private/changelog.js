@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const pteroconfig = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'changelog',
@@ -16,7 +16,7 @@ module.exports = {
 			Object.keys(pteroconfig).map(i => { if (pteroconfig[i].changelogs) servers.push(pteroconfig[i]); });
 
 			// Make changelog embed
-			const Embed = new MessageEmbed()
+			const CLEmbed = new Embed()
 				.setAuthor({ name: 'Changelog', iconURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png' })
 				.setFooter({ text: `By ${message.author.username}`, iconURL: message.author.avatarURL({ dynamic : true }) });
 
@@ -41,9 +41,9 @@ module.exports = {
 			// Send changelog embeds to the main channels and reply with response
 			server.changelogs.mainchannels.forEach(channelid => {
 				changes.forEach(change => {
-					Embed.setColor(Math.floor(Math.random() * 16777215));
-					Embed.setDescription(change);
-					guild.channels.cache.get(channelid).send({ embeds: [Embed] });
+					CLEmbed.setColor(Math.floor(Math.random() * 16777215));
+					CLEmbed.setDescription(change);
+					guild.channels.cache.get(channelid).send({ embeds: [CLEmbed] });
 				});
 			});
 			message.reply({ content: `${changes.length} Changelog(s) sent to ${server.name}!` });

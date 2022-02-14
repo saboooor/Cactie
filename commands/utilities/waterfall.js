@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'waterfall',
@@ -25,7 +25,7 @@ module.exports = {
 			// check if error
 			if (h.error) return message.reply(h.error);
 			// initial embed creation
-			const Embed = new MessageEmbed()
+			const WaterfallEmbed = new Embed()
 				.setColor(16777215)
 				.setURL(`https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}`)
 				.setTitle(`Waterfall ${h.version} build ${h.build}`)
@@ -35,13 +35,13 @@ module.exports = {
 			// add fields for commits
 			h.changes.forEach(commit => {
 			// check if commit description is more than 1000, if so, split it into multiple fields
-				if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { Embed.addField(commit.commit, `${chunk}`); });
-				else Embed.addField(commit.commit, commit.message);
+				if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { WaterfallEmbed.addField({ name: commit.commit, value: `${chunk}` }); });
+				else WaterfallEmbed.addField({ name: commit.commit, value: commit.message });
 			});
 			// add field for download
-			Embed.addField('Download', `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})`);
+			WaterfallEmbed.addField({ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` });
 			// send embed
-			message.reply({ embeds: [Embed] });
+			message.reply({ embeds: [WaterfallEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your boner expand INSTANTLY!',
@@ -27,20 +27,20 @@ module.exports = {
 			const hardtxt = hard == 1 ? 'soft' : 'hard';
 
 			// Create initial embed
-			const Embed = new MessageEmbed()
-				.setColor(Math.round(Math.random() * 16777215))
+			const ppEmbed = new Embed()
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${nick}'s ${hardtxt} pp size`);
 
 			// Chance of getting a SIKE u have no pp
 			if (Math.round(Math.random() * 10) == 5) {
-				Embed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
-				return message.reply({ embeds: [Embed] });
+				ppEmbed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
+				return message.reply({ embeds: [ppEmbed] });
 			}
 
 			// Get random number out of the maxppsize for the amount of inches and set the description and footer to size then reply
 			const random = Math.round(Math.random() * srvconfig.maxppsize);
-			Embed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hardtxt} pp size = ${random}"` });
-			message.reply({ embeds: [Embed] });
+			ppEmbed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hardtxt} pp size = ${random}"` });
+			message.reply({ embeds: [ppEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

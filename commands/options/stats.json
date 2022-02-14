@@ -1,6 +1,6 @@
 [
     {
-        "type": "STRING",
+        "type": 3,
         "name": "server",
         "description": "Specify a server",
         "required": false

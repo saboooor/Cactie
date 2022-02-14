@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'voiceticket_create',
-	botperm: 'MANAGE_CHANNELS',
+	botperm: 'ManageChannels',
 	deferReply: true,
 	async execute(interaction, client) {
 		try {

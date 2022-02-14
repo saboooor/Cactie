@@ -1,6 +1,6 @@
 [
 	{
-		"type": "INTEGER",
+		"type": 4,
 		"name": "volume",
 		"description": "The volume to set (1-100)",
 		"required": false

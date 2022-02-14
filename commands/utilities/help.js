@@ -1,9 +1,9 @@
-const { MessageButton, MessageActionRow, MessageEmbed, MessageSelectMenu } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed, UnsafeSelectMenuComponent, SelectMenuOption } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
 	aliases: ['commands'],
-	botperm: 'ADD_REACTIONS',
+	botperm: 'AddReactions',
 	usage: '[Type]',
 	cooldown: 10,
 	options: require('../options/help.json'),
@@ -11,31 +11,31 @@ module.exports = {
 		try {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
-			const Embed = new MessageEmbed()
+			const HelpEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
 			if (arg == 'admin' || arg == 'fun' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities') {
 				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
-				require(`../../help/${arg}.js`)(prefix, Embed, srvconfig);
+				require(`../../help/${arg}.js`)(prefix, HelpEmbed, srvconfig);
 			}
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has('ADMINISTRATOR')) return;
-				Embed.setDescription('Created support panel! You may now delete this message');
-				const Panel = new MessageEmbed()
-					.setColor(3447003)
+				HelpEmbed.setDescription('Created support panel! You may now delete this message');
+				const Panel = new Embed()
+					.setColor(0x5662f6)
 					.setTitle('Need help? No problem!')
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL({ dynamic : true }) });
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
-					const row = new MessageActionRow()
+					const row = new ActionRow()
 						.addComponents(
-							new MessageButton()
+							new ButtonComponent()
 								.setCustomId('create_ticket')
 								.setLabel('Open Ticket')
-								.setEmoji('🎫')
-								.setStyle('PRIMARY'),
+								.setEmoji({ name: '🎫' })
+								.setStyle(ButtonStyle.Primary),
 						);
 					message.channel.send({ embeds: [Panel], components: [row] });
 				}
@@ -49,57 +49,52 @@ module.exports = {
 				}
 			}
 			else {
-				Embed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
+				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
 			}
-			const row = new MessageActionRow()
-				.addComponents([
-					new MessageSelectMenu()
+			const row = new ActionRow()
+				.addComponents(
+					new UnsafeSelectMenuComponent()
 						.setCustomId('select')
 						.setPlaceholder('Select a help category!')
-						.addOptions([
-							{
-								label: 'Admin',
-								description: 'These commands require specific permissions.',
-								value: 'help_admin',
-							},
-							{
-								label: 'Fun',
-								description: 'These commands are made just for fun!',
-								value: 'help_fun',
-							},
-							{
-								label: 'Music',
-								description: 'These commands play music in your voice chat!',
-								value: 'help_music',
-							},
-							{
-								label: 'NSFW',
-								description: 'These commands have sensitive content that is NSFW',
-								value: 'help_nsfw',
-							},
-							{
-								label: 'Tickets',
-								description: 'These commands are related to Pup\'s tickets system',
-								value: 'help_tickets',
-							},
-							{
-								label: 'Utilities',
-								description: 'These commands are useful for some situations',
-								value: 'help_utilities',
-							},
-						]),
-				]);
-			const row2 = new MessageActionRow()
-				.addComponents([
-					new MessageButton()
+						.setOptions(
+							new SelectMenuOption()
+								.setLabel('Admin')
+								.setDescription('These commands require specific permissions')
+								.setValue('help_admin'),
+							new SelectMenuOption()
+								.setLabel('Fun')
+								.setDescription('These commands are made just for fun')
+								.setValue('help_fun'),
+							new SelectMenuOption()
+								.setLabel('Music')
+								.setDescription('These commands play music in your voice chat')
+								.setValue('help_music'),
+							new SelectMenuOption()
+								.setLabel('NSFW')
+								.setDescription('These commands have sensitive content that is NSFW')
+								.setValue('help_nsfw'),
+							new SelectMenuOption()
+								.setLabel('Tickets')
+								.setDescription('These commands are related to Pup\'s tickets system')
+								.setValue('help_tickets'),
+							new SelectMenuOption()
+								.setLabel('Utilities')
+								.setDescription('These commands are useful for some situations')
+								.setValue('help_utilities'),
+						),
+				);
+			const row2 = new ActionRow()
+				.addComponents(
+					new ButtonComponent()
 						.setURL('https://pup.smhsmh.club/discord')
 						.setLabel('Support Discord')
-						.setStyle('LINK'),
-					new MessageButton()
+						.setStyle(ButtonStyle.Link),
+					new ButtonComponent()
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
-						.setStyle('LINK')]);
-			message.reply({ embeds: [Embed], components: [row, row2] });
+						.setStyle(ButtonStyle.Link),
+				);
+			message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 		}
 		catch (err) {
 			client.error(err, message);

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 module.exports = {
@@ -47,20 +47,20 @@ module.exports = {
 				});
 			}
 			member.user = await member.user.fetch();
-			const Embed = new MessageEmbed()
+			const UsrEmbed = new Embed()
 				.setColor(member.user.accentColor)
 				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null })
 				.setThumbnail(member.avatarURL() ? member.avatarURL({ dynamic : true }) : member.user.avatarURL({ dynamic : true }))
 				.setDescription(`${member.user}`)
-				.addField('Status', member.presence ? member.presence.status : 'offline')
+				.addField({ name: 'Status', value: member.presence ? member.presence.status : 'offline' })
 				.setTimestamp();
-			if (activitieslist.join('\n')) Embed.addField('Activities', activitieslist.join('\n'));
-			if (member.user.bannerURL()) Embed.setImage(member.user.bannerURL({ dynamic : true }));
-			Embed
-				.addField('Joined Server At', `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>`)
-				.addField('Created Account At', `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`)
-				.addField('Roles', roleslist.join(', '));
-			await message.reply({ embeds: [Embed] });
+			if (activitieslist.join('\n')) UsrEmbed.addField({ name: 'Activities', value: activitieslist.join('\n') });
+			if (member.user.bannerURL()) UsrEmbed.setImage(member.user.bannerURL({ dynamic : true }));
+			UsrEmbed
+				.addField({ name: 'Joined Server At', value: `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>` })
+				.addField({ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` })
+				.addField({ name: 'Roles', value: roleslist.join(', ') });
+			await message.reply({ embeds: [UsrEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

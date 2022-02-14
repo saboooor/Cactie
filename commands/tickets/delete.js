@@ -1,10 +1,10 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'delete',
 	description: 'Delete a ticket',
-	permission: 'ADMINISTRATOR',
-	botperm: 'MANAGE_CHANNELS',
+	permission: 'Administrator',
+	botperm: 'ManageChannels',
 	async execute(message, user, client, reaction) {
 		try {
 			let author = message.member.user;
@@ -27,13 +27,13 @@ module.exports = {
 				const link = await getTranscript(messages);
 				const users = [];
 				await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
-				const Embed = new MessageEmbed()
+				const DelEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${message.channel.name}`)
-					.addField('**Users in ticket**', `${users}`)
-					.addField('**Transcript**', `${link}.txt`)
-					.addField('**Deleted by**', `${author}`);
-				await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [Embed] });
+					.addField({ name: '**Users in ticket**', value: `${users}` })
+					.addField({ name: '**Transcript**', value: `${link}.txt` })
+					.addField({ name: '**Deleted by**', value: `${author}` });
+				await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
 				await trans.delete();
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			}

@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 module.exports = {
 	name: 'loop',
@@ -31,12 +31,12 @@ module.exports = {
 			// Send message to channel with current song looped
 			const song = player.queue.current;
 			const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
-			const thing = new MessageEmbed()
+			const LoopEmbed = new Embed()
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setTimestamp()
 				.setDescription(`🔁 **${trackRepeat} Looping the track**\n[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
-			return message.reply({ embeds: [thing] });
+			return message.reply({ embeds: [LoopEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

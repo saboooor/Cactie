@@ -1,4 +1,4 @@
-const { MessageAttachment, MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
+const { MessageAttachment, Embed, Collection, ButtonComponent, ButtonStyle, ActionRow, PermissionsBitField } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -24,8 +24,8 @@ module.exports = async (client, message) => {
 	}
 
 	// If the bot can't read message history or send messages, don't execute a command
-	if (!message.guild.me.permissionsIn(message.channel).has('SEND_MESSAGES')
-	|| !message.guild.me.permissionsIn(message.channel).has('READ_MESSAGE_HISTORY')) return;
+	if (!message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)
+	|| !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)) return;
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
@@ -67,13 +67,13 @@ module.exports = async (client, message) => {
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete();
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
-		const Embed = new MessageEmbed()
+		const shortEmbed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
 			.setDescription(link)
 			.setFooter({ text: 'Next time please use a paste service for long messages' });
-		message.channel.send({ embeds: [Embed] });
+		message.channel.send({ embeds: [shortEmbed] });
 	}
 
 	// If message doesn't start with the prefix, if so, return
@@ -125,11 +125,11 @@ module.exports = async (client, message) => {
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
-			const Embed = new MessageEmbed()
-				.setColor(Math.round(Math.random() * 16777215))
+			const cooldownEmbed = new Embed()
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-			return message.reply({ embeds: [Embed] });
+			return message.reply({ embeds: [cooldownEmbed] });
 		}
 	}
 
@@ -139,8 +139,8 @@ module.exports = async (client, message) => {
 
 	// Check if args are required and see if args are there, if not, send error
 	if (command.args && args.length < 1) {
-		const Usage = new MessageEmbed()
-			.setColor(3447003)
+		const Usage = new Embed()
+			.setColor(0x5662f6)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
 		if (command.similarcmds) Usage.setFooter({ text: `Did you mean to use ${srvconfig.prefix}${command.similarcmds}?` });
@@ -148,8 +148,8 @@ module.exports = async (client, message) => {
 	}
 
 	// Create Error Embed
-	const errEmbed = new MessageEmbed()
-		.setColor('RED');
+	const errEmbed = new Embed()
+		.setColor(0xE74C3C);
 
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '765287593762881616') {
@@ -160,18 +160,18 @@ module.exports = async (client, message) => {
 		if (Date.now() > vote.timestamp + 86400000) {
 			errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
-			const row = new MessageActionRow()
+			const row = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://top.gg/bot/765287593762881616/vote')
 						.setLabel('top.gg')
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 				)
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setURL('https://discordbotlist.com/bots/pup/upvote')
 						.setLabel('dbl.com')
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 				);
 			return message.reply({ embeds: [errEmbed], components: [row] });
 		}
@@ -182,8 +182,8 @@ module.exports = async (client, message) => {
 		client.logger.info(JSON.stringify(message.member.permissions));
 		client.logger.info(command.permission);
 	}
-	if (command.permission && (!message.member.permissions || (!message.member.permissions.has(command.permission) && !message.member.permissionsIn(message.channel).has(command.permission) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
-		if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
+	if (command.permission && (!message.member.permissions || (!message.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission]) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
+		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			errEmbed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
 			return message.reply({ embeds: [errEmbed] });
@@ -196,7 +196,7 @@ module.exports = async (client, message) => {
 	}
 
 	// Check if bot has the permissions necessary to run the command
-	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(command.botperm) && !message.guild.me.permissionsIn(message.channel).has(command.botperm)))) {
+	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])))) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
 		errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
 		return message.reply({ embeds: [errEmbed] });
@@ -248,15 +248,15 @@ module.exports = async (client, message) => {
 		command.execute(message, args, client);
 	}
 	catch (err) {
-		const interactionFailed = new MessageEmbed()
+		const interactionFailed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL({ dynamic : true }) })
-			.addField('**Type:**', 'Dash')
-			.addField('**Guild:**', message.guild.name)
-			.addField('**Channel:**', message.channel.name)
-			.addField('**INTERACTION:**', srvconfig.prefix + command.name)
-			.addField('**Error:**', `${clean(err)}`);
+			.addField({ name: '**Type:**', value: 'Dash' })
+			.addField({ name: '**Guild:**', value: message.guild.name })
+			.addField({ name: '**Channel:**', value: message.channel.name })
+			.addField({ name: '**INTERACTION:**', value: srvconfig.prefix + command.name })
+			.addField({ name: '**Error:**', value: `${clean(err)}` });
 		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 		client.logger.error(err);

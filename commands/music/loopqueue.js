@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'loopqueue',
 	description: 'Toggle queue loop',
@@ -29,11 +29,11 @@ module.exports = {
 
 			// Send message to channel
 			const queueRepeat = player.queueRepeat ? 'Now' : 'No Longer';
-			const thing = new MessageEmbed()
-				.setColor(Math.round(Math.random() * 16777215))
+			const LoopEmbed = new Embed()
+				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp()
 				.setDescription(`🔁 **${queueRepeat} Looping the queue**`);
-			return message.reply({ embeds: [thing] });
+			return message.reply({ embeds: [LoopEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

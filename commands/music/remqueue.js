@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 module.exports = {
 	name: 'remqueue',
 	description: 'Delete a song from the queue',
@@ -18,21 +18,21 @@ module.exports = {
 			const position = Number(args[0]) - 1;
 			if (isNaN(position) || position > player.queue.size) {
 				const number = isNaN(position) ? args[0] : position + 1;
-				const thing = new MessageEmbed()
-					.setColor('RED')
+				const ErrEmbed = new Embed()
+					.setColor(0xE74C3C)
 					.setDescription(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`);
-				return message.reply({ embeds: [thing] });
+				return message.reply({ embeds: [ErrEmbed] });
 			}
 
 			// Get song from index and remove it and reply
 			const song = player.queue[position];
 			player.queue.remove(position);
-			const thing = new MessageEmbed()
+			const RemEmbed = new Embed()
 				.setDescription(`⏏️ **Removed**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setTimestamp()
 				.setThumbnail(song.img);
-			message.reply({ embeds: [thing] });
+			message.reply({ embeds: [RemEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

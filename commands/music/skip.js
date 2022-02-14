@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { MessageEmbed } = require('discord.js');
+const { Embed } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'skip',
@@ -15,8 +15,8 @@ module.exports = {
 			// Get player and server config and create error embed
 			const player = client.manager.get(message.guild.id);
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			const errEmbed = new MessageEmbed()
-				.setColor('RED');
+			const errEmbed = new Embed()
+				.setColor(0xE74C3C);
 
 			// If arg is set, force skip to index (This requires dj role)
 			if (args[0]) {
@@ -40,11 +40,11 @@ module.exports = {
 					// Skip to the position and reply
 					player.queue.remove(0, position - 1);
 					player.stop();
-					const thing = new MessageEmbed()
+					const SkipEmbed = new Embed()
 						.setDescription(msg.music.skip.skipto.replace('-i', `${position}`))
-						.setColor(Math.round(Math.random() * 16777215))
+						.setColor(Math.floor(Math.random() * 16777215))
 						.setTimestamp();
-					const skipmsg = await message.reply({ embeds: [thing] });
+					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
 					// After 10 seconds, delete or compress message
 					await sleep(10000);
@@ -67,12 +67,12 @@ module.exports = {
 			// Get last song, skip and reply
 			const song = player.queue.current;
 			player.stop();
-			const thing = new MessageEmbed()
+			const SkipEmbed = new Embed()
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setTimestamp()
 				.setThumbnail(song.img);
-			const skipmsg = await message.reply({ embeds: [thing] });
+			const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
 			// After 10 seconds, delete or compress message
 			await sleep(10000);

@@ -1,4 +1,4 @@
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
 const msg = require('../../lang/en/msg.json');
@@ -15,7 +15,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			const queue = player.queue;
 			const song = queue.current;
-			const embed = new MessageEmbed()
+			const QueueEmbed = new Embed()
 				.setColor(song.color)
 				.setThumbnail(song.img);
 
@@ -26,27 +26,27 @@ module.exports = {
 			const tracks = queue.slice(start, end);
 
 			// Add current song as a field and queue list
-			if (song) embed.addField(msg.music.np, `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
+			if (song) QueueEmbed.addField({ name: msg.music.np, value: `[${song.title}](${song.uri}) \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` });
 			let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 			if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped, { server: 'https://bin.birdflop.com' })}`;
-			if (!tracks.length) embed.addField('No tracks up next', `in ${page > 1 ? `page ${page}` : 'the queue'}.`);
-			else embed.addField('🎶 Queue List', mapped);
+			if (!tracks.length) QueueEmbed.addField({ name: 'No tracks up next', value: `in ${page > 1 ? `page ${page}` : 'the queue'}.` });
+			else QueueEmbed.addField({ name: '🎶 Queue List', value: mapped });
 
 			// Get max pages and add it to footer and reply with buttons
 			const maxPages = Math.ceil(queue.length / 10);
-			embed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
-			const row = new MessageActionRow()
+			QueueEmbed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
+			const row = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('queue_prev')
 						.setLabel('◄')
-						.setStyle('SECONDARY'),
-					new MessageButton()
+						.setStyle(ButtonStyle.Secondary),
+					new ButtonComponent()
 						.setCustomId('queue_next')
 						.setLabel('►')
-						.setStyle('SECONDARY'),
+						.setStyle(ButtonStyle.Secondary),
 				);
-			message.reply({ embeds: [embed], components: [row] });
+			message.reply({ embeds: [QueueEmbed], components: [row] });
 		}
 		catch (err) {
 			client.error(err, message);

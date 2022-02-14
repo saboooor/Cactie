@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
+const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'ptero',
@@ -23,43 +23,43 @@ module.exports = {
 			const Client = new NodeactylClient(server.url, server.apikey);
 			const info = await Client.getServerDetails(server.id);
 			const usages = await Client.getServerUsages(server.id);
-			const Embed = new MessageEmbed()
+			const PteroEmbed = new Embed()
 				.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
 				.setURL(`${server.url}/server/${server.id}`);
-			if (usages.current_state == 'running') Embed.setColor(65280);
-			if (usages.current_state == 'stopping') Embed.setColor(16737280);
-			if (usages.current_state == 'offline') Embed.setColor(16711680);
-			if (usages.current_state == 'starting') Embed.setColor(16737280);
-			if (info.node) Embed.addField('**Node:**', info.node, true);
-			if (info.docker_image) Embed.addField('**Docker Image:**', info.docker_image, true);
-			if (usages.resources.cpu_absolute) Embed.addField('**CPU Usage:**', `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, true);
-			if (usages.resources.memory_bytes) Embed.addField('**RAM Usage:**', `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, true);
-			if (usages.resources.network_tx_bytes) Embed.addField('**Network Sent:**', `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, true);
-			if (usages.resources.network_rx_bytes) Embed.addField('**Network Recieved:**', `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, true);
-			const row = new MessageActionRow()
+			if (usages.current_state == 'running') PteroEmbed.setColor(0x2ECC71);
+			if (usages.current_state == 'stopping') PteroEmbed.setColor(0xFF6400);
+			if (usages.current_state == 'offline') PteroEmbed.setColor(0xE74C3C);
+			if (usages.current_state == 'starting') PteroEmbed.setColor(0xFF6400);
+			if (info.node) PteroEmbed.addField({ name: '**Node:**', value: info.node, inline: true });
+			if (info.docker_image) PteroEmbed.addField({ name: '**Docker Image:**', value: info.docker_image, inline: true });
+			if (usages.resources.cpu_absolute) PteroEmbed.addField({ name: '**CPU Usage:**', value: `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, inline: true });
+			if (usages.resources.memory_bytes) PteroEmbed.addField({ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true });
+			if (usages.resources.network_tx_bytes) PteroEmbed.addField({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
+			if (usages.resources.network_rx_bytes) PteroEmbed.addField({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
+			const row = new ActionRow()
 				.addComponents(
-					new MessageButton()
+					new ButtonComponent()
 						.setCustomId('ptero_start')
 						.setLabel('Start')
-						.setStyle('PRIMARY'),
-					new MessageButton()
+						.setStyle(ButtonStyle.Primary),
+					new ButtonComponent()
 						.setCustomId('ptero_restart')
 						.setLabel('Restart')
-						.setStyle('SECONDARY'),
-					new MessageButton()
+						.setStyle(ButtonStyle.Secondary),
+					new ButtonComponent()
 						.setCustomId('ptero_stop')
 						.setLabel('Stop')
-						.setStyle('DANGER'),
-					new MessageButton()
+						.setStyle(ButtonStyle.Danger),
+					new ButtonComponent()
 						.setCustomId('ptero_kill')
 						.setLabel('Kill')
-						.setStyle('DANGER'),
-					new MessageButton()
+						.setStyle(ButtonStyle.Danger),
+					new ButtonComponent()
 						.setCustomId('ptero_update')
 						.setLabel('Update')
-						.setStyle('SUCCESS'),
+						.setStyle(ButtonStyle.Success),
 				);
-			message.reply({ embeds: [Embed], components: [row] });
+			message.reply({ embeds: [PteroEmbed], components: [row] });
 		}
 		catch (err) {
 			client.error(err, message);
