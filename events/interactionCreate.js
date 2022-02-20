@@ -101,7 +101,7 @@ module.exports = async (client, interaction) => {
 				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
 				.addField({ name: '**Type:**', value: 'Dropdown' })
 				.addField({ name: '**Interaction:**', value: interaction.values[0] })
-				.addField({ name: '**Error:**', value: clean(err) });
+				.addField({ name: '**Error:**', value: `${clean(err)}` });
 			if (interaction.guild) interactionFailed.addField({ name: '**Guild:**', value: interaction.guild.name }).addField({ name: '**Channel:**', value: interaction.channel.name });
 			client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 			interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });

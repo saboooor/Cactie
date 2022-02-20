@@ -3,7 +3,7 @@ module.exports = {
 	name: 'help_nsfw',
 	async execute(interaction, client) {
 		try {
-			if (!interaction.channel.nsfw) return interaction.user.send({ content: 'That is not an NSFW channel!' });
+			if (!interaction.channel.nsfw) return interaction.user.send({ content: 'That is not an NSFW channel!' }).catch(error => { client.logger.warn(error); });
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			const prefix = srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 			const HelpEmbed = new Embed()
