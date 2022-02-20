@@ -37,7 +37,10 @@ module.exports = client => {
 		},
 		autoPlay: true,
 		plugins: [
-			new spotify(),
+			new spotify({
+				clientID: SpotifyID,
+				clientSecret: SpotifySecret,
+			}),
 		],
 	});
 	client.on('raw', (d) => client.manager.updateVoiceState(d));
