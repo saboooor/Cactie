@@ -1,7 +1,6 @@
 const { Manager, Structure } = require('erela.js');
 const { LavasfyClient } = require('lavasfy');
-const apple = require('erela.js-apple');
-const deezer = require('erela.js-deezer');
+const spotify = require('erela.js-spotify');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
 
@@ -38,8 +37,7 @@ module.exports = client => {
 		},
 		autoPlay: true,
 		plugins: [
-			new deezer(),
-			new apple(),
+			new spotify(),
 		],
 	});
 	client.on('raw', (d) => client.manager.updateVoiceState(d));
