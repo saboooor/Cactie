@@ -24,7 +24,7 @@ module.exports = async function playSongs(message, args, client, top) {
 	const msg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
 
 	// Check if slash command and use it later for responses
-	const slash = message.type && message.type == 'APPLICATION_COMMAND';
+	const slash = message.commandName;
 
 	// Create embed for responses
 	const PlayEmbed = new Embed().setTimestamp();

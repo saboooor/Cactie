@@ -12,7 +12,7 @@ module.exports = async (client, message) => {
 	if (message.author.bot) return await gitUpdate(client, message);
 
 	// If channel is DM,send the dm to the dms channel
-	if (message.channel.type == 'DM') {
+	if (message.channel.isDM()) {
 		const files = [];
 		for (const attachment of message.attachments) {
 			const response = await fetch(attachment[1].url, { method: 'GET' });

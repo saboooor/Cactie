@@ -14,7 +14,7 @@ module.exports = {
 			// Find category and if no category then set it to null
 			let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
-			if (parent.type != 'GUILD_CATEGORY') parent = { id: null };
+			if (!parent.isCategory()) parent = { id: null };
 
 			// Find role and if no role then reply with error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);

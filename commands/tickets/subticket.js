@@ -27,7 +27,7 @@ module.exports = {
 				reason: args[0] ? args.join(' ') : 'Created using a reaction',
 			})
 				.catch(error => client.logger.error(error));
-			if (message.type && message.type == 'APPLICATION_COMMAND') message.reply({ content: `Subticket created at ${subticket}!` });
+			if (message.commandName) message.reply({ content: `Subticket created at ${subticket}!` });
 			client.logger.info(`Subticket created at #${subticket.name}`);
 			await sleep(1000);
 			const users = [];

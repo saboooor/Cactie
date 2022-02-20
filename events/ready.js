@@ -12,7 +12,7 @@ module.exports = async (client) => {
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
 		await client.application?.commands.create({
 			name: command.name,
-			type: command.type ? command.type : ApplicationCommandType.ChatInput,
+			type: command.type ? ApplicationCommandType[command.type] : ApplicationCommandType.ChatInput,
 			description: command.description,
 			options: command.options,
 		});

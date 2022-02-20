@@ -1,3 +1,4 @@
+const { ChannelType } = require('discord.js');
 module.exports = {
 	name: 'voiceticket',
 	description: 'Create a voiceticket',
@@ -20,7 +21,7 @@ module.exports = {
 			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
 			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.replace('Pup', '')} ${author.username}`, {
-				type: 'GUILD_VOICE',
+				type: ChannelType.GuildVoice,
 				parent: parent.id,
 				permissionOverwrites: [
 					{

@@ -21,7 +21,7 @@ module.exports = {
 				denying = !isNaN(args[0]) ? await message.guild.channels.cache.get(srvconfig.suggestionchannel).messages.fetch({ around: args[0], limit: 1 }) : null;
 				fetchedMsg = denying ? denying.first() : null;
 			}
-			if (!fetchedMsg && message.channel.parent.type == 'GUILD_TEXT') {
+			if (!fetchedMsg && message.channel.parent.isText()) {
 				denying = await message.channel.parent.messages.fetch({ around: message.channel.id, limit: 1 });
 				fetchedMsg = denying ? denying.first() : null;
 			}
@@ -66,7 +66,7 @@ module.exports = {
 			}
 
 			// Check if there's a message and put in new field and send update dm
-			if (!isNaN(args[0]) && message.channel.parent.type != 'GUILD_TEXT') args = args.slice(1);
+			if (!isNaN(args[0]) && !message.channel.parent.isText()) args = args.slice(1);
 			if (args.join(' ')) {
 			// check if there's a response already, if so, edit the field and don't add a new field
 				let newField = true;

@@ -27,9 +27,8 @@ module.exports = {
 			}
 			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 			if (!parent) parent = { id: null };
-			if (parent.type != 'GUILD_CATEGORY') parent = { id: null };
+			if (!parent.isCategory()) parent = { id: null };
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
-				type: 'text',
 				parent: parent.id,
 				topic: `Ticket Opened by ${author.tag}`,
 				permissionOverwrites: [

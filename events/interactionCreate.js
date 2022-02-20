@@ -170,7 +170,7 @@ module.exports = async (client, interaction) => {
 			.setColor(0xE74C3C);
 
 		// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
-		if (interaction.channel.type == 'DM') {
+		if (interaction.channel.isDM()) {
 			errEmbed.setTitle('You can\'t execute commands in DMs!');
 			return interaction.reply({ embeds: [errEmbed], ephemeral: true });
 		}
