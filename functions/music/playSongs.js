@@ -65,7 +65,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		const Searched = await player.search(search);
 		// Get first track and check if result is not found or a playlist, if not, then just add the song
 		const track = Searched.tracks[0];
-		if (Searched.loadType === 'NO_MATCHES') {
+		if (Searched.loadType === 'NO_MATCHES' || !track) {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
 			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] });
