@@ -23,7 +23,7 @@ module.exports = client => {
 				if (channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return channel.send({ content: 'Failed to close ticket, please try again in 10 minutes' });
 				if (data.voiceticket !== 'false') {
 					const voiceticket = await channel.guild.channels.cache.get(data.voiceticket);
-					voiceticket.delete();
+					voiceticket.delete().catch(err => client.logger.error(err));
 					await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 				}
 				await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');

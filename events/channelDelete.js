@@ -6,7 +6,7 @@ module.exports = async (client, channel) => {
 	if (!ticketData) return;
 	if (ticketData.voiceticket !== 'false') {
 		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket);
-		voiceticket.delete();
+		voiceticket.delete().catch(err => client.logger.error(err));
 		await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 	}
 	client.delData('ticketdata', 'channelId', channel.id);

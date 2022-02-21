@@ -65,7 +65,7 @@ module.exports = async (client, message) => {
 
 	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
-		message.delete();
+		message.delete().catch(err => client.logger.error(err));
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
 		const shortEmbed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
