@@ -1,6 +1,5 @@
 const { Manager, Structure } = require('erela.js');
 const { LavasfyClient } = require('lavasfy');
-const spotify = require('erela.js-spotify');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
 
@@ -36,12 +35,6 @@ module.exports = client => {
 			if (guild) guild.shard.send(payload);
 		},
 		autoPlay: true,
-		plugins: [
-			new spotify({
-				clientID: SpotifyID,
-				clientSecret: SpotifySecret,
-			}),
-		],
 	});
 	client.on('raw', (d) => client.manager.updateVoiceState(d));
 	fs.readdir('./events/music/', (err, files) => {
