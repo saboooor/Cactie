@@ -6,12 +6,15 @@ module.exports = {
 	cooldown: 0.1,
 	async execute(message, args, client) {
 		try {
+			// Check if user is in pup support guild and has permission to use the command
 			const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
 			if (member ? !member.roles.cache.has('849452673156513813') : true) return;
-			if (!client.users.cache.get(args[0].replace(/\D/g, ''))) return message.reply({ content: 'Invalid user!' });
-			const DMEmbed = new Embed()
-				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`**Message sent to ${client.users.cache.get(args[0].replace(/\D/g, ''))}!**\n**Content:** ${args.slice(1).join(' ')}`);
+
+			// Get user and check if they exist
+			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
+			if (!user) return message.reply({ content: 'Invalid user!' });
+
+			// Check if message has any attachments and add it to the dm (idek if it works now tbh)
 			const files = [];
 			for (const attachment of message.attachments) {
 				const response = await fetch(attachment[1].url, { method: 'GET' });
@@ -19,9 +22,15 @@ module.exports = {
 				const img = new MessageAttachment(Buffer.from(arrayBuffer), attachment[1].name);
 				files.push(img);
 			}
-			client.users.cache.get(args[0].replace(/\D/g, ''))
-				.send({ content: args.slice(1).join(' '), files: files })
+
+			// Send DM to user
+			user.send({ content: args.slice(1).join(' '), files: files })
 				.catch(error => { client.logger.warn(error); });
+
+			// Create response embed and respond
+			const DMEmbed = new Embed()
+				.setColor(Math.floor(Math.random() * 16777215))
+				.setDescription(`**Message sent to ${user}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			message.reply({ embeds: [DMEmbed] });
 		}
 		catch (err) {
