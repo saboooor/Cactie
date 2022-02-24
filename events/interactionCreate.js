@@ -205,8 +205,10 @@ module.exports = async (client, interaction) => {
 		}
 
 		// Check if user has the permissions necessary to use the command
-		client.logger.info(interaction.member.permissions);
-		client.logger.info(command.permission);
+		if (command.permission) {
+			client.logger.info(JSON.stringify(interaction.member.permissions));
+			client.logger.info(command.permission);
+		}
 		if (command.permission && (!interaction.member.permissions || (!interaction.member.permissions.has(command.permission) && !interaction.member.permissionsIn(interaction.channel).has(command.permission) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
 			if (command.permission == 'ADMINISTRATOR' && srvconfig.adminrole != 'permission') {
 				client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
