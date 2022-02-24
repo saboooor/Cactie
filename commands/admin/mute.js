@@ -18,11 +18,12 @@ module.exports = {
 			if (!role && srvconfig.mutecmd != 'timeout') return message.reply({ content: 'This command is disabled!' });
 
 			// Get user and check if user is valid
-			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
+			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!member) return message.reply({ content: 'Invalid User! Are they in this server?' });
+			const user = member.user;
+			if (user == client.user) return message.reply({ content: 'I can\'t mute myself!' });
 
 			// Get member and author and check if role is lower than member's role
-			const member = message.guild.members.cache.get(user.id);
 			const author = message.member;
 			if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
 

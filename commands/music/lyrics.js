@@ -1,7 +1,6 @@
 const { createPaste } = require('hastebin');
 const { MessageEmbed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const solenolyrics = require('solenolyrics');
 module.exports = {
 	name: 'lyrics',
 	description: 'Get lyrics of a song',
@@ -10,6 +9,7 @@ module.exports = {
 	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		try {
+			return message.reply('this command is temporarily disabled until we get a better lyric module');
 			// Get the player and if there is no current song or player, make a fake one (This will be using lastfm for the music info later on)
 			const player = client.manager.get(message.guild.id);
 			let song = player ? player.queue.current : null;
@@ -24,10 +24,6 @@ module.exports = {
 
 			// Set the lyrics if current song lyrics are set, if not, make a request for lyrics
 			let lyrics = player ? player.lyrics : null;
-			if (song) {
-				lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0] ? song.title.split('(')[0] : song.title)
-					.catch(err => { client.logger.warn(err); });
-			}
 
 			// If there is no lyrics, say so
 			if (!lyrics) return message.reply({ content: 'Could not find lyrics for this track!' });
