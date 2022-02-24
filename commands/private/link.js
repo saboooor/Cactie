@@ -6,11 +6,14 @@ module.exports = {
 	cooldown: 10,
 	async execute(message, args, client) {
 		try {
+			// Get the servers saved to Pup and check if the server is in the current guild
 			const serverlist = Object.keys(servers).map(i => { return servers[i].name.toLowerCase(); }), srvs = [];
 			serverlist.forEach(i => {
 				if (servers[i] && servers[i].guildid == message.guild.id && servers[i].link) srvs.push(servers[i]);
 			});
 			if (!srvs[0]) return;
+
+			// Create the embed with the discordsrv link stuff
 			const Embed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('DISCORD LINKING')
@@ -26,6 +29,8 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 **1.** On your list of Discord servers in the left-hand servers tab, you should see the ${srvs[0].name} logo. Right click it.
 **2.** Click Privacy \`Settings\`
 **3.** Enable the setting labeled \`Allow direct messages from server members\`.`);
+
+			// Button to create a ticket if people are confused
 			const row = new MessageActionRow()
 				.addComponents(
 					new MessageButton()
@@ -33,6 +38,8 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 						.setLabel('Still have an issue? Create a ticket by clicking here!')
 						.setStyle('SECONDARY'),
 				);
+
+			// Reply with the embed and button
 			message.reply({ embeds: [Embed], components: [row] });
 		}
 		catch (err) {

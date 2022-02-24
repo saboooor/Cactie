@@ -4,6 +4,7 @@ module.exports = {
 	description: 'Check music backend stats',
 	async execute(message, args, client) {
 		try {
+			// Get all lavalink node stats and send them
 			const all = client.manager.nodes.map(node =>
 				`**Players:** ${node.stats.players}` +
             `\n**Playing Players:** ${node.stats.playingPlayers}` +

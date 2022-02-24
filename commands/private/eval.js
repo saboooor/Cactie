@@ -11,9 +11,9 @@ module.exports = {
 	cooldown: 0.1,
 	// eslint-disable-next-line no-unused-vars
 	async execute(message, args, client) {
-		// Check if user is sab lolololol
-		if (message.author.id !== '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
 		try {
+			// Check if user is sab lolololol
+			if (message.author.id !== '249638347306303499') return message.reply({ content: 'You can\'t do that!' });
 			const code = args.join(' ');
 			let evaled = eval(code);
 			if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled); }
