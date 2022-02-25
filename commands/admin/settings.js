@@ -43,7 +43,7 @@ module.exports = {
 				// Suggestionchannel / Pollchannel / Logchannel can only be a text channel or false
 				if ((prop == 'suggestionchannel' || prop == 'pollchannel' || prop == 'logchannel') && value != 'false' && (!message.guild.channels.cache.get(value) || !message.guild.channels.cache.get(value).isText())) SettingsEmbed = errEmbed.setTitle('That is not a valid text channel Id!');
 				// Ticketcategory can only be a category channel or false
-				if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || !message.guild.channels.cache.get(value).isText())) SettingsEmbed = errEmbed.setTitle('That is not a valid category Id!');
+				if (prop == 'ticketcategory' && value != 'false' && (!message.guild.channels.cache.get(value) || !message.guild.channels.cache.get(value).isCategory())) SettingsEmbed = errEmbed.setTitle('That is not a valid category Id!');
 				// Supportrole / Djrole can only be a role
 				if ((prop == 'supportrole' || prop == 'djrole') && value != 'false' && !message.guild.roles.cache.get(value)) SettingsEmbed = errEmbed.setTitle('That is not a valid role Id!');
 				// Adminrole can only be a role or 'permission'
