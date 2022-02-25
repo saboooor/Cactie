@@ -31,7 +31,7 @@ module.exports = {
 					return message.reply({ content: 'I don\'t have the CREATE_PUBLIC_THREADS permission!' });
 				}
 				const thread = await msg.startThread({
-					name: `Suggestion by ${message.member.displayName}'`,
+					name: `Suggestion by ${message.member.displayName}`,
 					autoArchiveDuration: 1440,
 					reason: suggestion,
 				});

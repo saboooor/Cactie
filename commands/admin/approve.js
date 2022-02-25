@@ -50,8 +50,13 @@ module.exports = {
 			// Delete command message
 			if (!message.commandName) message.delete();
 
-			// Get suggestion thread if exists and delete with transcript
+			// Get suggestion thread
 			const thread = message.guild.channels.cache.get(ApproveEmbed.url.split('a')[2]);
+
+			// Delete command message
+			if (!message.commandName && !thread) message.delete();
+
+			// Delete thread if exists with transcript
 			if (thread) {
 				if (!message.guild.me.permissions.has('MANAGE_THREADS') || !message.guild.me.permissionsIn(message.channel).has('MANAGE_THREADS')) {
 					client.logger.error(`Missing MANAGE_THREADS permission in #${message.channel.name} at ${message.guild.name}`);
