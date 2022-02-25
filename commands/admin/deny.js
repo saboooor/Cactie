@@ -70,14 +70,16 @@ module.exports = {
 			// Check if there's a message and put in new field and send update dm
 			if (!isNaN(args[0]) && !message.channel.parent.isText()) args = args.slice(1);
 			if (args.join(' ')) {
-			// check if there's a response already, if so, edit the field and don't add a new field
+				// check if there's a response already, if so, edit the field and don't add a new field
 				let newField = true;
-				DenyEmbed.fields.forEach(field => {
-					if (field.name == 'Response') {
-						newField = false;
-						field.value = args.join(' ');
-					}
-				});
+				if (DenyEmbed.fields) {
+					DenyEmbed.fields.forEach(field => {
+						if (field.name == 'Response') {
+							newField = false;
+							field.value = args.join(' ');
+						}
+					});
+				}
 				if (newField) DenyEmbed.addField({ name: 'Response', value: args.join(' ') });
 			}
 			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
