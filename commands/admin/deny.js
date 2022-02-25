@@ -45,7 +45,7 @@ module.exports = {
 				if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
 				emojis.push(emoji);
 			});
-			if (!DenyEmbed.fields[0] && emojis[0]) DenyEmbed.addField({ name: 'Results', value: `${emojis.join(' ')}` });
+			if (!DenyEmbed.fields && emojis[0]) DenyEmbed.addField({ name: 'Results', value: `${emojis.join(' ')}` });
 
 			// Get suggestion thread
 			const thread = message.guild.channels.cache.get(DenyEmbed.url.split('a')[2]);
