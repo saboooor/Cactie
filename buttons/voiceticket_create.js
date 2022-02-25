@@ -32,19 +32,19 @@ module.exports = {
 				permissionOverwrites: [
 					{
 						id: interaction.guild.id,
-						deny: ['VIEW_CHANNEL'],
+						deny: ['ViewChannel'],
 					},
 					{
 						id: client.user.id,
-						allow: ['VIEW_CHANNEL'],
+						allow: ['ViewChannel'],
 					},
 					{
 						id: author.id,
-						allow: ['VIEW_CHANNEL'],
+						allow: ['ViewChannel'],
 					},
 					{
 						id: role.id,
-						allow: ['VIEW_CHANNEL'],
+						allow: ['ViewChannel'],
 					},
 				],
 			});

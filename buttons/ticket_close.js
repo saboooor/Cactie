@@ -37,7 +37,7 @@ module.exports = {
 			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'resolved', 'false');
 
 			// Remove permissions for each user in the ticket
-			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }); });
+			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: false }); });
 
 			// Get the transcript
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });

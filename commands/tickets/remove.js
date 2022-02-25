@@ -25,9 +25,9 @@ module.exports = {
 			client.setData('ticketdata', 'channelId', message.channel.id, 'users', ticketData.users.join(','));
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
 				const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
-				voiceticket.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
+				voiceticket.permissionOverwrites.edit(user, { ViewChannel: false });
 			}
-			message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: false });
+			message.channel.permissionOverwrites.edit(user, { ViewChannel: false });
 			const RemEmbed = new Embed()
 				.setColor(0xFF6400)
 				.setDescription(`${message.member.user} removed ${user} from the ticket`);

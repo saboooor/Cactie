@@ -27,7 +27,7 @@ module.exports = client => {
 					await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 				}
 				await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
-				await data.users.forEach(userid => channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false }));
+				await data.users.forEach(userid => channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: false }));
 				const messages = await channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const users = [];

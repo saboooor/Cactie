@@ -65,7 +65,7 @@ module.exports = {
 
 			// Get rid of the permissions of the users in the tickets from the ticket itself
 			ticketData.users.forEach(userid => {
-				message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: false });
+				message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: false });
 			});
 
 			// Create a transcript of the ticket

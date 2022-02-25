@@ -61,7 +61,7 @@ module.exports = {
 					if (!role) { SettingsEmbed = errEmbed.setTitle('That is not a valid role Id!'); }
 					else {
 						message.guild.channels.cache.forEach(channel => {
-							channel.permissionOverwrites.edit(role, { SEND_MESSAGES: false })
+							channel.permissionOverwrites.edit(role, { SendMessages: false })
 								.catch(e => { client.logger.error(e); });
 						});
 

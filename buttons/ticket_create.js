@@ -37,19 +37,19 @@ module.exports = {
 				permissionOverwrites: [
 					{
 						id: interaction.guild.id,
-						deny: ['VIEW_CHANNEL', 'USE_PUBLIC_THREADS', 'USE_PRIVATE_THREADS'],
+						deny: ['ViewChannel', 'UsePublicThreads', 'UsePrivateThreads'],
 					},
 					{
 						id: client.user.id,
-						allow: ['VIEW_CHANNEL', 'USE_PUBLIC_THREADS', 'USE_PRIVATE_THREADS'],
+						allow: ['ViewChannel', 'UsePublicThreads', 'UsePrivateThreads'],
 					},
 					{
 						id: author.id,
-						allow: ['VIEW_CHANNEL'],
+						allow: ['ViewChannel'],
 					},
 					{
 						id: role.id,
-						allow: ['VIEW_CHANNEL'],
+						allow: ['ViewChannel'],
 					},
 				],
 			});

@@ -35,11 +35,11 @@ module.exports = {
 			// If the ticket has a voiceticket, give permissions to the user there
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
 				const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
-				voiceticket.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
+				voiceticket.permissionOverwrites.edit(user, { ViewChannel: true });
 			}
 
 			// Give permissions to the user and reply
-			message.channel.permissionOverwrites.edit(user, { VIEW_CHANNEL: true });
+			message.channel.permissionOverwrites.edit(user, { ViewChannel: true });
 			const AddEmbed = new Embed()
 				.setColor(0xFF6400)
 				.setDescription(`${message.member.user} added ${user} to the ticket`);

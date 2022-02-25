@@ -22,7 +22,7 @@ module.exports = {
 			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
 
 			// Add permissions for each user in the ticket
-			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { VIEW_CHANNEL: true }); });
+			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: true }); });
 
 			// Reply with ticket open message
 			const OpenEmbed = new Embed()
