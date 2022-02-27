@@ -10,7 +10,7 @@ module.exports = {
 				.setTitle('**HELP**');
 			require('../help/animals.js')(prefix, Embed);
 			interaction.message.components[0].components[0].options.forEach(option => option.default = false);
-			interaction.message.components[0].components[0].options[1].default = true;
+			interaction.message.components[0].components[0].options[2].default = true;
 			interaction.reply({ embeds: [Embed], components: interaction.message.components });
 		}
 		catch (err) {

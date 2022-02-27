@@ -10,7 +10,7 @@ module.exports = {
 				.setTitle('**HELP**');
 			require('../help/utilities.js')(prefix, Embed);
 			interaction.message.components[0].components[0].options.forEach(option => option.default = false);
-			interaction.message.components[0].components[0].options[5].default = true;
+			interaction.message.components[0].components[0].options[6].default = true;
 			interaction.reply({ embeds: [Embed], components: interaction.message.components });
 		}
 		catch (err) {
