@@ -17,9 +17,8 @@ module.exports = {
 				if (b[1].rawPosition > a[1].rawPosition) return 1;
 				return 0;
 			});
-			const roleslist = Object.keys(roles).map(i => {
-				return `**${roles[i][1]}**`;
-			});
+			let roleslist = Object.keys(roles).map(i => { return `${roles[i][1]}`; });
+			if (roles.length > 50) roleslist = ['Too many roles to list'];
 			const activities = member.presence ? member.presence.activities : null;
 			let activitieslist = [];
 			if (activities) {
