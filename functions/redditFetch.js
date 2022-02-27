@@ -5,7 +5,6 @@ const ffmpegSync = require('./ffmpegSync.js');
 const fs = require('fs');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
-	if (attempts > 1) message.channel.send({ content: `This is taking a while, please wait... (attempt ${attempts})` });
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}... (attempt ${attempts})`);
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`);
@@ -15,6 +14,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	});
 	if (!pong) return;
 	if (pong.message == 'Not Found') return message.reply({ content: 'Invalid subreddit!' });
+	if (!pong[0]) pong[0] = pong;
 	if (!pong[0]) {
 		client.logger.error('Couldn\'t get data!');
 		client.logger.error(pong);
@@ -23,7 +23,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	const data = pong[0].data.children[0].data;
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
-	if (!data.url.includes('i.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
+	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
 	if (!message.channel.nsfw && data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
 	const Embed = new MessageEmbed()
 		.setColor(Math.floor(Math.random() * 16777215))
@@ -43,10 +43,11 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 			.setColor(gifData.gif.avgColor)
 			.setURL(data.url);
 	}
+	if (data.url.includes('v.redd.it')) data.url = `${data.url}/DASH_480.mp4?source=fallback`;
 	const files = [];
 	const timestamp = Date.now();
 	const path = `logs/${timestamp}.gif`;
-	if (data.url.endsWith('.gifv') || data.url.endsWith('.mp4')) {
+	if (data.url.endsWith('.gifv') || data.url.endsWith('.mp4') || data.url.endsWith('DASH_480.mp4?source=fallback')) {
 		await ffmpegSync(data.url.replace('.gifv', '.mp4'), path);
 		files.push(new MessageAttachment(path));
 		data.url = `attachment://${timestamp}.gif`;
