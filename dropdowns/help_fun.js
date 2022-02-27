@@ -16,5 +16,5 @@ module.exports = {
 		catch (err) {
 			client.error(err, interaction);
 		}
-},
+	},
 };

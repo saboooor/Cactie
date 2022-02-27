@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
-	name: 'help_tickets',
+	name: 'help_animals',
 	async execute(interaction, client) {
 		try {
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
@@ -8,9 +8,9 @@ module.exports = {
 			const Embed = new MessageEmbed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
-			require('../help/tickets.js')(prefix, Embed);
+			require('../help/animals.js')(prefix, Embed);
 			interaction.message.components[0].components[0].options.forEach(option => option.default = false);
-			interaction.message.components[0].components[0].options[4].default = true;
+			interaction.message.components[0].components[0].options[1].default = true;
 			interaction.reply({ embeds: [Embed], components: interaction.message.components });
 		}
 		catch (err) {

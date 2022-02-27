@@ -16,7 +16,7 @@ module.exports = {
 				.setTitle('**HELP**');
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
-			if (arg == 'admin' || arg == 'fun' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities') {
+			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities') {
 				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
 				require(`../../help/${arg}.js`)(prefix, Embed, srvconfig);
 			}
@@ -66,6 +66,11 @@ module.exports = {
 								label: 'Fun',
 								description: 'These commands are made just for fun!',
 								value: 'help_fun',
+							},
+							{
+								label: 'Animals',
+								description: 'These commands show pictures of animals',
+								value: 'help_animals',
 							},
 							{
 								label: 'Music',
