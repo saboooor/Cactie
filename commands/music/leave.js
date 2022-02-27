@@ -4,7 +4,6 @@ module.exports = {
 	description: 'Leave voice channel',
 	aliases: ['dc', 'fuckoff'],
 	cooldown: 2,
-	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
 	djRole: true,
@@ -12,6 +11,7 @@ module.exports = {
 		try {
 			// Get the player and destroy it
 			const player = client.manager.get(message.guild.id);
+			if (!player) return message.reply('I\'m not in a voice chat!');
 			player.destroy();
 
 			// Send message to channel
