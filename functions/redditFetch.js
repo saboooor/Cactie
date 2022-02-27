@@ -4,6 +4,7 @@ const { Embed, MessageAttachment } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
 const fs = require('fs');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
+	if (!attempts) attempts = 1;
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}... (attempt ${attempts})`);
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(e => {
