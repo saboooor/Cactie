@@ -22,7 +22,7 @@ module.exports = {
 
 			// Check if ticket already exists
 			const author = interaction.user;
-			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}'`))[0];
+			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}' AND guildId = '${interaction.guild.id}'`))[0];
 			if (ticketData) {
 				const channel = interaction.guild.channels.cache.get(ticketData.channelId);
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
@@ -54,6 +54,7 @@ module.exports = {
 				],
 			});
 			await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
+			await client.setData('ticketdata', 'channelId', ticket.id, 'guildId', interaction.guild.id);
 			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
 			interaction.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
