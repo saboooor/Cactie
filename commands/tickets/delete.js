@@ -37,7 +37,6 @@ module.exports = {
 				await trans.delete();
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			}
-			else { message.reply({ content: 'Deleting Ticket...' }); }
 			client.delData('ticketdata', 'channelId', message.channel.id);
 			client.logger.info(`Deleted ticket #${message.channel.name}`);
 			await message.channel.delete();
