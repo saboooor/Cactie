@@ -1,4 +1,4 @@
-const { ChannelType } = require('discord.js');
+const { ChannelType, PermissionsBitField } = require('discord.js');
 module.exports = {
 	name: 'voiceticket_create',
 	botperm: 'ManageChannels',
@@ -32,19 +32,19 @@ module.exports = {
 				permissionOverwrites: [
 					{
 						id: interaction.guild.id,
-						deny: ['ViewChannel'],
+						deny: [PermissionsBitField.Flags.ViewChannel],
 					},
 					{
 						id: client.user.id,
-						allow: ['ViewChannel'],
+						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 					{
 						id: author.id,
-						allow: ['ViewChannel'],
+						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 					{
 						id: role.id,
-						allow: ['ViewChannel'],
+						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
 			});

@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonComponent, ButtonStyle, ActionRow, Embed, PermissionsBitField } = require('discord.js');
 module.exports = {
 	name: 'ticket',
 	description: 'Create a ticket',
@@ -34,19 +34,19 @@ module.exports = {
 				permissionOverwrites: [
 					{
 						id: message.guild.id,
-						deny: ['ViewChannel', 'UsePublicThreads', 'UsePrivateThreads'],
+						deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.UsePublicThreads, PermissionsBitField.Flags.UsePrivateThreads],
 					},
 					{
 						id: client.user.id,
-						allow: ['ViewChannel', 'UsePublicThreads', 'UsePrivateThreads'],
+						allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.UsePublicThreads, PermissionsBitField.Flags.UsePrivateThreads],
 					},
 					{
 						id: author.id,
-						allow: ['ViewChannel'],
+						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 					{
 						id: role.id,
-						allow: ['ViewChannel'],
+						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
 			}).catch(error => client.logger.error(error));
