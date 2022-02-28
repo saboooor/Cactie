@@ -50,6 +50,7 @@ module.exports = {
 					},
 				],
 			}).catch(error => client.logger.error(error));
+			return;
 			await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
 			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
 			message.reply({ content: `Ticket created at ${ticket}!` });
