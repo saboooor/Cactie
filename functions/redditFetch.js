@@ -43,7 +43,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		data.url = gifData.gif.urls.sd;
 		client.logger.info(`Redgifs URL: ${data.url}`);
 		PostEmbed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})`, url: gifData.user.profileUrl.startsWith('http') ? gifData.user.profileUrl : null })
-			.setColor(gifData.gif.avgColor)
+			.setColor(parseInt(gifData.gif.avgColor.replace('#', '0x')))
 			.setURL(data.url);
 	}
 	if (data.url.includes('v.redd.it')) data.url = `${data.url}/DASH_480.mp4?source=fallback`;
