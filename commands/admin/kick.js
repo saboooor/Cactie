@@ -18,7 +18,7 @@ module.exports = {
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;
-			if (member.roles.highest.rawPosition >= author.roles.highest.rawPosition) return message.reply({ content: 'You can\'t do that! Your role is lower than the user\'s role!' });
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: `You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!` });
 
 			// Create embed
 			const KickEmbed = new Embed()
