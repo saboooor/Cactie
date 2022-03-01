@@ -2,6 +2,7 @@ const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js')
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
 const msg = require('../../lang/en/msg.json');
+const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
@@ -11,7 +12,7 @@ module.exports = async (client, player, track) => {
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
 	const thing = new Embed()
-		.setDescription(`▶️ **Started Playing**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
+		.setDescription(`<:play:${play}> **Started Playing**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(track.img)
 		.setColor(track.color)
 		.setTimestamp();
@@ -21,12 +22,12 @@ module.exports = async (client, player, track) => {
 		.addComponents(
 			new ButtonComponent()
 				.setCustomId('music_shuffle')
-				.setEmoji({ name: '🔀' })
+				.setEmoji({ id: shuffle })
 				.setLabel(msg.music.shuffle.name)
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonComponent()
 				.setCustomId('music_skip')
-				.setEmoji({ name: '⏭' })
+				.setEmoji({ id: skip })
 				.setLabel(msg.music.skip.name)
 				.setStyle(ButtonStyle.Secondary),
 		);
@@ -34,7 +35,7 @@ module.exports = async (client, player, track) => {
 		row.addComponents(
 			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club/music')
-				.setEmoji({ name: '🎵' })
+				.setEmoji({ id: music })
 				.setLabel('Music Control Panel')
 				.setStyle(ButtonStyle.Link),
 		);
