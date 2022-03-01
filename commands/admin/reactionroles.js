@@ -94,7 +94,7 @@ module.exports = {
 				});
 
 				// check if there are any reaction roles set
-				if (!RREmbed.fields.length) RREmbed.addField({ name: 'No reaction roles set!', value: 'Add one with /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>' });
+				if (!RREmbed.fields) RREmbed.addField({ name: 'No reaction roles set!', value: 'Add one with /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>' });
 
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.fields.length > 12) {
