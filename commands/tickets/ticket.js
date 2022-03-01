@@ -19,7 +19,7 @@ module.exports = {
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}'`))[0];
+			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}' AND guildId = '${message.guild.id}'`))[0];
 			if (ticketData) {
 				const channel = message.guild.channels.cache.get(ticketData.channelId);
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
@@ -50,8 +50,8 @@ module.exports = {
 					},
 				],
 			}).catch(error => client.logger.error(error));
-			return;
 			await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
+			await client.setData('ticketdata', 'channelId', ticket.id, 'guildId', message.guild.id);
 			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
 			message.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);

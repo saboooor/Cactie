@@ -22,7 +22,7 @@ module.exports = {
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 			if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket needs to be closed first!' });
 			if (srvconfig.logchannel != 'false') {
-				const trans = await message.reply({ content: 'Creating transcript...' });
+				await message.reply({ content: 'Creating transcript...' });
 				const messages = await message.channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const users = [];
@@ -34,10 +34,8 @@ module.exports = {
 					.addField({ name: '**Transcript**', value: `${link}.txt` })
 					.addField({ name: '**Deleted by**', value: `${author}` });
 				await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
-				await trans.delete();
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			}
-			else { message.reply({ content: 'Deleting Ticket...' }); }
 			client.delData('ticketdata', 'channelId', message.channel.id);
 			client.logger.info(`Deleted ticket #${message.channel.name}`);
 			await message.channel.delete();

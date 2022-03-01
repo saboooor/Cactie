@@ -38,7 +38,6 @@ module.exports = {
 				await interaction.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
 				client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 			}
-			else { interaction.reply({ content: 'Deleting Ticket...' }); }
 
 			// Actually delete ticket and ticket database
 			client.delData('ticketdata', 'channelId', interaction.channel.id);
