@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
+const { play, music } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = message.member.voice;
@@ -84,7 +85,7 @@ module.exports = async function playSongs(message, args, client, top) {
 			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
 			// Add description to embed and the song
-			embed.setDescription(`🎵 **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
+			embed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
 		}
@@ -131,5 +132,5 @@ module.exports = async function playSongs(message, args, client, top) {
 	if (!player.playing && top) await player.play();
 
 	// Send embed
-	slash ? message.editReply({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `▶️ **Found result for \`${search}\`**`, embeds: [embed] });
+	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [embed] });
 };

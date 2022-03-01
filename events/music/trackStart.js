@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const msg = require('../../lang/en/msg.json');
+const { play, shuffle, skip } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
@@ -9,7 +10,7 @@ module.exports = async (client, player, track) => {
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
 	const thing = new MessageEmbed()
-		.setDescription(`▶️ **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
+		.setDescription(`<:play:${play}> **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(track.img)
 		.setColor(track.color)
 		.setTimestamp();
@@ -19,12 +20,12 @@ module.exports = async (client, player, track) => {
 		.addComponents([
 			new MessageButton()
 				.setCustomId('music_shuffle')
-				.setEmoji('🔀')
+				.setEmoji(shuffle)
 				.setLabel(msg.music.shuffle.name)
 				.setStyle('SECONDARY'),
 			new MessageButton()
 				.setCustomId('music_skip')
-				.setEmoji('⏭')
+				.setEmoji(skip)
 				.setLabel(msg.music.skip.name)
 				.setStyle('SECONDARY'),
 		]);

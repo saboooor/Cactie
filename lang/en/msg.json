@@ -12,7 +12,7 @@
         "again": "Click here to ping again!"
     },
     "music": {
-        "np": "🎶 **Now Playing**",
+        "np": "<:music:948086240421478431> **Now Playing**",
         "dj": {
             "notfound": "The DJ role can't be found!"
         },
@@ -33,15 +33,15 @@
         "skip": {
             "name": "Skip",
             "alrvoted": "You've already voted to skip this song!",
-            "skipping": "⏭ **Skipping?** `-f` Use `/skip` to skip or `/forceskip` to force skip.",
-            "skipped": "⏭ **Skipped**",
-            "skipto": "⏭ **Skipped -i songs**"
+            "skipping": "<:skip:948085737318936606> **Skipping?** `-f` Use `/skip` to skip or `/forceskip` to force skip.",
+            "skipped": "<:skip:948085737318936606> **Skipped**",
+            "skipto": "<:skip:948085737318936606> **Skipped -i songs**"
         },
         "shuffle": {
             "name": "Shuffle",
             "alrvoted": "You've already voted to shuffle the queue!",
-            "shuffling": "🔀 **Shuffle Queue?** `-f`",
-            "shuffled": "🔀 **Shuffled the queue**"
+            "shuffling": "<:shuffle:948085876049727540> **Shuffle Queue?** `-f`",
+            "shuffled": "<:shuffle:948085876049727540> **Shuffled the queue**"
         },
         "queue": {
             "indexnotfound": "That song number isn't in the queue!"
