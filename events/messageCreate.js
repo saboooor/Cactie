@@ -56,7 +56,7 @@ module.exports = async (client, message) => {
 	try {
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: `My prefix is \`${srvconfig.prefix}\`` });
-			setTimeout(() => { prefix.delete(); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err)); }, 10000);
 		}
 	}
 	catch (err) {
