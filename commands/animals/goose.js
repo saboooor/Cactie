@@ -6,7 +6,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get from r/goose with the redditFetch function
-			redditFetch(['goose', 'geese', 'untitledgoosegame'], message, client);
+			redditFetch(['goose', 'geese'], message, client);
 		}
 		catch (err) {
 			client.error(err, message);
