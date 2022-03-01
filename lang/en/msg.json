@@ -33,9 +33,15 @@
         "skip": {
             "name": "Skip",
             "alrvoted": "You've already voted to skip this song!",
-            "skipping": "⏭️ **Skipping?** `-f` Use `/skip` to skip or `/forceskip` to force skip.",
-            "skipped": "⏭️ **Skipped**",
-            "skipto": "⏭️ **Skipped -i songs**"
+            "skipping": "⏭ **Skipping?** `-f` Use `/skip` to skip or `/forceskip` to force skip.",
+            "skipped": "⏭ **Skipped**",
+            "skipto": "⏭ **Skipped -i songs**"
+        },
+        "shuffle": {
+            "name": "Shuffle",
+            "alrvoted": "You've already voted to shuffle the queue!",
+            "shuffling": "🔀 **Shuffle Queue?** `-f`",
+            "shuffled": "🔀 **Shuffled the queue**"
         },
         "queue": {
             "indexnotfound": "That song number isn't in the queue!"

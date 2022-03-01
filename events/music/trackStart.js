@@ -14,15 +14,29 @@ module.exports = async (client, player, track) => {
 		.setColor(track.color)
 		.setTimestamp();
 
-	// Add button for skip
+	// Add button for skip, shuffle, and dashboard
 	const row = new MessageActionRow()
-		.addComponents(
+		.addComponents([
+			new MessageButton()
+				.setCustomId('music_shuffle')
+				.setEmoji('🔀')
+				.setLabel(msg.music.shuffle.name)
+				.setStyle('SECONDARY'),
 			new MessageButton()
 				.setCustomId('music_skip')
-				.setEmoji('⏭️')
+				.setEmoji('⏭')
 				.setLabel(msg.music.skip.name)
 				.setStyle('SECONDARY'),
+		]);
+	if (client.user.id == '765287593762881616') {
+		row.addComponents(
+			new MessageButton()
+				.setURL('https://pup.smhsmh.club/music')
+				.setLabel('Music Control Panel')
+				.setStyle('LINK'),
 		);
+	}
+
 	const guild = client.guilds.cache.get(player.guild);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache

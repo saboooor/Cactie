@@ -1,7 +1,8 @@
 const { MessageEmbed } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'shuffle',
-	description: 'Shuffle queue',
+	description: 'Shuffle the queue',
 	player: true,
 	inVoiceChannel: true,
 	sameVoiceChannel: true,
@@ -17,16 +18,16 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return message.reply({ content: 'You\'ve already voted to shuffle the queue!' });
+				if (alr) return message.reply({ content: msg.music.shuffle.alrvoted });
 				player.shuffleAmount.push(message.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `**Shuffle Queue?** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
+				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`) });
 				player.shuffleAmount = null;
 			}
 
 			// Shuffle queue and reply
 			player.queue.shuffle();
 			const thing = new MessageEmbed()
-				.setDescription('🔀 Shuffled the queue')
+				.setDescription(msg.music.shuffle.shuffled)
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTimestamp();
 			message.reply({ embeds: [thing] });
