@@ -111,18 +111,22 @@ module.exports = {
 								.setCustomId('rr_next')
 								.setLabel('►')
 								.setStyle(ButtonStyle.Secondary),
+						);
+					if (client.user.id == '765287593762881616') {
+						btns.addComponents(
 							new ButtonComponent()
 								.setURL('https://pup.smhsmh.club')
 								.setLabel('Dashboard')
 								.setStyle(ButtonStyle.Link),
 						);
+					}
 					components.push(btns);
 				}
 			}
-			RREmbed.addField({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
+			if (client.user.id == '765287593762881616') RREmbed.addField({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
 
 			// If there aren't any buttons, add a button for dashboard
-			if (!components[0]) components.push(dashbtn);
+			if (!components[0] && client.user.id == '765287593762881616') components.push(dashbtn);
 
 			// Send Embed with buttons
 			message.reply({ embeds: [RREmbed], components: components });

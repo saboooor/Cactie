@@ -22,8 +22,8 @@ module.exports = {
 
 				// Embed for possible error
 				const errEmbed = new Embed()
-					.setColor(0xE74C3C)
-					.addField({ name: 'Too confusing?', value: msg.dashboard });
+					.setColor(0xE74C3C);
+				if (client.user.id == '765287593762881616') errEmbed.addField({ name: 'Too confusing?', value: msg.dashboard });
 
 				// Check if setting exists
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -120,8 +120,8 @@ module.exports = {
 				// Set embed description with page and stuff
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
 					.addField({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
-					.addField({ name: 'Too confusing?', value: msg.dashboard })
 					.setFooter({ text: `Page 1 of ${maxPages}` });
+				if (client.user.id == '765287593762881616') SettingsEmbed.addField({ name: 'Too confusing?', value: msg.dashboard });
 
 				// Add buttons for page changing
 				const row = new ActionRow()
