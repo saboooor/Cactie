@@ -1,7 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const msg = require('../../lang/en/msg.json');
-const { play, shuffle, skip } = require('../../lang/int/emoji.json');
+const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
@@ -33,6 +33,7 @@ module.exports = async (client, player, track) => {
 		row.addComponents(
 			new MessageButton()
 				.setURL('https://pup.smhsmh.club/music')
+				.setEmoji(music)
 				.setLabel('Music Control Panel')
 				.setStyle('LINK'),
 		);
