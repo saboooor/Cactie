@@ -34,18 +34,23 @@ module.exports = {
 				}
 				const messagelink = args[2].split('/');
 				if (messagelink[4] != message.guild.id) {
-					RREmbed.setDescription('That message is not in this server!');
+					RREmbed.setDescription('That message is not in this server!\nDid you send a valid *message link*?');
 					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
 				}
 				const channel = await message.guild.channels.cache.get(messagelink[5]);
 				if (!channel) {
-					RREmbed.setDescription('That channel doesn\'t exist!');
+					RREmbed.setDescription('That channel doesn\'t exist!\nDid you send a valid *message link*?');
 					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
 				}
 				const msgs = await channel.messages.fetch({ around: messagelink[6], limit: 1 });
 				const fetchedMsg = msgs.first();
 				if (!fetchedMsg) {
-					RREmbed.setDescription('That message doesn\'t exist!');
+					RREmbed.setDescription('That message doesn\'t exist!\nDid you send a valid *message link*?');
+					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+				}
+				const role = await message.guild.roles.cache.get(args[3].replace(/\D/g, ''));
+				if (!role) {
+					RREmbed.setDescription('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
 					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
 				}
 				try {
@@ -56,12 +61,7 @@ module.exports = {
 					message.reply({ embeds: [RREmbed], components: [dashbtn] });
 					return client.logger.error(err);
 				}
-				const role = await message.guild.roles.cache.get(args[3]);
-				if (!role) {
-					RREmbed.setDescription('That role doesn\'t exist!');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
-				}
-				RREmbed.setDescription('Coming soon');
+				RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
 			}
 			else if (args[0] == 'remove') {
 				if (!args[2]) {
