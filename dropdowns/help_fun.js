@@ -9,8 +9,8 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
 			require('../help/fun.js')(prefix, HelpEmbed);
-			interaction.message.components[0].components[0].options.forEach(option => option.default = false);
-			interaction.message.components[0].components[0].options[1].default = true;
+			interaction.message.components[0].components[0].options.forEach(option => option.data.default = false);
+			interaction.message.components[0].components[0].options[1].data.default = true;
 			interaction.reply({ embeds: [HelpEmbed], components: interaction.message.components });
 		}
 		catch (err) {

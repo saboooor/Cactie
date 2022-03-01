@@ -49,7 +49,7 @@ module.exports = {
 				}
 			}
 			else {
-				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu');
+				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities');
 			}
 			const row = new ActionRow()
 				.addComponents(
