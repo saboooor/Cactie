@@ -61,6 +61,7 @@ module.exports = {
 					message.reply({ embeds: [RREmbed], components: [dashbtn] });
 					return client.logger.error(err);
 				}
+				await client.query(`INSERT INTO reactionroles ('guildId', 'channelId', 'messageId', 'emojiId', 'roleId', 'type') VALUES ('${messagelink[4]}', '${messagelink[5]}', '${messagelink[6]}', '1', '${args[3].replace(/\D/g, '')}', '${args[4]}');`);
 				RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
 			}
 			else if (args[0] == 'remove') {
