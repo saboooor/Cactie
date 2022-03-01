@@ -36,11 +36,11 @@ module.exports = {
 				permissionOverwrites: [
 					{
 						id: interaction.guild.id,
-						deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.UsePublicThreads, PermissionsBitField.Flags.UsePrivateThreads],
+						deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessagesInThreads],
 					},
 					{
 						id: client.user.id,
-						allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.UsePublicThreads, PermissionsBitField.Flags.UsePrivateThreads],
+						allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessagesInThreads],
 					},
 					{
 						id: author.id,

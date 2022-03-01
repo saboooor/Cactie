@@ -27,18 +27,18 @@ module.exports = {
 			}
 			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 			if (!parent) parent = { id: null };
-			if (!parent.isCategory()) parent = { id: null };
+			else if (!parent.isCategory()) parent = { id: null };
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
 				parent: parent.id,
 				topic: `Ticket Opened by ${author.tag}`,
 				permissionOverwrites: [
 					{
 						id: message.guild.id,
-						deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.UsePublicThreads, PermissionsBitField.Flags.UsePrivateThreads],
+						deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessagesInThreads],
 					},
 					{
 						id: client.user.id,
-						allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.UsePublicThreads, PermissionsBitField.Flags.UsePrivateThreads],
+						allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessagesInThreads],
 					},
 					{
 						id: author.id,
@@ -49,7 +49,7 @@ module.exports = {
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
-			}).catch(error => client.logger.error(error));
+			});
 			await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
 			await client.setData('ticketdata', 'channelId', ticket.id, 'guildId', message.guild.id);
 			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
