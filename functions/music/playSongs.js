@@ -2,6 +2,7 @@ const { Embed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
+const { play, music } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = message.member.voice;
@@ -40,7 +41,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'PLAYLIST_LOADED') {
 			// Add description to embed and build every song in the playlist
-			PlayEmbed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
+			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
 			await Searched.tracks.forEach(song => {
 				// Some songs don't have a url, just use google lol
 				if (!song.info.uri) song.info.uri = 'https://google.com';
@@ -49,7 +50,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else if (Searched.loadType.startsWith('TRACK')) {
 			// Add description to embed and build the song
-			PlayEmbed.setDescription(`🎶 **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
+			PlayEmbed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.info.title}](${track.info.uri}) [${message.member.user}]`);
 			// Some songs don't have a url, just use google lol
 			if (!track.info.uri) track.info.uri = 'https://google.com';
 			songs.push(TrackUtils.build(track));
@@ -84,7 +85,7 @@ module.exports = async function playSongs(message, args, client, top) {
 			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
 			// Add description to embed and the song
-			PlayEmbed.setDescription(`🎵 **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
+			PlayEmbed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
 		}
@@ -131,5 +132,5 @@ module.exports = async function playSongs(message, args, client, top) {
 	if (!player.playing && top) await player.play();
 
 	// Send embed
-	slash ? message.editReply({ content: `▶️ **Found result for \`${search}\`**`, embeds: [PlayEmbed] }) : msg.edit({ content: `▶️ **Found result for \`${search}\`**`, embeds: [PlayEmbed] });
+	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed] });
 };

@@ -11,7 +11,7 @@ module.exports = async (client, player, track) => {
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
 	const thing = new Embed()
-		.setDescription(`▶️ **Started Playing**\n [${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
+		.setDescription(`▶️ **Started Playing**\n[${track.title}](${track.uri}) - \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
 		.setThumbnail(track.img)
 		.setColor(track.color)
 		.setTimestamp();
@@ -20,11 +20,25 @@ module.exports = async (client, player, track) => {
 	const row = new ActionRow()
 		.addComponents(
 			new ButtonComponent()
+				.setCustomId('music_shuffle')
+				.setEmoji({ name: '🔀' })
+				.setLabel(msg.music.shuffle.name)
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonComponent()
 				.setCustomId('music_skip')
-				.setEmoji({ name: '⏭️' })
+				.setEmoji({ name: '⏭' })
 				.setLabel(msg.music.skip.name)
 				.setStyle(ButtonStyle.Secondary),
 		);
+	if (client.user.id == '765287593762881616') {
+		row.addComponents(
+			new ButtonComponent()
+				.setURL('https://pup.smhsmh.club/music')
+				.setEmoji({ name: '🎵' })
+				.setLabel('Music Control Panel')
+				.setStyle(ButtonStyle.Link),
+		);
+	}
 	const guild = client.guilds.cache.get(player.guild);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
