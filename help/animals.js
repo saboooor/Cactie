@@ -7,7 +7,7 @@ module.exports = (prefix, HelpEmbed) => {
 		commands.push(`${prefix}${command.name}`);
 	}
 	HelpEmbed.setDescription(`
-**ANIMALS:**
+**ANIMAL COMMANDS:**
 
 **${commands.join(', ')}**
 `);

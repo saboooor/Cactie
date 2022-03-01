@@ -122,7 +122,7 @@ module.exports = async (client, message) => {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
 		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
-		if (now < expirationTime) {
+		if (now < expirationTime && message.author.id != '249638347306303499') {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
 			const cooldownEmbed = new Embed()

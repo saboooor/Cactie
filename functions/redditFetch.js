@@ -58,7 +58,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	PostEmbed.setImage(data.url);
 	message.reply({ embeds: [PostEmbed], files: files }).catch(e => {
 		client.logger.error(e);
-		return redditFetch(subreddits, message, client, attempts + 1);
+		message.reply({ content: `Ran into a problem:\n\`\`\`${e}\`\`\`\nThis is probably due to Discord's 8MB limit, Pup will host the files itself later in the near future` });
 	});
 	await sleep(5000);
 	if (fs.existsSync(path)) fs.unlinkSync(path);
