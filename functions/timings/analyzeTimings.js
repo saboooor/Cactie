@@ -1,5 +1,6 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
+const { left, right } = require('../../lang/int/emoji.json');
 const YAML = require('yaml');
 const fs = require('fs');
 const createField = require('./createField.js');
@@ -251,11 +252,11 @@ module.exports = async function analyzeTimings(message, client, args) {
 				.addComponents(
 					new ButtonComponent()
 						.setCustomId('timings_prev')
-						.setLabel('◄')
+						.setEmoji({ id: left })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonComponent()
 						.setCustomId('timings_next')
-						.setLabel('►')
+						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonComponent()
 						.setURL('https://github.com/pemigrade/botflop')

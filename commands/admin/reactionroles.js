@@ -1,4 +1,5 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { left, right } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
@@ -112,11 +113,11 @@ module.exports = {
 						.addComponents(
 							new ButtonComponent()
 								.setCustomId('rr_prev')
-								.setLabel('◄')
+								.setEmoji({ id: left })
 								.setStyle(ButtonStyle.Secondary),
 							new ButtonComponent()
 								.setCustomId('rr_next')
-								.setLabel('►')
+								.setEmoji({ id: right })
 								.setStyle(ButtonStyle.Secondary),
 						);
 					if (client.user.id == '765287593762881616') {

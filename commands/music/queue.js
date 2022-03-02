@@ -1,6 +1,7 @@
 const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
+const { left, right } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'queue',
@@ -39,11 +40,11 @@ module.exports = {
 				.addComponents(
 					new ButtonComponent()
 						.setCustomId('queue_prev')
-						.setLabel('◄')
+						.setEmoji({ id: left })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonComponent()
 						.setCustomId('queue_next')
-						.setLabel('►')
+						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
 				);
 			message.reply({ embeds: [QueueEmbed], components: [row] });

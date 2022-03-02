@@ -1,4 +1,5 @@
 const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { left, right } = require('../../lang/int/emoji.json');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -128,11 +129,11 @@ module.exports = {
 					.addComponents(
 						new ButtonComponent()
 							.setCustomId('settings_prev')
-							.setLabel('◄')
+							.setEmoji({ id: left })
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
 							.setCustomId('settings_next')
-							.setLabel('►')
+							.setEmoji({ id: right })
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
