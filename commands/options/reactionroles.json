@@ -26,6 +26,22 @@
                 "name": "role",
                 "description": "The role to remove/add the user to",
                 "required": true
+            },
+            {
+                "type": "STRING",
+                "name": "type",
+                "description": "The reaction type",
+                "required": true,
+                "choices": [
+                    {
+                        "name": "toggle",
+                        "value": "toggle"
+                    },
+                    {
+                        "name": "switch",
+                        "value": "switch"
+                    }
+                ]
             }
         ]
     },
