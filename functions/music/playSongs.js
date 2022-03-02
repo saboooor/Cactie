@@ -2,7 +2,7 @@ const { Embed } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
-const { play, music } = require('../../lang/int/emoji.json');
+const { play, music, warn } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = message.member.voice;
@@ -58,7 +58,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		else {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
-			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] });
+			return slash ? message.editReply({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] });
 		}
 	}
 	else {
@@ -69,7 +69,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		if (Searched.loadType === 'NO_MATCHES' || !track) {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
-			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [PlayEmbed] });
+			return slash ? message.editReply({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
