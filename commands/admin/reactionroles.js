@@ -14,7 +14,7 @@ module.exports = {
 			const RREmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reaction Roles');
-			const components = [];
+			let components = [];
 
 			// Get reaction roles and pages
 			const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
@@ -133,7 +133,7 @@ module.exports = {
 			if (client.user.id == '765287593762881616') RREmbed.addField({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
 
 			// If there aren't any buttons, add a button for dashboard
-			if (!components[0] && client.user.id == '765287593762881616') components.push(dashbtn);
+			if (!components[0]) components = dashbtn;
 
 			// Send Embed with buttons
 			message.reply({ embeds: [RREmbed], components: components });
