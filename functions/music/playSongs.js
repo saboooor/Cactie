@@ -41,7 +41,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'PLAYLIST_LOADED') {
 			// Add description to embed and build every song in the playlist
-			embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search}) \`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
+			embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlistInfo.name}](${search})\n\`[${Searched.tracks.length} songs]\` [${message.member.user}]`);
 			await Searched.tracks.forEach(song => {
 				// Some songs don't have a url, just use google lol
 				if (!song.info.uri) song.info.uri = 'https://google.com';
@@ -73,7 +73,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
-			embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlist.name}](${search}) \`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
+			embed.setDescription(`🎶 **Added Playlist to queue**\n[${Searched.playlist.name}](${search})\n\`[${Searched.tracks.length} songs]\` \`[${convertTime(Searched.playlist.duration)}]\` [${message.member.user}]`);
 			await Searched.tracks.forEach(song => {
 				// Set image if thumbnail exists
 				if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
@@ -85,7 +85,7 @@ module.exports = async function playSongs(message, args, client, top) {
 			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
 			// Add description to embed and the song
-			embed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.title}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
+			embed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.title}](${track.uri})\n\`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${message.member.user}]`)
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
 		}
