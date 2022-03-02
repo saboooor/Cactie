@@ -1,4 +1,5 @@
 const { MessageButton, MessageActionRow, MessageEmbed } = require('discord.js');
+const { left, right } = require('../../lang/int/emoji.json');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -128,11 +129,11 @@ module.exports = {
 					.addComponents(
 						new MessageButton()
 							.setCustomId('settings_prev')
-							.setLabel('◄')
+							.setEmoji(left)
 							.setStyle('SECONDARY'),
 						new MessageButton()
 							.setCustomId('settings_next')
-							.setLabel('►')
+							.setEmoji(right)
 							.setStyle('SECONDARY'),
 						new MessageButton()
 							.setURL('https://pup.smhsmh.club')
