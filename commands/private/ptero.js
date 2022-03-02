@@ -1,6 +1,7 @@
 const { NodeactylClient } = require('nodeactyl');
 const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
 const servers = require('../../config/pterodactyl.json');
+const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'ptero',
 	description: 'Controls pterodactyl servers on godzillagroin',
@@ -56,7 +57,8 @@ module.exports = {
 						.setStyle(ButtonStyle.Danger),
 					new ButtonComponent()
 						.setCustomId('ptero_update')
-						.setLabel('Update')
+						.setLabel('Refresh')
+						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Success),
 				);
 			message.reply({ embeds: [PteroEmbed], components: [row] });

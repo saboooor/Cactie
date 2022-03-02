@@ -1,6 +1,7 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
+const { refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'nowplaying',
@@ -24,7 +25,8 @@ module.exports = {
 				.addComponents(
 					new ButtonComponent()
 						.setCustomId('music_updatenp')
-						.setLabel('Update')
+						.setLabel('Refresh')
+						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
 				);
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });

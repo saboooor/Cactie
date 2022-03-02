@@ -2,6 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
+const { refresh } = require('../../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_updatenp',
@@ -22,7 +23,8 @@ module.exports = {
 				.setColor(song.color);
 			const btn = new ButtonComponent()
 				.setCustomId('music_updatenp')
-				.setLabel('Update')
+				.setLabel('Refresh')
+				.setEmoji({ id: refresh })
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(true);
 			const row = new ActionRow().addComponents(btn);
