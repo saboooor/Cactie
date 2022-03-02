@@ -23,7 +23,7 @@ module.exports = {
 				// Embed for possible error
 				const errEmbed = new Embed()
 					.setColor(0xE74C3C);
-				if (client.user.id == '765287593762881616') errEmbed.addField({ name: 'Too confusing?', value: msg.dashboard });
+				if (client.user.id == '765287593762881616') errEmbed.addFields({ name: 'Too confusing?', value: msg.dashboard });
 
 				// Check if setting exists
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -83,8 +83,8 @@ module.exports = {
 					if (logchannel) {
 						const logEmbed = new Embed()
 							.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL() })
-							.addField({ name: 'Setting', value: prop })
-							.addField({ name: 'Value', value: value });
+							.addFields({ name: 'Setting', value: prop })
+							.addFields({ name: 'Value', value: value });
 						logchannel.send({ embeds: [logEmbed] });
 					}
 				}
@@ -119,9 +119,9 @@ module.exports = {
 
 				// Set embed description with page and stuff
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
-					.addField({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
+					.addFields({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
 					.setFooter({ text: `Page 1 of ${maxPages}` });
-				if (client.user.id == '765287593762881616') SettingsEmbed.addField({ name: 'Too confusing?', value: msg.dashboard });
+				if (client.user.id == '765287593762881616') SettingsEmbed.addFields({ name: 'Too confusing?', value: msg.dashboard });
 
 				// Add buttons for page changing
 				const row = new ActionRow()

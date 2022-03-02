@@ -13,8 +13,8 @@ module.exports = {
 			const CloseEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
-				.addField({ name: '**Transcript**', value: `${link}.txt` })
-				.addField({ name:'**Closed by**', value: `${interaction.user}` });
+				.addFields({ name: '**Transcript**', value: `${link}.txt` })
+				.addFields({ name:'**Closed by**', value: `${interaction.user}` });
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 			interaction.channel.parent.send({ embeds: [CloseEmbed] });
 

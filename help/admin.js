@@ -4,7 +4,7 @@ module.exports = (prefix, HelpEmbed, srvconfig) => {
 	for (const file of adminCommands) {
 		const command = require(`../commands/admin/${file}`);
 		if (srvconfig.adminrole != 'permission' && command.permission == 'ADMINISTRATOR') command.permission = `<@&${srvconfig.adminrole}>`;
-		HelpEmbed.addField({ name: `${prefix}${command.name} ${command.usage}`, value: `${command.aliases ? `\n(Aliases: ${command.aliases.join(', ')})` : ''}\n${command.description}\n*Permission: ${command.permission}*` });
+		HelpEmbed.addFields({ name: `${prefix}${command.name} ${command.usage}`, value: `${command.aliases ? `\n(Aliases: ${command.aliases.join(', ')})` : ''}\n${command.description}\n*Permission: ${command.permission}*` });
 	}
 	HelpEmbed.setDescription(`
 **ADMIN COMMANDS:**

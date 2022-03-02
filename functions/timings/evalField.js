@@ -20,7 +20,7 @@ module.exports = function eval_field(TimingsEmbed, option, option_name, plugins,
 		});
 		if (add_to_field) {
 			option_data.name = option_name;
-			TimingsEmbed.addField(createField(option_data));
+			TimingsEmbed.addFields(createField(option_data));
 		}
 	});
 };

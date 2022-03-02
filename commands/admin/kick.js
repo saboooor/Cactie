@@ -26,7 +26,7 @@ module.exports = {
 				.setTitle(`Kicked ${user.tag}.`);
 
 			// Add reason if specified
-			if (args[2]) KickEmbed.addField({ name: 'Reason', value: args.slice(2).join(' ') });
+			if (args[2]) KickEmbed.addFields({ name: 'Reason', value: args.slice(2).join(' ') });
 
 			// Send kick message to target
 			await user.send({ content: `**You've been kicked from ${message.guild.name}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })

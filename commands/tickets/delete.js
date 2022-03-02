@@ -30,9 +30,9 @@ module.exports = {
 				const DelEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${message.channel.name}`)
-					.addField({ name: '**Users in ticket**', value: `${users}` })
-					.addField({ name: '**Transcript**', value: `${link}.txt` })
-					.addField({ name: '**Deleted by**', value: `${author}` });
+					.addFields({ name: '**Users in ticket**', value: `${users}` })
+					.addFields({ name: '**Transcript**', value: `${link}.txt` })
+					.addFields({ name: '**Deleted by**', value: `${author}` });
 				await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			}

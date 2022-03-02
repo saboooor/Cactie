@@ -36,11 +36,11 @@ module.exports = {
 			// add fields for commits
 			h.changes.forEach(commit => {
 			// check if commit description is more than 1000, if so, split it into multiple fields
-				if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { VelocityEmbed.addField({ name: commit.commit, value: `${chunk}` }); });
-				else VelocityEmbed.addField({ name: commit.commit, value: commit.message });
+				if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { VelocityEmbed.addFields({ name: commit.commit, value: `${chunk}` }); });
+				else VelocityEmbed.addFields({ name: commit.commit, value: commit.message });
 			});
 			// add field for download
-			VelocityEmbed.addField({ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/velocity/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` });
+			VelocityEmbed.addFields({ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/velocity/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` });
 			// send embed
 			message.reply({ embeds: [VelocityEmbed] });
 		}

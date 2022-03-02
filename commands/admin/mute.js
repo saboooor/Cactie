@@ -44,7 +44,7 @@ module.exports = {
 
 			// Add reason if specified
 			const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
-			if (reason) MuteEmbed.addField({ name: 'Reason', value: reason });
+			if (reason) MuteEmbed.addFields({ name: 'Reason', value: reason });
 
 			// Send mute message to target
 			await user.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })

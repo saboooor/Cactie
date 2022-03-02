@@ -74,7 +74,7 @@ module.exports = {
 					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				if (!reactionroles[0]) {
-					RREmbed.addField({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
+					RREmbed.addFields({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
 					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const rr = reactionroles[args[1]];
@@ -86,7 +86,7 @@ module.exports = {
 				let emoji = client.emojis.cache.get(rr.emojiId);
 				if (!emoji) emoji = rr.emojiId;
 				RREmbed.setDescription('Reaction Role removed!\nThe ID of other possible reactions have also changed.\nView current reaction roles with `/reactionroles get`');
-				RREmbed.addField({ name: '\u200b', value: `${emoji} **<@&${rr.roleId}>**\n[Go to message](https://discord.com/channels/${rr.guildId}/${rr.channelId}/${rr.messageId})` });
+				RREmbed.addFields({ name: '\u200b', value: `${emoji} **<@&${rr.roleId}>**\n[Go to message](https://discord.com/channels/${rr.guildId}/${rr.channelId}/${rr.messageId})` });
 			}
 			else {
 				// Add reaction roles to embed
@@ -96,11 +96,11 @@ module.exports = {
 					if (!emoji) emoji = reactionrole.emojiId;
 
 					// add reaction role to embed
-					RREmbed.addField({ name: `#${reactionroles.indexOf(reactionrole)}`, value: `${emoji} **<@&${reactionrole.roleId}>**\n[Go to message](https://discord.com/channels/${reactionrole.guildId}/${reactionrole.channelId}/${reactionrole.messageId})\n\u200b`, inline: true });
+					RREmbed.addFields({ name: `#${reactionroles.indexOf(reactionrole)}`, value: `${emoji} **<@&${reactionrole.roleId}>**\n[Go to message](https://discord.com/channels/${reactionrole.guildId}/${reactionrole.channelId}/${reactionrole.messageId})\n\u200b`, inline: true });
 				});
 
 				// check if there are any reaction roles set
-				if (!RREmbed.fields) RREmbed.addField({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
+				if (!RREmbed.fields) RREmbed.addFields({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
 
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.fields.length > 12) {
@@ -130,7 +130,7 @@ module.exports = {
 					components.push(btns);
 				}
 			}
-			if (client.user.id == '765287593762881616') RREmbed.addField({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
+			if (client.user.id == '765287593762881616') RREmbed.addFields({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
 
 			// If there aren't any buttons, add a button for dashboard
 			if (!components[0]) components = dashbtn;

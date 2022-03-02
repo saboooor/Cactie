@@ -35,11 +35,11 @@ module.exports = {
 			// add fields for commits
 			h.changes.forEach(commit => {
 			// check if commit description is more than 1000, if so, split it into multiple fields
-				if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { WaterfallEmbed.addField({ name: commit.commit, value: `${chunk}` }); });
-				else WaterfallEmbed.addField({ name: commit.commit, value: commit.message });
+				if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { WaterfallEmbed.addFields({ name: commit.commit, value: `${chunk}` }); });
+				else WaterfallEmbed.addFields({ name: commit.commit, value: commit.message });
 			});
 			// add field for download
-			WaterfallEmbed.addField({ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` });
+			WaterfallEmbed.addFields({ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` });
 			// send embed
 			message.reply({ embeds: [WaterfallEmbed] });
 		}

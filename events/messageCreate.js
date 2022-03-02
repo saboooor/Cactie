@@ -252,11 +252,11 @@ module.exports = async (client, message) => {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL({ dynamic : true }) })
-			.addField({ name: '**Type:**', value: 'Dash' })
-			.addField({ name: '**Guild:**', value: message.guild.name })
-			.addField({ name: '**Channel:**', value: message.channel.name })
-			.addField({ name: '**INTERACTION:**', value: srvconfig.prefix + command.name })
-			.addField({ name: '**Error:**', value: `${clean(err)}` });
+			.addFields({ name: '**Type:**', value: 'Dash' })
+			.addFields({ name: '**Guild:**', value: message.guild.name })
+			.addFields({ name: '**Channel:**', value: message.channel.name })
+			.addFields({ name: '**INTERACTION:**', value: srvconfig.prefix + command.name })
+			.addFields({ name: '**Error:**', value: `${clean(err)}` });
 		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 		client.logger.error(err);
