@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'loopqueue',
 	description: 'Toggle queue loop',
@@ -32,7 +33,7 @@ module.exports = {
 			const LoopEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription(`🔁 **${queueRepeat} Looping the queue**`);
+				.setDescription(`<:refresh:${refresh}> **${queueRepeat} Looping the queue**`);
 			return message.reply({ embeds: [LoopEmbed] });
 		}
 		catch (err) {
