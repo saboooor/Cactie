@@ -19,39 +19,42 @@ module.exports = {
 			// Get reaction roles and pages
 			const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
 
-			const dashbtn = new ActionRow()
-				.addComponents(
-					new ButtonComponent()
-						.setURL('https://pup.smhsmh.club')
-						.setLabel('Dashboard')
-						.setStyle(ButtonStyle.Link),
-				);
+			let dashbtn = null;
+			if (client.user.id == '765287593762881616') {
+				dashbtn = [new ActionRow()
+					.addComponents(
+						new ButtonComponent()
+							.setURL('https://pup.smhsmh.club')
+							.setLabel('Dashboard')
+							.setStyle(ButtonStyle.Link),
+					)];
+			}
 
 			if (args[0] == 'add') {
 				if (!args[3]) {
 					RREmbed.setDescription('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const messagelink = args[2].split('/');
 				if (messagelink[4] != message.guild.id) {
 					RREmbed.setDescription('That message is not in this server!\nDid you send a valid *message link*?');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const channel = await message.guild.channels.cache.get(messagelink[5]);
 				if (!channel) {
 					RREmbed.setDescription('That channel doesn\'t exist!\nDid you send a valid *message link*?');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const msgs = await channel.messages.fetch({ around: messagelink[6], limit: 1 });
 				const fetchedMsg = msgs.first();
 				if (!fetchedMsg) {
 					RREmbed.setDescription('That message doesn\'t exist!\nDid you send a valid *message link*?');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const role = await message.guild.roles.cache.get(args[3].replace(/\D/g, ''));
 				if (!role) {
 					RREmbed.setDescription('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				let reaction = null;
 				try {
@@ -59,7 +62,7 @@ module.exports = {
 				}
 				catch (err) {
 					RREmbed.setDescription(`\`${err}\`\nUse an emote from a server that Pup is in or an emoji.`);
-					message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					message.reply({ embeds: [RREmbed], components: dashbtn });
 					return client.logger.error(err);
 				}
 				await client.query(`INSERT INTO reactionroles (guildId, channelId, messageId, emojiId, roleId, type) VALUES ('${messagelink[4]}', '${messagelink[5]}', '${messagelink[6]}', '${reaction._emoji[reaction._emoji.id ? 'id' : 'name']}', '${args[3].replace(/\D/g, '')}', '${args[4].toLowerCase()}');`);
@@ -68,16 +71,16 @@ module.exports = {
 			else if (args[0] == 'remove') {
 				if (!args[1]) {
 					RREmbed.setDescription('Usage: /reactionroles remove <Reaction Role Number>');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				if (!reactionroles[0]) {
 					RREmbed.addField({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const rr = reactionroles[args[1]];
 				if (!rr) {
 					RREmbed.setDescription('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
-					return message.reply({ embeds: [RREmbed], components: [dashbtn] });
+					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				await client.query(`DELETE FROM reactionroles WHERE messageId = '${rr.messageId}' AND emojiId = '${rr.emojiId}'`);
 				let emoji = client.emojis.cache.get(rr.emojiId);
