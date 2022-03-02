@@ -37,7 +37,7 @@ module.exports = {
 
 			// Send the lyrics to the channel
 			const LyricsEmbed = new Embed()
-				.setDescription(`🎵 **Lyrics**\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
+				.setDescription(`🎵 **Lyrics**\n[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
 				.setThumbnail(song.img)
 				.setColor(song.color);
 			return message.reply({ embeds: [LyricsEmbed] });
