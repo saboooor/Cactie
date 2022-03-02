@@ -35,15 +35,9 @@
         "description": "remove a reaction role",
         "options": [
             {
-                "type": "STRING",
-                "name": "emoji",
-                "description": "The reaction emoji",
-                "required": true
-            },
-            {
-                "type": "STRING",
-                "name": "url",
-                "description": "The link to the message to add the reaction to",
+                "type": "INTEGER",
+                "name": "id",
+                "description": "The reaction number",
                 "required": true
             }
         ]
