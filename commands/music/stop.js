@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const { warn } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'stop',
 	description: 'Stops the music',
@@ -15,7 +16,7 @@ module.exports = {
 			const StopMusic = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription('⏹️ Stopped the music');
+				.setDescription(`<:alert:${warn}> **Stopped the music**`);
 			message.reply({ embeds: [StopMusic] });
 		}
 		catch (err) {
