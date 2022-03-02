@@ -1,3 +1,4 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const servers = require('../../config/pterodactyl.json');
 const srvs = Object.keys(servers).map(i => { return servers[i]; });
 const { Embed } = require('discord.js');
@@ -18,5 +19,9 @@ module.exports = async function pteroUpdate(interaction, Client) {
 	if (usages.resources.memory_bytes) PteroEmbed.addFields({ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true });
 	if (usages.resources.network_tx_bytes) PteroEmbed.addFields({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
 	if (usages.resources.network_rx_bytes) PteroEmbed.addFields({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
+	interaction.message.components[0].components[4].setDisabled(true);
+	interaction.reply({ embeds: [PteroEmbed], components: interaction.message.components });
+	await sleep(20000);
+	interaction.message.components[0].components[4].setDisabled(false);
 	interaction.reply({ embeds: [PteroEmbed], components: interaction.message.components });
 };

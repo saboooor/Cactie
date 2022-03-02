@@ -16,6 +16,7 @@ module.exports = async function ptero(interaction, client, action) {
 	else if (action == 'stop') Client.stopServer(server.id);
 	else if (action == 'kill') Client.killServer(server.id);
 	client.logger.info(`${action}ing ${server.name}`);
-	await sleep(1000);
+	pteroUpdate(interaction, Client);
+	sleep(20000);
 	pteroUpdate(interaction, Client);
 };
