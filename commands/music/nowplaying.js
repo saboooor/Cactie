@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 const msg = require('../../lang/en/msg.json');
@@ -12,41 +12,25 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get player, current song, and song position / length and send embed
-			let player = client.manager.get(message.guild.id);
-			let song = player.queue.current;
-			let total = song.duration;
-			let current = player.position;
-			let NPEmbed = new Embed()
+			const player = client.manager.get(message.guild.id);
+			const song = player.queue.current;
+			const total = song.duration;
+			const current = player.position;
+			const NPEmbed = new Embed()
 				.setDescription(`${msg.music.np}\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
 				.setThumbnail(song.img)
 				.setColor(song.color);
-			const npmsg = await message.channel.send({ embeds: [NPEmbed] });
+			const row = new ActionRow()
+				.addComponents(
+					new ButtonComponent()
+						.setCustomId('music_updatenp')
+						.setLabel('Update')
+						.setStyle(ButtonStyle.Secondary),
+				);
+			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
 
-			// Set the now playing message and update it every 5 seconds
-			player.set('nowplayingMSG', npmsg);
-			if (message.commandName) message.reply({ content: 'Message sent.' });
-			const interval = setInterval(() => {
-			// Get the player and current song
-				player = client.manager.get(message.guild.id);
-				song = player.queue.current;
-
-				// If there's no song playing, clear the interval and delete the message
-				if (!song) {
-					if (player?.get('nowplayingMSG')) player?.get('nowplayingMSG').delete().catch(e => client.logger.error(e));
-					return clearInterval(interval);
-				}
-
-				// Get the song position / length and edit the embed
-				total = song.duration;
-				current = player.position;
-				NPEmbed = new Embed()
-					.setDescription(`${msg.music.np}\n[${song.title}](${song.uri}) - \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\`${progressbar(total, current, 20, '▬', '🔘')}\`\n\`${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}\``)
-					.setThumbnail(song.img)
-					.setColor(song.color);
-				player?.get('nowplayingMSG') ? player.get('nowplayingMSG').edit({ embeds: [NPEmbed] }, '') :
-					message.channel.send({ embeds: [NPEmbed] }).then(msg2 => player.set('nowplayingMSG', msg2));
-			}, 5000);
-			player.set('nowplaying', interval);
+			// Set the now playing message
+			if (!message.commandName) player.setNowplayingMessage(npmsg);
 		}
 		catch (err) {
 			client.error(err, message);
