@@ -1,5 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { MessageEmbed } = require('discord.js');
+const compressEmbed = require('../functions/compressEmbed');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_skip',
@@ -39,7 +40,7 @@ module.exports = {
 
 			// After 10 seconds, compress message
 			await sleep(10000);
-			interaction.reply({ content: msg.music.skip.skipped, embeds: [] });
+			interaction.reply({ embeds: [compressEmbed(thing)] });
 		}
 		catch (err) {
 			client.error(err, interaction);
