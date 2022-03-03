@@ -1,3 +1,4 @@
+const { PermissionsBitField } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'approve',
@@ -58,9 +59,9 @@ module.exports = {
 
 			// Delete thread if exists with transcript
 			if (thread) {
-				if (!message.guild.me.permissions.has('MANAGE_THREADS') || !message.guild.me.permissionsIn(message.channel).has('MANAGE_THREADS')) {
-					client.logger.error(`Missing MANAGE_THREADS permission in #${message.channel.name} at ${message.guild.name}`);
-					return message.reply({ content: 'I don\'t have the MANAGE_THREADS permission!' });
+				if (!message.guild.me.permissions.has(PermissionsBitField.Flags.ManageThreads) || !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageThreads)) {
+					client.logger.error(`Missing ManageThreads permission in #${message.channel.name} at ${message.guild.name}`);
+					return message.reply({ content: 'I don\'t have the ManageThreads permission!' });
 				}
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {

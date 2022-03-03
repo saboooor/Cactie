@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { Embed, PermissionsBitField } = require('discord.js');
 const { upvote, downvote } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'suggest',
@@ -26,9 +26,9 @@ module.exports = {
 			await msg.react(upvote);
 			await msg.react(downvote);
 			if (srvconfig.suggestthreads) {
-				if (!message.guild.me.permissions.has('CREATE_PUBLIC_THREADS') || !message.guild.me.permissionsIn(channel).has('CREATE_PUBLIC_THREADS')) {
-					client.logger.error(`Missing CREATE_PUBLIC_THREADS permission in #${channel.name} at ${message.guild.name}`);
-					return message.reply({ content: 'I don\'t have the CREATE_PUBLIC_THREADS permission!' });
+				if (!message.guild.me.permissions.has(PermissionsBitField.Flags.CreatePublicThreads) || !message.guild.me.permissionsIn(channel).has(PermissionsBitField.Flags.CreatePublicThreads)) {
+					client.logger.error(`Missing CreatePublicThreads permission in #${channel.name} at ${message.guild.name}`);
+					return message.reply({ content: 'I don\'t have the CreatePublicThreads permission!' });
 				}
 				const thread = await msg.startThread({
 					name: `Suggestion by ${message.member.displayName}`,
