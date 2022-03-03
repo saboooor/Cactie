@@ -18,7 +18,7 @@ module.exports = {
 			const total = song.duration;
 			const current = player.position;
 			const NPEmbed = new Embed()
-				.setDescription(`${msg.music.np} \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
+				.setDescription(`<:music:${music}> **${msg.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);

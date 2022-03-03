@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
-const { refresh } = require('../lang/int/emoji.json');
+const { refresh, music } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_updatenp',
@@ -18,7 +18,7 @@ module.exports = {
 
 			// Create embed and disable button
 			const NPEmbed = new Embed()
-				.setDescription(`${msg.music.np} \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
+				.setDescription(`<:music:${music}> **${msg.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);

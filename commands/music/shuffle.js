@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const { shuffle } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'shuffle',
@@ -20,14 +21,14 @@ module.exports = {
 				for (const i of player.shuffleAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return message.reply({ content: msg.music.shuffle.alrvoted });
 				player.shuffleAmount.push(message.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`) });
+				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `<:shuffle:${shuffle}> ${msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
 				player.shuffleAmount = null;
 			}
 
 			// Shuffle queue and reply
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
-				.setDescription(msg.music.shuffle.shuffled)
+				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp();
 			message.reply({ embeds: [ShuffleEmbed] });
