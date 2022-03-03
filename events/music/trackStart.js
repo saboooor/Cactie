@@ -10,7 +10,8 @@ module.exports = async (client, player, track) => {
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
 	const thing = new MessageEmbed()
-		.setDescription(`<:play:${play}> **Started Playing**\n[${track.title}](${track.uri})\n\`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`)
+		.setDescription(`<:play:${play}> **Started Playing** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
+		.setFooter({ text: track.requester.tag, iconURL: track.requester.displayAvatarURL() })
 		.setThumbnail(track.img)
 		.setColor(track.color)
 		.setTimestamp();
