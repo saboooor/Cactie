@@ -35,6 +35,7 @@ module.exports = {
 
 			// Get max pages and add it to footer and reply with buttons
 			const maxPages = Math.ceil(queue.length / 10);
+			if (maxPages < 2) return message.reply({ embeds: [embed] });
 			embed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
 			const row = new MessageActionRow()
 				.addComponents(
