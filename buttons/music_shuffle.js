@@ -1,5 +1,5 @@
 const { Embed } = require('discord.js');
-const { shuffle } = require('../../lang/int/emoji.json');
+const { shuffle } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_shuffle',
