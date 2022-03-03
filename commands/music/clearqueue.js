@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const { no } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'clearqueue',
 	description: 'Clear Queue',
@@ -30,7 +31,7 @@ module.exports = {
 			const ClearEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTimestamp()
-				.setDescription('⏏️ Cleared all songs from the queue');
+				.setDescription(`<:no:${no}> Cleared all songs from the queue`);
 			return message.reply({ embeds: [ClearEmbed] });
 		}
 		catch (err) {

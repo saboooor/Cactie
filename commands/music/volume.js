@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const { vol } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'volume',
 	aliases: ['v', 'vol'],
@@ -18,7 +19,7 @@ module.exports = {
 			if (!args.length) {
 				const VolEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
-					.setDescription(`🔊 The current volume is: **${player.volume}%**`)
+					.setDescription(`<:volume:${vol}> The current volume is: **${player.volume}%**`)
 					.setTimestamp();
 				return message.reply({ embeds: [VolEmbed] });
 			}
@@ -36,7 +37,7 @@ module.exports = {
 			player.setVolume(volume);
 			const VolEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`🔊 Volume set to: **${volume}%**`)
+				.setDescription(`<:volume:${vol}> Volume set to: **${volume}%**`)
 				.setTimestamp();
 			message.reply({ embeds: [VolEmbed] });
 		}

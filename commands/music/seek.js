@@ -1,5 +1,6 @@
 const { Embed } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
+const { forward, rewind } = require('../../lang/int/emoji.json');
 const ms = require('ms');
 module.exports = {
 	name: 'seek',
@@ -30,8 +31,8 @@ module.exports = {
 			// Check if time is less than duration, if so, then seek forward or backward and reply, or else send an error
 			if (time <= duration) {
 				player.seek(time);
-				if (time > position) SeekEmbed.setDescription(`⏩ **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
-				else SeekEmbed.setDescription(`⏪ **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+				if (time > position) SeekEmbed.setDescription(`<:forward:${forward}> **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+				else SeekEmbed.setDescription(`<:rewind:${rewind}> **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
 			else {
 				SeekEmbed
