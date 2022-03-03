@@ -35,7 +35,8 @@ module.exports = {
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setTimestamp()
-				.setDescription(`🔁 **${trackRepeat} Looping the track**\n[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]`);
+				.setDescription(`🔁 **${trackRepeat} Looping the track** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
+				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() });
 			return message.reply({ embeds: [thing] });
 		}
 		catch (err) {
