@@ -1,5 +1,6 @@
 const { Manager, Structure } = require('erela.js');
 const { LavasfyClient } = require('lavasfy');
+const { MessageEmbed } = require('discord.js');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
 module.exports = client => {
@@ -8,7 +9,13 @@ module.exports = client => {
 		(Player) =>
 			class extends Player {
 				setNowplayingMessage(message) {
-					if (this.nowPlayingMessage) this.nowPlayingMessage.delete().catch(err => client.logger.error(err));
+					if (this.nowPlayingMessage) {
+						const lines = this.nowPlayingMessage.embeds[0].description.split('\n');
+						const MiniNPEmbed = new MessageEmbed()
+							.setDescription(`${lines[0]} ${lines[1]}${lines[2] ? ` - ${lines[2]}` : ''}`)
+							.setColor(this.nowPlayingMessage.embeds[0].color);
+						this.nowPlayingMessage.edit({ embeds: [MiniNPEmbed] }).catch(err => client.logger.error(err));
+					}
 					return this.nowPlayingMessage = message;
 				}
 			},
