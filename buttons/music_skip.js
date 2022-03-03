@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed } = require('discord.js');
-const { skip } = require('../../lang/int/emoji.json');
+const { skip } = require('../lang/int/emoji.json');
 const compressEmbed = require('../functions/compressEmbed');
 const msg = require('../lang/en/msg.json');
 module.exports = {
