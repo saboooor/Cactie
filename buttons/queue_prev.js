@@ -23,7 +23,7 @@ module.exports = {
 			const tracks = queue.slice(start, end);
 
 			// Clear fields, add new page to fields
-			QueueEmbed.fields = [];
+			QueueEmbed.fields = null;
 			if (song) QueueEmbed.addFields({ name: msg.music.np, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` });
 			let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 			if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped, { server: 'https://bin.birdflop.com' })}`;
