@@ -70,13 +70,14 @@ module.exports = {
 			const thing = new MessageEmbed()
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
-				.setTimestamp()
-				.setThumbnail(song.img);
+				.setThumbnail(song.img)
+				.setFooter(message.member.user.tag, message.member.user.displayAvatarURL())
+				.setTimestamp();
 			const skipmsg = await message.reply({ embeds: [thing] });
 
-			// After 10 seconds, delete or compress message
+			// After 10 seconds, compress message
 			await sleep(10000);
-			message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
+			message.commandName ? message.editReply({ content: msg.music.skip.skipped, embeds: [] }) : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
 		}
 		catch (err) {
 			client.error(err, message);

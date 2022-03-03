@@ -1,6 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const msg = require('../../lang/en/msg.json');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
