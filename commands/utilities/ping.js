@@ -1,4 +1,5 @@
 const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { refresh } = require('../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'ping',
@@ -12,7 +13,8 @@ module.exports = {
 				.addComponents(
 					new ButtonComponent()
 						.setCustomId('ping_again')
-						.setLabel(msg.ping.again)
+						.setEmoji(refresh)
+						.setLabel(msg.refresh)
 						.setStyle(ButtonStyle.Secondary),
 				);
 			const PingEmbed = new Embed()

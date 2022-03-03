@@ -5,6 +5,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...ar
 const servers = require('../../config/pterodactyl.json');
 const protocols = require('../../lang/int/mcprotocol.json');
 const { refresh } = require('../../lang/int/emoji.json');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'stats',
 	description: 'Get the status of Pup or a Server',
@@ -84,7 +85,7 @@ module.exports = {
 			const row = new ActionRow().addComponents(
 				new ButtonComponent()
 					.setCustomId('stats_refresh')
-					.setLabel('Refresh')
+					.setLabel(msg.refresh)
 					.setEmoji({ id: refresh })
 					.setStyle(ButtonStyle.Success),
 			);

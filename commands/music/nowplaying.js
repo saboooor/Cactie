@@ -34,7 +34,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonComponent()
 						.setCustomId('music_updatenp')
-						.setLabel('Refresh')
+						.setLabel(msg.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
 				);
