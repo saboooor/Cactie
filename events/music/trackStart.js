@@ -1,7 +1,6 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
-const msg = require('../../lang/en/msg.json');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
@@ -24,12 +23,10 @@ module.exports = async (client, player, track) => {
 			new ButtonComponent()
 				.setCustomId('music_shuffle')
 				.setEmoji({ id: shuffle })
-				.setLabel(msg.music.shuffle.name)
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonComponent()
 				.setCustomId('music_skip')
 				.setEmoji({ id: skip })
-				.setLabel(msg.music.skip.name)
 				.setStyle(ButtonStyle.Secondary),
 		);
 	if (client.user.id == '765287593762881616') {

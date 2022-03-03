@@ -1,5 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed } = require('discord.js');
+const compressEmbed = require('../functions/compressEmbed');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'skip',
@@ -43,12 +44,13 @@ module.exports = {
 					const SkipEmbed = new Embed()
 						.setDescription(msg.music.skip.skipto.replace('-i', `${position}`))
 						.setColor(Math.floor(Math.random() * 16777215))
+						.setFooter(message.member.user.tag, message.member.user.displayAvatarURL())
 						.setTimestamp();
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
 					// After 10 seconds, delete or compress message
 					await sleep(10000);
-					return message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
+					message.commandName ? message.editReply({ embeds: [compressEmbed(SkipEmbed)] }) : skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
 				}
 			}
 
@@ -70,13 +72,14 @@ module.exports = {
 			const SkipEmbed = new Embed()
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
-				.setTimestamp()
-				.setThumbnail(song.img);
+				.setThumbnail(song.img)
+				.setFooter(message.member.user.tag, message.member.user.displayAvatarURL())
+				.setTimestamp();
 			const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
 			// After 10 seconds, delete or compress message
 			await sleep(10000);
-			message.commandName ? message.deleteReply() : skipmsg.edit({ content: msg.music.skip.skipped, embeds: [] });
+			message.commandName ? message.editReply({ embeds: [compressEmbed(SkipEmbed)] }) : skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
 		}
 		catch (err) {
 			client.error(err, message);

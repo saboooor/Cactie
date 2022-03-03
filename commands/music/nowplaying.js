@@ -1,7 +1,7 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
-const { refresh } = require('../../lang/int/emoji.json');
+const { shuffle, skip, music, refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'nowplaying',
@@ -25,11 +25,28 @@ module.exports = {
 			const row = new ActionRow()
 				.addComponents(
 					new ButtonComponent()
+						.setCustomId('music_shuffle')
+						.setEmoji({ id: shuffle })
+						.setStyle(ButtonStyle.Secondary),
+					new ButtonComponent()
+						.setCustomId('music_skip')
+						.setEmoji({ id: skip })
+						.setStyle(ButtonStyle.Secondary),
+					new ButtonComponent()
 						.setCustomId('music_updatenp')
 						.setLabel('Refresh')
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
 				);
+			if (client.user.id == '765287593762881616') {
+				row.addComponents(
+					new ButtonComponent()
+						.setURL('https://pup.smhsmh.club/music')
+						.setEmoji({ id: music })
+						.setLabel('Music Control Panel')
+						.setStyle('LINK'),
+				);
+			}
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
 
 			// Set the now playing message
