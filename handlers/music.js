@@ -14,7 +14,7 @@ module.exports = client => {
 						const MiniNPEmbed = new MessageEmbed()
 							.setDescription(`${lines[0]} ${lines[1]}${lines[2] ? ` - ${lines[2]}` : ''}`)
 							.setColor(this.nowPlayingMessage.embeds[0].color);
-						this.nowPlayingMessage.edit({ embeds: [MiniNPEmbed] }).catch(err => client.logger.error(err));
+						this.nowPlayingMessage.edit({ embeds: [MiniNPEmbed], components: [] }).catch(err => client.logger.error(err));
 					}
 					return this.nowPlayingMessage = message;
 				}
