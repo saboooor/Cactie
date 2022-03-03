@@ -34,7 +34,7 @@ module.exports = {
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setFooter(interaction.member.user.tag, interaction.member.user.displayAvatarURL())
+				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() })
 				.setTimestamp();
 			await interaction.reply({ embeds: [SkipEmbed] });
 

@@ -44,7 +44,7 @@ module.exports = {
 					const SkipEmbed = new Embed()
 						.setDescription(msg.music.skip.skipto.replace('-i', `${position}`))
 						.setColor(Math.floor(Math.random() * 16777215))
-						.setFooter(message.member.user.tag, message.member.user.displayAvatarURL())
+						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
 						.setTimestamp();
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
@@ -73,7 +73,7 @@ module.exports = {
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setFooter(message.member.user.tag, message.member.user.displayAvatarURL())
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
 				.setTimestamp();
 			const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
