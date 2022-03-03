@@ -22,12 +22,10 @@ module.exports = async (client, player, track) => {
 			new MessageButton()
 				.setCustomId('music_shuffle')
 				.setEmoji(shuffle)
-				.setLabel(msg.music.shuffle.name)
 				.setStyle('SECONDARY'),
 			new MessageButton()
 				.setCustomId('music_skip')
 				.setEmoji(skip)
-				.setLabel(msg.music.skip.name)
 				.setStyle('SECONDARY'),
 		]);
 	if (client.user.id == '765287593762881616') {
