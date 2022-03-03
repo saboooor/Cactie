@@ -4,7 +4,7 @@ module.exports = {
 	name: '8ball',
 	description: 'Let the 8 ball decide your fate!',
 	args: true,
-	usage: '[Question]',
+	usage: '<Question>',
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		try {

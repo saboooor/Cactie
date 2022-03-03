@@ -4,7 +4,6 @@ module.exports = {
 	description: 'Insult someone, or insult yourself!',
 	voteOnly: true,
 	usage: '[Someone]',
-	args: true,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		try {
