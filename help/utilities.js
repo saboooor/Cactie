@@ -7,6 +7,7 @@ module.exports = (prefix, HelpEmbed) => {
 	}
 	HelpEmbed.setDescription(`
 **UTILITY COMMANDS:**
+*These commands are useful for some situations*
 [] = Optional
 <> = Required
 `);

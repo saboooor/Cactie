@@ -7,6 +7,7 @@ module.exports = (prefix, HelpEmbed) => {
 	}
 	HelpEmbed.setDescription(`
 **TICKET COMMANDS:**
+*These commands are related to Pup's ticket system*
 [] = Optional
 <> = Required
 `);

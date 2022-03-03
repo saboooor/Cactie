@@ -8,6 +8,7 @@ module.exports = (prefix, HelpEmbed) => {
 	}
 	HelpEmbed.setDescription(`
 **ANIMAL COMMANDS:**
+*These commands show cute animals*
 
 **${commands.join(', ')}**
 `);

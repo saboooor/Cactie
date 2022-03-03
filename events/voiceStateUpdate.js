@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { warn } = require('../../lang/int/emoji.json');
+const { warn } = require('../lang/int/emoji.json');
 const { Embed } = require('discord.js');
 module.exports = async (client, oldState, newState) => {
 	// get guild and player

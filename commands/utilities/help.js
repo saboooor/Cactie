@@ -16,7 +16,7 @@ module.exports = {
 				.setTitle('**HELP**');
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
-			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities') {
+			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
 				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(e => client.logger.error(e));
 				require(`../../help/${arg}.js`)(prefix, HelpEmbed, srvconfig);
 			}
@@ -49,7 +49,7 @@ module.exports = {
 				}
 			}
 			else {
-				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities');
+				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
 			}
 			const row = new ActionRow()
 				.addComponents(
@@ -85,6 +85,10 @@ module.exports = {
 								.setLabel('Utilities')
 								.setDescription('These commands are useful for some situations')
 								.setValue('help_utilities'),
+							new SelectMenuOption()
+								.setLabel('Actions')
+								.setDescription('These commands let you do stuff to people idk')
+								.setValue('help_actions'),
 						),
 				);
 			const row2 = new ActionRow()

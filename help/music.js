@@ -7,7 +7,7 @@ module.exports = (prefix, HelpEmbed) => {
 	}
 	HelpEmbed.setDescription(`
 **MUSIC COMMANDS:**
-*These commands play music in your voice chat.*
+*These commands play music in your voice chat*
 [] = Optional
 <> = Required
 `);

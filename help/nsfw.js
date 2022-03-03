@@ -8,6 +8,7 @@ module.exports = (prefix, HelpEmbed) => {
 	}
 	HelpEmbed.setDescription(`
 **NSFW COMMANDS:**
+*These commands have sensitive content that is NSFW*
 *All NSFW commands are based on Reddit's API. NOT cherry picked.*
 
 **${commands.join(', ')}**

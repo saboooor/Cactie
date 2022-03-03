@@ -8,7 +8,7 @@ module.exports = (prefix, HelpEmbed, srvconfig) => {
 	}
 	HelpEmbed.setDescription(`
 **ADMIN COMMANDS:**
-*These commands require the member to have specified permissions.*
+*These commands require specific permissions*
 [] = Optional
 <> = Required
 `);
