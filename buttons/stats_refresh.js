@@ -10,7 +10,7 @@ module.exports = {
 			const srvs = [];
 			Object.keys(servers).map(i => { srvs.push(servers[i]); });
 			const StatsEmbed = interaction.message.embeds[0];
-			StatsEmbed.fields = null;
+			StatsEmbed.setFields();
 			const arg = StatsEmbed.url.replace('https://', '').split('.pup')[0].replace('colon', ':');
 			let server = servers[arg.toLowerCase()];
 			if (!server) server = srvs.find(srv => arg.toLowerCase() == srv.short);
