@@ -1,6 +1,7 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
+const { shuffle, skip, music } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'nowplaying',
@@ -22,12 +23,29 @@ module.exports = {
 				.setThumbnail(song.img)
 				.setColor(song.color);
 			const row = new MessageActionRow()
-				.addComponents(
+				.addComponents([
+					new MessageButton()
+						.setCustomId('music_shuffle')
+						.setEmoji(shuffle)
+						.setStyle('SECONDARY'),
+					new MessageButton()
+						.setCustomId('music_skip')
+						.setEmoji(skip)
+						.setStyle('SECONDARY'),
 					new MessageButton()
 						.setCustomId('music_updatenp')
 						.setLabel('Update')
 						.setStyle('SECONDARY'),
+				]);
+			if (client.user.id == '765287593762881616') {
+				row.addComponents(
+					new MessageButton()
+						.setURL('https://pup.smhsmh.club/music')
+						.setEmoji(music)
+						.setLabel('Music Control Panel')
+						.setStyle('LINK'),
 				);
+			}
 			const npmsg = await message.reply({ embeds: [embed], components: [row] });
 
 			// Set the now playing message

@@ -12,7 +12,7 @@ module.exports = client => {
 					if (this.nowPlayingMessage) {
 						const lines = this.nowPlayingMessage.embeds[0].description.split('\n');
 						const MiniNPEmbed = new MessageEmbed()
-							.setDescription(`${lines[0]} ${lines[1]}${lines[2] ? ` - ${lines[2]}` : ''}`)
+							.setDescription(`${lines[0]}${lines[1] ? ` ${lines[1]}` : ''}${lines[2] ? ` - ${lines[2]}` : ''}${lines[3] ? `\n${lines[3]}` : ''}`)
 							.setColor(this.nowPlayingMessage.embeds[0].color);
 						this.nowPlayingMessage.edit({ embeds: [MiniNPEmbed], components: [] }).catch(err => client.logger.error(err));
 					}
