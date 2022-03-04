@@ -24,9 +24,11 @@ module.exports = client => {
 		(Player) =>
 			class extends Player {
 				setNowplayingMessage(message) {
-					const NPEmbed = this.nowPlayingMessage.embeds[0];
-					const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? queuerow : null;
-					if (this.nowPlayingMessage) this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: [row] }).catch(err => client.logger.error(err));
+					if (this.nowPlayingMessage) {
+						const NPEmbed = this.nowPlayingMessage.embeds[0];
+						const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? queuerow : null;
+						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: [row] }).catch(err => client.logger.error(err));
+					}
 					return this.nowPlayingMessage = message;
 				}
 			},
