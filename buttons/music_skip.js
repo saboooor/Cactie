@@ -5,7 +5,6 @@ const compressEmbed = require('../functions/compressEmbed');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_skip',
-	deferReply: true,
 	player: true,
 	serverUnmute: true,
 	inVoiceChannel: true,
@@ -22,9 +21,9 @@ module.exports = {
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.reply({ content: msg.music.skip.alrvoted });
+				if (alr) return interaction.channel.send({ content: msg.music.skip.alrvoted });
 				player.skipAmount.push(interaction.member.id);
-				if (player.skipAmount.length < requiredAmount) return interaction.reply({ content: `<:skip:${skip}> ${msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
+				if (player.skipAmount.length < requiredAmount) return interaction.channel.send({ content: `<:skip:${skip}> ${msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
 				player.skipAmount = null;
 			}
 
@@ -36,11 +35,11 @@ module.exports = {
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
-			await interaction.reply({ embeds: [SkipEmbed] });
+			await interaction.channel.send({ embeds: [SkipEmbed] });
 
 			// After 10 seconds, compress message
 			await sleep(10000);
-			interaction.reply({ embeds: [compressEmbed(SkipEmbed)] });
+			interaction.channel.send({ embeds: [compressEmbed(SkipEmbed)] });
 		}
 		catch (err) {
 			client.error(err, interaction);
