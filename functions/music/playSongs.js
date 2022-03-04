@@ -41,7 +41,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'PLAYLIST_LOADED') {
 			// Add description to embed and build every song in the playlist
-			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to queue** \`[${Searched.tracks.length} songs]\`\n[${Searched.playlistInfo.name}](${search})`)
+			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to ${top ? 'start of ' : ''}queue** \`[${Searched.tracks.length} songs]\`\n[${Searched.playlistInfo.name}](${search})`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			await Searched.tracks.forEach(song => {
 				// Some songs don't have a url, just use google lol
@@ -51,7 +51,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else if (Searched.loadType.startsWith('TRACK')) {
 			// Add description to embed and build the song
-			PlayEmbed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.info.title}](${track.info.uri})`)
+			PlayEmbed.setDescription(`<:music:${music}> **Added Song to ${top ? 'start of ' : ''}queue**\n[${track.info.title}](${track.info.uri})`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			// Some songs don't have a url, just use google lol
 			if (!track.info.uri) track.info.uri = 'https://google.com';
@@ -75,7 +75,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
-			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to queue** \`[${Searched.tracks.length} songs / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
+			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to ${top ? 'start of ' : ''}queue** \`[${Searched.tracks.length} songs / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			await Searched.tracks.forEach(song => {
 				// Set image if thumbnail exists
@@ -88,7 +88,7 @@ module.exports = async function playSongs(message, args, client, top) {
 			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
 			// Add description to embed and the song
-			PlayEmbed.setDescription(`<:music:${music}> **Added Song to queue** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
+			PlayEmbed.setDescription(`<:music:${music}> **Added Song to ${top ? 'start of ' : ''}queue** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);

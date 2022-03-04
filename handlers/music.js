@@ -14,7 +14,6 @@ const queuerow = new ActionRow()
 			.setStyle(ButtonStyle.Secondary),
 		new ButtonComponent()
 			.setCustomId('music_playlast')
-			.setEmoji({ id: refresh })
 			.setLabel('Re-add to queue')
 			.setStyle(ButtonStyle.Secondary),
 	);
