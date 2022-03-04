@@ -28,9 +28,8 @@ module.exports = {
 			// Shuffle queue and reply
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
-				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTimestamp();
+				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`);
 			message.reply({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) {

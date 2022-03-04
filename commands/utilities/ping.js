@@ -20,8 +20,7 @@ module.exports = {
 			const PingEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(msg.ping.pong)
-				.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`)
-				.setTimestamp();
+				.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`);
 			message.reply({ embeds: [PingEmbed], components: [row] });
 		}
 		catch (err) {

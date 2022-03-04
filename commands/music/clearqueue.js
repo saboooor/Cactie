@@ -30,7 +30,6 @@ module.exports = {
 			player.queue.clear();
 			const ClearEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTimestamp()
 				.setDescription(`<:no:${no}> Cleared all songs from the queue`);
 			return message.reply({ embeds: [ClearEmbed] });
 		}

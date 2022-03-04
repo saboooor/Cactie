@@ -19,8 +19,7 @@ module.exports = {
 			if (!args.length) {
 				const VolEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
-					.setDescription(`<:volume:${vol}> The current volume is: **${player.volume}%**`)
-					.setTimestamp();
+					.setDescription(`<:volume:${vol}> The current volume is: **${player.volume}%**`);
 				return message.reply({ embeds: [VolEmbed] });
 			}
 
@@ -37,8 +36,7 @@ module.exports = {
 			player.setVolume(volume);
 			const VolEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:volume:${vol}> Volume set to: **${volume}%**`)
-				.setTimestamp();
+				.setDescription(`<:volume:${vol}> Volume set to: **${volume}%**`);
 			message.reply({ embeds: [VolEmbed] });
 		}
 		catch (err) {

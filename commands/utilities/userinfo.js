@@ -51,8 +51,7 @@ module.exports = {
 				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null })
 				.setThumbnail(member.avatarURL() ? member.avatarURL({ dynamic : true }) : member.user.avatarURL({ dynamic : true }))
 				.setDescription(`${member.user}`)
-				.addFields({ name: 'Status', value: member.presence ? member.presence.status : 'offline' })
-				.setTimestamp();
+				.addFields({ name: 'Status', value: member.presence ? member.presence.status : 'offline' });
 			if (activitieslist.join('\n')) UsrEmbed.addFields({ name: 'Activities', value: activitieslist.join('\n') });
 			if (member.user.bannerURL()) UsrEmbed.setImage(member.user.bannerURL({ dynamic : true }));
 			UsrEmbed

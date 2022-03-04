@@ -1,4 +1,6 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed } = require('discord.js');
+const compressEmbed = require('../../functions/compressEmbed');
 const { play } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'resume',
@@ -16,8 +18,7 @@ module.exports = {
 			if (!player.paused) {
 				const ResEmbed = new Embed()
 					.setColor(0xE74C3C)
-					.setDescription(`<:play:${play}> The player is already **resumed**.`)
-					.setTimestamp();
+					.setDescription(`<:play:${play}> The player is already **resumed**.`);
 				return message.reply({ embeds: [ResEmbed] });
 			}
 
@@ -26,9 +27,12 @@ module.exports = {
 			const ResEmbed = new Embed()
 				.setDescription(`<:play:${play}> **Resumed**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
-				.setTimestamp()
 				.setThumbnail(song.img);
-			return message.reply({ embeds: [ResEmbed] });
+			const resmsg = await message.reply({ embeds: [ResEmbed] });
+
+			// Wait 10 seconds and compress the message
+			await sleep(10000);
+			message.commandName ? message.editReply({ embeds: [compressEmbed(ResEmbed)] }) : resmsg.edit({ embeds: [compressEmbed(ResEmbed)] });
 		}
 		catch (err) {
 			client.error(err, message);

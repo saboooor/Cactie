@@ -1,4 +1,6 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed } = require('discord.js');
+const compressEmbed = require('../../functions/compressEmbed');
 const { convertTime } = require('../../functions/music/convert.js');
 const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
@@ -35,10 +37,13 @@ module.exports = {
 			const LoopEmbed = new Embed()
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setTimestamp()
 				.setDescription(`<:refresh:${refresh}> **${trackRepeat} Looping the track** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() });
-			return message.reply({ embeds: [LoopEmbed] });
+			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
+
+			// Wait 10 seconds and compress the message
+			await sleep(10000);
+			message.commandName ? message.editReply({ embeds: [compressEmbed(LoopEmbed)] }) : loopmsg.edit({ embeds: [compressEmbed(LoopEmbed)] });
 		}
 		catch (err) {
 			client.error(err, message);

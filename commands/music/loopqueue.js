@@ -32,9 +32,8 @@ module.exports = {
 			const queueRepeat = player.queueRepeat ? 'Now' : 'No Longer';
 			const LoopEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTimestamp()
 				.setDescription(`<:refresh:${refresh}> **${queueRepeat} Looping the queue**`);
-			return message.reply({ embeds: [LoopEmbed] });
+			message.reply({ embeds: [LoopEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

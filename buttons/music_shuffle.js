@@ -31,8 +31,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
 				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
-				.setColor(Math.round(Math.random() * 16777215))
-				.setTimestamp();
+				.setColor(Math.round(Math.random() * 16777215));
 			await interaction.reply({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) {

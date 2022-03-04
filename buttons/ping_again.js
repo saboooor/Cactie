@@ -6,8 +6,7 @@ module.exports = {
 		try {
 			// Get the embed from the message
 			const PingEmbed = interaction.message.embeds[0]
-				.setDescription(`**${msg.ping.latency}** ${Date.now() - interaction.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`)
-				.setTimestamp();
+				.setDescription(`**${msg.ping.latency}** ${Date.now() - interaction.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`);
 
 			// Get next string (if last index, go to index 0)
 			const newIndex = pong.indexOf(PingEmbed.title) == pong.length - 1 ? 0 : pong.indexOf(PingEmbed.title) + 1;

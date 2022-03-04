@@ -1,5 +1,6 @@
 const { convertTime } = require('../functions/music/convert.js');
 const { createPaste } = require('hastebin');
+const { music } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'queue_prev',
@@ -24,11 +25,11 @@ module.exports = {
 
 			// Clear fields, add new page to fields
 			QueueEmbed.setFields();
-			if (song) QueueEmbed.addFields({ name: msg.music.np, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` });
+			if (song) QueueEmbed.addFields({ name: `<:music:${music}> **${msg.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` });
 			let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 			if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped, { server: 'https://bin.birdflop.com' })}`;
 			if (!tracks.length) QueueEmbed.addFields({ name: 'No tracks up next', value: `in ${page > 1 ? `page ${page}` : 'the queue'}.` });
-			else QueueEmbed.addFields({ name: '🎶 Queue List', value: mapped });
+			else QueueEmbed.addFields({ name: `<:music:${music}> Queue List`, value: mapped });
 
 			// Set current page number in footer and reply
 			QueueEmbed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });

@@ -35,8 +35,7 @@ module.exports = {
 				.setDescription(`<:skip:${skip}> **${msg.music.skip.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() })
-				.setTimestamp();
+				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
 			await interaction.reply({ embeds: [SkipEmbed] });
 
 			// After 10 seconds, compress message

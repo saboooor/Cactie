@@ -11,8 +11,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(message.guild.name)
 				.setThumbnail(message.guild.iconURL({ dynamic : true }))
-				.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL({ dynamic : true }) })
-				.setTimestamp();
+				.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL({ dynamic : true }) });
 			if (message.guild.description) srvEmbed.addFields({ name: 'Description', value: message.guild.description });
 			if (message.guild.vanityURLCode) srvEmbed.addFields({ name: 'Vanity URL', value: `discord.gg/${message.guild.vanityURLCode}` });
 			const timestamp = Math.round(message.guild.createdTimestamp / 1000);

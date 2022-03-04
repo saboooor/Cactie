@@ -24,8 +24,7 @@ module.exports = {
 				.setDescription(`<:skip:${skip}> **${msg.music.skip.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
-				.setTimestamp();
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
 			// Wait 10 seconds and compress the message

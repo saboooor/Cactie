@@ -29,9 +29,8 @@ module.exports = {
 			// Reverse queue and reply
 			player.queue.reverse();
 			const ReverseEmbed = new Embed()
-				.setDescription('⏪ Reversed the queue')
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTimestamp();
+				.setDescription('⏪ **Reversed the queue**');
 			message.reply({ embeds: [ReverseEmbed] }).catch(error => client.logger.error(error));
 		}
 		catch (err) {
