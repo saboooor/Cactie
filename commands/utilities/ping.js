@@ -1,5 +1,5 @@
 const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
-const { refresh } = require('../lang/int/emoji.json');
+const { refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'ping',
