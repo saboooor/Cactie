@@ -9,12 +9,12 @@ const queuerow = new ActionRow()
 	.addComponents(
 		new ButtonComponent()
 			.setCustomId('music_playnext')
-			.setEmoji(refresh)
+			.setEmoji({ id: refresh })
 			.setLabel('Replay Next')
 			.setStyle(ButtonStyle.Secondary),
 		new ButtonComponent()
 			.setCustomId('music_playlast')
-			.setEmoji(refresh)
+			.setEmoji({ id: refresh })
 			.setLabel('Re-add to queue')
 			.setStyle(ButtonStyle.Secondary),
 	);
