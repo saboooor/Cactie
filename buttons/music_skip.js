@@ -35,11 +35,11 @@ module.exports = {
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
-			await interaction.channel.send({ embeds: [SkipEmbed] });
+			const skipmsg = await interaction.channel.send({ embeds: [SkipEmbed] });
 
 			// After 10 seconds, compress message
 			await sleep(10000);
-			interaction.channel.send({ embeds: [compressEmbed(SkipEmbed)] });
+			skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
 		}
 		catch (err) {
 			client.error(err, interaction);
