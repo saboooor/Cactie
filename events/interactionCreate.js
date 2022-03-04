@@ -24,8 +24,7 @@ module.exports = async (client, interaction) => {
 		}
 
 		// Create error embed
-		const errEmbed = new Embed()
-			.setColor(0xE74C3C);
+		const errEmbed = new Embed().setColor(0xE74C3C);
 
 		// Get player
 		const player = client.manager.get(interaction.guild.id);
