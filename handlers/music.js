@@ -3,13 +3,30 @@ const { LavasfyClient } = require('lavasfy');
 const compressEmbed = require('../functions/compressEmbed.js');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
+const { refresh } = require('../../lang/int/emoji.json');
+const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const queuerow = new ActionRow()
+	.addComponents(
+		new ButtonComponent()
+			.setCustomId('music_playnext')
+			.setEmoji(refresh)
+			.setLabel('Replay Next')
+			.setStyle(ButtonStyle.Secondary),
+		new ButtonComponent()
+			.setCustomId('music_playlast')
+			.setEmoji(refresh)
+			.setLabel('Re-add to queue')
+			.setStyle(ButtonStyle.Secondary),
+	);
 module.exports = client => {
 	Structure.extend(
 		'Player',
 		(Player) =>
 			class extends Player {
 				setNowplayingMessage(message) {
-					if (this.nowPlayingMessage) this.nowPlayingMessage.edit({ embeds: [compressEmbed(this.nowPlayingMessage.embeds[0])], components: [] }).catch(err => client.logger.error(err));
+					const NPEmbed = this.nowPlayingMessage.embeds[0];
+					const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? queuerow : null;
+					if (this.nowPlayingMessage) this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: [row] }).catch(err => client.logger.error(err));
 					return this.nowPlayingMessage = message;
 				}
 			},
