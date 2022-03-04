@@ -12,7 +12,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Since playtop and play are so similar, use the same code in a function
-			playSongs(message, args, client);
+			playSongs(message.member.user, message, args, client);
 		}
 		catch (err) {
 			client.error(err, message);

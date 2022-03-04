@@ -3,7 +3,7 @@ const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
 const { play, music, warn } = require('../../lang/int/emoji.json');
-module.exports = async function playSongs(message, args, client, top) {
+module.exports = async function playSongs(requester, message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = message.member.voice;
 	let player = client.manager.get(message.guild.id);
@@ -104,7 +104,7 @@ module.exports = async function playSongs(message, args, client, top) {
 	// For each song, set the requester, add the album art, and separate artist and title, then add them to the queue
 	for (const song of songs) {
 		// Set requester
-		song.requester = message.member.user;
+		song.requester = requester;
 
 		// If song image isn't set and artist is set, get album art from last.fm
 		if (!song.img && song.author) {

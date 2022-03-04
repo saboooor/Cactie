@@ -14,7 +14,7 @@ module.exports = {
 		try {
 			// Since playtop and play are so similar, use the same code in a function
 			// True is the value of checking if the command is playtop
-			playSongs(message, args, client, true);
+			playSongs(message.member.user, args, client, true);
 		}
 		catch (err) {
 			client.error(err, message);
