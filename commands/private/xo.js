@@ -1,46 +1,47 @@
 const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
-const btns = {
-	ticone: new ButtonComponent()
-		.setCustomId('ticone')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	tictwo: new ButtonComponent()
-		.setCustomId('tictwo')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	ticthree: new ButtonComponent()
-		.setCustomId('ticthree')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	tacone: new ButtonComponent()
-		.setCustomId('tacone')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	tactwo: new ButtonComponent()
-		.setCustomId('tactwo')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	tacthree: new ButtonComponent()
-		.setCustomId('tacthree')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	toeone: new ButtonComponent()
-		.setCustomId('toeone')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	toetwo: new ButtonComponent()
-		.setCustomId('toetwo')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-	toethree: new ButtonComponent()
-		.setCustomId('toethree')
-		.setLabel('\u200b')
-		.setStyle(ButtonStyle.Secondary),
-};
+const { x, o, empty } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'xo',
 	description: 'tic tac toe (for testing)',
 	async execute(message) {
+		const btns = {
+			ticone: new ButtonComponent()
+				.setCustomId('ticone')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			tictwo: new ButtonComponent()
+				.setCustomId('tictwo')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			ticthree: new ButtonComponent()
+				.setCustomId('ticthree')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			tacone: new ButtonComponent()
+				.setCustomId('tacone')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			tactwo: new ButtonComponent()
+				.setCustomId('tactwo')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			tacthree: new ButtonComponent()
+				.setCustomId('tacthree')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			toeone: new ButtonComponent()
+				.setCustomId('toeone')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			toetwo: new ButtonComponent()
+				.setCustomId('toetwo')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+			toethree: new ButtonComponent()
+				.setCustomId('toethree')
+				.setEmoji({ id: empty })
+				.setStyle(ButtonStyle.Secondary),
+		};
 		const tic = new ActionRow().addComponents(btns.ticone, btns.tictwo, btns.ticthree);
 		const tac = new ActionRow().addComponents(btns.tacone, btns.tactwo, btns.tacthree);
 		const toe = new ActionRow().addComponents(btns.toeone, btns.toetwo, btns.toethree);
@@ -50,7 +51,11 @@ module.exports = {
 
 		collector.on('collect', async i => {
 			i.deferUpdate();
-			btns[i.customId].setDisabled(true);
+			const btn = btns[i.customId];
+			if (btn.style == ButtonStyle.Secondary) {
+				btn.setStyle(ButtonStyle.Danger)
+					.setEmoji({ id: x });
+			}
 			msg.edit({ components: [tic, tac, toe] });
 		});
 
