@@ -2,15 +2,18 @@ const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { x, o, empty } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'buttons',
-	description: 'buttons (for testing)',
+	description: 'ya just buttons idk what else',
+	voteOnly: true,
 	args: true,
 	usage: '<Rows and Columns (ex: 5x5)>',
+	cooldown: 10,
+	options: require('../options/text.json'),
 	async execute(message, args) {
 		const btns = {};
 		const rows = [];
 		const [ro, co] = args[0].split('x');
 		if (ro > 5 || co > 5) return message.reply('The maximum size of the board is 5x5 due to Discord limitations');
-		if (!isNaN(ro) || !isNaN(co) || ro == '0' || co == '0') return message.reply('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)');
+		if (isNaN(ro) || isNaN(co) || ro == '0' || co == '0') return message.reply('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)');
 		for (let row = 0; row < parseInt(ro); row++) {
 			rows.push(new ActionRow());
 			for (let column = 0; column < parseInt(co); column++) {
@@ -22,9 +25,7 @@ module.exports = {
 			}
 		}
 		const msg = await message.reply({ content: '\u200b', components: rows });
-
-		const collector = msg.createMessageComponentCollector({ time: 36000000 });
-
+		const collector = msg.createMessageComponentCollector({ time: 300000 });
 		collector.on('collect', async i => {
 			i.deferUpdate();
 			const btn = btns[i.customId];
@@ -36,10 +37,7 @@ module.exports = {
 				btn.setStyle(ButtonStyle.Secondary)
 					.setEmoji({ id: o });
 			}
-			msg.edit({ components: rows });
+			message.commandName ? message.editReply({ components: rows }) : msg.edit({ components: rows });
 		});
-
-		collector.on('end', () => msg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [] }));
-
 	},
 };
