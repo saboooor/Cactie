@@ -4,7 +4,6 @@ const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_shuffle',
 	deferReply: true,
-	ephemeral: true,
 	player: true,
 	serverUnmute: true,
 	inVoiceChannel: true,
@@ -30,8 +29,9 @@ module.exports = {
 			// Shuffle queue and reply
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
+				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
-				.setColor(Math.round(Math.random() * 16777215));
+				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
 			await interaction.reply({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) {

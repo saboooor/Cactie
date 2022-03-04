@@ -29,7 +29,8 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`);
+				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) {
