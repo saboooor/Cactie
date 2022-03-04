@@ -30,7 +30,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
-				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
+				.setDescription(`${client.emojis.cache.get(shuffle)} **${msg.music.shuffle.shuffled}**`)
 				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
 			await interaction.reply({ embeds: [ShuffleEmbed] });
 		}
