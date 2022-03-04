@@ -59,8 +59,8 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 		else {
 			// There's no result for the search, send error message
-			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
-			return slash ? message.editReply({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] });
+			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
+			return slash ? message.editReply({ content: null, embeds: [PlayEmbed] }) : msg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 	}
 	else {
@@ -70,8 +70,8 @@ module.exports = async function playSongs(message, args, client, top) {
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'NO_MATCHES' || !track) {
 			// There's no result for the search, send error message
-			PlayEmbed.setColor(0xE74C3C).setDescription('No results found.');
-			return slash ? message.editReply({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:alert:${warn}> **Failed to search**`, embeds: [PlayEmbed] });
+			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
+			return slash ? message.editReply({ content: null, embeds: [PlayEmbed] }) : msg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
