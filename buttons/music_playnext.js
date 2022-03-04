@@ -1,4 +1,4 @@
-const { playSongs } = require('../functions/music/playSongs.js');
+const playSongs = require('../functions/music/playSongs.js');
 module.exports = {
 	name: 'music_playnext',
 	async execute(interaction, client) {
