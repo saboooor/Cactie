@@ -3,7 +3,7 @@ const { LavasfyClient } = require('lavasfy');
 const compressEmbed = require('../functions/compressEmbed.js');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
-const { refresh } = require('../../lang/int/emoji.json');
+const { refresh } = require('../lang/int/emoji.json');
 const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const queuerow = new ActionRow()
 	.addComponents(
