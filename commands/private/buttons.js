@@ -3,12 +3,17 @@ const { x, o, empty } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'buttons',
 	description: 'buttons (for testing)',
-	async execute(message) {
+	args: true,
+	usage: '<Rows and Columns (ex: 5x5)>',
+	async execute(message, args) {
 		const btns = {};
 		const rows = [];
-		for (let row = 0; row < 5; row++) {
+		const [ro, co] = args[0].split('x');
+		if (ro > 5 || co > 5) return message.reply('The maximum size of the board is 5x5 due to Discord limitations');
+		if (!isNaN(ro) || !isNaN(co) || ro == '0' || co == '0') return message.reply('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)');
+		for (let row = 0; row < parseInt(ro); row++) {
 			rows.push(new ActionRow());
-			for (let column = 0; column < 5; column++) {
+			for (let column = 0; column < parseInt(co); column++) {
 				btns[`${column}${row}`] = new ButtonComponent()
 					.setCustomId(`${column}${row}`)
 					.setEmoji({ id: empty })
