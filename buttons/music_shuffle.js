@@ -3,7 +3,6 @@ const { shuffle } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_shuffle',
-	deferReply: true,
 	player: true,
 	serverUnmute: true,
 	inVoiceChannel: true,
