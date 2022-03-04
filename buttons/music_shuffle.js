@@ -19,9 +19,9 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.message.reply({ content: msg.music.shuffle.alrvoted });
+				if (alr) return interaction.channel.send({ content: msg.music.shuffle.alrvoted });
 				player.shuffleAmount.push(interaction.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return interaction.message.reply({ content: `<:shuffle:${shuffle}> ${msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
+				if (player.shuffleAmount.length < requiredAmount) return interaction.channel.send({ content: `<:shuffle:${shuffle}> ${msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
 				player.shuffleAmount = null;
 			}
 
@@ -31,7 +31,7 @@ module.exports = {
 				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
 				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
-			await interaction.message.reply({ embeds: [ShuffleEmbed] });
+			await interaction.channel.send({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) {
 			client.error(err, interaction);
