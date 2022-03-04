@@ -45,8 +45,7 @@ module.exports = {
 					const SkipEmbed = new Embed()
 						.setDescription(`<:skip:${skip}> **${msg.music.skip.skipto.replace('-i', `${position}`)}**`)
 						.setColor(Math.floor(Math.random() * 16777215))
-						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
-						.setTimestamp();
+						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
 					// After 10 seconds, delete or compress message

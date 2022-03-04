@@ -28,7 +28,7 @@ module.exports = async function playSongs(message, args, client, top) {
 	const slash = message.commandName;
 
 	// Create embed for responses
-	const PlayEmbed = new Embed().setTimestamp();
+	const PlayEmbed = new Embed();
 
 	// Check if search is a spotify link, if not, search YouTube
 	if (search.match(client.Lavasfy.spotifyPattern)) {

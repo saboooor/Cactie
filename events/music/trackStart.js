@@ -14,8 +14,7 @@ module.exports = async (client, player, track) => {
 		.setDescription(`<:play:${play}> **Started Playing** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
 		.setFooter({ text: track.requester.tag, iconURL: track.requester.displayAvatarURL() })
 		.setThumbnail(track.img)
-		.setColor(track.color)
-		.setTimestamp();
+		.setColor(track.color);
 
 	// Add button for skip
 	const row = new ActionRow()
