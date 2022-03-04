@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
-const { refresh, music } = require('../lang/int/emoji.json');
+const { refresh, music, shuffle, skip } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_updatenp',
@@ -28,7 +28,17 @@ module.exports = {
 				.setEmoji({ id: refresh })
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(true);
-			const row = new ActionRow().addComponents(btn);
+			const row = new ActionRow().addComponents(
+				new ButtonComponent()
+					.setCustomId('music_shuffle')
+					.setEmoji({ id: shuffle })
+					.setStyle(ButtonStyle.Secondary),
+				new ButtonComponent()
+					.setCustomId('music_skip')
+					.setEmoji({ id: skip })
+					.setStyle(ButtonStyle.Secondary),
+				btn,
+			);
 
 			// Send updated embed with disabled button and re-enable it after 5 seconds
 			await interaction.reply({ embeds: [NPEmbed], components: [row] });

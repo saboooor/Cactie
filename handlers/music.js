@@ -10,7 +10,7 @@ const queuerow = new ActionRow()
 		new ButtonComponent()
 			.setCustomId('music_playnext')
 			.setEmoji({ id: refresh })
-			.setLabel('Replay Next')
+			.setLabel('Replay Song')
 			.setStyle(ButtonStyle.Secondary),
 		new ButtonComponent()
 			.setCustomId('music_playlast')
@@ -26,8 +26,8 @@ module.exports = client => {
 				setNowplayingMessage(message) {
 					if (this.nowPlayingMessage) {
 						const NPEmbed = this.nowPlayingMessage.embeds[0];
-						const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? queuerow : null;
-						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: [row] }).catch(err => client.logger.error(err));
+						const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? [queuerow] : [];
+						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: row }).catch(err => client.logger.error(err));
 					}
 					return this.nowPlayingMessage = message;
 				}
