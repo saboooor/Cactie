@@ -1,5 +1,5 @@
 const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
-const { x, o, empty } = require('../../lang/int/emoji.json');
+const { empty } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'buttons',
 	description: 'ya just buttons idk what else',
@@ -29,14 +29,10 @@ module.exports = {
 		collector.on('collect', async i => {
 			i.deferUpdate();
 			const btn = btns[i.customId];
-			if (btn.style == ButtonStyle.Secondary) {
-				btn.setStyle(ButtonStyle.Danger)
-					.setEmoji({ id: x });
-			}
-			else {
-				btn.setStyle(ButtonStyle.Secondary)
-					.setEmoji({ id: o });
-			}
+			if (btn.style == ButtonStyle.Secondary) btn.setStyle(ButtonStyle.Danger);
+			else if (btn.style == ButtonStyle.Danger) btn.setStyle(ButtonStyle.Primary);
+			else if (btn.style == ButtonStyle.Primary) btn.setStyle(ButtonStyle.Success);
+			else if (btn.style == ButtonStyle.Success) btn.setStyle(ButtonStyle.Secondary);
 			message.commandName ? message.editReply({ components: rows }) : msg.edit({ components: rows });
 		});
 	},
