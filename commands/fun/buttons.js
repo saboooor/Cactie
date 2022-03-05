@@ -27,6 +27,7 @@ module.exports = {
 		const msg = await message.reply({ content: '\u200b', components: rows });
 		const collector = msg.createMessageComponentCollector({ time: 300000 });
 		collector.on('collect', async i => {
+			if (i.user != message.member.user) return i.reply({ content: 'This isn\'t your button grid!\nCreate one with the /buttons command', ephemeral: true });
 			i.deferUpdate();
 			const btn = btns[i.customId];
 			if (btn.style == ButtonStyle.Secondary) btn.setStyle(ButtonStyle.Danger);
