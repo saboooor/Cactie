@@ -13,15 +13,16 @@ function EndXO(btns, a, b, c, TicTacToe, msg, xuser, ouser, rows) {
 }
 module.exports = {
 	name: 'tictactoe',
-	description: 'Play Tic Tac Toe with an opponent or a dumb bot',
+	description: 'Play Tic Tac Toe with an opponent',
 	aliases: ['xo'],
 	args: true,
-	usage: '<Opponent user>',
+	usage: '<Opponent User>',
 	cooldown: 10,
 	options: require('../options/someone.json'),
 	async execute(message, args) {
 		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!user) return message.reply({ content: 'Invalid User!' });
+		if (user.user.id == message.member.user.id) return message.reply({ content: 'You played yourself, oh wait, you can\'t.' });
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
