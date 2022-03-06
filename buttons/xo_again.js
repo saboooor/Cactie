@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../lang/int/emoji.json');
 function EndXO(btns, a, b, c, TicTacToe, msg, xuser, ouser, rows) {
 	btns[a].setStyle(ButtonStyle.Success);
@@ -23,10 +23,14 @@ module.exports = {
 	name: 'xo_again',
 	ephemeral: true,
 	async execute(interaction) {
-		const userId = interaction.message.embeds[0].description.split('**O:** ')[1].replace(/\D/g, '');
-		const user = interaction.guild.members.cache.get(userId);
-		if (!user) return interaction.reply({ content: 'Invalid User!' });
-		if (user.user.id == interaction.member.user.id) return interaction.reply({ content: 'You played yourself, oh wait, you can\'t.' });
+		const TicTacToe = interaction.message.embeds[0];
+		const lines = TicTacToe.description.split('\n');
+		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
+		const ouserId = lines[1].split('**O:** ')[1].replace(/\D/g, '');
+		if (xuserId != interaction.member.user.id && ouserId != interaction.member.user.id) return interaction.member.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
+		const xuser = interaction.guild.members.cache.get(xuserId);
+		const ouser = interaction.guild.members.cache.get(ouserId);
+		if (!xuser || !ouser) return interaction.member.user.send({ content: 'Invalid User! Have they left the server?' });
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
@@ -40,19 +44,16 @@ module.exports = {
 				rows[row - 1].addComponents(btns[`${column}${row}`]);
 			}
 		}
-		const TicTacToe = new Embed()
-			.setColor(Math.floor(Math.random() * 16777215))
-			.setTitle('Tic Tac Toe')
-			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? interaction.member.user : user.user}` })
-			.setThumbnail(turn ? interaction.member.user.avatarURL() : user.user.avatarURL())
-			.setDescription(`**X:** ${interaction.member.user}\n**O:** ${user.user}`);
+		TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
+			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser.user : ouser.user}` })
+			.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 
-		const msg = await interaction.message.edit({ content: `${turn ? interaction.member.user : user.user}`, embeds: [TicTacToe], components: rows });
+		const msg = await interaction.message.edit({ content: `${turn ? xuser.user : ouser.user}`, embeds: [TicTacToe], components: rows });
 
-		const collector = msg.createMessageComponentCollector({ time: 36000000 });
-
+		const collector = msg.createMessageComponentCollector({ time: 3600000 });
 		collector.on('collect', async btninteraction => {
-			if (btninteraction.user.id != (turn ? interaction.member.user.id : user.user.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+			if (btninteraction.customId == 'xo_again') return;
+			if (btninteraction.user.id != (turn ? xuser.user.id : ouser.user.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			btninteraction.deferUpdate();
 			const btn = btns[btninteraction.customId];
 			if (btn.style == ButtonStyle.Secondary) {
@@ -61,23 +62,23 @@ module.exports = {
 					.setDisabled(true);
 			}
 			turn = !turn;
-			TicTacToe.setColor(Math.floor(Math.random() * 16777215))
-				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? interaction.member.user : user.user}` })
-				.setThumbnail(turn ? interaction.member.user.avatarURL() : user.user.avatarURL());
+			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
+				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser.user : ouser.user}` })
+				.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
 			const reslist = Object.keys(btns).map(i => { return `${btns[i].data.style}`; });
 
 			// horizontal
-			if (reslist[0] == reslist[1] && reslist[1] == reslist[2] && reslist[0] != ButtonStyle.Secondary) return EndXO(btns, 11, 12, 13, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
-			if (reslist[3] == reslist[4] && reslist[4] == reslist[5] && reslist[3] != ButtonStyle.Secondary) return EndXO(btns, 21, 22, 23, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
-			if (reslist[6] == reslist[7] && reslist[7] == reslist[8] && reslist[6] != ButtonStyle.Secondary) return EndXO(btns, 31, 32, 33, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
+			if (reslist[0] == reslist[1] && reslist[1] == reslist[2] && reslist[0] != ButtonStyle.Secondary) return EndXO(btns, 11, 12, 13, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
+			if (reslist[3] == reslist[4] && reslist[4] == reslist[5] && reslist[3] != ButtonStyle.Secondary) return EndXO(btns, 21, 22, 23, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
+			if (reslist[6] == reslist[7] && reslist[7] == reslist[8] && reslist[6] != ButtonStyle.Secondary) return EndXO(btns, 31, 32, 33, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
 			// diagonal
-			if (reslist[0] == reslist[4] && reslist[4] == reslist[8] && reslist[0] != ButtonStyle.Secondary) return EndXO(btns, 11, 22, 33, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
-			if (reslist[6] == reslist[4] && reslist[4] == reslist[2] && reslist[6] != ButtonStyle.Secondary) return EndXO(btns, 13, 22, 31, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
+			if (reslist[0] == reslist[4] && reslist[4] == reslist[8] && reslist[0] != ButtonStyle.Secondary) return EndXO(btns, 11, 22, 33, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
+			if (reslist[6] == reslist[4] && reslist[4] == reslist[2] && reslist[6] != ButtonStyle.Secondary) return EndXO(btns, 13, 22, 31, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
 			// vertical
-			if (reslist[0] == reslist[3] && reslist[3] == reslist[6] && reslist[0] != ButtonStyle.Secondary) return EndXO(btns, 11, 21, 31, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
-			if (reslist[1] == reslist[4] && reslist[4] == reslist[7] && reslist[1] != ButtonStyle.Secondary) return EndXO(btns, 12, 22, 32, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
-			if (reslist[2] == reslist[5] && reslist[5] == reslist[8] && reslist[2] != ButtonStyle.Secondary) return EndXO(btns, 13, 23, 33, TicTacToe, msg, interaction.member.user, user.user, rows) && collector.stop();
+			if (reslist[0] == reslist[3] && reslist[3] == reslist[6] && reslist[0] != ButtonStyle.Secondary) return EndXO(btns, 11, 21, 31, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
+			if (reslist[1] == reslist[4] && reslist[4] == reslist[7] && reslist[1] != ButtonStyle.Secondary) return EndXO(btns, 12, 22, 32, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
+			if (reslist[2] == reslist[5] && reslist[5] == reslist[8] && reslist[2] != ButtonStyle.Secondary) return EndXO(btns, 13, 23, 33, TicTacToe, msg, xuser.user, ouser.user, rows) && collector.stop();
 
 			// check for draw
 			let draw = true;
@@ -91,7 +92,7 @@ module.exports = {
 			}
 
 			// Go on to next turn if no matches
-			msg.edit({ content: `${turn ? interaction.member.user : user.user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+			msg.edit({ content: `${turn ? xuser.user : ouser.user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 		});
 
 		collector.on('end', () => {

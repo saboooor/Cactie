@@ -45,7 +45,7 @@ module.exports = {
 			}
 		}
 		const TicTacToe = new Embed()
-			.setColor(Math.floor(Math.random() * 16777215))
+			.setColor(turn ? 0xff0000 : 0x0000ff)
 			.setTitle('Tic Tac Toe')
 			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member.user : user.user}` })
 			.setThumbnail(turn ? message.member.user.avatarURL() : user.user.avatarURL())
@@ -53,9 +53,10 @@ module.exports = {
 
 		const msg = await message.reply({ content: `${turn ? message.member.user : user.user}`, embeds: [TicTacToe], components: rows });
 
-		const collector = msg.createMessageComponentCollector({ time: 36000000 });
+		const collector = msg.createMessageComponentCollector({ time: 3600000 });
 
 		collector.on('collect', async interaction => {
+			if (interaction.customId == 'xo_again') return;
 			if (interaction.user.id != (turn ? message.member.user.id : user.user.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			interaction.deferUpdate();
 			const btn = btns[interaction.customId];
@@ -65,7 +66,7 @@ module.exports = {
 					.setDisabled(true);
 			}
 			turn = !turn;
-			TicTacToe.setColor(Math.floor(Math.random() * 16777215))
+			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
 				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member.user : user.user}` })
 				.setThumbnail(turn ? message.member.user.avatarURL() : user.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
