@@ -13,7 +13,7 @@ module.exports = {
 				.addComponents(
 					new ButtonComponent()
 						.setCustomId('ping_again')
-						.setEmoji(refresh)
+						.setEmoji({ id: refresh })
 						.setLabel(msg.refresh)
 						.setStyle(ButtonStyle.Secondary),
 				);

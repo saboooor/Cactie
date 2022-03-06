@@ -1,8 +1,17 @@
-const { Embed } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
-const { play, music, warn } = require('../../lang/int/emoji.json');
+const { play, music, warn, leave } = require('../../lang/int/emoji.json');
+const undo = new ActionRow()
+	.addComponents(
+		new ButtonComponent()
+			.setCustomId('ping_again')
+			.setEmoji({ id: leave })
+			.setLabel('Undo')
+			.setStyle(ButtonStyle.Secondary),
+	);
+const row = [];
 module.exports = async function playSongs(requester, message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = message.member.voice;
@@ -48,6 +57,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 				if (!song.info.uri) song.info.uri = 'https://google.com';
 				songs.push(TrackUtils.build(song));
 			});
+			row.push(undo);
 		}
 		else if (Searched.loadType.startsWith('TRACK')) {
 			// Add description to embed and build the song
@@ -56,6 +66,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 			// Some songs don't have a url, just use google lol
 			if (!track.info.uri) track.info.uri = 'https://google.com';
 			songs.push(TrackUtils.build(track));
+			row.push(undo);
 		}
 		else {
 			// There's no result for the search, send error message
@@ -82,6 +93,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 				if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
 				songs.push(song);
 			});
+			row.push(undo);
 		}
 		else {
 			// Set image if thumbnail exists
@@ -92,6 +104,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
+			row.push(undo);
 		}
 	}
 
@@ -129,5 +142,5 @@ module.exports = async function playSongs(requester, message, args, client, top)
 	if (!player.playing) await player.play();
 
 	// Send embed
-	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed] });
+	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
 };
