@@ -1,5 +1,5 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
-const { x, o, empty } = require('../../lang/int/emoji.json');
+const { x, o, empty, refresh } = require('../../lang/int/emoji.json');
 function EndXO(btns, a, b, c, TicTacToe, msg, xuser, ouser, rows) {
 	btns[a].setStyle(ButtonStyle.Success);
 	btns[b].setStyle(ButtonStyle.Success);
@@ -90,7 +90,16 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (TicTacToe.fields[0].name == 'Result:') return;
+			if (TicTacToe.fields[0].name == 'Result:') {
+				rows.push(new ActionRow()
+					.addComponents(new ButtonComponent()
+						.setCustomId('xo_again')
+						.setEmoji({ id: refresh })
+						.setLabel('Play Again')
+						.setStyle(ButtonStyle.Secondary),
+					));
+				return msg.edit({ components: rows });
+			}
 			msg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] });
 		});
 	},
