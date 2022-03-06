@@ -21,6 +21,7 @@ const again = new ActionRow()
 	);
 module.exports = {
 	name: 'xo_again',
+	ephemeral: true,
 	async execute(interaction) {
 		const userId = interaction.message.embeds[0].description.split('**O:** ')[1].replace(/\D/g, '');
 		const user = interaction.guild.members.cache.get(userId);
