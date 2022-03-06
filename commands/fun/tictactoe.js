@@ -9,8 +9,16 @@ function EndXO(btns, a, b, c, TicTacToe, msg, xuser, ouser, rows) {
 	TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
 		.setFields({ name: 'Result:', value: `${xwin ? xuser : ouser} wins!` })
 		.setThumbnail(xwin ? xuser.avatarURL() : ouser.avatarURL());
+	rows.push(again);
 	msg.edit({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
 }
+const again = new ActionRow()
+	.addComponents(new ButtonComponent()
+		.setCustomId('xo_again')
+		.setEmoji({ id: refresh })
+		.setLabel('Play Again')
+		.setStyle(ButtonStyle.Secondary),
+	);
 module.exports = {
 	name: 'tictactoe',
 	description: 'Play Tic Tac Toe with an opponent',
@@ -82,6 +90,7 @@ module.exports = {
 				TicTacToe.setColor(0xff00ff)
 					.setFields({ name: 'Result:', value: 'Draw!' })
 					.setThumbnail();
+				rows.push(again);
 				return msg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
 			}
 
@@ -90,16 +99,7 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (TicTacToe.fields[0].name == 'Result:') {
-				rows.push(new ActionRow()
-					.addComponents(new ButtonComponent()
-						.setCustomId('xo_again')
-						.setEmoji({ id: refresh })
-						.setLabel('Play Again')
-						.setStyle(ButtonStyle.Secondary),
-					));
-				return msg.edit({ components: rows });
-			}
+			if (TicTacToe.fields[0].name == 'Result:') return;
 			msg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] });
 		});
 	},
