@@ -122,18 +122,11 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		if (song.author) song.title = `${song.title}\n${song.author}`;
 
 		// Add song to start of playlist
-		if (top) { await player.queue.unshift(song); }
-		else {
-			// Add song to start of playlist
-			await player.queue.add(song);
-
-			// If the player isn't playing, play it
-			if (!player.playing) await player.play();
-		}
+		await player.queue[top ? 'unshift' : 'add'](song);
 	}
 
 	// If the player isn't playing, play it
-	if (!player.playing && top) await player.play();
+	if (!player.playing) await player.play();
 
 	// Send embed
 	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed] }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed] });
