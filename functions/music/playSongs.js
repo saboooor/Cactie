@@ -123,17 +123,11 @@ module.exports = async function playSongs(message, args, client, top) {
 
 		// Add song to start of playlist
 		if (top) { await player.queue.unshift(song); }
-		else {
-			// Add song to start of playlist
-			await player.queue.add(song);
-
-			// If the player isn't playing, play it
-			if (!player.playing) await player.play();
-		}
+		else { await player.queue.add(song); }
 	}
 
 	// If the player isn't playing, play it
-	if (!player.playing && top) await player.play();
+	if (!player.playing) await player.play();
 
 	// Send embed
 	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [embed] }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [embed] });
