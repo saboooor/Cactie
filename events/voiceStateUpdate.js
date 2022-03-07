@@ -41,14 +41,14 @@ module.exports = async (client, oldState, newState) => {
 
 	switch (stateChange.type) {
 	case 'JOIN':
-		if (stateChange.members.size === 1 && player.paused) {
+		if (stateChange.members.size === 1) {
 			player.pause(false);
 			client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
 		}
 		break;
 	case 'LEAVE':
 		if (stateChange.members.size === 0) {
-			if (!player.paused && player.playing) {
+			if (player.playing) {
 				player.pause(true);
 				client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
 			}
