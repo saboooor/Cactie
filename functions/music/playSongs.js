@@ -5,7 +5,7 @@ const getlfmCover = require('./getlfmCover.js');
 const { play, music, warn, leave, no } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
-	const { channel } = message.member.voice;
+	const { channel } = requester.voice;
 	let player = client.manager.get(message.guild.id);
 	if (!player) {
 		player = client.manager.create({
@@ -50,7 +50,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		if (Searched.loadType === 'PLAYLIST_LOADED') {
 			// Add description to embed and build every song in the playlist
 			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to ${top ? 'start of ' : ''}queue** \`[${Searched.tracks.length} songs]\`\n[${Searched.playlistInfo.name}](${search})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
+				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 			await Searched.tracks.forEach(song => {
 				// Some songs don't have a url, just use google lol
 				if (!song.info.uri) song.info.uri = 'https://google.com';
@@ -61,7 +61,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		else if (Searched.loadType.startsWith('TRACK')) {
 			// Add description to embed and build the song
 			PlayEmbed.setDescription(`<:music:${music}> **Added Song to ${top ? 'start of ' : ''}queue**\n[${track.info.title}](${track.info.uri})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
+				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 			// Some songs don't have a url, just use google lol
 			if (!track.info.uri) track.info.uri = 'https://google.com';
 			songs.push(TrackUtils.build(track));
@@ -86,7 +86,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
 			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to ${top ? 'start of ' : ''}queue** \`[${Searched.tracks.length} songs / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
+				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 			await Searched.tracks.forEach(song => {
 				// Set image if thumbnail exists
 				if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
@@ -100,7 +100,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 
 			// Add description to embed and the song
 			PlayEmbed.setDescription(`<:music:${music}> **Added Song to ${top ? 'start of ' : ''}queue** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
+				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() })
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
 			row.push(undo);
@@ -116,7 +116,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 	// For each song, set the requester, add the album art, and separate artist and title, then add them to the queue
 	for (const song of songs) {
 		// Set requester
-		song.requester = requester;
+		song.requester = requester.user;
 
 		// If song image isn't set and artist is set, get album art from last.fm
 		if (!song.img && song.author) {
@@ -149,7 +149,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		// Check if button is actually the undo button
 		if (interaction.customId != 'music_undo') return;
 		// Check if the user is the requester
-		if (requester.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t request this song!' });
+		if (requester.user.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t request this song!' });
 		// Remove each song from the queue
 		for (const song of songs) {
 			const i = player.queue.indexOf(song);

@@ -8,7 +8,7 @@ module.exports = {
 			const b = a[a.length - 1].split(')')[0];
 
 			// Queue up the song in the embed, True is to playtop it
-			playSongs(interaction.member.user, interaction.message, [b], client, true);
+			playSongs(interaction.member, interaction.message, [b], client, true);
 		}
 		catch (err) {
 			client.error(err, interaction);
