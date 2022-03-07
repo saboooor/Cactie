@@ -41,19 +41,19 @@ module.exports = {
 			for (let step = 0; step < random; step++) {
 				await sleep(1200);
 				ppEmbed.setDescription('8' + shaft.join('') + 'D');
-				message.commandName ? message.editReply({ embeds: [ppEmbed] }) : pp.edit({ embeds: [ppEmbed] });
+				pp.edit({ embeds: [ppEmbed] });
 				shaft.push('=');
 			}
 
 			// Chance of getting a SIKE u have no pp
 			if (Math.round(Math.random() * 10) == 5) {
 				ppEmbed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
-				return message.commandName ? message.editReply({ embeds: [ppEmbed] }) : pp.edit({ embeds: [ppEmbed] });
+				return pp.edit({ embeds: [ppEmbed] });
 			}
 
 			// Set pp size inches to footer and edit message to final result
 			ppEmbed.setFooter({ text: `pp size = ${random}"` });
-			message.commandName ? message.editReply({ embeds: [ppEmbed] }) : pp.edit({ embeds: [ppEmbed] });
+			pp.edit({ embeds: [ppEmbed] });
 		}
 		catch (err) {
 			client.error(err, message);

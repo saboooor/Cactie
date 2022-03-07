@@ -2,16 +2,7 @@ const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js')
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
-const { play, music, warn, leave } = require('../../lang/int/emoji.json');
-const undo = new ActionRow()
-	.addComponents(
-		new ButtonComponent()
-			.setCustomId('ping_again')
-			.setEmoji({ id: leave })
-			.setLabel('Undo')
-			.setStyle(ButtonStyle.Secondary),
-	);
-const row = [];
+const { play, music, warn, leave, no } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, top) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = message.member.voice;
@@ -33,11 +24,19 @@ module.exports = async function playSongs(requester, message, args, client, top)
 	const search = args.join(' '); const songs = [];
 	const msg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
 
-	// Check if slash command and use it later for responses
-	const slash = message.commandName;
-
 	// Create embed for responses
 	const PlayEmbed = new Embed();
+
+	// Create undo button
+	const undo = new ActionRow()
+		.addComponents(
+			new ButtonComponent()
+				.setCustomId('music_undo')
+				.setEmoji({ id: leave })
+				.setLabel('Undo')
+				.setStyle(ButtonStyle.Secondary),
+		);
+	const row = [];
 
 	// Check if search is a spotify link, if not, search YouTube
 	if (search.match(client.Lavasfy.spotifyPattern)) {
@@ -71,7 +70,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		else {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
-			return slash ? message.editReply({ content: null, embeds: [PlayEmbed] }) : msg.edit({ content: null, embeds: [PlayEmbed] });
+			return msg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 	}
 	else {
@@ -82,7 +81,7 @@ module.exports = async function playSongs(requester, message, args, client, top)
 		if (Searched.loadType === 'NO_MATCHES' || !track) {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
-			return slash ? message.editReply({ content: null, embeds: [PlayEmbed] }) : msg.edit({ content: null, embeds: [PlayEmbed] });
+			return msg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
@@ -142,5 +141,18 @@ module.exports = async function playSongs(requester, message, args, client, top)
 	if (!player.playing) await player.play();
 
 	// Send embed
-	slash ? message.editReply({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row }) : msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
+	msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
+
+	const collector = msg.createMessageComponentCollector({ time: 60000 });
+	collector.on('collect', async interaction => {
+		if (interaction.customId != 'music_undo') return;
+		if (requester.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t request this song!' });
+		for (const song of songs) {
+			const i = player.queue.indexOf(song);
+			if (song == player.queue.current) player.stop();
+			else if (i != -1) player.queue.remove(i);
+		}
+		PlayEmbed.setDescription(PlayEmbed.description.replace('Added', 'Unadded').replace('to', 'from').replace(`<:music:${music}>`, `<:no:${no}>`));
+		interaction.reply({ embeds: [PlayEmbed] });
+	});
 };

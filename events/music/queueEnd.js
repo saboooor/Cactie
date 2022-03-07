@@ -6,8 +6,7 @@ module.exports = async (client, player) => {
 	const channel = guild.channels.cache.get(player.textChannel);
 	const EndEmbed = new Embed()
 		.setColor(Math.floor(Math.random() * 16777215))
-		.setDescription(`<:alert:${warn}> **Music session ended**`)
-		.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
+		.setDescription(`<:alert:${warn}> **Music session ended**`);
 	const NowPlaying = await channel.send({ embeds: [EndEmbed] });
 	player.setNowplayingMessage(NowPlaying);
 	if (!player.twentyFourSeven) {
