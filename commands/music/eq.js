@@ -33,7 +33,7 @@ module.exports = {
 			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2] });
 
 			// Create a collector for the EQ buttons
-			const collector = EQMsg.createMessageComponentCollector({ time: 600000 });
+			const collector = EQMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the filter buttons
 				if (!interaction.customId.startsWith('filter_')) return;
