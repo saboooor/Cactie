@@ -30,7 +30,30 @@ module.exports = {
 			const but9 = new ButtonComponent().setCustomId('filter_maxed').setLabel(msg.music.eq.maxed).setStyle(ButtonStyle.Primary);
 			const row = new ActionRow().addComponents(but, but2, but3, but4, but5);
 			const row2 = new ActionRow().addComponents(but6, but7, but8, but9);
-			await message.reply({ embeds: [EQEmbed], components: [row, row2] });
+			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2] });
+
+			// Create a collector for the EQ buttons
+			const collector = EQMsg.createMessageComponentCollector({ time: 600000 });
+			collector.on('collect', async interaction => {
+				// Check if the button is one of the filter buttons
+				if (!interaction.customId.startsWith('filter_')) return;
+				interaction.deferUpdate();
+
+				// Get the player and EQ preset
+				const player = client.manager.get(interaction.guild.id);
+				const preset = interaction.customId.split('_')[1];
+				if (preset == 'clear') {
+					// Get the player and clear the EQ
+					await player.clearEQ();
+
+					// Update the message with the new EQ
+					EQEmbed.setDescription(msg.music.eq.btn.replace('-m', msg.off));
+					await EQMsg.edit({ embeds: [EQEmbed] });
+				}
+			});
+
+			// When the collector stops, remove the undo button from it
+			collector.on('end', () => msg.edit({ components: [] }));
 		}
 		catch (err) {
 			client.error(err, message);
