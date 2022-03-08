@@ -21,8 +21,6 @@ module.exports = {
 				.addFields({ name: 'Created At', value: `<t:${timestamp}>\n<t:${timestamp}:R>` });
 			await message.reply({ embeds: [srvEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -42,8 +42,6 @@ module.exports = {
 				.setColor(song.color);
 			return message.reply({ embeds: [LyricsEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

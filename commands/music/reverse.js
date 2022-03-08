@@ -34,8 +34,6 @@ module.exports = {
 				.setDescription(`<:rewind:${rewind}> **Reversed the queue**`);
 			message.reply({ embeds: [ReverseEmbed] }).catch(error => client.logger.error(error));
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

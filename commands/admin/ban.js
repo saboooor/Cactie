@@ -59,8 +59,6 @@ module.exports = {
 				logchannel.send({ embeds: [BanEmbed] });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

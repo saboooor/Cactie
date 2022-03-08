@@ -33,8 +33,6 @@ module.exports = {
 				.setDescription(`<:no:${no}> Cleared all songs from the queue`);
 			return message.reply({ embeds: [ClearEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

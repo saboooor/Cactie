@@ -14,8 +14,6 @@ module.exports = {
 			Client.sendServerCommand(server.id, args.join(' '));
 			message.reply({ content: `Sent command \`${args.join(' ')}\` to Bungee` });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -52,8 +52,6 @@ module.exports = {
 			// Set the now playing message
 			if (!message.commandName) player.setNowplayingMessage(npmsg);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

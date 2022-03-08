@@ -27,8 +27,6 @@ module.exports = {
 				.setDescription(`<:in:${join}> **Joined ${channel}**`);
 			return message.reply({ embeds: [JoinEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

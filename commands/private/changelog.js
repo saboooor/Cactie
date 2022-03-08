@@ -48,8 +48,6 @@ module.exports = {
 			});
 			message.reply({ content: `${changes.length} Changelog(s) sent to ${server.name}!` });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

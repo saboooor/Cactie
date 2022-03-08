@@ -46,8 +46,6 @@ module.exports = {
 			message.reply({ embeds: [AddEmbed] });
 			client.logger.info(`Added ${user.username} to #${message.channel.name}`);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

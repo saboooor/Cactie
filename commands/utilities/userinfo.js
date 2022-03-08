@@ -60,8 +60,6 @@ module.exports = {
 				.addFields({ name: 'Roles', value: roleslist.join(', ') });
 			await message.reply({ embeds: [UsrEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

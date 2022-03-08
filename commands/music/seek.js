@@ -40,8 +40,6 @@ module.exports = {
 			}
 			message.reply({ embeds: [SeekEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

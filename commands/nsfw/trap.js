@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['traps', 'trapsarentgay', 'FemBoys'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

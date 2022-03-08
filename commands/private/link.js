@@ -35,8 +35,6 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 				);
 			message.reply({ embeds: [LinkEmbed], components: [row] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

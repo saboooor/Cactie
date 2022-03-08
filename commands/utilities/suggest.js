@@ -50,8 +50,6 @@ module.exports = {
 				message.reply({ content: `**Suggestion Created at ${channel}!**` });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

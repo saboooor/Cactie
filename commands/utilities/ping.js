@@ -23,8 +23,6 @@ module.exports = {
 				.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`);
 			message.reply({ embeds: [PingEmbed], components: [row] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

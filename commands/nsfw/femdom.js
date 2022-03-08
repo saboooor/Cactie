@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['femdom', 'FemdomHumiliation', 'femdomgonewild', 'Pegging', 'femdom_gifs'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

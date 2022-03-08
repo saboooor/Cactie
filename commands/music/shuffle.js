@@ -33,8 +33,6 @@ module.exports = {
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ShuffleEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

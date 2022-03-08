@@ -70,8 +70,6 @@ module.exports = {
 			// When the collector stops, remove the undo button from it
 			collector.on('end', () => EQMsg.edit({ components: [] }));
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

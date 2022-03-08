@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['rule34', 'Rule_34', 'Rule34LoL', 'Overwatch_Porn', 'OverwatchNSFW', 'rule34gifs'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

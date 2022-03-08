@@ -21,8 +21,6 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215));
 			await message.reply({ embeds: [StatsEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

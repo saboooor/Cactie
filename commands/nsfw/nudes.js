@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['nudes', 'PetiteGoneWild', 'RealGirls', 'Nude_Selfie', 'gonewild'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

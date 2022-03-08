@@ -14,8 +14,6 @@ module.exports = {
 				.addFields({ name: '**Nether Depths:**', value: '[Also check out Nether Depths!](https://netherdepths.com/discord)' });
 			await message.reply({ embeds: [InvEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

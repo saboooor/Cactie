@@ -33,8 +33,6 @@ module.exports = {
 				.setDescription(`**Message sent to ${user}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			message.reply({ embeds: [DMEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

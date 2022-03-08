@@ -104,8 +104,6 @@ module.exports = {
 				);
 			message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

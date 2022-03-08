@@ -11,8 +11,6 @@ module.exports = {
 			// Reply with result
 			message.reply({ content: `<a:coinflip:908779062644867123> **${text}s!**` });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -34,8 +34,6 @@ module.exports = {
 			await sleep(10000);
 			message.commandName ? message.editReply({ embeds: [compressEmbed(ResEmbed)] }) : resmsg.edit({ embeds: [compressEmbed(ResEmbed)] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

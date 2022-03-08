@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['hentai', 'hentaifemdom', 'traphentai', 'HENTAI_GIF'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

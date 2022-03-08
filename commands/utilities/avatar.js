@@ -17,8 +17,6 @@ module.exports = {
 				.setImage(member.avatarURL() ? member.avatarURL() : member.user.avatarURL());
 			await message.reply({ embeds: [UsrEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

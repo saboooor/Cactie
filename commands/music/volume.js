@@ -39,8 +39,6 @@ module.exports = {
 				.setDescription(`<:volume:${vol}> Volume set to: **${volume}%**`);
 			message.reply({ embeds: [VolEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -102,8 +102,6 @@ module.exports = {
 				logchannel.send({ embeds: [DenyEmbed] });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

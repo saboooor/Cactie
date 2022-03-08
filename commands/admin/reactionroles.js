@@ -139,8 +139,6 @@ module.exports = {
 			// Send Embed with buttons
 			message.reply({ embeds: [RREmbed], components: components });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

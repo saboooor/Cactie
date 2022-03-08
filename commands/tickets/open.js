@@ -33,8 +33,6 @@ module.exports = {
 			await sleep(1000);
 			client.logger.info(`Reopened ticket #${message.channel.name}`);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

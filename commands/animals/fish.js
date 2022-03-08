@@ -8,8 +8,6 @@ module.exports = {
 			// Get from r/fish with the redditFetch function
 			redditFetch(['fish', 'bettafish'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

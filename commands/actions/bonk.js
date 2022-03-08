@@ -22,8 +22,6 @@ module.exports = {
 			// Reply with bonk message, if user is set then mention the user
 			message.reply({ content: user ? `${user}` : null, embeds: [BonkEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

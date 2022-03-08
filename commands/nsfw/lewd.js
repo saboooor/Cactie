@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['lewd', 'hololewd'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

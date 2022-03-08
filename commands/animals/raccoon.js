@@ -8,8 +8,6 @@ module.exports = {
 			// Get from r/Raccoons with the redditFetch function
 			redditFetch(['Raccoons', 'raccoonfanclub', 'trashpandas'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

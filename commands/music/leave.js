@@ -21,8 +21,6 @@ module.exports = {
 				.setDescription(`<:out:${leave}> **Left VC**`);
 			return message.reply({ embeds: [LeaveEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

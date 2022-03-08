@@ -50,8 +50,6 @@ module.exports = {
 				logchannel.send({ embeds: [KickEmbed] });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

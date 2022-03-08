@@ -36,8 +36,6 @@ module.exports = {
 				logchannel.send({ embeds: [ClearEmbed] });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

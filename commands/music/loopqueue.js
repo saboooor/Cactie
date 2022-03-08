@@ -35,8 +35,6 @@ module.exports = {
 				.setDescription(`<:refresh:${refresh}> **${queueRepeat} Looping the queue**`);
 			message.reply({ embeds: [LoopEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

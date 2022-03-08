@@ -55,8 +55,6 @@ module.exports = {
 			ppEmbed.setFooter({ text: `pp size = ${random}"` });
 			pp.edit({ embeds: [ppEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

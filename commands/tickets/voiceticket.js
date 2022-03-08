@@ -46,8 +46,6 @@ module.exports = {
 			client.logger.info(`Voiceticket created at #${voiceticket.name}`);
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', voiceticket.id);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

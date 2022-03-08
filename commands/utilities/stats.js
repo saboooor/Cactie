@@ -91,8 +91,6 @@ module.exports = {
 			);
 			message.reply({ embeds: [StatsEmbed], files: iconpng, components: [row] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

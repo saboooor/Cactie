@@ -18,8 +18,6 @@ module.exports = {
 				.setDescription(`<:alert:${warn}> **Stopped the music**`);
 			message.reply({ embeds: [StopMusic] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

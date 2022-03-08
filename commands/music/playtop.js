@@ -16,8 +16,6 @@ module.exports = {
 			// True is the value of checking if the command is playtop
 			playSongs(message.member, args, client, true);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

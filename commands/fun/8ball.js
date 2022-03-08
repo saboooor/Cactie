@@ -15,8 +15,6 @@ module.exports = {
 				.setDescription(`${ball[i]}`);
 			message.reply({ embeds: [MagicEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

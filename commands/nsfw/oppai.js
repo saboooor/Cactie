@@ -5,8 +5,6 @@ module.exports = {
 		try {
 			redditFetch(['oppai', 'oppai_gif'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

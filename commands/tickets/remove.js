@@ -34,8 +34,6 @@ module.exports = {
 			message.reply({ embeds: [RemEmbed] });
 			client.logger.info(`Removed ${user.username} from #${message.channel.name}`);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

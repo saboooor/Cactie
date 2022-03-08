@@ -20,8 +20,6 @@ module.exports = {
 			player.twentyFourSeven = !player.twentyFourSeven;
 			message.reply({ embeds: [twentyFourSevenEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -86,8 +86,6 @@ module.exports = {
 			// When the collector stops, remove the undo button from it
 			collector.on('end', () => { pteroMsg.edit({ components: [] }); });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

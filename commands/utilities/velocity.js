@@ -44,8 +44,6 @@ module.exports = {
 			// send embed
 			message.reply({ embeds: [VelocityEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -14,8 +14,6 @@ module.exports = {
 			const i = Math.floor(Math.random() * insults.length + 1);
 			message.reply({ content: `${user ? `${user}, ` : ''}${insults[i]}` });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

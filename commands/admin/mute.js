@@ -71,8 +71,6 @@ module.exports = {
 				logchannel.send({ embeds: [MuteEmbed] });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

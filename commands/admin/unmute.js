@@ -56,8 +56,6 @@ module.exports = {
 				logchannel.send({ embeds: [UnmuteEmbed] });
 			}
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

@@ -42,8 +42,6 @@ module.exports = {
 			ppEmbed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hardtxt} pp size = ${random}"` });
 			message.reply({ embeds: [ppEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

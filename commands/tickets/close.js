@@ -125,8 +125,6 @@ module.exports = {
 			// Log
 			client.logger.info(`Closed ticket #${message.channel.name}`);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

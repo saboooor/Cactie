@@ -42,8 +42,6 @@ module.exports = {
 			// send embed
 			message.reply({ embeds: [PurpurEmbed] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

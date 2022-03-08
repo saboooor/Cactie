@@ -31,8 +31,6 @@ module.exports = {
 			await sleep(10000);
 			message.commandName ? message.editReply({ embeds: [compressEmbed(SkipEmbed)] }) : skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

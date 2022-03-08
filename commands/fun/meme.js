@@ -8,8 +8,6 @@ module.exports = {
 			// Get from r/memes with the redditFetch function
 			redditFetch(['memes', 'meme', 'dankmemes', 'funny'], message, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };

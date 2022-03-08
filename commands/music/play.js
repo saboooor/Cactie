@@ -14,8 +14,6 @@ module.exports = {
 			// Since playtop and play are so similar, use the same code in a function
 			playSongs(message.member, message, args, client);
 		}
-		catch (err) {
-			client.error(err, message);
-		}
+		catch (err) { client.error(err, message); }
 	},
 };
