@@ -24,8 +24,6 @@ module.exports = {
 				.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
 			interaction.reply({ embeds: [SettingEmbed], components: interaction.message.components });
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

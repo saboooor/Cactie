@@ -33,8 +33,6 @@ module.exports = {
 				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
 			await interaction.channel.send({ embeds: [ShuffleEmbed] });
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

@@ -10,8 +10,6 @@ module.exports = {
 			// Queue up the song in the embed, True is to playtop it
 			playSongs(interaction.member, interaction.message, [b], client, true);
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

@@ -13,8 +13,6 @@ module.exports = {
 			interaction.message.components[0].components[0].options[1].data.default = true;
 			interaction.reply({ embeds: [HelpEmbed], components: interaction.message.components });
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

@@ -57,8 +57,6 @@ module.exports = {
 				await Panel.react('🔒');
 			}
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

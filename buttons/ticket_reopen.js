@@ -31,8 +31,6 @@ module.exports = {
 			interaction.reply({ embeds: [OpenEmbed] });
 			client.logger.info(`Reopened ticket #${interaction.channel.name}`);
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

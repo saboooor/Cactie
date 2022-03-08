@@ -10,8 +10,6 @@ module.exports = {
 			// Queue up the song in the embed
 			playSongs(interaction.member, interaction.message, [b], client);
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

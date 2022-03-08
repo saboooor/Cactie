@@ -44,8 +44,6 @@ module.exports = {
 			client.logger.info(`Deleted ticket #${interaction.channel.name}`);
 			await interaction.channel.delete();
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

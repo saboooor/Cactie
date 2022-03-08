@@ -13,8 +13,6 @@ module.exports = {
 			if (`\`\`\`md\n${content}\n\`\`\``.length > 2000) interaction.reply({ content: await createPaste(content, { server: 'https://bin.birdflop.com' }), ephemeral: true });
 			else interaction.reply({ content: `\`\`\`md\n${content}\n\`\`\``, ephemeral: true });
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };

@@ -15,8 +15,6 @@ module.exports = {
 			PingEmbed.setTitle(pong[newIndex]);
 			interaction.reply({ embeds: [PingEmbed] });
 		}
-		catch (err) {
-			client.error(err, interaction);
-		}
+		catch (err) { client.error(err, interaction); }
 	},
 };
