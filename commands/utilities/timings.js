@@ -22,7 +22,7 @@ module.exports = {
 
 					// Get the embed and clear the fields
 					const TimingsEmbed = i.message.embeds[0];
-					TimingsEmbed.setFields(issues);
+					TimingsEmbed.setFields(...issues);
 
 					// Get page from footer
 					const footer = TimingsEmbed.footer.text.split(' • ');
