@@ -21,7 +21,7 @@ module.exports = {
 					i.deferUpdate();
 
 					// Get the embed and clear the fields
-					const TimingsEmbed = i.message.embeds[0];
+					const TimingsEmbed = msg.embeds[0];
 					TimingsEmbed.setFields(...issues);
 
 					// Get page from footer
@@ -41,7 +41,7 @@ module.exports = {
 					TimingsEmbed.fields.splice(0, index - 12);
 					TimingsEmbed.fields.splice(index, issues.length);
 					footer[footer.length - 1] = `Page ${page} of ${Math.ceil(issues.length / 12)}`;
-					TimingsEmbed.setFooter({ text: footer.join(' • '), iconURL: message.message.embeds[0].footer.iconURL });
+					TimingsEmbed.setFooter({ text: footer.join(' • ') });
 
 					// Send the embed
 					msg.edit({ embeds: [TimingsEmbed] });
