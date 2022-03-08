@@ -5,7 +5,7 @@ module.exports = client => {
 		const errEmbed = new Embed()
 			.setColor(0xE74C3C)
 			.setTitle('Error')
-			.setURL(`https://panel.netherdepths.com/server/41769d86/files/edit#/logs/${client.date}.log`)
+			.setURL(`https://panel.netherdepths.com/server/${message.client.user.username == 'Pup' ? '41769d86' : '3f2661e1'}/files/edit#/logs/${client.date}.log`)
 			.setDescription(`\`\`\`\n${err}\n\`\`\``);
 		const row = [];
 		if (!userError) {
@@ -18,7 +18,7 @@ module.exports = client => {
 						.setStyle(ButtonStyle.Link),
 				));
 		}
-		message.channel.send({ embeds: [errEmbed], components: [row] });
+		message.channel.send({ embeds: [errEmbed], components: row });
 	};
 	client.logger.info('Error Handler Loaded');
 };
