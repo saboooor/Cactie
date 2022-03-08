@@ -86,7 +86,7 @@ module.exports = {
 				}
 				if (newField) ApproveEmbed.addFields({ name: 'Response', value: args.join(' ') });
 			}
-			ApproveEmbed.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
+			ApproveEmbed.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 			if (ApproveEmbed.url) {
 				client.users.cache.get(ApproveEmbed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })

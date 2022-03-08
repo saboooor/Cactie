@@ -48,14 +48,13 @@ module.exports = {
 			member.user = await member.user.fetch();
 			const UsrEmbed = new Embed()
 				.setColor(member.user.accentColor)
-				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null })
-				.setThumbnail(member.avatarURL() ? member.avatarURL({ dynamic : true }) : member.user.avatarURL({ dynamic : true }))
+				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL() : null })
+				.setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())
 				.setDescription(`${member.user}`)
 				.addFields({ name: 'Status', value: member.presence ? member.presence.status : 'offline' });
 			if (activitieslist.join('\n')) UsrEmbed.addFields({ name: 'Activities', value: activitieslist.join('\n') });
-			if (member.user.bannerURL()) UsrEmbed.setImage(member.user.bannerURL({ dynamic : true }));
-			UsrEmbed
-				.addFields({ name: 'Joined Server At', value: `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>` })
+			if (member.user.bannerURL()) UsrEmbed.setImage(member.user.bannerURL());
+			UsrEmbed.addFields({ name: 'Joined Server At', value: `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>` })
 				.addFields({ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` })
 				.addFields({ name: 'Roles', value: roleslist.join(', ') });
 			await message.reply({ embeds: [UsrEmbed] });

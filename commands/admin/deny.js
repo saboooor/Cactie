@@ -83,7 +83,7 @@ module.exports = {
 				}
 				if (newField) DenyEmbed.addFields({ name: 'Response', value: args.join(' ') });
 			}
-			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL({ dynamic : true }) });
+			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 			if (DenyEmbed.url) {
 				client.users.cache.get(DenyEmbed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })

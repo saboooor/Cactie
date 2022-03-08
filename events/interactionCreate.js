@@ -64,7 +64,7 @@ module.exports = async (client, interaction) => {
 			const interactionFailed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
-				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
+				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 				.addFields({ name: '**Type:**', value: 'Button' })
 				.addFields({ name: '**Interaction:**', value: button.name })
 				.addFields({ name: '**Error:**', value: clean(err) });
@@ -97,7 +97,7 @@ module.exports = async (client, interaction) => {
 			const interactionFailed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
-				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
+				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 				.addFields({ name: '**Type:**', value: 'Dropdown' })
 				.addFields({ name: '**Interaction:**', value: interaction.values[0] })
 				.addFields({ name: '**Error:**', value: `${clean(err)}` });
@@ -281,7 +281,7 @@ module.exports = async (client, interaction) => {
 			const interactionFailed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('INTERACTION FAILED')
-				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL({ dynamic : true }) })
+				.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 				.addFields({ name: '**Type:**', value: 'Slash' })
 				.addFields({ name: '**Interaction:**', value: command.name })
 				.addFields({ name: '**Error:**', value: `${clean(err)}` })

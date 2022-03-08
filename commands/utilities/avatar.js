@@ -1,4 +1,5 @@
-const { Embed } = require('discord.js');
+const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'avatar',
 	description: 'Get the avatar of a user',
@@ -11,11 +12,42 @@ module.exports = {
 			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) return message.reply({ content: 'Invalid member!' });
 			member.user = await member.user.fetch();
+			const memberpfp = member.avatarURL({ size: 1024 });
+			const userpfp = member.user.avatarURL({ size: 1024 });
 			const UsrEmbed = new Embed()
 				.setColor(member.user.accentColor)
-				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL({ dynamic : true }) : null })
-				.setImage(member.avatarURL() ? member.avatarURL() : member.user.avatarURL());
-			await message.reply({ embeds: [UsrEmbed] });
+				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp ? userpfp : null })
+				.setImage(memberpfp ? memberpfp : userpfp);
+			const row = [];
+			if (memberpfp) {
+				row.push(
+					new ActionRow().addComponents(
+						new ButtonComponent()
+							.setCustomId('avatar_user')
+							.setLabel('Toggle Global Avatar')
+							.setEmoji({ id: refresh })
+							.setStyle(ButtonStyle.Secondary),
+					),
+				);
+			}
+			const msg = await message.reply({ embeds: [UsrEmbed], components: row });
+
+			if (memberpfp) {
+				const collector = msg.createMessageComponentCollector({ time: 60000 });
+
+				collector.on('collect', async interaction => {
+				// Check if the button is the avatar button
+					if (interaction.customId != 'avatar_user') return;
+					interaction.deferUpdate();
+
+					// Toggle profile pic
+					if (UsrEmbed.image.url == memberpfp) return msg.edit({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
+					if (UsrEmbed.image.url == userpfp) return msg.edit({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
+				});
+
+				// When the collector stops, remove the button from it
+				collector.on('end', () => { msg.edit({ components: [] }); });
+			}
 		}
 		catch (err) { client.error(err, message); }
 	},

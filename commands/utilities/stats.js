@@ -39,7 +39,7 @@ module.exports = {
 				if (usages.resources.network_tx_bytes) StatsEmbed.addFields({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
 				if (usages.resources.network_rx_bytes) StatsEmbed.addFields({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
 				info.name ? StatsEmbed.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`) : StatsEmbed.setTitle(args.join(' '));
-				if (server.client) StatsEmbed.setThumbnail(client.user.avatarURL({ dynamic : true }));
+				if (server.client) StatsEmbed.setThumbnail(client.user.avatarURL());
 			}
 			else {
 				server = { ip: args[0] };

@@ -17,7 +17,7 @@ module.exports = {
 			const Poll = new Embed()
 				.setColor(0x5662f6)
 				.setTitle('Poll')
-				.setAuthor({ name: message.member.user.username, iconURL: message.member.user.avatarURL({ dynamic : true }) })
+				.setAuthor({ name: message.member.user.username, iconURL: message.member.user.avatarURL() })
 				.setDescription(args.join(' '));
 			const msg = await channel.send({ embeds: [Poll] });
 			await msg.react(yes);

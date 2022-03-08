@@ -61,7 +61,7 @@ module.exports = async (client, oldState, newState) => {
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setDescription(`<:alert:${warn}> **Left because of 5 minutes of inactivity!**`)
 					.addFields({ name: 'Tired of me leaving?', value: 'Enable the **24/7** mode with the /247 command!' })
-					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL({ dynamic : true }) });
+					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });
 				const NowPlaying = await channel.send({ embeds: [AlertEmbed] });
 				player.setNowplayingMessage(NowPlaying);
 				player.destroy();

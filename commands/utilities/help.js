@@ -26,7 +26,7 @@ module.exports = {
 				const Panel = new Embed()
 					.setColor(0x5662f6)
 					.setTitle('Need help? No problem!')
-					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL({ dynamic : true }) });
+					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL() });
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
 					const row = new ActionRow()

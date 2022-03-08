@@ -70,7 +70,7 @@ module.exports = async (client, message) => {
 		const shortEmbed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
-			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL({ dynamic : true }) })
+			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL() })
 			.setDescription(link)
 			.setFooter({ text: 'Next time please use a paste service for long messages' });
 		message.channel.send({ embeds: [shortEmbed] });
@@ -251,7 +251,7 @@ module.exports = async (client, message) => {
 		const interactionFailed = new Embed()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
-			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL({ dynamic : true }) })
+			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() })
 			.addFields({ name: '**Type:**', value: 'Dash' })
 			.addFields({ name: '**Guild:**', value: message.guild.name })
 			.addFields({ name: '**Channel:**', value: message.channel.name })

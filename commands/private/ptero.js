@@ -69,7 +69,7 @@ module.exports = {
 			const collector = pteroMsg.createMessageComponentCollector({ time: 120000 });
 
 			collector.on('collect', async interaction => {
-				// Check if the button is one of the settings buttons
+				// Check if the button is one of the ptero buttons
 				if (!interaction.customId.startsWith('ptero_')) return;
 				interaction.deferUpdate();
 
@@ -83,7 +83,7 @@ module.exports = {
 				ptero(interaction, client, action);
 			});
 
-			// When the collector stops, remove the undo button from it
+			// When the collector stops, remove the buttons from it
 			collector.on('end', () => { pteroMsg.edit({ components: [] }); });
 		}
 		catch (err) { client.error(err, message); }
