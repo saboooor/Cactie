@@ -21,7 +21,7 @@ const client = new Client({
 	],
 	allowedMentions: {
 		parse: ['users', 'roles', 'everyone'],
-		repliedUser: true,
+		repliedUser: false,
 	},
 });
 client.startTimestamp = Date.now();
