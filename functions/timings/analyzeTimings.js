@@ -17,11 +17,11 @@ module.exports = async function analyzeTimings(message, client, args) {
 		if (arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url=')) {
 			TimingsEmbed.addFields({ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' })
 				.setURL(url);
-			return { embeds: [TimingsEmbed] };
+			return [{ embeds: [TimingsEmbed] }];
 		}
 	});
 
-	if (!url) return { content: 'Invalid URL' };
+	if (!url) return [{ content: 'Invalid URL' }];
 
 	client.logger.info(`Timings analyzed from ${message.member.user.tag} (${message.member.user.id}): ${url}`);
 
@@ -41,7 +41,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	if (!request_raw || !request) {
 		TimingsEmbed.addFields({ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true });
-		return { embeds: [TimingsEmbed] };
+		return [{ embeds: [TimingsEmbed] }];
 	}
 
 	let version = request.timingsMaster.version;
@@ -221,32 +221,16 @@ module.exports = async function analyzeTimings(message, client, args) {
 	}
 	TimingsEmbed.setColor(parseInt('0x' + componentToHex(Math.round(red)) + componentToHex(Math.round(green)) + '00'));
 
-	const issue_count = TimingsEmbed.fields.length;
-	if (issue_count == 0) {
+	const issues = TimingsEmbed.fields;
+	if (issues.length == 0) {
 		TimingsEmbed.addFields({ name: '✅ All good', value: 'Analyzed with no recommendations.' });
-		return { embeds: [TimingsEmbed] };
+		return [{ embeds: [TimingsEmbed] }];
 	}
 	const components = [];
-	if (issue_count >= 13) {
-		let page = 1;
-		if (message.customId) {
-			const footer = message.message.embeds[0].footer.text.split(' • ');
-			page = parseInt(footer[footer.length - 1].split('Page ')[1].split(' ')[0]);
-			if (message.customId == 'timings_next') page = page + 1;
-			if (message.customId == 'timings_prev') page = page - 1;
-			if (page == 0) page = Math.ceil(issue_count / 12);
-			if (page > Math.ceil(issue_count / 12)) page = 1;
-			const index = page * 12;
-			TimingsEmbed.fields.splice(0, index - 12);
-			TimingsEmbed.fields.splice(index, issue_count);
-			footer[footer.length - 1] = `Page ${page} of ${Math.ceil(issue_count / 12)}`;
-			TimingsEmbed.setFooter({ text: footer.join(' • '), iconURL: message.message.embeds[0].footer.iconURL });
-		}
-		else {
-			TimingsEmbed.fields.splice(12, issue_count);
-			TimingsEmbed.addFields({ name: `Plus ${issue_count - 12} more recommendations`, value: 'Click the buttons below to see more' });
-			TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page ${page} of ${Math.ceil(issue_count / 12)}`, iconURL: message.member.user.avatarURL() });
-		}
+	if (issues.length >= 13) {
+		TimingsEmbed.fields.splice(12, issues.length);
+		TimingsEmbed.addFields({ name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
+		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: message.member.user.avatarURL() });
 		components.push(
 			new ActionRow()
 				.addComponents(
@@ -265,5 +249,5 @@ module.exports = async function analyzeTimings(message, client, args) {
 				),
 		);
 	}
-	return { embeds: [TimingsEmbed], components: components };
+	return [{ embeds: [TimingsEmbed], components: components }, issues];
 };
