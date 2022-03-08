@@ -162,6 +162,11 @@ module.exports = {
 			if (args[0] == 'reset') {
 				const collector = SettingsMsg.createMessageComponentCollector({ time: 30000 });
 				collector.on('collect', async interaction => {
+					// Check if the button is one of the settings buttons
+					if (!interaction.customId.startsWith('settings_')) return;
+					interaction.deferUpdate();
+
+					// Check if button is confirm reset or nevermind
 					if (interaction.component.customId == 'settings_reset') {
 						// Delete settings database for guild and reply
 						client.delData('settings', 'guildId', interaction.guild.id);
