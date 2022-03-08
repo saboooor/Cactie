@@ -1,3 +1,4 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 const desc = require('../../lang/en/settingsdesc.json');
@@ -18,7 +19,7 @@ module.exports = {
 			const components = [];
 			// Check if arg is set or is 'reset'
 			if (args[1] != null && args[0] != 'reset') {
-			// Set prop variable to first argument
+				// Set prop variable to first argument
 				const prop = args[0];
 
 				// Embed for possible error
@@ -91,7 +92,7 @@ module.exports = {
 				}
 			}
 			else if (args[0] == 'reset') {
-			// Set title to 'SETTINGS RESET'
+				// Set title to 'SETTINGS RESET'
 				SettingsEmbed.setTitle('**SETTINGS RESET**');
 
 				// Add buttons for reset confirm / deny
@@ -111,7 +112,7 @@ module.exports = {
 				components.push(row);
 			}
 			else {
-			// Get settings and make an array out of it to split and make pages
+				// Get settings and make an array out of it to split and make pages
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 				const configlist = Object.keys(srvconfig).map(prop => {
 					return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
@@ -156,7 +157,33 @@ module.exports = {
 			}
 
 			// Send Embed with buttons
-			message.reply({ embeds: [SettingsEmbed], components: components });
+			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: components });
+
+			if (args[0] == 'reset') {
+				const collector = SettingsMsg.createMessageComponentCollector({ time: 30000 });
+				collector.on('collect', async interaction => {
+					if (interaction.component.customId == 'settings_reset') {
+						// Delete settings database for guild and reply
+						client.delData('settings', 'guildId', interaction.guild.id);
+						SettingsEmbed.setDescription('Settings successfully reset!');
+						SettingsMsg.edit({ components: [], embeds: [SettingsEmbed] });
+
+						// Delete message after 5 seconds
+						await sleep(5000);
+						await collector.stop();
+					}
+					else if (interaction.component.customId == 'settings_nevermind') {
+						// Delete message and command message
+						await collector.stop();
+					}
+				});
+
+				// When the collector stops, remove the undo button from it
+				collector.on('end', () => {
+					SettingsMsg.delete();
+					if (!message.commandName) message.delete();
+				});
+			}
 		}
 		catch (err) {
 			client.error(err, message);
