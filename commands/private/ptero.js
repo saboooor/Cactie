@@ -1,5 +1,7 @@
 const { NodeactylClient } = require('nodeactyl');
 const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
+const pteroUpdate = require('../../functions/ptero/pteroUpdate.js');
+const ptero = require('../../functions/ptero/ptero.js');
 const servers = require('../../config/pterodactyl.json');
 const { refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
@@ -62,7 +64,27 @@ module.exports = {
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Success),
 				);
-			message.reply({ embeds: [PteroEmbed], components: [row] });
+			const pteroMsg = await message.reply({ embeds: [PteroEmbed], components: [row] });
+
+			const collector = pteroMsg.createMessageComponentCollector({ time: 120000 });
+
+			collector.on('collect', async interaction => {
+				// Check if the button is one of the settings buttons
+				if (!interaction.customId.startsWith('ptero_')) return;
+				interaction.deferUpdate();
+
+				// Get the action from the customId
+				const action = interaction.customId.split('_')[1];
+
+				// Update action
+				if (action == 'update') return pteroUpdate(interaction, Client);
+
+				// Call the ptero function with the action in the customId
+				ptero(interaction, client, action);
+			});
+
+			// When the collector stops, remove the undo button from it
+			collector.on('end', () => { pteroMsg.edit({ components: [] }); });
 		}
 		catch (err) {
 			client.error(err, message);
