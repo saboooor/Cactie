@@ -5,6 +5,7 @@ module.exports = {
 	botperm: 'ManageChannels',
 	deferReply: true,
 	ephemeral: true,
+	// noDefer: true,
 	async execute(interaction, client) {
 		try {
 			// Check if tickets are disabled
@@ -14,7 +15,7 @@ module.exports = {
 			// Find category and if no category then set it to null
 			let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
-			if (!parent.isCategory()) parent = { id: null };
+			else if (!parent.isCategory()) parent = { id: null };
 
 			// Find role and if no role then reply with error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
@@ -28,6 +29,19 @@ module.exports = {
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
 				return interaction.reply({ content: `You've already created a ticket at ${channel}!` });
 			}
+
+			// const modal = new Modal()
+			//	.setTitle('Create Ticket')
+			//	.setCustomId('ticket_create_modal');
+			// modal.addComponents(
+			//	new ActionRow().addComponents(
+			//		new TextInputComponent()
+			//			.setCustomId('modal_long_text')
+			//			.setLabel('To open a ticket, please explain your issue.')
+			//			.setStyle(TextInputStyle.Paragraph),
+			//		),
+			//	);
+			// return interaction.showModal(modal);
 
 			// Create ticket and set database
 			const ticket = await interaction.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {

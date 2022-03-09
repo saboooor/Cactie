@@ -41,8 +41,10 @@ module.exports = async (client, interaction) => {
 		// Defer and execute the button
 		try {
 			client.logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
-			await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
-			interaction.reply = interaction.editReply;
+			if (!button.noDefer) {
+				await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
+				interaction.reply = interaction.editReply;
+			}
 			button.execute(interaction, client);
 		}
 		catch (err) {
