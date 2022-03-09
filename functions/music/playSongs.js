@@ -79,9 +79,9 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 		if (query) {
 			const tracklist = Searched.tracks.map(track => {
-				return `**${track.title}**\n${track.author}\n\`${track.uri}\``;
+				return `**${track.title}**\n${track.author}\n${track.uri}`;
 			});
-			PlayEmbed.setDescription(`🔎 **Search Results**\n${tracklist}`)
+			PlayEmbed.setDescription(`🔎 **Search Results**\n${tracklist.join('\n')}`)
 			console.log(Searched.tracks);
 			return msg.edit({ embeds: [PlayEmbed] });
 		}
