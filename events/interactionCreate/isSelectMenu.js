@@ -3,7 +3,7 @@ function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
 }
-const msg = require('../lang/en/msg.json');
+const msg = require('../../lang/en/msg.json');
 module.exports = async (client, interaction) => {
 	if (interaction.isSelectMenu()) {
 		// Get the dropdown from the available dropdowns in the bot, if there isn't one, just return because discord will throw an error itself
