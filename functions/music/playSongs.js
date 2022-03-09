@@ -79,9 +79,10 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 		if (query) {
 			PlayEmbed.setDescription('🔎 **Search Results**');
-			Searched.tracks.forEach(song => {
-				PlayEmbed.addFields({ name: song.title, value: song.author });
-			});
+			// For each song, set the requester, add the album art, and separate artist and title, then add them to the queue
+			for (const song of songs) {
+				PlayEmbed.addFields({ name: `**${songs.indexOf(song) + 1}** • ${song.title} - ${song.author}`, value: song.uri });
+			}
 			console.log(Searched.tracks);
 			return message.reply({ embeds: [PlayEmbed] });
 		}
