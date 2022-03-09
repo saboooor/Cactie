@@ -82,7 +82,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			const tracklist = tracks.map(track => {
 				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri})`;
 			});
-			PlayEmbed.setDescription(`🔎 **Search Results**\n\n${tracklist.join('\n')}`)
+			PlayEmbed.setDescription(`🔎 **Search Results**\n\n${tracklist.join('\n')}`);
 			console.log(Searched.tracks);
 
 			const row = new ActionRow();
@@ -92,7 +92,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 						.setCustomId(`${number}`)
 						.setLabel(`${number}`)
 						.setStyle(ButtonStyle.Secondary)
-				)
+				);
 			}
 			return msg.edit({ embeds: [PlayEmbed] });
 		}
