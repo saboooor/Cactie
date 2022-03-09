@@ -82,19 +82,32 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			const tracklist = tracks.map(track => {
 				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri})`;
 			});
-			PlayEmbed.setDescription(`🔎 **Search Results**\n\n${tracklist.join('\n')}`)
+			PlayEmbed.setDescription(`🔎 **Search Results**\n${tracklist.join('\n')}`);
 			console.log(Searched.tracks);
 
-			const row = new ActionRow();
+			const balls = new ActionRow();
 			for (let number = 1; number <= 5; number++) {
-				row.addComponents(
+				balls.addComponents(
 					new ButtonComponent()
 						.setCustomId(`${number}`)
 						.setLabel(`${number}`)
-						.setStyle(ButtonStyle.Secondary)
-				)
+						.setStyle(ButtonStyle.Secondary),
+				);
 			}
-			return msg.edit({ embeds: [PlayEmbed] });
+			row.push(balls);
+			msg.edit({ embeds: [PlayEmbed], components: row });
+
+			const collector = msg.createMessageComponentCollector({ time: 60000 });
+			collector.on('collect', async interaction => {
+				// Check if the user is the requester
+				if (requester.user.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t search this query!' });
+				playSongs(requester, msg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
+			});
+
+			// When the collector stops, remove the undo button from it
+			collector.on('end', () => msg.edit({ content: `<:alert:${warn}> Search query selection timed out.`, embeds: [] }));
+
+			return;
 		}
 
 		// Get first track and check if result is not found or a playlist, if not, then just add the song
