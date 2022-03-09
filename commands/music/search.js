@@ -1,20 +1,18 @@
 const playSongs = require('../../functions/music/playSongs.js');
 module.exports = {
-	name: 'playtop',
-	description: 'Play music to the top of the queue',
-	usage: '<Song URL/Name/Playlist URL>',
-	aliases: ['pt', 'ptop'],
+	name: 'search',
+	description: 'Search and play music from YouTube, Spotify, or Apple Music',
+	usage: '<Song Query>',
+	aliases: ['playsearch', 'ps'],
 	args: true,
 	serverUnmute: true,
 	inVoiceChannel: true,
 	sameVoiceChanne: true,
-	djRole: true,
 	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		try {
 			// Since playtop and play are so similar, use the same code in a function
-			// True is the value of checking if the command is playtop
-			playSongs(message.member, message, args, client, true);
+			playSongs(message.member, message, args, client, false, true);
 		}
 		catch (err) { client.error(err, message); }
 	},

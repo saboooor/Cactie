@@ -3,7 +3,7 @@ const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
 const { play, music, warn, leave, no } = require('../../lang/int/emoji.json');
-module.exports = async function playSongs(requester, message, args, client, top) {
+module.exports = async function playSongs(requester, message, args, client, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;
 	let player = client.manager.get(message.guild.id);
@@ -76,6 +76,16 @@ module.exports = async function playSongs(requester, message, args, client, top)
 	else {
 		// Search YouTube
 		const Searched = await player.search(search);
+
+		if (query) {
+			PlayEmbed.setDescription('🔎 **Search Results**');
+			Searched.tracks.forEach(song => {
+				PlayEmbed.addFields({ name: song.title, value: song.author });
+			});
+			console.log(Searched.tracks);
+			return message.reply({ embeds: [PlayEmbed] });
+		}
+
 		// Get first track and check if result is not found or a playlist, if not, then just add the song
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'NO_MATCHES' || !track) {
