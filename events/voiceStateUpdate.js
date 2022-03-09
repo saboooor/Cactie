@@ -39,16 +39,28 @@ module.exports = async (client, oldState, newState) => {
 	// filter current users based on being a bot
 	stateChange.members = stateChange.channel.members.filter(member => !member.user.bot);
 
+	let deafened = true;
+	stateChange.members.forEach(member => { if (!member.voice.selfDeaf) deafened = false; });
+
+	if (deafened) {
+		player.pause(true);
+		client.logger.info(`Paused player in ${newState.guild.name} because of user deafen`);
+	}
+	else if (player.paused) {
+		player.pause(false);
+		client.logger.info(`Resumed player in ${newState.guild.name} because of user undeafen`);
+	}
+
 	switch (stateChange.type) {
 	case 'JOIN':
-		if (stateChange.members.size === 1) {
+		if (stateChange.members.size === 1 && player.paused) {
 			player.pause(false);
 			client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
 		}
 		break;
 	case 'LEAVE':
 		if (stateChange.members.size === 0) {
-			if (player.playing) {
+			if (!player.paused) {
 				player.pause(true);
 				client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
 			}
