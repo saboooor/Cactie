@@ -5,7 +5,7 @@ function clean(text) {
 }
 const msg = require('../../lang/en/msg.json');
 module.exports = async (client, interaction) => {
-	if (interaction.isChatInputCommand()) {
+	if (interaction.isChatInputCommand() || interaction.isContextMenuCommand()) {
 		// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
 		const command = client.slashcommands.get(interaction.commandName);
 		if (!command) return;
