@@ -21,10 +21,7 @@ module.exports = {
 			const position = Number(args[0]) - 1;
 			if (isNaN(position) || position > player.queue.size) {
 				const number = isNaN(position) ? args[0] : position + 1;
-				const ErrEmbed = new Embed()
-					.setColor(0xE74C3C)
-					.setDescription(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`);
-				return message.reply({ embeds: [ErrEmbed] });
+				return client.error(`No songs at number ${number}.\nTotal Songs: ${player.queue.size}`, message, true);
 			}
 
 			// Get song from index and remove it and reply

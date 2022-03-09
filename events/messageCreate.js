@@ -147,10 +147,6 @@ module.exports = async (client, message) => {
 		return message.reply({ embeds: [Usage] });
 	}
 
-	// Create Error Embed
-	const errEmbed = new Embed()
-		.setColor(0xE74C3C);
-
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '765287593762881616') {
 		// Get vote data for user
@@ -158,7 +154,7 @@ module.exports = async (client, message) => {
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (Date.now() > vote.timestamp + 86400000) {
-			errEmbed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
+			const errEmbed = new Embed().setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
 			const row = new ActionRow()
 				.addComponents(
@@ -185,49 +181,34 @@ module.exports = async (client, message) => {
 	if (command.permission && message.author.id !== '249638347306303499' && (!message.member.permissions || (!message.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission]) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			errEmbed.setTitle(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name));
-			return message.reply({ embeds: [errEmbed] });
+			return client.error(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			errEmbed.setTitle(msg.permreq.replace('-p', command.permission));
-			return message.reply({ embeds: [errEmbed] });
+			return client.error(msg.permreq.replace('-p', command.permission), message, true);
 		}
 	}
 
 	// Check if bot has the permissions necessary to run the command
 	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])))) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
-		errEmbed.setTitle(`I don't have the ${command.botperm} permission!`);
-		return message.reply({ embeds: [errEmbed] });
+		return client.error(`I don't have the ${command.botperm} permission!`, message, true);
 	}
 
 	// Get player for music checks
 	const player = client.manager.get(message.guild.id);
 
 	// Check if player exists and command needs it
-	if (command.player && (!player || !player.queue.current)) {
-		errEmbed.setTitle('There is no music playing.');
-		return message.reply({ embeds: [errEmbed] });
-	}
+	if (command.player && (!player || !player.queue.current)) return client.error('There is no music playing.', message, true);
 
 	// Check if bot is server muted and command needs unmute
-	if (command.serverUnmute && message.guild.me.voice.serverMute) {
-		errEmbed.setTitle('I\'m server muted!');
-		return message.reply({ embeds: [errEmbed] });
-	}
+	if (command.serverUnmute && message.guild.me.voice.serverMute) return client.error('I\'m server muted!', message, true);
 
 	// Check if user is in vc and command needs user to be in vc
-	if (command.inVoiceChannel && !message.member.voice.channel) {
-		errEmbed.setTitle('You must be in a voice channel!');
-		return message.reply({ embeds: [errEmbed] });
-	}
+	if (command.inVoiceChannel && !message.member.voice.channel) return client.error('You must be in a voice channel!', message, true);
 
 	// Check if user is in the same vc as bot and command needs it
-	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) {
-		errEmbed.setTitle(`You must be in the same channel as ${client.user}!`);
-		return message.reply({ embeds: [errEmbed] });
-	}
+	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) return client.error(`You must be in the same channel as ${client.user}!`, message, true);
 
 	// Check if user has dj role and command needs user to have it
 	if (command.djRole && srvconfig.djrole != 'false') {
@@ -236,10 +217,7 @@ module.exports = async (client, message) => {
 		if (!role) return message.reply({ content: msg.dj.notfound });
 
 		// Check if user has role, if not, send error message
-		if (!message.member.roles.cache.has(srvconfig.djrole)) {
-			errEmbed.setTitle(msg.rolereq.replace('-r', role.name));
-			return message.reply({ embeds: [errEmbed] });
-		}
+		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(msg.rolereq.replace('-r', role.name), message, true);
 	}
 
 	// execute the command
