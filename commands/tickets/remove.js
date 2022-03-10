@@ -18,7 +18,7 @@ module.exports = {
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 			const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid User!' });
+			if (!user) return client.error('Invalid User!', message, true);
 			if (!ticketData.users.includes(user.id)) return message.reply({ content: 'This user isn\'t in this ticket!' });
 			if (user.id == ticketData.opener) return message.reply({ content: 'You can\'t remove the ticket opener!' });
 			ticketData.users.remove(user.id);

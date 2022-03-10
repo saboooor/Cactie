@@ -25,11 +25,11 @@ module.exports = {
 
 			// Create list of valid servers and send the list if the server above is invalid
 			const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].short} (${servers[i].name})`; });
-			if (!server) return message.reply({ content: `**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
+			if (!server) return client.error(`**Invalid Server**\nPlease use an option from the list below:\n\n${serverlist.join('')}`, message, true);
 
 			// Get defined server's guild and check if user has perms there
 			const guild = client.guilds.cache.get(server.guildid);
-			if (!guild.members.cache.get(message.member.id) || !guild.members.cache.get(message.member.id).roles.cache.has(server.roleid)) return message.reply({ content: 'You can\'t do that!' });
+			if (!guild.members.cache.get(message.member.id) || !guild.members.cache.get(message.member.id).roles.cache.has(server.roleid)) return client.error('You can\'t do that!', message, true);
 
 			// Send changelog commands to the console channels
 			server.changelogs.consolechannels.forEach(channelid => {

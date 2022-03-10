@@ -29,8 +29,8 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args) {
 		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-		if (!user) return message.reply({ content: 'Invalid User!' });
-		if (user.user.id == message.member.user.id) return message.reply({ content: 'You played yourself, oh wait, you can\'t.' });
+		if (!user) return client.error('Invalid User!', message, true);
+		if (user.user.id == message.member.user.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];

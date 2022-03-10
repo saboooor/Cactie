@@ -21,7 +21,7 @@ module.exports = {
 				if (!player.reverseAmount) player.reverseAmount = [];
 				let alr = false;
 				for (const i of player.reverseAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return message.reply({ content: 'You\'ve already voted to reverse the queue!' });
+				if (alr) return client.error('You\'ve already voted to reverse the queue!', message, true);
 				player.reverseAmount.push(message.member.id);
 				if (player.reverseAmount.length < requiredAmount) return message.reply({ content: `**Reverse Queue?** \`${player.reverseAmount.length} / ${requiredAmount}\`` });
 				player.reverseAmount = null;

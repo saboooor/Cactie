@@ -13,12 +13,7 @@ module.exports = {
 		try {
 			// Get player and check if already paused
 			const player = client.manager.get(message.guild.id);
-			if (player.paused) {
-				const PauseEmbed = new Embed()
-					.setColor(0xE74C3C)
-					.setDescription(`<:pause:${pause}> The player is already paused.`);
-				return message.reply({ embeds: [PauseEmbed] });
-			}
+			if (player.paused) return client.error('The player is already paused.', message, true);
 
 			// Pause the player
 			player.pause(true);

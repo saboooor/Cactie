@@ -13,7 +13,7 @@ module.exports = {
 		try {
 			// Get user from arg and check if user is valid
 			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid User!' });
+			if (!user) return client.error('Invalid User!', message, true);
 
 			// Send unban message to user
 			await user.send({ content: `**You've been unbanned in ${message.guild.name}**` })

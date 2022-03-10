@@ -25,7 +25,7 @@ module.exports = {
 			const JoinEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:in:${join}> **Joined ${channel}**`);
-			return message.reply({ embeds: [JoinEmbed] });
+			message.reply({ embeds: [JoinEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},

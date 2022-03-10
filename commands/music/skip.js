@@ -52,7 +52,7 @@ module.exports = {
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return message.reply({ content: msg.music.skip.alrvoted });
+				if (alr) return client.error(msg.music.skip.alrvoted, message, true);
 				player.skipAmount.push(message.member.id);
 				if (player.skipAmount.length < requiredAmount) return message.reply({ content: `<:skip:${skip}> ${msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
 				player.skipAmount = null;

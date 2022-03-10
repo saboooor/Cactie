@@ -19,7 +19,7 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return message.reply({ content: msg.music.shuffle.alrvoted });
+				if (alr) return client.error(msg.music.shuffle.alrvoted, message, true);
 				player.shuffleAmount.push(message.member.id);
 				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `<:shuffle:${shuffle}> ${msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
 				player.shuffleAmount = null;

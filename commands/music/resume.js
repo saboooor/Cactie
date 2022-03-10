@@ -15,12 +15,7 @@ module.exports = {
 			// Get player and current song and check if already resumed
 			const player = client.manager.get(message.guild.id);
 			const song = player.queue.current;
-			if (!player.paused) {
-				const ResEmbed = new Embed()
-					.setColor(0xE74C3C)
-					.setDescription(`<:play:${play}> The player is already **resumed**.`);
-				return message.reply({ embeds: [ResEmbed] });
-			}
+			if (!player.paused) return client.error('The player is already playing.', message, true);
 
 			// Unpause player and reply
 			player.pause(false);

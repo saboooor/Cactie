@@ -25,12 +25,7 @@ module.exports = {
 
 			// Parse arg as number and if volume isn't between 0 and 100, reply with error
 			const volume = Number(args[0]);
-			if (!volume || volume < 0 || volume > 100) {
-				const VolEmbed = new Embed()
-					.setColor(0xE74C3C)
-					.setDescription('Usage: /volume <Number of volume between 0 - 100>');
-				return message.reply({ embeds: [VolEmbed] });
-			}
+			if (!volume || volume < 0 || volume > 100) client.error('Usage: /volume <Number of volume between 0 - 100>', message, true);
 
 			// Set the volume and reply
 			player.setVolume(volume);

@@ -30,7 +30,7 @@ module.exports = {
 			}
 
 			// If there is no lyrics, say so
-			if (!lyrics) return message.reply({ content: 'Could not find lyrics for this track!' });
+			if (!lyrics) return client.error('Could not find lyrics for this track!', message);
 
 			// If the lyrics are too long for the embed, send it to hastebin
 			if (lyrics.length > 3500) lyrics = await createPaste(lyrics, { server: 'https://bin.birdflop.com' });
@@ -40,7 +40,7 @@ module.exports = {
 				.setDescription(`🎵 **Lyrics**\n[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
 				.setThumbnail(song.img)
 				.setColor(song.color);
-			return message.reply({ embeds: [LyricsEmbed] });
+			message.reply({ embeds: [LyricsEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},

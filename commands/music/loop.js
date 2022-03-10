@@ -22,7 +22,7 @@ module.exports = {
 				if (!player.loopTrackAmount) player.loopTrackAmount = [];
 				let alr = false;
 				for (const i of player.loopTrackAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return message.reply({ content: 'You\'ve already voted to toggle the Track Loop!' });
+				if (alr) return client.error('You\'ve already voted to toggle the Track Loop!', message, true);
 				player.loopTrackAmount.push(message.member.id);
 				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
 				player.loopTrackAmount = null;

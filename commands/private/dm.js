@@ -12,7 +12,7 @@ module.exports = {
 
 			// Get user and check if they exist
 			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid user!' });
+			if (!user) return client.error('Invalid User!', message, true);
 
 			// Check if message has any attachments and add it to the dm (idek if it works now tbh)
 			const files = [];

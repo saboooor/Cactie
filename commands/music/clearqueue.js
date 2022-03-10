@@ -20,7 +20,7 @@ module.exports = {
 				if (!player.clearQueueAmount) player.clearQueueAmount = [];
 				let alr = false;
 				for (const i of player.clearQueueAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return message.reply({ content: 'You\'ve already voted to clear the queue!' });
+				if (alr) return client.error('You\'ve already voted to clear the queue!', message, true);
 				player.clearQueueAmount.push(message.member.id);
 				if (player.clearQueueAmount.length < requiredAmount) return message.reply({ content: `**Clear Queue?** \`${player.clearQueueAmount.length} / ${requiredAmount}\`` });
 				player.clearQueueAmount = null;
@@ -31,7 +31,7 @@ module.exports = {
 			const ClearEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:no:${no}> Cleared all songs from the queue`);
-			return message.reply({ embeds: [ClearEmbed] });
+			message.reply({ embeds: [ClearEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},

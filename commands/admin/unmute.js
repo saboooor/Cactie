@@ -14,17 +14,17 @@ module.exports = {
 			// Get settings and check if mutecmd is enabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
-			if (!role && srvconfig.mutecmd != 'timeout') return message.reply({ content: 'This command is disabled!' });
+			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
 
 			// Get user and check if user is valid
 			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid User!' });
+			if (!user) return client.error('Invalid User!', message, true);
 
 			// Get member and author and check if role is lower than member's role
 			const member = message.guild.members.cache.get(user.id);
 
 			// Check if user is unmuted
-			if (role && !member.roles.cache.has(role.id)) return message.reply({ content: 'This user is not muted!' });
+			if (role && !member.roles.cache.has(role.id)) return client.error('This user is not muted!', message, true);
 
 			// Reset the mute timer
 			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', 0);

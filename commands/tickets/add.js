@@ -25,7 +25,7 @@ module.exports = {
 
 			// Check if user is valid
 			const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid User!' });
+			if (!user) return client.error('Invalid User!', message, true);
 
 			// Check if user is already in the ticket, if not, add them to the ticket data
 			if (ticketData.users.includes(user.id)) return message.reply({ content: 'This user has already been added!' });
