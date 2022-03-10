@@ -18,7 +18,10 @@ module.exports = client => {
 						.setStyle(ButtonStyle.Link),
 				));
 		}
-		message.channel.send({ embeds: [errEmbed], components: row });
+		message.reply({ embeds: [errEmbed], components: row }).catch(err => {
+			client.logger.warn(err);
+			message.channel.send({ embeds: [errEmbed], components: row });
+		});
 	};
 	client.logger.info('Error Handler Loaded');
 };
