@@ -32,57 +32,30 @@ module.exports = {
 			}
 
 			if (args[0] == 'add') {
-				if (!args[3]) {
-					RREmbed.setDescription('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (!args[3]) return client.error('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>', message, true);
 				const messagelink = args[2].split('/');
-				if (messagelink[4] != message.guild.id) {
-					RREmbed.setDescription('That message is not in this server!\nDid you send a valid *message link*?');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (messagelink[4] != message.guild.id) return client.error('That message is not in this server!\nDid you send a valid *message link*?', message, true);
 				const channel = await message.guild.channels.cache.get(messagelink[5]);
-				if (!channel) {
-					RREmbed.setDescription('That channel doesn\'t exist!\nDid you send a valid *message link*?');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (!channel) return client.error('That channel doesn\'t exist!\nDid you send a valid *message link*?', message, true);
 				const msgs = await channel.messages.fetch({ around: messagelink[6], limit: 1 });
 				const fetchedMsg = msgs.first();
-				if (!fetchedMsg) {
-					RREmbed.setDescription('That message doesn\'t exist!\nDid you send a valid *message link*?');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (!fetchedMsg) client.error('That message doesn\'t exist!\nDid you send a valid *message link*?', message, true);
 				const role = await message.guild.roles.cache.get(args[3].replace(/\D/g, ''));
-				if (!role) {
-					RREmbed.setDescription('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (!role) return client.error('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
 				let reaction = null;
-				try {
-					reaction = await fetchedMsg.react(args[1]);
-				}
-				catch (err) {
-					RREmbed.setDescription(`\`${err}\`\nUse an emote from a server that Pup is in or an emoji.`);
-					message.reply({ embeds: [RREmbed], components: dashbtn });
-					return client.logger.error(err);
-				}
+				try { reaction = await fetchedMsg.react(args[1]); }
+				catch (err) { return client.error(`\`${err}\`\nUse an emote from a server that Pup is in or an emoji.`, message, true); }
 				await client.query(`INSERT INTO reactionroles (guildId, channelId, messageId, emojiId, roleId, type) VALUES ('${messagelink[4]}', '${messagelink[5]}', '${messagelink[6]}', '${reaction._emoji[reaction._emoji.id ? 'id' : 'name']}', '${args[3].replace(/\D/g, '')}', '${args[4].toLowerCase()}');`);
 				RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
 			}
 			else if (args[0] == 'remove') {
-				if (!args[1]) {
-					RREmbed.setDescription('Usage: /reactionroles remove <Reaction Role Number>');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (!args[1]) return client.error('Usage: /reactionroles remove <Reaction Role Number>');
 				if (!reactionroles[0]) {
 					RREmbed.addFields({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
 					return message.reply({ embeds: [RREmbed], components: dashbtn });
 				}
 				const rr = reactionroles[args[1]];
-				if (!rr) {
-					RREmbed.setDescription('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
-				}
+				if (!rr) return client.error('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
 				await client.query(`DELETE FROM reactionroles WHERE messageId = '${rr.messageId}' AND emojiId = '${rr.emojiId}'`);
 				let emoji = client.emojis.cache.get(rr.emojiId);
 				if (!emoji) emoji = rr.emojiId;
