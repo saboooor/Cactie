@@ -27,7 +27,7 @@ module.exports = {
 	usage: '<Opponent User>',
 	cooldown: 10,
 	options: require('../options/user.json'),
-	async execute(message, args) {
+	async execute(message, args, client) {
 		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!user) return client.error('Invalid User!', message, true);
 		if (user.user.id == message.member.user.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
