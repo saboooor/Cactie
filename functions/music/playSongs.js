@@ -80,10 +80,9 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		if (query) {
 			const tracks = Searched.tracks.slice(0, 5);
 			const tracklist = tracks.map(track => {
-				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri})`;
+				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\``;
 			});
 			PlayEmbed.setDescription(`🔎 **Search Results**\n${tracklist.join('\n')}`);
-			console.log(Searched.tracks);
 
 			const balls = new ActionRow();
 			for (let number = 1; number <= 5; number++) {
