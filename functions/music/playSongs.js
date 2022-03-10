@@ -101,11 +101,17 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			collector.on('collect', async interaction => {
 				// Check if the user is the requester
 				if (requester.user.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t search this query!' });
+				interaction.deferUpdate();
 				playSongs(requester, msg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
+				await msg.edit({ content: `<:play:${play}> **Selected result #${interaction.customId}**`, embeds: [], components: [] })
+					.then(() => collector.stop());
 			});
 
 			// When the collector stops, remove the undo button from it
-			collector.on('end', () => msg.edit({ content: `<:alert:${warn}> Search query selection timed out.`, embeds: [] }));
+			collector.on('end', () => {
+				if (msg.content.startsWith(`<:play:${play}> `)) return;
+				msg.edit({ content: `<:alert:${warn}> Search query selection timed out.`, embeds: [], components: [] });
+			});
 
 			return;
 		}
@@ -173,6 +179,9 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 	// If the player isn't playing, play it
 	if (!player.playing) await player.play();
+
+	// Search command reminder
+	PlayEmbed.setFooter({ text: 'Not quite the right result? Get a better one with the search command!' });
 
 	// Send embed
 	msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
