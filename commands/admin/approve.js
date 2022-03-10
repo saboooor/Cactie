@@ -1,5 +1,6 @@
 const { PermissionsBitField } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
+const { yes } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'approve',
 	description: 'Approve a suggestion.',
@@ -26,7 +27,7 @@ module.exports = {
 				approving = await message.channel.parent.messages.fetch({ around: message.channel.id, limit: 1 });
 				fetchedMsg = approving ? approving.first() : null;
 			}
-			if (!fetchedMsg) return message.reply({ content: 'Could not find the message, try doing the command in the channel the suggestion was sent in?' });
+			if (!fetchedMsg) return client.error('Could not find the message, try doing the command in the channel the suggestion was sent in?', message, true);
 
 			// Check if message was sent by the bot
 			if (fetchedMsg.author != client.user) return;
@@ -37,7 +38,7 @@ module.exports = {
 
 			// Remove all reactions and set color to green and approved title
 			fetchedMsg.reactions.removeAll();
-			ApproveEmbed.setColor(0x2ECC71).setTitle('Suggestion (Approved)');
+			ApproveEmbed.setColor(0x2ECC71).setTitle(`<:yes:${yes}> Suggestion (Approved)`);
 
 			// Fetch results / reactions and add field if not already added
 			const emojis = [];
@@ -61,7 +62,7 @@ module.exports = {
 			if (thread) {
 				if (!message.guild.me.permissions.has(PermissionsBitField.Flags.ManageThreads) || !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageThreads)) {
 					client.logger.error(`Missing ManageThreads permission in #${message.channel.name} at ${message.guild.name}`);
-					return message.reply({ content: 'I don\'t have the ManageThreads permission!' });
+					return client.error('I don\'t have the ManageThreads permission!', message, true);
 				}
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {
