@@ -14,16 +14,16 @@ module.exports = {
 		try {
 			// Get user and check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return message.reply({ content: 'Invalid User! Are they in this server?' });
+			if (!member) return client.error('Invalid User! Are they in this server?', message, true);
 			const user = member.user;
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: `You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!` });
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!`, message, true);
 
 			// Get amount of time to ban, if not specified, then permanent
 			const time = ms(args[1] ? args[1] : 'perm');
-			if (time > 31536000000) return message.reply({ content: 'You cannot ban someone for more than 1 year!' });
+			if (time > 31536000000) return client.error('You cannot ban someone for more than 1 year!', message, true);
 
 			// Create embed and check if bqn has a reason / time period
 			const BanEmbed = new Embed()

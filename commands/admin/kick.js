@@ -14,11 +14,11 @@ module.exports = {
 			// Get user and check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			const user = member.user;
-			if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
+			if (!user) return client.error('Invalid User! Are they in this server?', message, true);
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: `You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!` });
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!`, message, true);
 
 			// Create embed
 			const KickEmbed = new Embed()

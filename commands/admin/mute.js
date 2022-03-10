@@ -15,27 +15,27 @@ module.exports = {
 			// Get mute role and check if role is valid
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
-			if (!role && srvconfig.mutecmd != 'timeout') return message.reply({ content: 'This command is disabled!' });
+			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
 
 			// Get user and check if user is valid
 			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return message.reply({ content: 'Invalid User! Are they in this server?' });
+			if (!user) return client.error('Invalid User! Are they in this server?', message, true);
 
 			// Get member and author and check if role is lower than member's role
 			const member = message.guild.members.cache.get(user.id);
 			const author = message.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return message.reply({ content: `You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!` });
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!`, message, true);
 
 			// Check if user is muted
-			if (role && member.roles.cache.has(role.id)) return message.reply({ content: 'This user is already muted! Try unmuting instead.' });
+			if (role && member.roles.cache.has(role.id)) return client.error('This user is already muted! Try unmuting instead.', message, true);
 
 			// Check if duration is set and if it's more than a year
 			const time = ms(args[1] ? args[1] : 'perm');
-			if (role && time > 31536000000) return message.reply({ content: 'You cannot mute someone for more than 1 year!' });
+			if (role && time > 31536000000) return client.error('You cannot mute someone for more than 1 year!', message, true);
 
 			// Timeout feature can't mute someone for more than 30 days
-			else if (time > 2592000000) return message.reply({ content: 'You cannot mute someone for more than 30 days with the timeout feature turned on!' });
-			if (isNaN(time) && srvconfig.mutecmd == 'timeout') return message.reply({ content: 'You cannot mute someone forever with the timeout feature turned on!' });
+			else if (time > 2592000000) return client.error('You cannot mute someone for more than 30 days with the timeout feature turned on!', message, true);
+			if (isNaN(time) && srvconfig.mutecmd == 'timeout') return client.error('You cannot mute someone forever with the timeout feature turned on!', message, true);
 
 			// Create embed and check if duration / reason are set and do stuff
 			const MuteEmbed = new Embed()
