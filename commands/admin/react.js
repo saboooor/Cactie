@@ -17,25 +17,13 @@ module.exports = {
 			if (!messagelink[4]) messagelink[4] = message.guild.id;
 			if (!messagelink[5]) messagelink[5] = message.channel.id;
 			if (!messagelink[6]) messagelink[6] = args[0];
-			if (messagelink[4] != message.guild.id) {
-				ReactEmbed.setTitle('That message is not in this server!');
-				return message.reply({ embeds: [ReactEmbed] });
-			}
+			if (messagelink[4] != message.guild.id) return client.error('That message is not in this server!', message, true);
 			const channel = await message.guild.channels.cache.get(messagelink[5]);
-			if (!channel) {
-				ReactEmbed.setTitle('That channel doesn\'t exist!');
-				return message.reply({ embeds: [ReactEmbed] });
-			}
+			if (!channel) return client.error('That channel doesn\'t exist!', message, true);
 			const msgs = await channel.messages.fetch({ around: messagelink[6], limit: 1 });
 			const fetchedMsg = msgs.first();
-			if (!fetchedMsg) {
-				ReactEmbed.setTitle('That message doesn\'t exist!');
-				return message.reply({ embeds: [ReactEmbed] });
-			}
-			await fetchedMsg.react(args[1]).catch(e => {
-				ReactEmbed.setTitle('Reaction failed!')
-					.setDescription(`\`${e}\`\nUse an emote from a server that Pup is in or an emoji.`);
-			});
+			if (!fetchedMsg) return client.error('That message doesn\'t exist!');
+			await fetchedMsg.react(args[1]).catch(e => { return client.error(`Reaction failed!\n\`${e}\`\nUse an emote from a server that Pup is in or an emoji.`, message, true); });
 			message.reply({ embeds: [ReactEmbed] });
 		}
 		catch (err) { client.error(err, message); }
