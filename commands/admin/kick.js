@@ -26,10 +26,10 @@ module.exports = {
 				.setTitle(`Kicked ${user.tag}.`);
 
 			// Add reason if specified
-			if (args[2]) KickEmbed.addFields({ name: 'Reason', value: args.slice(2).join(' ') });
+			if (args[1]) KickEmbed.addFields({ name: 'Reason', value: args.slice(1).join(' ') });
 
 			// Send kick message to target
-			await user.send({ content: `**You've been kicked from ${message.guild.name}.${args[2] ? ` Reason: ${args.slice(2).join(' ')}` : ''}**` })
+			await user.send({ content: `**You've been kicked from ${message.guild.name}.${args[1] ? ` Reason: ${args.slice(1).join(' ')}` : ''}**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
