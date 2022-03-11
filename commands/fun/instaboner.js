@@ -12,34 +12,30 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
 
-			// Get name of author, or user if specified
-			const name = message.member.displayName;
-			let nick = args[0] ? args[0] : name;
-
-			// Check if arg is set and is a mention and fetch that user for the name
-			if (args[0] && nick.startsWith('<@') && nick.endsWith('>')) {
-				const mention = nick.replace(/\D/g, '');
-				nick = client.users.cache.get(mention).username;
+			// Check if arg is a user and set it
+			let user = null;
+			if (args[0]) {
+				user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+				if (user) args[0] = user.displayName;
 			}
-
-			// Randomly pick between hard or soft
-			const hard = Math.round(Math.random());
-			const hardtxt = hard == 1 ? 'soft' : 'hard';
 
 			// Create initial embed
 			const ppEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle(`${nick}'s ${hardtxt} pp size`);
+				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`);
+
+			// Randomly pick between hard or soft
+			const hard = Math.round(Math.random());
 
 			// Chance of getting a SIKE u have no pp
 			if (Math.round(Math.random() * 10) == 5) {
-				ppEmbed.setDescription('SIKE').setFooter({ text: `${nick} has no pp` });
+				ppEmbed.setDescription('SIKE').setFooter({ text: `${args[0] ? args.join(' ') : message.member.displayName} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}` });
 				return message.reply({ embeds: [ppEmbed] });
 			}
 
 			// Get random number out of the maxppsize for the amount of inches and set the description and footer to size then reply
 			const random = Math.round(Math.random() * srvconfig.maxppsize);
-			ppEmbed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hardtxt} pp size = ${random}"` });
+			ppEmbed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"` });
 			message.reply({ embeds: [ppEmbed] });
 		}
 		catch (err) { client.error(err, message); }
