@@ -10,8 +10,8 @@ module.exports = {
 			// Check if arg is a user and set it
 			let user = null;
 			if (args[0]) {
-				user = client.users.cache.get(args[0].replace(/\D/g, ''));
-				if (user) args[0] = user.username;
+				user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+				if (user) args[0] = user.displayName;
 			}
 
 			// Get random index of gif list

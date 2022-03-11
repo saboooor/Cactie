@@ -9,8 +9,8 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if arg is a user and set it
-			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (user) args[0] = user.username;
+			const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (user) args[0] = user.displayName;
 
 			// Get random index of gif list
 			const i = Math.floor(Math.random() * kill.length);

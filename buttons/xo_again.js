@@ -26,10 +26,10 @@ module.exports = {
 		const lines = TicTacToe.description.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
 		const ouserId = lines[1].split('**O:** ')[1].replace(/\D/g, '');
-		if (xuserId != interaction.member.user.id && ouserId != interaction.member.user.id) return interaction.member.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
+		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
-		if (!xuser || !ouser) return interaction.member.user.send({ content: 'Invalid User! Have they left the server?' });
+		if (!xuser || !ouser) return interaction.user.send({ content: 'Invalid User! Have they left the server?' });
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
@@ -44,15 +44,15 @@ module.exports = {
 			}
 		}
 		TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser.user : ouser.user}` })
+			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` })
 			.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 
-		const msg = await interaction.message.edit({ content: `${turn ? xuser.user : ouser.user}`, embeds: [TicTacToe], components: rows });
+		const msg = await interaction.message.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
 
 		const collector = msg.createMessageComponentCollector({ time: 3600000 });
 		collector.on('collect', async btninteraction => {
 			if (btninteraction.customId == 'xo_again') return;
-			if (btninteraction.user.id != (turn ? xuser.user.id : ouser.user.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+			if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			btninteraction.deferUpdate();
 			const btn = btns[btninteraction.customId];
 			if (btn.style == ButtonStyle.Secondary) {
@@ -62,7 +62,7 @@ module.exports = {
 			}
 			turn = !turn;
 			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser.user : ouser.user}` })
+				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` })
 				.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
 			const reslist = Object.keys(btns).map(i => { return `${btns[i].data.style}`; });
@@ -91,7 +91,7 @@ module.exports = {
 			}
 
 			// Go on to next turn if no matches
-			msg.edit({ content: `${turn ? xuser.user : ouser.user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+			msg.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 		});
 
 		collector.on('end', () => {

@@ -30,7 +30,7 @@ module.exports = {
 			const ShuffleEmbed = new Embed()
 				.setColor(Math.round(Math.random() * 16777215))
 				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
-				.setFooter({ text: interaction.member.user.tag, iconURL: interaction.member.user.displayAvatarURL() });
+				.setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
 			await interaction.channel.send({ embeds: [ShuffleEmbed] });
 		}
 		catch (err) { client.error(err, interaction); }

@@ -30,7 +30,7 @@ module.exports = {
 	async execute(message, args, client) {
 		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!user) return client.error('Invalid User!', message, true);
-		if (user.user.id == message.member.user.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
+		if (user.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
@@ -47,17 +47,17 @@ module.exports = {
 		const TicTacToe = new Embed()
 			.setColor(turn ? 0xff0000 : 0x0000ff)
 			.setTitle('Tic Tac Toe')
-			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member.user : user.user}` })
+			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : user}` })
 			.setThumbnail(turn ? message.member.user.avatarURL() : user.user.avatarURL())
-			.setDescription(`**X:** ${message.member.user}\n**O:** ${user.user}`);
+			.setDescription(`**X:** ${message.member}\n**O:** ${user}`);
 
-		const msg = await message.reply({ content: `${turn ? message.member.user : user.user}`, embeds: [TicTacToe], components: rows });
+		const msg = await message.reply({ content: `${turn ? message.member : user}`, embeds: [TicTacToe], components: rows });
 
 		const collector = msg.createMessageComponentCollector({ time: 3600000 });
 
 		collector.on('collect', async interaction => {
 			if (interaction.customId == 'xo_again') return;
-			if (interaction.user.id != (turn ? message.member.user.id : user.user.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+			if (interaction.user.id != (turn ? message.member.id : user.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			interaction.deferUpdate();
 			const btn = btns[interaction.customId];
 			if (btn.style == ButtonStyle.Secondary) {
@@ -67,7 +67,7 @@ module.exports = {
 			}
 			turn = !turn;
 			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member.user : user.user}` })
+				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : user}` })
 				.setThumbnail(turn ? message.member.user.avatarURL() : user.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
 			const reslist = Object.keys(btns).map(i => { return `${btns[i].data.style}`; });
@@ -96,7 +96,7 @@ module.exports = {
 			}
 
 			// Go on to next turn if no matches
-			msg.edit({ content: `${turn ? message.member.user : user.user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+			msg.edit({ content: `${turn ? message.member : user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 		});
 
 		collector.on('end', () => {

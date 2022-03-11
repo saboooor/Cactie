@@ -24,7 +24,7 @@ module.exports = {
 
 				// Get list of users for embed
 				const users = [];
-				await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
+				await ticketData.users.forEach(userid => users.push(interaction.guild.members.cache.get(userid).user));
 
 				// Create embed
 				const DelEmbed = new Embed()

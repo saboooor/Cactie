@@ -51,7 +51,7 @@ module.exports = async (client) => {
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const role = await guild.roles.cache.get(srvconfig.mutecmd);
 				if (member && role) {
-					member.user.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
+					member.send({ content: '**You have been unmuted**' }).catch(e => { client.logger.warn(e); });
 					await member.roles.remove(role);
 				}
 				await client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);

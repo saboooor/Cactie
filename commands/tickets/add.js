@@ -24,27 +24,27 @@ module.exports = {
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 
 			// Check if user is valid
-			const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
-			if (!user) return client.error('Invalid User!', message, true);
+			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!member) return client.error('Invalid User!', message, true);
 
 			// Check if user is already in the ticket, if not, add them to the ticket data
-			if (ticketData.users.includes(user.id)) return message.reply({ content: 'This user has already been added!' });
-			ticketData.users.push(user.id);
+			if (ticketData.users.includes(member.id)) return message.reply({ content: 'This user has already been added!' });
+			ticketData.users.push(member.id);
 			client.setData('ticketdata', 'channelId', message.channel.id, 'users', ticketData.users.join(','));
 
 			// If the ticket has a voiceticket, give permissions to the user there
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
 				const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
-				voiceticket.permissionOverwrites.edit(user, { ViewChannel: true });
+				voiceticket.permissionOverwrites.edit(member, { ViewChannel: true });
 			}
 
 			// Give permissions to the user and reply
-			message.channel.permissionOverwrites.edit(user, { ViewChannel: true });
+			message.channel.permissionOverwrites.edit(member, { ViewChannel: true });
 			const AddEmbed = new Embed()
 				.setColor(0xFF6400)
-				.setDescription(`${message.member.user} added ${user} to the ticket`);
+				.setDescription(`${message.member.user} added ${member} to the ticket`);
 			message.reply({ embeds: [AddEmbed] });
-			client.logger.info(`Added ${user.username} to #${message.channel.name}`);
+			client.logger.info(`Added ${member.user.tag} to #${message.channel.name}`);
 		}
 		catch (err) { client.error(err, message); }
 	},

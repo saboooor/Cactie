@@ -25,7 +25,7 @@ module.exports = {
 			if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 
 			// Create voice channel for voiceticket
-			const author = client.users.cache.get(ticketData.opener);
+			const author = interaction.guild.members.cache.get(ticketData.opener).user;
 			const voiceticket = await interaction.guild.channels.create(`Voiceticket${client.user.username.replace('Pup', '')} ${author.username}`, {
 				type: ChannelType.GuildVoice,
 				parent: parent.id,

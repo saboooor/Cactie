@@ -17,20 +17,17 @@ module.exports = {
 			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
 
 			// Get user and check if user is valid
-			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return client.error('Invalid User!', message, true);
-
-			// Get member and author and check if role is lower than member's role
-			const member = message.guild.members.cache.get(user.id);
+			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!member) return client.error('Invalid Member! Are they in this server?', message, true);
 
 			// Check if user is unmuted
 			if (role && !member.roles.cache.has(role.id)) return client.error('This user is not muted!', message, true);
 
 			// Reset the mute timer
-			if (role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', 0);
+			if (role) await client.setData('memberdata', 'memberId', `${member.id}-${message.guild.id}`, 'mutedUntil', 0);
 
 			// Send unmute message to user
-			await user.send({ content: '**You\'ve been unmuted**' })
+			await member.send({ content: '**You\'ve been unmuted**' })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
@@ -43,11 +40,11 @@ module.exports = {
 			// Create embed with color and title
 			const UnmuteEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle(`Unmuted ${user.tag}`);
+				.setTitle(`Unmuted ${member.user.tag}`);
 
 			// Reply with unban log
 			message.reply({ embeds: [UnmuteEmbed] });
-			client.logger.info(`Unmuted ${user.tag} in ${message.guild.name}`);
+			client.logger.info(`Unmuted ${member.user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);

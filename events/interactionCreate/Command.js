@@ -72,7 +72,7 @@ module.exports = async (client, interaction) => {
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '765287593762881616') {
 		// Get vote data for user
-		const vote = await client.getData('lastvoted', 'userId', interaction.member.user.id);
+		const vote = await client.getData('lastvoted', 'userId', interaction.user.id);
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (Date.now() > vote.timestamp + 86400000) {

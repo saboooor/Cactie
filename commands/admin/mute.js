@@ -18,11 +18,10 @@ module.exports = {
 			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
 
 			// Get user and check if user is valid
-			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return client.error('Invalid User! Are they in this server?', message, true);
+			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!member) return client.error('Invalid Member! Are they in this server?', message, true);
 
-			// Get member and author and check if role is lower than member's role
-			const member = message.guild.members.cache.get(user.id);
+			// Get author and check if role is lower than member's role
 			const author = message.member;
 			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!`, message, true);
 
@@ -40,26 +39,26 @@ module.exports = {
 			// Create embed and check if duration / reason are set and do stuff
 			const MuteEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle(`Muted ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+				.setTitle(`Muted ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 			// Add reason if specified
 			const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
 			if (reason) MuteEmbed.addFields({ name: 'Reason', value: reason });
 
 			// Send mute message to target
-			await user.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+			await member.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
 				.catch(e => {
 					client.logger.warn(e);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			client.logger.info(`Muted user: ${user.tag} in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+			client.logger.info(`Muted user: ${member.user.tag} in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set member data for unmute time if set
-			if (!isNaN(time) && role) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
+			if (!isNaN(time) && role) await client.setData('memberdata', 'memberId', `${member.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);
 
 			// Actually mute the dude (add role)
 			if (role) await member.roles.add(role);
-			else await member.timeout(time, `Muted by ${message.member.user.tag} for ${args.slice(1).join(' ')}`);
+			else await member.timeout(time, `Muted by ${author.user.tag} for ${args.slice(1).join(' ')}`);
 
 			// Reply to command
 			message.reply({ embeds: [MuteEmbed] });
@@ -67,7 +66,7 @@ module.exports = {
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				MuteEmbed.setTitle(`${message.member.user.tag} ${MuteEmbed.title}`);
+				MuteEmbed.setTitle(`${author.user.tag} ${MuteEmbed.title}`);
 				logchannel.send({ embeds: [MuteEmbed] });
 			}
 		}

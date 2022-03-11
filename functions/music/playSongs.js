@@ -99,7 +99,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			const collector = msg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the user is the requester
-				if (requester.user.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t search this query!' });
+				if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t search this query!' });
 				interaction.deferUpdate();
 				playSongs(requester, msg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
 				await msg.edit({ content: `<:play:${play}> **Selected result #${interaction.customId}**`, embeds: [], components: [] })
@@ -191,7 +191,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		// Check if button is actually the undo button
 		if (interaction.customId != 'music_undo') return;
 		// Check if the user is the requester
-		if (requester.user.id != interaction.member.user.id) return interaction.member.user.send({ content: 'You didn\'t request this song!' });
+		if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t request this song!' });
 		// Remove each song from the queue
 		for (const song of songs) {
 			const i = player.queue.indexOf(song);
