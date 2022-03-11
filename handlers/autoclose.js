@@ -27,11 +27,11 @@ module.exports = client => {
 					await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 				}
 				await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
-				await data.users.forEach(userid => channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: false }));
+				await data.users.forEach(userid => channel.permissionOverwrites.edit(channel.guild.members.cache.get(userid), { ViewChannel: false }));
 				const messages = await channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const users = [];
-				await data.users.forEach(userid => users.push(client.users.cache.get(userid)));
+				await data.users.forEach(userid => users.push(channel.guild.members.cache.get(userid)));
 				const CloseDMEmbed = new Embed()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)

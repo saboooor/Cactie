@@ -235,7 +235,7 @@ module.exports = async (client, message) => {
 			.addFields({ name: '**Channel:**', value: message.channel.name })
 			.addFields({ name: '**INTERACTION:**', value: srvconfig.prefix + command.name })
 			.addFields({ name: '**Error:**', value: `${clean(err)}` });
-		client.users.cache.get('249638347306303499').send({ embeds: [interactionFailed] });
+		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
 		client.logger.error(err);
 	}

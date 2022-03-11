@@ -24,7 +24,7 @@ module.exports = {
 			await sleep(1000);
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to open ticket, please try again in 10 minutes' });
 			ticketData.users.forEach(userid => {
-				message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: true });
+				message.channel.permissionOverwrites.edit(message.guild.members.cache.get(userid), { ViewChannel: true });
 			});
 			const OpenEmbed = new Embed()
 				.setColor(0xFF6400)

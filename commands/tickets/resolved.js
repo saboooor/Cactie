@@ -15,7 +15,7 @@ module.exports = {
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
 			if (ticketData.resolved == 'true') return message.reply({ content: 'This ticket is already marked as resolved!' });
 			const users = [];
-			ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
+			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'resolved', 'true');
 			message.reply({ content: `${users}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });
 			client.logger.info(`Marked ticket #${message.channel.name} as resolved`);

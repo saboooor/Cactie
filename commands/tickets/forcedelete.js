@@ -23,7 +23,7 @@ module.exports = {
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
 			const users = [];
-			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
+			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
 			const DelEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${message.channel.name}`)

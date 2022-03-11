@@ -5,7 +5,7 @@ module.exports = client => {
 			client.logger.info(`${table} deleted for ${args}!`);
 		}
 		catch (err) {
-			await client.users.cache.get('249638347306303499').send({ content: `${err}` });
+			client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: `<@&839158574138523689> ${err}` });
 			client.logger.error(`Error deleting ${table}: ${err}`);
 		}
 		return;

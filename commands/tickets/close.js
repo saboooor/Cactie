@@ -65,7 +65,7 @@ module.exports = {
 
 			// Get rid of the permissions of the users in the tickets from the ticket itself
 			ticketData.users.forEach(userid => {
-				message.channel.permissionOverwrites.edit(client.users.cache.get(userid), { ViewChannel: false });
+				message.channel.permissionOverwrites.edit(message.guild.members.cache.get(userid), { ViewChannel: false });
 			});
 
 			// Create a transcript of the ticket
@@ -74,7 +74,7 @@ module.exports = {
 
 			// Get all the users and send the embed to their DMs
 			const users = [];
-			await ticketData.users.forEach(userid => users.push(client.users.cache.get(userid)));
+			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
 			const CloseDMEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)

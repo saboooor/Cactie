@@ -9,5 +9,5 @@ module.exports = async (client, member) => {
 	const muterole = member.guild.roles.cache.get(srvconfig.mutecmd);
 	const memberdata = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}-${member.guild.id}'`);
 	if (memberdata[0] && memberdata[0].mutedUntil != 0 && muterole) member.roles.add(muterole);
-	member.guild.systemChannel.send({ content: srvconfig.joinmessage.replace(/{USER MENTION}/g, client.users.cache.get(member.id)).replace(/{USER TAG}/g, client.users.cache.get(member.id).tag) });
+	member.guild.systemChannel.send({ content: srvconfig.joinmessage.replace(/{USER MENTION}/g, `${member}`).replace(/{USER TAG}/g, member.user.tag) });
 };
