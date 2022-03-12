@@ -1,5 +1,5 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
-const msg = require('../../lang/en/msg.json');
+const msg = require('../lang/en/msg.json');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
