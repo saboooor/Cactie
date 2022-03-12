@@ -16,7 +16,7 @@ module.exports = {
 			const SettingsEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Bot Settings');
-			const components = [];
+			const components = []; let configlist = null;
 			// Check if arg is set or is 'reset'
 			if (args[1] != null && args[0] != 'reset') {
 				// Set prop variable to first argument
@@ -83,7 +83,9 @@ module.exports = {
 			}
 			else if (args[0] == 'reset') {
 				// Set title to 'SETTINGS RESET'
-				SettingsEmbed.setTitle('**SETTINGS RESET**');
+				SettingsEmbed.setTitle('**SETTINGS RESET**')
+					.setDescription('Do you want to reset all settings to their default values?')
+					.setFooter({ text: 'You only have 30 seconds to respond.' });
 
 				// Add buttons for reset confirm / deny
 				const row = new ActionRow()
@@ -104,7 +106,7 @@ module.exports = {
 			else {
 				// Get settings and make an array out of it to split and make pages
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-				const configlist = Object.keys(srvconfig).map(prop => {
+				configlist = Object.keys(srvconfig).map(prop => {
 					return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 				});
 				const maxPages = Math.ceil(configlist.length / 5);
@@ -119,11 +121,11 @@ module.exports = {
 				const row = new ActionRow()
 					.addComponents(
 						new ButtonComponent()
-							.setCustomId('settings_prev')
+							.setCustomId('settings_page_prev')
 							.setEmoji({ id: left })
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
-							.setCustomId('settings_next')
+							.setCustomId('settings_page_next')
 							.setEmoji({ id: right })
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
@@ -149,15 +151,17 @@ module.exports = {
 			// Send Embed with buttons
 			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: components });
 
-			if (args[0] == 'reset') {
-				const collector = SettingsMsg.createMessageComponentCollector({ time: 30000 });
+			if (args[0] == 'reset' || !args[1]) {
+				const collector = SettingsMsg.createMessageComponentCollector({ time: args[0] == 'reset' ? 30000 : 120000 });
 				collector.on('collect', async interaction => {
 					// Check if the button is one of the settings buttons
 					if (!interaction.customId.startsWith('settings_')) return;
 					interaction.deferUpdate();
 
+					const button = interaction.component.customId.split('_');
+
 					// Check if button is confirm reset or nevermind
-					if (interaction.component.customId == 'settings_reset') {
+					if (button[1] == 'reset') {
 						// Delete settings database for guild and reply
 						client.delData('settings', 'guildId', interaction.guild.id);
 						SettingsEmbed.setDescription('Settings successfully reset!');
@@ -167,9 +171,27 @@ module.exports = {
 						await sleep(5000);
 						await collector.stop();
 					}
-					else if (interaction.component.customId == 'settings_nevermind') {
+					else if (button[1] == 'nevermind') {
 						// Delete message and command message
 						await collector.stop();
+					}
+					else if (button[1] == 'page') {
+						// Calculate total amount of pages and get current page from embed footer
+						const maxPages = Math.ceil(configlist.length / 5);
+						const lastPage = parseInt(SettingsEmbed.footer ? SettingsEmbed.footer.text.split(' ')[1] : maxPages);
+
+						// Get next page (if last page, go to pg 1)
+						// Or get prev page (if first page, go to last page)
+						const next = lastPage + 1 == maxPages + 1 ? 1 : lastPage + 1;
+						const prev = lastPage - 1 ? lastPage - 1 : maxPages;
+						const page = button[2] == 'prev' ? prev : next;
+						const end = page * 5;
+						const start = end - 5;
+
+						// Update embed description with new page and reply
+						SettingsEmbed.setDescription(configlist.slice(start, end).join('\n'))
+							.setFooter({ text: `Page ${page > maxPages ? maxPages : page} of ${maxPages}` });
+						SettingsMsg.edit({ embeds: [SettingsEmbed] });
 					}
 				});
 
