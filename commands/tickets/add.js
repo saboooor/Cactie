@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket',
@@ -25,7 +26,7 @@ module.exports = {
 
 			// Check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error('Invalid User!', message, true);
+			if (!member) return client.error(msg.invalidmember, message, true);
 
 			// Check if user is already in the ticket, if not, add them to the ticket data
 			if (ticketData.users.includes(member.id)) return message.reply({ content: 'This user has already been added!' });

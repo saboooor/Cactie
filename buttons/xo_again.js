@@ -1,6 +1,7 @@
 const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../lang/int/emoji.json');
-function EndXO(btns, a, b, c, TicTacToe, msg, xuser, ouser, rows) {
+const msg = require('../lang/en/msg.json');
+function EndXO(btns, a, b, c, TicTacToe, xomsg, xuser, ouser, rows) {
 	btns[a].setStyle(ButtonStyle.Success);
 	btns[b].setStyle(ButtonStyle.Success);
 	btns[c].setStyle(ButtonStyle.Success);
@@ -9,7 +10,7 @@ function EndXO(btns, a, b, c, TicTacToe, msg, xuser, ouser, rows) {
 	TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
 		.setFields({ name: 'Result:', value: `${xwin ? xuser : ouser} wins!` })
 		.setThumbnail(xwin ? xuser.avatarURL() : ouser.avatarURL());
-	msg.edit({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
+	xomsg.edit({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
 }
 module.exports = {
 	name: 'xo_again',
@@ -29,7 +30,7 @@ module.exports = {
 		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
-		if (!xuser || !ouser) return interaction.user.send({ content: 'Invalid User! Have they left the server?' });
+		if (!xuser || !ouser) return interaction.user.send({ content: msg.invalidmember });
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
@@ -47,9 +48,9 @@ module.exports = {
 			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` })
 			.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 
-		const msg = await interaction.message.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
+		const xomsg = await interaction.message.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
 
-		const collector = msg.createMessageComponentCollector({ time: 3600000 });
+		const collector = xomsg.createMessageComponentCollector({ time: 3600000 });
 		collector.on('collect', async btninteraction => {
 			if (btninteraction.customId == 'xo_again') return;
 			if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
@@ -87,16 +88,16 @@ module.exports = {
 					.setFields({ name: 'Result:', value: 'Draw!' })
 					.setThumbnail();
 				rows.push(again);
-				return msg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
+				return xomsg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
 			}
 
 			// Go on to next turn if no matches
-			msg.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+			xomsg.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 		});
 
 		collector.on('end', () => {
 			if (TicTacToe.fields[0].name == 'Result:') return;
-			msg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] });
+			xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] });
 		});
 	},
 };

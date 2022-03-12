@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'unmute',
 	description: 'Unmute someone that was muted in the server',
@@ -18,7 +19,7 @@ module.exports = {
 
 			// Get user and check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error('Invalid Member! Are they in this server?', message, true);
+			if (!member) return client.error(msg.invalidmember, message, true);
 
 			// Check if user is unmuted
 			if (role && !member.roles.cache.has(role.id)) return client.error('This user is not muted!', message, true);

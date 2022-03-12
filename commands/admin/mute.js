@@ -1,4 +1,5 @@
 const { Embed } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 const ms = require('ms');
 module.exports = {
 	name: 'mute',
@@ -19,7 +20,7 @@ module.exports = {
 
 			// Get user and check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error('Invalid Member! Are they in this server?', message, true);
+			if (!member) return client.error(msg.invalidmember, message, true);
 
 			// Get author and check if role is lower than member's role
 			const author = message.member;

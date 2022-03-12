@@ -1,5 +1,6 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
+const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'avatar',
 	description: 'Get the avatar of a user',
@@ -10,7 +11,7 @@ module.exports = {
 		try {
 			let member = message.member;
 			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return message.reply({ content: 'Invalid member!' });
+			if (!member) return message.reply({ content: msg.invalidmember });
 			member.user = await member.user.fetch();
 			const memberpfp = member.avatarURL({ size: 1024 });
 			const userpfp = member.user.avatarURL({ size: 1024 });
@@ -30,10 +31,10 @@ module.exports = {
 					),
 				);
 			}
-			const msg = await message.reply({ embeds: [UsrEmbed], components: row });
+			const avatarmsg = await message.reply({ embeds: [UsrEmbed], components: row });
 
 			if (memberpfp) {
-				const collector = msg.createMessageComponentCollector({ time: 60000 });
+				const collector = avatarmsg.createMessageComponentCollector({ time: 60000 });
 
 				collector.on('collect', async interaction => {
 				// Check if the button is the avatar button
@@ -41,12 +42,12 @@ module.exports = {
 					interaction.deferUpdate();
 
 					// Toggle profile pic
-					if (UsrEmbed.image.url == memberpfp) return msg.edit({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
-					if (UsrEmbed.image.url == userpfp) return msg.edit({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
+					if (UsrEmbed.image.url == memberpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
+					if (UsrEmbed.image.url == userpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
 				});
 
 				// When the collector stops, remove the button from it
-				collector.on('end', () => { msg.edit({ components: [] }); });
+				collector.on('end', () => { avatarmsg.edit({ components: [] }); });
 			}
 		}
 		catch (err) { client.error(err, message); }
