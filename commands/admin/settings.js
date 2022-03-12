@@ -114,8 +114,8 @@ module.exports = {
 				// Set embed description with page and stuff
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
 					.addFields({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
-					.setFooter({ text: `Page 1 of ${maxPages}` });
-				if (client.user.id == '765287593762881616') SettingsEmbed.addFields({ name: 'Too confusing?', value: msg.dashboard });
+					.setFooter({ text: msg.page.replace('-1', '1').replace('-2', maxPages) });
+				if (client.user.id == '765287593762881616') SettingsEmbed.addFields({ name: msg.dashboard.confusing, value: msg.dashboard.use });
 
 				// Add buttons for page changing
 				const row = new ActionRow()
@@ -130,7 +130,7 @@ module.exports = {
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
-							.setLabel('Dashboard')
+							.setLabel(msg.dashboard.name)
 							.setStyle(ButtonStyle.Link),
 					);
 				components.push(row);
@@ -142,7 +142,7 @@ module.exports = {
 					.addComponents(
 						new ButtonComponent()
 							.setURL('https://pup.smhsmh.club')
-							.setLabel('Dashboard')
+							.setLabel(msg.dashboard.name)
 							.setStyle(ButtonStyle.Link),
 					);
 				components.push(row);

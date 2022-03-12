@@ -1,4 +1,5 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const msg = require('../../lang/en/msg.json');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
@@ -16,7 +17,7 @@ module.exports = async (client, guild) => {
 		.addComponents(
 			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club')
-				.setLabel('Dashboard')
+				.setLabel(msg.dashboard.name)
 				.setStyle(ButtonStyle.Link),
 			new ButtonComponent()
 				.setURL('https://pup.smhsmh.club/discord')

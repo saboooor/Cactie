@@ -15,21 +15,10 @@ module.exports = {
 			const RREmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reaction Roles');
-			let components = [];
+			const components = [];
 
 			// Get reaction roles and pages
 			const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
-
-			let dashbtn = null;
-			if (client.user.id == '765287593762881616') {
-				dashbtn = [new ActionRow()
-					.addComponents(
-						new ButtonComponent()
-							.setURL('https://pup.smhsmh.club')
-							.setLabel('Dashboard')
-							.setStyle(ButtonStyle.Link),
-					)];
-			}
 
 			if (args[0] == 'add') {
 				if (!args[3]) return client.error('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>', message, true);
@@ -52,7 +41,7 @@ module.exports = {
 				if (!args[1]) return client.error('Usage: /reactionroles remove <Reaction Role Number>');
 				if (!reactionroles[0]) {
 					RREmbed.addFields({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
-					return message.reply({ embeds: [RREmbed], components: dashbtn });
+					return message.reply({ embeds: [RREmbed] });
 				}
 				const rr = reactionroles[args[1]];
 				if (!rr) return client.error('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
@@ -79,7 +68,7 @@ module.exports = {
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.fields.length > 12) {
 					RREmbed.fields.splice(12, RREmbed.fields.length);
-					RREmbed.setFooter({ text: `Page 1 of ${Math.ceil(RREmbed.fields.length / 12)}`, iconURL: message.member.user.avatarURL() });
+					RREmbed.setFooter({ text: msg.page.replace('-1', '1').replace('-2', Math.ceil(RREmbed.fields.length / 12)), iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
 					const btns = new ActionRow()
@@ -93,21 +82,9 @@ module.exports = {
 								.setEmoji({ id: right })
 								.setStyle(ButtonStyle.Secondary),
 						);
-					if (client.user.id == '765287593762881616') {
-						btns.addComponents(
-							new ButtonComponent()
-								.setURL('https://pup.smhsmh.club')
-								.setLabel('Dashboard')
-								.setStyle(ButtonStyle.Link),
-						);
-					}
 					components.push(btns);
 				}
 			}
-			if (client.user.id == '765287593762881616') RREmbed.addFields({ name: 'Too confusing?', value: `${msg.dashboard} REACTION ROLES COMING SOON` });
-
-			// If there aren't any buttons, add a button for dashboard
-			if (!components[0]) components = dashbtn;
 
 			// Send Embed with buttons
 			message.reply({ embeds: [RREmbed], components: components });

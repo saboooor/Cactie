@@ -1,6 +1,7 @@
 const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { left, right } = require('../../lang/int/emoji.json');
+const msg = require('../../lang/en/msg.json');
 const YAML = require('yaml');
 const fs = require('fs');
 const createField = require('./createField.js');
@@ -230,7 +231,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	if (issues.length >= 13) {
 		TimingsEmbed.fields.splice(12, issues.length);
 		TimingsEmbed.addFields({ name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
-		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: message.member.user.avatarURL() });
+		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • ${msg.page.replace('-1', '1').replace('-2', Math.ceil(issues.length / 12))}`, iconURL: message.member.user.avatarURL() });
 		components.push(
 			new ActionRow()
 				.addComponents(

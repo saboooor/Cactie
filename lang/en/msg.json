@@ -1,11 +1,15 @@
 {
-    "dashboard": "Use the dashboard!",
     "off": "Off",
     "on": "On",
     "refresh": "Refresh",
     "rolereq": "You need the -r role to do that!",
     "permreq": "You need the -p permission to do that!",
     "page": "Page -1 of -2",
+    "dashboard": {
+        "name": "Dashboard",
+        "use": "Use the dashboard!",
+        "confusing": "Too confusing?"
+    },
     "ping": {
         "pong": "Pong!",
         "latency": "Message Latency",
