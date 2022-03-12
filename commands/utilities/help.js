@@ -49,46 +49,54 @@ module.exports = {
 				}
 			}
 			else {
-				HelpEmbed.setDescription('\n\nPlease use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
+				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
 			}
 			const row = new ActionRow()
 				.addComponents(
 					new UnsafeSelectMenuComponent()
-						.setCustomId('select')
+						.setCustomId('help_menu')
 						.setPlaceholder('Select a help category!')
 						.setOptions(
 							new SelectMenuOption()
 								.setLabel('Admin')
 								.setDescription('These commands require specific permissions')
-								.setValue('help_admin'),
+								.setValue('help_admin')
+								.setDefault(arg == 'admin'),
 							new SelectMenuOption()
 								.setLabel('Fun')
 								.setDescription('These commands are made just for fun')
-								.setValue('help_fun'),
+								.setValue('help_fun')
+								.setDefault(arg == 'fun'),
 							new SelectMenuOption()
 								.setLabel('Animals')
 								.setDescription('These commands show cute animals')
-								.setValue('help_animals'),
+								.setValue('help_animals')
+								.setDefault(arg == 'animals'),
 							new SelectMenuOption()
 								.setLabel('Music')
 								.setDescription('These commands play music in your voice chat')
-								.setValue('help_music'),
+								.setValue('help_music')
+								.setDefault(arg == 'music'),
 							new SelectMenuOption()
 								.setLabel('NSFW')
 								.setDescription('These commands have sensitive content that is NSFW')
-								.setValue('help_nsfw'),
+								.setValue('help_nsfw')
+								.setDefault(arg == 'nsfw'),
 							new SelectMenuOption()
 								.setLabel('Tickets')
 								.setDescription('These commands are related to Pup\'s tickets system')
-								.setValue('help_tickets'),
+								.setValue('help_tickets')
+								.setDefault(arg == 'tickets'),
 							new SelectMenuOption()
 								.setLabel('Utilities')
 								.setDescription('These commands are useful for some situations')
-								.setValue('help_utilities'),
+								.setValue('help_utilities')
+								.setDefault(arg == 'utilities'),
 							new SelectMenuOption()
 								.setLabel('Actions')
 								.setDescription('These commands let you do stuff to people idk')
-								.setValue('help_actions'),
+								.setValue('help_actions')
+								.setDefault(arg == 'actions'),
 						),
 				);
 			const row2 = new ActionRow()
@@ -102,7 +110,23 @@ module.exports = {
 						.setLabel('Donate')
 						.setStyle(ButtonStyle.Link),
 				);
-			message.reply({ embeds: [HelpEmbed], components: [row, row2] });
+			const msg = await message.reply({ embeds: [HelpEmbed], components: [row, row2] });
+
+			const collector = msg.createMessageComponentCollector({ time: 3600000 });
+			collector.on('collect', async interaction => {
+				if (interaction.customId != 'help_menu') return;
+				await interaction.deferUpdate();
+				HelpEmbed.setFields();
+				if (interaction.values[0] == 'help_nsfw' && !msg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
+				else require(`../../help/${interaction.values[0].split('_')[1]}.js`)(prefix, HelpEmbed, srvconfig);
+				row.components[0].options.forEach(option => option.setDefault(option.data.value == interaction.values[0]));
+				msg.edit({ embeds: [HelpEmbed], components: [row, row2] });
+			});
+
+			collector.on('end', () => {
+				HelpEmbed.setDescription('Help command timed out, please do the help command again if you still need a list of commands.');
+				msg.edit({ embeds: [HelpEmbed], components: [row2] });
+			});
 		}
 		catch (err) { client.error(err, message); }
 	},
