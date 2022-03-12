@@ -1,6 +1,5 @@
 const { PermissionsBitField } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
-const { yes } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'approve',
 	description: 'Approve a suggestion.',
@@ -38,14 +37,14 @@ module.exports = {
 
 			// Remove all reactions and set color to green and approved title
 			fetchedMsg.reactions.removeAll();
-			ApproveEmbed.setColor(0x2ECC71).setTitle(`<:yes:${yes}> Suggestion (Approved)`);
+			ApproveEmbed.setColor(0x2ECC71).setTitle('Suggestion (Approved)');
 
-			// Fetch results / reactions and add field if not already added
+			// Fetch result / reaction emojis and add field if not already added
 			const emojis = [];
 			await fetchedMsg.reactions.cache.forEach(reaction => {
-				let emoji = `<a:${reaction._emoji.name}:${reaction._emoji.id}> ${reaction.count}`;
-				if (!reaction._emoji.animated) emoji = emoji.replace('a', '');
-				emojis.push(emoji);
+				let emoji = client.emojis.cache.get(reaction._emoji.id);
+				if (!emoji) emoji = reaction._emoji.name;
+				emojis.push(`${emoji} **${reaction.count}**`);
 			});
 			if (!ApproveEmbed.fields && emojis[0]) ApproveEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
 
