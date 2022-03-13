@@ -43,11 +43,13 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of user deafen`);
 		player.timeout = Date.now() + 300000;
+		client.logger.info(`Timeout set to ${player.timeout}`);
 	}
 	else if (player.paused) {
 		player.pause(false);
 		client.logger.info(`Resumed player in ${newState.guild.name} because of user undeafen`);
 		player.timeout = null;
+		client.logger.info(`Timeout set to ${player.timeout}`);
 	}
 
 	switch (stateChange.type) {
@@ -56,6 +58,7 @@ module.exports = async (client, oldState, newState) => {
 			player.pause(false);
 			client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
 			player.timeout = null;
+			client.logger.info(`Timeout set to ${player.timeout}`);
 		}
 		break;
 	case 'LEAVE':
@@ -65,6 +68,7 @@ module.exports = async (client, oldState, newState) => {
 				client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
 			}
 			player.timeout = Date.now() + 300000;
+			client.logger.info(`Timeout set to ${player.timeout}`);
 		}
 		break;
 	}

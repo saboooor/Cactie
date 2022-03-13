@@ -9,4 +9,5 @@ module.exports = async (client, player) => {
 	const NowPlaying = await channel.send({ embeds: [EndEmbed] });
 	player.setNowplayingMessage(NowPlaying);
 	player.timeout = Date.now() + 300000;
+	client.logger.info(`Timeout set to ${player.timeout}`);
 };

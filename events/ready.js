@@ -45,6 +45,7 @@ module.exports = async (client) => {
 	setInterval(async () => {
 		await client.manager.players.forEach(async player => {
 			if (player.timeout && player.timeout < Date.now()) {
+				client.logger.info(player.timeout);
 				if (!player.voiceChannel) return;
 				const AlertEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
