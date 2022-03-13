@@ -43,4 +43,5 @@ module.exports = async (client, player, track) => {
 		.get(player.textChannel)
 		.send({ embeds: [thing], components: [row] });
 	player.setNowplayingMessage(NowPlaying);
+	player.timeout = null;
 };

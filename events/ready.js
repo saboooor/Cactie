@@ -1,4 +1,5 @@
 const { EmbedBuilder, ApplicationCommandType, ActivityType } = require('discord.js');
+const { warn } = require('../lang/int/emoji.json');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Game }], status: 'dnd' });
@@ -42,6 +43,22 @@ module.exports = async (client) => {
 		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }] });
 	}, 5000);
 	setInterval(async () => {
+		await client.manager.players.forEach(async player => {
+			if (player.timeout && player.timeout < Date.now()) {
+				if (!player.voiceChannel) return;
+				const AlertEmbed = new EmbedBuilder()
+					.setColor(Math.floor(Math.random() * 16777215))
+					.setDescription(`<:alert:${warn}> **Left because of 5 minutes of inactivity!**`)
+					.addFields({ name: 'Tired of me leaving?', value: 'Enable the **24/7** mode with the /247 command!' })
+					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });
+				const guild = client.guilds.cache.get(player.guild);
+				const channel = guild.channels.cache.get(player.textChannel);
+				const LeaveMsg = await channel.send({ embeds: [AlertEmbed] });
+				player.setNowplayingMessage(LeaveMsg);
+				client.logger.info(`Destroyed player in ${guild.name} because of queue end`);
+				player.destroy();
+			}
+		});
 		const memberdata = await client.query('SELECT * FROM `memberdata`');
 		memberdata.forEach(async data => {
 			if (data.mutedUntil < Date.now() && data.mutedUntil != 0) {
