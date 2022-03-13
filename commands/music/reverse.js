@@ -1,5 +1,5 @@
 const { rewind } = require('../../lang/int/emoji.json');
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'reverse',
 	description: 'Reverse queue',
@@ -29,7 +29,7 @@ module.exports = {
 
 			// Reverse queue and reply
 			player.queue.reverse();
-			const ReverseEmbed = new Embed()
+			const ReverseEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:rewind:${rewind}> **Reversed the queue**`);
 			message.reply({ embeds: [ReverseEmbed] }).catch(error => client.logger.error(error));

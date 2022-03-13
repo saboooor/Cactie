@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 const ms = require('ms');
 module.exports = {
@@ -38,7 +38,7 @@ module.exports = {
 			if (isNaN(time) && srvconfig.mutecmd == 'timeout') return client.error('You cannot mute someone forever with the timeout feature turned on!', message, true);
 
 			// Create embed and check if duration / reason are set and do stuff
-			const MuteEmbed = new Embed()
+			const MuteEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Muted ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 

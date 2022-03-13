@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'nodestats',
 	description: 'Check music backend stats',
@@ -16,7 +16,7 @@ module.exports = {
             `\n**System Load:** ${(Math.round(node.stats.cpu.systemLoad * 100) / 100).toFixed(2)}%` +
             `\n**Lavalink Load:** ${(Math.round(node.stats.cpu.lavalinkLoad * 100) / 100).toFixed(2)}%`,
 			).join('\n\n----------------------------\n');
-			const StatsEmbed = new Embed()
+			const StatsEmbed = new EmbedBuilder()
 				.setDescription(all)
 				.setColor(Math.floor(Math.random() * 16777215));
 			await message.reply({ embeds: [StatsEmbed] });

@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'unmute',
@@ -39,7 +39,7 @@ module.exports = {
 			else await member.timeout(0);
 
 			// Create embed with color and title
-			const UnmuteEmbed = new Embed()
+			const UnmuteEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Unmuted ${member.user.tag}`);
 

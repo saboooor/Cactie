@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'reopen_ticket',
 	botperm: 'ManageChannels',
@@ -25,7 +25,7 @@ module.exports = {
 			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(interaction.guild.members.cache.get(userid).user, { ViewChannel: true }); });
 
 			// Reply with ticket open message
-			const OpenEmbed = new Embed()
+			const OpenEmbed = new EmbedBuilder()
 				.setColor(0xFF6400)
 				.setDescription(`Ticket Opened by ${interaction.user}`);
 			interaction.reply({ embeds: [OpenEmbed] });

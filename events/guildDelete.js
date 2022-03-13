@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, guild) => {
 	if (!guild.available) return;
 	const player = client.manager.get(guild.id);
@@ -9,7 +9,7 @@ module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been removed from ${guild.name}`);
 	const owner = await guild.fetchOwner();
 	const timestamp = Math.round(guild.createdTimestamp / 1000);
-	const RemEmbed = new Embed()
+	const RemEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`${client.user.username} has been removed from ${guild.name}`)
 		.setThumbnail(guild.iconURL())

@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'close',
@@ -27,7 +27,7 @@ module.exports = {
 			message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
 				const messages = await message.channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
-				const CloseEmbed = new Embed()
+				const CloseEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${message.channel.name}`)
 					.addFields({ name: '**Transcript**', value: `${link}.txt` })
@@ -75,7 +75,7 @@ module.exports = {
 			// Get all the users and send the embed to their DMs
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
-			const CloseDMEmbed = new Embed()
+			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)
 				.addFields({ name: '**Users in ticket**', value: `${users}` })
@@ -88,20 +88,20 @@ module.exports = {
 			});
 
 			// Create embed
-			const CloseEmbed = new Embed()
+			const CloseEmbed = new EmbedBuilder()
 				.setColor(0xFF6400)
 				.setDescription(`Ticket Closed by ${author}`);
 
 			// If the ticket mode is set to buttons, add the buttons, if not, don't
 			if (srvconfig.tickets == 'buttons') {
-				const row = new ActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
 							.setEmoji({ name: '⛔' })
 							.setStyle(ButtonStyle.Danger),
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('reopen_ticket')
 							.setLabel('Reopen Ticket')
 							.setEmoji({ name: '🔓' })

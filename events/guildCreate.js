@@ -1,10 +1,10 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, guild) => {
 	client.logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();
 	const timestamp = Math.round(guild.createdTimestamp / 1000);
-	const AddEmbed = new Embed()
+	const AddEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`${client.user.username} has been added to ${guild.name}`)
 		.setThumbnail(guild.iconURL())
@@ -13,22 +13,22 @@ module.exports = async (client, guild) => {
 		.addFields({ name: 'Created At', value: `<t:${timestamp}>\n<t:${timestamp}:R>` });
 	client.guilds.cache.get('811354612547190794').channels.cache.get('865682839616618506').send({ embeds: [AddEmbed] });
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
-	const row = new ActionRow()
+	const row = new ActionRowBuilder()
 		.addComponents(
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setURL('https://pup.smhsmh.club')
 				.setLabel(msg.dashboard.name)
 				.setStyle(ButtonStyle.Link),
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setURL('https://pup.smhsmh.club/discord')
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setURL('https://pup.smhsmh.club/discord')
 				.setLabel('Vote on top.gg')
 				.setStyle(ButtonStyle.Link),
 		);
-	const greetingEmbed = new Embed()
+	const greetingEmbed = new EmbedBuilder()
 		.setColor(AddEmbed.color)
 		.setTitle(`Thanks for adding me to ${guild.name}!`)
 		.setDescription(`My prefix is \`${srvconfig.prefix}\`, you can change this with \`${srvconfig.prefix}settings\`\nType \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!\nThis bot has reactions to messages with keywords which at times may be annoying. To turn them off, do \`${srvconfig.prefix}settings reactions false\``)

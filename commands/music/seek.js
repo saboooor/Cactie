@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { forward, rewind } = require('../../lang/int/emoji.json');
 const ms = require('ms');
@@ -24,7 +24,7 @@ module.exports = {
 			const duration = song.duration;
 
 			// Create embed
-			const SeekEmbed = new Embed()
+			const SeekEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215));
 
 			// Check if time is less than duration, if so, then seek forward or backward and reply, or else send an error

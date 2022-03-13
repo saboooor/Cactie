@@ -1,5 +1,5 @@
 const { NodeactylClient } = require('nodeactyl');
-const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const pteroUpdate = require('../../functions/ptero/pteroUpdate.js');
 const ptero = require('../../functions/ptero/ptero.js');
 const servers = require('../../config/pterodactyl.json');
@@ -27,7 +27,7 @@ module.exports = {
 			const Client = new NodeactylClient(server.url, server.apikey);
 			const info = await Client.getServerDetails(server.id);
 			const usages = await Client.getServerUsages(server.id);
-			const PteroEmbed = new Embed()
+			const PteroEmbed = new EmbedBuilder()
 				.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
 				.setURL(`${server.url}/server/${server.id}`);
 			if (usages.current_state == 'running') PteroEmbed.setColor(0x2ECC71);
@@ -40,25 +40,25 @@ module.exports = {
 			if (usages.resources.memory_bytes) PteroEmbed.addFields({ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true });
 			if (usages.resources.network_tx_bytes) PteroEmbed.addFields({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
 			if (usages.resources.network_rx_bytes) PteroEmbed.addFields({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('ptero_start')
 						.setLabel('Start')
 						.setStyle(ButtonStyle.Primary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('ptero_restart')
 						.setLabel('Restart')
 						.setStyle(ButtonStyle.Secondary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('ptero_stop')
 						.setLabel('Stop')
 						.setStyle(ButtonStyle.Danger),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('ptero_kill')
 						.setLabel('Kill')
 						.setStyle(ButtonStyle.Danger),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('ptero_update')
 						.setLabel(msg.refresh)
 						.setEmoji({ id: refresh })

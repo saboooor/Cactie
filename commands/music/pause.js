@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { pause } = require('../../lang/int/emoji.json');
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
 
 			// Send message to channel with current song
 			const song = player.queue.current;
-			const PauseEmbed = new Embed()
+			const PauseEmbed = new EmbedBuilder()
 				.setDescription(`<:pause:${pause}> **Paused**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);

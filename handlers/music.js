@@ -4,15 +4,15 @@ const compressEmbed = require('../functions/compressEmbed.js');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
 const { refresh } = require('../lang/int/emoji.json');
-const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
-const queuerow = new ActionRow()
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const queuerow = new ActionRowBuilder()
 	.addComponents(
-		new ButtonComponent()
+		new ButtonBuilder()
 			.setCustomId('music_playnext')
 			.setEmoji({ id: refresh })
 			.setLabel('Replay Song')
 			.setStyle(ButtonStyle.Secondary),
-		new ButtonComponent()
+		new ButtonBuilder()
 			.setCustomId('music_playlast')
 			.setLabel('Re-add to queue')
 			.setStyle(ButtonStyle.Secondary),

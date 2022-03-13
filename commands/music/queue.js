@@ -1,4 +1,4 @@
-const { Embed, ButtonComponent, ButtonStyle, ActionRow } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { createPaste } = require('hastebin');
 const { left, right, music } = require('../../lang/int/emoji.json');
@@ -16,7 +16,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			const queue = player.queue;
 			const song = queue.current;
-			const QueueEmbed = new Embed()
+			const QueueEmbed = new EmbedBuilder()
 				.setColor(song.color)
 				.setThumbnail(song.img);
 
@@ -37,13 +37,13 @@ module.exports = {
 			const maxPages = Math.ceil(queue.length / 10);
 			if (maxPages < 2) return message.reply({ embeds: [QueueEmbed] });
 			QueueEmbed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('queue_prev')
 						.setEmoji({ id: left })
 						.setStyle(ButtonStyle.Secondary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('queue_next')
 						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),

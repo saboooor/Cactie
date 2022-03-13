@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'purpur',
@@ -24,7 +24,7 @@ module.exports = {
 			// check if error
 			if (h.error) return message.reply({ content: h.error });
 			// initial embed creation
-			const PurpurEmbed = new Embed()
+			const PurpurEmbed = new EmbedBuilder()
 				.setColor(0x95639C)
 				.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
 				.setURL(`https://api.pl3x.net/v2/purpur/${c}/${f}`)

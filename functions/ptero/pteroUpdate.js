@@ -1,12 +1,12 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const servers = require('../../config/pterodactyl.json');
 const srvs = Object.keys(servers).map(i => { return servers[i]; });
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = async function pteroUpdate(interaction, Client) {
 	const server = srvs.find(srv => interaction.message.embeds[0].url.split('server/')[1] == srv.id);
 	const info = await Client.getServerDetails(server.id);
 	const usages = await Client.getServerUsages(server.id);
-	const PteroEmbed = new Embed()
+	const PteroEmbed = new EmbedBuilder()
 		.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
 		.setURL(`${server.url}/server/${server.id}`);
 	if (usages.current_state == 'running') PteroEmbed.setColor(0x2ECC71);

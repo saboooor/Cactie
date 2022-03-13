@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { warn } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'stop',
@@ -13,7 +13,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			player.stop();
 			player.queue.clear();
-			const StopMusic = new Embed()
+			const StopMusic = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:alert:${warn}> **Stopped the music**`);
 			message.reply({ embeds: [StopMusic] });

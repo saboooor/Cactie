@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { play } = require('../../lang/int/emoji.json');
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
 
 			// Unpause player and reply
 			player.pause(false);
-			const ResEmbed = new Embed()
+			const ResEmbed = new EmbedBuilder()
 				.setDescription(`<:play:${play}> **Resumed**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);

@@ -1,4 +1,4 @@
-const { Embed, Collection, ButtonComponent, ButtonStyle, ActionRow, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
 function clean(text) {
 	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
 	else return text;
@@ -51,7 +51,7 @@ module.exports = async (client, interaction) => {
 		// If cooldown expiration hasn't passed, send cooldown message
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			const cooldownEmbed = new Embed()
+			const cooldownEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -76,17 +76,17 @@ module.exports = async (client, interaction) => {
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (Date.now() > vote.timestamp + 86400000) {
-			const errEmbed = new Embed().setTitle(`You need to vote to use ${command.name}! Vote below!`)
+			const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://top.gg/bot/765287593762881616/vote')
 						.setLabel('top.gg')
 						.setStyle(ButtonStyle.Link),
 				)
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://discordbotlist.com/bots/pup/upvote')
 						.setLabel('dbl.com')
 						.setStyle(ButtonStyle.Link),
@@ -151,7 +151,7 @@ module.exports = async (client, interaction) => {
 		command.execute(interaction, args, client);
 	}
 	catch (err) {
-		const interactionFailed = new Embed()
+		const interactionFailed = new EmbedBuilder()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })

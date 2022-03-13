@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Create Embed with title and color
-			const RREmbed = new Embed()
+			const RREmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reaction Roles');
 			const components = [];
@@ -71,13 +71,13 @@ module.exports = {
 					RREmbed.setFooter({ text: msg.page.replace('-1', '1').replace('-2', Math.ceil(RREmbed.fields.length / 12)), iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
-					const btns = new ActionRow()
+					const btns = new ActionRowBuilder()
 						.addComponents(
-							new ButtonComponent()
+							new ButtonBuilder()
 								.setCustomId('rr_prev')
 								.setEmoji({ id: left })
 								.setStyle(ButtonStyle.Secondary),
-							new ButtonComponent()
+							new ButtonBuilder()
 								.setCustomId('rr_next')
 								.setEmoji({ id: right })
 								.setStyle(ButtonStyle.Secondary),

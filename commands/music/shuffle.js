@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { shuffle } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 
 			// Shuffle queue and reply
 			player.queue.shuffle();
-			const ShuffleEmbed = new Embed()
+			const ShuffleEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });

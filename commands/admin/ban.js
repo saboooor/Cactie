@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 const ms = require('ms');
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 			if (time > 31536000000) return client.error('You cannot ban someone for more than 1 year!', message, true);
 
 			// Create embed and check if bqn has a reason / time period
-			const BanEmbed = new Embed()
+			const BanEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Banned ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 

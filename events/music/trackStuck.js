@@ -1,9 +1,9 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, player, track) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);
-	const stuckEmbed = new Embed()
+	const stuckEmbed = new EmbedBuilder()
 		.setColor(0xE74C3C)
 		.setDescription(`❌ [${track.title}](${track.uri}) got stuck, skipping..`);
 	const msg = await channel.send({ embeds: [stuckEmbed] });

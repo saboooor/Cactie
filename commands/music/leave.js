@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { leave } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'leave',
@@ -16,7 +16,7 @@ module.exports = {
 			player.destroy();
 
 			// Send message to channel
-			const LeaveEmbed = new Embed()
+			const LeaveEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:out:${leave}> **Left VC**`);
 			message.reply({ embeds: [LeaveEmbed] });

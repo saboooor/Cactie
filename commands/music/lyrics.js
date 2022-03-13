@@ -1,5 +1,5 @@
 const { createPaste } = require('hastebin');
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
 module.exports = {
@@ -36,7 +36,7 @@ module.exports = {
 			if (lyrics.length > 3500) lyrics = await createPaste(lyrics, { server: 'https://bin.birdflop.com' });
 
 			// Send the lyrics to the channel
-			const LyricsEmbed = new Embed()
+			const LyricsEmbed = new EmbedBuilder()
 				.setDescription(`🎵 **Lyrics**\n[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]\n\n${lyrics}`)
 				.setThumbnail(song.img)
 				.setColor(song.color);

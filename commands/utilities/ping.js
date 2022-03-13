@@ -1,4 +1,4 @@
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
 const pong = require('../../lang/en/pong.json');
 const msg = require('../../lang/en/msg.json');
@@ -11,13 +11,13 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Create embed with ping information and add ping again button
-			const PingEmbed = new Embed()
+			const PingEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(msg.ping.pong)
 				.setDescription(`**${msg.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${msg.ping.api}** ${client.ws.ping}ms`);
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('ping_again')
 						.setEmoji({ id: refresh })
 						.setLabel(msg.refresh)

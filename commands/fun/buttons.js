@@ -1,4 +1,4 @@
-const { ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { empty } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'buttons',
@@ -15,9 +15,9 @@ module.exports = {
 		if (ro > 5 || co > 5) return client.error('The maximum size of the board is 5x5 due to Discord limitations', message, true);
 		if (isNaN(ro) || isNaN(co) || ro == '0' || co == '0') return client.error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', message, true);
 		for (let row = 0; row < parseInt(ro); row++) {
-			rows.push(new ActionRow());
+			rows.push(new ActionRowBuilder());
 			for (let column = 0; column < parseInt(co); column++) {
-				btns[`${column}${row}`] = new ButtonComponent()
+				btns[`${column}${row}`] = new ButtonBuilder()
 					.setCustomId(`${column}${row}`)
 					.setEmoji({ id: empty })
 					.setStyle(ButtonStyle.Secondary);

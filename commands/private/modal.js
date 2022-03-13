@@ -1,11 +1,11 @@
-const { ButtonComponent, ButtonStyle, ActionRow, Modal, TextInputComponent, TextInputStyle } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, Modal, TextInputComponent, TextInputStyle } = require('discord.js');
 module.exports = {
 	name: 'modal',
 	description: 'shows a modal (for testing)',
 	async execute(message) {
-		const row = new ActionRow()
+		const row = new ActionRowBuilder()
 			.addComponents(
-				new ButtonComponent()
+				new ButtonBuilder()
 					.setCustomId('show_modal')
 					.setLabel('Show modal')
 					.setStyle(ButtonStyle.Primary),
@@ -18,13 +18,13 @@ module.exports = {
 				.setTitle('i wanna off myself')
 				.setCustomId('huh');
 			const rows = [];
-			rows.push(new ActionRow().addComponents(
+			rows.push(new ActionRowBuilder().addComponents(
 				new TextInputComponent()
 					.setCustomId('modal_long_text')
 					.setLabel('Paragraph Text')
 					.setStyle(TextInputStyle.Paragraph),
 			));
-			rows.push(new ActionRow().addComponents(
+			rows.push(new ActionRowBuilder().addComponents(
 				new TextInputComponent()
 					.setCustomId('modal_short_text')
 					.setLabel('Short Text')

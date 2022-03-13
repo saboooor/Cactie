@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your boner expand INSTANTLY!',
@@ -20,7 +20,7 @@ module.exports = {
 			}
 
 			// Create initial embed
-			const ppEmbed = new Embed()
+			const ppEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`);
 

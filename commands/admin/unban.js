@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'unban',
 	description: 'Unban someone that was banned from the server',
@@ -28,7 +28,7 @@ module.exports = {
 			message.guild.members.unban(ban.user.id);
 
 			// Create embed with color and title
-			const UnbanEmbed = new Embed()
+			const UnbanEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Unbanned ${ban.user.tag}`);
 

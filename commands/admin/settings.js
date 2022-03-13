@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
@@ -13,7 +13,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Create Embed with title and color
-			const SettingsEmbed = new Embed()
+			const SettingsEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Bot Settings');
 			const components = []; let configlist = null;
@@ -74,7 +74,7 @@ module.exports = {
 				// Check if log channel exists and send message
 				const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const logEmbed = new Embed()
+					const logEmbed = new EmbedBuilder()
 						.setAuthor({ name: `${message.member.user.tag} changed a setting`, iconURL: message.member.user.avatarURL() })
 						.addFields({ name: 'Setting', value: prop })
 						.addFields({ name: 'Value', value: value });
@@ -88,15 +88,15 @@ module.exports = {
 					.setFooter({ text: 'You only have 30 seconds to respond.' });
 
 				// Add buttons for reset confirm / deny
-				const row = new ActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('settings_reset')
 							.setLabel('Reset Settings')
 							.setStyle(ButtonStyle.Danger),
 					)
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('settings_nevermind')
 							.setLabel('Nevermind')
 							.setStyle(ButtonStyle.Primary),
@@ -118,17 +118,17 @@ module.exports = {
 				if (client.user.id == '765287593762881616') SettingsEmbed.addFields({ name: msg.dashboard.confusing, value: msg.dashboard.use });
 
 				// Add buttons for page changing
-				const row = new ActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('settings_page_prev')
 							.setEmoji({ id: left })
 							.setStyle(ButtonStyle.Secondary),
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('settings_page_next')
 							.setEmoji({ id: right })
 							.setStyle(ButtonStyle.Secondary),
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel(msg.dashboard.name)
 							.setStyle(ButtonStyle.Link),
@@ -138,9 +138,9 @@ module.exports = {
 
 			// If there aren't any buttons, add a button for dashboard
 			if (!components[0]) {
-				const row = new ActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setURL('https://pup.smhsmh.club')
 							.setLabel(msg.dashboard.name)
 							.setStyle(ButtonStyle.Link),

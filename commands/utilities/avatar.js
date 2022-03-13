@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
@@ -15,15 +15,15 @@ module.exports = {
 			member.user = await member.user.fetch();
 			const memberpfp = member.avatarURL({ size: 1024 });
 			const userpfp = member.user.avatarURL({ size: 1024 });
-			const UsrEmbed = new Embed()
+			const UsrEmbed = new EmbedBuilder()
 				.setColor(member.user.accentColor)
 				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp ? userpfp : null })
 				.setImage(memberpfp ? memberpfp : userpfp);
 			const row = [];
 			if (memberpfp) {
 				row.push(
-					new ActionRow().addComponents(
-						new ButtonComponent()
+					new ActionRowBuilder().addComponents(
+						new ButtonBuilder()
 							.setCustomId('avatar_user')
 							.setLabel('Toggle Global Avatar')
 							.setEmoji({ id: refresh })

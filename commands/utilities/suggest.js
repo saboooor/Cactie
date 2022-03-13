@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { upvote, downvote } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'suggest',
@@ -16,7 +16,7 @@ module.exports = {
 			let channel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
 			if (!channel) channel = message.channel;
 			const suggestion = args.join(' ');
-			const SuggestEmbed = new Embed()
+			const SuggestEmbed = new EmbedBuilder()
 				.setColor(0x5662f6)
 				.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL() })
 				.setTitle('Suggestion')

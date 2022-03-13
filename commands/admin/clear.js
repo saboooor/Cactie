@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 const { yes } = require('../../lang/int/emoji.json');
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				const ClearEmbed = new Embed()
+				const ClearEmbed = new EmbedBuilder()
 					.setTitle(`${message.member.user.tag} cleared ${args[0]} messages`)
 					.addFields({ name: 'Channel', value: `${message.channel}` })
 					.addFields({ name: 'Transcript', value: `${await getTranscript(messages)}` });

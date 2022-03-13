@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'boner',
 	description: 'See your boner expand!',
@@ -25,7 +25,7 @@ module.exports = {
 			}
 
 			// Create initial embed and reply with it
-			const ppEmbed = new Embed()
+			const ppEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`)
 				.setDescription('\u200b');

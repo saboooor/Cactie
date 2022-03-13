@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
@@ -25,12 +25,12 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	const msg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
 
 	// Create embed for responses
-	const PlayEmbed = new Embed();
+	const PlayEmbed = new EmbedBuilder();
 
 	// Create undo button
-	const undo = new ActionRow()
+	const undo = new ActionRowBuilder()
 		.addComponents(
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setCustomId('music_undo')
 				.setEmoji({ id: leave })
 				.setLabel('Undo')
@@ -84,10 +84,10 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			});
 			PlayEmbed.setDescription(`🔎 **Search Results**\n${tracklist.join('\n')}`);
 
-			const balls = new ActionRow();
+			const balls = new ActionRowBuilder();
 			for (let number = 1; number <= 5; number++) {
 				balls.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId(`${number}`)
 						.setLabel(`${number}`)
 						.setStyle(ButtonStyle.Secondary),

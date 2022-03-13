@@ -1,9 +1,9 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, player, track, payload) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);
-	const thing = new Embed()
+	const thing = new EmbedBuilder()
 		.setColor(0xE74C3C)
 		.setDescription('❌ **Failed to load track**')
 		.setFooter({ text: payload.error });

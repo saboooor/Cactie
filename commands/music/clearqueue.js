@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { no } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'clearqueue',
@@ -28,7 +28,7 @@ module.exports = {
 
 			// Clear the queue and send message
 			player.queue.clear();
-			const ClearEmbed = new Embed()
+			const ClearEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:no:${no}> Cleared all songs from the queue`);
 			message.reply({ embeds: [ClearEmbed] });

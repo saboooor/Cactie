@@ -1,4 +1,4 @@
-const { Embed, MessageAttachment } = require('discord.js');
+const { EmbedBuilder, MessageAttachment } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'dm',
@@ -28,7 +28,7 @@ module.exports = {
 				.catch(error => { client.logger.warn(error); });
 
 			// Create response embed and respond
-			const DMEmbed = new Embed()
+			const DMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`**Message sent to ${user}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			message.reply({ embeds: [DMEmbed] });

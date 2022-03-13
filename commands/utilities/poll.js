@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { yes, no } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'poll',
@@ -14,7 +14,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			let channel = message.guild.channels.cache.get(srvconfig.pollchannel);
 			if (!channel) channel = message.channel;
-			const Poll = new Embed()
+			const Poll = new EmbedBuilder()
 				.setColor(0x5662f6)
 				.setTitle('Poll')
 				.setAuthor({ name: message.member.user.username, iconURL: message.member.user.avatarURL() })

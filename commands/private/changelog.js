@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const pteroconfig = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'changelog',
@@ -16,7 +16,7 @@ module.exports = {
 			Object.keys(pteroconfig).map(i => { if (pteroconfig[i].changelogs) servers.push(pteroconfig[i]); });
 
 			// Make changelog embed
-			const CLEmbed = new Embed()
+			const CLEmbed = new EmbedBuilder()
 				.setAuthor({ name: 'Changelog', iconURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/298/scroll_1f4dc.png' })
 				.setFooter({ text: `By ${message.author.username}`, iconURL: message.author.avatarURL() });
 

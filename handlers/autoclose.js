@@ -1,5 +1,5 @@
 const { schedule } = require('node-cron');
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = client => {
@@ -32,7 +32,7 @@ module.exports = client => {
 				const link = await getTranscript(messages);
 				const users = [];
 				await data.users.forEach(userid => users.push(channel.guild.members.cache.get(userid)));
-				const CloseDMEmbed = new Embed()
+				const CloseDMEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
 					.addFields({ name: '**Users in ticket**', value: `${users}` })
@@ -43,19 +43,19 @@ module.exports = client => {
 					usr.send({ embeds: [CloseDMEmbed] })
 						.catch(error => { client.logger.warn(error); });
 				});
-				const resolveEmbed = new Embed()
+				const resolveEmbed = new EmbedBuilder()
 					.setColor(0xFF6400)
 					.setDescription('Automatically closed Resolved Ticket');
 				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
 				if (srvconfig.tickets == 'buttons') {
-					const row = new ActionRow()
+					const row = new ActionRowBuilder()
 						.addComponents(
-							new ButtonComponent()
+							new ButtonBuilder()
 								.setCustomId('delete_ticket')
 								.setLabel('Delete Ticket')
 								.setEmoji({ name: '⛔' })
 								.setStyle(ButtonStyle.Danger),
-							new ButtonComponent()
+							new ButtonBuilder()
 								.setCustomId('reopen_ticket')
 								.setLabel('Reopen Ticket')
 								.setEmoji({ name: '🔓' })

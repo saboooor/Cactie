@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'close_ticket',
@@ -47,7 +47,7 @@ module.exports = {
 			// Get users and dm them all with ticket close embed
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(interaction.guild.members.cache.get(userid).user));
-			const CloseDMEmbed = new Embed()
+			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
 				.addFields({ name: '**Users in ticket**', value: `${users}` })
@@ -56,20 +56,20 @@ module.exports = {
 			users.forEach(usr => { usr.send({ embeds: [CloseDMEmbed] }); });
 
 			// Reply with ticket close message
-			const CloseEmbed = new Embed()
+			const CloseEmbed = new EmbedBuilder()
 				.setColor(0xFF6400)
 				.setDescription(`Ticket Closed by ${author}`);
 			let row = null;
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.tickets == 'buttons') {
-				row = new ActionRow()
+				row = new ActionRowBuilder()
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
 							.setEmoji({ name: '⛔' })
 							.setStyle(ButtonStyle.Danger),
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('reopen_ticket')
 							.setLabel('Reopen Ticket')
 							.setEmoji({ name: '🔓' })

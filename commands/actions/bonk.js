@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { bonk } = require('../../lang/int/actiongifs.json');
 module.exports = {
 	name: 'bonk',
@@ -18,7 +18,7 @@ module.exports = {
 			const i = Math.floor(Math.random() * bonk.length);
 
 			// Create embed with bonk gif and author / footer
-			const BonkEmbed = new Embed()
+			const BonkEmbed = new EmbedBuilder()
 				.setAuthor({ name: `${message.member.displayName} bonks ${args[0] ? args.join(' ') : 'themselves'}`, iconURL: message.member.user.avatarURL() })
 				.setImage(bonk[i])
 				.setFooter({ text: 'get bonked' });

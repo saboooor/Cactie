@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const getTranscript = require('../functions/getTranscript.js');
 module.exports = {
 	name: 'delete_ticket',
@@ -27,7 +27,7 @@ module.exports = {
 				await ticketData.users.forEach(userid => users.push(interaction.guild.members.cache.get(userid).user));
 
 				// Create embed
-				const DelEmbed = new Embed()
+				const DelEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${interaction.channel.name}`)
 					.addFields({ name:'**Users in ticket**', value: `${users}` })

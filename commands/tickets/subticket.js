@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { ButtonComponent, ButtonStyle, ActionRow, Embed } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'subticket',
 	description: 'Create a subticket',
@@ -32,16 +32,16 @@ module.exports = {
 			await sleep(1000);
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
-			const CreateEmbed = new Embed()
+			const CreateEmbed = new EmbedBuilder()
 				.setColor(0x5662f6)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
 				.addFields({ name: 'Description', value: args[0] ? args.join(' ') : 'Created using a reaction' });
 			if (srvconfig.tickets == 'buttons') {
 				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
-				const row = new ActionRow()
+				const row = new ActionRowBuilder()
 					.addComponents(
-						new ButtonComponent()
+						new ButtonBuilder()
 							.setCustomId('close_subticket')
 							.setLabel('Close Subticket')
 							.setEmoji({ name: '🔒' })

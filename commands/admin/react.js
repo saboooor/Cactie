@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'react',
 	description: 'Adds a reaction to a message',
@@ -10,7 +10,7 @@ module.exports = {
 	options: require('../options/react.json'),
 	async execute(message, args, client) {
 		try {
-			const ReactEmbed = new Embed()
+			const ReactEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reacted to message!');
 			const messagelink = args[0].split('/');

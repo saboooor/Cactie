@@ -1,4 +1,4 @@
-const { MessageAttachment, Embed, Collection, ButtonComponent, ButtonStyle, ActionRow, PermissionsBitField } = require('discord.js');
+const { MessageAttachment, EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
@@ -67,7 +67,7 @@ module.exports = async (client, message) => {
 	if (message.content.split('\n').length > srvconfig.msgshortener && srvconfig.msgshortener != '0') {
 		message.delete().catch(err => client.logger.error(err));
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
-		const shortEmbed = new Embed()
+		const shortEmbed = new EmbedBuilder()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Shortened long message')
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL() })
@@ -125,7 +125,7 @@ module.exports = async (client, message) => {
 		if (now < expirationTime && message.author.id != '249638347306303499') {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
-			const cooldownEmbed = new Embed()
+			const cooldownEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -139,7 +139,7 @@ module.exports = async (client, message) => {
 
 	// Check if args are required and see if args are there, if not, send error
 	if (command.args && args.length < 1) {
-		const Usage = new Embed()
+		const Usage = new EmbedBuilder()
 			.setColor(0x5662f6)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
@@ -154,17 +154,17 @@ module.exports = async (client, message) => {
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (Date.now() > vote.timestamp + 86400000) {
-			const errEmbed = new Embed().setTitle(`You need to vote to use ${command.name}! Vote below!`)
+			const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://top.gg/bot/765287593762881616/vote')
 						.setLabel('top.gg')
 						.setStyle(ButtonStyle.Link),
 				)
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://discordbotlist.com/bots/pup/upvote')
 						.setLabel('dbl.com')
 						.setStyle(ButtonStyle.Link),
@@ -226,7 +226,7 @@ module.exports = async (client, message) => {
 		command.execute(message, args, client);
 	}
 	catch (err) {
-		const interactionFailed = new Embed()
+		const interactionFailed = new EmbedBuilder()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() })

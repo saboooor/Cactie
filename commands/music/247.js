@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: '247',
@@ -14,7 +14,7 @@ module.exports = {
 		try {
 			// Get player and set 24/7 to the opposite of current state and send message
 			const player = client.manager.players.get(message.guild.id);
-			const twentyFourSevenEmbed = new Embed()
+			const twentyFourSevenEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:refresh:${refresh}> 24/7 mode is now **o${!player.twentyFourSeven ? 'n' : 'ff'}**.`);
 			player.twentyFourSeven = !player.twentyFourSeven;

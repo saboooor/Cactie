@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'open',
 	description: 'Repen a ticket',
@@ -26,7 +26,7 @@ module.exports = {
 			ticketData.users.forEach(userid => {
 				message.channel.permissionOverwrites.edit(message.guild.members.cache.get(userid), { ViewChannel: true });
 			});
-			const OpenEmbed = new Embed()
+			const OpenEmbed = new EmbedBuilder()
 				.setColor(0xFF6400)
 				.setDescription(`Ticket Opened by ${author}`);
 			message.reply({ embeds: [OpenEmbed] });

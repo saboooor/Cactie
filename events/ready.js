@@ -1,4 +1,4 @@
-const { Embed, ApplicationCommandType, ActivityType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandType, ActivityType } = require('discord.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Game }], status: 'dnd' });
@@ -60,7 +60,7 @@ module.exports = async (client) => {
 				// Check if log channel exists and send message
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const UnmuteEmbed = new Embed().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
+					const UnmuteEmbed = new EmbedBuilder().setTitle(`${member ? member.user.tag : userId} has been unmuted`);
 					logchannel.send({ embeds: [UnmuteEmbed] });
 				}
 			}
@@ -77,7 +77,7 @@ module.exports = async (client) => {
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
 				if (logchannel) {
-					const UnbanEmbed = new Embed().setTitle(`${user ? user.tag : userId} has been unbanned`);
+					const UnbanEmbed = new EmbedBuilder().setTitle(`${user ? user.tag : userId} has been unbanned`);
 					logchannel.send({ embeds: [UnbanEmbed] });
 				}
 			}

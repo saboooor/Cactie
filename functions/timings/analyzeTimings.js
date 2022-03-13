@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { left, right } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
@@ -7,7 +7,7 @@ const fs = require('fs');
 const createField = require('./createField.js');
 const evalField = require('./evalField.js');
 module.exports = async function analyzeTimings(message, client, args) {
-	const TimingsEmbed = new Embed()
+	const TimingsEmbed = new EmbedBuilder()
 		.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
 		.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 
@@ -233,17 +233,17 @@ module.exports = async function analyzeTimings(message, client, args) {
 		TimingsEmbed.addFields({ name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
 		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • ${msg.page.replace('-1', '1').replace('-2', Math.ceil(issues.length / 12))}`, iconURL: message.member.user.avatarURL() });
 		components.push(
-			new ActionRow()
+			new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('timings_prev')
 						.setEmoji({ id: left })
 						.setStyle(ButtonStyle.Secondary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('timings_next')
 						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://github.com/pemigrade/botflop')
 						.setLabel('Botflop')
 						.setStyle(ButtonStyle.Link),

@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { warn } = require('../lang/int/emoji.json');
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	const guildId = newState.guild.id;
@@ -69,7 +69,7 @@ module.exports = async (client, oldState, newState) => {
 				if (stateChange.channel.members.filter(member => !member.user.bot).size >= 1) return;
 				if (!player.voiceChannel) return;
 				const channel = newState.guild.channels.cache.get(player.textChannel);
-				const AlertEmbed = new Embed()
+				const AlertEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setDescription(`<:alert:${warn}> **Left because of 5 minutes of inactivity!**`)
 					.addFields({ name: 'Tired of me leaving?', value: 'Enable the **24/7** mode with the /247 command!' })

@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 const msg = require('../../lang/en/msg.json');
@@ -47,7 +47,7 @@ module.exports = {
 				});
 			}
 			member.user = await member.user.fetch();
-			const UsrEmbed = new Embed()
+			const UsrEmbed = new EmbedBuilder()
 				.setColor(member.user.accentColor)
 				.setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL() : null })
 				.setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())

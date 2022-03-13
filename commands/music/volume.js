@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { vol } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'volume',
@@ -17,7 +17,7 @@ module.exports = {
 			// Get player and if arg isn't set, reply with current volume
 			const player = client.manager.get(message.guild.id);
 			if (!args.length) {
-				const VolEmbed = new Embed()
+				const VolEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setDescription(`<:volume:${vol}> The current volume is: **${player.volume}%**`);
 				return message.reply({ embeds: [VolEmbed] });
@@ -29,7 +29,7 @@ module.exports = {
 
 			// Set the volume and reply
 			player.setVolume(volume);
-			const VolEmbed = new Embed()
+			const VolEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:volume:${vol}> Volume set to: **${volume}%**`);
 			message.reply({ embeds: [VolEmbed] });

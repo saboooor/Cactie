@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { skip } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
@@ -34,7 +34,7 @@ module.exports = {
 					// Skip to the position and reply
 					player.queue.remove(0, position - 1);
 					player.stop();
-					const SkipEmbed = new Embed()
+					const SkipEmbed = new EmbedBuilder()
 						.setDescription(`<:skip:${skip}> **${msg.music.skip.skipto.replace('-i', `${position}`)}**`)
 						.setColor(Math.floor(Math.random() * 16777215))
 						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
@@ -61,7 +61,7 @@ module.exports = {
 			// Get last song, skip and reply
 			const song = player.queue.current;
 			player.stop();
-			const SkipEmbed = new Embed()
+			const SkipEmbed = new EmbedBuilder()
 				.setDescription(`<:skip:${skip}> **${msg.music.skip.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)

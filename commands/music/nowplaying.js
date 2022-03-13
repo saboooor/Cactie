@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 const { shuffle, skip, music, refresh } = require('../../lang/int/emoji.json');
@@ -17,22 +17,22 @@ module.exports = {
 			const song = player.queue.current;
 			const total = song.duration;
 			const current = player.position;
-			const NPEmbed = new Embed()
+			const NPEmbed = new EmbedBuilder()
 				.setDescription(`<:music:${music}> **${msg.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('music_shuffle')
 						.setEmoji({ id: shuffle })
 						.setStyle(ButtonStyle.Secondary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('music_skip')
 						.setEmoji({ id: skip })
 						.setStyle(ButtonStyle.Secondary),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setCustomId('music_updatenp')
 						.setLabel(msg.refresh)
 						.setEmoji({ id: refresh })
@@ -40,7 +40,7 @@ module.exports = {
 				);
 			if (client.user.id == '765287593762881616') {
 				row.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://pup.smhsmh.club/music')
 						.setEmoji({ id: music })
 						.setLabel('Music Control Panel')

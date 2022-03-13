@@ -1,4 +1,4 @@
-const { Embed, MessageAttachment, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, MessageAttachment, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
@@ -19,7 +19,7 @@ module.exports = {
 			Object.keys(servers).map(i => { srvs.push(servers[i]); });
 			let server = servers[args.join(' ').toLowerCase()];
 			if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
-			const StatsEmbed = new Embed().setColor(Math.floor(Math.random() * 16777215));
+			const StatsEmbed = new EmbedBuilder().setColor(Math.floor(Math.random() * 16777215));
 			if (server && server.id) {
 				const Client = new NodeactylClient(server.url, server.apikey);
 				const info = await Client.getServerDetails(server.id);
@@ -82,8 +82,8 @@ module.exports = {
 				if (!pong.debug.query) StatsEmbed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 			}
 			StatsEmbed.setURL(`https://${args[0].replace(':', 'colon')}.pup`).setTimestamp();
-			const row = new ActionRow().addComponents(
-				new ButtonComponent()
+			const row = new ActionRowBuilder().addComponents(
+				new ButtonBuilder()
 					.setCustomId('stats_refresh')
 					.setLabel(msg.refresh)
 					.setEmoji({ id: refresh })

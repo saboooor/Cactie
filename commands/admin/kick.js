@@ -1,4 +1,4 @@
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'kick',
@@ -21,7 +21,7 @@ module.exports = {
 			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!`, message, true);
 
 			// Create embed
-			const KickEmbed = new Embed()
+			const KickEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Kicked ${member.user.tag}.`);
 

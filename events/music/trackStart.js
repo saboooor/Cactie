@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const solenolyrics = require('solenolyrics');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
@@ -10,27 +10,27 @@ module.exports = async (client, player, track) => {
 		.catch(err => { client.logger.warn(err); });
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
-	const thing = new Embed()
+	const thing = new EmbedBuilder()
 		.setDescription(`<:play:${play}> **Started Playing** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
 		.setFooter({ text: track.requester.tag, iconURL: track.requester.displayAvatarURL() })
 		.setThumbnail(track.img)
 		.setColor(track.color);
 
 	// Add button for skip
-	const row = new ActionRow()
+	const row = new ActionRowBuilder()
 		.addComponents(
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setCustomId('music_shuffle')
 				.setEmoji({ id: shuffle })
 				.setStyle(ButtonStyle.Secondary),
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setCustomId('music_skip')
 				.setEmoji({ id: skip })
 				.setStyle(ButtonStyle.Secondary),
 		);
 	if (client.user.id == '765287593762881616') {
 		row.addComponents(
-			new ButtonComponent()
+			new ButtonBuilder()
 				.setURL('https://pup.smhsmh.club/music')
 				.setEmoji({ id: music })
 				.setLabel('Music Control Panel')

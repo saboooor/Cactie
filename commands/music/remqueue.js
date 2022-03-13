@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { Embed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { no } = require('../../lang/int/emoji.json');
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 			// Get song from index and remove it and reply
 			const song = player.queue[position];
 			player.queue.remove(position);
-			const RemEmbed = new Embed()
+			const RemEmbed = new EmbedBuilder()
 				.setDescription(`<:no:${no}> **Removed**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);

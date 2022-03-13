@@ -1,4 +1,4 @@
-const { Embed, ActionRow, ButtonComponent, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 function EndXO(btns, a, b, c, TicTacToe, xomsg, xuser, ouser, rows) {
@@ -13,8 +13,8 @@ function EndXO(btns, a, b, c, TicTacToe, xomsg, xuser, ouser, rows) {
 	rows.push(again);
 	xomsg.edit({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
 }
-const again = new ActionRow()
-	.addComponents(new ButtonComponent()
+const again = new ActionRowBuilder()
+	.addComponents(new ButtonBuilder()
 		.setCustomId('xo_again')
 		.setEmoji({ id: refresh })
 		.setLabel('Play Again')
@@ -36,16 +36,16 @@ module.exports = {
 		const btns = {};
 		const rows = [];
 		for (let row = 1; row <= 3; row++) {
-			rows.push(new ActionRow());
+			rows.push(new ActionRowBuilder());
 			for (let column = 1; column <= 3; column++) {
-				btns[`${column}${row}`] = new ButtonComponent()
+				btns[`${column}${row}`] = new ButtonBuilder()
 					.setCustomId(`${column}${row}`)
 					.setEmoji({ id: empty })
 					.setStyle(ButtonStyle.Secondary);
 				rows[row - 1].addComponents(btns[`${column}${row}`]);
 			}
 		}
-		const TicTacToe = new Embed()
+		const TicTacToe = new EmbedBuilder()
 			.setColor(turn ? 0xff0000 : 0x0000ff)
 			.setTitle('Tic Tac Toe')
 			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : user}` })

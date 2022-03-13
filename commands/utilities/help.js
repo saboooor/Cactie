@@ -1,4 +1,4 @@
-const { ButtonComponent, ButtonStyle, ActionRow, Embed, UnsafeSelectMenuComponent, SelectMenuOption } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Pup',
@@ -11,7 +11,7 @@ module.exports = {
 		try {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
-			const HelpEmbed = new Embed()
+			const HelpEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
 			let arg = args[0];
@@ -23,15 +23,15 @@ module.exports = {
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has('ADMINISTRATOR')) return;
 				HelpEmbed.setDescription('Created support panel! You may now delete this message');
-				const Panel = new Embed()
+				const Panel = new EmbedBuilder()
 					.setColor(0x5662f6)
 					.setTitle('Need help? No problem!')
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL() });
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
-					const row = new ActionRow()
+					const row = new ActionRowBuilder()
 						.addComponents(
-							new ButtonComponent()
+							new ButtonBuilder()
 								.setCustomId('create_ticket')
 								.setLabel('Open Ticket')
 								.setEmoji({ name: '🎫' })
@@ -51,61 +51,61 @@ module.exports = {
 			else {
 				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
 			}
-			const row = new ActionRow()
+			const row = new ActionRowBuilder()
 				.addComponents(
-					new UnsafeSelectMenuComponent()
+					new SelectMenuBuilder()
 						.setCustomId('help_menu')
 						.setPlaceholder('Select a help category!')
 						.setOptions(
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Admin')
 								.setDescription('These commands require specific permissions')
 								.setValue('help_admin')
 								.setDefault(arg == 'admin'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Fun')
 								.setDescription('These commands are made just for fun')
 								.setValue('help_fun')
 								.setDefault(arg == 'fun'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Animals')
 								.setDescription('These commands show cute animals')
 								.setValue('help_animals')
 								.setDefault(arg == 'animals'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Music')
 								.setDescription('These commands play music in your voice chat')
 								.setValue('help_music')
 								.setDefault(arg == 'music'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('NSFW')
 								.setDescription('These commands have sensitive content that is NSFW')
 								.setValue('help_nsfw')
 								.setDefault(arg == 'nsfw'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Tickets')
 								.setDescription('These commands are related to Pup\'s tickets system')
 								.setValue('help_tickets')
 								.setDefault(arg == 'tickets'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Utilities')
 								.setDescription('These commands are useful for some situations')
 								.setValue('help_utilities')
 								.setDefault(arg == 'utilities'),
-							new SelectMenuOption()
+							new SelectMenuOptionBuilder()
 								.setLabel('Actions')
 								.setDescription('These commands let you do stuff to people idk')
 								.setValue('help_actions')
 								.setDefault(arg == 'actions'),
 						),
 				);
-			const row2 = new ActionRow()
+			const row2 = new ActionRowBuilder()
 				.addComponents(
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://pup.smhsmh.club/discord')
 						.setLabel('Support Discord')
 						.setStyle(ButtonStyle.Link),
-					new ButtonComponent()
+					new ButtonBuilder()
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
 						.setStyle(ButtonStyle.Link),
