@@ -34,6 +34,6 @@ module.exports = async (client, guild) => {
 		.setDescription(`My prefix is \`${srvconfig.prefix}\`, you can change this with \`${srvconfig.prefix}settings\`\nType \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!\nThis bot has reactions to messages with keywords which at times may be annoying. To turn them off, do \`${srvconfig.prefix}settings reactions false\``)
 		.setThumbnail('https://pup.smhsmh.club/assets/images/pup.png');
 	const message = { embeds: [greetingEmbed], components: [row] };
-	if (!guild.systemChannel) owner.send(message).catch(e => { client.logger.warn(e); });
-	else guild.systemChannel.send(message).catch(e => { client.logger.warn(e); });
+	if (!guild.systemChannel) owner.send(message).catch(err => client.logger.warn(err));
+	else guild.systemChannel.send(message).catch(err => client.logger.warn(err));
 };

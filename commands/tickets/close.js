@@ -34,7 +34,7 @@ module.exports = {
 					.addFields({ name: '**Closed by**', value: `${message.member.user}` });
 				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 				message.channel.parent.send({ embeds: [CloseEmbed] })
-					.catch(error => { client.logger.error(error); });
+					.catch(err => client.logger.error(err));
 				client.logger.info(`Closed subticket #${message.channel.name}`);
 				return message.channel.delete();
 			}
@@ -84,7 +84,7 @@ module.exports = {
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			users.forEach(usr => {
 				usr.send({ embeds: [CloseDMEmbed] })
-					.catch(error => { client.logger.warn(error); });
+					.catch(err => client.logger.warn(err));
 			});
 
 			// Create embed

@@ -41,7 +41,7 @@ module.exports = client => {
 				client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
 				users.forEach(usr => {
 					usr.send({ embeds: [CloseDMEmbed] })
-						.catch(error => { client.logger.warn(error); });
+						.catch(err => client.logger.warn(err));
 				});
 				const resolveEmbed = new EmbedBuilder()
 					.setColor(0xFF6400)

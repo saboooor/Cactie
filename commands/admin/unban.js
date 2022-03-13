@@ -19,8 +19,8 @@ module.exports = {
 			// Send unban message to user if they can be fetched by the client
 			const user = client.users.cache.get(ban.user.id);
 			await user.send({ content: `**You've been unbanned in ${message.guild.name}**` })
-				.catch(e => {
-					client.logger.warn(e);
+				.catch(err => {
+					client.logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
 				});
 

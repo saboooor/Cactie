@@ -44,7 +44,7 @@ module.exports = {
 					await sleep(5000);
 					created.delete();
 				}
-				message.delete().catch(e => client.logger.warn(e));
+				message.delete().catch(err => client.logger.warn(err));
 			}
 			else {
 				message.reply({ content: `**Suggestion Created at ${channel}!**` });

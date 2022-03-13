@@ -7,7 +7,7 @@ module.exports = async (client, player, track) => {
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
 	player.shuffleAmount = null;
 	player.lyrics = await solenolyrics.requestLyricsFor(track.title.split('(')[0] ? track.title.split('(')[0] : track.title)
-		.catch(err => { client.logger.warn(err); });
+		.catch(err => client.logger.warn(err));
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
 	const thing = new EmbedBuilder()

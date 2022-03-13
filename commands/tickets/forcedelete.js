@@ -33,7 +33,7 @@ module.exports = {
 			if (srvconfig.logchannel != 'false') message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
 			users.forEach(usr => {
 				usr.send({ embeds: [DelEmbed] })
-					.catch(error => { client.logger.warn(error); });
+					.catch(err => client.logger.warn(err));
 			});
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 			client.delData('ticketdata', 'channelId', message.channel.id);

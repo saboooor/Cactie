@@ -124,7 +124,7 @@ module.exports = async (client, message) => {
 		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
 		if (now < expirationTime && message.author.id != '249638347306303499') {
 			const timeLeft = (expirationTime - now) / 1000;
-			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(e => { client.logger.error(e); });
+			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => client.logger.error(err));
 			const cooldownEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
@@ -236,7 +236,7 @@ module.exports = async (client, message) => {
 			.addFields({ name: '**INTERACTION:**', value: srvconfig.prefix + command.name })
 			.addFields({ name: '**Error:**', value: `${clean(err)}` });
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-		message.author.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
+		message.author.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
 		client.logger.error(err);
 	}
 };

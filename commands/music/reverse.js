@@ -32,7 +32,7 @@ module.exports = {
 			const ReverseEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:rewind:${rewind}> **Reversed the queue**`);
-			message.reply({ embeds: [ReverseEmbed] }).catch(error => client.logger.error(error));
+			message.reply({ embeds: [ReverseEmbed] }).catch(err => client.logger.error(err));
 		}
 		catch (err) { client.error(err, message); }
 	},

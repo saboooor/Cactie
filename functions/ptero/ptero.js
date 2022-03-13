@@ -8,7 +8,7 @@ module.exports = async function ptero(interaction, client, action) {
 	if (!client.guilds.cache.get(server.guildid).members.cache.get(interaction.member.id)
     || !client.guilds.cache.get(server.guildid).members.cache.get(interaction.member.id).roles.cache.has(server.roleid)) {
 		return interaction.user.send({ content: 'You can\'t do that!' })
-			.catch(e => { return client.logger.warn(e); });
+			.catch(err => client.logger.warn(err));
 	}
 	const Client = new NodeactylClient(server.url, server.apikey);
 	if (action == 'start') Client.startServer(server.id);

@@ -26,7 +26,7 @@ module.exports = {
 			let lyrics = player ? player.lyrics : null;
 			if (song) {
 				lyrics = await solenolyrics.requestLyricsFor(song.title.split('(')[0] ? song.title.split('(')[0] : song.title)
-					.catch(err => { client.logger.warn(err); });
+					.catch(err => client.logger.warn(err));
 			}
 
 			// If there is no lyrics, say so

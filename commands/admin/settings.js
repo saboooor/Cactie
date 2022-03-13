@@ -58,7 +58,7 @@ module.exports = {
 					else {
 						message.guild.channels.cache.forEach(channel => {
 							channel.permissionOverwrites.edit(role, { SendMessages: false })
-								.catch(err => { client.logger.error(err); });
+								.catch(err => client.logger.error(err));
 						});
 
 						// Move the mute role under pup's highest role if not already over it

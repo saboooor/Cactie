@@ -7,12 +7,12 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (!attempts) attempts = 1;
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 	client.logger.info(`Fetching an image from r/${subreddit}... (attempt ${attempts})`);
-	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(e => {
-		client.logger.error(e);
+	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(err => {
+		client.logger.error(err);
 		return message.reply({ content: `Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json` });
 	});
-	const pong = await json.json().catch(e => {
-		client.logger.error(e);
+	const pong = await json.json().catch(err => {
+		client.logger.error(err);
 		return message.reply({ content: `Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json` });
 	});
 	if (!pong) return;
@@ -27,7 +27,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
-	if (!message.channel.nsfw && data.over_18) return message.react('🔞').catch(e => { client.logger.error(e); });
+	if (!message.channel.nsfw && data.over_18) return message.react('🔞').catch(err => client.logger.error(err));
 	const PostEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setAuthor({ name: `u/${data.author}`, url: `https://reddit.com/u/${data.author}` })
@@ -56,9 +56,9 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		data.url = `attachment://${timestamp}.gif`;
 	}
 	PostEmbed.setImage(data.url);
-	message.reply({ embeds: [PostEmbed], files: files }).catch(e => {
-		client.logger.error(e);
-		message.reply({ content: `Ran into a problem:\n\`\`\`${e}\`\`\`\nThis is probably due to Discord's 8MB limit, Pup will host the files itself later in the near future` });
+	message.reply({ embeds: [PostEmbed], files: files }).catch(err => {
+		client.logger.error(err);
+		message.reply({ content: `Ran into a problem:\n\`\`\`${err}\`\`\`\nThis is probably due to Discord's 8MB limit, Pup will host the files itself later in the near future` });
 	});
 	await sleep(5000);
 	if (fs.existsSync(path)) fs.unlinkSync(path);

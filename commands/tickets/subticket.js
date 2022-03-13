@@ -26,7 +26,7 @@ module.exports = {
 				autoArchiveDuration: 1440,
 				reason: args[0] ? args.join(' ') : 'Created using a reaction',
 			})
-				.catch(error => client.logger.error(error));
+				.catch(err => client.logger.error(err));
 			if (message.commandName) message.reply({ content: `Subticket created at ${subticket}!` });
 			client.logger.info(`Subticket created at #${subticket.name}`);
 			await sleep(1000);

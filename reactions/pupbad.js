@@ -3,7 +3,7 @@ module.exports = {
 	triggers: ['bad', 'gross', 'shit', 'dum'],
 	additionaltriggers: ['pup'],
 	execute(message) {
-		message.react('🇳').catch(e => { message.client.logger.error(e); });
-		message.react('🇴').catch(e => { message.client.logger.error(e); });
+		message.react('🇳').catch(err => message.client.logger.error(err));
+		message.react('🇴').catch(err => message.client.logger.error(err));
 	},
 };

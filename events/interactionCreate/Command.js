@@ -161,7 +161,7 @@ module.exports = async (client, interaction) => {
 			.addFields({ name: '**Guild:**', value: interaction.guild.name })
 			.addFields({ name: '**Channel:**', value: interaction.channel.name });
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-		interaction.user.send({ embeds: [interactionFailed] }).catch(e => { client.logger.warn(e); });
+		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
 		client.logger.error(err);
 	}
 };

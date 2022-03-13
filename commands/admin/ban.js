@@ -37,8 +37,8 @@ module.exports = {
 
 			// Send ban message to target
 			await user.send({ content: `**You've been banned from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
-				.catch(e => {
-					client.logger.warn(e);
+				.catch(err => {
+					client.logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
 			client.logger.info(`Banned user: ${user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);

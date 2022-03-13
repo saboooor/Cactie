@@ -41,7 +41,7 @@ module.exports = {
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
-			}).catch(error => client.logger.error(error));
+			}).catch(err => client.logger.error(err));
 			message.reply({ content: `Voiceticket created at ${voiceticket}!` });
 			client.logger.info(`Voiceticket created at #${voiceticket.name}`);
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', voiceticket.id);

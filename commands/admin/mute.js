@@ -48,8 +48,8 @@ module.exports = {
 
 			// Send mute message to target
 			await member.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
-				.catch(e => {
-					client.logger.warn(e);
+				.catch(err => {
+					client.logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
 			client.logger.info(`Muted user: ${member.user.tag} in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);

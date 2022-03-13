@@ -90,7 +90,7 @@ module.exports = {
 			if (ApproveEmbed.url) {
 				message.guild.members.cache.get(ApproveEmbed.url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
-					.catch(error => { client.logger.warn(error); });
+					.catch(err => client.logger.warn(err));
 			}
 
 			// Update message and reply with approved

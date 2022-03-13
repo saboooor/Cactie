@@ -29,8 +29,8 @@ module.exports = {
 
 			// Send unmute message to user
 			await member.send({ content: '**You\'ve been unmuted**' })
-				.catch(e => {
-					client.logger.warn(e);
+				.catch(err => {
+					client.logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
 				});
 
