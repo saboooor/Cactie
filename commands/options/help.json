@@ -6,32 +6,40 @@
         "required": false,
         "choices": [
             {
-                "name": "admin",
+                "name": "Admin",
                 "value": "admin"
             },
             {
-                "name": "fun",
+                "name": "Fun",
                 "value": "fun"
             },
             {
-                "name": "music",
+                "name": "Animals",
+                "value": "animals"
+            },
+            {
+                "name": "Music",
                 "value": "music"
             },
             {
-                "name": "nsfw",
+                "name": "NSFW",
                 "value": "nsfw"
             },
             {
-                "name": "tickets",
+                "name": "Tickets",
                 "value": "tickets"
             },
             {
-                "name": "utilities",
+                "name": "Utilities",
                 "value": "utilities"
             },
             {
-                "name": "supportpanel",
+                "name": "Support Panel (Admin Only)",
                 "value": "supportpanel"
+            },
+            {
+                "name": "Actions",
+                "value": "actions"
             }
         ]
     }

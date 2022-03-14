@@ -86,15 +86,15 @@
                 "required": true,
                 "choices": [
                     {
-                        "name": "buttons",
+                        "name": "Buttons",
                         "value": "buttons"
                     },
                     {
-                        "name": "reactions",
+                        "name": "Reactions",
                         "value": "reactions"
                     },
                     {
-                        "name": "false",
+                        "name": "Disabled",
                         "value": "false"
                     }
                 ]

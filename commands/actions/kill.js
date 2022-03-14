@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Kill someone!',
 	usage: '<Someone>',
 	args: true,
-	options: require('../options/someone.json'),
+	options: require('../options/someonereq.json'),
 	async execute(message, args, client) {
 		try {
 			// Check if arg is a user and set it
