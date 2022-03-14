@@ -1,14 +1,10 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const solenolyrics = require('solenolyrics');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.clearQueueAmount = null;
 	player.loopTrackAmount = null; player.loopQueueAmount = null;
 	player.shuffleAmount = null;
-	player.lyrics = await solenolyrics.requestLyricsFor(track.title.split('(')[0] ? track.title.split('(')[0] : track.title)
-		.catch(err => client.logger.warn(err));
-	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
 	const StartEmbed = new EmbedBuilder()
 		.setDescription(`<:play:${play}> **Started Playing** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)

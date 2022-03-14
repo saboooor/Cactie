@@ -25,7 +25,6 @@
     "node-cron": "^3.0.0",
     "node-fetch": "^3.2.3",
     "nodeactyl": "^3.2.2",
-    "solenolyrics": "^5.0.0",
     "winston": "^3.6.0",
     "yaml": "^1.10.2"
   }

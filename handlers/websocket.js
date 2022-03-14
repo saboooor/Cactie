@@ -28,7 +28,6 @@ module.exports = client => {
 							paused: player.paused,
 							volume: player.volume,
 							bands: player.bands,
-							lyrics: player.lyrics,
 							hasdj: srvconfig.djrole == 'false' ? true : member.roles.cache.has(srvconfig.djrole),
 							djrole: role ? role.name : null,
 						};
