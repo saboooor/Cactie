@@ -124,7 +124,8 @@ module.exports = {
 			});
 
 			collector.on('end', () => {
-				HelpEmbed.setDescription('Help command timed out, please do the help command again if you still need a list of commands.');
+				HelpEmbed.setDescription('Help command timed out.')
+					.setFooter({ text: 'please do the help command again if you still need a list of commands.' });
 				msg.edit({ embeds: [HelpEmbed], components: [row2] });
 			});
 		}
