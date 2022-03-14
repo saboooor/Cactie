@@ -9,7 +9,7 @@ module.exports = client => {
 		(Player) =>
 			class extends Player {
 				setNowplayingMessage(message) {
-					if (this.nowPlayingMessage) this.nowPlayingMessage.edit({ embeds: [compressEmbed(this.nowPlayingMessage.embeds[0])], components: [] }).catch(err => client.logger.error(err));
+					if (message) message.edit({ embeds: [compressEmbed(message.embeds[0])], components: [] }).catch(err => client.logger.error(err));
 					return this.nowPlayingMessage = message;
 				}
 			},
