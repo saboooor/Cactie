@@ -42,8 +42,8 @@ module.exports = {
 					interaction.deferUpdate();
 
 					// Toggle profile pic
-					if (UsrEmbed.image.url == memberpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
-					if (UsrEmbed.image.url == userpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
+					if (UsrEmbed.toJSON().image.url == memberpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
+					if (UsrEmbed.toJSON().image.url == userpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
 				});
 
 				// When the collector stops, remove the button from it

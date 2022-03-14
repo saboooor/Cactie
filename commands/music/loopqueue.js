@@ -1,4 +1,6 @@
+function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder } = require('discord.js');
+const compressEmbed = require('../../functions/compressEmbed');
 const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'loopqueue',
@@ -33,7 +35,11 @@ module.exports = {
 			const LoopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:refresh:${refresh}> **${queueRepeat} Looping the queue**`);
-			message.reply({ embeds: [LoopEmbed] });
+			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
+
+			// Wait 10 seconds and compress the message
+			await sleep(10000);
+			message.commandName ? message.editReply({ embeds: [compressEmbed(LoopEmbed)] }) : loopmsg.edit({ embeds: [compressEmbed(LoopEmbed)] });
 		}
 		catch (err) { client.error(err, message); }
 	},

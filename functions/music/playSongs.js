@@ -199,7 +199,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			else if (i != -1) player.queue.remove(i);
 		}
 		// Reply and stop the collector
-		PlayEmbed.setDescription(PlayEmbed.description.replace('Added', 'Unadded').replace('to', 'from').replace(`<:music:${music}>`, `<:no:${no}>`));
+		PlayEmbed.setDescription(PlayEmbed.toJSON().description.replace('Added', 'Unadded').replace('to', 'from').replace(`<:music:${music}>`, `<:no:${no}>`));
 		interaction.reply({ embeds: [PlayEmbed] });
 		collector.stop();
 	});

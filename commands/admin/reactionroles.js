@@ -63,12 +63,12 @@ module.exports = {
 				});
 
 				// check if there are any reaction roles set
-				if (!RREmbed.fields) RREmbed.addFields({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
+				if (!RREmbed.toJSON().fields) RREmbed.addFields({ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' });
 
 				// If there's more than 12 reaction roles, paginate
-				if (RREmbed.fields.length > 12) {
-					RREmbed.fields.splice(12, RREmbed.fields.length);
-					RREmbed.setFooter({ text: msg.page.replace('-1', '1').replace('-2', Math.ceil(RREmbed.fields.length / 12)), iconURL: message.member.user.avatarURL() });
+				if (RREmbed.toJSON().fields.length > 12) {
+					RREmbed.toJSON().fields.splice(12, RREmbed.toJSON().fields.length);
+					RREmbed.setFooter({ text: msg.page.replace('-1', '1').replace('-2', Math.ceil(RREmbed.toJSON().fields.length / 12)), iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
 					const btns = new ActionRowBuilder()

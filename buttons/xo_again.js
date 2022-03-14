@@ -24,7 +24,7 @@ module.exports = {
 				.setStyle(ButtonStyle.Secondary),
 			);
 		const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON());
-		const lines = TicTacToe.description.split('\n');
+		const lines = TicTacToe.toJSON().description.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
 		const ouserId = lines[1].split('**O:** ')[1].replace(/\D/g, '');
 		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
@@ -96,7 +96,7 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (TicTacToe.fields[0].name == 'Result:') return;
+			if (TicTacToe.toJSON().fields[0].name == 'Result:') return;
 			xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] });
 		});
 	},

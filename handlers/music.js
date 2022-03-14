@@ -25,7 +25,7 @@ module.exports = client => {
 				setNowplayingMessage(message) {
 					if (this.nowPlayingMessage && this.nowPlayingMessage.embeds[0]) {
 						const NPEmbed = new EmbedBuilder(this.nowPlayingMessage.embeds[0].toJSON());
-						const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? [queuerow] : [];
+						const row = NPEmbed.toJSON().description.startsWith('<:play:948091865977196554> **Started Playing**') ? [queuerow] : [];
 						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: row }).catch(err => client.logger.error(err));
 					}
 					return this.nowPlayingMessage = message;

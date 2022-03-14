@@ -10,7 +10,7 @@ module.exports = async (client, player, track) => {
 		.catch(err => client.logger.warn(err));
 	if (!player.lyrics) player.lyrics = 'Lyrics not found.';
 	if (!player.voiceChannel) return;
-	const thing = new EmbedBuilder()
+	const StartEmbed = new EmbedBuilder()
 		.setDescription(`<:play:${play}> **Started Playing** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
 		.setFooter({ text: track.requester.tag, iconURL: track.requester.displayAvatarURL() })
 		.setThumbnail(track.img)
@@ -41,7 +41,7 @@ module.exports = async (client, player, track) => {
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
 		.get(player.textChannel)
-		.send({ embeds: [thing], components: [row] });
+		.send({ embeds: [StartEmbed], components: [row] });
 	player.setNowplayingMessage(NowPlaying);
 	player.timeout = null;
 	client.logger.info(`Timeout set to ${player.timeout}`);

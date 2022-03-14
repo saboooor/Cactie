@@ -33,7 +33,7 @@ module.exports = {
 
 			// Get embed and check if embed is a suggestion
 			const DenyEmbed = new EmbedBuilder(fetchedMsg.embeds[0].toJSON());
-			if (!DenyEmbed || !DenyEmbed.author || !DenyEmbed.title.startsWith('Suggestion')) return;
+			if (!DenyEmbed || !DenyEmbed.toJSON().author || !DenyEmbed.toJSON().title.startsWith('Suggestion')) return;
 
 			// Remove all reactions and set color to red and denied title
 			fetchedMsg.reactions.removeAll();
@@ -46,10 +46,10 @@ module.exports = {
 				if (!emoji) emoji = reaction._emoji.name;
 				emojis.push(`${emoji} **${reaction.count}**`);
 			});
-			if (!DenyEmbed.fields && emojis[0]) DenyEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
+			if (!DenyEmbed.toJSON().fields && emojis[0]) DenyEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
 
 			// Get suggestion thread
-			const thread = message.guild.channels.cache.get(DenyEmbed.url.split('a')[2]);
+			const thread = message.guild.channels.cache.get(DenyEmbed.toJSON().url.split('a')[2]);
 
 			// Delete command message
 			if (!message.commandName && !thread) message.delete();
@@ -73,8 +73,8 @@ module.exports = {
 			if (args.join(' ')) {
 				// check if there's a response already, if so, edit the field and don't add a new field
 				let newField = true;
-				if (DenyEmbed.fields) {
-					DenyEmbed.fields.forEach(field => {
+				if (DenyEmbed.toJSON().fields) {
+					DenyEmbed.toJSON().fields.forEach(field => {
 						if (field.name == 'Response') {
 							newField = false;
 							field.value = args.join(' ');
@@ -84,8 +84,8 @@ module.exports = {
 				if (newField) DenyEmbed.addFields({ name: 'Response', value: args.join(' ') });
 			}
 			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
-			if (DenyEmbed.url) {
-				message.guild.members.cache.get(DenyEmbed.url.split('a')[1])
+			if (DenyEmbed.toJSON().url) {
+				message.guild.members.cache.get(DenyEmbed.toJSON().url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
 					.catch(err => client.logger.warn(err));
 			}

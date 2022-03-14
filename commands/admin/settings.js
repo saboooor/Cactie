@@ -178,7 +178,7 @@ module.exports = {
 					else if (button[1] == 'page') {
 						// Calculate total amount of pages and get current page from embed footer
 						const maxPages = Math.ceil(configlist.length / 5);
-						const lastPage = parseInt(SettingsEmbed.footer ? SettingsEmbed.footer.text.split(' ')[1] : maxPages);
+						const lastPage = parseInt(SettingsEmbed.toJSON().footer ? SettingsEmbed.toJSON().footer.text.split(' ')[1] : maxPages);
 
 						// Get next page (if last page, go to pg 1)
 						// Or get prev page (if first page, go to last page)

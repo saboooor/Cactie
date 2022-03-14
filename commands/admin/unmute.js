@@ -50,7 +50,7 @@ module.exports = {
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				UnmuteEmbed.setTitle(`${message.member.user.tag} ${UnmuteEmbed.title}`);
+				UnmuteEmbed.setTitle(`${message.member.user.tag} ${UnmuteEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [UnmuteEmbed] });
 			}
 		}

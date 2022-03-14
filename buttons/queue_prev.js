@@ -16,7 +16,7 @@ module.exports = {
 
 			// Calculate total amount of pages and get current page from embed footer
 			const maxPages = Math.ceil(queue.length / 10);
-			const lastPage = parseInt(QueueEmbed.footer.text.split(' ')[1]);
+			const lastPage = parseInt(QueueEmbed.toJSON().footer.text.split(' ')[1]);
 
 			// Get prev page (if first page, go to last page)
 			const page = lastPage - 1 ? lastPage - 1 : maxPages;

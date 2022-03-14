@@ -12,7 +12,7 @@ module.exports = {
 			Object.keys(servers).map(i => { srvs.push(servers[i]); });
 			const StatsEmbed = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 			StatsEmbed.setFields();
-			const arg = StatsEmbed.url.replace('https://', '').split('.pup')[0].replace('colon', ':');
+			const arg = StatsEmbed.toJSON().url.replace('https://', '').split('.pup')[0].replace('colon', ':');
 			let server = servers[arg.toLowerCase()];
 			if (!server) server = srvs.find(srv => arg.toLowerCase() == srv.short);
 			if (server && server.id) {
@@ -44,9 +44,9 @@ module.exports = {
 				const pong = await json.json();
 				const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
 				if (!pong.online) return interaction.reply({ content: `**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
-				if (!StatsEmbed.title && pong.hostname) StatsEmbed.setTitle(pong.hostname);
-				else if (!StatsEmbed.title && pong.port == 25565) StatsEmbed.setTitle(pong.ip);
-				else if (!StatsEmbed.title) StatsEmbed.setTitle(`${pong.ip}:${pong.port}`);
+				if (!StatsEmbed.toJSON().title && pong.hostname) StatsEmbed.setTitle(pong.hostname);
+				else if (!StatsEmbed.toJSON().title && pong.port == 25565) StatsEmbed.setTitle(pong.ip);
+				else if (!StatsEmbed.toJSON().title) StatsEmbed.setTitle(`${pong.ip}:${pong.port}`);
 				StatsEmbed.setDescription(`Last Pinged: <t:${pong.debug.cachetime}:R>`);
 				if (!pong.debug.cachetime) StatsEmbed.setDescription(`Last Pinged: <t:${Math.round(Date.now() / 1000)}:R>`);
 				if (pong.version) StatsEmbed.addFields({ name: '**Version:**', value: pong.version, inline: true });

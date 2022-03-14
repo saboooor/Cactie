@@ -56,7 +56,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				BanEmbed.setTitle(`${message.member.user.tag} ${BanEmbed.title}`);
+				BanEmbed.setTitle(`${message.member.user.tag} ${BanEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [BanEmbed] });
 			}
 		}

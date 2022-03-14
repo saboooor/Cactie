@@ -33,7 +33,7 @@ module.exports = {
 
 			// Get embed and check if embed is a suggestion
 			const ApproveEmbed = new EmbedBuilder(fetchedMsg.embeds[0].toJSON());
-			if (!ApproveEmbed || !ApproveEmbed.author || !ApproveEmbed.title.startsWith('Suggestion')) return;
+			if (!ApproveEmbed || !ApproveEmbed.toJSON().author || !ApproveEmbed.toJSON().title.startsWith('Suggestion')) return;
 
 			// Remove all reactions and set color to green and approved title
 			fetchedMsg.reactions.removeAll();
@@ -46,13 +46,13 @@ module.exports = {
 				if (!emoji) emoji = reaction._emoji.name;
 				emojis.push(`${emoji} **${reaction.count}**`);
 			});
-			if (!ApproveEmbed.fields && emojis[0]) ApproveEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
+			if (!ApproveEmbed.toJSON().fields && emojis[0]) ApproveEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
 
 			// Delete command message
 			if (!message.commandName) message.delete();
 
 			// Get suggestion thread
-			const thread = message.guild.channels.cache.get(ApproveEmbed.url.split('a')[2]);
+			const thread = message.guild.channels.cache.get(ApproveEmbed.toJSON().url.split('a')[2]);
 
 			// Delete command message
 			if (!message.commandName && !thread) message.delete();
@@ -76,8 +76,8 @@ module.exports = {
 			if (args.join(' ')) {
 				// check if there's a response already, if so, edit the field and don't add a new field
 				let newField = true;
-				if (ApproveEmbed.fields) {
-					ApproveEmbed.fields.forEach(field => {
+				if (ApproveEmbed.toJSON().fields) {
+					ApproveEmbed.toJSON().fields.forEach(field => {
 						if (field.name == 'Response') {
 							newField = false;
 							field.value = args.join(' ');
@@ -87,8 +87,8 @@ module.exports = {
 				if (newField) ApproveEmbed.addFields({ name: 'Response', value: args.join(' ') });
 			}
 			ApproveEmbed.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
-			if (ApproveEmbed.url) {
-				message.guild.members.cache.get(ApproveEmbed.url.split('a')[1])
+			if (ApproveEmbed.toJSON().url) {
+				message.guild.members.cache.get(ApproveEmbed.toJSON().url.split('a')[1])
 					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
 					.catch(err => client.logger.warn(err));
 			}

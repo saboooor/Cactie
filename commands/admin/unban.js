@@ -40,7 +40,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				UnbanEmbed.setTitle(`${message.member.user.tag} ${UnbanEmbed.title}`);
+				UnbanEmbed.setTitle(`${message.member.user.tag} ${UnbanEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [UnbanEmbed] });
 			}
 		}

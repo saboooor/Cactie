@@ -41,8 +41,8 @@ module.exports = {
 			// Send changelog embeds to the main channels and reply with response
 			server.changelogs.mainchannels.forEach(channelid => {
 				changes.forEach(change => {
-					CLEmbed.setColor(Math.floor(Math.random() * 16777215));
-					CLEmbed.setDescription(change);
+					CLEmbed.setColor(Math.floor(Math.random() * 16777215))
+						.setDescription(change);
 					guild.channels.cache.get(channelid).send({ embeds: [CLEmbed] });
 				});
 			});

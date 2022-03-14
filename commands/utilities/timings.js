@@ -26,7 +26,7 @@ module.exports = {
 					TimingsEmbed.setFields(...issues);
 
 					// Get page from footer
-					const footer = TimingsEmbed.footer.text.split(' • ');
+					const footer = TimingsEmbed.toJSON().footer.text.split(' • ');
 					let page = parseInt(footer[footer.length - 1].split('Page ')[1].split(' ')[0]);
 
 					// Add/Remove page depending on the customId
@@ -39,8 +39,8 @@ module.exports = {
 
 					// idk what happened here but it works
 					const index = page * 12;
-					TimingsEmbed.fields.splice(0, index - 12);
-					TimingsEmbed.fields.splice(index, issues.length);
+					TimingsEmbed.toJSON().fields.splice(0, index - 12);
+					TimingsEmbed.toJSON().fields.splice(index, issues.length);
 					footer[footer.length - 1] = `Page ${page} of ${Math.ceil(issues.length / 12)}`;
 					TimingsEmbed.setFooter({ text: footer.join(' • ') });
 

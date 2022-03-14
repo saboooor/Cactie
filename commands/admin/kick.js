@@ -46,7 +46,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				KickEmbed.setTitle(`${message.member.user.tag} ${KickEmbed.title}`);
+				KickEmbed.setTitle(`${message.member.user.tag} ${KickEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [KickEmbed] });
 			}
 		}

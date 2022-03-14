@@ -13,10 +13,10 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			player.stop();
 			player.queue.clear();
-			const StopMusic = new EmbedBuilder()
+			const StopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:alert:${warn}> **Stopped the music**`);
-			message.reply({ embeds: [StopMusic] });
+			message.reply({ embeds: [StopEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},

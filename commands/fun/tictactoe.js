@@ -101,7 +101,7 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (TicTacToe.fields[0].name == 'Result:') return;
+			if (TicTacToe.toJSON().fields[0].name == 'Result:') return;
 			xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] });
 		});
 	},

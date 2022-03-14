@@ -222,14 +222,14 @@ module.exports = async function analyzeTimings(message, client, args) {
 	}
 	TimingsEmbed.setColor(parseInt('0x' + componentToHex(Math.round(red)) + componentToHex(Math.round(green)) + '00'));
 
-	const issues = TimingsEmbed.fields;
+	const issues = TimingsEmbed.toJSON().fields;
 	if (issues.length == 0) {
 		TimingsEmbed.addFields({ name: '✅ All good', value: 'Analyzed with no recommendations.' });
 		return [{ embeds: [TimingsEmbed] }];
 	}
 	const components = [];
 	if (issues.length >= 13) {
-		TimingsEmbed.fields.splice(12, issues.length);
+		TimingsEmbed.toJSON().fields.splice(12, issues.length);
 		TimingsEmbed.addFields({ name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
 		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • ${msg.page.replace('-1', '1').replace('-2', Math.ceil(issues.length / 12))}`, iconURL: message.member.user.avatarURL() });
 		components.push(

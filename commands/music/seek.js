@@ -34,8 +34,7 @@ module.exports = {
 				else SeekEmbed.setDescription(`<:rewind:${rewind}> **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
 			else {
-				SeekEmbed
-					.setColor(0xE74C3C)
+				SeekEmbed.setColor(0xE74C3C)
 					.setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
 			message.reply({ embeds: [SeekEmbed] });
