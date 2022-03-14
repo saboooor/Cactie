@@ -17,21 +17,22 @@ module.exports = client => {
 		ticketData.forEach(async data => {
 			if (data.resolved == 'true') {
 				data.users = data.users.split(',');
-				const channel = await client.channels.cache.get(data.channelId);
+				const guild = await client.guilds.cache.get(data.guildId);
+				const channel = await guild.channels.cache.get(data.channelId);
 				channel.setName(channel.name.replace('ticket', 'closed'));
 				await sleep(1000);
 				if (channel.name.includes(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return channel.send({ content: 'Failed to close ticket, please try again in 10 minutes' });
 				if (data.voiceticket !== 'false') {
-					const voiceticket = await channel.guild.channels.cache.get(data.voiceticket);
+					const voiceticket = await guild.channels.cache.get(data.voiceticket);
 					voiceticket.delete().catch(err => client.logger.error(err));
 					await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 				}
 				await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
-				await data.users.forEach(userid => channel.permissionOverwrites.edit(channel.guild.members.cache.get(userid), { ViewChannel: false }));
+				await data.users.forEach(userid => channel.permissionOverwrites.edit(guild.members.cache.get(userid), { ViewChannel: false }));
 				const messages = await channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const users = [];
-				await data.users.forEach(userid => users.push(channel.guild.members.cache.get(userid)));
+				await data.users.forEach(userid => users.push(guild.members.cache.get(userid)));
 				const CloseDMEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
@@ -46,7 +47,7 @@ module.exports = client => {
 				const resolveEmbed = new EmbedBuilder()
 					.setColor(0xFF6400)
 					.setDescription('Automatically closed Resolved Ticket');
-				const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
+				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				if (srvconfig.tickets == 'buttons') {
 					const row = new ActionRowBuilder()
 						.addComponents(
