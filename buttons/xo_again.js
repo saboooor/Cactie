@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 function EndXO(btns, a, b, c, TicTacToe, xomsg, xuser, ouser, rows) {
@@ -23,7 +23,7 @@ module.exports = {
 				.setLabel('Play Again')
 				.setStyle(ButtonStyle.Secondary),
 			);
-		const TicTacToe = interaction.message.embeds[0];
+		const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 		const lines = TicTacToe.description.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
 		const ouserId = lines[1].split('**O:** ')[1].replace(/\D/g, '');

@@ -4,7 +4,7 @@ const compressEmbed = require('../functions/compressEmbed.js');
 const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
 const fs = require('fs');
 const { refresh } = require('../lang/int/emoji.json');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const queuerow = new ActionRowBuilder()
 	.addComponents(
 		new ButtonBuilder()
@@ -24,7 +24,7 @@ module.exports = client => {
 			class extends Player {
 				setNowplayingMessage(message) {
 					if (this.nowPlayingMessage && this.nowPlayingMessage.embeds[0]) {
-						const NPEmbed = this.nowPlayingMessage.embeds[0];
+						const NPEmbed = new EmbedBuilder(this.nowPlayingMessage.embeds[0].toJSON());
 						const row = NPEmbed.description.startsWith('<:play:948091865977196554> **Started Playing**') ? [queuerow] : [];
 						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: row }).catch(err => client.logger.error(err));
 					}

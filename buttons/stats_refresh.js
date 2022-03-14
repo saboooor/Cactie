@@ -1,4 +1,5 @@
 const { createPaste } = require('hastebin');
+const { EmbedBuilder } = require('discord.js');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const servers = require('../config/pterodactyl.json');
@@ -9,7 +10,7 @@ module.exports = {
 		try {
 			const srvs = [];
 			Object.keys(servers).map(i => { srvs.push(servers[i]); });
-			const StatsEmbed = interaction.message.embeds[0];
+			const StatsEmbed = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 			StatsEmbed.setFields();
 			const arg = StatsEmbed.url.replace('https://', '').split('.pup')[0].replace('colon', ':');
 			let server = servers[arg.toLowerCase()];

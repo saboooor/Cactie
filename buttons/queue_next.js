@@ -1,5 +1,6 @@
 const { convertTime } = require('../functions/music/convert.js');
 const { createPaste } = require('hastebin');
+const { EmbedBuilder } = require('discord.js');
 const { music } = require('../lang/int/emoji.json');
 const msg = require('../lang/en/msg.json');
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
 			const player = interaction.client.manager.get(interaction.guild.id);
 			const queue = player.queue;
 			const song = queue.current;
-			const QueueEmbed = interaction.message.embeds[0];
+			const QueueEmbed = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 
 			// Calculate total amount of pages and get current page from embed footer
 			const maxPages = Math.ceil(queue.length / 10);

@@ -1,10 +1,11 @@
 const { NodeactylClient } = require('nodeactyl');
+const { EmbedBuilder } = require('discord.js');
 const servers = require('../config/pterodactyl.json');
 const fs = require('fs');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async function gitUpdate(client, message) {
 	// get embed and check if it's an embed in the git channel
-	const GitEmbed = message.embeds[0];
+	const GitEmbed = new EmbedBuilder(message.embeds[0].toJSON());
 	if (!message.webhookId || !message.channel.id == '812082273393704960' || !GitEmbed || !GitEmbed.title) return;
 
 	// get the server name from pterodactyl.json and branch name from embed title and check if it's this bot

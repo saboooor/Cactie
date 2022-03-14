@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'deny',
@@ -32,7 +32,7 @@ module.exports = {
 			if (fetchedMsg.author != client.user) return;
 
 			// Get embed and check if embed is a suggestion
-			const DenyEmbed = fetchedMsg.embeds[0];
+			const DenyEmbed = new EmbedBuilder(fetchedMsg.embeds[0].toJSON());
 			if (!DenyEmbed || !DenyEmbed.author || !DenyEmbed.title.startsWith('Suggestion')) return;
 
 			// Remove all reactions and set color to red and denied title

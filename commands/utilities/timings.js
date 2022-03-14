@@ -1,4 +1,5 @@
 const analyzeTimings = require('../../functions/timings/analyzeTimings.js');
+const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'timings',
 	description: 'Analyze Paper timings to optimize the Paper server.',
@@ -21,7 +22,7 @@ module.exports = {
 					i.deferUpdate();
 
 					// Get the embed and clear the fields
-					const TimingsEmbed = msg.embeds[0];
+					const TimingsEmbed = new EmbedBuilder(msg.embeds[0].toJSON());
 					TimingsEmbed.setFields(...issues);
 
 					// Get page from footer

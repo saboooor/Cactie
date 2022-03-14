@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'approve',
@@ -32,7 +32,7 @@ module.exports = {
 			if (fetchedMsg.author != client.user) return;
 
 			// Get embed and check if embed is a suggestion
-			const ApproveEmbed = fetchedMsg.embeds[0];
+			const ApproveEmbed = new EmbedBuilder(fetchedMsg.embeds[0].toJSON());
 			if (!ApproveEmbed || !ApproveEmbed.author || !ApproveEmbed.title.startsWith('Suggestion')) return;
 
 			// Remove all reactions and set color to green and approved title
