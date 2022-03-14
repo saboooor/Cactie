@@ -2,6 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { EmbedBuilder, MessageAttachment } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
+const { nsfw } = require('../lang/int/emoji.json');
 const fs = require('fs');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
@@ -27,11 +28,11 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
-	if (!message.channel.nsfw && data.over_18) return message.react('🔞').catch(err => client.logger.error(err));
+	if (!message.channel.nsfw && data.over_18) return message.react(nsfw).catch(err => client.logger.error(err));
 	const PostEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setAuthor({ name: `u/${data.author}`, url: `https://reddit.com/u/${data.author}` })
-		.setTitle(data.title)
+		.setTitle(`${data.over_18 ? `<:nsfw:${nsfw}>  ` : ''}${data.title}`)
 		.setDescription(`**${data.ups} Upvotes** (${data.upvote_ratio * 100}%)`)
 		.setURL(`https://reddit.com${data.permalink}`)
 		.setFooter({ text: `Fetched from r/${data.subreddit}` })
