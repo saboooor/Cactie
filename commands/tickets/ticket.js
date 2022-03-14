@@ -61,6 +61,12 @@ module.exports = {
 				.setTitle('Ticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly\nIf you have multiple issues, please use the /subticket command\nIf you want to create a private voice chat, please use the /voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.');
 			if (args && args[0] && !reaction) CreateEmbed.addFields({ name: 'Description', value: args.join(' ') });
+
+			// Ping the staff if enabled
+			let ping = null;
+			if (srvconfig.ticketmention == 'here' || srvconfig.ticketmention == 'everyone') ping = `@${srvconfig.ticketmention}`;
+			else if (srvconfig.ticketmention != 'false') ping = `<@${srvconfig.ticketmention}>`;
+
 			if (srvconfig.tickets == 'buttons') {
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 				const row = new ActionRowBuilder()
@@ -81,22 +87,14 @@ module.exports = {
 							.setEmoji({ name: '🔊' })
 							.setStyle(ButtonStyle.Secondary),
 					);
-				await ticket.send({ content: `${author}`, embeds: [CreateEmbed], components: [row] });
+				await ticket.send({ content: `${author}${ping ? ping : ''}`, embeds: [CreateEmbed], components: [row] });
 			}
 			else if (srvconfig.tickets == 'reactions') {
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
-				const Panel = await ticket.send({ content: `${author}`, embeds: [CreateEmbed] });
+				const Panel = await ticket.send({ content: `${author}${ping ? ping : ''}`, embeds: [CreateEmbed] });
 				await Panel.react('🔒');
 				await Panel.react('📜');
 				await Panel.react('🔊');
-			}
-			// Ping with the ticketmention setting if enabled
-			if (srvconfig.ticketmention != 'false') {
-				let ping = null;
-				if (srvconfig.ticketmention == 'here') ping = await ticket.send({ content: '@here' });
-				else if (srvconfig.ticketmention == 'everyone') ping = await ticket.send({ content: '@everyone' });
-				else ping = await ticket.send({ content: `<@${srvconfig.ticketmention}>` });
-				await ping.delete();
 			}
 		}
 		catch (err) { client.error(err, message); }

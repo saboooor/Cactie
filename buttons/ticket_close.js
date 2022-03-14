@@ -59,34 +59,21 @@ module.exports = {
 			const CloseEmbed = new EmbedBuilder()
 				.setColor(0xFF6400)
 				.setDescription(`Ticket Closed by ${author}`);
-			let row = null;
-			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			if (srvconfig.tickets == 'buttons') {
-				row = new ActionRowBuilder()
-					.addComponents(
-						new ButtonBuilder()
-							.setCustomId('delete_ticket')
-							.setLabel('Delete Ticket')
-							.setEmoji({ name: '⛔' })
-							.setStyle(ButtonStyle.Danger),
-						new ButtonBuilder()
-							.setCustomId('reopen_ticket')
-							.setLabel('Reopen Ticket')
-							.setEmoji({ name: '🔓' })
-							.setStyle(ButtonStyle.Primary),
-					);
-			}
+			const row = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId('delete_ticket')
+						.setLabel('Delete Ticket')
+						.setEmoji({ name: '⛔' })
+						.setStyle(ButtonStyle.Danger),
+					new ButtonBuilder()
+						.setCustomId('reopen_ticket')
+						.setLabel('Reopen Ticket')
+						.setEmoji({ name: '🔓' })
+						.setStyle(ButtonStyle.Primary),
+				);
 			interaction.reply({ embeds: [CloseEmbed], components: [row] });
 			client.logger.info(`Closed ticket #${interaction.channel.name}`);
-
-			// Check if ticket setting is set to reactions and add the reactions
-			if (srvconfig.tickets == 'reactions') {
-				CloseEmbed.setColor(0x5662f6);
-				CloseEmbed.setDescription('🔓 Reopen Ticket `/open` `/open`\n⛔ Delete Ticket `/delete` `/delete`');
-				const Panel = await interaction.channel.send({ embeds: [CloseEmbed] });
-				Panel.react('🔓');
-				Panel.react('⛔');
-			}
 		}
 		catch (err) { client.error(err, interaction); }
 	},

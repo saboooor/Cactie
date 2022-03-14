@@ -11,9 +11,6 @@ module.exports = {
 			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
-			// Check if ticket is still open
-			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
-
 			// Check if ticket log channel is set in settings
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.logchannel != 'false') {

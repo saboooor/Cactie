@@ -2,10 +2,6 @@ const { MessageAttachment, EmbedBuilder, Collection, ButtonBuilder, ButtonStyle,
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
-function clean(text) {
-	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
-	else return text;
-}
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return and also check if message is a github update
@@ -234,7 +230,7 @@ module.exports = async (client, message) => {
 			.addFields({ name: '**Guild:**', value: message.guild.name })
 			.addFields({ name: '**Channel:**', value: message.channel.name })
 			.addFields({ name: '**INTERACTION:**', value: srvconfig.prefix + command.name })
-			.addFields({ name: '**Error:**', value: `${clean(err)}` });
+			.addFields({ name: '**Error:**', value: `\`\`\`xl\n${err}\n\`\`\`` });
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
 		client.logger.error(err);

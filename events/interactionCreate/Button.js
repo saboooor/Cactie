@@ -1,8 +1,4 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-function clean(text) {
-	if (typeof (text) === 'string') return text.replace(/`/g, '`' + String.fromCharCode(8203)).replace(/@/g, '@' + String.fromCharCode(8203));
-	else return text;
-}
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
 	if (!interaction.isButton()) return;
@@ -48,7 +44,7 @@ module.exports = async (client, interaction) => {
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
 			.addFields({ name: '**Type:**', value: 'Button' })
 			.addFields({ name: '**Interaction:**', value: button.name })
-			.addFields({ name: '**Error:**', value: clean(err) });
+			.addFields({ name: '**Error:**', value: `\`\`\`xl\n${err}\n\`\`\`` });
 		if (interaction.guild) interactionFailed.addFields({ name: '**Guild:**', value: interaction.guild.name }).addFields({ name: '**Channel:**', value: interaction.channel.name });
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));

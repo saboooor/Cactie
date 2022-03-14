@@ -35,27 +35,19 @@ module.exports = {
 				.setColor(0x5662f6)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
-				.addFields({ name: 'Description', value: 'Created with a button' });
+				.addFields({ name: 'Description', value: 'Created with a button' })
+				.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 
-			// Check if ticket mode is buttons or reactions and do stuff
-			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			if (srvconfig.tickets == 'buttons') {
-				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
-				const row = new ActionRowBuilder()
-					.addComponents(
-						new ButtonBuilder()
-							.setCustomId('close_subticket')
-							.setLabel('Close Subticket')
-							.setEmoji({ name: '🔒' })
-							.setStyle(ButtonStyle.Danger),
-					);
-				await subticket.send({ content: `${users}`, embeds: [CreateEmbed], components: [row] });
-			}
-			else if (srvconfig.tickets == 'reactions') {
-				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or react with 🔒' });
-				const Panel = await subticket.send({ content: `${users}`, embeds: [CreateEmbed] });
-				await Panel.react('🔒');
-			}
+			// Create close button and send panel to subticket
+			const row = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId('close_subticket')
+						.setLabel('Close Subticket')
+						.setEmoji({ name: '🔒' })
+						.setStyle(ButtonStyle.Danger),
+				);
+			await subticket.send({ content: `${users}`, embeds: [CreateEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, interaction); }
 	},
