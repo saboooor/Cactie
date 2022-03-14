@@ -18,10 +18,6 @@ module.exports = {
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
-			// Get settings and check if tickets are disabled
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-
 			// Check if ticket is closed
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 

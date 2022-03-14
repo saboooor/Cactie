@@ -17,8 +17,6 @@ module.exports = {
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 			if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already opened!' });
 			await message.channel.setName(message.channel.name.replace('closed', 'ticket'));
 			await sleep(1000);

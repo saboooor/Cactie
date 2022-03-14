@@ -22,7 +22,6 @@ module.exports = {
 			}
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has('ADMINISTRATOR')) return;
-				HelpEmbed.setDescription('Created support panel! You may now delete this message');
 				const Panel = new EmbedBuilder()
 					.setColor(0x5662f6)
 					.setTitle('Need help? No problem!')
@@ -38,6 +37,7 @@ module.exports = {
 								.setStyle(ButtonStyle.Primary),
 						);
 					message.channel.send({ embeds: [Panel], components: [row] });
+					return message.reply('Support panel created! You may now delete this message');
 				}
 				else if (srvconfig.tickets == 'reactions') {
 					Panel.setDescription('React with 🎫 to open a ticket!');

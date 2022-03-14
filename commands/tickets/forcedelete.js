@@ -19,7 +19,6 @@ module.exports = {
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
-			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
 			const users = [];

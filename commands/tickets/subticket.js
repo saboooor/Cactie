@@ -19,7 +19,6 @@ module.exports = {
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 			if (message.channel.threads.cache.size > 5) return message.reply({ content: 'This ticket has too many subtickets!' });
-			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 			const subticket = await message.channel.threads.create({
 				name: `Subticket${client.user.username.replace('Pup', '')} ${message.channel.threads.cache.size + 1}`,

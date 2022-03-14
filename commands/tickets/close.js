@@ -39,9 +39,6 @@ module.exports = {
 				return message.channel.delete();
 			}
 
-			// Check if tickets are disabled
-			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-
 			// Check if ticket is already closed
 			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
 
