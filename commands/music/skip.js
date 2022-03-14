@@ -72,7 +72,7 @@ module.exports = {
 				.setDescription(`${msg.music.skip.skipped}\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setFooter(message.member.user.tag, message.member.user.displayAvatarURL())
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
 				.setTimestamp();
 			const skipmsg = await message.reply({ embeds: [thing] });
 
