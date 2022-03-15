@@ -27,7 +27,7 @@ module.exports = async (client, player, track) => {
 				.setEmoji(skip)
 				.setStyle('SECONDARY'),
 		]);
-	if (client.user.id == '765287593762881616') {
+	if (client.user.id == '848775888673439745') {
 		row.addComponents(
 			new MessageButton()
 				.setURL('https://cactie.smhsmh.club/music')

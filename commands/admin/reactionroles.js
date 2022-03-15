@@ -21,7 +21,7 @@ module.exports = {
 			const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
 
 			let dashbtn = null;
-			if (client.user.id == '765287593762881616') {
+			if (client.user.id == '848775888673439745') {
 				dashbtn = [new MessageActionRow()
 					.addComponents(
 						new MessageButton()
@@ -120,7 +120,7 @@ module.exports = {
 								.setEmoji(right)
 								.setStyle('SECONDARY'),
 						);
-					if (client.user.id == '765287593762881616') {
+					if (client.user.id == '848775888673439745') {
 						btns.addComponents(
 							new MessageButton()
 								.setURL('https://cactie.smhsmh.club')
@@ -131,7 +131,7 @@ module.exports = {
 					components.push(btns);
 				}
 			}
-			if (client.user.id == '765287593762881616') RREmbed.addField('Too confusing?', `${msg.dashboard} REACTION ROLES COMING SOON`);
+			if (client.user.id == '848775888673439745') RREmbed.addField('Too confusing?', `${msg.dashboard} REACTION ROLES COMING SOON`);
 
 			// If there aren't any buttons, add a button for dashboard
 			if (!components[0]) components = dashbtn;
