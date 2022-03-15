@@ -186,7 +186,7 @@ module.exports = async (client, interaction) => {
 			// If user has not voted since the past 24 hours, send error message with vote buttons
 			if (Date.now() > vote.timestamp + 86400000) {
 				embed.setTitle(`You need to vote to use ${command.name}! Vote below!`)
-					.setDescription('Voting helps us get Pup in more servers!\nIt\'ll only take a few seconds!');
+					.setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
 				const row = new MessageActionRow()
 					.addComponents(
 						new MessageButton()

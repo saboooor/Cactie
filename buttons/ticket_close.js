@@ -13,7 +13,7 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is already closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
+			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
 
 			// Check if user is ticket author
 			const author = interaction.user;
@@ -24,7 +24,7 @@ module.exports = {
 
 			// Check if bot got rate limited and ticket didn't properly close
 			await sleep(1000);
-			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 
 			// Check if there's a voice ticket and delete it
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {

@@ -1,7 +1,7 @@
 const { MessageButton, MessageActionRow, MessageEmbed, MessageSelectMenu } = require('discord.js');
 module.exports = {
 	name: 'help',
-	description: 'Get help with Pup',
+	description: 'Get help with Cactie',
 	aliases: ['commands'],
 	botperm: 'ADD_REACTIONS',
 	usage: '[Type]',
@@ -84,7 +84,7 @@ module.exports = {
 							},
 							{
 								label: 'Tickets',
-								description: 'These commands are related to Pup\'s tickets system',
+								description: 'These commands are related to Cactie\'s tickets system',
 								value: 'help_tickets',
 							},
 							{
@@ -97,7 +97,7 @@ module.exports = {
 			const row2 = new MessageActionRow()
 				.addComponents([
 					new MessageButton()
-						.setURL('https://pup.smhsmh.club/discord')
+						.setURL('https://cactie.smhsmh.club/discord')
 						.setLabel('Support Discord')
 						.setStyle('LINK'),
 					new MessageButton()

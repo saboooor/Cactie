@@ -3,7 +3,7 @@ const { left, right } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
-	description: 'Configure Pup\'s reaction roles in the server',
+	description: 'Configure Cactie\'s reaction roles in the server',
 	ephemeral: true,
 	aliases: ['rr'],
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
@@ -25,7 +25,7 @@ module.exports = {
 				dashbtn = [new MessageActionRow()
 					.addComponents(
 						new MessageButton()
-							.setURL('https://pup.smhsmh.club')
+							.setURL('https://cactie.smhsmh.club')
 							.setLabel('Dashboard')
 							.setStyle('LINK'),
 					)];
@@ -62,7 +62,7 @@ module.exports = {
 					reaction = await fetchedMsg.react(args[1]);
 				}
 				catch (err) {
-					RREmbed.setDescription(`\`${err}\`\nUse an emote from a server that Pup is in or an emoji.`);
+					RREmbed.setDescription(`\`${err}\`\nUse an emote from a server that Cactie is in or an emoji.`);
 					message.reply({ embeds: [RREmbed], components: dashbtn });
 					return client.logger.error(err);
 				}
@@ -123,7 +123,7 @@ module.exports = {
 					if (client.user.id == '765287593762881616') {
 						btns.addComponents(
 							new MessageButton()
-								.setURL('https://pup.smhsmh.club')
+								.setURL('https://cactie.smhsmh.club')
 								.setLabel('Dashboard')
 								.setStyle('LINK'),
 						);

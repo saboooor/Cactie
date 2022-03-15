@@ -23,7 +23,7 @@ module.exports = async function gitUpdate(client, message) {
 
 	// send a notice to everyone currently playing music and log and save music queues
 	client.logger.info('Detected a new commit on GitHub, updating...');
-	embed.setAuthor({ name: 'Pup is updating! Sorry for the inconvenience!' })
+	embed.setAuthor({ name: 'Cactie is updating! Sorry for the inconvenience!' })
 		.setFooter({ text: 'I\'ll be back up in a few seconds to keep your music playing!' });
 	await client.manager.players.forEach(async player => {
 		await client.guilds.cache.get(player.guild).channels.cache.get(player.textChannel).send({ embeds: [embed] });

@@ -6,7 +6,7 @@ module.exports = {
 	cooldown: 10,
 	async execute(message, args, client) {
 		try {
-			// Get the servers saved to Pup and check if the server is in the current guild
+			// Get the servers saved to Cactie and check if the server is in the current guild
 			const serverlist = Object.keys(servers).map(i => { return servers[i].name.toLowerCase(); }), srvs = [];
 			serverlist.forEach(i => {
 				if (servers[i] && servers[i].guildid == message.guild.id && servers[i].link) srvs.push(servers[i]);

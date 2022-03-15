@@ -1,10 +1,10 @@
 {
   "name": "pup",
   "version": "69.420",
-  "description": "Pup bot go brr",
+  "description": "Cactie bot go brr",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saboooor/Pup.git"
+    "url": "git+https://github.com/saboooor/Cactie.git"
   },
   "main": "index.js",
   "scripts": {

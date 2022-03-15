@@ -26,7 +26,7 @@ module.exports = async (client) => {
 		const activities = [
 			['PLAYING', 'with you ;)'],
 			['PLAYING', '/help'],
-			['WATCHING', 'pup.smhsmh.club'],
+			['WATCHING', 'cactie.smhsmh.club'],
 			['COMPETING', 'taking over the world'],
 			['COMPETING', `${client.guilds.cache.size} Servers`],
 			['PLAYING', '{GUILD}'],

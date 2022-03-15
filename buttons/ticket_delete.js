@@ -12,7 +12,7 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is still open
-			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Pup ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
+			if (interaction.channel.name.startsWith(`ticket${client.user.username.replace('Cactie ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket needs to be closed first!' });
 
 			// Check if ticket log channel is set in settings
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);

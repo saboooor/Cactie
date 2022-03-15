@@ -23,8 +23,8 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
 			// If the channel is a subticket, delete the subticket instead
-			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) &&
-			message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) {
+			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Cactie', '') + ' '}`) &&
+			message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) {
 				const messages = await message.channel.messages.fetch({ limit: 100 });
 				const link = await getTranscript(messages);
 				const Embed = new MessageEmbed()
@@ -43,7 +43,7 @@ module.exports = {
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
 
 			// Check if ticket is already closed
-			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
+			if (message.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is already closed!' });
 
 			// Check if user is a user that has been added with -add
 			if (ticketData.users.includes(author.id) && author.id != ticketData.opener) return message.reply({ content: 'You can\'t close this ticket!' });
@@ -51,7 +51,7 @@ module.exports = {
 			// Set the name to closed and check if bot has been rate limited
 			message.channel.setName(message.channel.name.replace('ticket', 'closed'));
 			await sleep(1000);
-			if (message.channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+			if (message.channel.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
 
 			// If voiceticket is set, delete the voiceticket
 			if (ticketData.voiceticket !== 'false') {

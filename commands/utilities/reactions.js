@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
 	name: 'reactions',
-	description: 'See what words Pup reacts to',
+	description: 'See what words Cactie reacts to',
 	voteOnly: true,
 	ephemeral: true,
 	cooldown: 10,

@@ -40,7 +40,7 @@ module.exports = {
 			if (client.user.id == '765287593762881616') {
 				row.addComponents(
 					new MessageButton()
-						.setURL('https://pup.smhsmh.club/music')
+						.setURL('https://cactie.smhsmh.club/music')
 						.setEmoji(music)
 						.setLabel('Music Control Panel')
 						.setStyle('LINK'),

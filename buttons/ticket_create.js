@@ -30,7 +30,7 @@ module.exports = {
 			}
 
 			// Create ticket and set database
-			const ticket = await interaction.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
+			const ticket = await interaction.guild.channels.create(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
 				type: 'text',
 				parent: parent.id,
 				topic: `Ticket Opened by ${author.tag}`,

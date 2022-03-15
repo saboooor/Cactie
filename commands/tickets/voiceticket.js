@@ -12,14 +12,14 @@ module.exports = {
 			const author = client.users.cache.get(ticketData.opener);
 			if (reaction && message.author.id != client.user.id) return;
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Cactie', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 			if (ticketData.voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
 			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
-			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.replace('Pup', '')} ${author.username}`, {
+			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.replace('Cactie', '')} ${author.username}`, {
 				type: 'GUILD_VOICE',
 				parent: parent.id,
 				permissionOverwrites: [

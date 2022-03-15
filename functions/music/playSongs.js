@@ -113,7 +113,7 @@ module.exports = async function playSongs(message, args, client, top) {
 		}
 
 		// If song image isn't set, set it to the default music image
-		if (!song.img) song.img = 'https://pup.smhsmh.club/assets/images/musicplaceholder.png';
+		if (!song.img) song.img = 'https://cactie.smhsmh.club/assets/images/musicplaceholder.png';
 
 		// Set song color (this will be replaced with the dominant color of the image if i find a good module for it)
 		song.color = [Math.round(Math.random() * 255), Math.round(Math.random() * 255), Math.round(Math.random() * 255)];

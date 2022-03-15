@@ -12,7 +12,7 @@ module.exports = {
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
 
 			// Check if ticket is closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
+			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
 
 			// Find category and if no category then set it to null
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
@@ -25,7 +25,7 @@ module.exports = {
 
 			// Create voice channel for voiceticket
 			const author = client.users.cache.get(ticketData.opener);
-			const voiceticket = await interaction.guild.channels.create(`Voiceticket${client.user.username.replace('Pup', '')} ${author.username}`, {
+			const voiceticket = await interaction.guild.channels.create(`Voiceticket${client.user.username.replace('Cactie', '')} ${author.username}`, {
 				type: 'GUILD_VOICE',
 				parent: parent.id,
 				permissionOverwrites: [

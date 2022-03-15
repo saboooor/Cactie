@@ -18,7 +18,7 @@ module.exports = {
 				.setColor(Math.round(Math.random() * 16777215))
 				.setTitle(msg.music.eq.name)
 				.setDescription(msg.music.eq.choose)
-				.addField(msg.music.eq.precise, `[${msg.dashboard}](https://pup.smhsmh.club/music)`);
+				.addField(msg.music.eq.precise, `[${msg.dashboard}](https://cactie.smhsmh.club/music)`);
 			const but = new MessageButton().setCustomId('filter_clear').setLabel(msg.off).setStyle('DANGER');
 			const but2 = new MessageButton().setCustomId('filter_bass').setLabel(msg.music.eq.bass).setStyle('PRIMARY');
 			const but3 = new MessageButton().setCustomId('filter_party').setLabel(msg.music.eq.party).setStyle('PRIMARY');

@@ -9,14 +9,14 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		try {
-			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Cactie', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 			const user = client.users.cache.find(u => u.id === args[0].replace(/\D/g, ''));
 			if (!user) return message.reply({ content: 'Invalid User!' });
 			if (!ticketData.users.includes(user.id)) return message.reply({ content: 'This user isn\'t in this ticket!' });

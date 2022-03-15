@@ -34,7 +34,7 @@ module.exports = {
 			}
 			await fetchedMsg.react(args[1]).catch(e => {
 				Embed.setTitle('Reaction failed!')
-					.setDescription(`\`${e}\`\nUse an emote from a server that Pup is in or an emoji.`);
+					.setDescription(`\`${e}\`\nUse an emote from a server that Cactie is in or an emoji.`);
 			});
 			message.reply({ embeds: [Embed] });
 		}
