@@ -12,7 +12,7 @@ module.exports = {
 		try {
 			// Set author to command sender
 			let author = message.member.user;
-			
+
 			// If this command is being used as a reaction:
 			// return if the message isn't a ticket panel
 			// set author to args, which is the reaction user
@@ -113,7 +113,7 @@ module.exports = {
 			else if (srvconfig.tickets == 'reactions') {
 				// Set the footer with the close reminder with reaction
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
-				
+
 				// Send to ticket and react
 				const Panel = await ticket.send({ content: `${author}${ping ? ping : ''}`, embeds: [CreateEmbed] });
 				await Panel.react('🔒');
