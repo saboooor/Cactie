@@ -20,7 +20,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(msg.music.eq.name)
 				.setDescription(msg.music.eq.choose);
-			if (client.user.id == '765287593762881616') EQEmbed.addFields({ name: msg.music.eq.precise, value: `[${msg.dashboard.use}](https://cactie.smhsmh.club/music)` });
+			if (client.user.id == '848775888673439745') EQEmbed.addFields({ name: msg.music.eq.precise, value: `[${msg.dashboard.use}](https://cactie.smhsmh.club/music)` });
 			const but = new ButtonBuilder().setCustomId('filter_clear').setLabel(msg.off).setStyle(ButtonStyle.Danger);
 			const but2 = new ButtonBuilder().setCustomId('filter_bass').setLabel(msg.music.eq.bass).setStyle(ButtonStyle.Primary);
 			const but3 = new ButtonBuilder().setCustomId('filter_party').setLabel(msg.music.eq.party).setStyle(ButtonStyle.Primary);

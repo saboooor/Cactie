@@ -144,7 +144,7 @@ module.exports = async (client, message) => {
 	}
 
 	// Check if command can be ran only if the user voted since the past 24 hours
-	if (command.voteOnly && client.user.id == '765287593762881616') {
+	if (command.voteOnly && client.user.id == '848775888673439745') {
 		// Get vote data for user
 		const vote = await client.getData('lastvoted', 'userId', message.author.id);
 
@@ -155,7 +155,7 @@ module.exports = async (client, message) => {
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-						.setURL('https://top.gg/bot/765287593762881616/vote')
+						.setURL('https://top.gg/bot/848775888673439745/vote')
 						.setLabel('top.gg')
 						.setStyle(ButtonStyle.Link),
 				)

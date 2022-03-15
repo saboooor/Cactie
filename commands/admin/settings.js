@@ -115,7 +115,7 @@ module.exports = {
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
 					.addFields({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
 					.setFooter({ text: msg.page.replace('-1', '1').replace('-2', maxPages) });
-				if (client.user.id == '765287593762881616') SettingsEmbed.addFields({ name: msg.dashboard.confusing, value: msg.dashboard.use });
+				if (client.user.id == '848775888673439745') SettingsEmbed.addFields({ name: msg.dashboard.confusing, value: msg.dashboard.use });
 
 				// Add buttons for page changing
 				const row = new ActionRowBuilder()

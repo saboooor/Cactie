@@ -38,7 +38,7 @@ module.exports = {
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
 				);
-			if (client.user.id == '765287593762881616') {
+			if (client.user.id == '848775888673439745') {
 				row.addComponents(
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/music')
