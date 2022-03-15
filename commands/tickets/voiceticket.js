@@ -11,10 +11,14 @@ module.exports = {
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 
+			// If the reaction isn't on the ticket panel, don't proceed
 			if (reaction && message.author.id != client.user.id) return;
+
 			// Check if ticket already has a voiceticket
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
-			if (message.channel.parent.isText()) message.channel = message.channel.parent;
+
+			// Check if channel is subticket and set the channel to the parent channel
+			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is closed
 			if (message.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: 'This ticket is closed!' });
