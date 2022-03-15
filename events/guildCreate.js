@@ -30,8 +30,12 @@ module.exports = async (client, guild) => {
 		);
 	const greetingEmbed = new EmbedBuilder()
 		.setColor(AddEmbed.toJSON().color)
-		.setTitle(`Thanks for adding me to ${guild.name}!`)
-		.setDescription(`My prefix is \`${srvconfig.prefix}\`, you can change this with \`${srvconfig.prefix}settings\`\nType \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!\nThis bot has reactions to messages with keywords which at times may be annoying. To turn them off, do \`${srvconfig.prefix}settings reactions false\``)
+		.setTitle(`Thanks for adding ${client.user.username} to ${guild.name}!`)
+		.setDescription(`
+My prefix is \`${srvconfig.prefix}\`, you may change this with \`${srvconfig.prefix}settings prefix <new prefix>\`
+Type \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!
+
+This bot has reactions to messages with some specific keywords which at times may be annoying. To turn them off, do \`${srvconfig.prefix}settings reactions false\``)
 		.setThumbnail('https://cactie.smhsmh.club/assets/images/Cactie.png');
 	const message = { embeds: [greetingEmbed], components: [row] };
 	if (!guild.systemChannel) owner.send(message).catch(err => client.logger.warn(err));

@@ -10,24 +10,39 @@ module.exports = {
 	botperm: 'ManageChannels',
 	async execute(message, args, client, reaction) {
 		try {
+			// Set author to command sender
 			let author = message.member.user;
+			
+			// If this command is being used as a reaction:
+			// return if the message isn't a ticket panel
+			// set author to args, which is the reaction user
 			if (reaction) {
 				if (message.author.id != client.user.id) return;
 				author = args;
 			}
+
+			// Check if tickets are disabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
-			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
-			const role = message.guild.roles.cache.get(srvconfig.supportrole);
+
+			// Check if ticket already exists
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}' AND guildId = '${message.guild.id}'`))[0];
 			if (ticketData) {
 				const channel = message.guild.channels.cache.get(ticketData.channelId);
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
 				return message.reply({ content: `You've already created a ticket at ${channel}!` });
 			}
-			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+
+			// Find category and if no category then set it to null
+			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
 			else if (!parent.isCategory()) parent = { id: null };
+
+			// Find role and if no role then reply with error
+			const role = message.guild.roles.cache.get(srvconfig.supportrole);
+			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+
+			// Create ticket and set database
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {
 				parent: parent.id,
 				topic: `Ticket Opened by ${author.tag}`,
@@ -55,6 +70,8 @@ module.exports = {
 			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
 			message.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
+
+			// Create embed
 			await sleep(1000);
 			const CreateEmbed = new EmbedBuilder()
 				.setColor(0x5662f6)
@@ -67,8 +84,12 @@ module.exports = {
 			if (srvconfig.ticketmention == 'here' || srvconfig.ticketmention == 'everyone') ping = `@${srvconfig.ticketmention}`;
 			else if (srvconfig.ticketmention != 'false') ping = `<@${srvconfig.ticketmention}>`;
 
+			// If tickets is set to buttons, add buttons, if not, add reactions
 			if (srvconfig.tickets == 'buttons') {
+				// Set the footer with the close reminder with button
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
+
+				// Create button row and send to ticket
 				const row = new ActionRowBuilder()
 					.addComponents(
 						new ButtonBuilder()
@@ -90,7 +111,10 @@ module.exports = {
 				await ticket.send({ content: `${author}${ping ? ping : ''}`, embeds: [CreateEmbed], components: [row] });
 			}
 			else if (srvconfig.tickets == 'reactions') {
+				// Set the footer with the close reminder with reaction
 				CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
+				
+				// Send to ticket and react
 				const Panel = await ticket.send({ content: `${author}${ping ? ping : ''}`, embeds: [CreateEmbed] });
 				await Panel.react('🔒');
 				await Panel.react('📜');
