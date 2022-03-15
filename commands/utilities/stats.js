@@ -8,7 +8,7 @@ const { refresh } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'stats',
-	description: 'Get the status of Pup or a Server',
+	description: 'Get the status of Cactie or a Server',
 	aliases: ['status', 'mcstatus', 'mcstats'],
 	usage: '[Server]',
 	options: require('../options/stats.json'),

@@ -15,11 +15,11 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (message.channel.parent.isText()) message.channel = message.channel.parent;
 			if (ticketData.voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
-			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
 			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
-			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.replace('Pup', '')} ${author.username}`, {
+			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.replace('Cactie', '')} ${author.username}`, {
 				type: ChannelType.GuildVoice,
 				parent: parent.id,
 				permissionOverwrites: [

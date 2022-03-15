@@ -1,7 +1,7 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
 module.exports = {
 	name: 'help',
-	description: 'Get help with Pup',
+	description: 'Get help with Cactie',
 	aliases: ['commands'],
 	botperm: 'AddReactions',
 	usage: '[Type]',
@@ -84,7 +84,7 @@ module.exports = {
 								.setDefault(arg == 'nsfw'),
 							new SelectMenuOptionBuilder()
 								.setLabel('Tickets')
-								.setDescription('These commands are related to Pup\'s tickets system')
+								.setDescription(`These commands are related to ${client.user.username}'s tickets system`)
 								.setValue('help_tickets')
 								.setDefault(arg == 'tickets'),
 							new SelectMenuOptionBuilder()
@@ -102,7 +102,7 @@ module.exports = {
 			const row2 = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-						.setURL('https://pup.smhsmh.club/discord')
+						.setURL('https://cactie.smhsmh.club/discord')
 						.setLabel('Support Discord')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()

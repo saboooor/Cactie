@@ -28,7 +28,7 @@ module.exports = {
 			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 			if (!parent) parent = { id: null };
 			else if (!parent.isCategory()) parent = { id: null };
-			const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
+			const ticket = await message.guild.channels.create(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
 				parent: parent.id,
 				topic: `Ticket Opened by ${author.tag}`,
 				permissionOverwrites: [

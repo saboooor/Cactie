@@ -2,11 +2,11 @@ const { EmbedBuilder, MessageAttachment } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'dm',
-	description: 'DM someone through Pup bot.',
+	description: 'DM someone through Cactie bot.',
 	cooldown: 0.1,
 	async execute(message, args, client) {
 		try {
-			// Check if user is in pup support guild and has permission to use the command
+			// Check if user is in Cactie Support guild and has permission to use the command
 			const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
 			if (member ? !member.roles.cache.has('849452673156513813') : true) return;
 

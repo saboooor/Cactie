@@ -13,15 +13,15 @@ module.exports = {
 		try {
 			if (reaction && message.author.id != client.user.id) return;
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Pup', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Cactie', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 			if (message.channel.threads.cache.size > 5) return message.reply({ content: 'This ticket has too many subtickets!' });
-			if (message.channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
 			const subticket = await message.channel.threads.create({
-				name: `Subticket${client.user.username.replace('Pup', '')} ${message.channel.threads.cache.size + 1}`,
+				name: `Subticket${client.user.username.replace('Cactie', '')} ${message.channel.threads.cache.size + 1}`,
 				autoArchiveDuration: 1440,
 				reason: args[0] ? args.join(' ') : 'Created using a reaction',
 			})

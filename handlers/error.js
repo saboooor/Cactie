@@ -5,15 +5,15 @@ module.exports = client => {
 		const errEmbed = new EmbedBuilder()
 			.setColor(0xE74C3C)
 			.setTitle('An error has occured!')
-			.setURL(`https://panel.netherdepths.com/server/${message.client.user.username == 'Pup' ? '41769d86' : '3f2661e1'}/files/edit#/logs/${client.date}.log`)
+			.setURL(`https://panel.netherdepths.com/server/${message.client.user.username == 'Cactie' ? '41769d86' : '3f2661e1'}/files/edit#/logs/${client.date}.log`)
 			.setDescription(`\`\`\`xl\n${err}\n\`\`\``);
 		const row = [];
 		if (!userError) {
-			errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Pup Support Discord Server.' });
+			errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Cactie Support Discord Server.' });
 			row.push(new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
-						.setURL('https://pup.smhsmh.club/discord')
+						.setURL('https://cactie.smhsmh.club/discord')
 						.setLabel('Support Server')
 						.setStyle(ButtonStyle.Link),
 				));

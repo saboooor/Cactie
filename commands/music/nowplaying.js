@@ -41,7 +41,7 @@ module.exports = {
 			if (client.user.id == '765287593762881616') {
 				row.addComponents(
 					new ButtonBuilder()
-						.setURL('https://pup.smhsmh.club/music')
+						.setURL('https://cactie.smhsmh.club/music')
 						.setEmoji({ id: music })
 						.setLabel('Music Control Panel')
 						.setStyle('LINK'),

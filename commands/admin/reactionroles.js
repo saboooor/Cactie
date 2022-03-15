@@ -3,7 +3,7 @@ const { left, right } = require('../../lang/int/emoji.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
-	description: 'Configure Pup\'s reaction roles in the server',
+	description: 'Configure Cactie\'s reaction roles in the server',
 	ephemeral: true,
 	aliases: ['rr'],
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
@@ -33,7 +33,7 @@ module.exports = {
 				if (!role) return client.error('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
 				let reaction = null;
 				try { reaction = await fetchedMsg.react(args[1]); }
-				catch (err) { return client.error(`\`${err}\`\nUse an emote from a server that Pup is in or an emoji.`, message, true); }
+				catch (err) { return client.error(`\`${err}\`\nUse an emote from a server that ${client.user.username} is in or an emoji.`, message, true); }
 				await client.query(`INSERT INTO reactionroles (guildId, channelId, messageId, emojiId, roleId, type) VALUES ('${messagelink[4]}', '${messagelink[5]}', '${messagelink[6]}', '${reaction._emoji[reaction._emoji.id ? 'id' : 'name']}', '${args[3].replace(/\D/g, '')}', '${args[4].toLowerCase()}');`);
 				RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
 			}

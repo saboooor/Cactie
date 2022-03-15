@@ -1,6 +1,6 @@
-# Pup Discord Bot
+# Cactie Discord Bot
 <p align="center">
-  <img src="https://pup.smhsmh.club/assets/images/pup.png" width="20%" alt="Pup">
+  <img src="https://cactie.smhsmh.club/assets/images/Cactie.png" width="20%" alt="Cactie">
 </p>
 
 THIS IS NOT MEANT OR WILL EVER BE MEANT TO BE USED AS A FULL-ON SEPARATE BOT.
@@ -15,4 +15,4 @@ SUPPORT WILL NOT BE GIVEN FOR PEOPLE THAT USE THIS REPO AS A COMPLETELY SEPARATE
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
 
 ### Contributors
-![Contributors](https://contrib.rocks/image?repo=saboooor/Pup)
+![Contributors](https://contrib.rocks/image?repo=saboooor/Cactie)

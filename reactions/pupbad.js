@@ -1,7 +1,7 @@
 module.exports = {
-	name: 'pupbad',
+	name: 'cactiebad',
 	triggers: ['bad', 'gross', 'shit', 'dum'],
-	additionaltriggers: ['pup'],
+	additionaltriggers: ['cactie'],
 	execute(message) {
 		message.react('🇳').catch(err => message.client.logger.error(err));
 		message.react('🇴').catch(err => message.client.logger.error(err));

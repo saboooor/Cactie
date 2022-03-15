@@ -29,12 +29,12 @@ module.exports = async (client, member) => {
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 	// Check if ticket is already closed
-	if (channel.name.startsWith(`closed${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return;
+	if (channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return;
 
 	// Set the name to closed and check if bot has been rate limited
 	channel.setName(channel.name.replace('ticket', 'closed'));
 	await sleep(1000);
-	if (channel.name.startsWith(`ticket${client.user.username.replace('Pup', '').replace(' ', '').toLowerCase()}-`)) return channel.send({ content: `${member} has left the server but the ticket closure failed.` });
+	if (channel.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return channel.send({ content: `${member} has left the server but the ticket closure failed.` });
 
 	// If voiceticket is set, delete the voiceticket
 	if (ticketData.voiceticket !== 'false') {

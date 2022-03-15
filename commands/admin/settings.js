@@ -5,7 +5,7 @@ const desc = require('../../lang/en/settingsdesc.json');
 const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'settings',
-	description: 'Configure Pup\'s settings in the server',
+	description: 'Configure Cactie\'s settings in the server',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permission: 'Administrator',
@@ -129,7 +129,7 @@ module.exports = {
 							.setEmoji({ id: right })
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonBuilder()
-							.setURL('https://pup.smhsmh.club')
+							.setURL('https://cactie.smhsmh.club')
 							.setLabel(msg.dashboard.name)
 							.setStyle(ButtonStyle.Link),
 					);
@@ -141,7 +141,7 @@ module.exports = {
 				const row = new ActionRowBuilder()
 					.addComponents(
 						new ButtonBuilder()
-							.setURL('https://pup.smhsmh.club')
+							.setURL('https://cactie.smhsmh.club')
 							.setLabel(msg.dashboard.name)
 							.setStyle(ButtonStyle.Link),
 					);
