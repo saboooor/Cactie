@@ -16,11 +16,11 @@ module.exports = {
 			if (interaction.channel.threads.cache.size > 5) return interaction.reply({ content: 'This ticket has too many subtickets!' });
 
 			// Check if ticket is closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return interaction.reply({ content: 'This ticket is closed!' });
+			if (interaction.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return interaction.reply({ content: 'This ticket is closed!' });
 
 			// Create Thread for subticket
 			const subticket = await interaction.channel.threads.create({
-				name: `Subticket${client.user.username.replace('Cactie', '') + ' '}${interaction.channel.threads.cache.size + 1}`,
+				name: `Subticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} ${interaction.channel.threads.cache.size + 1}`,
 				autoArchiveDuration: 1440,
 				reason: 'Created with a button',
 			});

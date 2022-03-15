@@ -13,13 +13,13 @@ module.exports = {
 				author = user;
 			}
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Cactie', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+			if (message.channel.name.startsWith(`Subticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} `) && message.channel.parent.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
-			if (message.channel.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket needs to be closed first!' });
+			if (message.channel.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: 'This ticket needs to be closed first!' });
 			if (srvconfig.logchannel != 'false') {
 				await message.reply({ content: 'Creating transcript...' });
 				const messages = await message.channel.messages.fetch({ limit: 100 });

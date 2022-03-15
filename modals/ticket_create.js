@@ -29,7 +29,7 @@ module.exports = {
 			if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
 
 			// Create ticket and set database
-			const ticket = await interaction.guild.channels.create(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-${author.username.toLowerCase().replace(' ', '-')}`, {
+			const ticket = await interaction.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {
 				parent: parent.id,
 				topic: `Ticket Opened by ${author.tag}`,
 				permissionOverwrites: [

@@ -10,7 +10,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if channel is a subticket, if so tell the user to use the command in the ticket itself instead
-			if (message.channel.name.startsWith(`Subticket${client.user.username.replace('Cactie', '') + ' '}`) && message.channel.parent.name.startsWith(`ticket${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+			if (message.channel.name.startsWith(`Subticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} `) && message.channel.parent.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
 
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
@@ -18,7 +18,7 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is closed
-			if (message.channel.name.startsWith(`closed${client.user.username.replace('Cactie', '').replace(' ', '').toLowerCase()}-`)) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: 'This ticket is closed!' });
 
 			// Check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
