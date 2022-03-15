@@ -10,15 +10,26 @@ module.exports = {
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
-			const author = message.guild.members.cache.get(ticketData.opener);
+
 			if (reaction && message.author.id != client.user.id) return;
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			// Check if ticket already has a voiceticket
+			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
 			if (message.channel.parent.isText()) message.channel = message.channel.parent;
-			if (ticketData.voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
+
+			// Check if ticket is closed
 			if (message.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: 'This ticket is closed!' });
-			const role = message.guild.roles.cache.get(srvconfig.supportrole);
+
+			// Find category and if no category then set it to null
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
+
+			// Find role and if no role then reply with error
+			const role = message.guild.roles.cache.get(srvconfig.supportrole);
+			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+
+			// Create voice channel for voiceticket
+			const author = message.guild.members.cache.get(ticketData.opener).user;
 			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} ${author.username}`, {
 				type: ChannelType.GuildVoice,
 				parent: parent.id,
@@ -40,10 +51,14 @@ module.exports = {
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
-			}).catch(err => client.logger.error(err));
+			});
+
+			// Add voiceticket to ticket database
+			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', voiceticket.id);
+
+			// Reply with voiceticket open message
 			message.reply({ content: `Voiceticket created at ${voiceticket}!` });
 			client.logger.info(`Voiceticket created at #${voiceticket.name}`);
-			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', voiceticket.id);
 		}
 		catch (err) { client.error(err, message); }
 	},
