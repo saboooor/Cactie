@@ -27,7 +27,7 @@ module.exports = {
 				const DelEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${interaction.channel.name}`)
-					.addFields({ name:'**Users in ticket**', value: `${users}` })
+					.addFields({ name: '**Users in ticket**', value: `${users}` })
 					.addFields({ name: '**Transcript**', value: `${link}.txt` })
 					.addFields({ name: '**Deleted by**', value: `${interaction.user}` });
 
