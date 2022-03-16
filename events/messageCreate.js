@@ -5,7 +5,7 @@ const gitUpdate = require('../functions/gitUpdate');
 const msg = require('../lang/en/msg.json');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return and also check if message is a github update
-	if (message.author.bot) return await gitUpdate(client, message);
+	if (!message.webhookId) return await gitUpdate(client, message);
 
 	// If channel is DM,send the dm to the dms channel
 	if (message.channel.isDM()) {

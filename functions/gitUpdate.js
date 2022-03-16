@@ -5,7 +5,7 @@ const fs = require('fs');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async function gitUpdate(client, message) {
 	// get embed and check if it's an embed in the git channel
-	if (!message.webhookId || !message.channel.id == '812082273393704960' || !message.embeds[0] || !message.embeds[0].toJSON().title) return;
+	if (message.channel.id != '812082273393704960' || !message.embeds[0] || !message.embeds[0].toJSON().title) return;
 
 	// Set the embed into a builder
 	const GitEmbed = new EmbedBuilder(message.embeds[0].toJSON());
