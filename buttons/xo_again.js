@@ -21,8 +21,19 @@ module.exports = {
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
 		if (!xuser || !ouser) return interaction.user.send({ content: msg.invalidmember });
+		const playAgainEmbed = new EmbedBuilder()
+			.setAuthor({ name: `${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
+			.setDescription(`${interaction.user} wants to play again!`)
+			.setFooter({ text: 'Click the button below to respond!' });
+		const againlink = new ActionRowBuilder()
+			.addComponents(new ButtonBuilder()
+				.setURL(interaction.message.link)
+				.setEmoji({ id: refresh })
+				.setLabel('Play Tic Tac Toe')
+				.setStyle(ButtonStyle.Link),
+			);
 		const dmuser = xuserId == interaction.user.id ? ouser : xuser;
-		dmuser.send(`${interaction.user} wants to play again!\n${interaction.message.url}`);
+		dmuser.send({ embeds: [playAgainEmbed], components: [againlink] });
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
