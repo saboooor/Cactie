@@ -48,7 +48,7 @@ module.exports = {
 		collector.on('collect', async interaction => {
 			if (interaction.customId == 'xo_again') return;
 			if (interaction.user.id != (turn ? message.member.id : user.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			interaction.deferUpdate();
+			interaction.deferUpdate().catch(err => client.logger.error(err));
 			const btn = btns[interaction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
 				btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)

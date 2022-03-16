@@ -12,7 +12,7 @@ const again = new ActionRowBuilder()
 module.exports = {
 	name: 'xo_again',
 	ephemeral: true,
-	async execute(interaction) {
+	async execute(interaction, client) {
 		const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 		const lines = TicTacToe.toJSON().description.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
@@ -44,7 +44,7 @@ module.exports = {
 		collector.on('collect', async btninteraction => {
 			if (btninteraction.customId == 'xo_again') return;
 			if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			btninteraction.deferUpdate();
+			btninteraction.deferUpdate().catch(err => client.logger.error(err));
 			const btn = btns[btninteraction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
 				btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
