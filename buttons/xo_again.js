@@ -21,7 +21,8 @@ module.exports = {
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
 		if (!xuser || !ouser) return interaction.user.send({ content: msg.invalidmember });
-		ouser.send(`${xuser} wants to play again!\n${interaction.message.url}`);
+		const dmuser = xuserId == interaction.user.id ? ouser : xuser;
+		dmuser.send(`${interaction.user} wants to play again!\n${interaction.message.url}`);
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
