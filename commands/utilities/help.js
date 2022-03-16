@@ -119,7 +119,7 @@ module.exports = {
 				HelpEmbed.setFields();
 				if (interaction.values[0] == 'help_nsfw' && !msg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
 				else require(`../../help/${interaction.values[0].split('_')[1]}.js`)(prefix, HelpEmbed, srvconfig);
-				row.components[0].options.forEach(option => option.setDefault(option.data.value == interaction.values[0]));
+				row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
 				msg.edit({ embeds: [HelpEmbed], components: [row, row2] });
 			});
 

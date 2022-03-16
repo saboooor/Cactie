@@ -30,11 +30,11 @@ module.exports = {
 			if (i.user != message.member.user) return i.reply({ content: 'This isn\'t your button grid!\nCreate one with the /buttons command', ephemeral: true });
 			i.deferUpdate();
 			const btn = btns[i.customId];
-			if (btn.style == ButtonStyle.Secondary) btn.setStyle(ButtonStyle.Danger);
-			else if (btn.style == ButtonStyle.Danger) btn.setStyle(ButtonStyle.Primary);
-			else if (btn.style == ButtonStyle.Primary) btn.setStyle(ButtonStyle.Success);
-			else if (btn.style == ButtonStyle.Success) btn.setStyle(ButtonStyle.Secondary);
-			message.commandName ? message.editReply({ components: rows }) : msg.edit({ components: rows });
+			if (btn.toJSON().style == ButtonStyle.Secondary) btn.setStyle(ButtonStyle.Danger);
+			else if (btn.toJSON().style == ButtonStyle.Danger) btn.setStyle(ButtonStyle.Primary);
+			else if (btn.toJSON().style == ButtonStyle.Primary) btn.setStyle(ButtonStyle.Success);
+			else if (btn.toJSON().style == ButtonStyle.Success) btn.setStyle(ButtonStyle.Secondary);
+			msg.edit({ components: rows });
 		});
 	},
 };
