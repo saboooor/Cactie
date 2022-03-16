@@ -34,7 +34,7 @@ module.exports = {
 
 			// Set current page number in footer and reply
 			QueueEmbed.setFooter({ text: msg.page.replace('-1', page > maxPages ? maxPages : page).replace('-2', maxPages) });
-			return interaction.message.edit({ embeds: [QueueEmbed], components: interaction.message.components });
+			return interaction.message.edit({ embeds: [QueueEmbed] });
 		}
 		catch (err) { client.error(err, interaction); }
 	},

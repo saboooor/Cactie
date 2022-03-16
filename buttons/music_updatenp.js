@@ -44,7 +44,7 @@ module.exports = {
 			await interaction.reply({ embeds: [NPEmbed], components: [row] });
 			await sleep(5000);
 			btn.setDisabled(false);
-			await interaction.reply({ embeds: [NPEmbed], components: [row] });
+			await interaction.reply({ components: [row] });
 		}
 		catch (err) { client.error(err, interaction); }
 	},

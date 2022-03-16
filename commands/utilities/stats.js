@@ -81,13 +81,13 @@ module.exports = {
 				}
 				if (!pong.debug.query) StatsEmbed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 			}
-			StatsEmbed.setURL(`https://${args[0].replace(':', 'colon')}.pup`).setTimestamp();
+			StatsEmbed.setURL(`https://${args[0].replace(':', 'colon')}.pup`);
 			const row = new ActionRowBuilder().addComponents(
 				new ButtonBuilder()
 					.setCustomId('stats_refresh')
 					.setLabel(msg.refresh)
 					.setEmoji({ id: refresh })
-					.setStyle(ButtonStyle.Success),
+					.setStyle(ButtonStyle.Secondary),
 			);
 			message.reply({ embeds: [StatsEmbed], files: iconpng, components: [row] });
 		}

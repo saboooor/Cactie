@@ -1,7 +1,7 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const servers = require('../../config/pterodactyl.json');
 const srvs = Object.keys(servers).map(i => { return servers[i]; });
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 module.exports = async function pteroUpdate(interaction, Client) {
 	const server = srvs.find(srv => interaction.message.embeds[0].url.split('server/')[1] == srv.id);
 	const info = await Client.getServerDetails(server.id);
@@ -19,9 +19,11 @@ module.exports = async function pteroUpdate(interaction, Client) {
 	if (usages.resources.memory_bytes) PteroEmbed.addFields({ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true });
 	if (usages.resources.network_tx_bytes) PteroEmbed.addFields({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
 	if (usages.resources.network_rx_bytes) PteroEmbed.addFields({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
-	interaction.message.components[0].components[4].setDisabled(true);
-	interaction.reply({ embeds: [PteroEmbed], components: interaction.message.components });
+	const row = new ActionRowBuilder();
+	interaction.message.components[0].components.forEach(button => row.addComponents(new ButtonBuilder(button.toJSON())));
+	row.components[4].setDisabled(true);
+	interaction.message.edit({ embeds: [PteroEmbed], components: [row] });
 	await sleep(20000);
-	interaction.message.components[0].components[4].setDisabled(false);
-	interaction.reply({ embeds: [PteroEmbed], components: interaction.message.components });
+	row.components[4].setDisabled(true);
+	interaction.message.edit({ embeds: [PteroEmbed], components: [row] });
 };

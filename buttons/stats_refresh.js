@@ -68,7 +68,7 @@ module.exports = {
 				if (!pong.debug.query) StatsEmbed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 			}
 			StatsEmbed.setTimestamp();
-			interaction.reply({ embeds: [StatsEmbed], components: interaction.message.components, files: [] });
+			interaction.reply({ embeds: [StatsEmbed], files: [] });
 		}
 		catch (err) { client.error(err, interaction); }
 	},
