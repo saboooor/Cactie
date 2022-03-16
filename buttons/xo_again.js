@@ -21,6 +21,7 @@ module.exports = {
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
 		if (!xuser || !ouser) return interaction.user.send({ content: msg.invalidmember });
+		ouser.send(`${xuser} wants to play again!\n${interaction.message.url}`);
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
@@ -85,6 +86,8 @@ module.exports = {
 
 			// Go on to next turn if no matches
 			xomsg.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+			const pingmsg = await interaction.channel.send(`${turn ? xuser : ouser}`);
+			pingmsg.delete();
 		});
 
 		collector.on('end', () => {
