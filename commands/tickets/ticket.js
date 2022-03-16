@@ -65,9 +65,7 @@ module.exports = {
 					},
 				],
 			});
-			await client.setData('ticketdata', 'channelId', ticket.id, 'opener', author.id);
-			await client.setData('ticketdata', 'channelId', ticket.id, 'guildId', message.guild.id);
-			await client.setData('ticketdata', 'channelId', ticket.id, 'users', author.id);
+			await client.query(`INSERT INTO ticketdata (guildId, opener, users) VALUES ('${message.guild.id}', '${author.id}', '${author.id}');`);
 			message.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
 
