@@ -15,7 +15,7 @@ module.exports = {
 					new ActionRowBuilder().addComponents(
 						new TextInputBuilder()
 							.setCustomId('description')
-							.setLabel('To open a ticket, please explain your issue.')
+							.setLabel('Please explain your issue before opening.')
 							.setStyle(TextInputStyle.Paragraph)
 							.setMinLength(10)
 							.setMaxLength(1024),

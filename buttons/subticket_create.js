@@ -9,13 +9,13 @@ module.exports = {
 		try {
 			// Create and show a modal for the user to fill out the ticket's description
 			const modal = new ModalBuilder()
-				.setTitle('Create Ticket')
+				.setTitle('Create Subticket')
 				.setCustomId('subticket_create')
 				.addComponents(
 					new ActionRowBuilder().addComponents(
 						new TextInputBuilder()
 							.setCustomId('description')
-							.setLabel('To open a subticket, please explain your issue.')
+							.setLabel('Please explain your issue before opening.')
 							.setStyle(TextInputStyle.Paragraph)
 							.setMinLength(10)
 							.setMaxLength(1024),
