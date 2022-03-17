@@ -27,7 +27,7 @@ module.exports = {
 			.setFooter({ text: 'Click the button below to respond!' });
 		const againlink = new ActionRowBuilder()
 			.addComponents(new ButtonBuilder()
-				.setURL(interaction.message.link)
+				.setURL(interaction.message.url)
 				.setEmoji({ id: refresh })
 				.setLabel('Play Tic Tac Toe')
 				.setStyle(ButtonStyle.Link),
