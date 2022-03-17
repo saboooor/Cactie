@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'approve',
@@ -100,9 +100,15 @@ module.exports = {
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				ApproveEmbed.setTitle(`${message.member.user.tag} approved a suggestion`)
-					.addFields({ name: 'Link to message', value: `[Click here](${fetchedMsg.url})` });
-				logchannel.send({ embeds: [ApproveEmbed] });
+				ApproveEmbed.setTitle(`${message.member.user.tag} approved a suggestion`).setFields();
+				if (args.join(' ')) ApproveEmbed.addFields({ name: 'Response', value: args.join(' ') });
+				const msglink = new ActionRowBuilder()
+					.addComponents(new ButtonBuilder()
+						.setURL(fetchedMsg.url)
+						.setLabel('Go to Message')
+						.setStyle(ButtonStyle.Link),
+					);
+				logchannel.send({ embeds: [ApproveEmbed], components: [msglink] });
 			}
 		}
 		catch (err) { client.error(err, message); }
