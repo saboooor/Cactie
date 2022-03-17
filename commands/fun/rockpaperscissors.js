@@ -47,9 +47,10 @@ module.exports = {
 		const collector = rpsmsg.createMessageComponentCollector({ time: 3600000 });
 
 		collector.on('collect', async interaction => {
-			if (interaction.customId == 'rock' || interaction.customId == 'paper' || interaction.customId == 'scissors') return;
-			if (interaction.user.id != message.member.id || interaction.user.id != user.id) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			interaction.deferUpdate().catch(err => client.logger.error(err));
+			if (interaction.customId != 'rock' && interaction.customId != 'paper' && interaction.customId != 'scissors') return;
+			interaction.deferReply({ ephemeral: true }).catch(err => client.logger.error(err));
+			if (interaction.user.id != message.member.id && interaction.user.id != user.id) return interaction.editReply({ content: 'you\'re not in this game!' });
+			interaction.editReply({ content: `Selected ${interaction.emoji.name} ${interaction.customId}!` });
 		});
 
 		collector.on('end', () => {
