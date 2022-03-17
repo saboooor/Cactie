@@ -7,18 +7,27 @@ module.exports = {
 	botperm: 'ManageChannels',
 	async execute(message, user, client, reaction) {
 		try {
+			// Set author to command sender
 			let author = message.member.user;
+
+			// If this command is being used as a reaction:
+			// return if the message isn't a ticket panel
+			// set author to args, which is the reaction user
 			if (reaction) {
 				if (message.author.id != client.user.id) return;
 				author = user;
 			}
-			if (message.channel.name.startsWith(`Subticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} `) && message.channel.parent.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+
+			// Check if channel is subticket and set the channel to the parent channel
+			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
-			if (!ticketData) return message.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
-			if (message.channel.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: 'This ticket needs to be closed first!' });
+
+			// Check if ticket is open
+			if (message.channel.name.startsWith('ticket')) return message.reply({ content: 'This ticket needs to be closed first!' });
 
 			// Check if ticket log channel is set in settings
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

@@ -7,12 +7,12 @@ module.exports = {
 	botperm: 'ManageChannels',
 	async execute(message, args, client, reaction) {
 		try {
+			// If the reaction isn't on the ticket panel, don't proceed
+			if (reaction && message.author.id != client.user.id) return;
+
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
-
-			// If the reaction isn't on the ticket panel, don't proceed
-			if (reaction && message.author.id != client.user.id) return;
 
 			// Check if ticket already has a voiceticket
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return message.reply({ content: 'This ticket already has a voiceticket!' });
@@ -21,7 +21,7 @@ module.exports = {
 			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is closed
-			if (message.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith('closed')) return message.reply({ content: 'This ticket is closed!' });
 
 			// Find category and if no category then set it to null
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

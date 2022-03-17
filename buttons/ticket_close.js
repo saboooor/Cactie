@@ -9,22 +9,21 @@ module.exports = {
 		try {
 			// Get ticket database
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return client.error('Could not find this ticket in the database, please manually delete this channel.', interaction, true);
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is already closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return interaction.reply({ content: 'This ticket is already closed!' });
+			if (interaction.channel.name.startsWith('closed')) return client.error('This ticket is already closed!', interaction, true);
 
 			// Check if user is ticket author
-			const author = interaction.user;
-			if (author.id != ticketData.opener) return interaction.reply({ content: 'You can\'t close this ticket!' });
+			if (interaction.user.id != ticketData.opener) return client.error('You can\'t close this ticket!', interaction, true);
 
 			// Change channel name to closed
 			interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
 
 			// Check if bot got rate limited and ticket didn't properly close
 			await sleep(1000);
-			if (interaction.channel.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return interaction.reply({ content: 'Failed to close ticket, please try again in 10 minutes' });
+			if (interaction.channel.name.startsWith('ticket')) return client.error('Failed to close ticket, please try again in 10 minutes.', interaction, true);
 
 			// Check if there's a voice ticket and delete it
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
@@ -37,7 +36,9 @@ module.exports = {
 			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'resolved', 'false');
 
 			// Remove permissions for each user in the ticket
-			ticketData.users.forEach(userid => { interaction.channel.permissionOverwrites.edit(interaction.guild.members.cache.get(userid).user, { ViewChannel: false }); });
+			ticketData.users.forEach(userid => {
+				interaction.channel.permissionOverwrites.edit(interaction.guild.members.cache.get(userid).user, { ViewChannel: false });
+			});
 
 			// Get the transcript
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });
@@ -52,13 +53,16 @@ module.exports = {
 				.setTitle(`Closed ${interaction.channel.name}`)
 				.addFields({ name: '**Users in ticket**', value: `${users}` })
 				.addFields({ name: '**Transcript**', value: `${link}.txt` })
-				.addFields({ name: '**Closed by**', value: `${author}` });
-			users.forEach(usr => { usr.send({ embeds: [CloseDMEmbed] }); });
+				.addFields({ name: '**Closed by**', value: `${interaction.user}` });
+			users.forEach(usr => {
+				usr.send({ embeds: [CloseDMEmbed] })
+					.catch(err => client.logger.warn(err));
+			});
 
 			// Reply with ticket close message
 			const CloseEmbed = new EmbedBuilder()
 				.setColor(0xFF6400)
-				.setDescription(`Ticket Closed by ${author}`);
+				.setDescription(`Ticket Closed by ${interaction.user}`);
 			const row = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
@@ -73,6 +77,8 @@ module.exports = {
 						.setStyle(ButtonStyle.Primary),
 				);
 			interaction.reply({ embeds: [CloseEmbed], components: [row] });
+
+			// Log
 			client.logger.info(`Closed ticket #${interaction.channel.name}`);
 		}
 		catch (err) { client.error(err, interaction); }

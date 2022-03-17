@@ -8,7 +8,7 @@ module.exports = {
 		try {
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return client.error('Could not find this ticket in the database, please manually delete this channel.', interaction, true);
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket log channel is set in settings

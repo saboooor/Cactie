@@ -7,13 +7,13 @@ module.exports = {
 		try {
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${interaction.channel.id}'`))[0];
-			if (!ticketData) return interaction.reply({ content: 'Could not find this ticket in the database, please manually delete this channel.' });
+			if (!ticketData) return client.error('Could not find this ticket in the database, please manually delete this channel.', interaction, true);
 
 			// Check if ticket already has a voiceticket
-			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return interaction.reply({ content: 'This ticket already has a voiceticket!' });
+			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return client.error('This ticket already has a voiceticket!', interaction, true);
 
 			// Check if ticket is closed
-			if (interaction.channel.name.startsWith(`closed${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return interaction.reply({ content: 'This ticket is closed!' });
+			if (interaction.channel.name.startsWith('closed')) return client.error('This ticket is closed!', interaction, true);
 
 			// Find category and if no category then set it to null
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
@@ -22,7 +22,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+			if (!role) return client.error('You need to set a role with /settings supportrole <Role Id>!', interaction, true);
 
 			// Create voice channel for voiceticket
 			const author = interaction.guild.members.cache.get(ticketData.opener).user;

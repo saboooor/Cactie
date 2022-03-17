@@ -64,6 +64,7 @@ module.exports = {
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
+				reason: args.join(' '),
 			});
 			await client.query(`INSERT INTO ticketdata (guildId, opener, users) VALUES ('${message.guild.id}', '${author.id}', '${author.id}');`);
 			message.reply({ content: `Ticket created at ${ticket}!` });

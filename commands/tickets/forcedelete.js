@@ -7,34 +7,47 @@ module.exports = {
 	botperm: 'ManageChannels',
 	async execute(message, user, client, reaction) {
 		try {
+			// Set author to command sender
 			let author = message.member.user;
+
+			// If this command is being used as a reaction:
+			// return if the message isn't a ticket panel
+			// set author to args, which is the reaction user
 			if (reaction) {
 				if (message.author.id != client.user.id) return;
 				author = user;
 			}
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (message.channel.name.startsWith(`Subticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} `) && message.channel.parent.name.startsWith(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-`)) return message.reply({ content: `This is a subticket!\nYou must use this command in ${message.channel.parent}` });
+			// Check if channel is subticket and set the channel to the parent channel
+			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
+
+			// Get transcript of ticket
+			await message.reply({ content: 'Creating transcript...' });
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
+			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
+
+			// Get list of users for embed
 			const users = [];
 			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
+
+			// Create embed
 			const DelEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${message.channel.name}`)
 				.addFields({ name: '**Users in ticket**', value: `${users}` })
 				.addFields({ name: '**Transcript**', value: `${link}.txt` })
 				.addFields({ name: '**Deleted by**', value: `${author}` });
-			if (srvconfig.logchannel != 'false') message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
-			users.forEach(usr => {
-				usr.send({ embeds: [DelEmbed] })
-					.catch(err => client.logger.warn(err));
-			});
-			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
+
+			// Check if ticket log channel is set in settings and send the embed to the log channel
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			if (srvconfig.logchannel != 'false') await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
+
+			// Actually delete ticket and ticket database
 			client.delData('ticketdata', 'channelId', message.channel.id);
 			client.logger.info(`Deleted ticket #${message.channel.name}`);
 			await message.channel.delete();

@@ -8,7 +8,7 @@ module.exports = {
 		try {
 			// Check if tickets are disabled
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			if (srvconfig.tickets == 'false') return interaction.reply({ content: 'Tickets are disabled!' });
+			if (srvconfig.tickets == 'false') return client.error('Tickets are disabled!', interaction, true);
 
 			// Check if ticket already exists
 			const author = interaction.user;
@@ -16,7 +16,7 @@ module.exports = {
 			if (ticketData) {
 				const channel = interaction.guild.channels.cache.get(ticketData.channelId);
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
-				return interaction.reply({ content: `You've already created a ticket at ${channel}!` });
+				return client.error(`You've already created a ticket at #${channel.name}!`, interaction, true);
 			}
 
 			// Find category and if no category then set it to null
@@ -26,7 +26,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return interaction.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+			if (!role) return client.error('You need to set a role with /settings supportrole <Role Id>!', interaction, true);
 
 			// Create ticket and set database
 			const ticket = await interaction.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {
@@ -50,6 +50,7 @@ module.exports = {
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
 				],
+				reason: interaction.fields.getTextInputValue('description'),
 			});
 			await client.query(`INSERT INTO ticketdata (guildId, opener, users) VALUES ('${interaction.guild.id}', '${author.id}', '${author.id}');`);
 			interaction.reply({ content: `Ticket created at ${ticket}!` });
