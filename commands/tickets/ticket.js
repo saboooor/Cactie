@@ -66,7 +66,7 @@ module.exports = {
 				],
 				reason: args.join(' '),
 			});
-			await client.query(`INSERT INTO ticketdata (guildId, channelId opener, users) VALUES ('${message.guild.id}', '${ticket.id}', '${author.id}', '${author.id}');`);
+			await client.query(`INSERT INTO ticketdata (guildId, channelId, opener, users) VALUES ('${message.guild.id}', '${ticket.id}', '${author.id}', '${author.id}');`);
 			message.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
 

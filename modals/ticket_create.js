@@ -52,7 +52,7 @@ module.exports = {
 				],
 				reason: interaction.fields.getTextInputValue('description'),
 			});
-			await client.query(`INSERT INTO ticketdata (guildId, channelId opener, users) VALUES ('${interaction.guild.id}', '${ticket.id}', '${author.id}', '${author.id}');`);
+			await client.query(`INSERT INTO ticketdata (guildId, channelId, opener, users) VALUES ('${interaction.guild.id}', '${ticket.id}', '${author.id}', '${author.id}');`);
 			interaction.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);
 
