@@ -99,7 +99,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				);
 			}
 			row.push(balls);
-			playMsg.edit({ content: `<:srch:${srch}> Pick a search result from the buttons below`, embeds: [PlayEmbed], components: row });
+			await playMsg.edit({ content: `<:srch:${srch}> Pick a search result from the buttons below`, embeds: [PlayEmbed], components: row });
 
 			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
@@ -114,7 +114,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			// When the collector stops, remove the undo button from it
 			collector.on('end', () => {
 				if (playMsg.content.startsWith(`<:play:${play}> `)) return;
-				playMsg.edit({ content: `<:alert:${warn}> Search query selection timed out.`, embeds: [], components: [] });
+				playMsg.edit({ content: `<:alert:${warn}> **Search query selection timed out.**`, embeds: [], components: [] });
 			});
 
 			return;
