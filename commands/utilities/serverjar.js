@@ -5,7 +5,7 @@ module.exports = {
 	aliases: ['mcjar', 'jar', 'srvjar'],
 	description: 'Get info on any Purpur, Paper, Waterfall, or Velocity build',
 	args: true,
-	usage: '<Server Fork> [Version] [Build]',
+	usage: '<Purpur/Paper/Waterfall/Velocity> [Version] [Build]',
 	options: require('../options/minecraft.json'),
 	async execute(message, args, client) {
 		try {
