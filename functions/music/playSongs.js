@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
-const { play, music, warn, leave, no } = require('../../lang/int/emoji.json');
+const { play, music, warn, leave, no, srch } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;
@@ -22,7 +22,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 	// Get search results from YouTube, Spotify, or Apple Music
 	const search = args.join(' '); const songs = [];
-	const playMsg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
+	const playMsg = await message.reply({ content: `<:srch:${srch}> Searching for \`${search}\`...` });
 
 	// Create embed for responses
 	const PlayEmbed = new EmbedBuilder();
@@ -34,6 +34,11 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				.setCustomId('music_undo')
 				.setEmoji({ id: leave })
 				.setLabel('Undo')
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
+				.setCustomId('music_search')
+				.setEmoji({ id: srch })
+				.setLabel('Not the right result?')
 				.setStyle(ButtonStyle.Secondary),
 		);
 	const row = [];
@@ -82,7 +87,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			const tracklist = tracks.map(track => {
 				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\``;
 			});
-			PlayEmbed.setDescription(`🔎 **Search Results**\n${tracklist.join('\n')}`);
+			PlayEmbed.setDescription(`<:srch:${srch}> **Search Results**\n${tracklist.join('\n')}`);
 
 			const balls = new ActionRowBuilder();
 			for (let number = 1; number <= 5; number++) {
@@ -179,9 +184,6 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	// If the player isn't playing, play it
 	if (!player.playing) await player.play();
 
-	// Search command reminder
-	PlayEmbed.setFooter({ text: 'Not quite the right result? Get a better one with the search command!' });
-
 	// Send embed
 	playMsg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
 
@@ -189,7 +191,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 	collector.on('collect', async interaction => {
 		// Check if button is actually the undo button
-		if (interaction.customId != 'music_undo') return;
+		if (!interaction.customId.startsWith('music_')) return;
 		// Check if the user is the requester
 		if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t request this song!' });
 		// Remove each song from the queue
@@ -202,6 +204,10 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		PlayEmbed.setDescription(PlayEmbed.toJSON().description.replace('Added', 'Unadded').replace('to', 'from').replace(`<:music:${music}>`, `<:no:${no}>`));
 		interaction.reply({ embeds: [PlayEmbed] });
 		collector.stop();
+		if (interaction.customId == 'music_search') {
+			// Since playtop and play are so similar, use the same code in a function
+			playSongs(message.member, message, args, client, false, true);
+		}
 	});
 
 	// When the collector stops, remove the undo button from it
