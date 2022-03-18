@@ -10,6 +10,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			const JarEmbed = new EmbedBuilder().setColor(Math.floor(Math.random() * 16777215));
+			args[0] = args[0].toLowerCase();
 			if (args[0] == 'paper' || args[0] == 'waterfall' || args[0] == 'velocity') {
 				// fetch the latest mc version
 				const a = await fetch(`https://papermc.io/api/v2/projects/${args[0]}`);
@@ -47,7 +48,7 @@ module.exports = {
 				const a = await fetch('https://api.pl3x.net/v2/purpur');
 				const b = await a.json();
 				// if specified args are valid then replace latest with that number
-				const c = args[0] ? args[0] : b.versions.reverse()[0];
+				const c = args[0] ? args[0] : b.versions[b.versions.length - 1];
 				const d = await fetch(`https://api.pl3x.net/v2/purpur/${c}`);
 				const e = await d.json();
 				// check if error
