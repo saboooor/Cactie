@@ -99,7 +99,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				);
 			}
 			row.push(balls);
-			playMsg.edit({ embeds: [PlayEmbed], components: row });
+			playMsg.edit({ content: `<:srch:${srch}> Pick a search result from the buttons below`, embeds: [PlayEmbed], components: row });
 
 			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
@@ -192,6 +192,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	collector.on('collect', async interaction => {
 		// Check if button is actually the undo button
 		if (!interaction.customId.startsWith('music_')) return;
+		interaction.deferUpdate();
 		// Check if the user is the requester
 		if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t request this song!' });
 		// Remove each song from the queue
@@ -202,11 +203,11 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		}
 		// Reply and stop the collector
 		PlayEmbed.setDescription(PlayEmbed.toJSON().description.replace('Added', 'Unadded').replace('to', 'from').replace(`<:music:${music}>`, `<:no:${no}>`));
-		interaction.reply({ embeds: [PlayEmbed] });
+		playMsg.edit({ embeds: [PlayEmbed] });
 		collector.stop();
 		if (interaction.customId == 'music_search') {
 			// Since playtop and play are so similar, use the same code in a function
-			playSongs(message.member, message, args, client, false, true);
+			playSongs(requester, message, args, client, false, true);
 		}
 	});
 
