@@ -91,7 +91,7 @@ module.exports = {
 			}
 
 			// Update message and reply with denied
-			fetchedMsg.edit({ embeds: [DenyEmbed] });
+			await fetchedMsg.edit({ embeds: [DenyEmbed] });
 			if (message.commandName) message.reply({ content: 'Suggestion Denied!' });
 
 			// Check if log channel exists and send message

@@ -94,7 +94,7 @@ module.exports = {
 			}
 
 			// Update message and reply with approved
-			fetchedMsg.edit({ embeds: [ApproveEmbed] });
+			await fetchedMsg.edit({ embeds: [ApproveEmbed] });
 			if (message.commandName) message.reply({ content: 'Suggestion Approved!' });
 
 			// Check if log channel exists and send message
