@@ -20,10 +20,10 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket has more than 5 subtickets
-			if (message.channel.threads.cache.size > 5) return message.reply({ content: 'This ticket has too many subtickets!' });
+			if (message.channel.threads.cache.size > 5) return client.error('This ticket has too many subtickets!', message, true);
 
 			// Check if ticket is closed
-			if (message.channel.parent.name.startsWith('closed')) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.parent.name.startsWith('closed')) return client.error('This ticket is closed!', message, true);
 
 			// Create Thread for subticket
 			const subticket = await message.channel.threads.create({

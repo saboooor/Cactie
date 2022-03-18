@@ -45,7 +45,7 @@ module.exports = {
 					await msg.react('🎫');
 				}
 				else if (srvconfig.tickets == 'false') {
-					return message.reply({ content: 'Tickets are disabled!' });
+					return client.error('Tickets are disabled!', message, true);
 				}
 			}
 			else {

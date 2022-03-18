@@ -11,7 +11,7 @@ module.exports = {
 		try {
 			let member = message.member;
 			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return message.reply({ content: msg.invalidmember });
+			if (!member) return client.error(msg.invalidmember, message, true);
 			member.user = await member.user.fetch();
 			const memberpfp = member.avatarURL({ size: 1024 });
 			const userpfp = member.user.avatarURL({ size: 1024 });

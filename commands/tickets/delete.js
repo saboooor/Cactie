@@ -27,7 +27,7 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is open
-			if (message.channel.name.startsWith('ticket')) return message.reply({ content: 'This ticket needs to be closed first!' });
+			if (message.channel.name.startsWith('ticket')) return client.error('This ticket needs to be closed first!', message, true);
 
 			// Check if ticket log channel is set in settings
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

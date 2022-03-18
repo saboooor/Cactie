@@ -23,14 +23,14 @@ module.exports = {
 
 			// Check if tickets are disabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (srvconfig.tickets == 'false') return message.reply({ content: 'Tickets are disabled!' });
+			if (srvconfig.tickets == 'false') return client.error('Tickets are disabled!', message, true);
 
 			// Check if ticket already exists
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${author.id}' AND guildId = '${message.guild.id}'`))[0];
 			if (ticketData) {
 				const channel = message.guild.channels.cache.get(ticketData.channelId);
 				channel.send({ content: `❗ **${author} Ticket already exists!**` });
-				return message.reply({ content: `You've already created a ticket at ${channel}!` });
+				return client.error(`You've already created a ticket at #${channel.name}!`, message, true);
 			}
 
 			// Find category and if no category then set it to null
@@ -40,7 +40,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return message.reply({ content: 'You need to set a role with /settings supportrole <Role Id>!' });
+			if (!role) return client.error('You need to set a role with /settings supportrole <Role Id>!', message, true);
 
 			// Create ticket and set database
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {

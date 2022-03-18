@@ -28,7 +28,7 @@ module.exports = {
 			if (srvconfig.suggestthreads) {
 				if (!message.guild.me.permissions.has(PermissionsBitField.Flags.CreatePublicThreads) || !message.guild.me.permissionsIn(channel).has(PermissionsBitField.Flags.CreatePublicThreads)) {
 					client.logger.error(`Missing CreatePublicThreads permission in #${channel.name} at ${message.guild.name}`);
-					return message.reply({ content: 'I don\'t have the CreatePublicThreads permission!' });
+					return client.error('I don\'t have the CreatePublicThreads permission!', message, true);
 				}
 				const thread = await msg.startThread({
 					name: `Suggestion by ${message.member.displayName}`,
