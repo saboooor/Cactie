@@ -50,7 +50,7 @@ module.exports = {
 			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
 
 			// Reply with response
-			message.reply({ embeds: [BanEmbed] });
+			await message.reply({ embeds: [BanEmbed] });
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

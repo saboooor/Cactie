@@ -62,7 +62,7 @@ module.exports = {
 			else await member.timeout(time, `Muted by ${author.user.tag} for ${args.slice(1).join(' ')}`);
 
 			// Reply to command
-			message.reply({ embeds: [MuteEmbed] });
+			await message.reply({ embeds: [MuteEmbed] });
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);

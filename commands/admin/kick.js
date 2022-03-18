@@ -36,7 +36,7 @@ module.exports = {
 				});
 
 			// Reply with response
-			message.reply({ embeds: [KickEmbed] });
+			await message.reply({ embeds: [KickEmbed] });
 
 			// Actually kick the dude
 			await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });
