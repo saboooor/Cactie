@@ -48,13 +48,13 @@ module.exports = {
 				const a = await fetch('https://api.purpurmc.org/v2/purpur');
 				const b = await a.json();
 				// if specified args are valid then replace latest with that number
-				const c = args[0] ? args[0] : b.versions[b.versions.length - 1];
+				const c = args[1] ? args[1] : b.versions[b.versions.length - 1];
 				const d = await fetch(`https://api.purpurmc.org/v2/purpur/${c}`);
 				const e = await d.json();
 				// check if error
 				if (e.error) return client.error(e.error, message, true);
 				// fetch the latest build for mc / build versions specified or latest
-				const f = args[1] ? args[1] : 'latest';
+				const f = args[2] ? args[2] : 'latest';
 				const g = await fetch(`https://api.purpurmc.org/v2/purpur/${c}/${f}`);
 				const h = await g.json();
 				// check if error
