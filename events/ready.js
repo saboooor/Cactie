@@ -25,7 +25,7 @@ module.exports = async (client) => {
 	});
 	setInterval(async () => {
 		const activities = [
-			['Game', 'With you ;)'],
+			['Game', 'with you ;)'],
 			['Game', '/help'],
 			['Watching', 'cactie.smhsmh.club'],
 			['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
@@ -33,13 +33,9 @@ module.exports = async (client) => {
 			['Listening', '3 Big Balls'],
 			['Listening', 'Never Gonna Give You Up'],
 			['Listening', 'Fortnite Battle Pass'],
-			['Game', 'in {GUILD}'],
-			['Competing', '{GUILD}'],
-			['Watching', '{GUILD}'],
 		];
 		const i = Math.floor(Math.random() * activities.length);
 		const activity = activities[i];
-		if (activity[1].includes('{GUILD}')) activity[1] = activity[1].replace('{GUILD}', client.guilds.cache.get([...client.guilds.cache.keys()][Math.floor(Math.random() * client.guilds.cache.size)]).name);
 		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }] });
 	}, 5000);
 	setInterval(async () => {
