@@ -18,14 +18,14 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Check if ticket is closed
-			if (message.channel.name.startsWith('closed')) return message.reply({ content: 'This ticket is closed!' });
+			if (message.channel.name.startsWith('closed')) return client.error('This ticket is closed!', message, true);
 
 			// Check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) return client.error(msg.invalidmember, message, true);
 
 			// Check if user is already in the ticket, if not, add them to the ticket data
-			if (ticketData.users.includes(member.id)) return message.reply({ content: 'This user has already been added!' });
+			if (ticketData.users.includes(member.id)) return client.error('This user has already been added!', message, true);
 			ticketData.users.push(member.id);
 			client.setData('ticketdata', 'channelId', message.channel.id, 'users', ticketData.users.join(','));
 

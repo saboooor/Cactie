@@ -210,7 +210,7 @@ module.exports = async (client, message) => {
 	if (command.djRole && srvconfig.djrole != 'false') {
 		// Get dj role, if it doesn't exist, send error message because invalid setting value
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
-		if (!role) return message.reply({ content: msg.dj.notfound });
+		if (!role) return client.error(msg.dj.notfound, message, true);
 
 		// Check if user has role, if not, send error message
 		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(msg.rolereq.replace('-r', role.name), message, true);

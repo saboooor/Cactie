@@ -11,7 +11,7 @@ module.exports = {
 			const commandName = interaction == 'commands' ? args[2].toLowerCase() : category;
 			const command = client[interaction].get(commandName) || client[interaction].find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-			if (!command) return message.reply(`There is no command with name or alias \`${commandName}\`!`);
+			if (!command) return client.error(`There is no ${interaction} with name or alias \`${commandName}\`!`, message, true);
 
 			delete require.cache[require.resolve(`../../${interaction}${interaction == 'commands' ? `/${category}` : ''}/${command.name}.js`)];
 

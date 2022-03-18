@@ -1,6 +1,30 @@
 [
     {
         "type": 3,
+        "name": "fork",
+        "description": "The minecraft server fork name",
+        "required": true,
+        "choices": [
+            {
+                "name": "Purpur",
+                "value": "purpur"
+            },
+            {
+                "name": "Paper",
+                "value": "paper"
+            },
+            {
+                "name": "Waterfall",
+                "value": "waterfall"
+            },
+            {
+                "name": "Velocity",
+                "value": "velocity"
+            }
+        ]
+    },
+    {
+        "type": 3,
         "name": "version",
         "description": "Specify a version",
         "required": false

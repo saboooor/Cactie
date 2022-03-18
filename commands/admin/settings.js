@@ -17,6 +17,8 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Bot Settings');
 			const components = []; let configlist = null;
+			// Lowercase first arg
+			args[0] = args[0].toLowerCase();
 			// Check if arg is set or is 'reset'
 			if (args[1] != null && args[0] != 'reset') {
 				// Set prop variable to first argument
@@ -29,7 +31,7 @@ module.exports = {
 				const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
 
 				// Avoid users from setting guildId
-				if (prop == 'guildId') return client.error('You can\'t change that!', message, true);
+				if (prop == 'guildid') return client.error('You can\'t change that!', message, true);
 				// Tickets setting can only be either buttons, reactions, or false
 				if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return client.error('This setting must be either "buttons", "reactions", or "false"!', message, true);
 				// Reactions / Bonercmd / Suggestthreads settings can only either be true or false

@@ -10,7 +10,7 @@ module.exports = {
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 			// Only the support team can resolve tickets
-			if (ticketData.users.includes(message.member.user.id)) return message.reply({ content: 'You cannot resolve this ticket! Try closing the ticket instead' });
+			if (ticketData.users.includes(message.member.user.id)) return client.error('You cannot resolve this ticket! Try closing the ticket instead', message, true);
 
 			// Check if ticket is closed
 			if (message.channel.name.startsWith('closed')) return client.error('This ticket is already closed!', message, true);

@@ -8,7 +8,7 @@ module.exports = async (client, reaction, user) => {
 	const reactionrole = (await client.query(`SELECT * FROM reactionroles WHERE messageId = '${message.id}' AND emojiId = '${emojiId}'`))[0];
 	if (reactionrole && reactionrole.type != 'toggle') {
 		const role = message.guild.roles.cache.get(reactionrole.roleId);
-		if (!role) return message.reply({ content: 'Error: The role can\'t be found!' });
+		if (!role) return client.error('The role can\'t be found!', message, true);
 		const member = await message.guild.members.cache.find(m => m.id === user.id);
 		await member.roles.remove(role);
 		const msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
