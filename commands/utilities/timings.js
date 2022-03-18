@@ -10,19 +10,19 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			const timingsresult = await analyzeTimings(message, client, args);
-			const msg = await message.reply(timingsresult[0]);
+			const timingsmsg = await message.reply(timingsresult[0]);
 
 			// Get the issues from the timings result
 			const issues = timingsresult[1];
 			if (issues) {
-				const collector = msg.createMessageComponentCollector({ time: 300000 });
+				const collector = timingsmsg.createMessageComponentCollector({ time: 300000 });
 				collector.on('collect', async i => {
 					// Check if the button is one of the filter buttons
 					if (!i.customId.startsWith('timings_')) return;
 					i.deferUpdate();
 
 					// Get the embed and clear the fields
-					const TimingsEmbed = new EmbedBuilder(msg.embeds[0].toJSON());
+					const TimingsEmbed = new EmbedBuilder(timingsmsg.embeds[0].toJSON());
 					TimingsEmbed.setFields(...issues);
 
 					// Get page from footer
@@ -45,7 +45,7 @@ module.exports = {
 					TimingsEmbed.setFooter({ text: footer.join(' • ') });
 
 					// Send the embed
-					msg.edit({ embeds: [TimingsEmbed] });
+					timingsmsg.edit({ embeds: [TimingsEmbed] });
 				});
 			}
 		}

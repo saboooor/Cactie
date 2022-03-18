@@ -22,21 +22,21 @@ module.exports = {
 				.setTitle('Suggestion')
 				.setDescription(suggestion)
 				.setURL(`https://a${message.member.user.id}a.pup`);
-			const msg = await channel.send({ embeds: [SuggestEmbed] });
-			await msg.react(upvote);
-			await msg.react(downvote);
+			const suggestMsg = await channel.send({ embeds: [SuggestEmbed] });
+			await suggestMsg.react(upvote);
+			await suggestMsg.react(downvote);
 			if (srvconfig.suggestthreads) {
 				if (!message.guild.me.permissions.has(PermissionsBitField.Flags.CreatePublicThreads) || !message.guild.me.permissionsIn(channel).has(PermissionsBitField.Flags.CreatePublicThreads)) {
 					client.logger.error(`Missing CreatePublicThreads permission in #${channel.name} at ${message.guild.name}`);
 					return client.error('I don\'t have the CreatePublicThreads permission!', message, true);
 				}
-				const thread = await msg.startThread({
+				const thread = await suggestMsg.startThread({
 					name: `Suggestion by ${message.member.displayName}`,
 					autoArchiveDuration: 1440,
 					reason: suggestion,
 				});
 				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
-				msg.edit({ embeds: [SuggestEmbed] });
+				suggestMsg.edit({ embeds: [SuggestEmbed] });
 			}
 			if (!message.commandName) {
 				if (channel != message.channel) {

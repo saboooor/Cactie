@@ -2,7 +2,6 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 const desc = require('../../lang/en/settingsdesc.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Cactie\'s settings in the server',
@@ -116,8 +115,8 @@ module.exports = {
 				// Set embed description with page and stuff
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
 					.addFields({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
-					.setFooter({ text: msg.page.replace('-1', '1').replace('-2', maxPages) });
-				if (client.user.id == '848775888673439745') SettingsEmbed.addFields({ name: msg.dashboard.confusing, value: msg.dashboard.use });
+					.setFooter({ text: message.lang.page.replace('-1', '1').replace('-2', maxPages) });
+				if (client.user.id == '848775888673439745') SettingsEmbed.addFields({ name: message.lang.dashboard.confusing, value: message.lang.dashboard.use });
 
 				// Add buttons for page changing
 				const row = new ActionRowBuilder()
@@ -132,7 +131,7 @@ module.exports = {
 							.setStyle(ButtonStyle.Secondary),
 						new ButtonBuilder()
 							.setURL('https://cactie.smhsmh.club')
-							.setLabel(msg.dashboard.name)
+							.setLabel(message.lang.dashboard.name)
 							.setStyle(ButtonStyle.Link),
 					);
 				components.push(row);
@@ -144,7 +143,7 @@ module.exports = {
 					.addComponents(
 						new ButtonBuilder()
 							.setURL('https://cactie.smhsmh.club')
-							.setLabel(msg.dashboard.name)
+							.setLabel(message.lang.dashboard.name)
 							.setStyle(ButtonStyle.Link),
 					);
 				components.push(row);

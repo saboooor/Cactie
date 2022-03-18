@@ -2,7 +2,6 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { skip } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'forceskip',
 	aliases: ['fs'],
@@ -21,7 +20,7 @@ module.exports = {
 			player.stop();
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()
-				.setDescription(`<:skip:${skip}> **${msg.music.skip.skipped}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:skip:${skip}> **${message.lang.music.skip.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });

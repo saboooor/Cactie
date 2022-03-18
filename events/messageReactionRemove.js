@@ -11,9 +11,9 @@ module.exports = async (client, reaction, user) => {
 		if (!role) return client.error('The role can\'t be found!', message, true);
 		const member = await message.guild.members.cache.find(m => m.id === user.id);
 		await member.roles.remove(role);
-		const msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
+		const RRMsg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
 		client.logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
 		await sleep(1000);
-		await msg.delete();
+		await RRMsg.delete();
 	}
 };

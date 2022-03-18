@@ -1,6 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../lang/int/emoji.json');
-const msg = require('../lang/en/msg.json');
 const evalXO = require('../functions/evalXO.js');
 const again = new ActionRowBuilder()
 	.addComponents(new ButtonBuilder()
@@ -20,7 +19,7 @@ module.exports = {
 		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
-		if (!xuser || !ouser) return interaction.user.send({ content: msg.invalidmember });
+		if (!xuser || !ouser) return interaction.user.send({ content: interaction.lang.invalidmember });
 		const playAgainEmbed = new EmbedBuilder()
 			.setAuthor({ name: `${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
 			.setDescription(`${interaction.user} wants to play again!`)

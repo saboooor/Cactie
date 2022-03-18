@@ -1,5 +1,4 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
-const msg = require('../../lang/en/msg.json');
 module.exports = async (client, interaction) => {
 	// Check if interaction is command
 	if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
@@ -65,6 +64,9 @@ module.exports = async (client, interaction) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
+	// Get the language for the guild or user specific (wip)
+	interaction.lang = require('../../lang/en/msg.json');
+
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '848775888673439745') {
 		// Get vote data for user
@@ -99,11 +101,11 @@ module.exports = async (client, interaction) => {
 	if (command.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || (!interaction.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.permission]) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(msg.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
+			return client.error(interaction.lang.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(msg.permreq.replace('-p', command.permission), interaction, true);
+			return client.error(interaction.lang.permreq.replace('-p', command.permission), interaction, true);
 		}
 	}
 
@@ -132,10 +134,10 @@ module.exports = async (client, interaction) => {
 	if (command.djRole && srvconfig.djrole != 'false') {
 		// Get dj role, if it doesn't exist, send error message because invalid setting value
 		const role = interaction.guild.roles.cache.get(srvconfig.djrole);
-		if (!role) return interaction.reply({ content: msg.dj.notfound, ephemeral: true });
+		if (!role) return interaction.reply({ content: interaction.lang.dj.notfound, ephemeral: true });
 
 		// Check if user has role, if not, send error message
-		if (!interaction.member.roles.cache.has(srvconfig.djrole)) return client.error(msg.rolereq.replace('-r', role.name), interaction, true);
+		if (!interaction.member.roles.cache.has(srvconfig.djrole)) return client.error(interaction.lang.rolereq.replace('-r', role.name), interaction, true);
 	}
 
 	// Defer and execute the command

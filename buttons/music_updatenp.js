@@ -3,7 +3,6 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
 const { refresh, music, shuffle, skip } = require('../lang/int/emoji.json');
-const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_updatenp',
 	player: true,
@@ -18,13 +17,13 @@ module.exports = {
 
 			// Create embed and disable button
 			const NPEmbed = new EmbedBuilder()
-				.setDescription(`<:music:${music}> **${msg.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
+				.setDescription(`<:music:${music}> **${interaction.lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);
 			const btn = new ButtonBuilder()
 				.setCustomId('music_updatenp')
-				.setLabel(msg.refresh)
+				.setLabel(interaction.lang.refresh)
 				.setEmoji({ id: refresh })
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(true);

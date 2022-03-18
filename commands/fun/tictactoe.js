@@ -1,6 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 const evalXO = require('../../functions/evalXO.js');
 const again = new ActionRowBuilder()
 	.addComponents(new ButtonBuilder()
@@ -19,7 +18,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-		if (!user) return client.error(msg.invalidmember, message, true);
+		if (!user) return client.error(message.lang.invalidmember, message, true);
 		if (user.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		let turn = Math.round(Math.random());
 		const btns = {};

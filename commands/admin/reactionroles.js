@@ -1,6 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'reactionroles',
 	description: 'Configure Cactie\'s reaction roles in the server',
@@ -68,7 +67,7 @@ module.exports = {
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.toJSON().fields.length > 12) {
 					RREmbed.toJSON().fields.splice(12, RREmbed.toJSON().fields.length);
-					RREmbed.setFooter({ text: msg.page.replace('-1', '1').replace('-2', Math.ceil(RREmbed.toJSON().fields.length / 12)), iconURL: message.member.user.avatarURL() });
+					RREmbed.setFooter({ text: message.lang.page.replace('-1', '1').replace('-2', Math.ceil(RREmbed.toJSON().fields.length / 12)), iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
 					const btns = new ActionRowBuilder()

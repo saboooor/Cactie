@@ -1,5 +1,4 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'rockpaperscissors',
 	description: 'Play Rock Paper Scissors with an opponent',
@@ -10,7 +9,7 @@ module.exports = {
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-		if (!user) return client.error(msg.invalidmember, message, true);
+		if (!user) return client.error(message.lang.invalidmember, message, true);
 		if (user.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		const emoji = {
 			rock: ['🪨', 'Rock', '🪨 Rock'],

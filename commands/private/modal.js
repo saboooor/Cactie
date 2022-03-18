@@ -10,9 +10,9 @@ module.exports = {
 					.setLabel('Show modal')
 					.setStyle(ButtonStyle.Primary),
 			);
-		const msg = await message.reply({ content: 'balls', components: [row] });
+		const modalMsg = await message.reply({ content: 'balls', components: [row] });
 
-		const collector = msg.createMessageComponentCollector({ time: 240000 });
+		const collector = modalMsg.createMessageComponentCollector({ time: 240000 });
 		collector.on('collect', async interaction => {
 			const modal = new Modal()
 				.setTitle('i wanna off myself')

@@ -1,6 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'avatar',
 	description: 'Get the avatar of a user',
@@ -11,7 +10,7 @@ module.exports = {
 		try {
 			let member = message.member;
 			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(msg.invalidmember, message, true);
+			if (!member) return client.error(message.lang.invalidmember, message, true);
 			member.user = await member.user.fetch();
 			const memberpfp = member.avatarURL({ size: 1024 });
 			const userpfp = member.user.avatarURL({ size: 1024 });

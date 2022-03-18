@@ -2,7 +2,6 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 const { shuffle, skip, music, refresh } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
@@ -18,7 +17,7 @@ module.exports = {
 			const total = song.duration;
 			const current = player.position;
 			const NPEmbed = new EmbedBuilder()
-				.setDescription(`<:music:${music}> **${msg.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
+				.setDescription(`<:music:${music}> **${message.lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);
@@ -34,7 +33,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
 						.setCustomId('music_updatenp')
-						.setLabel(msg.refresh)
+						.setLabel(message.lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
 				);

@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const { shuffle } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'shuffle',
 	description: 'Shuffle the queue',
@@ -19,9 +18,9 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error(msg.music.shuffle.alrvoted, message, true);
+				if (alr) return client.error(message.lang.music.shuffle.alrvoted, message, true);
 				player.shuffleAmount.push(message.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `<:shuffle:${shuffle}> ${msg.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
+				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `<:shuffle:${shuffle}> ${message.lang.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
 				player.shuffleAmount = null;
 			}
 
@@ -29,7 +28,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:shuffle:${shuffle}> **${msg.music.shuffle.shuffled}**`)
+				.setDescription(`<:shuffle:${shuffle}> **${message.lang.music.shuffle.shuffled}**`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ShuffleEmbed] });
 		}

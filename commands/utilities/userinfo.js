@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'userinfo',
 	description: 'Discord member information',
@@ -12,7 +11,7 @@ module.exports = {
 		try {
 			let member = message.member;
 			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(msg.invalidmember, message, true);
+			if (!member) return client.error(message.lang.invalidmember, message, true);
 			const roles = Array.from(member.roles.cache).sort(function(a, b) {
 				if (b[1].rawPosition < a[1].rawPosition) return -1;
 				if (b[1].rawPosition > a[1].rawPosition) return 1;

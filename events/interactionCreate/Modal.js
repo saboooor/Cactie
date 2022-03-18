@@ -7,6 +7,9 @@ module.exports = async (client, interaction) => {
 	const modal = client.modals.get(interaction.customId);
 	if (!modal) return;
 
+	// Get the language for the guild or user specific (wip)
+	interaction.lang = require('../../lang/en/msg.json');
+
 	// Defer and execute the modal
 	try {
 		client.logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild.name}`);

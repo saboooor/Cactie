@@ -4,7 +4,6 @@ const pteroUpdate = require('../../functions/ptero/pteroUpdate.js');
 const ptero = require('../../functions/ptero/ptero.js');
 const servers = require('../../config/pterodactyl.json');
 const { refresh } = require('../../lang/int/emoji.json');
-const msg = require('../../lang/en/msg.json');
 module.exports = {
 	name: 'ptero',
 	description: 'Controls pterodactyl servers on godzillagroin',
@@ -60,7 +59,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Danger),
 					new ButtonBuilder()
 						.setCustomId('ptero_update')
-						.setLabel(msg.refresh)
+						.setLabel(message.lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Success),
 				);

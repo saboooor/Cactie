@@ -24,8 +24,8 @@ module.exports = {
 				rows[row].addComponents(btns[`${column}${row}`]);
 			}
 		}
-		const msg = await message.reply({ content: '\u200b', components: rows });
-		const collector = msg.createMessageComponentCollector({ time: 300000 });
+		const btnMsg = await message.reply({ content: '\u200b', components: rows });
+		const collector = btnMsg.createMessageComponentCollector({ time: 300000 });
 		collector.on('collect', async i => {
 			if (i.user != message.member.user) return i.reply({ content: 'This isn\'t your button grid!\nCreate one with the /buttons command', ephemeral: true });
 			i.deferUpdate();
@@ -34,7 +34,7 @@ module.exports = {
 			else if (btn.toJSON().style == ButtonStyle.Danger) btn.setStyle(ButtonStyle.Primary);
 			else if (btn.toJSON().style == ButtonStyle.Primary) btn.setStyle(ButtonStyle.Success);
 			else if (btn.toJSON().style == ButtonStyle.Success) btn.setStyle(ButtonStyle.Secondary);
-			msg.edit({ components: rows });
+			btnMsg.edit({ components: rows });
 		});
 	},
 };

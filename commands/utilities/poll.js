@@ -19,9 +19,9 @@ module.exports = {
 				.setTitle('Poll')
 				.setAuthor({ name: message.member.user.username, iconURL: message.member.user.avatarURL() })
 				.setDescription(args.join(' '));
-			const msg = await channel.send({ embeds: [Poll] });
-			await msg.react(yes);
-			await msg.react(no);
+			const pollMsg = await channel.send({ embeds: [Poll] });
+			await pollMsg.react(yes);
+			await pollMsg.react(no);
 			if (channel === message.channel && message.commandName) return message.reply({ content: '**Poll Created!**' });
 			if (channel === message.guild.channels.cache.find(c => c.name.includes('poll'))) return message.reply({ content: `**Poll Created! Check ${channel}**` });
 		}

@@ -22,7 +22,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 	// Get search results from YouTube, Spotify, or Apple Music
 	const search = args.join(' '); const songs = [];
-	const msg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
+	const playMsg = await message.reply({ content: `🔎 Searching for \`${search}\`...` });
 
 	// Create embed for responses
 	const PlayEmbed = new EmbedBuilder();
@@ -70,7 +70,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		else {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
-			return msg.edit({ content: null, embeds: [PlayEmbed] });
+			return playMsg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 	}
 	else {
@@ -94,22 +94,22 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				);
 			}
 			row.push(balls);
-			msg.edit({ embeds: [PlayEmbed], components: row });
+			playMsg.edit({ embeds: [PlayEmbed], components: row });
 
-			const collector = msg.createMessageComponentCollector({ time: 60000 });
+			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the user is the requester
 				if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t search this query!' });
 				interaction.deferUpdate();
-				playSongs(requester, msg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
-				await msg.edit({ content: `<:play:${play}> **Selected result #${interaction.customId}**`, embeds: [], components: [] })
+				playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
+				await playMsg.edit({ content: `<:play:${play}> **Selected result #${interaction.customId}**`, embeds: [], components: [] })
 					.then(() => collector.stop());
 			});
 
 			// When the collector stops, remove the undo button from it
 			collector.on('end', () => {
-				if (msg.content.startsWith(`<:play:${play}> `)) return;
-				msg.edit({ content: `<:alert:${warn}> Search query selection timed out.`, embeds: [], components: [] });
+				if (playMsg.content.startsWith(`<:play:${play}> `)) return;
+				playMsg.edit({ content: `<:alert:${warn}> Search query selection timed out.`, embeds: [], components: [] });
 			});
 
 			return;
@@ -120,7 +120,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		if (Searched.loadType === 'NO_MATCHES' || !track) {
 			// There's no result for the search, send error message
 			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
-			return msg.edit({ content: null, embeds: [PlayEmbed] });
+			return playMsg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
@@ -183,10 +183,10 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	PlayEmbed.setFooter({ text: 'Not quite the right result? Get a better one with the search command!' });
 
 	// Send embed
-	msg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
+	playMsg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
 
 	// Create a collector for the undo button
-	const collector = msg.createMessageComponentCollector({ time: 60000 });
+	const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 	collector.on('collect', async interaction => {
 		// Check if button is actually the undo button
 		if (interaction.customId != 'music_undo') return;
@@ -205,5 +205,5 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	});
 
 	// When the collector stops, remove the undo button from it
-	collector.on('end', () => msg.edit({ components: [] }));
+	collector.on('end', () => playMsg.edit({ components: [] }));
 };

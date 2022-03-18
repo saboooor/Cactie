@@ -7,6 +7,9 @@ module.exports = async (client, interaction) => {
 	const button = client.buttons.get(interaction.customId);
 	if (!button) return;
 
+	// Get the language for the guild or user specific (wip)
+	interaction.lang = require('../../lang/en/msg.json');
+
 	// Check if bot has the permissions necessary to run the button
 	if (button.botperm && (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[button.botperm]) || !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm]))) {
 		client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);

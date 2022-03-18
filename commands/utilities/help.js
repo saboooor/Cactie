@@ -41,8 +41,8 @@ module.exports = {
 				}
 				else if (srvconfig.tickets == 'reactions') {
 					Panel.setDescription('React with 🎫 to open a ticket!');
-					const msg = await message.channel.send({ embeds: [Panel] });
-					await msg.react('🎫');
+					const panelMsg = await message.channel.send({ embeds: [Panel] });
+					await panelMsg.react('🎫');
 				}
 				else if (srvconfig.tickets == 'false') {
 					return client.error('Tickets are disabled!', message, true);
@@ -110,23 +110,23 @@ module.exports = {
 						.setLabel('Donate')
 						.setStyle(ButtonStyle.Link),
 				);
-			const msg = await message.reply({ embeds: [HelpEmbed], components: [row, row2] });
+			const helpMsg = await message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 
-			const collector = msg.createMessageComponentCollector({ time: 3600000 });
+			const collector = helpMsg.createMessageComponentCollector({ time: 3600000 });
 			collector.on('collect', async interaction => {
 				if (interaction.customId != 'help_menu') return;
 				await interaction.deferUpdate();
 				HelpEmbed.setFields();
-				if (interaction.values[0] == 'help_nsfw' && !msg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
+				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
 				else require(`../../help/${interaction.values[0].split('_')[1]}.js`)(prefix, HelpEmbed, srvconfig);
 				row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
-				msg.edit({ embeds: [HelpEmbed], components: [row, row2] });
+				helpMsg.edit({ embeds: [HelpEmbed], components: [row, row2] });
 			});
 
 			collector.on('end', () => {
 				HelpEmbed.setDescription('Help command timed out.')
 					.setFooter({ text: 'please do the help command again if you still need a list of commands.' });
-				msg.edit({ embeds: [HelpEmbed], components: [row2] });
+				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] });
 			});
 		}
 		catch (err) { client.error(err, message); }

@@ -2,7 +2,6 @@ const { MessageAttachment, EmbedBuilder, Collection, ButtonBuilder, ButtonStyle,
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
-const msg = require('../lang/en/msg.json');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return and also check if message is a github update
 	if (message.webhookId || message.author.bot) return gitUpdate(client, message);
@@ -37,6 +36,9 @@ module.exports = async (client, message) => {
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+
+	// Get the language for the guild or user specific (wip)
+	message.lang = require('../lang/en/msg.json');
 
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
@@ -177,11 +179,11 @@ module.exports = async (client, message) => {
 	if (command.permission && message.author.id !== '249638347306303499' && (!message.member.permissions || (!message.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission]) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(msg.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
+			return client.error(message.lang.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(msg.permreq.replace('-p', command.permission), message, true);
+			return client.error(message.lang.permreq.replace('-p', command.permission), message, true);
 		}
 	}
 
@@ -210,10 +212,10 @@ module.exports = async (client, message) => {
 	if (command.djRole && srvconfig.djrole != 'false') {
 		// Get dj role, if it doesn't exist, send error message because invalid setting value
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
-		if (!role) return client.error(msg.dj.notfound, message, true);
+		if (!role) return client.error(message.lang.dj.notfound, message, true);
 
 		// Check if user has role, if not, send error message
-		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(msg.rolereq.replace('-r', role.name), message, true);
+		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(message.lang.rolereq.replace('-r', role.name), message, true);
 	}
 
 	// execute the command

@@ -2,7 +2,6 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder } = require('discord.js');
 const { skip } = require('../lang/int/emoji.json');
 const compressEmbed = require('../functions/compressEmbed');
-const msg = require('../lang/en/msg.json');
 module.exports = {
 	name: 'music_skip',
 	player: true,
@@ -21,9 +20,9 @@ module.exports = {
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.channel.send({ content: msg.music.skip.alrvoted });
+				if (alr) return interaction.channel.send({ content: interaction.lang.music.skip.alrvoted });
 				player.skipAmount.push(interaction.member.id);
-				if (player.skipAmount.length < requiredAmount) return interaction.channel.send({ content: `<:skip:${skip}> ${msg.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
+				if (player.skipAmount.length < requiredAmount) return interaction.channel.send({ content: `<:skip:${skip}> ${interaction.lang.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
 				player.skipAmount = null;
 			}
 
@@ -31,7 +30,7 @@ module.exports = {
 			player.stop();
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()
-				.setDescription(`<:skip:${skip}> **${msg.music.skip.skipped}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:skip:${skip}> **${interaction.lang.music.skip.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
