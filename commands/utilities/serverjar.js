@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
-	name: 'mcserverjar',
+	name: 'serverjar',
 	aliases: ['mcjar', 'jar', 'srvjar'],
 	description: 'Get info on any Purpur, Paper, Waterfall, or Velocity build',
 	args: true,
