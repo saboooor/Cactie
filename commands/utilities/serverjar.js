@@ -45,24 +45,24 @@ module.exports = {
 			}
 			else if (args[0] == 'purpur') {
 				// fetch the latest mc version
-				const a = await fetch('https://api.pl3x.net/v2/purpur');
+				const a = await fetch('https://api.purpurmc.org/v2/purpur');
 				const b = await a.json();
 				// if specified args are valid then replace latest with that number
 				const c = args[0] ? args[0] : b.versions[b.versions.length - 1];
-				const d = await fetch(`https://api.pl3x.net/v2/purpur/${c}`);
+				const d = await fetch(`https://api.purpurmc.org/v2/purpur/${c}`);
 				const e = await d.json();
 				// check if error
 				if (e.error) return client.error(e.error, message, true);
 				// fetch the latest build for mc / build versions specified or latest
 				const f = args[1] ? args[1] : 'latest';
-				const g = await fetch(`https://api.pl3x.net/v2/purpur/${c}/${f}`);
+				const g = await fetch(`https://api.purpurmc.org/v2/purpur/${c}/${f}`);
 				const h = await g.json();
 				// check if error
 				if (h.error) return client.error(h.error, message, true);
 				// initial embed creation
 				JarEmbed.setColor(0x95639C)
 					.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
-					.setURL(`https://api.pl3x.net/v2/purpur/${c}/${f}`)
+					.setURL(`https://api.purpurmc.org/v2/purpur/${c}/${f}`)
 					.setThumbnail('https://cdn.discordapp.com/attachments/742476351012864162/865391752675065896/purpur.png')
 					.setDescription(`${h.commits.length} commit(s)`)
 					.setTimestamp(h.timestamp);
@@ -73,7 +73,7 @@ module.exports = {
 					else JarEmbed.addFields({ name: commit.author, value: `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` });
 				});
 				// add field for download
-				JarEmbed.addFields({ name: 'Download', value: `[Click Here](https://api.pl3x.net/v2/purpur/${c}/${f}/download)` });
+				JarEmbed.addFields({ name: 'Download', value: `[Click Here](https://api.purpurmc.org/v2/purpur/${c}/${f}/download)` });
 			}
 			else {
 				return client.error('Invalid Minecraft server fork.', message, true);
