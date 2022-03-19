@@ -63,8 +63,9 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
 				const userId = data.memberId.split('-')[0];
 				const user = await client.users.cache.get(userId);
-				if (user) user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
+				if (user && guild) user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(e => { client.logger.warn(e); });
 				await client.setData('memberdata', 'memberId', data.memberId, 'bannedUntil', 0);
+				if (!guild) return;
 				client.logger.info(`Unbanned ${user ? user.tag : userId} in ${guild.name}`);
 				await guild.members.unban(userId).catch(e => client.logger.error(e));
 
