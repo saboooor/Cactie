@@ -60,6 +60,7 @@ module.exports = async (client) => {
 		memberdata.forEach(async data => {
 			if (data.mutedUntil < Date.now() && data.mutedUntil != 0) {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
+				if (!guild) return client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);
 				const userId = data.memberId.split('-')[0];
 				const member = await guild.members.cache.get(userId);
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
@@ -80,6 +81,7 @@ module.exports = async (client) => {
 			}
 			else if (data.bannedUntil < Date.now() && data.bannedUntil != 0) {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
+				if (!guild) return client.setData('memberdata', 'memberId', data.memberId, 'bannedUntil', 0);
 				const userId = data.memberId.split('-')[0];
 				const user = await guild.members.cache.get(userId);
 				if (user) user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(err => client.logger.warn(err));
