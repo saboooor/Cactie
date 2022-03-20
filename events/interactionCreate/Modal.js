@@ -7,8 +7,10 @@ module.exports = async (client, interaction) => {
 	const modal = client.modals.get(interaction.customId);
 	if (!modal) return;
 
-	// Get the language for the guild or user specific (wip)
-	interaction.lang = require('../../lang/en/msg.json');
+	// Get the language for the user if specified or (wip) guild language
+	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
+	if (data[0]) interaction.lang = require(`../lang/${data[0].language}/msg.json`);
+	else interaction.lang = require('../lang/English/msg.json');
 
 	// Defer and execute the modal
 	try {

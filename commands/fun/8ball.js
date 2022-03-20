@@ -1,4 +1,4 @@
-const ball = require('../../lang/en/8ball.json');
+const ball = require('../../lang/English/8ball.json');
 const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: '8ball',

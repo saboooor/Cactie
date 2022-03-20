@@ -58,6 +58,7 @@ module.exports = async (client) => {
 		});
 		const memberdata = await client.query('SELECT * FROM `memberdata`');
 		memberdata.forEach(async data => {
+			if (!data.memberId.split('-')[1]) return;
 			if (data.mutedUntil < Date.now() && data.mutedUntil != 0) {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
 				if (!guild) return client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);

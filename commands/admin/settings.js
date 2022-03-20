@@ -1,7 +1,7 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
-const desc = require('../../lang/en/settingsdesc.json');
+const desc = require('../../lang/English/settingsdesc.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Cactie\'s settings in the server',

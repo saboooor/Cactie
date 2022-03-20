@@ -37,7 +37,7 @@ module.exports = async (client, interaction) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(interaction.user.id)) {
 		// Get a random cooldown message
-		const messages = require('../../lang/en/cooldown.json');
+		const messages = require('../../lang/English/cooldown.json');
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -64,8 +64,10 @@ module.exports = async (client, interaction) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
-	// Get the language for the guild or user specific (wip)
-	interaction.lang = require('../../lang/en/msg.json');
+	// Get the language for the user if specified or (wip) guild language
+	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
+	if (data[0]) interaction.lang = require(`../lang/${data[0].language}/msg.json`);
+	else interaction.lang = require('../lang/English/msg.json');
 
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '848775888673439745') {

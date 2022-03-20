@@ -12,7 +12,6 @@
         "confusing": "Too confusing?"
     },
     "ping": {
-        "pong": "Pong!",
         "latency": "Message Latency",
         "api": "API Latency"
     },
@@ -49,7 +48,7 @@
             "shuffled": "Shuffled the queue"
         },
         "queue": {
-            "indexnotfound": "That song number isn't in the queue!"
+            "indexnotfound": "That song index isn't in the queue!"
         }
     }
 }

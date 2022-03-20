@@ -1,0 +1,54 @@
+{
+    "off": "Turned off '^'",
+    "on": "TURNED ON UWU",
+    "refresh": "Wefwesh",
+    "rolereq": "You n-nyeed the -r wowe to do that! OwO",
+    "permreq": "You n-nyeed the -p pewmission to do that! OwO",
+    "page": "Page -1 of -2",
+    "invalidmember": "I-Invawid membew! Awe they in this sewvew?",
+    "dashboard": {
+        "name": "Dashboawd",
+        "use": "Use the dashboawd!",
+        "confusing": "Too confusing?"
+    },
+    "ping": {
+        "latency": "M-Message Watency",
+        "api": "API Watency OwO"
+    },
+    "music": {
+        "np": "Nyow Pwaying",
+        "dj": {
+            "notfound": "The DJ wowe can't be found!"
+        },
+        "eq": {
+            "name": "Equawizew",
+            "btn": "🎛️ hehe Equawizew mode is n-nyow set t-to **-m**.",
+            "choose": "Choose a mode to set the equawizew to.",
+            "precise": "Want a m-mowe p-pwecise equawizew?",
+            "bass": "Bass OwO",
+            "boost": "Boost",
+            "maxed": "Maxed",
+            "party": "*waises paw* Pawty Wawty",
+            "pop": "Pop",
+            "radio": "Wadio",
+            "soft": "Soft UwU",
+            "treb": "Twebwe-Bass"
+        },
+        "skip": {
+            "name": "Skip",
+            "alrvoted": "You've awweady weady v-voted to skip this song!",
+            "skipping": "**Skipping?** `-f` Use `/skip` to skip ow `/forceskip` to fowce skip.",
+            "skipped": "Skipped",
+            "skipto": "Skipped -i songs"
+        },
+        "shuffle": {
+            "name": "Shuffwe OwO",
+            "alrvoted": "You've awweady weady voted to shuffwe the queue!",
+            "shuffling": "**S-S-Shuffwe Q-Queue OwO?** `-f`",
+            "shuffled": "Shuffwed the queue OwO"
+        },
+        "queue": {
+            "indexnotfound": "That song index i-isn't in t-the queue! '^'"
+        }
+    }
+}

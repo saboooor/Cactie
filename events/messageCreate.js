@@ -37,8 +37,10 @@ module.exports = async (client, message) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
-	// Get the language for the guild or user specific (wip)
-	message.lang = require('../lang/en/msg.json');
+	// Get the language for the user if specified or (wip) guild language
+	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
+	if (data[0]) message.lang = require(`../lang/${data[0].language}/msg.json`);
+	else message.lang = require('../lang/English/msg.json');
 
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
@@ -113,7 +115,7 @@ module.exports = async (client, message) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
 		// Get a random cooldown message
-		const messages = require('../lang/en/cooldown.json');
+		const messages = require('../lang/English/cooldown.json');
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
