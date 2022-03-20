@@ -66,8 +66,8 @@ module.exports = async (client, interaction) => {
 
 	// Get the language for the user if specified or (wip) guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
-	if (data[0]) interaction.lang = require(`../lang/${data[0].language}/msg.json`);
-	else interaction.lang = require('../lang/English/msg.json');
+	if (data[0]) interaction.lang = require(`../../lang/${data[0].language}/msg.json`);
+	else interaction.lang = require('../../lang/English/msg.json');
 
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '848775888673439745') {
