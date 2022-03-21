@@ -17,9 +17,10 @@ module.exports = {
 	cooldown: 10,
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
-		const user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-		if (!user) return client.error(message.lang.invalidmember, message, true);
-		if (user.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
+		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
+		if (!member) return client.error(message.lang.invalidmember, message, true);
+		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		let turn = Math.round(Math.random());
 		const btns = {};
 		const rows = [];
@@ -36,17 +37,17 @@ module.exports = {
 		const TicTacToe = new EmbedBuilder()
 			.setColor(turn ? 0xff0000 : 0x0000ff)
 			.setTitle('Tic Tac Toe')
-			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : user}` })
-			.setThumbnail(turn ? message.member.user.avatarURL() : user.user.avatarURL())
-			.setDescription(`**X:** ${message.member}\n**O:** ${user}`);
+			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` })
+			.setThumbnail(turn ? message.member.user.avatarURL() : member.user.avatarURL())
+			.setDescription(`**X:** ${message.member}\n**O:** ${member}`);
 
-		const xomsg = await message.reply({ content: `${turn ? message.member : user}`, embeds: [TicTacToe], components: rows });
+		const xomsg = await message.reply({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows });
 
 		const collector = xomsg.createMessageComponentCollector({ time: 3600000 });
 
 		collector.on('collect', async interaction => {
 			if (interaction.customId == 'xo_again') return;
-			if (interaction.user.id != (turn ? message.member.id : user.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+			if (interaction.user.id != (turn ? message.member.id : member.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			interaction.deferUpdate().catch(err => client.logger.error(err));
 			const btn = btns[interaction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
@@ -56,8 +57,8 @@ module.exports = {
 			}
 			turn = !turn;
 			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : user}` })
-				.setThumbnail(turn ? message.member.user.avatarURL() : user.user.avatarURL());
+				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` })
+				.setThumbnail(turn ? message.member.user.avatarURL() : member.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
 			const reslist = Object.keys(btns).map(i => { return `${btns[i].toJSON().style}`; });
 
@@ -68,10 +69,10 @@ module.exports = {
 				const xwin = win.winner == 'x';
 				Object.keys(btns).map(i => { btns[i].setDisabled(true); });
 				TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
-					.setFields({ name: 'Result:', value: `${xwin ? message.member : user} wins!` })
-					.setThumbnail(xwin ? message.member.user.avatarURL() : user.user.avatarURL());
+					.setFields({ name: 'Result:', value: `${xwin ? message.member : member} wins!` })
+					.setThumbnail(xwin ? message.member.user.avatarURL() : member.user.avatarURL());
 				rows.push(again);
-				xomsg.edit({ content: `${xwin ? message.member : user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
+				xomsg.edit({ content: `${xwin ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
 				return collector.stop();
 			}
 
@@ -87,8 +88,8 @@ module.exports = {
 			}
 
 			// Go on to next turn if no matches
-			xomsg.edit({ content: `${turn ? message.member : user}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
-			const pingmsg = await interaction.channel.send(`${turn ? message.member : user}`);
+			xomsg.edit({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+			const pingmsg = await interaction.channel.send(`${turn ? message.member : member}`);
 			pingmsg.delete();
 		});
 
