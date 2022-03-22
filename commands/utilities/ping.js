@@ -1,6 +1,5 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
-const pong = require('../../lang/English/pong.json');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
@@ -9,6 +8,9 @@ module.exports = {
 	cooldown: 10,
 	async execute(message, args, client) {
 		try {
+			// Get the array of pong responses
+			const pong = require(`../../lang/${message.lang.language}/pong.json`);
+
 			// Create embed with ping information and add ping again button
 			const PingEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
