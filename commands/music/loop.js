@@ -33,11 +33,10 @@ module.exports = {
 
 			// Send message to channel with current song looped
 			const song = player.queue.current;
-			const trackRepeat = player.trackRepeat ? 'Now' : 'No Longer';
 			const LoopEmbed = new EmbedBuilder()
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setDescription(`<:refresh:${refresh}> **${trackRepeat} Looping the track** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
+				.setDescription(`<:refresh:${refresh}> **${player.trackRepeat ? 'Now' : 'No Longer'} Looping the track** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() });
 			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
 

@@ -17,7 +17,10 @@
         "api": "API Latency"
     },
     "music": {
+        "h24": "24/7 mode is now",
         "np": "Now Playing",
+        "joined": "Joined",
+        "left": "Left the voice chat!",
         "dj": {
             "notfound": "The DJ role can't be found!"
         },
@@ -35,20 +38,20 @@
             "soft": "Soft",
             "treb": "Treble-Bass"
         },
-        "skip": {
-            "name": "Skip",
-            "alrvoted": "You've already voted to skip this song!",
-            "skipping": "**Skipping?** `-f` Use `/skip` to skip or `/forceskip` to force skip.",
+        "track": {
+            "skipalr": "You've already voted to skip this song!",
+            "skipping": "Skipping Track?",
+            "forceskipmsg": "Use `/skip` to skip or `/forceskip` to force skip.",
             "skipped": "Skipped",
             "skipto": "Skipped -i songs"
         },
-        "shuffle": {
-            "name": "Shuffle",
-            "alrvoted": "You've already voted to shuffle the queue!",
-            "shuffling": "**Shuffle Queue?** `-f`",
-            "shuffled": "Shuffled the queue"
-        },
         "queue": {
+            "shufflealr": "You've already voted to shuffle the queue!",
+            "shuffling": "Shuffle Queue?",
+            "shuffled": "Shuffled the queue",
+            "clearalr": "You've already voted to clear the queue!",
+            "clearing": "Clear Queue?",
+            "cleared": "Cleared the queue",
             "indexnotfound": "That song index isn't in the queue!"
         }
     }

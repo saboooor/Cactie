@@ -18,7 +18,7 @@ module.exports = {
 			// Send message to channel
 			const LeaveEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:out:${leave}> **Left VC**`);
+				.setDescription(`<:out:${leave}> **${message.lang.music.left}**`);
 			message.reply({ embeds: [LeaveEmbed] });
 		}
 		catch (err) { client.error(err, message); }

@@ -18,9 +18,9 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.channel.send({ content: interaction.lang.music.shuffle.alrvoted });
+				if (alr) return interaction.channel.send({ content: interaction.lang.music.queue.shufflealr });
 				player.shuffleAmount.push(interaction.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return interaction.channel.send({ content: `<:shuffle:${shuffle}> ${interaction.lang.music.shuffle.shuffling.replace('-f', `${player.shuffleAmount.length} / ${requiredAmount}`)}` });
+				if (player.shuffleAmount.length < requiredAmount) return interaction.channel.send({ content: `<:shuffle:${shuffle}> **${interaction.lang.music.queue.shuffling}** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
 				player.shuffleAmount = null;
 			}
 
@@ -28,7 +28,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new EmbedBuilder()
 				.setColor(Math.round(Math.random() * 16777215))
-				.setDescription(`<:shuffle:${shuffle}> **${interaction.lang.music.shuffle.shuffled}**`)
+				.setDescription(`<:shuffle:${shuffle}> **${interaction.lang.music.queue.shuffled}**`)
 				.setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
 			await interaction.channel.send({ embeds: [ShuffleEmbed] });
 		}

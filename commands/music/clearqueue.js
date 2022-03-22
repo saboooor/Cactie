@@ -20,9 +20,9 @@ module.exports = {
 				if (!player.clearQueueAmount) player.clearQueueAmount = [];
 				let alr = false;
 				for (const i of player.clearQueueAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error('You\'ve already voted to clear the queue!', message, true);
+				if (alr) return client.error(message.lang.music.queue.clearalr, message, true);
 				player.clearQueueAmount.push(message.member.id);
-				if (player.clearQueueAmount.length < requiredAmount) return message.reply({ content: `**Clear Queue?** \`${player.clearQueueAmount.length} / ${requiredAmount}\`` });
+				if (player.clearQueueAmount.length < requiredAmount) return message.reply({ content: `**${message.lang.music.queue.clearing}** \`${player.clearQueueAmount.length} / ${requiredAmount}\`` });
 				player.clearQueueAmount = null;
 			}
 
@@ -30,7 +30,8 @@ module.exports = {
 			player.queue.clear();
 			const ClearEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:no:${no}> Cleared all songs from the queue`);
+				.setDescription(`<:no:${no}> **${message.lang.music.queue.cleared}**`)
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ClearEmbed] });
 		}
 		catch (err) { client.error(err, message); }

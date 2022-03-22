@@ -5,7 +5,7 @@ module.exports = {
 	type: 'Message',
 	async execute(interaction, client) {
 		try {
-		// Get embed and check if it exists
+			// Get embed and check if it exists
 			const content = interaction.message.content;
 			if (!content) return interaction.reply({ content: 'There is no text in this message!', ephemeral: true });
 

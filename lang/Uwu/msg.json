@@ -17,7 +17,10 @@
         "api": "API Watency OwO"
     },
     "music": {
+        "h24": "UwU 24/7 mode is nyow",
         "np": "Nyow Pwaying",
+        "joined": "*nuzzles* Joinyed",
+        "left": "Weft t-the voice chat!",
         "dj": {
             "notfound": "The DJ wowe can't be found!"
         },
@@ -35,21 +38,21 @@
             "soft": "Soft UwU",
             "treb": "Twebwe-Bass"
         },
-        "skip": {
-            "name": "Skip",
-            "alrvoted": "You've awweady weady v-voted to skip this song!",
-            "skipping": "**Skipping?** `-f` Use `/skip` to skip ow `/forceskip` to fowce skip.",
+        "track": {
+            "skipalr": "You've awweady weady v-voted to skip this song!",
+            "skipping": "Skipping Twack?",
+            "forceskipmsg": "Use `/skip` to skip ow `/forceskip` to fowce skip.",
             "skipped": "Skipped",
             "skipto": "Skipped -i songs"
         },
-        "shuffle": {
-            "name": "Shuffwe OwO",
-            "alrvoted": "You've awweady weady voted to shuffwe the queue!",
-            "shuffling": "**S-S-Shuffwe Q-Queue OwO?** `-f`",
-            "shuffled": "Shuffwed the queue OwO"
-        },
         "queue": {
-            "indexnotfound": "That song index i-isn't in t-the queue! '^'"
+            "shufflealr": "You've awweady weady voted to shuffwe the queue!",
+            "shuffling": "S-S-Shuffwe Q-Queue OwO?",
+            "shuffled": "Shuffwed the queue OwO",
+            "clearalr": "You've awweady weady v-v-voted to cweaw t-the queue!",
+            "clearing": "Cweaw Queue?",
+            "cleared": "*blushes* Cweawed the queue",
+            "indexnotfound": "That song index i-isn't in t-the queue!"
         }
     }
 }

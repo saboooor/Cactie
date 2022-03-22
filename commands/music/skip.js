@@ -34,7 +34,7 @@ module.exports = {
 					player.queue.remove(0, position - 1);
 					player.stop();
 					const SkipEmbed = new EmbedBuilder()
-						.setDescription(`<:skip:${skip}> **${message.lang.music.skip.skipto.replace('-i', `${position}`)}**`)
+						.setDescription(`<:skip:${skip}> **${message.lang.music.track.skipto.replace('-i', `${position}`)}**`)
 						.setColor(Math.floor(Math.random() * 16777215))
 						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
@@ -51,9 +51,9 @@ module.exports = {
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error(message.lang.music.skip.alrvoted, message, true);
+				if (alr) return client.error(message.lang.music.track.skipalr, message, true);
 				player.skipAmount.push(message.member.id);
-				if (player.skipAmount.length < requiredAmount) return message.reply({ content: `<:skip:${skip}> ${message.lang.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
+				if (player.skipAmount.length < requiredAmount) return message.reply({ content: `<:skip:${skip}> **${message.lang.music.track.skipping}** \`${player.skipAmount.length} / ${requiredAmount}\` ${message.lang.music.track.forceskipmsg}` });
 				player.skipAmount = null;
 			}
 
@@ -61,7 +61,7 @@ module.exports = {
 			const song = player.queue.current;
 			player.stop();
 			const SkipEmbed = new EmbedBuilder()
-				.setDescription(`<:skip:${skip}> **${message.lang.music.skip.skipped}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:skip:${skip}> **${message.lang.music.track.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });

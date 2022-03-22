@@ -20,9 +20,9 @@ module.exports = {
 				if (!player.skipAmount) player.skipAmount = [];
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.channel.send({ content: interaction.lang.music.skip.alrvoted });
+				if (alr) return interaction.channel.send({ content: interaction.lang.music.track.skipalr });
 				player.skipAmount.push(interaction.member.id);
-				if (player.skipAmount.length < requiredAmount) return interaction.channel.send({ content: `<:skip:${skip}> ${interaction.lang.music.skip.skipping.replace('-f', `${player.skipAmount.length} / ${requiredAmount}`)}` });
+				if (player.skipAmount.length < requiredAmount) return interaction.channel.send({ content: `<:skip:${skip}> **${interaction.lang.music.track.skipping}** \`${player.skipAmount.length} / ${requiredAmount}\` ${interaction.lang.music.track.forceskipmsg}` });
 				player.skipAmount = null;
 			}
 
@@ -30,7 +30,7 @@ module.exports = {
 			player.stop();
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()
-				.setDescription(`<:skip:${skip}> **${interaction.lang.music.skip.skipped}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:skip:${skip}> **${interaction.lang.music.track.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
