@@ -19,7 +19,7 @@ module.exports = {
 				.setTitle('Bot Settings');
 			const components = []; let configlist = null;
 			// Lowercase first arg
-			args[0] = args[0].toLowerCase();
+			if (args[0]) args[0] = args[0].toLowerCase();
 			// Check if arg is set or is 'reset'
 			if (args[1] != null && args[0] != 'reset') {
 				// Set prop variable to first argument
