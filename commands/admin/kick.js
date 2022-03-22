@@ -12,7 +12,8 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get user and check if user is valid
-			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 			if (!member) return client.error(message.lang.invalidmember, message, true);
 
 			// Get member and author and check if role is lower than member's role
