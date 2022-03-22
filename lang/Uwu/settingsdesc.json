@@ -3,9 +3,9 @@
     "reactions": "*Weacts with vawious weactions on some wowds (true/false)*\nDo /reactions to see a-a wist of them",
     "leavemessage": "*The message when s-someonye weaves the guiwd. (<message>/false)\nVawiabwes: {USER MENTION} {USER TAG}*",
     "joinmessage": "*The message when someonye joins the guiwd. (<message>/false)\nVawiabwes: {USER MENTION} {USER TAG}*",
-    "maxppsize": "*Maximum pp size in bonyew and instabonyew commands (<75)*",
+    "maxppsize": "*Maximum pp size in boner and instaboner commands (<75)*",
     "tickets": "*Toggwes the ticket system (buttons/reactions/false)*",
-    "bonercmd": "*Toggwes the bonyew command (true/false)*",
+    "bonercmd": "*Toggwes the boner commands (true/false)*",
     "suggestionchannel": "*The channyew whewe the bot puts suggestions in (false/channyewId)*",
     "suggestthreads": "*Cweates a thwead when a suggestion is cweated f-f-fow discussion (true/false)*",
     "pollchannel": "*The channyew whewe the bot puts powws in (false/channyewId)*",
@@ -14,7 +14,7 @@
     "supportrole": "*The t-ticket suppowt team wowe (woweId)*",
     "ticketmention": "*Pings evewy wewy time a nyew ticket i-is cweated (false/here/everyone/woweId)*",
     "mutecmd": "*Toggwes t-the mute command / use a mute wowe (false/timeout/woweId)*",
-    "adminrole": "*The wowe to wepwace the ADMINYISTWATOW pewmission (permission/woweId)*",
+    "adminrole": "*The wowe to wepwace the Administrator pewmission (permission/woweId)*",
     "msgshortener": "*The amount of winyes i-in a message to t-twiggew message showtenyew (nyumbew [0 = false])*",
     "djrole": "*The DJ featuwe of the bot that w-wimits the skip/etc commands (false/woweId)*"
 }
