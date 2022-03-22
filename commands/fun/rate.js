@@ -1,4 +1,3 @@
-const ratings = require('../../lang/English/rate.json');
 module.exports = {
 	name: 'rate',
 	description: 'Rate someone or something! Or yourself.',
@@ -6,6 +5,9 @@ module.exports = {
 	options: require('../options/someone.json'),
 	async execute(message, args, client) {
 		try {
+			// Get the rating messages
+			const ratings = require(`../../lang/${message.lang.language}/rate.json`);
+
 			// If arg isn't set, set it to the author's name/nick
 			if (!args[0]) args[0] = message.member.displayName;
 
