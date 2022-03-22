@@ -1,7 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
-const desc = require('../../lang/English/settingsdesc.json');
 module.exports = {
 	name: 'settings',
 	description: 'Configure Cactie\'s settings in the server',
@@ -11,6 +10,9 @@ module.exports = {
 	options: require('../options/settings.json'),
 	async execute(message, args, client) {
 		try {
+			// Get the settings descriptions
+			const desc = require(`../../lang/${message.lang.language}/settingsdesc.json`);
+
 			// Create Embed with title and color
 			const SettingsEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
