@@ -1,13 +1,20 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
+const fs = require('fs');
+const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
+const settingoptions = require('../options/settings.json');
+languages.forEach(language => settingoptions[3].options[0].choices.push({ name: language, value: language }));
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
 module.exports = {
 	name: 'settings',
 	description: 'Configure Cactie\'s settings in the server',
 	aliases: ['setting'],
 	usage: '[<Setting> <Value>]',
 	permission: 'Administrator',
-	options: require('../options/settings.json'),
+	options: settingoptions,
 	async execute(message, args, client) {
 		try {
 			// Get the settings descriptions
@@ -33,6 +40,11 @@ module.exports = {
 
 				// Avoid users from setting guildId
 				if (prop == 'guildid') return client.error('You can\'t change that!', message, true);
+				// Check if language is one of the languages in the lang folder
+				if (prop == 'language') {
+					const lang = capitalizeFirstLetter(value.toLowerCase());
+					if (!languages.includes(lang)) return message.reply({ content: `**Invalid Language**\nPlease use a language from the list below:\`\`\`yml\n${languages.join(', ')}\`\`\`` });
+				}
 				// Tickets setting can only be either buttons, reactions, or false
 				if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return client.error('This setting must be either "buttons", "reactions", or "false"!', message, true);
 				// Reactions / Bonercmd / Suggestthreads settings can only either be true or false

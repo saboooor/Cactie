@@ -7,10 +7,11 @@ module.exports = async (client, interaction) => {
 	const button = client.buttons.get(interaction.customId);
 	if (!button) return;
 
-	// Get the language for the user if specified or (wip) guild language
+	// Get the language for the user if specified or guild language
+	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
 	if (data[0]) interaction.lang = require(`../../lang/${data[0].language}/msg.json`);
-	else interaction.lang = require('../../lang/English/msg.json');
+	else interaction.lang = require(`../../lang/${srvconfig.language}/msg.json`);
 
 	// Check if bot has the permissions necessary to run the button
 	if (button.botperm && (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[button.botperm]) || !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm]))) {

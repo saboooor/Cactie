@@ -12,13 +12,27 @@
     {
         "type": 1,
         "name": "prefix",
-        "description": "The bot\"s prefix",
+        "description": "The bot's prefix",
         "options": [
             {
                 "type": 3,
                 "name": "prefix",
-                "description": "The bot\"s prefix",
+                "description": "The bot's new prefix",
                 "required": true
+            }
+        ]
+    },
+    {
+        "type": 1,
+        "name": "language",
+        "description": "The bot's default language in the guild",
+        "options": [
+            {
+                "type": 3,
+                "name": "language",
+                "description": "The language to change the bot to.",
+                "required": true,
+                "choices": []
             }
         ]
     },

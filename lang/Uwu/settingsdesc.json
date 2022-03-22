@@ -1,5 +1,7 @@
 {
+    "guildId": "*This guiwd's Id (Wead o-onwy) OwO*",
     "prefix": "*The bot's pwefix*",
+    "language": "*The bot's defauwt wanguage in the g-g-guiwd*",
     "reactions": "*Weacts with vawious weactions on some wowds (true/false)*\nDo /reactions to see a-a wist of them",
     "leavemessage": "*The message when s-someonye weaves the guiwd. (<message>/false)\nVawiabwes: {USER MENTION} {USER TAG}*",
     "joinmessage": "*The message when someonye joins the guiwd. (<message>/false)\nVawiabwes: {USER MENTION} {USER TAG}*",

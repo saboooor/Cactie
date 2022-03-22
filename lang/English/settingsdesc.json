@@ -1,5 +1,7 @@
 {
+    "guildId": "*This guild's Id (Read only)*",
     "prefix": "*The bot's prefix*",
+    "language": "*The bot's default language in the guild*",
     "reactions": "*Reacts with various reactions on some words (true/false)*\nDo /reactions to see a list of them",
     "leavemessage": "*The message when someone leaves the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*",
     "joinmessage": "*The message when someone joins the guild. (<message>/false)\nVariables: {USER MENTION} {USER TAG}*",
