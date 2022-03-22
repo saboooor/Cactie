@@ -36,7 +36,7 @@ module.exports = {
 				const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 				if (!srvconfig[prop]) return client.error('Invalid setting!', message, true);
 				// Set value to second argument for slash commands and the rest of the text joined for normal commands
-				const value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
+				let value = message.commandName ? args[1].toString() : args.join(' ').replace(`${args[0]} `, '');
 
 				// Avoid users from setting guildId
 				if (prop == 'guildid') return client.error('You can\'t change that!', message, true);
@@ -44,6 +44,7 @@ module.exports = {
 				if (prop == 'language') {
 					const lang = capitalizeFirstLetter(value.toLowerCase());
 					if (!languages.includes(lang)) return message.reply({ content: `**Invalid Language**\nPlease use a language from the list below:\`\`\`yml\n${languages.join(', ')}\`\`\`` });
+					value = lang;
 				}
 				// Tickets setting can only be either buttons, reactions, or false
 				if (prop == 'tickets' && value != 'buttons' && value != 'reactions' && value != 'false') return client.error('This setting must be either "buttons", "reactions", or "false"!', message, true);
