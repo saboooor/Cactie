@@ -100,7 +100,15 @@ module.exports = async (client, interaction) => {
 		client.logger.info(JSON.stringify(interaction.member.permissions));
 		client.logger.info(command.permission);
 	}
-	if (command.permission && interaction.user.id !== '249638347306303499' && (!interaction.member.permissions || (!interaction.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.permission]) && !interaction.member.roles.cache.has(srvconfig.adminrole)))) {
+	if (command.permission
+		&& interaction.user.id !== '249638347306303499'
+		&& (!interaction.member.permissions
+			|| (!interaction.member.permissions.has(PermissionsBitField.Flags[command.permission])
+				&& !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.permission])
+				&& !interaction.member.roles.cache.has(srvconfig.adminrole)
+			)
+		)
+	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return client.error(interaction.lang.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);

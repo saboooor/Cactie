@@ -189,7 +189,15 @@ module.exports = async (client, message) => {
 		client.logger.info(JSON.stringify(message.member.permissions));
 		client.logger.info(command.permission);
 	}
-	if (command.permission && message.author.id !== '249638347306303499' && (!message.member.permissions || (!message.member.permissions.has(PermissionsBitField.Flags[command.permission]) && !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission]) && !message.member.roles.cache.has(srvconfig.adminrole)))) {
+	if (command.permission
+		&& message.author.id !== '249638347306303499'
+		&& (!message.member.permissions
+			|| (!message.member.permissions.has(PermissionsBitField.Flags[command.permission])
+				&& !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission])
+				&& !message.member.roles.cache.has(srvconfig.adminrole)
+			)
+		)
+	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			return client.error(message.lang.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
