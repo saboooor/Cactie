@@ -1,4 +1,3 @@
-const ball = require('../../lang/English/8ball.json');
 const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: '8ball',
@@ -8,6 +7,9 @@ module.exports = {
 	options: require('../options/question.json'),
 	async execute(message, args, client) {
 		try {
+			// Get the array of 8 ball responses
+			const ball = require(`../../lang/${message.lang.language}/8ball.json`);
+
 			// Get random index and reply with the string in the array of the index
 			const i = Math.floor(Math.random() * ball.length);
 			const MagicEmbed = new EmbedBuilder()
