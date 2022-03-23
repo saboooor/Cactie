@@ -17,6 +17,7 @@
         "api": "API Latency"
     },
     "music": {
+        "notinvc": "I'm not in a voice chat!",
         "h24": "24/7 mode is now",
         "np": "Now Playing",
         "joined": "Joined",

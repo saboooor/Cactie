@@ -11,9 +11,9 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get the player and destroy it
-			const player = client.manager.get(message.guild.id);
-			if (!player) return client.error('I\'m not in a voice chat!', message, true);
-			player.destroy();
+			const vc = message.guild.me.voice;
+			if (!vc) return client.error(message.lang.music.notinvc, message, true);
+			vc.leave();
 
 			// Send message to channel
 			const LeaveEmbed = new EmbedBuilder()
