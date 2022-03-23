@@ -33,7 +33,7 @@ module.exports = {
 			// Send message to channel
 			const LoopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:refresh:${refresh}> **${player.queueRepeat ? 'Now' : 'No Longer'} Looping the queue**`);
+				.setDescription(`<:refresh:${refresh}> **Queue loop is now ${player.trackRepeat ? message.lang.on : message.lang.off}**`);
 			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
 
 			// Wait 10 seconds and compress the message

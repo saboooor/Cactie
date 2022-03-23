@@ -53,7 +53,7 @@
             "clearalr": "You've already voted to clear the queue!",
             "clearing": "Clear Queue?",
             "cleared": "Cleared the queue",
-            "indexnotfound": "That song index isn't in the queue!"
+            "indexnotfound": "The song index -1 isn't in the queue!"
         }
     }
 }

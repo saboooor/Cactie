@@ -42,7 +42,7 @@ module.exports = {
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/music')
 						.setEmoji({ id: music })
-						.setLabel('Music Control Panel')
+						.setLabel(message.lang.dashboard.name)
 						.setStyle('LINK'),
 				);
 			}

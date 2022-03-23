@@ -28,7 +28,7 @@ module.exports = {
 
 				// Parse index from arg and if index isn't found in queue, send an error
 				const position = Number(args[0]);
-				if (position < 0 || position > player.queue.size) { return client.error(message.lang.music.queue.indexnotfound, message, true); }
+				if (position < 0 || position > player.queue.size) { return client.error(message.lang.music.queue.indexnotfound.replace('-1', position), message, true); }
 				else if (position) {
 					// Skip to the position and reply
 					player.queue.remove(0, position - 1);
