@@ -22,9 +22,9 @@ module.exports = {
 				if (!player.loopTrackAmount) player.loopTrackAmount = [];
 				let alr = false;
 				for (const i of player.loopTrackAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error('You\'ve already voted to toggle the Track Loop!', message, true);
+				if (alr) return client.error(`You've already voted to turn the Track Loop ${player.trackRepeat ? message.lang.off : message.lang.on}!`, message, true);
 				player.loopTrackAmount.push(message.member.id);
-				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**Toggle Track Loop?** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
+				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**Turn Track Loop ${player.trackRepeat ? message.lang.off : message.lang.on}?** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
 				player.loopTrackAmount = null;
 			}
 
