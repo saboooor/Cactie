@@ -111,11 +111,11 @@ module.exports = async (client, interaction) => {
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(interaction.lang.rolereq.replace('-r', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
+			return client.error(interaction.lang.rolereq.replace('${role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(interaction.lang.permreq.replace('-p', command.permission), interaction, true);
+			return client.error(interaction.lang.permreq.replace('${perm}', command.permission), interaction, true);
 		}
 	}
 
@@ -147,7 +147,7 @@ module.exports = async (client, interaction) => {
 		if (!role) return interaction.reply({ content: interaction.lang.dj.notfound, ephemeral: true });
 
 		// Check if user has role, if not, send error message
-		if (!interaction.member.roles.cache.has(srvconfig.djrole)) return client.error(interaction.lang.rolereq.replace('-r', role.name), interaction, true);
+		if (!interaction.member.roles.cache.has(srvconfig.djrole)) return client.error(interaction.lang.rolereq.replace('${role}', role.name), interaction, true);
 	}
 
 	// Defer and execute the command

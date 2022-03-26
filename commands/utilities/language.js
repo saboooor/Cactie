@@ -9,15 +9,17 @@ module.exports = {
 	name: 'language',
 	description: 'Change the language of the bot',
 	aliases: ['lang'],
-	usage: '<Language> [Change default server language (true/false)]',
+	usage: '<Language>',
 	args: true,
 	options: langoptions,
 	async execute(message, args, client) {
 		try {
 			const lang = capitalizeFirstLetter(args[0].toLowerCase());
-			if (!languages.includes(lang)) return message.reply({ content: `**Invalid Language**\nPlease use a language from the list below:\`\`\`yml\n${languages.join(', ')}\`\`\`` });
+			if (message.lang.language.name == lang) return message.channel.send(message.lang.language.alrset);
+			if (!languages.includes(lang)) return message.reply({ content: `${message.lang.language.invalid}\`\`\`yml\n${languages.join(', ')}\`\`\`` });
 			await client.setData('memberdata', 'memberId', `${message.member.id}`, 'language', lang);
-			message.reply({ content: `**Language set to ${lang}!**` });
+			message.lang = require(`../../lang/${lang}/msg.json`);
+			message.reply({ content: `**${message.lang.language.set}**` });
 		}
 		catch (err) { client.error(err, message); }
 	},

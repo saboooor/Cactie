@@ -5,11 +5,5 @@
         "description": "The language to change the bot to.",
         "required": true,
         "choices": []
-    },
-    {
-        "type": 5,
-        "name": "guild",
-        "description": "Change the global main guild language",
-        "required": false
     }
 ]

@@ -18,7 +18,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get the settings descriptions
-			const desc = require(`../../lang/${message.lang.language}/settingsdesc.json`);
+			const desc = require(`../../lang/${message.lang.language.name}/settingsdesc.json`);
 
 			// Create Embed with title and color
 			const SettingsEmbed = new EmbedBuilder()
@@ -130,7 +130,7 @@ module.exports = {
 				// Set embed description with page and stuff
 				SettingsEmbed.setDescription(configlist.slice(0, 4).join('\n'))
 					.addFields({ name: 'Usage', value: '`/settings [<Setting> <Value>]`' })
-					.setFooter({ text: message.lang.page.replace('-1', '1').replace('-2', maxPages) });
+					.setFooter({ text: message.lang.page.replace('${1}', '1').replace('${2}', maxPages) });
 				if (client.user.id == '848775888673439745') SettingsEmbed.addFields({ name: message.lang.dashboard.confusing, value: message.lang.dashboard.use });
 
 				// Add buttons for page changing

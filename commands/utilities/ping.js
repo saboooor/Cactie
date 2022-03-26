@@ -9,7 +9,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get the array of pong responses
-			const pong = require(`../../lang/${message.lang.language}/pong.json`);
+			const pong = require(`../../lang/${message.lang.language.name}/pong.json`);
 
 			// Create embed with ping information and add ping again button
 			const PingEmbed = new EmbedBuilder()

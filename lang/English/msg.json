@@ -1,11 +1,16 @@
 {
-    "language": "English",
+    "language": {
+        "name": "English",
+        "alrset": "Your personal language is already set to English!",
+        "set": "Your personal language has been set to English!",
+        "invalid": "**Invalid Language!**\nPlease use a language from the list below:"
+    },
     "off": "Off",
     "on": "On",
     "refresh": "Refresh",
-    "rolereq": "You need the -r role to do that!",
-    "permreq": "You need the -p permission to do that!",
-    "page": "Page -1 of -2",
+    "rolereq": "You need the ${role} role to do that!",
+    "permreq": "You need the ${perm} permission to do that!",
+    "page": "Page ${1} of ${2}",
     "invalidmember": "Invalid member! Are they in this server?",
     "dashboard": {
         "name": "Dashboard",
@@ -18,7 +23,10 @@
     },
     "music": {
         "notinvc": "I'm not in a voice chat!",
-        "h24": "24/7 mode is now",
+        "h24": {
+            "on": "24/7 mode is now enabled!",
+            "off": "24/7 mode is now disabled!"
+        },
         "np": "Now Playing",
         "joined": "Joined",
         "left": "Left the voice chat!",
@@ -27,7 +35,7 @@
         },
         "eq": {
             "name": "Equalizer",
-            "btn": "🎛️ Equalizer mode is now set to **-m**.",
+            "set": "Equalizer mode is now set to",
             "choose": "Choose a mode to set the equalizer to.",
             "precise": "Want a more precise equalizer?",
             "bass": "Bass",
@@ -44,7 +52,16 @@
             "skipping": "Skipping Track?",
             "forceskipmsg": "Use `/skip` to skip or `/forceskip` to force skip.",
             "skipped": "Skipped",
-            "skipto": "Skipped -i songs"
+            "skipto": "Skipped ${amnt} songs",
+            "loopalr": "You've already voted to toggle the track loop!",
+            "looping": {
+                "on": "Loop the track?",
+                "off": "Unloop the track?"
+            },
+            "loop": {
+                "on": "Now looping the track!",
+                "off": "No longer looping the track!"
+            }
         },
         "queue": {
             "shufflealr": "You've already voted to shuffle the queue!",
@@ -53,7 +70,16 @@
             "clearalr": "You've already voted to clear the queue!",
             "clearing": "Clear Queue?",
             "cleared": "Cleared the queue",
-            "indexnotfound": "The song index -1 isn't in the queue!"
+            "indexnotfound": "The song index ${index} isn't in the queue!",
+            "loopalr": "You've already voted to toggle the queue loop!",
+            "looping": {
+                "on": "Loop the queue?",
+                "off": "Unloop the queue?"
+            },
+            "loop": {
+                "on": "Now looping the queue!",
+                "off": "No longer looping the queue!"
+            }
         }
     }
 }

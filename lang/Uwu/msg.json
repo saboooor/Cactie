@@ -1,11 +1,16 @@
 {
-    "language": "Uwu",
+    "language": {
+        "name": "Uwu",
+        "alrset": "Your personal language is already set to UwU!",
+        "set": "Your personal language has been set to UwU!",
+        "invalid": "**Invalid Language!**\nPlease use a language from the list below:"
+    },
     "off": "Tuwned owff '^'",
     "on": "TUWNED ON UWU",
     "refresh": "Wefwesh",
-    "rolereq": "You n-nyeed the -r wowe to do that! OwO",
-    "permreq": "You n-nyeed the -p pewmission to do that! OwO",
-    "page": "Page -1 of -2",
+    "rolereq": "You n-nyeed the ${role} wowe to do that! OwO",
+    "permreq": "You n-nyeed the ${perm} pewmission to do that! OwO",
+    "page": "Page ${1} of ${2}",
     "invalidmember": "I-Invawid membew! Awe they in this sewvew?",
     "dashboard": {
         "name": "Dashboawd",
@@ -18,7 +23,10 @@
     },
     "music": {
         "notinvc": "I'm not in a voice chat!",
-        "h24": "UwU 24/7 mode is nyow",
+        "h24": {
+            "on": "24/7 mode is nyow TUWNED ON UWU!",
+            "off": "24/7 mode is nyow Tuwned owff! '^'"
+        },
         "np": "Nyow Pwaying",
         "joined": "*nuzzles* Joinyed",
         "left": "Weft t-the voice chat!",
@@ -27,7 +35,7 @@
         },
         "eq": {
             "name": "Equawizew",
-            "btn": "🎛️ hehe Equawizew mode is n-nyow set t-to **-m**.",
+            "set": "hehe Equawizew mode is n-nyow set t-to",
             "choose": "Choose a mode to set the equawizew to.",
             "precise": "Want a m-mowe p-pwecise equawizew?",
             "bass": "Bass OwO",
@@ -44,7 +52,16 @@
             "skipping": "Skipping Twack?",
             "forceskipmsg": "Use `/skip` to skip ow `/forceskip` to fowce skip.",
             "skipped": "Skipped",
-            "skipto": "Skipped -i songs"
+            "skipto": "Skipped ${amnt} songs",
+            "loopalr": "You've awweady weady voted to t-toggwe t-the twack woop OwO",
+            "looping": {
+                "on": "Woop the twack?",
+                "off": "Unwoop the twack?"
+            },
+            "loop": {
+                "on": "N-Nyow wooping the twack!",
+                "off": "Nyo wongew wooping the twack OwO!"
+            }
         },
         "queue": {
             "shufflealr": "You've awweady weady voted to shuffwe the queue!",
@@ -53,7 +70,16 @@
             "clearalr": "You've awweady weady v-v-voted to cweaw t-the queue!",
             "clearing": "Cweaw Queue?",
             "cleared": "*blushes* Cweawed the queue",
-            "indexnotfound": "That song index i-isn't in t-the queue!"
+            "indexnotfound": "The song index ${index} i-isn't in t-the queue!",
+            "loopalr": "You've awweady weady voted to toggwe the queue woop!",
+            "looping": {
+                "on": "Woop the queue?",
+                "off": "Unwoop the queue?"
+            },
+            "loop": {
+                "on": "Nyow wooping the queue!",
+                "off": "Nyo wongew wooping the queue!"
+            }
         }
     }
 }

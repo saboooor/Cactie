@@ -50,7 +50,7 @@ module.exports = {
 				// Check if the preset is clear or not
 				if (preset == 'clear') {
 					// Update the message with the new EQ
-					EQEmbed.setDescription(message.lang.music.eq.btn.replace('-m', message.lang.off));
+					EQEmbed.setDescription(`🎛️ ${message.lang.music.eq.set} **${message.lang.off}**`);
 				}
 				else {
 					// Wait 30ms after clear cuz idk i have to do it
@@ -61,7 +61,7 @@ module.exports = {
 					await player.setEQ(...bands);
 
 					// Update the message with the new EQ
-					EQEmbed.setDescription(message.lang.music.eq.btn.replace('-m', message.lang.music.eq[preset]));
+					EQEmbed.setDescription(`🎛️ ${message.lang.music.eq.set} **${message.lang.music.eq[preset]}**`);
 				}
 				await EQMsg.edit({ embeds: [EQEmbed] });
 			});

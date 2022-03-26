@@ -16,7 +16,7 @@ module.exports = {
 			const player = client.manager.players.get(message.guild.id);
 			const twentyFourSevenEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:refresh:${refresh}> ${message.lang.music.h24} **${!player.twentyFourSeven ? message.lang.on : message.lang.off}**.`);
+				.setDescription(`<:refresh:${refresh}> **${message.lang.music.h24[player.twentyFourSeven ? 'off' : 'on']}**`);
 			player.twentyFourSeven = !player.twentyFourSeven;
 			message.reply({ embeds: [twentyFourSevenEmbed] });
 		}

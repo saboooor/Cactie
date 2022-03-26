@@ -126,7 +126,7 @@ module.exports = async (client, message) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
 		// Get a random cooldown message
-		const messages = require(`../lang/${message.lang.language}/cooldown.json`);
+		const messages = require(`../lang/${message.lang.language.name}/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -200,11 +200,11 @@ module.exports = async (client, message) => {
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(message.lang.rolereq.replace('-r', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
+			return client.error(message.lang.rolereq.replace('${role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(message.lang.permreq.replace('-p', command.permission), message, true);
+			return client.error(message.lang.permreq.replace('${perm}', command.permission), message, true);
 		}
 	}
 
@@ -236,7 +236,7 @@ module.exports = async (client, message) => {
 		if (!role) return client.error(message.lang.dj.notfound, message, true);
 
 		// Check if user has role, if not, send error message
-		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(message.lang.rolereq.replace('-r', role.name), message, true);
+		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(message.lang.rolereq.replace('${role}', role.name), message, true);
 	}
 
 	// execute the command

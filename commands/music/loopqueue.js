@@ -21,9 +21,9 @@ module.exports = {
 				if (!player.loopQueueAmount) player.loopQueueAmount = [];
 				let alr = false;
 				for (const i of player.loopQueueAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error(`You've already voted to turn the Queue Loop ${player.queueRepeat ? message.lang.off : message.lang.on}!`, message, true);
+				if (alr) return client.error(message.lang.music.queue.loopalr, message, true);
 				player.loopQueueAmount.push(message.member.id);
-				if (player.loopQueueAmount.length < requiredAmount) return message.reply({ content: `**Turn Queue Loop ${player.queueRepeat ? message.lang.off : message.lang.on}?** \`${player.loopQueueAmount.length} / ${requiredAmount}\`` });
+				if (player.loopQueueAmount.length < requiredAmount) return message.reply({ content: `**${message.lang.music.queue.looping[player.queueRepeat ? 'off' : 'on']}** \`${player.loopQueueAmount.length} / ${requiredAmount}\`` });
 				player.loopQueueAmount = null;
 			}
 
@@ -33,7 +33,7 @@ module.exports = {
 			// Send message to channel
 			const LoopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:refresh:${refresh}> **Queue loop is now ${player.trackRepeat ? message.lang.on : message.lang.off}**`);
+				.setDescription(`<:refresh:${refresh}> **${message.lang.music.queue.loop[player.queueRepeat ? 'on' : 'off']}**`);
 			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
 
 			// Wait 10 seconds and compress the message
