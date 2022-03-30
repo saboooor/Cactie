@@ -65,11 +65,11 @@ module.exports = {
 				);
 			const pteroMsg = await message.reply({ embeds: [PteroEmbed], components: [row] });
 
-			const collector = pteroMsg.createMessageComponentCollector({ time: 120000 });
+			const filter = i => i.user.id == message.member.id && i.customId.startsWith('ptero_');
+			const collector = pteroMsg.createMessageComponentCollector({ filter, time: 120000 });
 
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the ptero buttons
-				if (!interaction.customId.startsWith('ptero_')) return;
 				interaction.deferUpdate();
 
 				// Get the action from the customId

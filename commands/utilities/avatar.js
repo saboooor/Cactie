@@ -34,11 +34,11 @@ module.exports = {
 			const avatarmsg = await message.reply({ embeds: [UsrEmbed], components: row });
 
 			if (memberpfp) {
-				const collector = avatarmsg.createMessageComponentCollector({ time: 60000 });
+				const filter = i => i.customId == 'avatar_user';
+				const collector = avatarmsg.createMessageComponentCollector({ filter, time: 60000 });
 
 				collector.on('collect', async interaction => {
-				// Check if the button is the avatar button
-					if (interaction.customId != 'avatar_user') return;
+					// Check if the button is the avatar button
 					interaction.deferUpdate();
 
 					// Toggle profile pic

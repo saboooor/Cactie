@@ -104,7 +104,6 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the user is the requester
-				if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t search this query!' });
 				interaction.deferUpdate();
 				playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
 				await playMsg.edit({ content: `<:play:${play}> **Selected result #${interaction.customId}**`, embeds: [], components: [] })
@@ -188,13 +187,12 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	playMsg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
 
 	// Create a collector for the undo button
-	const collector = playMsg.createMessageComponentCollector({ time: 60000 });
+	const filter = i => requester.id == i.user.id && i.customId.startsWith('music_');
+	const collector = playMsg.createMessageComponentCollector({ filter, time: 60000 });
 	collector.on('collect', async interaction => {
 		// Check if button is actually the undo button
 		if (!interaction.customId.startsWith('music_')) return;
 		interaction.deferUpdate();
-		// Check if the user is the requester
-		if (requester.id != interaction.user.id) return interaction.user.send({ content: 'You didn\'t request this song!' });
 		// Remove each song from the queue
 		for (const song of songs) {
 			const i = player.queue.indexOf(song);

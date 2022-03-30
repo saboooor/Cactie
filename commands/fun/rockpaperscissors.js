@@ -35,13 +35,13 @@ module.exports = {
 
 		const rpsmsg = await message.reply({ content: `${message.member} ${member}`, embeds: [TicTacToe], components: [row] });
 
-		const collector = rpsmsg.createMessageComponentCollector({ time: 3600000 });
+		const filter = i => i.user.id == message.member.id || i.user.id == member.id;
+		const collector = rpsmsg.createMessageComponentCollector({ filter, time: 3600000 });
 
 		const choices = {};
 		collector.on('collect', async interaction => {
 			if (interaction.customId != 'rock' && interaction.customId != 'paper' && interaction.customId != 'scissors') return;
 			await interaction.deferReply({ ephemeral: true }).catch(err => client.logger.error(err));
-			if (interaction.user.id != message.member.id && interaction.user.id != member.id) return interaction.editReply({ content: 'You\'re not in this game!' });
 			if (choices[interaction.user.id]) return interaction.editReply({ content: `You've already selected ${emoji[choices[interaction.user.id]][2]}!` });
 			choices[interaction.user.id] = interaction.customId;
 			await interaction.editReply({ content: `**Selected ${emoji[interaction.customId][2]}!**` });

@@ -43,10 +43,10 @@ module.exports = {
 
 		const xomsg = await message.reply({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows });
 
-		const collector = xomsg.createMessageComponentCollector({ time: 3600000 });
+		const filter = i => i.customId != 'xo_again';
+		const collector = xomsg.createMessageComponentCollector({ filter, time: 3600000 });
 
 		collector.on('collect', async interaction => {
-			if (interaction.customId == 'xo_again') return;
 			if (interaction.user.id != (turn ? message.member.id : member.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			interaction.deferUpdate().catch(err => client.logger.error(err));
 			const btn = btns[interaction.customId];

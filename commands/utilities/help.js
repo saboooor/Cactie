@@ -112,9 +112,9 @@ module.exports = {
 				);
 			const helpMsg = await message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 
-			const collector = helpMsg.createMessageComponentCollector({ time: 3600000 });
+			const filter = i => i.customId == 'help_menu';
+			const collector = helpMsg.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async interaction => {
-				if (interaction.customId != 'help_menu') return;
 				await interaction.deferUpdate();
 				HelpEmbed.setFields();
 				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');

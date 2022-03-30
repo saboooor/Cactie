@@ -61,11 +61,9 @@ module.exports = {
 				);
 			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 
-			const collector = SettingsMsg.createMessageComponentCollector({ time: 120000 });
+			const filter = i => i.customId.startsWith('settings_') && i.user.id == message.member.id;
+			const collector = SettingsMsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async interaction => {
-				// Check if the button is one of the settings buttons
-				if (!interaction.customId.startsWith('settings_')) return;
-
 				const button = interaction.component.customId.split('_');
 
 				if (button[1] == 'page') {
@@ -153,6 +151,7 @@ module.exports = {
 						SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 					}
 					else if (modal[button[2]].type == 'select') {
+						interaction.deferUpdate();
 						const menu = new SelectMenuBuilder()
 							.setCustomId(`settings_menu_${button[2]}`)
 							.setPlaceholder(`Select a new value for ${button[2]}`);
@@ -164,13 +163,22 @@ module.exports = {
 							);
 						});
 						const row = new ActionRowBuilder().addComponents(menu);
-						interaction.reply({ content: '\u200b', components: [row] });
+						const menuMsg = await interaction.message.reply({ content: '\u200b', components: [row] });
+						const menufilter = i => i.user.id == message.member.id;
+						const menuCollector = menuMsg.createMessageComponentCollector({ menufilter, time: 60000 });
+						menuCollector.on('collect', async menuint => {
+							await client.setData('settings', 'guildId', message.guild.id, button[2], menuint.values[0]);
+							client.logger.info(`Successfully set ${button[2]} to ${menuint.values[0]} in ${message.guild.name}`);
+							menuint.reply({ content: `**Successfully set ${button[2]} to ${menuint.values[0]}!**` });
+							menuCollector.stop();
+						});
+						menuCollector.on('end', () => menuMsg.delete());
 					}
 					else if (modal[button[2]].type == 'id') {
 						interaction.deferUpdate();
 						const idMsg = await interaction.message.reply({ content: `**Reply to this message with a ${modal[button[2]].from.replace('s', '')}!** (You may also put an Id)\nReply with 'false' to disable this setting.${modal[button[2]].additional ? `\n\n**You may also set this setting to either of these other options:**\n\`${modal[button[2]].additional.join(', ')}\`` : ''}` });
-						const filter = m => m.reference.messageId == idMsg.id && m.member.id == message.member.id;
-						const idcollector = idMsg.channel.createMessageCollector({ filter, time: 60000 });
+						const msgfilter = m => m.reference.messageId == idMsg.id && m.member.id == message.member.id;
+						const idcollector = idMsg.channel.createMessageCollector({ msgfilter, time: 60000 });
 						idcollector.on('collect', async msg => {
 							const obj = msg.guild[modal[button[2]].from].cache.get(msg.content.replace(/\D/g, ''));
 							if (!obj && msg.content != 'false' && (modal[button[2]].additional ? !modal[button[2]].additional.some(word => msg.content == word) : true)) return msg.reply({ content: `**That is not a valid ${modal[button[2]].from.replace('s', '')} or option!**` });
@@ -179,10 +187,9 @@ module.exports = {
 							await client.setData('settings', 'guildId', message.guild.id, button[2], val);
 							client.logger.info(`Successfully set ${button[2]} to ${val} in ${message.guild.name}`);
 							msg.reply({ content: `**Successfully set ${button[2]} to ${obj ? `${obj.name} (Id: ${obj.id})` : val}!**` });
+							idcollector.stop();
 						});
-						idcollector.on('end', () => {
-							idMsg.delete();
-						});
+						idcollector.on('end', () => idMsg.delete());
 					}
 				}
 			});

@@ -34,10 +34,10 @@ module.exports = {
 			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2] });
 
 			// Create a collector for the EQ buttons
-			const collector = EQMsg.createMessageComponentCollector({ time: 60000 });
+			const filter = i => i.user.id == message.member.id && i.customId.startsWith('filter_');
+			const collector = EQMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the filter buttons
-				if (!interaction.customId.startsWith('filter_')) return;
 				interaction.deferUpdate();
 
 				// Get the player and EQ preset

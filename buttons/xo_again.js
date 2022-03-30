@@ -52,9 +52,9 @@ module.exports = {
 
 		const xomsg = await interaction.message.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
 
-		const collector = xomsg.createMessageComponentCollector({ time: 3600000 });
+		const filter = i => i.customId != 'xo_again';
+		const collector = xomsg.createMessageComponentCollector({ filter, time: 3600000 });
 		collector.on('collect', async btninteraction => {
-			if (btninteraction.customId == 'xo_again') return;
 			if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
 			btninteraction.deferUpdate().catch(err => client.logger.error(err));
 			const btn = btns[btninteraction.customId];

@@ -15,10 +15,10 @@ module.exports = {
 			// Get the issues from the timings result
 			const issues = timingsresult[1];
 			if (issues) {
-				const collector = timingsmsg.createMessageComponentCollector({ time: 300000 });
+				const filter = i => i.user.id == message.member.id && i.customId.startsWith('timings_');
+				const collector = timingsmsg.createMessageComponentCollector({ filter, time: 300000 });
 				collector.on('collect', async i => {
-					// Check if the button is one of the filter buttons
-					if (!i.customId.startsWith('timings_')) return;
+					// Defer button
 					i.deferUpdate();
 
 					// Get the embed and clear the fields

@@ -29,10 +29,10 @@ module.exports = {
 			const pingmsg = await message.reply({ embeds: [PingEmbed], components: [row] });
 
 			// create collector for ping again button
-			const collector = pingmsg.createMessageComponentCollector({ time: args[0] == 'reset' ? 30000 : 120000 });
+			const filter = i => i.customId == 'ping_again';
+			const collector = pingmsg.createMessageComponentCollector({ filter, time: args[0] == 'reset' ? 30000 : 120000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the settings buttons
-				if (interaction.customId != 'ping_again') return;
 				interaction.deferUpdate();
 
 				// Set the embed description with new ping stuff
