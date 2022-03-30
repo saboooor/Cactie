@@ -1,0 +1,93 @@
+{
+    "prefix": {
+        "type": "text",
+        "min": 1,
+        "max": 10,
+        "style": "Short",
+        "placeholder": "-"
+    },
+    "language": {
+        "type": "text",
+        "min": 3,
+        "max": 7,
+        "style": "Short",
+        "placeholder": "English"
+    },
+    "leavemessage":{
+        "type": "text",
+        "min": 3,
+        "max": 2000,
+        "style": "Paragraph",
+        "placeholder": "Set false to disable.\nVars: \"{USER MENTION}\" \"{USER TAG}\""
+    },
+    "joinmessage":{
+        "type": "text",
+        "min": 3,
+        "max": 2000,
+        "style": "Paragraph",
+        "placeholder": "Set false to disable.\nVars: \"{USER MENTION}\" \"{USER TAG}\""
+    },
+    "maxppsize":{
+        "type": "text",
+        "min": 1,
+        "max": 2,
+        "style": "Short",
+        "placeholder": "Must be a *number* between 1 and 75."
+    },
+    "msgshortener":{
+        "type": "text",
+        "min": 1,
+        "max": 4,
+        "style": "Short",
+        "placeholder": "Must be a *number*.\nSet to 0 to disable."
+    },
+    "reactions": { "type": "bool" },
+    "bonercmd": { "type": "bool" },
+    "suggestthreads": { "type": "bool" },
+    "tickets": {
+        "type": "select",
+        "options": ["buttons", "reactions", "false"]
+    },
+    "suggestionchannel": {
+        "type": "id",
+        "from": "channels",
+        "func": "isText"
+    },
+    "pollchannel": {
+        "type": "id",
+        "from": "channels",
+        "func": "isText"
+    },
+    "logchannel": {
+        "type": "id",
+        "from": "channels",
+        "func": "isText"
+    },
+    "ticketcategory": {
+        "type": "id",
+        "from": "channels",
+        "func": "isCategory"
+    },
+    "supportrole": {
+        "type": "id",
+        "from": "roles"
+    },
+    "ticketmention": {
+        "type": "id",
+        "from": "roles",
+        "additional": ["here", "everyone"]
+    },
+    "mutecmd": {
+        "type": "id",
+        "from": "roles",
+        "additional": ["timeout"]
+    },
+    "adminrole": {
+        "type": "id",
+        "from": "roles"
+    },
+    "djrole": {
+        "type": "id",
+        "from": "roles"
+    }
+}

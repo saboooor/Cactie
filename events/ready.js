@@ -63,8 +63,8 @@ module.exports = async (client) => {
 				const guild = await client.guilds.cache.get(data.memberId.split('-')[1]);
 				if (!guild) return client.setData('memberdata', 'memberId', data.memberId, 'mutedUntil', 0);
 				const userId = data.memberId.split('-')[0];
-				let member = await message.guild.members.cache.get(user.id);
-				if (!member) member = await message.guild.members.fetch(user.id);
+				let member = await guild.members.cache.get(userId);
+				if (!member) member = await guild.members.fetch(userId);
 				const srvconfig = await client.getData('settings', 'guildId', guild.id);
 				const role = await guild.roles.cache.get(srvconfig.mutecmd);
 				if (member && role) {

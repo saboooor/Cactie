@@ -1,0 +1,107 @@
+[
+    {
+        "type": 1,
+        "name": "get",
+        "description": "Show all settings"
+    },
+    {
+        "type": 1,
+        "name": "reset",
+        "description": "Reset all settings"
+    },
+    {
+        "type": 1,
+        "name": "prefix",
+        "description": "The bot's prefix"
+    },
+    {
+        "type": 1,
+        "name": "language",
+        "description": "The bot's default language in the guild"
+    },
+    {
+        "type": 1,
+        "name": "reactions",
+        "description": "Reacts with various reactions on some words"
+    },
+    {
+        "type": 1,
+        "name": "leavemessage",
+        "description": "The message when someone leaves the guild"
+    },
+    {
+        "type": 1,
+        "name": "joinmessage",
+        "description": "The message when someone joins the guild"
+    },
+    {
+        "type": 1,
+        "name": "maxppsize",
+        "description": "Maximum pp size in boner and instaboner commands"
+    },
+    {
+        "type": 1,
+        "name": "tickets",
+        "description": "Toggles the ticket system"
+    },
+    {
+        "type": 1,
+        "name": "bonercmd",
+        "description": "Toggles the boner command"
+    },
+    {
+        "type": 1,
+        "name": "suggestionchannel",
+        "description": "The channel where the bot puts suggestions in"
+    },
+    {
+        "type": 1,
+        "name": "suggestthreads",
+        "description": "Creates a thread when a suggestion is created for discussion"
+    },
+    {
+        "type": 1,
+        "name": "pollchannel",
+        "description": "The channel where the bot puts polls in"
+    },
+    {
+        "type": 1,
+        "name": "logchannel",
+        "description": "The channel where the bot puts various logs, Must be false or a channel Id"
+    },
+    {
+        "type": 1,
+        "name": "ticketcategory",
+        "description": "The category where the bot creates tickets in, Must be false or a category Id"
+    },
+    {
+        "type": 1,
+        "name": "ticketmention",
+        "description": "Pings every time a new ticket is created"
+    },
+    {
+        "type": 1,
+        "name": "supportrole",
+        "description": "The ticket support team role"
+    },
+    {
+        "type": 1,
+        "name": "mutecmd",
+        "description": "Toggles the mute command"
+    },
+    {
+        "type": 1,
+        "name": "adminrole",
+        "description": "The role to replace the ADMINISTRATOR permission"
+    },
+    {
+        "type": 1,
+        "name": "msgshortener",
+        "description": "The amount of lines in a message to trigger message shortener"
+    },
+    {
+        "type": 1,
+        "name": "djrole",
+        "description": "The DJ feature of the bot that limits the skip/etc commands"
+    }
+]
