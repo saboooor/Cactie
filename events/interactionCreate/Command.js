@@ -37,7 +37,7 @@ module.exports = async (client, interaction) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(interaction.user.id)) {
 		// Get a random cooldown message
-		const messages = require(`../../lang/${interaction.lang.language}/cooldown.json`);
+		const messages = require(`../../lang/${interaction.lang.language.name}/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp

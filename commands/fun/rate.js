@@ -6,7 +6,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get the rating messages
-			const ratings = require(`../../lang/${message.lang.language}/rate.json`);
+			const ratings = require(`../../lang/${message.lang.language.name}/rate.json`);
 
 			// If arg isn't set, set it to the author's name/nick
 			if (!args[0]) args[0] = message.member.displayName;
