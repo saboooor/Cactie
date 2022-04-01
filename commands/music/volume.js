@@ -8,8 +8,9 @@ module.exports = {
 	usage: '[Volume]',
 	cooldown: 5,
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	options: require('../options/volume.json'),
 	async execute(message, args, client) {

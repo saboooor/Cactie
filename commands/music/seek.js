@@ -8,8 +8,10 @@ module.exports = {
 	args: true,
 	usage: '<Time s/m/h>',
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	options: require('../options/seek.json'),
 	async execute(message, args, client) {

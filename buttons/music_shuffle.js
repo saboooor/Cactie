@@ -3,9 +3,10 @@ const { shuffle } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'music_shuffle',
 	player: true,
-	serverUnmute: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	async execute(interaction, client) {
 		try {
 			// Get the player

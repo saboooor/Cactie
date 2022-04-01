@@ -5,14 +5,14 @@ module.exports = {
 	description: 'Leave voice channel',
 	aliases: ['dc', 'fuckoff'],
 	cooldown: 2,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	player: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {
 			// Get the player and destroy it
 			const player = client.manager.get(message.guild.id);
-			if (!player) return client.error(message.lang.music.notinvc, message, true);
 			player.destroy();
 
 			// Send message to channel

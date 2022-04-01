@@ -7,10 +7,11 @@ module.exports = {
 	aliases: ['s', 'skipto'],
 	description: 'Skip the currently playing song',
 	usage: '[Index of song in queue]',
-	serverUnmute: true,
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get player and server config and create error embed

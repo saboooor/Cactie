@@ -7,9 +7,10 @@ module.exports = {
 	aliases: ['fs'],
 	description: 'Force skip the currently playing song',
 	player: true,
-	serverUnmute: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {

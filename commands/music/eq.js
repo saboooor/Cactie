@@ -8,9 +8,9 @@ module.exports = {
 	aliases: [ 'filter', 'equalizer' ],
 	cooldown: 10,
 	player: true,
-	serverUnmute: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {

@@ -4,8 +4,9 @@ module.exports = {
 	name: 'shuffle',
 	description: 'Shuffle the queue',
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get player

@@ -7,8 +7,9 @@ module.exports = {
 	description: 'Toggle queue loop',
 	aliases: ['lq'],
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get the player

@@ -6,8 +6,8 @@ module.exports = {
 	aliases: ['cq'],
 	cooldown: 5,
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get player

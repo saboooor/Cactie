@@ -6,7 +6,8 @@ const { refresh, music, shuffle, skip } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'music_updatenp',
 	player: true,
-	serverUnmute: true,
+	playing: true,
+	srvunmute: true,
 	async execute(interaction, client) {
 		try {
 			// Get player, current song, and song position / length

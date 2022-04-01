@@ -10,8 +10,8 @@ module.exports = {
 	usage: '<Index of song in queue>',
 	similarcmds: 'remove',
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	options: require('../options/index.json'),
 	async execute(message, args, client) {

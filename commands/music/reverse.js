@@ -7,8 +7,8 @@ module.exports = {
 	aliases: ['rv'],
 	cooldown: 2,
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get player

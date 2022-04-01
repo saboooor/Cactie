@@ -5,9 +5,9 @@ module.exports = {
 	usage: '<Song Query>',
 	aliases: ['playsearch', 'ps'],
 	args: true,
-	serverUnmute: true,
-	inVoiceChannel: true,
-	sameVoiceChanne: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	options: require('../options/play.json'),
 	async execute(message, args, client) {
 		try {

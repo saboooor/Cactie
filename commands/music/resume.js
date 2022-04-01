@@ -7,8 +7,10 @@ module.exports = {
 	description: 'Resume currently playing music',
 	aliases: ['r', 'unpause'],
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {

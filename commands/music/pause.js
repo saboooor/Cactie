@@ -6,8 +6,10 @@ module.exports = {
 	name: 'pause',
 	description: 'Pause the currently playing music',
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {

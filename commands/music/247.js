@@ -7,8 +7,8 @@ module.exports = {
 	aliases: ['24h', '24/7'],
 	cooldown: 5,
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {

@@ -4,8 +4,8 @@ module.exports = {
 	name: 'stop',
 	description: 'Stops the music',
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	async execute(message, args, client) {
 		try {

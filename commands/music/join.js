@@ -5,7 +5,8 @@ module.exports = {
 	description: 'Join voice channel',
 	aliases: ['j'],
 	cooldown: 2,
-	inVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get the voice channel the user is in

@@ -5,11 +5,13 @@ const { convertTime } = require('../../functions/music/convert.js');
 const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'loop',
-	description: 'Toggle music loop',
+	description: 'Toggle track loop',
 	aliases: ['l'],
 	player: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	async execute(message, args, client) {
 		try {
 			// Get the player

@@ -5,9 +5,9 @@ module.exports = {
 	usage: '<Song URL/Name/Playlist URL>',
 	aliases: ['pt', 'ptop'],
 	args: true,
-	serverUnmute: true,
-	inVoiceChannel: true,
-	sameVoiceChanne: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	djRole: true,
 	options: require('../options/play.json'),
 	async execute(message, args, client) {

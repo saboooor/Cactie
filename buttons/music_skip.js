@@ -5,9 +5,10 @@ const compressEmbed = require('../functions/compressEmbed');
 module.exports = {
 	name: 'music_skip',
 	player: true,
-	serverUnmute: true,
-	inVoiceChannel: true,
-	sameVoiceChannel: true,
+	playing: true,
+	srvunmute: true,
+	invc: true,
+	samevc: true,
 	async execute(interaction, client) {
 		try {
 			// Get the player

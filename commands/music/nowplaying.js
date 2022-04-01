@@ -6,8 +6,9 @@ module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
 	aliases: ['playing', 'np'],
-	serverUnmute: true,
 	player: true,
+	playing: true,
+	srvunmute: true,
 	ephemeral: true,
 	async execute(message, args, client) {
 		try {

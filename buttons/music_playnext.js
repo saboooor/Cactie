@@ -1,8 +1,8 @@
 const playSongs = require('../functions/music/playSongs.js');
 module.exports = {
 	name: 'music_playnext',
-	serverUnmute: true,
-	inVoiceChannel: true,
+	invc: true,
+	samevc: true,
 	async execute(interaction, client) {
 		try {
 			if (interaction.guild.me.voice.channel && interaction.guild.me.voice.channel.id !== interaction.member.voice.channel.id) return;
