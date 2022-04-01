@@ -101,6 +101,7 @@ module.exports = {
 						.setFooter({ text: `Page ${page} of ${maxPages}` });
 					SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 				}
+				else if (!modal[button[2]]) { return; }
 				else if (button[1] == 'prop') {
 					if (modal[button[2]].type == 'text') {
 						// Create and show a modal for the user to fill out the settings's value
