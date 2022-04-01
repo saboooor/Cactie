@@ -40,5 +40,4 @@ module.exports = async (client, player, track) => {
 		.send({ embeds: [StartEmbed], components: [row] });
 	player.setNowplayingMessage(NowPlaying);
 	player.timeout = null;
-	client.logger.info(`Timeout set to ${player.timeout}`);
 };

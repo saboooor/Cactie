@@ -10,5 +10,4 @@ module.exports = async (client, player) => {
 	player.setNowplayingMessage(NowPlaying);
 	client.logger.info(`Queue ended in ${guild.name}`);
 	player.timeout = Date.now() + 300000;
-	client.logger.info(`Timeout set to ${player.timeout}`);
 };

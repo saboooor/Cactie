@@ -13,12 +13,14 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.channel !== null && newState.channel !== null) stateChange.type = 'MOVE';
 	if (oldState.channel === null && newState.channel === null) return;
 	if (newState.serverMute == true && oldState.serverMute == false && oldState.id == client.user.id) {
+		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of server mute`);
-		return player.pause(true);
+		return player.timeout = Date.now() + 300000;
 	}
 	if (newState.serverMute == false && oldState.serverMute == true && oldState.id == client.user.id) {
+		player.pause(false);
 		client.logger.info(`Resumed player in ${newState.guild.name} because of server unmute`);
-		return player.pause(false);
+		return player.timeout = null;
 	}
 
 	// move check first as it changes type
@@ -36,40 +38,29 @@ module.exports = async (client, oldState, newState) => {
 	// filter current users based on being a bot
 	stateChange.members = stateChange.channel.members.filter(member => !member.user.bot);
 
+	if (stateChange.type == 'JOIN' && stateChange.members.size == 1) {
+		player.pause(false);
+		client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
+		return player.timeout = null;
+	}
+
+	if (stateChange.type == 'LEAVE' && stateChange.members.size == 0) {
+		player.pause(true);
+		client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
+		return player.timeout = Date.now() + 300000;
+	}
+
 	let deafened = true;
 	stateChange.members.forEach(member => { if (!member.voice.selfDeaf) deafened = false; });
 
 	if (deafened) {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of user deafen`);
-		player.timeout = Date.now() + 300000;
-		client.logger.info(`Timeout set to ${player.timeout}`);
+		return player.timeout = Date.now() + 300000;
 	}
 	else if (player.paused) {
 		player.pause(false);
 		client.logger.info(`Resumed player in ${newState.guild.name} because of user undeafen`);
-		player.timeout = null;
-		client.logger.info(`Timeout set to ${player.timeout}`);
-	}
-
-	switch (stateChange.type) {
-	case 'JOIN':
-		if (stateChange.members.size === 1 && player.paused) {
-			player.pause(false);
-			client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
-			player.timeout = null;
-			client.logger.info(`Timeout set to ${player.timeout}`);
-		}
-		break;
-	case 'LEAVE':
-		if (stateChange.members.size === 0) {
-			if (!player.paused) {
-				player.pause(true);
-				client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
-			}
-			player.timeout = Date.now() + 300000;
-			client.logger.info(`Timeout set to ${player.timeout}`);
-		}
-		break;
+		return player.timeout = null;
 	}
 };
