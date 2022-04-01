@@ -1,6 +1,9 @@
 const playSongs = require('../functions/music/playSongs.js');
 module.exports = {
 	name: 'music_playlast',
+	serverUnmute: true,
+	inVoiceChannel: true,
+	sameVoiceChannel: true,
 	async execute(interaction, client) {
 		try {
 			// Get the song link from the embed description
