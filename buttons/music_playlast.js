@@ -6,6 +6,7 @@ module.exports = {
 	sameVoiceChannel: true,
 	async execute(interaction, client) {
 		try {
+			if (interaction.guild.me.voice.channel && interaction.guild.me.voice.channel.id !== interaction.member.voice.channel.id) return;
 			// Get the song link from the embed description
 			const a = interaction.message.embeds[0].description.split('](');
 			const b = a[a.length - 1].split(')')[0];
