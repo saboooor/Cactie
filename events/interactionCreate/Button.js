@@ -32,7 +32,7 @@ module.exports = async (client, interaction) => {
 	if (button.inVoiceChannel && !interaction.member.voice.channel) return client.error('You must be in a voice channel!', interaction, true);
 
 	// Check if user is in the same vc as bot and button needs it
-	if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) return client.error(`You must be in the same channel as ${client.user}!`, interaction, true);
+	if (button.sameVoiceChannel && interaction.member.voice.channel !== interaction.guild.me.voice.channel) return client.error(`You must be in the same channel as ${client.user.username}!`, interaction, true);
 
 	// Defer and execute the button
 	try {

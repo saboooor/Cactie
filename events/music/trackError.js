@@ -10,7 +10,6 @@ module.exports = async (client, player, track, payload) => {
 	const errorMsg = await channel.send({ embeds: [FailEmbed] });
 	client.logger.error(payload.error);
 	client.logger.error(`Failed to load track in ${guild.name}`);
-	if (!player.queue.current) player.destroy();
 	await sleep(30000);
 	errorMsg.delete();
 };

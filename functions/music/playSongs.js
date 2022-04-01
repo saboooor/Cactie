@@ -99,7 +99,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				);
 			}
 			row.push(balls);
-			await playMsg.edit({ content: `<:srch:${srch}> Pick a search result from the buttons below`, embeds: [PlayEmbed], components: row });
+			await playMsg.edit({ content: `<:srch:${srch}> Pick a search result from the buttons below\n\`Query: ${search}\``, embeds: [PlayEmbed], components: row });
 
 			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
@@ -190,8 +190,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	const filter = i => requester.id == i.user.id && i.customId.startsWith('music_');
 	const collector = playMsg.createMessageComponentCollector({ filter, time: 60000 });
 	collector.on('collect', async interaction => {
-		// Check if button is actually the undo button
-		if (!interaction.customId.startsWith('music_')) return;
+		// Defer the button
 		interaction.deferUpdate();
 		// Remove each song from the queue
 		for (const song of songs) {
@@ -205,6 +204,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		collector.stop();
 		if (interaction.customId == 'music_search') {
 			// Since playtop and play are so similar, use the same code in a function
+			if (args.join(' ').includes(songs[0].identifier)) args = [songs[0].title.split('\n')[0]];
 			playSongs(requester, message, args, client, false, true);
 		}
 	});

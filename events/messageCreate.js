@@ -227,7 +227,7 @@ module.exports = async (client, message) => {
 	if (command.inVoiceChannel && !message.member.voice.channel) return client.error('You must be in a voice channel!', message, true);
 
 	// Check if user is in the same vc as bot and command needs it
-	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) return client.error(`You must be in the same channel as ${client.user}!`, message, true);
+	if (command.sameVoiceChannel && message.member.voice.channel !== message.guild.me.voice.channel) return client.error(`You must be in the same channel as ${client.user.username}!`, message, true);
 
 	// Check if user has dj role and command needs user to have it
 	if (command.djRole && srvconfig.djrole != 'false') {
