@@ -1,7 +1,9 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right, on, off } = require('../../lang/int/emoji.json');
 const modal = require('../../lang/int/settingsmodal.json');
+const evalModal = require('../../functions/settings/evalModal.js');
+const updateSettingPanel = require('../../functions/settings/updateSettingPanel.js');
 const fs = require('fs');
 const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
 modal.language.options = languages;
@@ -23,9 +25,9 @@ module.exports = {
 				.setTitle('Bot Settings');
 
 			// Get settings and make an array out of it to split and make pages
-			let srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const settingbtns = new ActionRowBuilder();
-			let configlist = Object.keys(srvconfig).slice(0, 5).map(prop => {
+			const configlist = Object.keys(srvconfig).slice(0, 5).map(prop => {
 				const btn = new ButtonBuilder()
 					.setCustomId(`settings_prop_${prop}`)
 					.setLabel(capFirstLetter(prop))
@@ -64,7 +66,7 @@ module.exports = {
 				);
 			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 
-			let filter = i => i.customId.startsWith('settings_') && i.user.id == message.member.id;
+			const filter = i => i.customId.startsWith('settings_') && i.user.id == message.member.id;
 			const collector = SettingsMsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async interaction => {
 				const button = interaction.component.customId.split('_');
@@ -72,151 +74,10 @@ module.exports = {
 				if (button[1] == 'page') {
 					// Defer interaction
 					interaction.deferUpdate();
-
-					// Calculate total amount of pages and get current page from embed footer
-					const lastPage = parseInt(SettingsEmbed.toJSON().footer ? SettingsEmbed.toJSON().footer.text.split(' ')[1] : maxPages);
-
-					// Get next page (if last page, go to pg 1)
-					// Or get prev page (if first page, go to last page)
-					const next = lastPage + 1 == maxPages + 1 ? 1 : lastPage + 1;
-					const prev = lastPage - 1 ? lastPage - 1 : maxPages;
-					const page = button[2] == 'prev' ? prev : next;
-					const end = page * 5;
-					const start = end - 5;
-
-					settingbtns.setComponents();
-					configlist = Object.keys(srvconfig).slice(start, end).map(prop => {
-						const btn = new ButtonBuilder()
-							.setCustomId(`settings_prop_${prop}`)
-							.setLabel(capFirstLetter(prop))
-							.setStyle(ButtonStyle.Secondary);
-						if (modal[prop] && modal[prop].type == 'bool') {
-							btn.setStyle(srvconfig[prop] == 'false' ? ButtonStyle.Danger : ButtonStyle.Success)
-								.setEmoji({ id: srvconfig[prop] == 'false' ? off : on });
-						}
-						if (prop == 'guildId') btn.setStyle(ButtonStyle.Danger).setLabel('Reset');
-						settingbtns.addComponents(btn);
-						return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
-					});
-
-					// Update embed description with new page and reply
-					SettingsEmbed.setDescription(configlist.join('\n'))
-						.setFooter({ text: `Page ${page} of ${maxPages}` });
-					SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
+					updateSettingPanel(SettingsEmbed, SettingsMsg, client, srvconfig, desc, button[2]);
 				}
 				else if (button[1] == 'prop') {
-					if (button[2] == 'guildId') {
-						// Create and show a modal for the user to confirm reset
-						const propModal = new ModalBuilder()
-							.setTitle('Reset all settings')
-							.setCustomId('settings_reset')
-							.addComponents(
-								new ActionRowBuilder().addComponents(
-									new TextInputBuilder()
-										.setCustomId('confirm')
-										.setLabel('Do you really want to reset all settings?')
-										.setPlaceholder('Yes, I want to reset all settings')
-										.setStyle(TextInputStyle.Short)
-										.setMinLength(33)
-										.setMaxLength(33),
-								),
-							);
-						interaction.showModal(propModal);
-					}
-					if (!modal[button[2]]) return;
-					if (modal[button[2]].type == 'text') {
-						// Create and show a modal for the user to fill out the settings's value
-						const propModal = new ModalBuilder()
-							.setTitle(`Set the new value for ${button[2]}`)
-							.setCustomId('settings_prop')
-							.addComponents(
-								new ActionRowBuilder().addComponents(
-									new TextInputBuilder()
-										.setCustomId(button[2])
-										.setLabel(button[2])
-										.setValue(`${srvconfig[button[2]]}`)
-										.setPlaceholder(modal[button[2]].placeholder)
-										.setStyle(TextInputStyle[modal[button[2]].style])
-										.setMinLength(modal[button[2]].min)
-										.setMaxLength(modal[button[2]].max),
-								),
-							);
-						interaction.showModal(propModal);
-					}
-					else if (modal[button[2]].type == 'bool') {
-						interaction.deferUpdate();
-						const value = srvconfig[button[2]] == 'false' ? 'true' : 'false';
-						await client.setData('settings', 'guildId', message.guild.id, button[2], value);
-						client.logger.info(`Successfully set ${button[2]} to ${value} in ${message.guild.name}`);
-						srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-						const page = parseInt(SettingsEmbed.toJSON().footer ? SettingsEmbed.toJSON().footer.text.split(' ')[1] : maxPages);
-						const end = page * 5;
-						const start = end - 5;
-
-						settingbtns.setComponents();
-						configlist = Object.keys(srvconfig).slice(start, end).map(prop => {
-							const btn = new ButtonBuilder()
-								.setCustomId(`settings_prop_${prop}`)
-								.setLabel(prop)
-								.setStyle(ButtonStyle.Secondary);
-							if (modal[prop] && modal[prop].type == 'bool') {
-								btn.setStyle(srvconfig[prop] == 'false' ? ButtonStyle.Danger : ButtonStyle.Success)
-									.setEmoji({ id: srvconfig[prop] == 'false' ? off : on });
-							}
-							if (prop == 'guildId') btn.setStyle(ButtonStyle.Danger).setLabel('Reset');
-							settingbtns.addComponents(btn);
-							return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
-						});
-
-						// Update embed description with new page and reply
-						SettingsEmbed.setDescription(configlist.join('\n'));
-						SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
-					}
-					else if (modal[button[2]].type == 'select') {
-						interaction.deferUpdate();
-						const menu = new SelectMenuBuilder()
-							.setCustomId(`settings_menu_${button[2]}`)
-							.setPlaceholder(`Select a new value for ${button[2]}`);
-						modal[button[2]].options.forEach(option => {
-							menu.addOptions(
-								new SelectMenuOptionBuilder()
-									.setLabel(option)
-									.setValue(option),
-							);
-						});
-						const row = new ActionRowBuilder().addComponents(menu);
-						const menuMsg = await interaction.message.reply({ content: '\u200b', components: [row] });
-						filter = i => i.user.id == message.member.id;
-						const menuCollector = menuMsg.createMessageComponentCollector({ filter, time: 60000 });
-						menuCollector.on('collect', async menuint => {
-							await client.setData('settings', 'guildId', message.guild.id, button[2], menuint.values[0]);
-							client.logger.info(`Successfully set ${button[2]} to ${menuint.values[0]} in ${message.guild.name}`);
-							row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == menuint.values[0]));
-							menuMsg.edit({ content: `**Successfully set ${button[2]} to \`${menuint.values[0]}\`!**`, components: [row] });
-							menuint.deferUpdate();
-						});
-						menuCollector.on('end', () => {
-							if (menuMsg.content != '\u200b') menuMsg.delete();
-							else menuMsg.edit({ components: [] });
-						});
-					}
-					else if (modal[button[2]].type == 'id') {
-						interaction.deferUpdate();
-						const idMsg = await interaction.message.reply({ content: `**Reply to this message with a ${modal[button[2]].from.replace('s', '')}!** (You may also put an Id)\nReply with 'false' to disable this setting.${modal[button[2]].additional ? `\n\n**You may also set this setting to either of these other options:**\n\`${modal[button[2]].additional.join(', ')}\`` : ''}` });
-						filter = m => m.reference && m.reference.messageId == idMsg.id && m.member.id == message.member.id;
-						const idcollector = idMsg.channel.createMessageCollector({ filter, time: 60000 });
-						idcollector.on('collect', async msg => {
-							const obj = msg.guild[modal[button[2]].from].cache.get(msg.content.replace(/\D/g, ''));
-							if (!obj && msg.content != 'false' && (modal[button[2]].additional ? !modal[button[2]].additional.some(word => msg.content == word) : true)) return msg.reply({ content: `**That is not a valid ${modal[button[2]].from.replace('s', '')} or option!**` });
-							let val = msg.content;
-							if (obj) val = obj.id;
-							await client.setData('settings', 'guildId', message.guild.id, button[2], val);
-							client.logger.info(`Successfully set ${button[2]} to ${val} in ${message.guild.name}`);
-							msg.reply({ content: `**Successfully set ${button[2]} to \`${obj ? `${obj.name} (Id: ${obj.id})` : val}\`!**` });
-							idcollector.stop();
-						});
-						idcollector.on('end', () => idMsg.delete());
-					}
+					evalModal(client, interaction, button[2], srvconfig, SettingsEmbed, SettingsMsg, desc);
 				}
 			});
 
