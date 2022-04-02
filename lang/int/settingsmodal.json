@@ -6,13 +6,6 @@
         "style": "Short",
         "placeholder": "-"
     },
-    "language": {
-        "type": "text",
-        "min": 3,
-        "max": 7,
-        "style": "Short",
-        "placeholder": "English"
-    },
     "leavemessage":{
         "type": "text",
         "min": 3,
@@ -47,6 +40,10 @@
     "tickets": {
         "type": "select",
         "options": ["buttons", "reactions", "false"]
+    },
+    "language": {
+        "type": "select",
+        "options": []
     },
     "suggestionchannel": {
         "type": "id",

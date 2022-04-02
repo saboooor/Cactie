@@ -2,6 +2,9 @@ function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
 const { left, right, on, off } = require('../../lang/int/emoji.json');
 const modal = require('../../lang/int/settingsmodal.json');
+const fs = require('fs');
+const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
+modal.language.options = languages;
 module.exports = {
 	name: 'settingsnew',
 	description: 'Configure Cactie\'s settings in the server',
@@ -61,7 +64,7 @@ module.exports = {
 				);
 			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 
-			const filter = i => i.customId.startsWith('settings_') && i.user.id == message.member.id;
+			let filter = i => i.customId.startsWith('settings_') && i.user.id == message.member.id;
 			const collector = SettingsMsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async interaction => {
 				const button = interaction.component.customId.split('_');
@@ -101,17 +104,35 @@ module.exports = {
 						.setFooter({ text: `Page ${page} of ${maxPages}` });
 					SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 				}
-				else if (!modal[button[2]]) { return; }
 				else if (button[1] == 'prop') {
+					if (button[2] == 'guildId') {
+						// Create and show a modal for the user to confirm reset
+						const propModal = new ModalBuilder()
+							.setTitle('Reset all settings')
+							.setCustomId('settings_reset')
+							.addComponents(
+								new ActionRowBuilder().addComponents(
+									new TextInputBuilder()
+										.setCustomId('confirm')
+										.setLabel('Do you really want to reset all settings?')
+										.setPlaceholder('Yes, I want to reset all settings')
+										.setStyle(TextInputStyle.Short)
+										.setMinLength(33)
+										.setMaxLength(33),
+								),
+							);
+						interaction.showModal(propModal);
+					}
+					if (!modal[button[2]]) return;
 					if (modal[button[2]].type == 'text') {
 						// Create and show a modal for the user to fill out the settings's value
 						const propModal = new ModalBuilder()
 							.setTitle(`Set the new value for ${button[2]}`)
-							.setCustomId(button.join('_'))
+							.setCustomId('settings_prop')
 							.addComponents(
 								new ActionRowBuilder().addComponents(
 									new TextInputBuilder()
-										.setCustomId('value')
+										.setCustomId(button[2])
 										.setLabel(button[2])
 										.setValue(`${srvconfig[button[2]]}`)
 										.setPlaceholder(modal[button[2]].placeholder)
@@ -165,21 +186,25 @@ module.exports = {
 						});
 						const row = new ActionRowBuilder().addComponents(menu);
 						const menuMsg = await interaction.message.reply({ content: '\u200b', components: [row] });
-						const menufilter = i => i.user.id == message.member.id;
-						const menuCollector = menuMsg.createMessageComponentCollector({ menufilter, time: 60000 });
+						filter = i => i.user.id == message.member.id;
+						const menuCollector = menuMsg.createMessageComponentCollector({ filter, time: 60000 });
 						menuCollector.on('collect', async menuint => {
 							await client.setData('settings', 'guildId', message.guild.id, button[2], menuint.values[0]);
 							client.logger.info(`Successfully set ${button[2]} to ${menuint.values[0]} in ${message.guild.name}`);
-							menuint.reply({ content: `**Successfully set ${button[2]} to ${menuint.values[0]}!**` });
-							menuCollector.stop();
+							row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == menuint.values[0]));
+							menuMsg.edit({ content: `**Successfully set ${button[2]} to \`${menuint.values[0]}\`!**`, components: [row] });
+							menuint.deferUpdate();
 						});
-						menuCollector.on('end', () => menuMsg.delete());
+						menuCollector.on('end', () => {
+							if (menuMsg.content != '\u200b') menuMsg.delete();
+							else menuMsg.edit({ components: [] });
+						});
 					}
 					else if (modal[button[2]].type == 'id') {
 						interaction.deferUpdate();
 						const idMsg = await interaction.message.reply({ content: `**Reply to this message with a ${modal[button[2]].from.replace('s', '')}!** (You may also put an Id)\nReply with 'false' to disable this setting.${modal[button[2]].additional ? `\n\n**You may also set this setting to either of these other options:**\n\`${modal[button[2]].additional.join(', ')}\`` : ''}` });
-						const msgfilter = m => m.reference.messageId == idMsg.id && m.member.id == message.member.id;
-						const idcollector = idMsg.channel.createMessageCollector({ msgfilter, time: 60000 });
+						filter = m => m.reference && m.reference.messageId == idMsg.id && m.member.id == message.member.id;
+						const idcollector = idMsg.channel.createMessageCollector({ filter, time: 60000 });
 						idcollector.on('collect', async msg => {
 							const obj = msg.guild[modal[button[2]].from].cache.get(msg.content.replace(/\D/g, ''));
 							if (!obj && msg.content != 'false' && (modal[button[2]].additional ? !modal[button[2]].additional.some(word => msg.content == word) : true)) return msg.reply({ content: `**That is not a valid ${modal[button[2]].from.replace('s', '')} or option!**` });
@@ -187,7 +212,7 @@ module.exports = {
 							if (obj) val = obj.id;
 							await client.setData('settings', 'guildId', message.guild.id, button[2], val);
 							client.logger.info(`Successfully set ${button[2]} to ${val} in ${message.guild.name}`);
-							msg.reply({ content: `**Successfully set ${button[2]} to ${obj ? `${obj.name} (Id: ${obj.id})` : val}!**` });
+							msg.reply({ content: `**Successfully set ${button[2]} to \`${obj ? `${obj.name} (Id: ${obj.id})` : val}\`!**` });
 							idcollector.stop();
 						});
 						idcollector.on('end', () => idMsg.delete());
