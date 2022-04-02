@@ -52,17 +52,6 @@ module.exports = async (client, message) => {
 		}
 	});
 
-	// If message has the bot's Id, reply with prefix
-	try {
-		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: `My prefix is \`${srvconfig.prefix}\`\nIf my prefix commands don't work, please try using slash commands (/)` });
-			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err)); }, 10000);
-		}
-	}
-	catch (err) {
-		client.logger.error(err);
-	}
-
 	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com
 	if (message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageMessages)
 		&& message.content.split('\n').length > srvconfig.msgshortener
@@ -87,9 +76,21 @@ module.exports = async (client, message) => {
 		client.logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild.name}`);
 	}
 
+	// Use mention as prefix instead of prefix too
+	if (message.content.replace('!', '').startsWith(`<@${client.user.id}>`)) {
+		srvconfig.txtprefix = srvconfig.prefix;
+		srvconfig.prefix = message.content.split('>')[0] + '>';
+	}
+
 	// If message doesn't start with the prefix, if so, return
 	// Also unresolve the ticket if channel is a resolved ticket
 	if (!message.content.startsWith(srvconfig.prefix)) {
+		// If message has the bot's Id, reply with prefix
+		if (message.content.includes(client.user.id)) {
+			const prefix = await message.reply({ content: message.lang.prefix.replace('${pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('${usr}', `${client.user}`) });
+			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err)); }, 10000);
+		}
+
 		// Check if channel is a ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 		if (ticketData && ticketData.resolved == 'true') {
@@ -107,7 +108,14 @@ module.exports = async (client, message) => {
 
 	// Get the command from the commandName, if it doesn't exist, return
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-	if (!command || !command.name) return;
+	if (!command || !command.name) {
+		// If message has the bot's Id, reply with prefix
+		if (message.content.includes(client.user.id)) {
+			const prefix = await message.reply({ content: message.lang.prefix.replace('${pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('${usr}', `${client.user}`) });
+			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err)); }, 10000);
+		}
+		return;
+	}
 
 	// Start typing (basically to mimic the defer of interactions)
 	await message.channel.sendTyping();

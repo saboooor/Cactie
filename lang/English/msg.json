@@ -5,6 +5,7 @@
         "set": "Your personal language has been set to English!",
         "invalid": "**Invalid Language!**\nPlease use a language from the list below:"
     },
+    "prefix": "**My prefix is `${pfx}`**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${usr})",
     "off": "Off",
     "on": "On",
     "refresh": "Refresh",

@@ -5,6 +5,7 @@
         "set": "Your personal language has been set to UwU!",
         "invalid": "**Invalid Language!**\nPlease use a language from the list below:"
     },
+    "prefix": "**My pwefix is `${pfx}`**\nIf m-m-my commands don't wowk:\n- twy using swash commands (/)\n- Use my mention as a p-pwefix (${usr})",
     "off": "Tuwned owff '^'",
     "on": "TUWNED ON UWU",
     "refresh": "Wefwesh",
