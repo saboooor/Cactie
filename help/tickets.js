@@ -12,9 +12,9 @@ module.exports = (prefix, HelpEmbed) => {
 <> = Required
 `);
 	HelpEmbed.addFields({ name: '**How to create support tickets:**', value: `
-**1.** Set the support team / staff role by doing ${prefix}settings supportrole <Role Id>
-**2.** Set the ticket's category channel by doing ${prefix}settings ticketcategory <Category Id> (Optional)
-**3.** Set a log channel by doing ${prefix}settings logchannel <Channel Id> (Optional)
+**1.** Set the support team / staff role by doing /settings supportrole
+**2.** Set the ticket's category channel by doing /settings ticketcategory (Optional)
+**3.** Set a log channel by doing /settings logchannel (Optional)
 **4.** Execute ${prefix}help supportpanel if you want to use a reaction or button to create a ticket
 **5.** You're done!
 ` });

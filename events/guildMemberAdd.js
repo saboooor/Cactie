@@ -4,7 +4,7 @@ module.exports = async (client, member) => {
 	if (!member.guild.systemChannel) {
 		const owner = await member.guild.fetchOwner();
 		client.logger.warn(`${member.guild.name} (${owner.tag}) has misconfigured join messages!`);
-		return owner.send({ content: `Join messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system message channel or turn off join messages with the command \`/settings joinmessage false\`` })
+		return owner.send({ content: `Join messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system message channel or turn off join messages with the command \`/settings joinmessage\`` })
 			.catch(err => client.logger.warn(err));
 	}
 	const muterole = member.guild.roles.cache.get(srvconfig.mutecmd);

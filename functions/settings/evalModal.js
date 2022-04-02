@@ -1,4 +1,6 @@
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
+function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
+const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { on, off } = require('../../lang/int/emoji.json');
 const modal = require('../../lang/int/settingsmodal.json');
 const updateSettingPanel = require('./updateSettingPanel.js');
 module.exports = async function evalModal(client, interaction, setting, srvconfig, SettingsEmbed, SettingsMsg, desc) {
@@ -41,6 +43,33 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 		interaction.showModal(propModal);
 	}
 	else if (modal[setting].type == 'bool') {
+		if (!interaction.customId) {
+			const row = new ActionRowBuilder();
+			const btn = new ButtonBuilder()
+				.setCustomId(`settings_prop_${setting}`)
+				.setLabel(capFirstLetter(setting))
+				.setStyle(srvconfig[setting] == 'false' ? ButtonStyle.Danger : ButtonStyle.Success)
+				.setEmoji({ id: srvconfig[setting] == 'false' ? off : on });
+			row.addComponents(btn);
+			const msg = await SettingsMsg.reply({ content: '\u200b', components: [row] });
+			const filter = i => i.customId.startsWith('settings_') && i.user.id == interaction.member.id;
+			const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
+			collector.on('collect', async btnint => {
+				const value = srvconfig[setting] == 'false' ? 'true' : 'false';
+				await client.setData('settings', 'guildId', srvconfig.guildId, setting, value);
+				client.logger.info(`Successfully set ${setting} to ${value} in ${interaction.guild.name}`);
+				srvconfig = await client.getData('settings', 'guildId', srvconfig.guildId);
+				btn.setStyle(srvconfig[setting] == 'false' ? ButtonStyle.Danger : ButtonStyle.Success)
+					.setEmoji({ id: srvconfig[setting] == 'false' ? off : on });
+				msg.edit({ content: '\u200b', components: [row] });
+				btnint.deferUpdate();
+			});
+			// When the collector stops, delete the message
+			collector.on('end', () => {
+				msg.delete();
+			});
+			return;
+		}
 		interaction.deferUpdate();
 		const value = srvconfig[setting] == 'false' ? 'true' : 'false';
 		await client.setData('settings', 'guildId', srvconfig.guildId, setting, value);
@@ -48,7 +77,7 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 		updateSettingPanel(SettingsEmbed, SettingsMsg, client, srvconfig, desc);
 	}
 	else if (modal[setting].type == 'select') {
-		interaction.deferUpdate();
+		if (interaction.customId) interaction.deferUpdate();
 		const menu = new SelectMenuBuilder()
 			.setCustomId(`settings_menu_${setting}`)
 			.setPlaceholder(`Select a new value for ${setting}`);
@@ -60,7 +89,7 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 			);
 		});
 		const row = new ActionRowBuilder().addComponents(menu);
-		const menuMsg = await interaction.message.reply({ content: '\u200b', components: [row] });
+		const menuMsg = await SettingsMsg.reply({ content: '\u200b', components: [row] });
 		const filter = i => i.user.id == interaction.member.id;
 		const menuCollector = menuMsg.createMessageComponentCollector({ filter, time: 60000 });
 		menuCollector.on('collect', async menuint => {
@@ -77,8 +106,8 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 		});
 	}
 	else if (modal[setting].type == 'id') {
-		interaction.deferUpdate();
-		const idMsg = await interaction.message.reply({ content: `**Reply to this message with a ${modal[setting].from.replace('s', '')}!** (You may also put an Id)\nReply with 'false' to disable this setting.${modal[setting].additional ? `\n\n**You may also set this setting to either of these other options:**\n\`${modal[setting].additional.join(', ')}\`` : ''}` });
+		if (interaction.customId) interaction.deferUpdate();
+		const idMsg = await SettingsMsg.reply({ content: `**Reply to this message with a ${modal[setting].from.replace('s', '')}!** (You may also put an Id)\nReply with 'false' to disable this setting.${modal[setting].additional ? `\n\n**You may also set this setting to either of these other options:**\n\`${modal[setting].additional.join(', ')}\`` : ''}` });
 		const filter = m => m.reference && m.reference.messageId == idMsg.id && m.member.id == interaction.member.id;
 		const idcollector = idMsg.channel.createMessageCollector({ filter, time: 60000 });
 		idcollector.on('collect', async msg => {

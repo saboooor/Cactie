@@ -40,7 +40,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return client.error('You need to set a role with /settings supportrole <Role Id>!', message, true);
+			if (!role) return client.error('You need to set a role with /settings supportrole!', message, true);
 
 			// Create ticket and set database
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {

@@ -30,7 +30,7 @@ module.exports = {
 
 			// Find role and if no role then reply with error
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return client.error('You need to set a role with /settings supportrole <Role Id>!', message, true);
+			if (!role) return client.error('You need to set a role with /settings supportrole!', message, true);
 
 			// Create voice channel for voiceticket
 			const author = message.guild.members.cache.get(ticketData.opener).user;

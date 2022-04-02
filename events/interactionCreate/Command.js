@@ -158,8 +158,10 @@ module.exports = async (client, interaction) => {
 	try {
 		const cmdlog = args.join ? `${command.name} ${args.join(' ')}` : command.name;
 		client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
-		await interaction.deferReply({ ephemeral: command.ephemeral });
-		interaction.reply = interaction.editReply;
+		if (!command.noDefer) {
+			await interaction.deferReply({ ephemeral: command.ephemeral });
+			interaction.reply = interaction.editReply;
+		}
 		command.execute(interaction, args, client);
 	}
 	catch (err) {
