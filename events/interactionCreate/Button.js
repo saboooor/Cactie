@@ -9,6 +9,7 @@ module.exports = async (client, interaction) => {
 
 	// Get the language for the user if specified or guild language
 	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+	srvconfig.language = 'Uwu';
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
 	if (data[0]) interaction.lang = require(`../../lang/${data[0].language}/msg.json`);
 	else interaction.lang = require(`../../lang/${srvconfig.language}/msg.json`);
