@@ -29,7 +29,7 @@
             "off": "24/7 mode is now disabled!"
         },
         "np": "Now Playing",
-        "joined": "Joined",
+        "joined": "Joined {vc} and sending messages to {txt}",
         "left": "Left the voice chat!",
         "dj": {
             "notfound": "The DJ role can't be found!"
