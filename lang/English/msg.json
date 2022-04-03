@@ -68,8 +68,6 @@
             "shufflealr": "You've already voted to shuffle the queue!",
             "shuffling": "Shuffle Queue?",
             "shuffled": "Shuffled the queue",
-            "clearalr": "You've already voted to clear the queue!",
-            "clearing": "Clear Queue?",
             "cleared": "Cleared the queue",
             "indexnotfound": "The song index ${index} isn't in the queue!",
             "loopalr": "You've already voted to toggle the queue loop!",
