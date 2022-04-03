@@ -3,9 +3,9 @@ const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { no } = require('../../lang/int/emoji.json');
 module.exports = {
-	name: 'remqueue',
-	description: 'Delete a song from the queue',
-	aliases: ['removequeue', 'rmq'],
+	name: 'removesong',
+	description: 'Remove a song from the queue',
+	aliases: ['remsong', 'rm'],
 	args: true,
 	usage: '<Index of song in queue>',
 	similarcmds: 'remove',

@@ -11,7 +11,6 @@ module.exports = {
 	srvunmute: true,
 	invc: true,
 	samevc: true,
-	djRole: true,
 	async execute(message, args, client) {
 		try {
 			// Get player and current song and check if already resumed

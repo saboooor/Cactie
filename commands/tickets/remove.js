@@ -5,7 +5,7 @@ module.exports = {
 	botperm: 'ManageChannels',
 	args: true,
 	usage: '<User Mention or Id>',
-	similarcmds: 'remqueue',
+	similarcmds: 'removesong',
 	options: require('../options/user.json'),
 	async execute(message, args, client) {
 		try {
