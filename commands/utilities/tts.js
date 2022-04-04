@@ -50,17 +50,18 @@ module.exports = {
 			let counter = 0;
 			ttsplayer.play(resources[counter]);
 			connection.subscribe(ttsplayer);
-			if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part 1 of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? await createPaste(args.join(' ')) : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
+			const short = await createPaste(args.join(' '), { server: 'https://bin.birdflop.com' });
+			if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part 1 of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
 				counter++;
 				if (!resources[counter]) return connection.destroy();
 				ttsplayer.play(resources[counter]);
-				if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part ${counter + 1} of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? await createPaste(args.join(' ')) : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
+				if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part ${counter + 1} of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 			});
 
 			connection.on(VoiceConnectionStatus.Destroyed, async () => {
-				if (message.commandName) message.reply({ content: `**Finished playing text to speech message!**\n${args.join(' ').length > 1024 ? await createPaste(args.join(' ')) : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
+				if (message.commandName) message.reply({ content: `**Finished playing text to speech message!**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 				if (playerjson) {
 					await sleep(250);
 					const newplayer = await client.manager.create({
