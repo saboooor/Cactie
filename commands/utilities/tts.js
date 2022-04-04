@@ -1,12 +1,12 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceChannel, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
+const { createPaste } = require('hastebin');
 const { TrackUtils } = require('erela.js');
 const googleTTS = require('google-tts-api');
 module.exports = {
 	name: 'tts',
 	description: 'Text to speech into voice channel',
 	usage: '<Text>',
-	ephemeral: true,
 	args: true,
 	invc: true,
 	samevc: true,
@@ -50,15 +50,17 @@ module.exports = {
 			let counter = 0;
 			ttsplayer.play(resources[counter]);
 			connection.subscribe(ttsplayer);
+			if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part 1 of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? await createPaste(args.join(' ')) : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
 				counter++;
 				if (!resources[counter]) return connection.destroy();
 				ttsplayer.play(resources[counter]);
+				if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part ${counter + 1} of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? await createPaste(args.join(' ')) : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 			});
 
 			connection.on(VoiceConnectionStatus.Destroyed, async () => {
-				if (message.commandName) message.reply({ content: 'Finished playing text to speech message!' });
+				if (message.commandName) message.reply({ content: `**Finished playing text to speech message!**\n${args.join(' ').length > 1024 ? await createPaste(args.join(' ')) : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 				if (playerjson) {
 					await sleep(250);
 					const newplayer = await client.manager.create({
