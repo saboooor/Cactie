@@ -23,12 +23,13 @@ module.exports = async (client, oldState, newState) => {
 		.setDescription(`<:play:${play}> **Resumed**\n[${song.title}](${song.uri})`)
 		.setColor(song.color)
 		.setThumbnail(song.img);
+	const textChannel = newState.guild.channels.cache.get(player.textChannel);
 	if (newState.serverMute == true && oldState.serverMute == false && oldState.id == client.user.id) {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of server mute`);
 		PauseEmbed.setFooter({ text: 'Reason: The bot has been server muted' });
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
-		else newState.guild.channels.cache.get(player.textChannel).send({ embeds: [PauseEmbed] });
+		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
 	}
 	if (newState.serverMute == false && oldState.serverMute == true && oldState.id == client.user.id) {
@@ -36,7 +37,7 @@ module.exports = async (client, oldState, newState) => {
 		client.logger.info(`Resumed player in ${newState.guild.name} because of server unmute`);
 		ResEmbed.setFooter({ text: 'Reason: The bot has been server unmuted' });
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
-		else newState.guild.channels.cache.get(player.textChannel).send({ embeds: [ResEmbed] });
+		else textChannel.send({ embeds: [ResEmbed] });
 		return player.timeout = null;
 	}
 
@@ -60,7 +61,7 @@ module.exports = async (client, oldState, newState) => {
 		client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
 		ResEmbed.setFooter({ text: 'Reason: Someone joined the voice channel' });
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
-		else newState.guild.channels.cache.get(player.textChannel).send({ embeds: [ResEmbed] });
+		else if (!oldState.guild.members.cache.get(oldState.id).user.bot) textChannel.send({ embeds: [ResEmbed] });
 		return player.timeout = null;
 	}
 
@@ -69,7 +70,7 @@ module.exports = async (client, oldState, newState) => {
 		client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
 		PauseEmbed.setFooter({ text: 'Reason: The bot has been left alone' });
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
-		else newState.guild.channels.cache.get(player.textChannel).send({ embeds: [PauseEmbed] });
+		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
 	}
 
@@ -81,7 +82,7 @@ module.exports = async (client, oldState, newState) => {
 		client.logger.info(`Paused player in ${newState.guild.name} because of user deafen`);
 		PauseEmbed.setFooter({ text: 'Reason: Everyone\'s deafened' });
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
-		else newState.guild.channels.cache.get(player.textChannel).send({ embeds: [PauseEmbed] });
+		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
 	}
 	else if (player.paused) {
@@ -89,7 +90,7 @@ module.exports = async (client, oldState, newState) => {
 		client.logger.info(`Resumed player in ${newState.guild.name} because of user undeafen`);
 		ResEmbed.setFooter({ text: 'Reason: Someone undeafened themselves' });
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
-		else newState.guild.channels.cache.get(player.textChannel).send({ embeds: [ResEmbed] });
+		else textChannel.send({ embeds: [ResEmbed] });
 		return player.timeout = null;
 	}
 };

@@ -1,11 +1,12 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceChannel, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { TrackUtils } = require('erela.js');
 const googleTTS = require('google-tts-api');
 module.exports = {
 	name: 'tts',
 	description: 'Text to speech into voice channel',
 	usage: '<Text>',
+	ephemeral: true,
 	args: true,
 	invc: true,
 	samevc: true,
@@ -28,6 +29,7 @@ module.exports = {
 					volume: player.volume,
 					paused: player.paused,
 				};
+				player.nowPlayingMessage.delete();
 				player.destroy();
 			}
 
@@ -42,15 +44,23 @@ module.exports = {
 			}
 
 			const ttsplayer = createAudioPlayer();
-			const url = googleTTS.getAudioUrl(args.join(' '));
-			const resource = createAudioResource(url);
-			ttsplayer.play(resource);
+			const urls = googleTTS.getAllAudioUrls(args.join(' '));
+			const resources = [];
+			urls.forEach(url => resources.push(createAudioResource(url.url)));
+			let counter = 0;
+			ttsplayer.play(resources[counter]);
 			connection.subscribe(ttsplayer);
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
-				connection.destroy();
+				counter++;
+				if (!resources[counter]) return connection.destroy();
+				ttsplayer.play(resources[counter]);
+			});
+
+			connection.on(VoiceConnectionStatus.Destroyed, async () => {
+				if (message.commandName) message.reply({ content: 'Finished playing text to speech message!' });
 				if (playerjson) {
-					await sleep(500);
+					await sleep(250);
 					const newplayer = await client.manager.create({
 						guild: playerjson.guild,
 						voiceChannel: playerjson.voiceChannel,
