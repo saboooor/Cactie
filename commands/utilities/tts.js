@@ -1,32 +1,7 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceChannel, AudioPlayerStatus, StreamType } = require('@discordjs/voice');
+const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceChannel, AudioPlayerStatus } = require('@discordjs/voice');
 const { TrackUtils } = require('erela.js');
 const googleTTS = require('google-tts-api');
-const Stream = require('stream');
-function getVoiceStream(text, { lang = 'en', slow = false, host = 'https://translate.google.com', timeout = 10000, splitPunct } = {}) {
-	const stream = new Stream.PassThrough();
-
-	googleTTS.getAudioBase64(text, { lang, slow, host, timeout, splitPunct })
-		.then(base64Audio => base64toBinaryStream(base64Audio))
-		.then(audioStream => audioStream.pipe(stream))
-		.catch(console.error);
-
-	return stream;
-}
-function base64toBinaryStream(base64Text) {
-	const binary = Buffer.from(base64Text, 'base64').toString('binary');
-	const buffer = new ArrayBuffer(binary.length);
-	const bytes = new Uint8Array(buffer);
-
-	let i = 0;
-
-	const bytesLength = buffer.byteLength;
-	for (i; i < bytesLength; i++) { bytes[i] = binary.charCodeAt(i) & 0xFF; }
-	const stream = new Stream.PassThrough();
-
-	stream.write(bytes, 'binary');
-	return stream;
-}
 module.exports = {
 	name: 'tts',
 	description: 'Text to speech into voice channel',
@@ -67,16 +42,9 @@ module.exports = {
 			}
 
 			const ttsplayer = createAudioPlayer();
-
-			const stream = getVoiceStream(args.join(' '), { lang: 'en', slow: false });
-
-			const res = createAudioResource(stream, {
-				inputType: StreamType.Arbitrary,
-				inlineVolume:true,
-			});
-
-			ttsplayer.play(res);
-
+			const url = googleTTS.getAudioUrl(args.join(' '));
+			const resource = createAudioResource(url);
+			ttsplayer.play(resource);
 			connection.subscribe(ttsplayer);
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
