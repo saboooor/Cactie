@@ -90,7 +90,7 @@ module.exports = {
 			// Go on to next turn if no matches
 			xomsg.edit({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 			const pingmsg = await interaction.channel.send(`${turn ? message.member : member}`);
-			pingmsg.delete();
+			pingmsg.delete().catch(err => client.logger.error(err));
 		});
 
 		collector.on('end', () => {

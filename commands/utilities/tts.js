@@ -29,7 +29,7 @@ module.exports = {
 					volume: player.volume,
 					paused: player.paused,
 				};
-				player.nowPlayingMessage.delete();
+				player.nowPlayingMessage.delete().catch(err => client.logger.error(err));
 				player.destroy();
 			}
 

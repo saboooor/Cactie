@@ -15,6 +15,6 @@ module.exports = async (client, reaction, user) => {
 		const RRMsg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
 		client.logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
 		await sleep(1000);
-		await RRMsg.delete();
+		await RRMsg.delete().catch(err => client.logger.error(err));
 	}
 };

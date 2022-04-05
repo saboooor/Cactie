@@ -31,7 +31,7 @@ module.exports = async (client, reaction, user) => {
 			client.logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
 		}
 		await sleep(1000);
-		await msg.delete();
+		await msg.delete().catch(err => client.logger.error(err));
 	}
 	if (emojiId == '🎫') {
 		if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;
