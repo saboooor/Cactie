@@ -3,7 +3,7 @@ const { fileFromPath } = require('formdata-node/file-from-path');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { EmbedBuilder } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
-const { nsfw } = require('../lang/int/emoji.json');
+const { nsfw, refresh } = require('../lang/int/emoji.json');
 const fs = require('fs');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
@@ -19,9 +19,8 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (pong.message == 'Not Found') return client.error('Invalid subreddit!', message);
 	if (!pong[0]) pong[0] = pong;
 	if (!pong[0]) {
-		client.logger.error('Couldn\'t get data!');
 		client.logger.error(JSON.stringify(pong));
-		return client.error('Couldn\'t get data! Try again later.', message);
+		return client.error('Invalid data! Try again later.', message);
 	}
 	const data = pong[0].data.children[0].data;
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
@@ -47,24 +46,25 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 			.setURL(data.url);
 	}
 	if (data.url.includes('v.redd.it')) data.url = `${data.url}/DASH_480.mp4?source=fallback`;
-	const timestamp = Date.now();
-	const path = `logs/${timestamp}.gif`;
+	const path = `${Date.now()}.gif`;
+	PostEmbed.setImage(data.url);
+	const msg = await message.reply({ embeds: [PostEmbed] });
 	if (data.url.endsWith('.gifv') || data.url.endsWith('.mp4') || data.url.endsWith('DASH_480.mp4?source=fallback')) {
+		msg.edit({ content: `<:refresh:${refresh}> **Processing GIF...**` });
 		// Convert file to gif
 		await ffmpegSync(data.url.replace('.gifv', '.mp4'), path);
 
 		// Check file size
 		const stats = fs.statSync(path);
 		const fileSizeInBytes = stats.size;
-		if (fileSizeInBytes > 100000000) return redditFetch(subreddits, message, client, attempts + 1);
+		if (fileSizeInBytes > 50000000) return redditFetch(subreddits, message, client, attempts + 1);
 
 		// Create form and upload
 		const form = new FormData();
 		form.set('file', await fileFromPath(path));
 		await fetch('https://nonozone.smhsmh.club/uploadfile', { method: 'POST', body: form });
-		data.url = `https://nonozone.smhsmh.club/${timestamp}.gif`;
+		PostEmbed.setImage(`https://nonozone.smhsmh.club/${path}`);
+		msg.edit({ content: null, embeds: [PostEmbed] });
 		fs.unlinkSync(path);
 	}
-	PostEmbed.setImage(data.url);
-	message.reply({ embeds: [PostEmbed] }).catch(err => { client.error(err, message); });
 };
