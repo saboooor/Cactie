@@ -27,6 +27,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
 	if (!message.channel.nsfw && data.over_18) return message.react(nsfw).catch(err => client.logger.error(err));
+	const timestamp = parseInt(`${data.created}` + '000');
 	const PostEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setAuthor({ name: `u/${data.author}`, url: `https://reddit.com/u/${data.author}` })
@@ -34,7 +35,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		.setDescription(`**${data.ups} Upvotes** (${data.upvote_ratio * 100}%)`)
 		.setURL(`https://reddit.com${data.permalink}`)
 		.setFooter({ text: `Fetched from r/${data.subreddit}` })
-		.setTimestamp(parseInt(`${data.created}` + '000'));
+		.setTimestamp(timestamp);
 	if (data.url.includes('redgifs.com/watch/')) {
 		const gif = await fetch(`https://api.redgifs.com/v2/gifs/${data.url.split('redgifs.com/watch/')[1]}`);
 		const gifData = await gif.json();
@@ -46,25 +47,25 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 			.setURL(data.url);
 	}
 	if (data.url.includes('v.redd.it')) data.url = `${data.url}/DASH_480.mp4?source=fallback`;
-	const path = `${Date.now()}.gif`;
+	const file = `${timestamp}.gif`;
 	PostEmbed.setImage(data.url);
 	const msg = await message.reply({ embeds: [PostEmbed] });
 	if (data.url.endsWith('.gifv') || data.url.endsWith('.mp4') || data.url.endsWith('DASH_480.mp4?source=fallback')) {
 		msg.edit({ content: `<:refresh:${refresh}> **Processing GIF...**` });
 		// Convert file to gif
-		await ffmpegSync(data.url.replace('.gifv', '.mp4'), path);
+		await ffmpegSync(data.url.replace('.gifv', '.mp4'), file);
 
 		// Check file size
-		const stats = fs.statSync(path);
+		const stats = fs.statSync(file);
 		const fileSizeInBytes = stats.size;
 		if (fileSizeInBytes > 50000000) return redditFetch(subreddits, message, client, attempts + 1);
 
 		// Create form and upload
 		const form = new FormData();
-		form.set('file', await fileFromPath(path));
+		form.set('file', await fileFromPath(file));
 		await fetch('https://nonozone.smhsmh.club/uploadfile', { method: 'POST', body: form });
-		PostEmbed.setImage(`https://nonozone.smhsmh.club/${path}`);
+		PostEmbed.setImage(`https://nonozone.smhsmh.club/${file}`);
 		msg.edit({ content: null, embeds: [PostEmbed] });
-		fs.unlinkSync(path);
+		fs.unlinkSync(file);
 	}
 };
