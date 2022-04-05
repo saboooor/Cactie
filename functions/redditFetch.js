@@ -1,6 +1,7 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+const { FormData } = require('formdata-node');
+const { fileFromPath } = require('formdata-node/file-from-path');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
-const { EmbedBuilder, MessageAttachment } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
 const { nsfw } = require('../lang/int/emoji.json');
 const fs = require('fs');
@@ -46,19 +47,24 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 			.setURL(data.url);
 	}
 	if (data.url.includes('v.redd.it')) data.url = `${data.url}/DASH_480.mp4?source=fallback`;
-	const files = [];
 	const timestamp = Date.now();
 	const path = `logs/${timestamp}.gif`;
 	if (data.url.endsWith('.gifv') || data.url.endsWith('.mp4') || data.url.endsWith('DASH_480.mp4?source=fallback')) {
+		// Convert file to gif
 		await ffmpegSync(data.url.replace('.gifv', '.mp4'), path);
-		files.push(new MessageAttachment(path));
-		data.url = `attachment://${timestamp}.gif`;
+
+		// Check file size
+		const stats = fs.statSync(path);
+		const fileSizeInBytes = stats.size;
+		if (fileSizeInBytes > 100000000) return redditFetch(subreddits, message, client, attempts + 1);
+
+		// Create form and upload
+		const form = new FormData();
+		form.set('file', await fileFromPath(path));
+		await fetch('https://nonozone.smhsmh.club/uploadfile', { method: 'POST', body: form });
+		data.url = `https://nonozone.smhsmh.club/${timestamp}.gif`;
+		fs.unlinkSync(path);
 	}
 	PostEmbed.setImage(data.url);
-	message.reply({ embeds: [PostEmbed], files: files }).catch(err => {
-		client.logger.error(err);
-		message.reply({ content: `Ran into a problem:\n\`\`\`${err}\`\`\`\nThis is probably due to Discord's 8MB limit, Cactie will host the files itself later in the near future` });
-	});
-	await sleep(5000);
-	if (fs.existsSync(path)) fs.unlinkSync(path);
+	message.reply({ embeds: [PostEmbed] }).catch(err => { client.error(err, message); });
 };
