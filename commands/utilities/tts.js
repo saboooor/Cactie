@@ -30,7 +30,7 @@ module.exports = {
 					volume: player.volume,
 					paused: player.paused,
 				};
-				player.nowPlayingMessage.delete().catch(err => client.logger.error(err));
+				if (player.nowPlayingMessage) player.nowPlayingMessage.delete().catch(err => client.logger.error(err));
 				player.destroy();
 			}
 
