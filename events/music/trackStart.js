@@ -5,6 +5,7 @@ module.exports = async (client, player, track) => {
 	player.skipAmount = null; player.loopTrackAmount = null;
 	player.loopQueueAmount = null; player.shuffleAmount = null;
 	if (!player.voiceChannel) return;
+	const guild = client.guilds.cache.get(player.guild);
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${track.requester.id}'`);
 	let lang;
@@ -37,7 +38,6 @@ module.exports = async (client, player, track) => {
 				.setStyle(ButtonStyle.Link),
 		);
 	}
-	const guild = client.guilds.cache.get(player.guild);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
 		.get(player.textChannel)
