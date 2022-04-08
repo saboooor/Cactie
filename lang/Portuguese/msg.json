@@ -1,0 +1,118 @@
+{
+    "language": {
+        "name": "Portuguese",
+        "alrset": "Sua linguagem pessoal já está selecionada para Português!",
+        "set": "Sua linguagem pessoal foi selecionada para Português!",
+        "invalid": "**Linguagem inválida!**\nPor favor use uma linguagem da lista abaixo:"
+    },
+    "prefix": "**Meu prefixo é `${pfx}`**\nSe meus comandos não funcionarem:\n- tente usar barra comandos (/)\n- Use minha menção como um prefixo (${usr})",
+    "off": "Desligado",
+    "on": "Ligado",
+    "refresh": "Recarregar",
+    "rolereq": "Você precisa do papel de ${role} para fazer isso!",
+    "permreq": "Você precisa da permissão ${perm} para fazer isso!",
+    "page": "Página ${1} de ${2}",
+    "invalidmember": "Membro inválido! Ele está nesse servidor?",
+    "dashboard": {
+        "name": "Painel de controle",
+        "use": "Use o painel de controle!",
+        "confusing": "Muito confuso?"
+    },
+    "ping": {
+        "latency": "Latência da mensagem",
+        "api": "Latência da API"
+    },
+    "music": {
+        "stop": "Parou a música",
+        "ended": "A música terminou",
+        "notinvc": "Não estou em uma chamada de voz!",
+        "h24": {
+            "on": "modo 24/7 está habilitado!",
+            "off": "modo 24/7 está desabilitado!"
+        },
+        "np": "Agora tocando",
+        "alrplaying": "Eu já estou tocando música!",
+        "join": {
+            "joined": "Me juntei ao {vc} e mandando mensagens para {txt}",
+            "move": "Para me mover forçadamente, use o comando de mover."
+        },
+        "left": "Saiu da chamada de voz!",
+        "pause": {
+            "alr": "O player já está pausado.",
+            "paused": "Pausado",
+            "resumed": "Retomado"
+        },
+        "vcupdate": {
+            "reason": "Razão:",
+            "srvmute": "O bot foi mutado no servidor",
+            "srvunmute": "O bot foi desmutado no servidor",
+            "join": "Alguém se juntou ao canal de voz",
+            "leave": "O bot foi deixado sozinho",
+            "deafened": "Todos estão sem escutar",
+            "undeafened": "Alguém voltou a escutar"
+        },
+        "dj": {
+            "notfound": "O papel de Dj não pôde ser encontrado!"
+        },
+        "eq": {
+            "name": "Equalizador",
+            "set": "O modo do equalizador está definido como",
+            "choose": "Escolha um modo para definir o equalizador.",
+            "precise": "Quer um equalizador mais preciso?",
+            "bass": "Baixo",
+            "boost": "Impulsionar",
+            "maxed": "Maximizado",
+            "party": "Festa",
+            "pop": "Pop",
+            "radio": "Rádio",
+            "soft": "Suave",
+            "treb": "Graves agudos"
+        },
+        "track": {
+            "failed": "Falhou ao carregar a faixa!",
+            "stuck": "ficou travado, pulando..",
+            "started": "Começou a tocar",
+            "skipalr": "Você já votou para pular essa música!",
+            "skipping": "Pular faixa?",
+            "forceskipmsg": "Use `/skip` para pular ou `/forceskip` para forçar o pulo.",
+            "skipped": "Pulou",
+            "skipto": "Pulou ${amnt} músicas",
+            "loopalr": "Você já votou para alternar o loop da faixa!",
+            "looping": {
+                "on": "Colocar a faixa em repetição?",
+                "off": "Tirar a faixa de repetição?"
+            },
+            "loop": {
+                "on": "Agora repetindo a faixa!",
+                "off": "Não mais repetindo a faixa!"
+            },
+            "seek": {
+                "exceed": "Procurar duração excede duracão da música.\nDuração da música:",
+                "fwd": "Avançar",
+                "rwd": "Voltar"
+            }
+        },
+        "queue": {
+            "shufflealr": "Você já votou para colocar a fila no aleatório!",
+            "shuffling": "Colocar fila no aleatório?",
+            "shuffled": "Fila no aleatório",
+            "cleared": "Fila limpa",
+            "reversed": "Fila invertida",
+            "indexnotfound": "O índice ${index} da música não está na fila!",
+            "loopalr": "Você já votou para alternar o loop da fila!",
+            "looping": {
+                "on": "Repetir a fila?",
+                "off": "Tirar a fila de repetição?"
+            },
+            "loop": {
+                "on": "Agora repetindo a fila!",
+                "off": "Não mais repetindo a fila!"
+            }
+        },
+        "volume": {
+            "current": "Volume atual",
+            "set": "Volume definido",
+            "between": "Volume deve estar entre 0 e 100!"
+        }
+    }
+}
