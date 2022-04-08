@@ -3,6 +3,7 @@ const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceCha
 const { createPaste } = require('hastebin');
 const { TrackUtils } = require('erela.js');
 const googleTTS = require('google-tts-api');
+const resources = {};
 module.exports = {
 	name: 'tts',
 	description: 'Text to speech into voice channel',
@@ -43,21 +44,25 @@ module.exports = {
 				});
 			}
 
-			const ttsplayer = createAudioPlayer();
 			const urls = googleTTS.getAllAudioUrls(args.join(' '));
-			const resources = [];
-			urls.forEach(url => resources.push(createAudioResource(url.url)));
+			let play = true;
+			if (!resources[channel.guild.id]) resources[channel.guild.id] = [];
+			else play = false;
+			urls.forEach(url => resources[channel.guild.id].push(createAudioResource(url.url)));
+			if (!play) return;
 			let counter = 0;
-			ttsplayer.play(resources[counter]);
+			const ttsplayer = createAudioPlayer();
+			ttsplayer.play(resources[channel.guild.id][counter]);
 			connection.subscribe(ttsplayer);
 			const short = await createPaste(args.join(' '), { server: 'https://bin.birdflop.com' });
-			if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part 1 of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
+			if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources[channel.guild.id].length > 1 ? ` (Part 1 of ${resources[channel.guild.id].length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
 				counter++;
-				if (!resources[counter]) return;
-				ttsplayer.play(resources[counter]);
-				if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part ${counter + 1} of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
+				if (!resources[channel.guild.id][counter]) return resources[channel.guild.id] = null;
+				const res = resources[channel.guild.id];
+				ttsplayer.play(res[counter]);
+				if (message.commandName) message.reply({ content: `**Playing text to speech message:${res.length > 1 ? ` (Part ${counter + 1} of ${res.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 			});
 
 			connection.on(VoiceConnectionStatus.Destroyed, async () => {
