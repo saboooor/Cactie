@@ -55,6 +55,7 @@ module.exports = {
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
 				counter++;
+				if (!resources[counter]) return;
 				ttsplayer.play(resources[counter]);
 				if (message.commandName) message.reply({ content: `**Playing text to speech message:${resources.length > 1 ? ` (Part ${counter + 1} of ${resources.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });
 			});
