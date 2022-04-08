@@ -23,14 +23,34 @@
         "api": "API Latency"
     },
     "music": {
+        "stop": "Stopped the music",
+        "ended": "The music has ended",
         "notinvc": "I'm not in a voice chat!",
         "h24": {
             "on": "24/7 mode is now enabled!",
             "off": "24/7 mode is now disabled!"
         },
         "np": "Now Playing",
-        "joined": "Joined {vc} and sending messages to {txt}",
+        "alrplaying": "I'm already currently playing music!",
+        "join": {
+            "joined": "Joined {vc} and sending messages to {txt}",
+            "move": "To force move me, use the move command."
+        },
         "left": "Left the voice chat!",
+        "pause": {
+            "alr": "The player is already paused.",
+            "paused": "Paused",
+            "resumed": "Resumed"
+        },
+        "vcupdate": {
+            "reason": "Reason:",
+            "srvmute": "The bot has been server muted",
+            "srvunmute": "The bot has been server unmuted",
+            "join": "Someone joined the voice channel",
+            "leave": "The bot has been left alone",
+            "deafened": "Everyone's deafened",
+            "undeafened": "Someone undeafened themselves"
+        },
         "dj": {
             "notfound": "The DJ role can't be found!"
         },
@@ -49,6 +69,9 @@
             "treb": "Treble-Bass"
         },
         "track": {
+            "failed": "Failed to load the track!",
+            "stuck": "got stuck, skipping..",
+            "started": "Started playing",
             "skipalr": "You've already voted to skip this song!",
             "skipping": "Skipping Track?",
             "forceskipmsg": "Use `/skip` to skip or `/forceskip` to force skip.",
@@ -62,6 +85,11 @@
             "loop": {
                 "on": "Now looping the track!",
                 "off": "No longer looping the track!"
+            },
+            "seek": {
+                "exceed": "Seek duration exceeds Song duration.\nSong duration:",
+                "fwd": "Forward",
+                "rwd": "Rewind"
             }
         },
         "queue": {
@@ -69,6 +97,7 @@
             "shuffling": "Shuffle Queue?",
             "shuffled": "Shuffled the queue",
             "cleared": "Cleared the queue",
+            "reversed": "Reversed the queue",
             "indexnotfound": "The song index ${index} isn't in the queue!",
             "loopalr": "You've already voted to toggle the queue loop!",
             "looping": {
@@ -79,6 +108,11 @@
                 "on": "Now looping the queue!",
                 "off": "No longer looping the queue!"
             }
+        },
+        "volume": {
+            "current": "Current Volume",
+            "set": "Volume set",
+            "between": "Volume must be between 0 and 100!"
         }
     }
 }

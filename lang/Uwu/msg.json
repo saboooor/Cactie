@@ -23,14 +23,34 @@
         "api": "API Watency OwO"
     },
     "music": {
+        "stop": "Stawpped the music",
+        "ended": "The music has ended OwO",
         "notinvc": "I'm not in a voice chat!",
         "h24": {
             "on": "24/7 mode is nyow TUWNED ON UWU!",
             "off": "24/7 mode is nyow Tuwned owff! '^'"
         },
         "np": "Nyow Pwaying",
-        "joined": "*nuzzles* Joinyed",
-        "left": "Weft t-the voice chat!",
+        "alrplaying": "I-I-I'm awweady weady cuwwentwy wuwwentwy pwaying music!",
+        "join": {
+            "joined": "Joinyed {vc} and sending messages to {txt}",
+            "move": "To fowce move me, use the move command"
+        },
+        "left": "W-Weft t-the voice chat!",
+        "pause": {
+            "alr": "The pwayew is awweady weady paused.",
+            "paused": "P-Paused",
+            "resumed": "Wesumed"
+        },
+        "vcupdate": {
+            "reason": "Weason:",
+            "srvmute": "The bot has b-b-been sewvew muted",
+            "srvunmute": "The bot has been sewvew unmuted",
+            "join": "Someonye joinyed the voice channyew",
+            "leave": "The bot has been weft awonye '^'",
+            "deafened": "Evewyonye's deafenyed",
+            "undeafened": "Someonye undeafenyed themsewves OwO"
+        },
         "dj": {
             "notfound": "The DJ wowe can't be found!"
         },
@@ -49,6 +69,9 @@
             "treb": "Twebwe-Bass"
         },
         "track": {
+            "failed": "Faiwed to woad the twack!",
+            "stuck": "got stuck, skipping..",
+            "started": "Stawted pwaying",
             "skipalr": "You've awweady weady v-voted to skip this song!",
             "skipping": "Skipping Twack?",
             "forceskipmsg": "Use `/skip` to skip ow `/forceskip` to fowce skip.",
@@ -62,15 +85,19 @@
             "loop": {
                 "on": "N-Nyow wooping the twack!",
                 "off": "Nyo wongew wooping the twack OwO!"
+            },
+            "seek": {
+                "exceed": "S-Seek duwation exceeds Song duwation.\nSong duwation:",
+                "fwd": "Fowwawd",
+                "rwd": "Wewind"
             }
         },
         "queue": {
             "shufflealr": "You've awweady weady voted to shuffwe the queue!",
             "shuffling": "S-S-Shuffwe Q-Queue OwO?",
             "shuffled": "Shuffwed the queue OwO",
-            "clearalr": "You've awweady weady v-v-voted to cweaw t-the queue!",
-            "clearing": "Cweaw Queue?",
             "cleared": "*blushes* Cweawed the queue",
+            "reversed": "Wevewsed the queue",
             "indexnotfound": "The song index ${index} i-isn't in t-the queue!",
             "loopalr": "You've awweady weady voted to toggwe the queue woop!",
             "looping": {
@@ -81,6 +108,11 @@
                 "on": "Nyow wooping the queue!",
                 "off": "Nyo wongew wooping the queue!"
             }
+        },
+        "volume": {
+            "current": "Cuwwent Vowume",
+            "set": "Vowume set",
+            "between": "Vowume must be between 0 a-and 100!"
         }
     }
 }

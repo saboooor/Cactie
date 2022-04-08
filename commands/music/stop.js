@@ -15,7 +15,7 @@ module.exports = {
 			player.queue.clear();
 			const StopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:alert:${warn}> **Stopped the music**`);
+				.setDescription(`<:alert:${warn}> **${message.lang.music.stop}**`);
 			message.reply({ embeds: [StopEmbed] });
 		}
 		catch (err) { client.error(err, message); }

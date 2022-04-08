@@ -16,12 +16,12 @@ module.exports = {
 			// Get player and current song and check if already resumed
 			const player = client.manager.get(message.guild.id);
 			const song = player.queue.current;
-			if (!player.paused) return client.error('The player is already playing.', message, true);
+			if (!player.paused) return client.error(message.lang.music.alrplaying, message, true);
 
 			// Unpause player and reply
 			player.pause(false);
 			const ResEmbed = new EmbedBuilder()
-				.setDescription(`<:play:${play}> **Resumed**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:play:${play}> **${message.lang.music.pause.resumed}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);
 			const resmsg = await message.reply({ embeds: [ResEmbed] });

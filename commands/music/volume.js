@@ -20,19 +20,19 @@ module.exports = {
 			if (!args.length) {
 				const VolEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
-					.setDescription(`<:volume:${vol}> The current volume is: **${player.volume}%**`);
+					.setDescription(`<:volume:${vol}> ${message.lang.music.volume.current}: **${player.volume}%**`);
 				return message.reply({ embeds: [VolEmbed] });
 			}
 
 			// Parse arg as number and if volume isn't between 0 and 100, reply with error
 			const volume = Number(args[0]);
-			if (!volume || volume < 0 || volume > 100) client.error('Usage: /volume <Number of volume between 0 - 100>', message, true);
+			if (!volume || volume < 0 || volume > 100) client.error(message.lang.music.volume.between, message, true);
 
 			// Set the volume and reply
 			player.setVolume(volume);
 			const VolEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:volume:${vol}> Volume set to: **${volume}%**`);
+				.setDescription(`<:volume:${vol}> ${message.lang.music.volume.set}: **${volume}%**`);
 			message.reply({ embeds: [VolEmbed] });
 		}
 		catch (err) { client.error(err, message); }

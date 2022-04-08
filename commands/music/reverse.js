@@ -19,7 +19,7 @@ module.exports = {
 			player.queue.reverse();
 			const ReverseEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:rewind:${rewind}> **Reversed the queue**`);
+				.setDescription(`<:rewind:${rewind}> **${message.lang.music.queue.reversed}**`);
 			message.reply({ embeds: [ReverseEmbed] }).catch(err => client.logger.error(err));
 		}
 		catch (err) { client.error(err, message); }

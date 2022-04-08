@@ -32,12 +32,12 @@ module.exports = {
 			// Check if time is less than duration, if so, then seek forward or backward and reply, or else send an error
 			if (time <= duration) {
 				player.seek(time);
-				if (time > position) SeekEmbed.setDescription(`<:forward:${forward}> **Forward**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
-				else SeekEmbed.setDescription(`<:rewind:${rewind}> **Rewind**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+				if (time > position) SeekEmbed.setDescription(`<:forward:${forward}> **${message.lang.music.track.seek.fwd}**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+				else SeekEmbed.setDescription(`<:rewind:${rewind}> **${message.lang.music.track.seek.rwd}**\n[${song.title}](${song.uri})\n\`${convertTime(time)} / ${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
 			else {
 				SeekEmbed.setColor(0xE74C3C)
-					.setDescription(`Seek duration exceeds Song duration.\nSong duration: \`${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
+					.setDescription(`${message.lang.music.track.seek.exceed} \`${convertTime(duration).replace('7:12:56', 'LIVE')}\``);
 			}
 			message.reply({ embeds: [SeekEmbed] });
 		}

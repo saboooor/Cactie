@@ -13,7 +13,7 @@ module.exports = {
 
 			let player = client.manager.get(message.guild.id);
 			if (player) {
-				if (!player.paused) return client.error('I am already currently playing music!\nTo force move me, use the move command', message, true);
+				if (!player.paused) return client.error(`${message.lang.music.alrplaying}\n${message.lang.music.join.move}`, message, true);
 				player.voiceChannel = channel.id;
 				player.textChannel = message.channel.id;
 			}
@@ -32,7 +32,7 @@ module.exports = {
 			// Send message to channel
 			const JoinEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:in:${join}> **${message.lang.music.joined.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
+				.setDescription(`<:in:${join}> **${message.lang.music.join.joined.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
 		}
 		catch (err) { client.error(err, message); }

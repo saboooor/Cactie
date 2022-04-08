@@ -3,9 +3,11 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, player) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);
+	const srvconfig = await client.getData('settings', 'guildId', guild.id);
+	const lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const EndEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
-		.setDescription(`<:alert:${warn}> **Music session ended**`);
+		.setDescription(`<:alert:${warn}> **${lang.music.ended}**`);
 	const NowPlaying = await channel.send({ embeds: [EndEmbed] });
 	player.setNowplayingMessage(NowPlaying);
 	client.logger.info(`Queue ended in ${guild.name}`);
