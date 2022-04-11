@@ -64,15 +64,6 @@ module.exports = async (client, oldState, newState) => {
 	// filter current users based on being a bot
 	stateChange.members = stateChange.channel.members.filter(member => !member.user.bot);
 
-	if (stateChange.type == 'JOIN' && stateChange.members.size == 1) {
-		player.pause(false);
-		client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
-		ResEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.join}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
-		else if (!oldState.guild.members.cache.get(oldState.id).user.bot) textChannel.send({ embeds: [ResEmbed] });
-		return player.timeout = null;
-	}
-
 	if (stateChange.type == 'LEAVE' && stateChange.members.size == 0) {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
@@ -92,6 +83,14 @@ module.exports = async (client, oldState, newState) => {
 		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
 		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
+	}
+	else if (stateChange.type == 'JOIN' && stateChange.members.size == 1) {
+		player.pause(false);
+		client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
+		ResEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.join}` });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
+		else if (!oldState.guild.members.cache.get(oldState.id).user.bot) textChannel.send({ embeds: [ResEmbed] });
+		return player.timeout = null;
 	}
 	else if (player.paused) {
 		player.pause(false);
