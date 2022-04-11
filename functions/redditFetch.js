@@ -64,7 +64,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		const form = new FormData();
 		form.set('file', await fileFromPath(file));
 		await fetch('https://nonozone.smhsmh.club/uploadfile', { method: 'POST', body: form });
-		PostEmbed.setImage(`https://nonozone.smhsmh.club/${file}`);
+		PostEmbed.setImage(`https://nonozone.smhsmh.club/porn/${file}`);
 		msg.edit({ content: null, embeds: [PostEmbed] });
 		fs.unlinkSync(file);
 	}
