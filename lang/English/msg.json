@@ -65,7 +65,7 @@
             "un": "Resumed"
         },
         "vcupdate": {
-            "reason": "Reason:",
+            "reason": "Reason",
             "srvmute": "The bot has been server muted",
             "srvunmute": "The bot has been server unmuted",
             "join": "Someone joined the voice channel",

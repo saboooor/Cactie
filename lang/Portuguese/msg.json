@@ -65,7 +65,7 @@
             "un": "Retomado"
         },
         "vcupdate": {
-            "reason": "Razão:",
+            "reason": "Razão",
             "srvmute": "O bot foi mutado no servidor",
             "srvunmute": "O bot foi desmutado no servidor",
             "join": "Alguém se juntou ao canal de voz",
