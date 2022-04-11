@@ -92,7 +92,7 @@
     {
         "type": 1,
         "name": "adminrole",
-        "description": "The role to replace the ADMINISTRATOR permission"
+        "description": "The role to replace the Administrator permission"
     },
     {
         "type": 1,

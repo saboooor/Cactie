@@ -1,4 +1,4 @@
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, PermissionsBitField } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Cactie',
@@ -21,7 +21,7 @@ module.exports = {
 				require(`../../help/${arg}.js`)(prefix, HelpEmbed, srvconfig);
 			}
 			else if (arg == 'supportpanel') {
-				if (!message.member.permissions.has('ADMINISTRATOR')) return;
+				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
 				const Panel = new EmbedBuilder()
 					.setColor(0x5662f6)
 					.setTitle('Need help? No problem!')
