@@ -36,9 +36,9 @@ module.exports = client => {
 				const CloseDMEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Closed ${channel.name}`)
-					.addFields({ name: '**Users in ticket**', value: `${users}` })
 					.addFields({ name: '**Transcript**', value: `${link}.txt` })
 					.addFields({ name: '**Closed by**', value: 'Automatically closed' });
+				if (users[0]) CloseDMEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
 				client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
 				users.forEach(usr => {
 					usr.send({ embeds: [CloseDMEmbed] })

@@ -30,9 +30,9 @@ module.exports = {
 				const DelEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${interaction.channel.name}`)
-					.addFields({ name: '**Users in ticket**', value: `${users}` })
 					.addFields({ name: '**Transcript**', value: `${link}.txt` })
 					.addFields({ name: '**Deleted by**', value: `${interaction.user}` });
+				if (users[0]) DelEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
 
 				// Send embed to ticket log channel
 				await interaction.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
