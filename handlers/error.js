@@ -1,8 +1,8 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = client => {
 	client.error = function error(err, message, userError) {
+		err = err.stack ? err.stack : err;
 		client.logger.error(err);
-		client.logger.error(err.line);
 		const errEmbed = new EmbedBuilder()
 			.setColor(0xE74C3C)
 			.setTitle('An error has occured!')
