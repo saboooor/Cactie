@@ -13,10 +13,10 @@ module.exports = {
 			const code = args.join(' ');
 			let evaled = eval(code);
 			if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled); }
-			message.channel.send({ content: evaled, code: 'xl' });
+			message.channel.send({ content: evaled });
 		}
 		catch (err) {
-			message.channel.send({ content: `\`ERROR\` \`\`\`xl\n${err}\n\`\`\`` });
+			message.channel.send({ content: `\`ERROR\` \`\`\`\n${err}\n\`\`\`` });
 		}
 	},
 };
