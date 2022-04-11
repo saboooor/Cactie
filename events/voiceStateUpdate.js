@@ -15,6 +15,7 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.channel !== null && newState.channel !== null) stateChange.type = 'MOVE';
 	if (oldState.channel === null && newState.channel === null) return;
 	const song = player.queue.current;
+	if (!song) return;
 
 	const srvconfig = await client.getData('settings', 'guildId', guildId);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${song.requester.id}'`);
