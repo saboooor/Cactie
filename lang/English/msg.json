@@ -8,6 +8,7 @@
     "prefix": "**My prefix is `{pfx}`**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix ({usr})",
     "off": "Off",
     "on": "On",
+    "undo": "Undo",
     "refresh": "Refresh",
     "rolereq": "You need the {role} role to do that!",
     "permreq": "You need the {perm} permission to do that!",
@@ -23,6 +24,27 @@
         "api": "API Latency"
     },
     "music": {
+        "search": {
+            "ing": "Searching for `{query}`...",
+            "notright": "Not the right result?",
+            "results": "Search Results",
+            "pick": "Pick a search result from the buttons below",
+            "picked": "Selected result #{num}",
+            "failed": "**Failed to search** No results found",
+            "found": "Found result for `{query}`",
+            "timeout": "Search query selection timed out"
+        },
+        "added": {
+            "playlist": {
+                "top": "Added playlist to the start of the queue",
+                "end": "Added playlist to the queue"
+            },
+            "song": {
+                "top": "Added track to the start of the queue",
+                "end": "Added track to the queue"
+            },
+            "un": "Unadded item from queue" 
+        },
         "stop": "Stopped the music",
         "ended": "The music has ended",
         "notinvc": "I'm not in a voice chat!",
@@ -33,14 +55,14 @@
         "np": "Now Playing",
         "alrplaying": "I'm already currently playing music!",
         "join": {
-            "joined": "Joined {vc} and sending messages to {txt}",
+            "ed": "Joined {vc} and sending messages to {txt}",
             "move": "To force move me, use the move command."
         },
         "left": "Left the voice chat!",
         "pause": {
             "alr": "The player is already paused.",
-            "paused": "Paused",
-            "resumed": "Resumed"
+            "ed": "Paused",
+            "un": "Resumed"
         },
         "vcupdate": {
             "reason": "Reason:",
@@ -93,20 +115,22 @@
             }
         },
         "queue": {
-            "shufflealr": "You've already voted to shuffle the queue!",
-            "shuffling": "Shuffle Queue?",
-            "shuffled": "Shuffled the queue",
             "cleared": "Cleared the queue",
             "reversed": "Reversed the queue",
             "indexnotfound": "The song index {index} isn't in the queue!",
-            "loopalr": "You've already voted to toggle the queue loop!",
-            "looping": {
-                "on": "Loop the queue?",
-                "off": "Unloop the queue?"
+            "shuffle": {
+                "alr": "You've already voted to shuffle the queue!",
+                "ing": "Shuffle queue?",
+                "ed": "Shuffled the queue"
             },
             "loop": {
-                "on": "Now looping the queue!",
-                "off": "No longer looping the queue!"
+                "alr": "You've already voted to toggle the queue loop!",
+                "ing": {
+                    "on": "Loop the queue?",
+                    "off": "Unloop the queue?"
+                },
+                "on": "Now looping the queue",
+                "off": "No longer looping the queue"
             }
         },
         "volume": {

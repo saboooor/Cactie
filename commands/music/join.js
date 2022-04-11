@@ -32,7 +32,7 @@ module.exports = {
 			// Send message to channel
 			const JoinEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:in:${join}> **${message.lang.music.join.joined.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
+				.setDescription(`<:in:${join}> **${message.lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
 		}
 		catch (err) { client.error(err, message); }

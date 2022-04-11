@@ -20,9 +20,20 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	// If player isn't connected, connect it
 	if (player.state != 'CONNECTED') player.connect();
 
+	// Get the language if not specified
+	if (!message.lang) {
+		// Get current settings for the guild
+		const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+
+		// Get the language for the user if specified or guild language
+		const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
+		if (data[0]) message.lang = require(`../lang/${data[0].language}/msg.json`);
+		else message.lang = require(`../lang/${srvconfig.language}/msg.json`);
+	}
+
 	// Get search results from YouTube, Spotify, or Apple Music
 	const search = args.join(' '); const songs = [];
-	const playMsg = await message.reply({ content: `<:srch:${srch}> Searching for \`${search}\`...` });
+	const playMsg = await message.reply({ content: `<:srch:${srch}> **${message.lang.music.search.ing.replace('{query}', search)}**` });
 
 	// Create embed for responses
 	const PlayEmbed = new EmbedBuilder();
@@ -33,12 +44,12 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			new ButtonBuilder()
 				.setCustomId('music_undo')
 				.setEmoji({ id: leave })
-				.setLabel('Undo')
+				.setLabel(message.lang.undo)
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonBuilder()
 				.setCustomId('music_search')
 				.setEmoji({ id: srch })
-				.setLabel('Not the right result?')
+				.setLabel(message.lang.music.search.notright)
 				.setStyle(ButtonStyle.Secondary),
 		);
 	const row = [];
@@ -54,7 +65,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'PLAYLIST_LOADED') {
 			// Add description to embed and build every song in the playlist
-			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to ${top ? 'start of ' : ''}queue** \`[${Searched.tracks.length} songs]\`\n[${Searched.playlistInfo.name}](${search})`)
+			PlayEmbed.setDescription(`<:music:${music}> **${message.lang.music.added.playlist[top ? 'top' : 'end']}** \`[${Searched.tracks.length}]\`\n[${Searched.playlistInfo.name}](${search})`)
 				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 			await Searched.tracks.forEach(song => {
 				// Some songs don't have a url, just use google lol
@@ -65,7 +76,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		}
 		else if (Searched.loadType.startsWith('TRACK')) {
 			// Add description to embed and build the song
-			PlayEmbed.setDescription(`<:music:${music}> **Added Song to ${top ? 'start of ' : ''}queue**\n[${track.info.title}](${track.info.uri})`)
+			PlayEmbed.setDescription(`<:music:${music}> **${message.lang.music.added.song[top ? 'top' : 'end']}**\n[${track.info.title}](${track.info.uri})`)
 				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 			// Some songs don't have a url, just use google lol
 			if (!track.info.uri) track.info.uri = 'https://google.com';
@@ -74,7 +85,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		}
 		else {
 			// There's no result for the search, send error message
-			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
+			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> ${message.lang.music.search.failed}`);
 			return playMsg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 	}
@@ -87,7 +98,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			const tracklist = tracks.map(track => {
 				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\``;
 			});
-			PlayEmbed.setDescription(`<:srch:${srch}> **Search Results**\n${tracklist.join('\n')}`);
+			PlayEmbed.setDescription(`<:srch:${srch}> **${message.lang.music.search.results}**\n${tracklist.join('\n')}`);
 
 			const balls = new ActionRowBuilder();
 			for (let number = 1; number <= 5; number++) {
@@ -99,21 +110,21 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				);
 			}
 			row.push(balls);
-			await playMsg.edit({ content: `<:srch:${srch}> Pick a search result from the buttons below\n\`Query: ${search}\``, embeds: [PlayEmbed], components: row });
+			await playMsg.edit({ content: `<:srch:${srch}> ${message.lang.music.search.pick}\n\`${search}\``, embeds: [PlayEmbed], components: row });
 
 			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the user is the requester
 				interaction.deferUpdate();
 				playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
-				await playMsg.edit({ content: `<:play:${play}> **Selected result #${interaction.customId}**`, embeds: [], components: [] })
+				await playMsg.edit({ content: `<:play:${play}> **${message.lang.music.search.picked.replace('{num}', interaction.customId)}**`, embeds: [], components: [] })
 					.then(() => collector.stop());
 			});
 
 			// When the collector stops, remove the undo button from it
 			collector.on('end', () => {
 				if (playMsg.content.startsWith(`<:play:${play}> `)) return;
-				playMsg.edit({ content: `<:alert:${warn}> **Search query selection timed out.**`, embeds: [], components: [] });
+				playMsg.edit({ content: `<:alert:${warn}> **${message.lang.music.search.timeout}**`, embeds: [], components: [] });
 			});
 
 			return;
@@ -123,12 +134,12 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		const track = Searched.tracks[0];
 		if (Searched.loadType === 'NO_MATCHES' || !track) {
 			// There's no result for the search, send error message
-			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> **Failed to search** No results found.`);
+			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> ${message.lang.music.search.failed}`);
 			return playMsg.edit({ content: null, embeds: [PlayEmbed] });
 		}
 		else if (Searched.loadType == 'PLAYLIST_LOADED') {
 			// Add description to embed and push every song in the playlist
-			PlayEmbed.setDescription(`<:music:${music}> **Added Playlist to ${top ? 'start of ' : ''}queue** \`[${Searched.tracks.length} songs / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
+			PlayEmbed.setDescription(`<:music:${music}> **${message.lang.music.added.playlist[top ? 'top' : 'end']}** \`[${Searched.tracks.length} / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
 				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 			await Searched.tracks.forEach(song => {
 				// Set image if thumbnail exists
@@ -142,7 +153,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
 			// Add description to embed and the song
-			PlayEmbed.setDescription(`<:music:${music}> **Added Song to ${top ? 'start of ' : ''}queue** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
+			PlayEmbed.setDescription(`<:music:${music}> **${message.lang.music.added.song[top ? 'top' : 'end']}** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
 				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() })
 				.setThumbnail(track.img);
 			songs.push(Searched.tracks[0]);
@@ -184,7 +195,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 	if (!player.playing) await player.play();
 
 	// Send embed
-	playMsg.edit({ content: `<:play:${play}> **Found result for \`${search}\`**`, embeds: [PlayEmbed], components: row });
+	playMsg.edit({ content: `<:play:${play}> **${message.lang.music.search.found.replace('{query}', search)}**`, embeds: [PlayEmbed], components: row });
 
 	// Create a collector for the undo button
 	const filter = i => requester.id == i.user.id && i.customId.startsWith('music_');
@@ -199,7 +210,9 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			else if (i != -1) player.queue.remove(i);
 		}
 		// Reply and stop the collector
-		PlayEmbed.setDescription(PlayEmbed.toJSON().description.replace('Added', 'Unadded').replace('to', 'from').replace(`<:music:${music}>`, `<:no:${no}>`));
+		const desc = PlayEmbed.toJSON().description.split('`');
+		desc.shift();
+		PlayEmbed.setDescription(`<:no:${no}> **${message.lang.music.added.un}** \`${desc.join('`')}`);
 		playMsg.edit({ embeds: [PlayEmbed] });
 		collector.stop();
 		if (interaction.customId == 'music_search') {

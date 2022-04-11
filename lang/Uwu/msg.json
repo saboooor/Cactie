@@ -8,6 +8,7 @@
     "prefix": "**My pwefix is `{pfx}`**\nIf m-m-my commands don't wowk:\n- twy using swash commands (/)\n- Use my mention as a p-pwefix ({usr})",
     "off": "Tuwned owff '^'",
     "on": "TUWNED ON UWU",
+    "undo": "Undo OwO",
     "refresh": "Wefwesh",
     "rolereq": "You n-nyeed the {role} wowe to do that! OwO",
     "permreq": "You n-nyeed the {perm} pewmission to do that! OwO",
@@ -23,6 +24,27 @@
         "api": "API Watency OwO"
     },
     "music": {
+        "search": {
+            "ing": "Seawching fow `{query}`...",
+            "notright": "Nyot t-the wight wesuwt?",
+            "results": "Seawch Wesuwts",
+            "pick": "Pick a-a seawch wesuwt fwom the buttons bewow",
+            "picked": "S-Sewected wesuwt #{num}",
+            "failed": "**Faiwed to seawch** Nyo wesuwts found",
+            "found": "Found wesuwt fow `{query}` OwO",
+            "timeout": "Seawch quewy wuewy sewection timed out"
+        },
+        "added": {
+            "playlist": {
+                "top": "Added pwaywist to the stawt of the queue",
+                "end": "Added pwaywist to the queue"
+            },
+            "song": {
+                "top": "Added twack to the stawt of the queue",
+                "end": "Added twack to the queue"
+            },
+            "un": "Unyadded item fwom queue '^'" 
+        },
         "stop": "Stawpped the music",
         "ended": "The music has ended OwO",
         "notinvc": "I'm not in a voice chat!",
@@ -33,14 +55,14 @@
         "np": "Nyow Pwaying",
         "alrplaying": "I-I-I'm awweady weady cuwwentwy wuwwentwy pwaying music!",
         "join": {
-            "joined": "Joinyed {vc} and sending messages to {txt}",
+            "ed": "Joinyed {vc} and sending messages to {txt}",
             "move": "To fowce move me, use the move command"
         },
         "left": "W-Weft t-the voice chat!",
         "pause": {
             "alr": "The pwayew is awweady weady paused.",
-            "paused": "P-Paused",
-            "resumed": "Wesumed"
+            "ed": "P-Paused",
+            "un": "Wesumed"
         },
         "vcupdate": {
             "reason": "Weason:",
@@ -93,20 +115,22 @@
             }
         },
         "queue": {
-            "shufflealr": "You've awweady weady voted to shuffwe the queue!",
-            "shuffling": "S-S-Shuffwe Q-Queue OwO?",
-            "shuffled": "Shuffwed the queue OwO",
             "cleared": "*blushes* Cweawed the queue",
             "reversed": "Wevewsed the queue",
             "indexnotfound": "The song index {index} i-isn't in t-the queue!",
-            "loopalr": "You've awweady weady voted to toggwe the queue woop!",
-            "looping": {
-                "on": "Woop the queue?",
-                "off": "Unwoop the queue?"
+            "shuffle": {
+                "alr": "You've awweady weady voted to shuffwe the queue!",
+                "ing": "S-S-Shuffwe Q-Queue OwO?",
+                "ed": "Shuffwed the queue OwO"
             },
             "loop": {
-                "on": "Nyow wooping the queue!",
-                "off": "Nyo wongew wooping the queue!"
+                "alr": "You've already voted to toggle the queue loop!",
+                "ing": {
+                    "on": "Woop the queue?",
+                    "off": "Unwoop the queue?"
+                },
+                "on": "Nyow wooping the queue",
+                "off": "Nyo wongew wooping the queue"
             }
         },
         "volume": {

@@ -34,6 +34,7 @@ module.exports = async (client, guild) => {
 		.setDescription(`
 My prefix is \`${srvconfig.prefix}\`, you may change this with \`/settings prefix\`
 Type \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!
+You may also change the bot's language with \`/settings language\` or personal language with \`/language\`
 
 This bot has reactions to messages with some specific keywords which at times may be annoying. To turn them off, do \`/settings reactions\``)
 		.setThumbnail('https://cactie.smhsmh.club/assets/images/Cactie.png');

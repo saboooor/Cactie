@@ -24,11 +24,11 @@ module.exports = async (client, oldState, newState) => {
 	else lang = require(`../lang/${srvconfig.language}/msg.json`);
 
 	const PauseEmbed = new EmbedBuilder()
-		.setDescription(`<:pause:${pause}> **${lang.music.pause.paused}**\n[${song.title}](${song.uri})`)
+		.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
 		.setColor(song.color)
 		.setThumbnail(song.img);
 	const ResEmbed = new EmbedBuilder()
-		.setDescription(`<:play:${play}> **${lang.music.pause.resumed}**\n[${song.title}](${song.uri})`)
+		.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
 		.setColor(song.color)
 		.setThumbnail(song.img);
 	const textChannel = newState.guild.channels.cache.get(player.textChannel);

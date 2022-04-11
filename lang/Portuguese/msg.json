@@ -8,6 +8,7 @@
     "prefix": "**Meu prefixo é `{pfx}`**\nSe meus comandos não funcionarem:\n- tente usar barra comandos (/)\n- Use minha menção como um prefixo ({usr})",
     "off": "Desligado",
     "on": "Ligado",
+    "undo": "Desfazer",
     "refresh": "Recarregar",
     "rolereq": "Você precisa do papel de ${role} para fazer isso!",
     "permreq": "Você precisa da permissão {perm} para fazer isso!",
@@ -23,6 +24,27 @@
         "api": "Latência da API"
     },
     "music": {
+        "search": {
+            "ing": "Searching for `{query}`...",
+            "notright": "Not the right result?",
+            "results": "Search Results",
+            "pick": "Pick a search result from the buttons below",
+            "picked": "Selected result #{num}",
+            "failed": "**Failed to search** No results found",
+            "found": "Found result for `{query}`",
+            "timeout": "Search query selection timed out"
+        },
+        "added": {
+            "playlist": {
+                "top": "Added playlist to the start of the queue",
+                "end": "Added playlist to the queue"
+            },
+            "song": {
+                "top": "Added track to the start of the queue",
+                "end": "Added track to the queue"
+            },
+            "un": "Unadded item from queue" 
+        },
         "stop": "Parou a música",
         "ended": "A música terminou",
         "notinvc": "Não estou em uma chamada de voz!",
@@ -33,14 +55,14 @@
         "np": "Agora tocando",
         "alrplaying": "Eu já estou tocando música!",
         "join": {
-            "joined": "Me juntei ao {vc} e mandando mensagens para {txt}",
+            "ed": "Me juntei ao {vc} e mandando mensagens para {txt}",
             "move": "Para me mover forçadamente, use o comando de mover."
         },
         "left": "Saiu da chamada de voz!",
         "pause": {
             "alr": "O player já está pausado.",
-            "paused": "Pausado",
-            "resumed": "Retomado"
+            "ed": "Pausado",
+            "un": "Retomado"
         },
         "vcupdate": {
             "reason": "Razão:",
@@ -93,20 +115,22 @@
             }
         },
         "queue": {
-            "shufflealr": "Você já votou para colocar a fila no aleatório!",
-            "shuffling": "Colocar fila no aleatório?",
-            "shuffled": "Fila no aleatório",
             "cleared": "Fila limpa",
             "reversed": "Fila invertida",
             "indexnotfound": "O índice {index} da música não está na fila!",
-            "loopalr": "Você já votou para alternar o loop da fila!",
-            "looping": {
-                "on": "Repetir a fila?",
-                "off": "Tirar a fila de repetição?"
+            "shuffle": {
+                "alr": "Você já votou para colocar a fila no aleatório!",
+                "ing": "Colocar fila no aleatório?",
+                "ed": "Fila no aleatório"
             },
             "loop": {
-                "on": "Agora repetindo a fila!",
-                "off": "Não mais repetindo a fila!"
+                "alr": "Você já votou para alternar o loop da fila!",
+                "ing": {
+                    "on": "Repetir a fila?",
+                    "off": "Tirar a fila de repetição?"
+                },
+                "on": "Agora repetindo a fila",
+                "off": "Não mais repetindo a fila"
             }
         },
         "volume": {

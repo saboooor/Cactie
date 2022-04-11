@@ -19,9 +19,9 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error(message.lang.music.queue.shufflealr, message, true);
+				if (alr) return client.error(message.lang.music.queue.shuffle.alr, message, true);
 				player.shuffleAmount.push(message.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `<:shuffle:${shuffle}> **${message.lang.music.queue.shuffling}** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
+				if (player.shuffleAmount.length < requiredAmount) return message.reply({ content: `<:shuffle:${shuffle}> **${message.lang.music.queue.shuffle.ing}** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
 				player.shuffleAmount = null;
 			}
 
@@ -29,7 +29,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:shuffle:${shuffle}> **${message.lang.music.queue.shuffled}**`)
+				.setDescription(`<:shuffle:${shuffle}> **${message.lang.music.queue.shuffle.ed}**`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ShuffleEmbed] });
 		}

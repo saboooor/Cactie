@@ -21,7 +21,7 @@ module.exports = {
 			// Unpause player and reply
 			player.pause(false);
 			const ResEmbed = new EmbedBuilder()
-				.setDescription(`<:play:${play}> **${message.lang.music.pause.resumed}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:play:${play}> **${message.lang.music.pause.un}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);
 			const resmsg = await message.reply({ embeds: [ResEmbed] });

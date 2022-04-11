@@ -23,7 +23,7 @@ module.exports = {
 			// Send message to channel with current song
 			const song = player.queue.current;
 			const PauseEmbed = new EmbedBuilder()
-				.setDescription(`<:pause:${pause}> **${message.lang.music.pause.paused}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:pause:${pause}> **${message.lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);
 			const pausemsg = await message.reply({ embeds: [PauseEmbed] });
