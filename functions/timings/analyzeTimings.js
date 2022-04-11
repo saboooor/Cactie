@@ -230,7 +230,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	if (issues.length >= 13) {
 		TimingsEmbed.toJSON().fields.splice(12, issues.length);
 		TimingsEmbed.addFields({ name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
-		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • ${message.lang.page.replace('${1}', '1').replace('${2}', Math.ceil(issues.length / 12))}`, iconURL: message.member.user.avatarURL() });
+		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • ${message.lang.page.replace('{1}', '1').replace('{2}', Math.ceil(issues.length / 12))}`, iconURL: message.member.user.avatarURL() });
 		components.push(
 			new ActionRowBuilder()
 				.addComponents(

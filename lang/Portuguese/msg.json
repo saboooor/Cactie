@@ -5,13 +5,13 @@
         "set": "Sua linguagem pessoal foi selecionada para Português!",
         "invalid": "**Linguagem inválida!**\nPor favor use uma linguagem da lista abaixo:"
     },
-    "prefix": "**Meu prefixo é `${pfx}`**\nSe meus comandos não funcionarem:\n- tente usar barra comandos (/)\n- Use minha menção como um prefixo (${usr})",
+    "prefix": "**Meu prefixo é `{pfx}`**\nSe meus comandos não funcionarem:\n- tente usar barra comandos (/)\n- Use minha menção como um prefixo ({usr})",
     "off": "Desligado",
     "on": "Ligado",
     "refresh": "Recarregar",
     "rolereq": "Você precisa do papel de ${role} para fazer isso!",
-    "permreq": "Você precisa da permissão ${perm} para fazer isso!",
-    "page": "Página ${1} de ${2}",
+    "permreq": "Você precisa da permissão {perm} para fazer isso!",
+    "page": "Página {1} de {2}",
     "invalidmember": "Membro inválido! Ele está nesse servidor?",
     "dashboard": {
         "name": "Painel de controle",
@@ -76,7 +76,7 @@
             "skipping": "Pular faixa?",
             "forceskipmsg": "Use `/skip` para pular ou `/forceskip` para forçar o pulo.",
             "skipped": "Pulou",
-            "skipto": "Pulou ${amnt} músicas",
+            "skipto": "Pulou {amnt} músicas",
             "loopalr": "Você já votou para alternar o loop da faixa!",
             "looping": {
                 "on": "Colocar a faixa em repetição?",
@@ -98,7 +98,7 @@
             "shuffled": "Fila no aleatório",
             "cleared": "Fila limpa",
             "reversed": "Fila invertida",
-            "indexnotfound": "O índice ${index} da música não está na fila!",
+            "indexnotfound": "O índice {index} da música não está na fila!",
             "loopalr": "Você já votou para alternar o loop da fila!",
             "looping": {
                 "on": "Repetir a fila?",

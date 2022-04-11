@@ -5,13 +5,13 @@
         "set": "Your personal language has been set to English!",
         "invalid": "**Invalid Language!**\nPlease use a language from the list below:"
     },
-    "prefix": "**My prefix is `${pfx}`**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${usr})",
+    "prefix": "**My prefix is `{pfx}`**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix ({usr})",
     "off": "Off",
     "on": "On",
     "refresh": "Refresh",
-    "rolereq": "You need the ${role} role to do that!",
-    "permreq": "You need the ${perm} permission to do that!",
-    "page": "Page ${1} of ${2}",
+    "rolereq": "You need the {role} role to do that!",
+    "permreq": "You need the {perm} permission to do that!",
+    "page": "Page {1} of {2}",
     "invalidmember": "Invalid member! Are they in this server?",
     "dashboard": {
         "name": "Dashboard",
@@ -76,7 +76,7 @@
             "skipping": "Skipping Track?",
             "forceskipmsg": "Use `/skip` to skip or `/forceskip` to force skip.",
             "skipped": "Skipped",
-            "skipto": "Skipped ${amnt} songs",
+            "skipto": "Skipped {amnt} songs",
             "loopalr": "You've already voted to toggle the track loop!",
             "looping": {
                 "on": "Loop the track?",
@@ -98,7 +98,7 @@
             "shuffled": "Shuffled the queue",
             "cleared": "Cleared the queue",
             "reversed": "Reversed the queue",
-            "indexnotfound": "The song index ${index} isn't in the queue!",
+            "indexnotfound": "The song index {index} isn't in the queue!",
             "loopalr": "You've already voted to toggle the queue loop!",
             "looping": {
                 "on": "Loop the queue?",

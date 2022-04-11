@@ -32,7 +32,7 @@ module.exports = {
 			else QueueEmbed.addFields({ name: `<:music:${music}> Queue List`, value: mapped });
 
 			// Set current page number in footer and reply
-			QueueEmbed.setFooter({ text: interaction.lang.page.replace('${1}', page > maxPages ? maxPages : page).replace('${2}', maxPages) });
+			QueueEmbed.setFooter({ text: interaction.lang.page.replace('{1}', page > maxPages ? maxPages : page).replace('{2}', maxPages) });
 			return interaction.message.edit({ embeds: [QueueEmbed] });
 		}
 		catch (err) { client.error(err, interaction); }

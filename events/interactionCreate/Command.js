@@ -111,11 +111,11 @@ module.exports = async (client, interaction) => {
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(interaction.lang.rolereq.replace('${role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
+			return client.error(interaction.lang.rolereq.replace('{role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(interaction.lang.permreq.replace('${perm}', command.permission), interaction, true);
+			return client.error(interaction.lang.permreq.replace('{perm}', command.permission), interaction, true);
 		}
 	}
 

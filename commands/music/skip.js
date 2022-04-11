@@ -24,18 +24,18 @@ module.exports = {
 				if (srvconfig.djrole != 'false') {
 					const role = message.guild.roles.cache.get(srvconfig.djrole);
 					if (!role) return client.error(message.lang.music.dj.notfound, message, true);
-					if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(message.lang.rolereq.replace('${role}', `${role}`), message, true);
+					if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(message.lang.rolereq.replace('{role}', `${role}`), message, true);
 				}
 
 				// Parse index from arg and if index isn't found in queue, send an error
 				const position = Number(args[0]);
-				if (position < 0 || position > player.queue.size) { return client.error(message.lang.music.queue.indexnotfound.replace('${index}', position), message, true); }
+				if (position < 0 || position > player.queue.size) { return client.error(message.lang.music.queue.indexnotfound.replace('{index}', position), message, true); }
 				else if (position) {
 					// Skip to the position and reply
 					player.queue.remove(0, position - 1);
 					player.stop();
 					const SkipEmbed = new EmbedBuilder()
-						.setDescription(`<:skip:${skip}> **${message.lang.music.track.skipto.replace('${amnt}', `${position}`)}**`)
+						.setDescription(`<:skip:${skip}> **${message.lang.music.track.skipto.replace('{amnt}', `${position}`)}**`)
 						.setColor(Math.floor(Math.random() * 16777215))
 						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });

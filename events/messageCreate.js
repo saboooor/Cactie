@@ -87,7 +87,7 @@ module.exports = async (client, message) => {
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: message.lang.prefix.replace('${pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('${usr}', `${client.user}`) });
+			const prefix = await message.reply({ content: message.lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
 			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 
@@ -111,7 +111,7 @@ module.exports = async (client, message) => {
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: message.lang.prefix.replace('${pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('${usr}', `${client.user}`) });
+			const prefix = await message.reply({ content: message.lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
 			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
@@ -208,11 +208,11 @@ module.exports = async (client, message) => {
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(message.lang.rolereq.replace('${role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
+			return client.error(message.lang.rolereq.replace('{role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(message.lang.permreq.replace('${perm}', command.permission), message, true);
+			return client.error(message.lang.permreq.replace('{perm}', command.permission), message, true);
 		}
 	}
 

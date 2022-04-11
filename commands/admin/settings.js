@@ -46,7 +46,7 @@ module.exports = {
 			// Set embed description with page and stuff
 			SettingsEmbed.setDescription(configlist.join('\n'))
 				.addFields({ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' })
-				.setFooter({ text: message.lang.page.replace('${1}', '1').replace('${2}', maxPages) });
+				.setFooter({ text: message.lang.page.replace('{1}', '1').replace('{2}', maxPages) });
 			if (client.user.id == '848775888673439745') SettingsEmbed.addFields({ name: message.lang.dashboard.confusing, value: message.lang.dashboard.use });
 
 			// Add buttons for page changing
