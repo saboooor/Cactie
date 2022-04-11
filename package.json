@@ -13,7 +13,7 @@
     "@discordjs/opus": "^0.5.3",
     "@discordjs/voice": "^0.9.0-dev.1649160496-402514f",
     "body-parser": "^1.20.0",
-    "discord.js": "^14.0.0-dev.1649160496-402514f",
+    "discord.js": "^14.0.0-dev.1649505803-3c0bbac",
     "erela.js": "^2.3.3",
     "eslint": "^8.12.0",
     "express": "^4.17.3",
