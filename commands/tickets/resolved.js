@@ -20,7 +20,10 @@ module.exports = {
 
 			// Ping everyone in the ticket
 			const users = [];
-			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
+			await ticketData.users.forEach(userid => {
+				const ticketmember = message.guild.members.cache.get(userid);
+				if (ticketmember) users.push(ticketmember);
+			});
 
 			// Send message to ticket and log
 			message.reply({ content: `${users}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });

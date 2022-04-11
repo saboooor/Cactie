@@ -22,9 +22,7 @@ module.exports = {
 			if (interaction.channel.name.startsWith('closed')) return client.error('Failed to open ticket, please try again in 10 minutes', interaction, true);
 
 			// Add permissions for each user in the ticket
-			ticketData.users.forEach(userid => {
-				interaction.channel.permissionOverwrites.edit(interaction.guild.members.cache.get(userid), { ViewChannel: true });
-			});
+			await ticketData.users.forEach(userid => interaction.channel.permissionOverwrites.edit(userid, { ViewChannel: true }));
 
 			// Reply with ticket open message
 			const OpenEmbed = new EmbedBuilder()

@@ -69,9 +69,12 @@ module.exports = {
 			// Unresolve ticket
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'resolved', 'false');
 
-			// Get rid of the permissions of the users in the tickets from the ticket itself
-			ticketData.users.forEach(userid => {
-				message.channel.permissionOverwrites.edit(message.guild.members.cache.get(userid), { ViewChannel: false });
+			// Get all the users and get rid of their permissions
+			const users = [];
+			await ticketData.users.forEach(userid => {
+				message.channel.permissionOverwrites.edit(userid, { ViewChannel: false });
+				const ticketmember = message.guild.members.cache.get(userid);
+				if (ticketmember) users.push(ticketmember);
 			});
 
 			// Create a transcript of the ticket
@@ -79,9 +82,7 @@ module.exports = {
 			const link = await getTranscript(messages);
 			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
 
-			// Get all the users and send the embed to their DMs
-			const users = [];
-			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
+			// Send the embed to all the users' DMs
 			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)

@@ -37,7 +37,10 @@ module.exports = {
 
 			// Get users and ping them all with subticket embed
 			const users = [];
-			await ticketData.users.forEach(userid => users.push(message.guild.members.cache.get(userid).user));
+			await ticketData.users.forEach(userid => {
+				const ticketmember = message.guild.members.cache.get(userid);
+				if (ticketmember) users.push(ticketmember);
+			});
 			const CreateEmbed = new EmbedBuilder()
 				.setColor(0x5662f6)
 				.setTitle('Subticket Created')

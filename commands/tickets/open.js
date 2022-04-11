@@ -35,9 +35,7 @@ module.exports = {
 			if (message.channel.name.startsWith('closed')) return client.error('Failed to open ticket, please try again in 10 minutes', message, true);
 
 			// Add permissions to the users in the ticket to view the ticket
-			ticketData.users.forEach(userid => {
-				message.channel.permissionOverwrites.edit(message.guild.members.cache.get(userid), { ViewChannel: true });
-			});
+			await ticketData.users.forEach(userid => message.channel.permissionOverwrites.edit(userid, { ViewChannel: true }));
 
 			// Reply with ticket open message
 			const OpenEmbed = new EmbedBuilder()

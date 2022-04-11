@@ -35,19 +35,20 @@ module.exports = {
 			// Reset resolved state
 			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'resolved', 'false');
 
-			// Remove permissions for each user in the ticket
-			ticketData.users.forEach(userid => {
-				interaction.channel.permissionOverwrites.edit(interaction.guild.members.cache.get(userid).user, { ViewChannel: false });
+			// Get all the users and get rid of their permissions
+			const users = [];
+			await ticketData.users.forEach(userid => {
+				interaction.channel.permissionOverwrites.edit(userid, { ViewChannel: false });
+				const ticketmember = interaction.guild.members.cache.get(userid);
+				if (ticketmember) users.push(ticketmember);
 			});
 
-			// Get the transcript
+			// Create a transcript of the ticket
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
 			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
 
-			// Get users and dm them all with ticket close embed
-			const users = [];
-			await ticketData.users.forEach(userid => users.push(interaction.guild.members.cache.get(userid).user));
+			// Send the embed to all the users' DMs
 			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
