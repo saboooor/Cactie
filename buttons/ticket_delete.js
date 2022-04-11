@@ -23,7 +23,7 @@ module.exports = {
 				const users = [];
 				await ticketData.users.forEach(userid => {
 					const ticketmember = interaction.guild.members.cache.get(userid);
-					if (ticketmember) users.push(ticketmember.user);
+					if (ticketmember) users.push(ticketmember);
 				});
 
 				// Create embed
