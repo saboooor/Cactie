@@ -49,13 +49,13 @@ module.exports = {
 			if (!ApproveEmbed.toJSON().fields && emojis[0]) ApproveEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
 
 			// Delete command message
-			if (!message.commandName) message.delete().catch(err => client.logger.error(err));
+			if (!message.commandName) message.delete().catch(err => client.logger.error(err.stack));
 
 			// Get suggestion thread
 			const thread = message.guild.channels.cache.get(ApproveEmbed.toJSON().url.split('a')[2]);
 
 			// Delete command message
-			if (!message.commandName && !thread) message.delete().catch(err => client.logger.error(err));
+			if (!message.commandName && !thread) message.delete().catch(err => client.logger.error(err.stack));
 
 			// Delete thread if exists with transcript
 			if (thread) {

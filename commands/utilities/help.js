@@ -17,7 +17,7 @@ module.exports = {
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
 			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
-				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => client.logger.error(err));
+				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => client.logger.error(err.stack));
 				require(`../../help/${arg}.js`)(prefix, HelpEmbed, srvconfig);
 			}
 			else if (arg == 'supportpanel') {

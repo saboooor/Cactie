@@ -26,7 +26,7 @@ module.exports = client => {
 					if (this.nowPlayingMessage && this.nowPlayingMessage.embeds[0]) {
 						const NPEmbed = new EmbedBuilder(this.nowPlayingMessage.embeds[0].toJSON());
 						const row = NPEmbed.toJSON().description.startsWith('<:play:948091865977196554> ') ? [queuerow] : [];
-						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: row }).catch(err => client.logger.error(err));
+						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: row }).catch(err => client.logger.error(err.stack));
 					}
 					return this.nowPlayingMessage = message;
 				}
@@ -54,7 +54,7 @@ module.exports = client => {
 	});
 	client.on('raw', (d) => client.manager.updateVoiceState(d));
 	fs.readdir('./events/music/', (err, files) => {
-		if (err) return client.logger.error(err);
+		if (err) return client.logger.error(err.stack);
 		// go through all the files in the events/music folder and register them
 		let amount = 0;
 		files.forEach(file => {

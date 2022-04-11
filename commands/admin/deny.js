@@ -52,7 +52,7 @@ module.exports = {
 			const thread = message.guild.channels.cache.get(DenyEmbed.toJSON().url.split('a')[2]);
 
 			// Delete command message
-			if (!message.commandName && !thread) message.delete().catch(err => client.logger.error(err));
+			if (!message.commandName && !thread) message.delete().catch(err => client.logger.error(err.stack));
 
 			// Delete thread if exists with transcript
 			if (thread) {

@@ -16,7 +16,7 @@ module.exports = {
 				.setTitle(`Deleted ${interaction.channel.name}`)
 				.addFields({ name: '**Transcript**', value: `${link}.txt` })
 				.addFields({ name: '**Deleted by**', value: `${interaction.member.user}` });
-			interaction.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err));
+			interaction.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err.stack));
 
 			// Log and delete the thread
 			client.logger.info(`Deleted subticket #${interaction.channel.name}`);

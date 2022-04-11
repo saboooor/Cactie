@@ -1,7 +1,7 @@
 const fs = require('fs');
 module.exports = client => {
 	fs.readdir('./events/interactionCreate/', (err, files) => {
-		if (err) return client.logger.error(err);
+		if (err) return client.logger.error(err.stack);
 		// go through all the files in the interactionCreate folder and register them
 		let amount = 0;
 		files.forEach(file => {
@@ -14,7 +14,7 @@ module.exports = client => {
 		client.logger.info(`${amount} interaction event listeners loaded`);
 	});
 	fs.readdir('./events/', (err, files) => {
-		if (err) return client.logger.error(err);
+		if (err) return client.logger.error(err.stack);
 		// go through all the files in the events folder and register them
 		let amount = 0;
 		files.forEach(file => {

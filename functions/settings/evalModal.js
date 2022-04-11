@@ -65,7 +65,7 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 				btnint.deferUpdate();
 			});
 			// When the collector stops, delete the message
-			collector.on('end', () => { msg.delete().catch(err => client.logger.error(err)); });
+			collector.on('end', () => { msg.delete().catch(err => client.logger.error(err.stack)); });
 			return;
 		}
 		interaction.deferUpdate();
@@ -99,7 +99,7 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 			menuint.deferUpdate();
 		});
 		menuCollector.on('end', () => {
-			if (menuMsg.content != '\u200b') menuMsg.delete().catch(err => client.logger.error(err));
+			if (menuMsg.content != '\u200b') menuMsg.delete().catch(err => client.logger.error(err.stack));
 			else menuMsg.edit({ components: [] });
 		});
 	}
@@ -119,6 +119,6 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 			updateSettingPanel(SettingsEmbed, SettingsMsg, client, srvconfig, desc);
 			idcollector.stop();
 		});
-		idcollector.on('end', () => idMsg.delete().catch(err => client.logger.error(err)));
+		idcollector.on('end', () => idMsg.delete().catch(err => client.logger.error(err.stack)));
 	}
 };

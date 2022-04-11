@@ -39,7 +39,7 @@ module.exports = {
 					.setTitle(`Deleted ${message.channel.name}`)
 					.addFields({ name: '**Transcript**', value: `${link}.txt` })
 					.addFields({ name: '**Deleted by**', value: `${message.member.user}` });
-				message.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err));
+				message.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err.stack));
 
 				// Log and delete the thread
 				client.logger.info(`Deleted subticket #${message.channel.name}`);

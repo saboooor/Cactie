@@ -1,7 +1,7 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, reaction, user) => {
 	if (user.bot) return;
-	const message = await reaction.message.fetch().catch(err => client.logger.error(err));
+	const message = await reaction.message.fetch().catch(err => client.logger.error(err.stack));
 	if (!message.channel || message.channel.isDM()) return;
 	let emojiId = reaction.emoji.id;
 	if (!emojiId) emojiId = reaction.emoji.name;
@@ -31,7 +31,7 @@ module.exports = async (client, reaction, user) => {
 			client.logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
 		}
 		await sleep(1000);
-		await msg.delete().catch(err => client.logger.error(err));
+		await msg.delete().catch(err => client.logger.error(err.stack));
 	}
 	if (emojiId == '🎫') {
 		if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;

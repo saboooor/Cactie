@@ -42,7 +42,7 @@ module.exports = {
 				if (channel != message.channel) {
 					const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });
 					await sleep(5000);
-					created.delete().catch(err => client.logger.error(err));
+					created.delete().catch(err => client.logger.error(err.stack));
 				}
 				message.delete().catch(err => client.logger.warn(err));
 			}

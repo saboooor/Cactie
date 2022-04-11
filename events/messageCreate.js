@@ -29,7 +29,7 @@ module.exports = async (client, message) => {
 		return message.msgreply(object).catch(err => {
 			client.logger.warn(err);
 			return message.channel.send(object).catch(err => {
-				client.logger.error(err);
+				client.logger.error(err.stack);
 			});
 		});
 	};
@@ -64,7 +64,7 @@ module.exports = async (client, message) => {
 			)
 		)
 	) {
-		message.delete().catch(err => client.logger.error(err));
+		message.delete().catch(err => client.logger.error(err.stack));
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
 		const shortEmbed = new EmbedBuilder()
 			.setColor(Math.floor(Math.random() * 16777215))
@@ -88,7 +88,7 @@ module.exports = async (client, message) => {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: message.lang.prefix.replace('${pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('${usr}', `${client.user}`) });
-			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err)); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 
 		// Check if channel is a ticket
@@ -112,7 +112,7 @@ module.exports = async (client, message) => {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: message.lang.prefix.replace('${pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('${usr}', `${client.user}`) });
-			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err)); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
 	}
@@ -143,7 +143,7 @@ module.exports = async (client, message) => {
 		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
 		if (now < expirationTime && message.author.id != '249638347306303499') {
 			const timeLeft = (expirationTime - now) / 1000;
-			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => client.logger.error(err));
+			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => client.logger.error(err.stack));
 			const cooldownEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
@@ -267,6 +267,6 @@ module.exports = async (client, message) => {
 			.addFields({ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` });
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
-		client.logger.error(err);
+		client.logger.error(err.stack);
 	}
 };
