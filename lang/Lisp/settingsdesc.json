@@ -1,0 +1,22 @@
+{
+    "guildId": "*Thith guild'th Id (Read only)*",
+    "prefix": "*The bot'th prefix*",
+    "language": "*The bot'th default language in the guild*",
+    "reactions": "*Reactth with variouth reactionth on thome wordth (true/false)*\nDo /reactions to thee a litht of them",
+    "leavemessage": "*The meththage when thomeone leaveth the guild. (<meththage>/false)\nVariableth: {UThER MENTION} {UThER TAG}*",
+    "joinmessage": "*The meththage when thomeone jointh the guild. (<meththage>/false)\nVariableth: {UThER MENTION} {UThER TAG}*",
+    "maxppsize": "*Maximum pp thize in boner and inthtaboner commandth (<75)*",
+    "tickets": "*Toggleth the ticket thythtem (buttons/reactions/false)*",
+    "bonercmd": "*Toggleth the boner commandth (true/false)*",
+    "suggestionchannel": "*The channel where the bot putth thuggethtionth in (false/channelId)*",
+    "suggestthreads": "*Createth a thread when a thuggethtion ith created for dithcuththion (true/false)*",
+    "pollchannel": "*The channel where the bot putth pollth in (false/channelId)*",
+    "logchannel": "*The channel where the bot putth variouth logth (false/channelId)*",
+    "ticketcategory": "*The category where the bot createth ticketth in (false/categoryId)*",
+    "supportrole": "*The ticket thupport team role (roleId)*",
+    "ticketmention": "*Pingth every time a new ticket ith created (false/here/everyone/roleId)*",
+    "mutecmd": "*Toggleth the mute command / uthe a mute role (false/timeout/roleId)*",
+    "adminrole": "*The role to replathe the Adminithtrator permiththion (permission/roleId)*",
+    "msgshortener": "*The amount of lineth in a meththage to trigger meththage thhortener (number [0 = false])*",
+    "djrole": "*The DJ feature of the bot that limitth the thkip/etth commandth (false/roleId)*"
+}

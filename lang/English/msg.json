@@ -109,7 +109,7 @@
                 "off": "No longer looping the track!"
             },
             "seek": {
-                "exceed": "Seek duration exceeds Song duration.\nSong duration:",
+                "exceed": "Seek duration exceeds song duration.\nSong duration:",
                 "fwd": "Forward",
                 "rwd": "Rewind"
             }
