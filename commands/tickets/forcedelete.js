@@ -29,7 +29,7 @@ module.exports = {
 			await message.reply({ content: 'Creating transcript...' });
 			const messages = await message.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
-			client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
+			client.logger.info(`Created transcript of ${message.channel.name}: ${link}`);
 
 			// Get list of users for embed
 			const users = [];
@@ -42,7 +42,7 @@ module.exports = {
 			const DelEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${message.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}.txt` })
+				.addFields({ name: '**Transcript**', value: `${link}` })
 				.addFields({ name: '**Deleted by**', value: `${author}` });
 			if (users[0]) DelEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
 

@@ -46,13 +46,13 @@ module.exports = {
 			// Create a transcript of the ticket
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
-			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
+			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}`);
 
 			// Send the embed to all the users' DMs
 			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}.txt` })
+				.addFields({ name: '**Transcript**', value: `${link}` })
 				.addFields({ name: '**Closed by**', value: `${interaction.user}` });
 			if (users[0]) CloseDMEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
 			users.forEach(usr => {

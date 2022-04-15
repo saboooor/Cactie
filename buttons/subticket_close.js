@@ -8,13 +8,13 @@ module.exports = {
 			// Fetch the messages of the channel and get the transcript
 			const messages = await interaction.channel.messages.fetch({ limit: 100 });
 			const link = await getTranscript(messages);
-			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}.txt`);
+			client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}`);
 
 			// Create embed and send it to the main ticket channel
 			const CloseEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${interaction.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}.txt` })
+				.addFields({ name: '**Transcript**', value: `${link}` })
 				.addFields({ name: '**Deleted by**', value: `${interaction.member.user}` });
 			interaction.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err.stack));
 

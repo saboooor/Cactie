@@ -48,13 +48,13 @@ module.exports = {
 				const DelEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${message.channel.name}`)
-					.addFields({ name: '**Transcript**', value: `${link}.txt` })
+					.addFields({ name: '**Transcript**', value: `${link}` })
 					.addFields({ name: '**Deleted by**', value: `${author}` });
 				if (users[0]) DelEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
 
 				// Send embed to ticket log channel
 				await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
-				client.logger.info(`Created transcript of ${message.channel.name}: ${link}.txt`);
+				client.logger.info(`Created transcript of ${message.channel.name}: ${link}`);
 			}
 
 			// Actually delete ticket and ticket database

@@ -57,16 +57,16 @@ module.exports = async (client, member) => {
 	// Create a transcript of the ticket
 	const messages = await channel.messages.fetch({ limit: 100 });
 	const link = await getTranscript(messages);
-	client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
+	client.logger.info(`Created transcript of ${channel.name}: ${link}`);
 
 	// Send the embed to all the users' DMs
 	const CloseDMEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`Closed ${channel.name}`)
-		.addFields({ name: '**Transcript**', value: `${link}.txt` })
+		.addFields({ name: '**Transcript**', value: `${link}` })
 		.addFields({ name: '**Cause**', value: `${member} left the server` });
 	if (users[0]) CloseDMEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
-	client.logger.info(`Created transcript of ${channel.name}: ${link}.txt`);
+	client.logger.info(`Created transcript of ${channel.name}: ${link}`);
 	users.forEach(usr => {
 		usr.send({ embeds: [CloseDMEmbed] })
 			.catch(err => client.logger.warn(err));
