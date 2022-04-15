@@ -31,6 +31,6 @@ module.exports = async function getTranscript(messages) {
 		logs.logs.push(json);
 	});
 	logs.logs.reverse();
-	const balls = await fetch('https://files.smhsmh.club/transcript', { method: 'POST', body: JSON.stringify(logs), headers: { 'Content-Type': 'application/json' } });
+	const balls = await fetch('https://smhsmh.club/transcript', { method: 'POST', body: JSON.stringify(logs), headers: { 'Content-Type': 'application/json' } });
 	return balls.statusText;
 };
