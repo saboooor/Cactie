@@ -1,7 +1,7 @@
 const { MessageAttachment, EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
-const gitUpdate = require('../functions/gitUpdate');
+const gitUpdate = require('../../functions/gitUpdate');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return and also check if message is a github update
 	if (message.webhookId || message.author.bot) return gitUpdate(client, message);
@@ -82,7 +82,7 @@ module.exports = async (client, message) => {
 		srvconfig.prefix = message.content.split('>')[0] + '>';
 	}
 
-	// If message doesn't start with the prefix, if so, return
+	// If message doesn't start with the prefix, return
 	// Also unresolve the ticket if channel is a resolved ticket
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix

@@ -1,5 +1,5 @@
 const { EmbedBuilder, ApplicationCommandType, ActivityType } = require('discord.js');
-const { warn } = require('../lang/int/emoji.json');
+const { warn } = require('../../lang/int/emoji.json');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
 	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Game }], status: 'dnd' });

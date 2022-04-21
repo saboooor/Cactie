@@ -21,6 +21,7 @@
     "formdata-node": "^4.3.2",
     "fs": "^0.0.1-security",
     "google-tts-api": "^2.0.2",
+    "guilded.js": "^0.6.0",
     "hastebin": "^0.2.1",
     "last-fm": "^5.3.0",
     "lavasfy": "^2.3.0",

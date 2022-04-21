@@ -5,7 +5,7 @@ module.exports = client => {
 	client.modals = new Collection();
 	const modalFiles = fs.readdirSync('./modals').filter(file => file.endsWith('.js'));
 	for (const file of modalFiles) {
-		const modal = require(`../modals/${file}`);
+		const modal = require(`../../modals/${file}`);
 		client.modals.set(modal.name, modal);
 		amount = amount + 1;
 	}

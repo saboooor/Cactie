@@ -1,9 +1,9 @@
 const { Manager, Structure } = require('erela.js');
 const { LavasfyClient } = require('lavasfy');
-const compressEmbed = require('../functions/compressEmbed.js');
-const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
+const compressEmbed = require('../../functions/compressEmbed.js');
+const { nodes, SpotifyID, SpotifySecret } = require('../../config/music.json');
 const fs = require('fs');
-const { refresh } = require('../lang/int/emoji.json');
+const { refresh } = require('../../lang/int/emoji.json');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const queuerow = new ActionRowBuilder()
 	.addComponents(
@@ -59,7 +59,7 @@ module.exports = client => {
 		let amount = 0;
 		files.forEach(file => {
 			if (!file.endsWith('.js')) return;
-			const event = require(`../events/music/${file}`);
+			const event = require(`../../events/music/${file}`);
 			const eventName = file.split('.')[0];
 			client.manager.on(eventName, event.bind(null, client));
 			amount = amount + 1;

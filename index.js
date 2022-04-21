@@ -1,29 +1,40 @@
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
-const client = new Client({
+
+const D = require('discord.js');
+const discord = new D.Client({
 	shards: 'auto',
 	partials: [
-		Partials.Message,
-		Partials.Channel,
-		Partials.Reaction,
-		Partials.GuildMember,
-		Partials.User,
+		D.Partials.Message,
+		D.Partials.Channel,
+		D.Partials.Reaction,
+		D.Partials.GuildMember,
+		D.Partials.User,
 	],
 	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildBans,
-		GatewayIntentBits.GuildPresences,
-		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.DirectMessages,
-		GatewayIntentBits.GuildVoiceStates,
-		GatewayIntentBits.MessageContent,
+		D.GatewayIntentBits.Guilds,
+		D.GatewayIntentBits.GuildMessages,
+		D.GatewayIntentBits.GuildMembers,
+		D.GatewayIntentBits.GuildBans,
+		D.GatewayIntentBits.GuildPresences,
+		D.GatewayIntentBits.GuildMessageReactions,
+		D.GatewayIntentBits.DirectMessages,
+		D.GatewayIntentBits.GuildVoiceStates,
+		D.GatewayIntentBits.MessageContent,
 	],
 	allowedMentions: {
 		parse: ['users', 'roles', 'everyone'],
 		repliedUser: false,
 	},
 });
-client.startTimestamp = Date.now();
-for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(client);
+discord.type = 'discord';
+discord.startTimestamp = Date.now();
+for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(discord);
+for (const handler of fs.readdirSync('./handlers/discord').filter(file => file.endsWith('.js'))) require(`./handlers/discord/${handler}`)(discord);
+
+const { guildedtoken } = require('./config/bot.json');
+const G = require('guilded.js');
+const guilded = new G.Client({ token: guildedtoken });
+guilded.type = 'guilded';
+guilded.startTimestamp = Date.now();
+for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(guilded);
+for (const handler of fs.readdirSync('./handlers/guilded').filter(file => file.endsWith('.js'))) require(`./handlers/guilded/${handler}`)(guilded);

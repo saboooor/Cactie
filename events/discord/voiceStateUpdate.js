@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { play, pause } = require('../lang/int/emoji.json');
+const { play, pause } = require('../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	const guildId = newState.guild.id;

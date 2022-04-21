@@ -1,5 +1,5 @@
 const { WebSocketServer } = require('ws');
-const { wsport } = require('../config/bot.json');
+const { wsport } = require('../../config/bot.json');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = client => {
 	if (!wsport) return client.logger.info('Skipped websocket server loading!');

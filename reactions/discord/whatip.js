@@ -1,4 +1,4 @@
-const servers = require('../config/pterodactyl.json');
+const servers = require('../../config/pterodactyl.json');
 module.exports = {
 	name: 'whatip',
 	triggers: ['what'],

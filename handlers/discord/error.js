@@ -24,5 +24,6 @@ module.exports = client => {
 			message.channel.send({ embeds: [errEmbed], components: row });
 		});
 	};
+	client.rest.on('rateLimited', (info) => client.logger.warn(`Encountered ${info.method} rate limit!`));
 	client.logger.info('Error Handler Loaded');
 };

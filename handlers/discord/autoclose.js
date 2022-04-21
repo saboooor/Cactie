@@ -1,7 +1,7 @@
 const { schedule } = require('node-cron');
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const getTranscript = require('../functions/getTranscript.js');
+const getTranscript = require('../../functions/getTranscript.js');
 module.exports = client => {
 	schedule('0 0 * * *', async () => {
 		// Get all users who have voted recently

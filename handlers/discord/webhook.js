@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const { webhookport, voteauth } = require('../config/bot.json');
-const addVote = require('../functions/addVote');
+const { webhookport, voteauth } = require('../../config/bot.json');
+const addVote = require('../../functions/addVote');
 module.exports = client => {
 	if (!webhookport) return client.logger.info('Skipped webhook server loading!');
 	app.use(bodyParser.json());
