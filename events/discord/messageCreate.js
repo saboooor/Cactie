@@ -39,8 +39,8 @@ module.exports = async (client, message) => {
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
-	if (data[0]) message.lang = require(`../lang/${data[0].language}/msg.json`);
-	else message.lang = require(`../lang/${srvconfig.language}/msg.json`);
+	if (data[0]) message.lang = require(`../../lang/${data[0].language}/msg.json`);
+	else message.lang = require(`../../lang/${srvconfig.language}/msg.json`);
 
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
@@ -134,7 +134,7 @@ module.exports = async (client, message) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
 		// Get a random cooldown message
-		const messages = require(`../lang/${message.lang.language.name}/cooldown.json`);
+		const messages = require(`../../lang/${message.lang.language.name}/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -252,7 +252,7 @@ module.exports = async (client, message) => {
 
 	// execute the command
 	try {
-		client.logger.info(`${message.author.tag} issued dash command: ${message.content}, in ${message.guild.name}`);
+		client.logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client);
 	}
 	catch (err) {

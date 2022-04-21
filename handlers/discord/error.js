@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 module.exports = client => {
 	client.error = function error(err, message, userError) {
 		err = err.stack ? err.stack : err;
-		client.logger.error(err.stack);
+		client.logger.error(err);
 		const errEmbed = new EmbedBuilder()
 			.setColor(0xE74C3C)
 			.setTitle('An error has occured!')
