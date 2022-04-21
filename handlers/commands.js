@@ -4,11 +4,11 @@ module.exports = client => {
 	let amount = 0;
 	client.cooldowns = new Collection();
 	client.commands = new Collection();
-	const commandFolders = readdirSync(`./${client.type}cmds`);
+	const commandFolders = readdirSync(`./${client.type.name}cmds`);
 	for (const folder of commandFolders) {
-		const commandFiles = readdirSync(`./${client.type}cmds/${folder}`).filter(file => file.endsWith('.js') && folder != 'message');
+		const commandFiles = readdirSync(`./${client.type.name}cmds/${folder}`).filter(file => file.endsWith('.js') && folder != 'message');
 		for (const file of commandFiles) {
-			const command = require(`../${client.type}cmds/${folder}/${file}`);
+			const command = require(`../${client.type.name}cmds/${folder}/${file}`);
 			client.commands.set(command.name, command);
 			amount = amount + 1;
 		}

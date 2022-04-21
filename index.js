@@ -26,7 +26,7 @@ const discord = new D.Client({
 		repliedUser: false,
 	},
 });
-discord.type = 'discord';
+discord.type = { color: '\u001b[34m', name: 'discord' };
 discord.startTimestamp = Date.now();
 for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(discord);
 for (const handler of fs.readdirSync('./handlers/discord').filter(file => file.endsWith('.js'))) require(`./handlers/discord/${handler}`)(discord);
@@ -34,7 +34,7 @@ for (const handler of fs.readdirSync('./handlers/discord').filter(file => file.e
 const { guildedtoken } = require('./config/bot.json');
 const G = require('guilded.js');
 const guilded = new G.Client({ token: guildedtoken });
-guilded.type = 'guilded';
+guilded.type = { color: '\u001b[33m', name: 'guilded' };
 guilded.startTimestamp = Date.now();
 for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(guilded);
 for (const handler of fs.readdirSync('./handlers/guilded').filter(file => file.endsWith('.js'))) require(`./handlers/guilded/${handler}`)(guilded);
