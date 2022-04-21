@@ -20,8 +20,8 @@ module.exports = async (client, oldState, newState) => {
 	const srvconfig = await client.getData('settings', 'guildId', guildId);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${song.requester.id}'`);
 	let lang;
-	if (data[0]) lang = require(`../lang/${data[0].language}/msg.json`);
-	else lang = require(`../lang/${srvconfig.language}/msg.json`);
+	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
+	else lang = require(`../../lang/${srvconfig.language}/msg.json`);
 
 	const PauseEmbed = new EmbedBuilder()
 		.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
