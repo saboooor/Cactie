@@ -1,4 +1,4 @@
-# Cactie Discord Bot
+# Cactie Discord/Guilded Bot
 <p align="center">
   <img src="https://cactie.smhsmh.club/assets/images/Cactie.png" width="20%" alt="Cactie">
 </p>
