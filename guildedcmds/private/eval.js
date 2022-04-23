@@ -8,7 +8,7 @@ module.exports = {
 	// eslint-disable-next-line no-unused-vars
 	async execute(message, args, client) {
 		// Check if user is sab lolololol
-		if (message.author.id !== 'AYzRpEe4') return client.error('You can\'t do that!', message, true);
+		if (message.createdById !== 'AYzRpEe4') return client.error('You can\'t do that!', message, true);
 		try {
 			const code = args.join(' ');
 			let evaled = eval(code);
