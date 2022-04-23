@@ -32,8 +32,10 @@ module.exports = {
 			if (logchannel) {
 				const ClearEmbed = new EmbedBuilder()
 					.setTitle(`${message.member.user.tag} cleared ${args[0]} messages`)
-					.addFields({ name: 'Channel', value: `${message.channel}` })
-					.addFields({ name: 'Transcript', value: `${await getTranscript(messages)}` });
+					.addFields([
+						{ name: 'Channel', value: `${message.channel}` },
+						{ name: 'Transcript', value: `${await getTranscript(messages)}` },
+					]);
 				logchannel.send({ embeds: [ClearEmbed] });
 			}
 		}

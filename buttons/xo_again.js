@@ -2,12 +2,12 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { x, o, empty, refresh } = require('../lang/int/emoji.json');
 const evalXO = require('../functions/evalXO.js');
 const again = new ActionRowBuilder()
-	.addComponents(new ButtonBuilder()
+	.addComponents([new ButtonBuilder()
 		.setCustomId('xo_again')
 		.setEmoji({ id: refresh })
 		.setLabel('Play Again')
 		.setStyle(ButtonStyle.Secondary),
-	);
+	]);
 module.exports = {
 	name: 'xo_again',
 	ephemeral: true,
@@ -25,12 +25,12 @@ module.exports = {
 			.setDescription(`${interaction.user} wants to play again!`)
 			.setFooter({ text: 'Click the button below to respond!' });
 		const againlink = new ActionRowBuilder()
-			.addComponents(new ButtonBuilder()
+			.addComponents([new ButtonBuilder()
 				.setURL(interaction.message.url)
 				.setEmoji({ id: refresh })
 				.setLabel('Play Tic Tac Toe')
 				.setStyle(ButtonStyle.Link),
-			);
+			]);
 		const dmuser = xuserId == interaction.user.id ? ouser : xuser;
 		dmuser.send({ embeds: [playAgainEmbed], components: [againlink] });
 		let turn = Math.round(Math.random());
@@ -43,11 +43,11 @@ module.exports = {
 					.setCustomId(`${column}${row}`)
 					.setEmoji({ id: empty })
 					.setStyle(ButtonStyle.Secondary);
-				rows[row - 1].addComponents(btns[`${column}${row}`]);
+				rows[row - 1].addComponents([btns[`${column}${row}`]]);
 			}
 		}
 		TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` })
+			.setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` }])
 			.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 
 		const xomsg = await interaction.message.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
@@ -65,7 +65,7 @@ module.exports = {
 			}
 			turn = !turn;
 			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` })
+				.setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` }])
 				.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
 			const reslist = Object.keys(btns).map(i => { return `${btns[i].toJSON().style}`; });
@@ -77,7 +77,7 @@ module.exports = {
 				const xwin = win.winner == 'x';
 				Object.keys(btns).map(i => { btns[i].setDisabled(true); });
 				TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
-					.setFields({ name: 'Result:', value: `${xwin ? xuser : ouser} wins!` })
+					.setFields([{ name: 'Result:', value: `${xwin ? xuser : ouser} wins!` }])
 					.setThumbnail(xwin ? xuser.user.avatarURL() : ouser.user.avatarURL());
 				rows.push(again);
 				xomsg.edit({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
@@ -89,7 +89,7 @@ module.exports = {
 			Object.keys(btns).map(i => { if (!btns[i].toJSON().disabled) draw = false; });
 			if (draw) {
 				TicTacToe.setColor(0xff00ff)
-					.setFields({ name: 'Result:', value: 'Draw!' })
+					.setFields([{ name: 'Result:', value: 'Draw!' }])
 					.setThumbnail();
 				rows.push(again);
 				return xomsg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();

@@ -17,13 +17,13 @@ module.exports = {
 				.setTitle(pong[0])
 				.setDescription(`**${message.lang.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${message.lang.ping.api}** ${client.ws.ping}ms`);
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('ping_again')
 						.setEmoji({ id: refresh })
 						.setLabel(message.lang.refresh)
 						.setStyle(ButtonStyle.Secondary),
-				);
+				]);
 
 			// reply with embed
 			const pingmsg = await message.reply({ embeds: [PingEmbed], components: [row] });

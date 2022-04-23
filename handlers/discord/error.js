@@ -12,12 +12,12 @@ module.exports = client => {
 		if (!userError) {
 			errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Cactie Support Discord Server.' });
 			row.push(new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/discord')
 						.setLabel('Support Server')
 						.setStyle(ButtonStyle.Link),
-				));
+				]));
 		}
 		message.reply({ embeds: [errEmbed], components: row }).catch(err => {
 			client.logger.warn(err);

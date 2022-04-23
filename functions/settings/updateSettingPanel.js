@@ -2,7 +2,7 @@ const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const modal = require('../../lang/int/settingsmodal.json');
 const { left, right, on, off } = require('../../lang/int/emoji.json');
 const pages = new ActionRowBuilder()
-	.addComponents(
+	.addComponents([
 		new ButtonBuilder()
 			.setCustomId('settings_page_prev')
 			.setEmoji({ id: left })
@@ -11,7 +11,7 @@ const pages = new ActionRowBuilder()
 			.setCustomId('settings_page_next')
 			.setEmoji({ id: right })
 			.setStyle(ButtonStyle.Secondary),
-	);
+	]);
 module.exports = async function updateSettingPanel(SettingsEmbed, SettingsMsg, client, srvconfig, desc, newPage) {
 	srvconfig = await client.getData('settings', 'guildId', srvconfig.guildId);
 	const maxPages = Math.ceil(Object.keys(srvconfig).length / 5);
@@ -32,7 +32,7 @@ module.exports = async function updateSettingPanel(SettingsEmbed, SettingsMsg, c
 				.setEmoji({ id: srvconfig[prop] == 'false' ? off : on });
 		}
 		if (prop == 'guildId') btn.setStyle(ButtonStyle.Danger).setLabel('Reset');
-		settingbtns.addComponents(btn);
+		settingbtns.addComponents([btn]);
 		return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 	});
 

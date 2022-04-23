@@ -27,12 +27,12 @@ If after step 3, you do not see a box that says \`Message @${srvs[0].link.botnam
 **2.** Click Privacy \`Settings\`
 **3.** Enable the setting labeled \`Allow direct messages from server members\`.`);
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('create_ticket')
 						.setLabel('Still have an issue? Create a ticket by clicking here!')
 						.setStyle(ButtonStyle.Secondary),
-				);
+				]);
 			message.reply({ embeds: [LinkEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, message); }

@@ -11,16 +11,16 @@ module.exports = {
 			const modal = new ModalBuilder()
 				.setTitle('Create Subticket')
 				.setCustomId('subticket_create')
-				.addComponents(
-					new ActionRowBuilder().addComponents(
+				.addComponents([
+					new ActionRowBuilder().addComponents([
 						new TextInputBuilder()
 							.setCustomId('description')
 							.setLabel('Please explain your issue before opening.')
 							.setStyle(TextInputStyle.Paragraph)
 							.setMinLength(10)
 							.setMaxLength(1024),
-					),
-				);
+					]),
+				]);
 			interaction.showModal(modal);
 		}
 		catch (err) { client.error(err, interaction); }

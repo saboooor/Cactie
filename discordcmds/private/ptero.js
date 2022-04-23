@@ -33,14 +33,14 @@ module.exports = {
 			if (usages.current_state == 'stopping') PteroEmbed.setColor(0xFF6400);
 			if (usages.current_state == 'offline') PteroEmbed.setColor(0xE74C3C);
 			if (usages.current_state == 'starting') PteroEmbed.setColor(0xFF6400);
-			if (info.node) PteroEmbed.addFields({ name: '**Node:**', value: info.node, inline: true });
-			if (info.docker_image) PteroEmbed.addFields({ name: '**Docker Image:**', value: info.docker_image, inline: true });
-			if (usages.resources.cpu_absolute) PteroEmbed.addFields({ name: '**CPU Usage:**', value: `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, inline: true });
-			if (usages.resources.memory_bytes) PteroEmbed.addFields({ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true });
-			if (usages.resources.network_tx_bytes) PteroEmbed.addFields({ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true });
-			if (usages.resources.network_rx_bytes) PteroEmbed.addFields({ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true });
+			if (info.node) PteroEmbed.addFields([{ name: '**Node:**', value: info.node, inline: true }]);
+			if (info.docker_image) PteroEmbed.addFields([{ name: '**Docker Image:**', value: info.docker_image, inline: true }]);
+			if (usages.resources.cpu_absolute) PteroEmbed.addFields([{ name: '**CPU Usage:**', value: `${usages.resources.cpu_absolute}% / ${info.limits.cpu}%`, inline: true }]);
+			if (usages.resources.memory_bytes) PteroEmbed.addFields([{ name: '**RAM Usage:**', value: `${Math.round(usages.resources.memory_bytes / 1048576)} MB / ${info.limits.memory} MB`, inline: true }]);
+			if (usages.resources.network_tx_bytes) PteroEmbed.addFields([{ name: '**Network Sent:**', value: `${Math.round(usages.resources.network_tx_bytes / 1048576)} MB`, inline: true }]);
+			if (usages.resources.network_rx_bytes) PteroEmbed.addFields([{ name: '**Network Recieved:**', value: `${Math.round(usages.resources.network_rx_bytes / 1048576)} MB`, inline: true }]);
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('ptero_start')
 						.setLabel('Start')
@@ -62,7 +62,7 @@ module.exports = {
 						.setLabel(message.lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Success),
-				);
+				]);
 			const pteroMsg = await message.reply({ embeds: [PteroEmbed], components: [row] });
 
 			const filter = i => i.user.id == message.member.id && i.customId.startsWith('ptero_');

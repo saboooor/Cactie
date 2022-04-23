@@ -46,7 +46,7 @@ module.exports = async (client) => {
 				const AlertEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setDescription(`<:alert:${warn}> **Left because of 5 minutes of inactivity!**`)
-					.addFields({ name: 'Tired of me leaving?', value: 'Enable the **24/7** mode with the /247 command!' })
+					.addFields([{ name: 'Tired of me leaving?', value: 'Enable the **24/7** mode with the /247 command!' }])
 					.setFooter({ text: client.user.username, iconURL: client.user.avatarURL() });
 				const guild = client.guilds.cache.get(player.guild);
 				const channel = guild.channels.cache.get(player.textChannel);

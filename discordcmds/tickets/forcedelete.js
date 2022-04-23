@@ -42,9 +42,11 @@ module.exports = {
 			const DelEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${message.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}` })
-				.addFields({ name: '**Deleted by**', value: `${author}` });
-			if (users[0]) DelEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
+				.addFields([
+					{ name: '**Transcript**', value: `${link}` },
+					{ name: '**Deleted by**', value: `${author}` },
+				]);
+			if (users[0]) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 
 			// Check if ticket log channel is set in settings and send the embed to the log channel
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

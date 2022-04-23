@@ -48,7 +48,7 @@ module.exports = {
 				.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 
 			// Add description if specified
-			if (args[0]) CreateEmbed.addFields({ name: 'Description', value: args.join(' ') });
+			if (args[0]) CreateEmbed.addFields([{ name: 'Description', value: args.join(' ') }]);
 
 			// Ping the staff if enabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -60,13 +60,13 @@ module.exports = {
 			if (srvconfig.tickets == 'buttons') {
 				CreateEmbed.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 				const row = new ActionRowBuilder()
-					.addComponents(
+					.addComponents([
 						new ButtonBuilder()
 							.setCustomId('close_subticket')
 							.setLabel('Close Subticket')
 							.setEmoji({ name: '🔒' })
 							.setStyle(ButtonStyle.Danger),
-					);
+					]);
 				await subticket.send({ content: `${users}${ping ? ping : ''}`, embeds: [CreateEmbed], components: [row] });
 			}
 			else if (srvconfig.tickets == 'reactions') {

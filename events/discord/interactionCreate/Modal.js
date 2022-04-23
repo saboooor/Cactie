@@ -25,10 +25,12 @@ module.exports = async (client, interaction) => {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-			.addFields({ name: '**Type:**', value: 'Modal' })
-			.addFields({ name: '**Interaction:**', value: modal.name })
-			.addFields({ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` });
-		if (interaction.guild) interactionFailed.addFields({ name: '**Guild:**', value: interaction.guild.name }).addFields({ name: '**Channel:**', value: interaction.channel.name });
+			.addFields([
+				{ name: '**Type:**', value: 'Modal' },
+				{ name: '**Interaction:**', value: modal.name },
+				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
+			]);
+		if (interaction.guild) interactionFailed.addFields({ name: '**Guild:**', value: interaction.guild.name }, { name: '**Channel:**', value: interaction.channel.name });
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
 		client.logger.error(err.stack);

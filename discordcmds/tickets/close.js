@@ -37,8 +37,10 @@ module.exports = {
 				const CloseEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle(`Deleted ${message.channel.name}`)
-					.addFields({ name: '**Transcript**', value: `${link}` })
-					.addFields({ name: '**Deleted by**', value: `${message.member.user}` });
+					.addFields([
+						{ name: '**Transcript**', value: `${link}` },
+						{ name: '**Deleted by**', value: `${message.member.user}` },
+					]);
 				message.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err.stack));
 
 				// Log and delete the thread
@@ -86,9 +88,11 @@ module.exports = {
 			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${message.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}` })
-				.addFields({ name: '**Closed by**', value: `${author}` });
-			if (users[0]) CloseDMEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
+				.addFields([
+					{ name: '**Transcript**', value: `${link}` },
+					{ name: '**Closed by**', value: `${author}` },
+				]);
+			if (users[0]) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 			users.forEach(usr => {
 				usr.send({ embeds: [CloseDMEmbed] })
 					.catch(err => client.logger.warn(err));
@@ -103,7 +107,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.tickets == 'buttons') {
 				const row = new ActionRowBuilder()
-					.addComponents(
+					.addComponents([
 						new ButtonBuilder()
 							.setCustomId('delete_ticket')
 							.setLabel('Delete Ticket')
@@ -114,7 +118,7 @@ module.exports = {
 							.setLabel('Reopen Ticket')
 							.setEmoji({ name: '🔓' })
 							.setStyle(ButtonStyle.Primary),
-					);
+					]);
 				message.reply({ embeds: [CloseEmbed], components: [row] });
 			}
 			else {

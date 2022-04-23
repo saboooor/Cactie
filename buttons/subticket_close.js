@@ -14,8 +14,10 @@ module.exports = {
 			const CloseEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Deleted ${interaction.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}` })
-				.addFields({ name: '**Deleted by**', value: `${interaction.member.user}` });
+				.addFields([
+					{ name: '**Transcript**', value: `${link}` },
+					{ name: '**Deleted by**', value: `${interaction.member.user}` },
+				]);
 			interaction.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err.stack));
 
 			// Log and delete the thread

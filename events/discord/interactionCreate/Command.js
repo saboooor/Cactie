@@ -79,18 +79,16 @@ module.exports = async (client, interaction) => {
 			const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setURL('https://top.gg/bot/848775888673439745/vote')
 						.setLabel('top.gg')
 						.setStyle(ButtonStyle.Link),
-				)
-				.addComponents(
 					new ButtonBuilder()
 						.setURL('https://discordbotlist.com/bots/pup/upvote')
 						.setLabel('dbl.com')
 						.setStyle(ButtonStyle.Link),
-				);
+				]);
 			return interaction.reply({ embeds: [errEmbed], components: [row] });
 		}
 	}
@@ -168,11 +166,13 @@ module.exports = async (client, interaction) => {
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
-			.addFields({ name: '**Type:**', value: 'Slash' })
-			.addFields({ name: '**Interaction:**', value: command.name })
-			.addFields({ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` })
-			.addFields({ name: '**Guild:**', value: interaction.guild.name })
-			.addFields({ name: '**Channel:**', value: interaction.channel.name });
+			.addFields([
+				{ name: '**Type:**', value: 'Slash' },
+				{ name: '**Interaction:**', value: command.name },
+				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
+				{ name: '**Guild:**', value: interaction.guild.name },
+				{ name: '**Channel:**', value: interaction.channel.name },
+			]);
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
 		client.logger.error(err.stack);

@@ -4,12 +4,12 @@ module.exports = {
 	description: 'shows a modal (for testing)',
 	async execute(message) {
 		const row = new ActionRowBuilder()
-			.addComponents(
+			.addComponents([
 				new ButtonBuilder()
 					.setCustomId('show_modal')
 					.setLabel('Show modal')
 					.setStyle(ButtonStyle.Primary),
-			);
+			]);
 		const modalMsg = await message.reply({ content: 'balls', components: [row] });
 
 		const collector = modalMsg.createMessageComponentCollector({ time: 240000 });
@@ -18,19 +18,19 @@ module.exports = {
 				.setTitle('i wanna off myself')
 				.setCustomId('huh');
 			const rows = [];
-			rows.push(new ActionRowBuilder().addComponents(
+			rows.push(new ActionRowBuilder().addComponents([
 				new TextInputComponent()
 					.setCustomId('modal_long_text')
 					.setLabel('Paragraph Text')
 					.setStyle(TextInputStyle.Paragraph),
-			));
-			rows.push(new ActionRowBuilder().addComponents(
+			]));
+			rows.push(new ActionRowBuilder().addComponents([
 				new TextInputComponent()
 					.setCustomId('modal_short_text')
 					.setLabel('Short Text')
 					.setStyle(TextInputStyle.Short),
-			));
-			modal.addComponents(...rows);
+			]));
+			modal.addComponents(rows);
 			await interaction.showModal(modal);
 		});
 	},

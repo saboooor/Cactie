@@ -21,7 +21,7 @@ module.exports = {
 					.setCustomId(`${column}${row}`)
 					.setEmoji({ id: empty })
 					.setStyle(ButtonStyle.Secondary);
-				rows[row].addComponents(btns[`${column}${row}`]);
+				rows[row].addComponents([btns[`${column}${row}`]]);
 			}
 		}
 		const btnMsg = await message.reply({ content: '\u200b', components: rows });

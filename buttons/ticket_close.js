@@ -52,9 +52,11 @@ module.exports = {
 			const CloseDMEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`Closed ${interaction.channel.name}`)
-				.addFields({ name: '**Transcript**', value: `${link}` })
-				.addFields({ name: '**Closed by**', value: `${interaction.user}` });
-			if (users[0]) CloseDMEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
+				.addFields([
+					{ name: '**Transcript**', value: `${link}` },
+					{ name: '**Closed by**', value: `${interaction.user}` },
+				]);
+			if (users[0]) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 			users.forEach(usr => {
 				usr.send({ embeds: [CloseDMEmbed] })
 					.catch(err => client.logger.warn(err));
@@ -65,7 +67,7 @@ module.exports = {
 				.setColor(0xFF6400)
 				.setDescription(`Ticket Closed by ${interaction.user}`);
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('delete_ticket')
 						.setLabel('Delete Ticket')
@@ -76,7 +78,7 @@ module.exports = {
 						.setLabel('Reopen Ticket')
 						.setEmoji({ name: '🔓' })
 						.setStyle(ButtonStyle.Primary),
-				);
+				]);
 			interaction.reply({ embeds: [CloseEmbed], components: [row] });
 
 			// Log

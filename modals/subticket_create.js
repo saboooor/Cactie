@@ -37,7 +37,7 @@ module.exports = {
 				.setColor(0x5662f6)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
-				.addFields({ name: 'Description', value: interaction.fields.getTextInputValue('description') })
+				.addFields([{ name: 'Description', value: interaction.fields.getTextInputValue('description') }])
 				.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 
 			// Ping the staff if enabled
@@ -48,13 +48,13 @@ module.exports = {
 
 			// Create close button and send panel to subticket
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('close_subticket')
 						.setLabel('Close Subticket')
 						.setEmoji({ name: '🔒' })
 						.setStyle(ButtonStyle.Danger),
-				);
+				]);
 			await subticket.send({ content: `${users}${ping ? ping : ''}`, embeds: [CreateEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, interaction); }

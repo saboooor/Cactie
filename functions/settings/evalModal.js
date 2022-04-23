@@ -1,5 +1,6 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, ModalBuilder, TextInputBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder } = require('@discordjs/builders');
+const { TextInputStyle, ButtonStyle } = require('discord.js');
 const { on, off } = require('../../lang/int/emoji.json');
 const modal = require('../../lang/int/settingsmodal.json');
 const updateSettingPanel = require('./updateSettingPanel.js');
@@ -9,8 +10,8 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 		const propModal = new ModalBuilder()
 			.setTitle('Reset all settings')
 			.setCustomId('settings_reset')
-			.addComponents(
-				new ActionRowBuilder().addComponents(
+			.addComponents([
+				new ActionRowBuilder().addComponents([
 					new TextInputBuilder()
 						.setCustomId('confirm')
 						.setLabel('Do you really want to reset all settings?')
@@ -18,8 +19,8 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 						.setStyle(TextInputStyle.Short)
 						.setMinLength(33)
 						.setMaxLength(33),
-				),
-			);
+				]),
+			]);
 		interaction.showModal(propModal);
 	}
 	if (!modal[setting]) return;
@@ -28,8 +29,8 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 		const propModal = new ModalBuilder()
 			.setTitle(`Set the new value for ${setting}`)
 			.setCustomId('settings_prop')
-			.addComponents(
-				new ActionRowBuilder().addComponents(
+			.addComponents([
+				new ActionRowBuilder().addComponents([
 					new TextInputBuilder()
 						.setCustomId(setting)
 						.setLabel(setting)
@@ -38,8 +39,8 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 						.setStyle(TextInputStyle[modal[setting].style])
 						.setMinLength(modal[setting].min)
 						.setMaxLength(modal[setting].max),
-				),
-			);
+				]),
+			]);
 		interaction.showModal(propModal);
 	}
 	else if (modal[setting].type == 'bool') {
@@ -50,7 +51,7 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 				.setLabel(capFirstLetter(setting))
 				.setStyle(srvconfig[setting] == 'false' ? ButtonStyle.Danger : ButtonStyle.Success)
 				.setEmoji({ id: srvconfig[setting] == 'false' ? off : on });
-			row.addComponents(btn);
+			row.addComponents([btn]);
 			const msg = await SettingsMsg.reply({ content: '\u200b', components: [row] });
 			const filter = i => i.customId.startsWith('settings_') && i.user.id == interaction.member.id;
 			const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
@@ -80,13 +81,13 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 			.setCustomId(`settings_menu_${setting}`)
 			.setPlaceholder(`Select a new value for ${setting}`);
 		modal[setting].options.forEach(option => {
-			menu.addOptions(
+			menu.addOptions([
 				new SelectMenuOptionBuilder()
 					.setLabel(option)
 					.setValue(option),
-			);
+			]);
 		});
-		const row = new ActionRowBuilder().addComponents(menu);
+		const row = new ActionRowBuilder().addComponents([menu]);
 		const menuMsg = await SettingsMsg.reply({ content: '\u200b', components: [row] });
 		const filter = i => i.user.id == interaction.member.id;
 		const menuCollector = menuMsg.createMessageComponentCollector({ filter, time: 60000 });

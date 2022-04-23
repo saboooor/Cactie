@@ -33,7 +33,7 @@ module.exports = {
 
 			// Add reason if specified
 			const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
-			if (reason) BanEmbed.addFields({ name: 'Reason', value: reason });
+			if (reason) BanEmbed.addFields([{ name: 'Reason', value: reason }]);
 
 			// Send ban message to target
 			await user.send({ content: `**You've been banned from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })

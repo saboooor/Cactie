@@ -23,7 +23,7 @@ module.exports = {
 				.setThumbnail(song.img)
 				.setColor(song.color);
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('music_shuffle')
 						.setEmoji({ id: shuffle })
@@ -37,15 +37,15 @@ module.exports = {
 						.setLabel(message.lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
-				);
+				]);
 			if (client.user.id == '848775888673439745') {
-				row.addComponents(
+				row.addComponents([
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/music')
 						.setEmoji({ id: music })
 						.setLabel(message.lang.dashboard.name)
 						.setStyle('LINK'),
-				);
+				]);
 			}
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
 

@@ -46,7 +46,7 @@ module.exports = {
 				if (!emoji) emoji = reaction._emoji.name;
 				emojis.push(`${emoji} **${reaction.count}**`);
 			});
-			if (!ApproveEmbed.toJSON().fields && emojis[0]) ApproveEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
+			if (!ApproveEmbed.toJSON().fields && emojis[0]) ApproveEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
 
 			// Delete command message
 			if (!message.commandName) message.delete().catch(err => client.logger.error(err.stack));
@@ -66,7 +66,7 @@ module.exports = {
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {
 					const link = await getTranscript(messages);
-					ApproveEmbed.addFields({ name: 'View Discussion', value: link });
+					ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
 				}
 				thread.delete();
 			}
@@ -84,7 +84,7 @@ module.exports = {
 						}
 					});
 				}
-				if (newField) ApproveEmbed.addFields({ name: 'Response', value: args.join(' ') });
+				if (newField) ApproveEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 			}
 			ApproveEmbed.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 			if (ApproveEmbed.toJSON().url) {
@@ -100,14 +100,14 @@ module.exports = {
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				ApproveEmbed.setTitle(`${message.member.user.tag} approved a suggestion`).setFields();
-				if (args.join(' ')) ApproveEmbed.addFields({ name: 'Response', value: args.join(' ') });
+				ApproveEmbed.setTitle(`${message.member.user.tag} approved a suggestion`).setFields([]);
+				if (args.join(' ')) ApproveEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 				const msglink = new ActionRowBuilder()
-					.addComponents(new ButtonBuilder()
+					.addComponents([new ButtonBuilder()
 						.setURL(fetchedMsg.url)
 						.setLabel('Go to Message')
 						.setStyle(ButtonStyle.Link),
-					);
+					]);
 				logchannel.send({ embeds: [ApproveEmbed], components: [msglink] });
 			}
 		}

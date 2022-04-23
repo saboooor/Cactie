@@ -2,12 +2,12 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { x, o, empty, refresh } = require('../../lang/int/emoji.json');
 const evalXO = require('../../functions/evalXO.js');
 const again = new ActionRowBuilder()
-	.addComponents(new ButtonBuilder()
+	.addComponents([new ButtonBuilder()
 		.setCustomId('xo_again')
 		.setEmoji({ id: refresh })
 		.setLabel('Play Again')
 		.setStyle(ButtonStyle.Secondary),
-	);
+	]);
 module.exports = {
 	name: 'tictactoe',
 	description: 'Play Tic Tac Toe with an opponent',
@@ -31,13 +31,13 @@ module.exports = {
 					.setCustomId(`${column}${row}`)
 					.setEmoji({ id: empty })
 					.setStyle(ButtonStyle.Secondary);
-				rows[row - 1].addComponents(btns[`${column}${row}`]);
+				rows[row - 1].addComponents([btns[`${column}${row}`]]);
 			}
 		}
 		const TicTacToe = new EmbedBuilder()
 			.setColor(turn ? 0xff0000 : 0x0000ff)
 			.setTitle('Tic Tac Toe')
-			.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` })
+			.setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` }])
 			.setThumbnail(turn ? message.member.user.avatarURL() : member.user.avatarURL())
 			.setDescription(`**X:** ${message.member}\n**O:** ${member}`);
 
@@ -57,7 +57,7 @@ module.exports = {
 			}
 			turn = !turn;
 			TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
-				.setFields({ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` })
+				.setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` }])
 				.setThumbnail(turn ? message.member.user.avatarURL() : member.user.avatarURL());
 			// 2 = empty / 4 = X / 1 = O
 			const reslist = Object.keys(btns).map(i => { return `${btns[i].toJSON().style}`; });
@@ -69,7 +69,7 @@ module.exports = {
 				const xwin = win.winner == 'x';
 				Object.keys(btns).map(i => { btns[i].setDisabled(true); });
 				TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
-					.setFields({ name: 'Result:', value: `${xwin ? message.member : member} wins!` })
+					.setFields([{ name: 'Result:', value: `${xwin ? message.member : member} wins!` }])
 					.setThumbnail(xwin ? message.member.user.avatarURL() : member.user.avatarURL());
 				rows.push(again);
 				xomsg.edit({ content: `${xwin ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
@@ -81,7 +81,7 @@ module.exports = {
 			Object.keys(btns).map(i => { if (!btns[i].toJSON().disabled) draw = false; });
 			if (draw) {
 				TicTacToe.setColor(0xff00ff)
-					.setFields({ name: 'Result:', value: 'Draw!' })
+					.setFields([{ name: 'Result:', value: 'Draw!' }])
 					.setThumbnail();
 				rows.push(again);
 				return xomsg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();

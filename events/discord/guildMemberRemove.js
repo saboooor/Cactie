@@ -63,9 +63,11 @@ module.exports = async (client, member) => {
 	const CloseDMEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`Closed ${channel.name}`)
-		.addFields({ name: '**Transcript**', value: `${link}` })
-		.addFields({ name: '**Cause**', value: `${member} left the server` });
-	if (users[0]) CloseDMEmbed.addFields({ name: '**Users in ticket**', value: `${users}` });
+		.addFields([
+			{ name: '**Transcript**', value: `${link}` },
+			{ name: '**Cause**', value: `${member} left the server` },
+		]);
+	if (users[0]) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 	client.logger.info(`Created transcript of ${channel.name}: ${link}`);
 	users.forEach(usr => {
 		usr.send({ embeds: [CloseDMEmbed] })
@@ -80,7 +82,7 @@ module.exports = async (client, member) => {
 	// If the ticket mode is set to buttons, add the buttons, if not, don't
 	if (srvconfig.tickets == 'buttons') {
 		const row = new ActionRowBuilder()
-			.addComponents(
+			.addComponents([
 				new ButtonBuilder()
 					.setCustomId('delete_ticket')
 					.setLabel('Delete Ticket')
@@ -91,7 +93,7 @@ module.exports = async (client, member) => {
 					.setLabel('Reopen Ticket')
 					.setEmoji({ name: '🔓' })
 					.setStyle(ButtonStyle.Primary),
-			);
+			]);
 		channel.send({ embeds: [CloseEmbed], components: [row] });
 	}
 	else {

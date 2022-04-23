@@ -37,11 +37,11 @@ module.exports = {
 				// add fields for commits
 				h.changes.forEach(commit => {
 					// check if commit description is more than 1000, if so, split it into multiple fields
-					if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields({ name: commit.commit, value: `${chunk}` }); });
-					else JarEmbed.addFields({ name: commit.commit, value: commit.message });
+					if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields([{ name: commit.commit, value: `${chunk}` }]); });
+					else JarEmbed.addFields([{ name: commit.commit, value: commit.message }]);
 				});
 				// add field for download
-				JarEmbed.addFields({ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` });
+				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` }]);
 			}
 			else if (args[0] == 'purpur') {
 				// fetch the latest mc version
@@ -69,11 +69,11 @@ module.exports = {
 				// add fields for commits
 				h.commits.forEach(commit => {
 				// check if commit description is more than 1000, if so, split it into multiple fields
-					if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields({ name: commit.author, value: `${chunk}` }); });
-					else JarEmbed.addFields({ name: commit.author, value: `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` });
+					if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields([{ name: commit.author, value: `${chunk}` }]); });
+					else JarEmbed.addFields([{ name: commit.author, value: `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` }]);
 				});
 				// add field for download
-				JarEmbed.addFields({ name: 'Download', value: `[Click Here](https://api.purpurmc.org/v2/purpur/${c}/${f}/download)` });
+				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://api.purpurmc.org/v2/purpur/${c}/${f}/download)` }]);
 			}
 			else {
 				return client.error('Invalid Minecraft server fork.', message, true);

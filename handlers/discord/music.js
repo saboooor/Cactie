@@ -6,7 +6,7 @@ const fs = require('fs');
 const { refresh } = require('../../lang/int/emoji.json');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const queuerow = new ActionRowBuilder()
-	.addComponents(
+	.addComponents([
 		new ButtonBuilder()
 			.setCustomId('music_playnext')
 			.setEmoji({ id: refresh })
@@ -16,7 +16,7 @@ const queuerow = new ActionRowBuilder()
 			.setCustomId('music_playlast')
 			.setLabel('Re-add to queue')
 			.setStyle(ButtonStyle.Secondary),
-	);
+	]);
 module.exports = client => {
 	Structure.extend(
 		'Player',

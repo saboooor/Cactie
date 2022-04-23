@@ -10,11 +10,11 @@ module.exports = async (client, guild) => {
 		.setThumbnail(guild.iconURL())
 		.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL() })
 		.setDescription(`This guild has ${guild.memberCount} members\n${client.user.username} is now in ${client.guilds.cache.size} servers`)
-		.addFields({ name: 'Created At', value: `<t:${timestamp}>\n<t:${timestamp}:R>` });
+		.addFields([{ name: 'Created At', value: `<t:${timestamp}>\n<t:${timestamp}:R>` }]);
 	client.guilds.cache.get('811354612547190794').channels.cache.get('865682839616618506').send({ embeds: [AddEmbed] });
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const row = new ActionRowBuilder()
-		.addComponents(
+		.addComponents([
 			new ButtonBuilder()
 				.setURL('https://cactie.smhsmh.club')
 				.setLabel(msg.dashboard.name)
@@ -27,7 +27,7 @@ module.exports = async (client, guild) => {
 				.setURL('https://cactie.smhsmh.club/discord')
 				.setLabel('Vote on top.gg')
 				.setStyle(ButtonStyle.Link),
-		);
+		]);
 	const greetingEmbed = new EmbedBuilder()
 		.setColor(AddEmbed.toJSON().color)
 		.setTitle(`Thanks for adding ${client.user.username} to ${guild.name}!`)

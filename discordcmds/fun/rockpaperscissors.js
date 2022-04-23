@@ -19,19 +19,19 @@ module.exports = {
 		};
 		const row = new ActionRowBuilder();
 		Object.keys(emoji).map(i => {
-			row.addComponents(
+			row.addComponents([
 				new ButtonBuilder()
 					.setCustomId(i)
 					.setEmoji({ name: emoji[i][0] })
 					.setLabel(emoji[i][1])
 					.setStyle(ButtonStyle.Secondary),
-			);
+			]);
 		});
 		const TicTacToe = new EmbedBuilder()
 			.setColor(Math.floor(Math.random() * 16777215))
 			.setTitle('Rock Paper Scissors')
 			.setDescription('Select an option!')
-			.setFields({ name: '**Waiting for:**', value: `${message.member}\n${member}` });
+			.setFields([{ name: '**Waiting for:**', value: `${message.member}\n${member}` }]);
 
 		const rpsmsg = await message.reply({ content: `${message.member} ${member}`, embeds: [TicTacToe], components: [row] });
 
@@ -46,11 +46,11 @@ module.exports = {
 			choices[interaction.user.id] = interaction.customId;
 			await interaction.editReply({ content: `**Selected ${emoji[interaction.customId][2]}!**` });
 
-			if (interaction.user.id == message.member.id) TicTacToe.setFields({ name: '**Waiting for:**', value: `${member}` });
-			else if (interaction.user.id == member.id) TicTacToe.setFields({ name: '**Waiting for:**', value: `${message.member}` });
+			if (interaction.user.id == message.member.id) TicTacToe.setFields([{ name: '**Waiting for:**', value: `${member}` }]);
+			else if (interaction.user.id == member.id) TicTacToe.setFields([{ name: '**Waiting for:**', value: `${message.member}` }]);
 
 			if (choices[message.member.id] && choices[member.id]) {
-				TicTacToe.setFields();
+				TicTacToe.setFields([]);
 				let win = true;
 				if (choices[member.id] == 'rock' && choices[message.member.id] == 'scissors') win = false;
 				else if (choices[member.id] == 'paper' && choices[message.member.id] == 'rock') win = false;

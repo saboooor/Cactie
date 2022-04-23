@@ -28,7 +28,7 @@ module.exports = {
 				.setEmoji({ id: refresh })
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(true);
-			const row = new ActionRowBuilder().addComponents(
+			const row = new ActionRowBuilder().addComponents([
 				new ButtonBuilder()
 					.setCustomId('music_shuffle')
 					.setEmoji({ id: shuffle })
@@ -38,7 +38,7 @@ module.exports = {
 					.setEmoji({ id: skip })
 					.setStyle(ButtonStyle.Secondary),
 				btn,
-			);
+			]);
 
 			// Send updated embed with disabled button and re-enable it after 5 seconds
 			await interaction.reply({ embeds: [NPEmbed], components: [row] });

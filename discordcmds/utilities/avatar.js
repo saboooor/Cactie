@@ -22,13 +22,13 @@ module.exports = {
 			const row = [];
 			if (memberpfp) {
 				row.push(
-					new ActionRowBuilder().addComponents(
+					new ActionRowBuilder().addComponents([
 						new ButtonBuilder()
 							.setCustomId('avatar_user')
 							.setLabel('Toggle Global Avatar')
 							.setEmoji({ id: refresh })
 							.setStyle(ButtonStyle.Secondary),
-					),
+					]),
 				);
 			}
 			const avatarmsg = await message.reply({ embeds: [UsrEmbed], components: row });

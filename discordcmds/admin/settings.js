@@ -38,20 +38,20 @@ module.exports = {
 						.setEmoji({ id: srvconfig[prop] == 'false' ? off : on });
 				}
 				if (prop == 'guildId') btn.setStyle(ButtonStyle.Danger).setLabel('Reset');
-				settingbtns.addComponents(btn);
+				settingbtns.addComponents([btn]);
 				return `**${prop}**\n${desc[prop]}\n\`${srvconfig[prop]}\``;
 			});
 			const maxPages = Math.ceil(Object.keys(srvconfig).length / 5);
 
 			// Set embed description with page and stuff
 			SettingsEmbed.setDescription(configlist.join('\n'))
-				.addFields({ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' })
+				.addFields([{ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' }])
 				.setFooter({ text: message.lang.page.replace('{1}', '1').replace('{2}', maxPages) });
-			if (client.user.id == '848775888673439745') SettingsEmbed.addFields({ name: message.lang.dashboard.confusing, value: message.lang.dashboard.use });
+			if (client.user.id == '848775888673439745') SettingsEmbed.addFields([{ name: message.lang.dashboard.confusing, value: message.lang.dashboard.use }]);
 
 			// Add buttons for page changing
 			const pages = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('settings_page_prev')
 						.setEmoji({ id: left })
@@ -64,7 +64,7 @@ module.exports = {
 						.setURL('https://cactie.smhsmh.club')
 						.setLabel(message.lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
-				);
+				]);
 
 			const modalyes = modal[args[0]] && modal[args[0]].type == 'text';
 			if (message.commandName) {

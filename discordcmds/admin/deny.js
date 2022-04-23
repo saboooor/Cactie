@@ -46,7 +46,7 @@ module.exports = {
 				if (!emoji) emoji = reaction._emoji.name;
 				emojis.push(`${emoji} **${reaction.count}**`);
 			});
-			if (!DenyEmbed.toJSON().fields && emojis[0]) DenyEmbed.addFields({ name: 'Results', value: `${emojis.join(' ')}` });
+			if (!DenyEmbed.toJSON().fields && emojis[0]) DenyEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
 
 			// Get suggestion thread
 			const thread = message.guild.channels.cache.get(DenyEmbed.toJSON().url.split('a')[2]);
@@ -63,7 +63,7 @@ module.exports = {
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 2) {
 					const link = await getTranscript(messages);
-					DenyEmbed.addFields({ name: 'View Discussion', value: link });
+					DenyEmbed.addFields([{ name: 'View Discussion', value: link }]);
 				}
 				thread.delete();
 			}
@@ -81,7 +81,7 @@ module.exports = {
 						}
 					});
 				}
-				if (newField) DenyEmbed.addFields({ name: 'Response', value: args.join(' ') });
+				if (newField) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 			}
 			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 			if (DenyEmbed.toJSON().url) {
@@ -97,14 +97,14 @@ module.exports = {
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				DenyEmbed.setTitle(`${message.member.user.tag} approved a suggestion`).setFields();
-				if (args.join(' ')) DenyEmbed.addFields({ name: 'Response', value: args.join(' ') });
+				DenyEmbed.setTitle(`${message.member.user.tag} approved a suggestion`).setFields([]);
+				if (args.join(' ')) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 				const msglink = new ActionRowBuilder()
-					.addComponents(new ButtonBuilder()
+					.addComponents([new ButtonBuilder()
 						.setURL(fetchedMsg.url)
 						.setLabel('Go to Message')
 						.setStyle(ButtonStyle.Link),
-					);
+					]);
 				logchannel.send({ embeds: [DenyEmbed], components: [msglink] });
 			}
 		}

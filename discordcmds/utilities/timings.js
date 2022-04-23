@@ -23,7 +23,7 @@ module.exports = {
 
 					// Get the embed and clear the fields
 					const TimingsEmbed = new EmbedBuilder(timingsmsg.embeds[0].toJSON());
-					TimingsEmbed.setFields(...issues);
+					TimingsEmbed.setFields(issues);
 
 					// Get page from footer
 					const footer = TimingsEmbed.toJSON().footer.text.split(' • ');

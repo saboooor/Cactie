@@ -1,9 +1,9 @@
 const fs = require('fs');
 module.exports = (prefix, HelpEmbed) => {
-	const nsfwCommands = fs.readdirSync('./commands/nsfw').filter(file => file.endsWith('.js'));
+	const nsfwCommands = fs.readdirSync('./discordcmds/nsfw').filter(file => file.endsWith('.js'));
 	const commands = [];
 	for (const file of nsfwCommands) {
-		const command = require(`../commands/nsfw/${file}`);
+		const command = require(`../discordcmds/nsfw/${file}`);
 		commands.push(`${prefix}${command.name}`);
 	}
 	HelpEmbed.setDescription(`

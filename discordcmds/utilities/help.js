@@ -1,4 +1,5 @@
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, PermissionsBitField } = require('discord.js');
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
+const { ButtonStyle, PermissionsBitField } = require('discord.js');
 module.exports = {
 	name: 'help',
 	description: 'Get help with Cactie',
@@ -29,13 +30,13 @@ module.exports = {
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
 					const row = new ActionRowBuilder()
-						.addComponents(
+						.addComponents([
 							new ButtonBuilder()
 								.setCustomId('create_ticket')
 								.setLabel('Open Ticket')
 								.setEmoji({ name: '🎫' })
 								.setStyle(ButtonStyle.Primary),
-						);
+						]);
 					message.channel.send({ embeds: [Panel], components: [row] });
 					return message.reply('Support panel created! You may now delete this message');
 				}
@@ -52,11 +53,11 @@ module.exports = {
 				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
 			}
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new SelectMenuBuilder()
 						.setCustomId('help_menu')
 						.setPlaceholder('Select a help category!')
-						.setOptions(
+						.addOptions([
 							new SelectMenuOptionBuilder()
 								.setLabel('Admin')
 								.setDescription('These commands require specific permissions')
@@ -97,10 +98,10 @@ module.exports = {
 								.setDescription('These commands let you do stuff to people idk')
 								.setValue('help_actions')
 								.setDefault(arg == 'actions'),
-						),
-				);
+						]),
+				]);
 			const row2 = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/discord')
 						.setLabel('Support Discord')
@@ -109,14 +110,14 @@ module.exports = {
 						.setURL('https://paypal.me/youhavebeenyoted')
 						.setLabel('Donate')
 						.setStyle(ButtonStyle.Link),
-				);
+				]);
 			const helpMsg = await message.reply({ embeds: [HelpEmbed], components: [row, row2] });
 
 			const filter = i => i.customId == 'help_menu';
 			const collector = helpMsg.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async interaction => {
 				await interaction.deferUpdate();
-				HelpEmbed.setFields();
+				HelpEmbed.setFields([]);
 				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
 				else require(`../../help/${interaction.values[0].split('_')[1]}.js`)(prefix, HelpEmbed, srvconfig);
 				row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
@@ -129,6 +130,6 @@ module.exports = {
 				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] });
 			});
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { console.log(err); }
 	},
 };

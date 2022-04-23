@@ -19,7 +19,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(message.lang.music.eq.name)
 				.setDescription(message.lang.music.eq.choose);
-			if (client.user.id == '848775888673439745') EQEmbed.addFields({ name: message.lang.music.eq.precise, value: `[${message.lang.dashboard.use}](https://cactie.smhsmh.club/music)` });
+			if (client.user.id == '848775888673439745') EQEmbed.addFields([{ name: message.lang.music.eq.precise, value: `[${message.lang.dashboard.use}](https://cactie.smhsmh.club/music)` }]);
 			const but = new ButtonBuilder().setCustomId('filter_clear').setLabel(message.lang.off).setStyle(ButtonStyle.Danger);
 			const but2 = new ButtonBuilder().setCustomId('filter_bass').setLabel(message.lang.music.eq.bass).setStyle(ButtonStyle.Primary);
 			const but3 = new ButtonBuilder().setCustomId('filter_party').setLabel(message.lang.music.eq.party).setStyle(ButtonStyle.Primary);
@@ -29,8 +29,8 @@ module.exports = {
 			const but7 = new ButtonBuilder().setCustomId('filter_boost').setLabel(message.lang.music.eq.boost).setStyle(ButtonStyle.Primary);
 			const but8 = new ButtonBuilder().setCustomId('filter_soft').setLabel(message.lang.music.eq.soft).setStyle(ButtonStyle.Primary);
 			const but9 = new ButtonBuilder().setCustomId('filter_maxed').setLabel(message.lang.music.eq.maxed).setStyle(ButtonStyle.Primary);
-			const row = new ActionRowBuilder().addComponents(but, but2, but3, but4, but5);
-			const row2 = new ActionRowBuilder().addComponents(but6, but7, but8, but9);
+			const row = new ActionRowBuilder().addComponents([but, but2, but3, but4, but5]);
+			const row2 = new ActionRowBuilder().addComponents([but6, but7, but8, but9]);
 			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2] });
 
 			// Create a collector for the EQ buttons

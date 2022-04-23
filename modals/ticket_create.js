@@ -62,12 +62,12 @@ module.exports = {
 				.setColor(0x5662f6)
 				.setTitle('Ticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly\nIf you have multiple issues, please use the /subticket command\nIf you want to create a private voice chat, please use the /voiceticket command\n\nMessages will be transcripted for future reference and are sent to the staff and people participating in the ticket.')
-				.addFields({ name: 'Description', value: interaction.fields.getTextInputValue('description') })
+				.addFields([{ name: 'Description', value: interaction.fields.getTextInputValue('description') }])
 				.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 
 			// Create buttons
 			const row = new ActionRowBuilder()
-				.addComponents(
+				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('close_ticket')
 						.setLabel('Close Ticket')
@@ -83,7 +83,7 @@ module.exports = {
 						.setLabel('Create Voiceticket')
 						.setEmoji({ name: '🔊' })
 						.setStyle(ButtonStyle.Secondary),
-				);
+				]);
 
 			// Ping the staff if enabled
 			let ping = null;

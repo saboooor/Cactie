@@ -40,7 +40,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 	// Create undo button
 	const undo = new ActionRowBuilder()
-		.addComponents(
+		.addComponents([
 			new ButtonBuilder()
 				.setCustomId('music_undo')
 				.setEmoji({ id: leave })
@@ -51,7 +51,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 				.setEmoji({ id: srch })
 				.setLabel(message.lang.music.search.notright)
 				.setStyle(ButtonStyle.Secondary),
-		);
+		]);
 	const row = [];
 
 	// Check if search is a spotify link, if not, search YouTube
@@ -102,12 +102,12 @@ module.exports = async function playSongs(requester, message, args, client, top,
 
 			const balls = new ActionRowBuilder();
 			for (let number = 1; number <= 5; number++) {
-				balls.addComponents(
+				balls.addComponents([
 					new ButtonBuilder()
 						.setCustomId(`${number}`)
 						.setLabel(`${number}`)
 						.setStyle(ButtonStyle.Secondary),
-				);
+				]);
 			}
 			row.push(balls);
 			await playMsg.edit({ content: `<:srch:${srch}> ${message.lang.music.search.pick}\n\`${search}\``, embeds: [PlayEmbed], components: row });
