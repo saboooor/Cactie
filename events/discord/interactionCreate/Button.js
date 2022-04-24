@@ -14,7 +14,12 @@ module.exports = async (client, interaction) => {
 	else interaction.lang = require(`../../../lang/${srvconfig.language}/msg.json`);
 
 	// Check if bot has the permissions necessary to run the button
-	if (button.botperm && (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[button.botperm]) || !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm]))) {
+	if (button.botperm
+		&& (!interaction.guild.me.permissions
+			|| (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[button.botperm])
+				&& !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm])
+			)
+		)) {
 		client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
 		return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(err => client.logger.warn(err));
 	}

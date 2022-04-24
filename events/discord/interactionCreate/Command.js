@@ -118,7 +118,12 @@ module.exports = async (client, interaction) => {
 	}
 
 	// Check if bot has the permissions necessary to run the command
-	if (command.botperm && (!interaction.guild.me.permissions || (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.botperm])))) {
+	if (command.botperm
+		&& (!interaction.guild.me.permissions
+			|| (!interaction.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm])
+				&& !interaction.guild.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.botperm])
+			)
+		)) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
 		return client.error(`I don't have the ${command.botperm} permission!`, interaction, true);
 	}

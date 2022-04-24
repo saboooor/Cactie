@@ -1,22 +1,9 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const getTranscript = require('../../functions/getTranscript.js');
+const getTranscript = require('../../../functions/getTranscript.js');
 module.exports = async (client, member) => {
 	// Get the guild settings
 	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
-
-	// Leave messages
-	if (srvconfig.leavemessage != 'false') {
-		if (!member.guild.systemChannel) {
-			const owner = await member.guild.fetchOwner();
-			client.logger.warn(`${member.guild.name} (${owner.tag}) has misconfigured leave messages!`);
-			owner.send({ content: `Leave messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system message channel or turn off leave messages with the command \`/settings leavemessage\`` })
-				.catch(err => client.logger.warn(err));
-		}
-		else {
-			member.guild.systemChannel.send({ content: srvconfig.leavemessage.replace(/{USER MENTION}/g, `<@${member.id}>`).replace(/{USER TAG}/g, member.user.tag) });
-		}
-	}
 
 	// Close ticket if user is a user that has created an open ticket
 	// Check if ticket is an actual ticket

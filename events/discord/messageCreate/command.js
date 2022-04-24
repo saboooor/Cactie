@@ -1,26 +1,10 @@
-const { MessageAttachment, EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
-const { createPaste } = require('hastebin');
-const gitUpdate = require('../../functions/gitUpdate');
+const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
 module.exports = async (client, message) => {
-	// Check if message is from a bot and if so return and also check if message is a github update
-	if (message.webhookId || message.author.bot) return gitUpdate(client, message);
-
-	// If channel is DM,send the dm to the dms channel
-	if (message.channel.isDM()) {
-		const files = [];
-		for (const attachment of message.attachments) {
-			const response = await fetch(attachment[1].url, { method: 'GET' });
-			const arrayBuffer = await response.arrayBuffer();
-			const img = new MessageAttachment(Buffer.from(arrayBuffer), attachment[1].name);
-			files.push(img);
-		}
-		return client.guilds.cache.get('811354612547190794').channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}`, files: files });
-	}
-
 	// If the bot can't read message history or send messages, don't execute a command
 	if (!message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)
-	|| !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)) return;
+	|| !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)
+	|| message.webhookId
+	|| message.author.bot) return;
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
@@ -39,42 +23,8 @@ module.exports = async (client, message) => {
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
-	if (data[0]) message.lang = require(`../../lang/${data[0].language}/msg.json`);
-	else message.lang = require(`../../lang/${srvconfig.language}/msg.json`);
-
-	// Check if reaction keywords are in message, if so, react
-	client.reactions.forEach(reaction => {
-		if ((srvconfig.reactions != 'false' || reaction.private)
-		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
-		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
-			reaction.execute(message);
-			client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
-		}
-	});
-
-	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com
-	if (message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageMessages)
-		&& message.content.split('\n').length > srvconfig.msgshortener
-		&& srvconfig.msgshortener != '0'
-		&& message.author.id !== '249638347306303499'
-		&& (!message.member.permissions
-			|| (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)
-				&& !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags.Administrator)
-				&& !message.member.roles.cache.has(srvconfig.adminrole)
-			)
-		)
-	) {
-		message.delete().catch(err => client.logger.error(err.stack));
-		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
-		const shortEmbed = new EmbedBuilder()
-			.setColor(Math.floor(Math.random() * 16777215))
-			.setTitle('Shortened long message')
-			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL() })
-			.setDescription(link)
-			.setFooter({ text: 'Next time please use a paste service for long messages' });
-		message.channel.send({ embeds: [shortEmbed] });
-		client.logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild.name}`);
-	}
+	if (data[0]) message.lang = require(`../../../lang/${data[0].language}/msg.json`);
+	else message.lang = require(`../../../lang/${srvconfig.language}/msg.json`);
 
 	// Use mention as prefix instead of prefix too
 	if (message.content.replace('!', '').startsWith(`<@${client.user.id}>`)) {
@@ -103,7 +53,7 @@ module.exports = async (client, message) => {
 	// Get args by splitting the message by the spaces and getting rid of the prefix
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
 
-	// Get the command name from the fist arg and get rid of the first arg
+	// Get the command name from the first arg and get rid of the first arg
 	const commandName = args.shift().toLowerCase();
 
 	// Get the command from the commandName, if it doesn't exist, return
@@ -134,7 +84,7 @@ module.exports = async (client, message) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
 		// Get a random cooldown message
-		const messages = require(`../../lang/${message.lang.language.name}/cooldown.json`);
+		const messages = require(`../../../lang/${message.lang.language.name}/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -215,7 +165,12 @@ module.exports = async (client, message) => {
 	}
 
 	// Check if bot has the permissions necessary to run the command
-	if (command.botperm && (!message.guild.me.permissions || (!message.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm]) && !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])))) {
+	if (command.botperm
+		&& (!message.guild.me.permissions
+			|| (!message.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm])
+				&& !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])
+			)
+		)) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
 		return client.error(`I don't have the ${command.botperm} permission!`, message, true);
 	}
