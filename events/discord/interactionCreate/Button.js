@@ -11,6 +11,8 @@ module.exports = async (client, interaction) => {
 	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
 	if (data[0]) interaction.lang = require(`../../../lang/${data[0].language}/msg.json`);
+	else if (interaction.locale.split('_') == 'en') interaction.lang = require('../../../lang/English/msg.json');
+	else if (interaction.locale.split('_') == 'pt') interaction.lang = require('../../../lang/Portuguese/msg.json');
 	else interaction.lang = require(`../../../lang/${srvconfig.language}/msg.json`);
 
 	// Check if bot has the permissions necessary to run the button
