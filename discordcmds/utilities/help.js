@@ -10,6 +10,7 @@ module.exports = {
 	options: require('../options/help.js'),
 	async execute(message, args, client) {
 		try {
+			const helpdesc = require(`../../lang/${message.lang.language.name}/helpdesc.json`);
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 			const HelpEmbed = new EmbedBuilder()
@@ -52,53 +53,24 @@ module.exports = {
 			else {
 				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
 			}
+			const options = [];
+			const categories = Object.keys(helpdesc);
+			categories.forEach(category => {
+				if (category == 'supportpanel') return;
+				options.push(
+					new SelectMenuOptionBuilder()
+						.setLabel(helpdesc[category].name)
+						.setDescription(helpdesc[category].description)
+						.setValue(`help_${category}`)
+						.setDefault(arg == category),
+				);
+			});
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new SelectMenuBuilder()
 						.setCustomId('help_menu')
 						.setPlaceholder('Select a help category!')
-						.addOptions([
-							new SelectMenuOptionBuilder()
-								.setLabel('Admin')
-								.setDescription('These commands require specific permissions')
-								.setValue('help_admin')
-								.setDefault(arg == 'admin'),
-							new SelectMenuOptionBuilder()
-								.setLabel('Fun')
-								.setDescription('These commands are made just for fun')
-								.setValue('help_fun')
-								.setDefault(arg == 'fun'),
-							new SelectMenuOptionBuilder()
-								.setLabel('Animals')
-								.setDescription('These commands show cute animals')
-								.setValue('help_animals')
-								.setDefault(arg == 'animals'),
-							new SelectMenuOptionBuilder()
-								.setLabel('Music')
-								.setDescription('These commands play music in your voice chat')
-								.setValue('help_music')
-								.setDefault(arg == 'music'),
-							new SelectMenuOptionBuilder()
-								.setLabel('NSFW')
-								.setDescription('These commands have sensitive content that is NSFW')
-								.setValue('help_nsfw')
-								.setDefault(arg == 'nsfw'),
-							new SelectMenuOptionBuilder()
-								.setLabel('Tickets')
-								.setDescription(`These commands are related to ${client.user.username}'s tickets system`)
-								.setValue('help_tickets')
-								.setDefault(arg == 'tickets'),
-							new SelectMenuOptionBuilder()
-								.setLabel('Utilities')
-								.setDescription('These commands are useful for some situations')
-								.setValue('help_utilities')
-								.setDefault(arg == 'utilities'),
-							new SelectMenuOptionBuilder()
-								.setLabel('Actions')
-								.setDescription('These commands let you do stuff to people idk')
-								.setValue('help_actions')
-								.setDefault(arg == 'actions'),
-						]),
+						.addOptions(options),
 				]);
 			const row2 = new ActionRowBuilder()
 				.addComponents([

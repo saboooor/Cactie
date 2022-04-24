@@ -1,0 +1,34 @@
+{
+    "admin": {
+        "name": "Admin",
+        "description": "These commands require specific permissions"
+    },
+    "fun": {
+        "name": "Fun",
+        "description": "These commands are made just for fun"
+    },
+    "music": {
+        "name": "Music",
+        "description": "These commands play music in your voice channel"
+    },
+    "nsfw": {
+        "name": "NSFW",
+        "description": "These commands have sensitive content that is NSFW"
+    },
+    "tickets": {
+        "name": "Tickets",
+        "description": "These commands are related to the bot's tickets system"
+    },
+    "utilities": {
+        "name": "Utilities",
+        "description": "These commands are useful for some situations"
+    },
+    "actions": {
+        "name": "Actions",
+        "description": "These commands let you do stuff to people"
+    },
+    "supportpanel": {
+        "name": "Support Panel (Admin only)",
+        "description": "This command sends a message that has a button to open tickets"
+    }
+}
