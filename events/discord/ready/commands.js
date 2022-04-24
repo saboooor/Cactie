@@ -18,6 +18,33 @@ module.exports = async (client) => {
 			if (option.name != sourceopt.name) return opt = false;
 			if (option.description != sourceopt.description) return opt = false;
 			if (option.required != sourceopt.required) return opt = false;
+			if (option.choices) {
+				option.choices.forEach(choice => {
+					const srcchoice = sourceopt.choices.find(o => o.name == choice.name);
+					if (!srcchoice) return opt = false;
+					if (choice.name != srcchoice.name) return opt = false;
+					if (choice.value != srcchoice.value) return opt = false;
+				});
+			}
+			if (option.options) {
+				option.options.forEach(suboption => {
+					const sourcesubopt = sourceopt.options.find(o => o.name == suboption.name);
+					if (!sourcesubopt) return opt = false;
+					if (suboption.type != sourcesubopt.type) return opt = false;
+					if (suboption.name != sourcesubopt.name) return opt = false;
+					if (suboption.description != sourcesubopt.description) return opt = false;
+					if (suboption.required != sourcesubopt.required) return opt = false;
+					if (suboption.choices) {
+						suboption.choices.forEach(choice => {
+							// eslint-disable-next-line max-nested-callbacks
+							const srcchoice = sourcesubopt.choices.find(o => o.name == choice.name);
+							if (!srcchoice) return opt = false;
+							if (choice.name != srcchoice.name) return opt = false;
+							if (choice.value != srcchoice.value) return opt = false;
+						});
+					}
+				});
+			}
 		});
 		if (opt && desc) return;
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
