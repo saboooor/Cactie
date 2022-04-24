@@ -7,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '<Rows and Columns (ex: 5x5)>',
 	cooldown: 10,
-	options: require('../options/text.json'),
+	options: require('../options/text.js'),
 	async execute(message, args, client) {
 		const btns = {};
 		const rows = [];

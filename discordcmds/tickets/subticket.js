@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['subnew', 'sub'],
 	args: true,
 	usage: '<Description>',
-	options: require('../options/ticket.json'),
+	options: require('../options/ticket.js'),
 	botperm: 'CreatePublicThreads',
 	async execute(message, args, client, reaction) {
 		try {

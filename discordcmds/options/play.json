@@ -1,8 +1,0 @@
-[
-    {
-        "type": 3,
-        "name": "song",
-        "description": "Song URL/Name or Playlist URL",
-        "required": true
-    }
-]

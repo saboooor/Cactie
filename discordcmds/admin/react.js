@@ -7,7 +7,7 @@ module.exports = {
 	usage: '<Message Link / Id (only in channel)> <Emoji>',
 	botperm: 'AddReactions',
 	permission: 'Administrator',
-	options: require('../options/react.json'),
+	options: require('../options/react.js'),
 	async execute(message, args, client) {
 		try {
 			const ReactEmbed = new EmbedBuilder()

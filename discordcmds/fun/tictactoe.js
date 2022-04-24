@@ -15,7 +15,7 @@ module.exports = {
 	args: true,
 	usage: '<Opponent User>',
 	cooldown: 10,
-	options: require('../options/user.json'),
+	options: require('../options/user.js'),
 	async execute(message, args, client) {
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));

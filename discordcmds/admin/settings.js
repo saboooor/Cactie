@@ -14,7 +14,7 @@ module.exports = {
 	usage: '[Option]',
 	noDefer: true,
 	permission: 'Administrator',
-	options: require('../options/settings.json'),
+	options: require('../options/settings.js'),
 	async execute(message, args, client) {
 		try {
 			// Get the settings descriptions

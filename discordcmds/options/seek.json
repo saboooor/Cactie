@@ -1,8 +1,0 @@
-[
-	{
-		"type": 3,
-		"name": "time",
-		"description": "Time s/m/h (Ex. 10s, 2m)",
-		"required": true
-	}
-]

@@ -1,8 +1,0 @@
-[
-    {
-        "type": 3,
-        "name": "suggestion",
-        "description": "What you want to suggest",
-        "required": true
-    }
-]

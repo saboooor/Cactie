@@ -12,7 +12,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	options: require('../options/volume.json'),
+	options: require('../options/volume.js'),
 	async execute(message, args, client) {
 		try {
 			// Get player and if arg isn't set, reply with current volume

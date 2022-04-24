@@ -5,7 +5,7 @@ module.exports = {
 	voteOnly: true,
 	usage: '[Someone]',
 	aliases: ['instapp'],
-	options: require('../options/someone.json'),
+	options: require('../options/someone.js'),
 	async execute(message, args, client) {
 		try {
 			// Get settings and check if bonercmd is enabled

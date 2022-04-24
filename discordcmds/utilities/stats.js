@@ -10,7 +10,7 @@ module.exports = {
 	description: 'Get the status of Cactie or a Server',
 	aliases: ['status', 'mcstatus', 'mcstats'],
 	usage: '[Server]',
-	options: require('../options/stats.json'),
+	options: require('../options/stats.js'),
 	async execute(message, args, client) {
 		try {
 			if (!args[0]) args = ['pup'];

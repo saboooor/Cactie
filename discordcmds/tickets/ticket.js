@@ -6,8 +6,8 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['new'],
 	usage: '[Description]',
-	options: require('../options/ticket.json'),
 	botperm: 'ManageChannels',
+	options: require('../options/ticket.js'),
 	async execute(message, args, client, reaction) {
 		try {
 			// Set author to command sender

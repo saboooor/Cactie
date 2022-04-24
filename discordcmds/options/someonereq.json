@@ -1,8 +1,0 @@
-[
-    {
-        "type": 3,
-        "name": "someone",
-        "description": "Pick someone or something to use this command on!",
-        "required": true
-    }
-]

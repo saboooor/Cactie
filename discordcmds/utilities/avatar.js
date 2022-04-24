@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Get the avatar of a user',
 	aliases: ['pfp', 'av'],
 	usage: '[User]',
-	options: require('../options/user.json'),
+	options: require('../options/user.js'),
 	async execute(message, args, client) {
 		try {
 			let member = message.member;

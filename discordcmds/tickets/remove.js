@@ -6,7 +6,7 @@ module.exports = {
 	args: true,
 	usage: '<User Mention or Id>',
 	similarcmds: 'removesong',
-	options: require('../options/user.json'),
+	options: require('../options/user.js'),
 	async execute(message, args, client) {
 		try {
 			// Check if channel is subticket and set the channel to the parent channel

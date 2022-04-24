@@ -1,9 +1,0 @@
-[
-    {
-        "type": 3,
-        "name": "language",
-        "description": "The language to change the bot to.",
-        "required": true,
-        "choices": []
-    }
-]

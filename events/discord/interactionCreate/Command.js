@@ -132,19 +132,19 @@ module.exports = async (client, interaction) => {
 	const player = client.manager.get(interaction.guild.id);
 
 	// Check if player exists and command needs it
-	if (interaction.player && !player) return client.error('I\'m not in a voice channel!\nPlay some music before using this command!', interaction, true);
+	if (command.player && !player) return client.error('I\'m not in a voice channel!\nPlay some music before using this command!', interaction, true);
 
 	// Check if player has any current song and command needs it
-	if (interaction.playing && !player.queue.current) return client.error('I\'m not playing music!\nPlay some music before using this command!', interaction, true);
+	if (command.playing && !player.queue.current) return client.error('I\'m not playing music!\nPlay some music before using this command!', interaction, true);
 
 	// Check if bot is server muted and command needs unmute
-	if (interaction.srvunmute && interaction.guild.me.voice.serverMute) return client.error('I\'m Server Muted!\nUnmute me before using this command!', interaction, true);
+	if (command.srvunmute && interaction.guild.me.voice.serverMute) return client.error('I\'m Server Muted!\nUnmute me before using this command!', interaction, true);
 
 	// Check if user is in the same vc as bot and command needs it
-	if (interaction.samevc && player && interaction.member.voice.channel.id != interaction.guild.me.voice.channel.id) return client.error(`You must be in the same channel as ${client.user.username} to use this command!`, interaction, true);
+	if (command.samevc && player && interaction.member.voice.channel.id != interaction.guild.me.voice.channel.id) return client.error(`You must be in the same channel as ${client.user.username} to use this command!`, interaction, true);
 
 	// Check if user is in vc and command needs user to be in vc
-	if (interaction.invc && !interaction.member.voice.channel) return client.error('You must be in a voice channel!\nJoin a voice channel before using this command!', interaction, true);
+	if (command.invc && !interaction.member.voice.channel) return client.error('You must be in a voice channel!\nJoin a voice channel before using this command!', interaction, true);
 
 	// Check if user has dj role and command needs user to have it
 	if (command.djRole && srvconfig.djrole != 'false') {

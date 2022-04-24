@@ -10,6 +10,7 @@ module.exports = async (client, message) => {
 			const img = new MessageAttachment(Buffer.from(arrayBuffer), attachment[1].name);
 			files.push(img);
 		}
+		if (message.author.id == client.user.id) message.author = `${client.user} > <@${message.channel.recipientId}>`;
 		return client.guilds.cache.get('811354612547190794').channels.cache.get('849453797809455125').send({ content: `**${message.author}** > ${message.content}`, files: files });
 	}
 };

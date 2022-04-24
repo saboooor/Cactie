@@ -5,7 +5,7 @@ module.exports = client => {
 	client.slashcommands = new Collection();
 	const slashcommandFolders = readdirSync('./discordcmds');
 	for (const folder of slashcommandFolders) {
-		const slashcommandFiles = readdirSync(`./discordcmds/${folder}`).filter(file => file.endsWith('.js') && folder != 'nsfw' && folder != 'private');
+		const slashcommandFiles = readdirSync(`./discordcmds/${folder}`).filter(file => file.endsWith('.js') && folder != 'nsfw' && folder != 'options' && folder != 'private');
 		for (const file of slashcommandFiles) {
 			const slashcommand = require(`../../discordcmds/${folder}/${file}`);
 			client.slashcommands.set(slashcommand.name, slashcommand);

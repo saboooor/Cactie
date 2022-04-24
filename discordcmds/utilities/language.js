@@ -1,7 +1,5 @@
 const fs = require('fs');
 const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
-const langoptions = require('../options/lang.json');
-languages.forEach(language => langoptions[0].choices.push({ name: language, value: language }));
 function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -11,7 +9,7 @@ module.exports = {
 	aliases: ['lang'],
 	usage: '<Language>',
 	args: true,
-	options: langoptions,
+	options: require('../options/lang.js'),
 	async execute(message, args, client) {
 		try {
 			const lang = capitalizeFirstLetter(args[0].toLowerCase());
