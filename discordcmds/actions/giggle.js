@@ -1,12 +1,12 @@
 const action = require('../../functions/action.js');
 module.exports = {
-	name: 'awooga',
-	description: 'AWOOGAA!',
+	name: 'giggle',
+	description: 'hehehehehehehe',
 	usage: '[Someone]',
 	options: require('../options/someone.js'),
 	async execute(message, args, client) {
 		try {
-			action(message, args, 'awooga', 'AWOOGAS', '👀👀');
+			action(message, args, 'giggle', 'giggles', 'hehehehehehehe');
 		}
 		catch (err) { client.error(err, message); }
 	},
