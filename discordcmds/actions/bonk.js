@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { bonk } = require('../../lang/int/actiongifs.json');
+let current = null;
 module.exports = {
 	name: 'bonk',
 	description: 'Bonk someone!',
@@ -15,7 +16,12 @@ module.exports = {
 			}
 
 			// Get random index of gif list
-			const i = Math.floor(Math.random() * bonk.length);
+			let i = Math.floor(Math.random() * bonk.length);
+
+			do {
+				i = Math.floor(Math.random() * bonk.length);
+			} while (i === current);
+			current = i;
 
 			// Create embed with bonk gif and author / footer
 			const BonkEmbed = new EmbedBuilder()
