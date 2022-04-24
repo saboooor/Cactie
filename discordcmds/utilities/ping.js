@@ -3,7 +3,6 @@ const { refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
-	ephemeral: true,
 	aliases: ['pong'],
 	cooldown: 10,
 	async execute(message, args, client) {
