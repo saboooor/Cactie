@@ -7,6 +7,9 @@ module.exports = async (client, interaction) => {
 	const command = client.slashcommands.get(interaction.commandName);
 	if (!command) return;
 
+	// Get current settings for the guild
+	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
 	if (data[0]) interaction.lang = require(`../../../lang/${data[0].language}/msg.json`);
@@ -67,9 +70,6 @@ module.exports = async (client, interaction) => {
 
 	// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
 	if (interaction.channel.isDM()) return client.error('You can\'t execute commands in DMs!', interaction, true);
-
-	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '848775888673439745') {
