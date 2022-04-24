@@ -37,6 +37,12 @@ module.exports = {
 				});
 				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
 				suggestMsg.edit({ embeds: [SuggestEmbed] });
+				const CreateEmbed = new EmbedBuilder()
+					.setColor(0x5662f6)
+					.setTitle('Suggest Created')
+					.setDescription('You may go in detail about your suggestion or have a discussion about it in this thread');
+				await sleep(1000);
+				await thread.send({ content: `${message.member}`, embeds: [CreateEmbed] });
 			}
 			if (!message.commandName) {
 				if (channel != message.channel) {

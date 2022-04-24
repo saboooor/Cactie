@@ -64,7 +64,7 @@ module.exports = {
 					return client.error('I don\'t have the ManageThreads permission!', message, true);
 				}
 				const messages = await thread.messages.fetch({ limit: 100 });
-				if (messages.size > 2) {
+				if (messages.size > 3) {
 					const link = await getTranscript(messages);
 					ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
 				}
