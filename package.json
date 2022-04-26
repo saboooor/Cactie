@@ -11,9 +11,9 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
-    "@discordjs/voice": "^0.10.0-dev.1650672497-3617093",
+    "@discordjs/voice": "^0.10.0-dev.1650931746-df64d3e",
     "body-parser": "^1.20.0",
-    "discord.js": "^14.0.0-dev.1650672498-3617093",
+    "discord.js": "^14.0.0-dev.1650931749-df64d3e",
     "erela.js": "^2.3.3",
     "eslint": "^8.14.0",
     "express": "^4.17.3",
