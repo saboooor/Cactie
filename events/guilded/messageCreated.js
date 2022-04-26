@@ -32,7 +32,7 @@ module.exports = async (client, message) => {
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(`@${client.user.name}`)) {
-			const prefix = await message.reply(`My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.`);
+			const prefix = await message.send({ content: `My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.`, replyMessageIds: [message.id] });
 			setTimeout(() => { message.client.messages.delete(prefix.channelId, prefix.id).catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
@@ -49,7 +49,7 @@ module.exports = async (client, message) => {
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(`@${client.user.name}`)) {
-			const prefix = await message.reply(`My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.`);
+			const prefix = await message.send({ content: `My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.`, replyMessageIds: [message.id] });
 			setTimeout(() => { message.client.messages.delete(prefix.channelId, prefix.id).catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
@@ -79,7 +79,11 @@ module.exports = async (client, message) => {
 		if (now < expirationTime && message.createdById != 'AYzRpEe4') {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return client.messages.addReaction(message.channelId, message.id, 90001737);
-			return message.reply(`**${message[random]}**\n\nwait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
+			const cooldownEmbed = new EmbedBuilder()
+				.setColor(Math.floor(Math.random() * 16777215))
+				.setTitle(messages[random])
+				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
+			return message.send({ embeds: [cooldownEmbed], replyMessageIds: [message.id] });
 		}
 	}
 
