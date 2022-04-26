@@ -13,10 +13,10 @@ module.exports = {
 			const code = args.join(' ');
 			let evaled = eval(code);
 			if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled); }
-			message.reply({ content: evaled });
+			message.send({ content: evaled });
 		}
 		catch (err) {
-			message.reply({ content: `\`ERROR\` \`\`\`\n${err}\n\`\`\`` });
+			message.send({ content: `\`ERROR\` \`\`\`\n${err}\n\`\`\`` });
 		}
 	},
 };

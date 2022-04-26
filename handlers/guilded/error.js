@@ -1,9 +1,16 @@
+const { Embed } = require('guilded.js');
 module.exports = client => {
 	client.error = function error(err, message, userError) {
-		client.logger.error(err.stack ? err.stack : err);
-		let msg = `**An error has occured!**\n ${err}`;
-		if (!userError) msg = msg + '\n This was most likely an error on our end. Please report this at the Cactie Support Guilded Server.\n https://guilded.gg/cactie';
-		message.reply(msg).catch(err => client.logger.error(err));
+		err = err.stack ? err.stack : err;
+		client.logger.error(err);
+		const errEmbed = new Embed()
+			.setColor(0xE74C3C)
+			.setTitle('An error has occured!')
+			.setDescription(`\`\`\`\n${err}\n\`\`\``);
+		if (!userError) {
+			errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Cactie Support Discord Server.' });
+		}
+		message.send({ embeds: [errEmbed], replyMessageIds: [message.id] });
 	};
 	client.logger.info('Error Handler Loaded');
 };
