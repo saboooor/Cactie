@@ -8,7 +8,7 @@ module.exports = {
 		try {
 			const embed = new Embed()
 				.setTitle('balls');
-			message.send({ content: 'a', embeds: [embed] });
+			message.send({ content: 'a', embeds: [embed], replyMessageIds: [message.id] });
 		}
 		catch (err) { client.error(err, message); }
 	},
