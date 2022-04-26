@@ -40,7 +40,7 @@ for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith(
 for (const handler of fs.readdirSync('./handlers/guilded').filter(file => file.endsWith('.js'))) require(`./handlers/guilded/${handler}`)(guilded);
 
 process.on('unhandledRejection', (reason) => {
-	if (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction') {
+	if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction')) {
 		discord.logger.error(JSON.stringify(reason.requestBody));
 	}
 });

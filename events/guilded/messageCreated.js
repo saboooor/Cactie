@@ -1,4 +1,5 @@
 const { Collection } = require('discord.js');
+const { Embed } = require('guilded.js');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return
 	if (message.createdById == client.user.id) return;
@@ -11,13 +12,16 @@ module.exports = async (client, message) => {
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.createdById}'`);
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
+	message.member = client.members.cache.get(`${message.serverId}:${message.createdById}`);
+	if (!message.member) message.member = await client.members.fetch(message.serverId, message.createdById);
+
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
 		if ((srvconfig.reactions != 'false' || reaction.private)
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
 		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
 			reaction.execute(message);
-			client.logger.info(`${message.createdById} triggered reaction: ${reaction.name}`);
+			client.logger.info(`${message.member.user.name} triggered reaction: ${reaction.name}`);
 		}
 	});
 
@@ -79,7 +83,7 @@ module.exports = async (client, message) => {
 		if (now < expirationTime && message.createdById != 'AYzRpEe4') {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return client.messages.addReaction(message.channelId, message.id, 90001737);
-			const cooldownEmbed = new EmbedBuilder()
+			const cooldownEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
@@ -93,7 +97,7 @@ module.exports = async (client, message) => {
 
 	// execute the command
 	try {
-		client.logger.info(`${message.createdById} issued command: ${message.content}`);
+		client.logger.info(`${message.member.user.name} issued command: ${message.content}`);
 		command.execute(message, args, client, lang);
 	}
 	catch (err) { client.logger.error(err.stack); }

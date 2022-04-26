@@ -5,7 +5,6 @@ module.exports = {
 	args: true,
 	usage: '<Code>',
 	cooldown: 0.1,
-	// eslint-disable-next-line no-unused-vars
 	async execute(message, args, client) {
 		// Check if user is sab lolololol
 		if (message.createdById !== 'AYzRpEe4') return client.error('You can\'t do that!', message, true);
@@ -15,8 +14,6 @@ module.exports = {
 			if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled); }
 			message.send({ content: evaled });
 		}
-		catch (err) {
-			message.send({ content: `\`ERROR\` \`\`\`\n${err}\n\`\`\`` });
-		}
+		catch (err) { client.error(err, message, true); }
 	},
 };
