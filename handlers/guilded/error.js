@@ -6,9 +6,9 @@ module.exports = client => {
 		const errEmbed = new Embed()
 			.setColor(0xE74C3C)
 			.setTitle('An error has occured!')
-			.setDescription(`\`\`\`\n${err}\n\`\`\``);
+			.setDescription(`\`\`\`${err}\`\`\`${userError ? '\nThis was most likely an error on our end.' : ''}`);
 		if (!userError) {
-			errEmbed.setFooter('This was most likely an error on our end. Please report this at guilded.gg/cactie.');
+			errEmbed.setFooter('Please report this at guilded.gg/cactie.');
 		}
 		message.send({ embeds: [errEmbed], replyMessageIds: [message.id] });
 	};
