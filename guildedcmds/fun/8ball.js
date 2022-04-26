@@ -1,3 +1,4 @@
+const { Embed } = require('guilded.js');
 module.exports = {
 	name: '8ball',
 	description: 'Let the 8 ball decide your fate!',
@@ -10,7 +11,10 @@ module.exports = {
 
 			// Get random index and reply with the string in the array of the index
 			const i = Math.floor(Math.random() * ball.length);
-			message.reply(`🎱 **${args.join(' ')}?**\n \`${ball[i]}\``);
+			const MagicEmbed = new Embed()
+				.setTitle(`🎱 ${args.join(' ')}?`)
+				.setDescription(`${ball[i]}`);
+			message.send({ embeds: [MagicEmbed], replyMessageIds: [message.id] });
 		}
 		catch (err) { client.error(err, message); }
 	},
