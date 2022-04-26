@@ -8,7 +8,7 @@ module.exports = client => {
 			.setTitle('An error has occured!')
 			.setDescription(`\`\`\`\n${err}\n\`\`\``);
 		if (!userError) {
-			errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Cactie Support Discord Server.' });
+			errEmbed.setFooter('This was most likely an error on our end. Please report this at guilded.gg/cactie.');
 		}
 		message.send({ embeds: [errEmbed], replyMessageIds: [message.id] });
 	};
