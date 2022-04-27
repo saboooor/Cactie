@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { yes, no } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'poll',
-	description: 'Create a poll!\nIt is recommended to use /poll instead',
+	description: 'Create a poll!',
 	ephemeral: true,
 	cooldown: 10,
 	args: true,
