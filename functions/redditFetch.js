@@ -26,7 +26,8 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
-	if (!message.channel.nsfw && data.over_18) return message.react(nsfw).catch(err => client.logger.error(err.stack));
+	if (data.over_18 && client.type.name == 'discord' && !message.channel.nsfw) return message.react(nsfw).catch(err => client.logger.error(err.stack));
+	if (data.over_18 && client.type.name == 'guilded' && !message.channel.nsfw) return redditFetch(subreddits, message, client, attempts + 1);
 	const timestamp = parseInt(`${data.created}` + '000');
 	const PostEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
