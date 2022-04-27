@@ -1,8 +1,11 @@
 const { Collection } = require('discord.js');
-const { Embed } = require('guilded.js');
+const { Embed, UserType } = require('guilded.js');
 module.exports = async (client, message) => {
-	// Check if message is from a bot and if so return
-	if (message.createdById == client.user.id) return;
+	// Check if message is from a bot and if so return, and fetch member if not already fetched
+	if (message.createdByBotId || message.createdByWebhookId) return;
+	message.member = client.members.cache.get(`${message.serverId}:${message.createdById}`);
+	if (!message.member) message.member = await client.members.fetch(message.serverId, message.createdById);
+	if (message.member.user.type == UserType.Bot) return;
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.serverId);
@@ -11,9 +14,6 @@ module.exports = async (client, message) => {
 	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.createdById}'`);
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
-
-	message.member = client.members.cache.get(`${message.serverId}:${message.createdById}`);
-	if (!message.member) message.member = await client.members.fetch(message.serverId, message.createdById);
 
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
