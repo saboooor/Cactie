@@ -102,6 +102,6 @@ module.exports = {
 				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] });
 			});
 		}
-		catch (err) { console.log(err); }
+		catch (err) { client.error(err, message); }
 	},
 };
