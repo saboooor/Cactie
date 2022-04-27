@@ -19,10 +19,11 @@ module.exports = async function action(message, args, type, plural, footer) {
 	}
 
 	const username = message.client.type.name == 'discord' ? message.member.displayName : message.member.user.name;
+	const iconURL = message.client.type.name == 'discord' ? message.member.user.displayAvatarURL() : message.member.user.avatar;
 
 	// Create embed with bonk gif and author / footer
 	const BonkEmbed = new EmbedBuilder()
-		.setAuthor({ name: `${username} ${plural} ${args[0] ? args.join(' ') : ''}`, iconURL: message.member.user.avatarURL() })
+		.setAuthor({ name: `${username} ${plural} ${args[0] ? args.join(' ') : ''}`, iconURL: iconURL })
 		.setImage(gifs[type][i])
 		.setFooter({ text: footer });
 
