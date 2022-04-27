@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { Embed } = require('guilded.js');
 module.exports = {
 	name: 'invite',
 	description: 'Get Cactie\'s invite links',
@@ -6,7 +6,7 @@ module.exports = {
 	cooldown: 10,
 	async execute(message, args, client) {
 		try {
-			const InvEmbed = new EmbedBuilder()
+			const InvEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.addFields([
 					{ name: '**Add Cactie Bot to your server:**', value: '[Invite Cactie to your server using this link!](https://cactie.smhsmh.club/guildedinvite)' },

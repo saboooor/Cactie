@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { Embed } = require('guilded.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your boner expand INSTANTLY!',
@@ -11,7 +11,7 @@ module.exports = {
 			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
 
 			// Create initial embed
-			const ppEmbed = new EmbedBuilder()
+			const ppEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${args[0] ? args.join(' ') : message.member.user.name}'s pp size`);
 
