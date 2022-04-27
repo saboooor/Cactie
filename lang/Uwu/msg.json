@@ -1,9 +1,9 @@
 {
     "language": {
         "name": "Uwu",
-        "alrset": "Your personal language is already set to UwU!",
-        "set": "Your personal language has been set to UwU!",
-        "invalid": "**Invalid Language!**\nPlease use a language from the list below:"
+        "alrset": "Youw p-pewsonyaw wanguage is awweady weady set to UwU!",
+        "set": "Youw pewsonyaw wanguage has been set to UwU!",
+        "invalid": "**Invawid W-Wanguage!**\nPwease u-use a wanguage fwom the wist bewow:"
     },
     "prefix": "**My pwefix is `{pfx}`**\nIf m-m-my commands don't wowk:\n- twy using swash commands (/)\n- Use my mention as a p-pwefix ({usr})",
     "off": "Tuwned owff '^'",

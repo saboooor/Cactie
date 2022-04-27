@@ -15,10 +15,10 @@ module.exports = {
 			if (args[0].toLowerCase() == 'reset') {
 				// Delete settings database for guild and reply
 				client.delData('memberdata', 'memberId', message.member.id);
-				return message.reply('**Your language has been reset.**');
+				return message.reply({ content: '**Your language has been reset.**' });
 			}
 			const lang = capitalizeFirstLetter(args[0].toLowerCase());
-			if (message.lang.language.name == lang) return message.channel.send(message.lang.language.alrset);
+			if (message.lang.language.name == lang) return message.reply({ content: message.lang.language.alrset });
 			if (!languages.includes(lang)) return message.reply({ content: `${message.lang.language.invalid}\`\`\`yml\n${languages.join(', ')}\`\`\`` });
 			await client.setData('memberdata', 'memberId', message.member.id, 'language', lang);
 			message.lang = require(`../../lang/${lang}/msg.json`);
