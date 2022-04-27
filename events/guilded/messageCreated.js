@@ -36,7 +36,7 @@ module.exports = async (client, message) => {
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(`@${client.user.name}`)) {
-			const prefix = await message.send({ content: `My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.`, replyMessageIds: [message.id] });
+			const prefix = await message.reply({ content: `My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.` });
 			setTimeout(() => { message.client.messages.delete(prefix.channelId, prefix.id).catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
@@ -53,7 +53,7 @@ module.exports = async (client, message) => {
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(`@${client.user.name}`)) {
-			const prefix = await message.send({ content: `My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.`, replyMessageIds: [message.id] });
+			const prefix = await message.reply({ content: `My prefix is \`${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}\` You may also use my mention as a prefix.` });
 			setTimeout(() => { message.client.messages.delete(prefix.channelId, prefix.id).catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
@@ -87,13 +87,23 @@ module.exports = async (client, message) => {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-			return message.send({ embeds: [cooldownEmbed], replyMessageIds: [message.id] });
+			return message.reply({ embeds: [cooldownEmbed] });
 		}
 	}
 
 	// Set last used timestamp to now for user and delete the timestamp after cooldown passes
 	timestamps.set(message.createdById, now);
 	setTimeout(() => timestamps.delete(message.createdById), cooldownAmount);
+
+	// Check if args are required and see if args are there, if not, send error
+	if (command.args && args.length < 1) {
+		const Usage = new Embed()
+			.setColor(0x5662f6)
+			.setTitle('Usage')
+			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
+		if (command.similarcmds) Usage.setFooter(`Did you mean to use ${srvconfig.prefix}${command.similarcmds}?`);
+		return message.reply({ embeds: [Usage] });
+	}
 
 	// execute the command
 	try {

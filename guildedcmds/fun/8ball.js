@@ -14,7 +14,7 @@ module.exports = {
 			const MagicEmbed = new Embed()
 				.setTitle(`🎱 ${args.join(' ')}?`)
 				.setDescription(`${ball[i]}`);
-			message.send({ embeds: [MagicEmbed], replyMessageIds: [message.id] });
+			message.reply({ embeds: [MagicEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},

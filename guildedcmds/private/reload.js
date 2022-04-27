@@ -18,7 +18,7 @@ module.exports = {
 
 			const newCommand = require(`../../${folder}${interaction == 'commands' ? `/${category}` : ''}/${command.name}.js`);
 			client[interaction].set(newCommand.name, newCommand);
-			message.send({ content: `${interaction} \`${command.name}\` was reloaded!`, replyMessageIds: [message.id] });
+			message.reply({ content: `${interaction} \`${command.name}\` was reloaded!` });
 		}
 		catch (err) { client.error(err, message); }
 	},

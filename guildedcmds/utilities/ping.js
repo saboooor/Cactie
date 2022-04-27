@@ -16,7 +16,7 @@ module.exports = {
 				.setDescription(`**${lang.ping.latency}** ${Date.now() - message.createdAt}ms`);
 
 			// reply with embed
-			message.send({ embeds: [PingEmbed], replyMessageIds: [message.id] });
+			message.reply({ embeds: [PingEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},

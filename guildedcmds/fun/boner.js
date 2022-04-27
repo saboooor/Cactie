@@ -20,7 +20,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(`${args[0] ? args.join(' ') : message.member.user.name}'s pp size`)
 				.setDescription('\u200b');
-			const pp = await message.send({ embeds: [ppEmbed], replyMessageIds: [message.id] });
+			const pp = await message.reply({ embeds: [ppEmbed] });
 
 			// For pushing equals signs
 			const shaft = [];
@@ -38,12 +38,12 @@ module.exports = {
 
 			// Chance of getting a SIKE u have no pp
 			if (Math.round(Math.random() * 10) == 5) {
-				ppEmbed.setDescription('SIKE').setFooter({ text: `${args[0] ? args.join(' ') : message.member.user.name} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}` });
+				ppEmbed.setDescription('SIKE').setFooter(`${args[0] ? args.join(' ') : message.member.user.name} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}`);
 				return pp.update({ embeds: [ppEmbed] });
 			}
 
 			// Set pp size inches to footer and edit message to final result
-			ppEmbed.setFooter({ text: `${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"` });
+			ppEmbed.setFooter(`${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"`);
 			pp.update({ embeds: [ppEmbed] });
 		}
 		catch (err) { client.error(err, message); }

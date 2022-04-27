@@ -12,7 +12,7 @@ module.exports = {
 			const code = args.join(' ');
 			let evaled = eval(code);
 			if (typeof evaled !== 'string') { evaled = require('util').inspect(evaled); }
-			message.send({ content: evaled });
+			message.reply({ content: evaled });
 		}
 		catch (err) { client.error(err, message, true); }
 	},
