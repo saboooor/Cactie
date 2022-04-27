@@ -1,5 +1,5 @@
 const { SlashCommandSubcommandBuilder } = require('discord.js');
-const helpdesc = require('../../../lang/English/helpdesc.json');
+const helpdesc = require('../../lang/English/helpdesc.json');
 module.exports = async function options(cmd) {
 	const categories = Object.keys(helpdesc);
 	categories.forEach(category => {

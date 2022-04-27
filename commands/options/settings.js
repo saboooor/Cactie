@@ -1,5 +1,5 @@
 const { SlashCommandSubcommandBuilder } = require('discord.js');
-const settingsdesc = require('../../../lang/English/settingsdesc.json');
+const settingsdesc = require('../../lang/English/settingsdesc.json');
 module.exports = async function options(cmd) {
 	const settings = Object.keys(settingsdesc);
 	settings.forEach(setting => {
