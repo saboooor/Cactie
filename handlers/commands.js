@@ -4,20 +4,20 @@ module.exports = client => {
 	let amount = 0;
 	client.cooldowns = new Collection();
 	client.commands = new Collection();
-	const commandFolders = readdirSync(`./${client.type.name}cmds`);
+	const commandFolders = readdirSync(`./commands/${client.type.name}`);
 	for (const folder of commandFolders) {
-		const commandFiles = readdirSync(`./${client.type.name}cmds/${folder}`).filter(file => file.endsWith('.js') && folder != 'options' && folder != 'message');
+		const commandFiles = readdirSync(`./commands/${client.type.name}/${folder}`).filter(file => file.endsWith('.js') && folder != 'options' && folder != 'message');
 		for (const file of commandFiles) {
-			const command = require(`../${client.type.name}cmds/${folder}/${file}`);
+			const command = require(`../commands/${client.type.name}/${folder}/${file}`);
 			client.commands.set(command.name, command);
 			amount++;
 		}
 	}
-	const universalcmdFolders = readdirSync('./universalcmds');
+	const universalcmdFolders = readdirSync('./commands/universal');
 	for (const folder of universalcmdFolders) {
-		const universalcmdFiles = readdirSync(`./universalcmds/${folder}`).filter(file => file.endsWith('.js'));
+		const universalcmdFiles = readdirSync(`./commands/universal/${folder}`).filter(file => file.endsWith('.js'));
 		for (const file of universalcmdFiles) {
-			const command = require(`../universalcmds/${folder}/${file}`);
+			const command = require(`../commands/universal/${folder}/${file}`);
 			client.commands.set(command.name, command);
 			amount++;
 		}
