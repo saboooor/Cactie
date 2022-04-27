@@ -9,7 +9,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get settings and check if bonercmd is enabled
-			const srvconfig = await client.getData('settings', 'guildId', '!guilded');
+			const srvconfig = await client.getData('settings', 'guildId', message.serverId);
 			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
 
 			// Get random number out of the maxppsize for the amount of inches

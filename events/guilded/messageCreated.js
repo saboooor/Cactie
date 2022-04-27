@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
 	if (message.createdById == client.user.id) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', '!guilded');
+	const srvconfig = await client.getData('settings', 'guildId', message.serverId);
 
 	// Get the language for the user if specified or guild language
 	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
