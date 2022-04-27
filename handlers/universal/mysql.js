@@ -1,6 +1,6 @@
 const mariadb = require('mariadb/callback');
 const { readdirSync } = require('fs');
-const { host, user, pass, db } = require('../config/mysql.json');
+const { host, user, pass, db } = require('../../config/mysql.json');
 module.exports = async client => {
 	// Database Functions
 	let amount = 0;
