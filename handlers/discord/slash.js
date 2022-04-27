@@ -12,5 +12,14 @@ module.exports = client => {
 			amount = amount + 1;
 		}
 	}
+	const unislashcommandFolders = readdirSync('./universalcmds');
+	for (const folder of unislashcommandFolders) {
+		const slashcommandFiles = readdirSync(`./universalcmds/${folder}`).filter(file => file.endsWith('.js') && folder != 'nsfw');
+		for (const file of slashcommandFiles) {
+			const slashcommand = require(`../../universalcmds/${folder}/${file}`);
+			client.slashcommands.set(slashcommand.name, slashcommand);
+			amount = amount + 1;
+		}
+	}
 	client.logger.info(`${amount} slash commands loaded`);
 };
