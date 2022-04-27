@@ -28,5 +28,5 @@ module.exports = async function action(message, args, type, plural, footer) {
 		.setFooter({ text: footer });
 
 	// Reply with bonk message, if user is set then mention the user
-	message.reply({ content: user ? `${user}` : null, embeds: [BonkEmbed] });
+	message.reply({ content: user ? `${user}` : undefined, embeds: [BonkEmbed] });
 };
