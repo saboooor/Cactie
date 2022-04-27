@@ -27,8 +27,7 @@ module.exports = {
 			// Create initial embed and reply with it
 			const ppEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`)
-				.setDescription('\u200b');
+				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`);
 			const pp = await message.reply({ embeds: [ppEmbed] });
 
 			// For pushing equals signs
@@ -36,11 +35,13 @@ module.exports = {
 
 			// Add equal signs to shaft every second and edit the message
 			for (let step = 0; step < random; step++) {
-				await sleep(1200);
+				const sleepamt = Math.round(Math.random() * (2000 - 800 + 1) + 800);
+				await sleep(sleepamt);
 				ppEmbed.setDescription('8' + shaft.join('') + 'D');
 				pp.edit({ embeds: [ppEmbed] });
 				shaft.push('=');
 			}
+			await sleep(1000);
 
 			// Randomly pick between hard or soft
 			const hard = Math.round(Math.random());
