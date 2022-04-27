@@ -4,7 +4,7 @@ module.exports = client => {
 	let amount = 0;
 	client.cooldowns = new Collection();
 	client.commands = new Collection();
-	const types = [client.type.name, 'universal']
+	const types = [client.type.name, 'universal'];
 	types.forEach(type => {
 		const commandFolders = readdirSync(`./commands/${type}`);
 		for (const folder of commandFolders) {
@@ -14,7 +14,7 @@ module.exports = client => {
 				client.commands.set(command.name, command);
 				amount++;
 			}
-		}	
-	})
+		}
+	});
 	client.logger.info(`${amount} message commands loaded`);
 };
