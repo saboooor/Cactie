@@ -3,7 +3,7 @@ module.exports = {
 	name: 'giggle',
 	description: 'hehehehehehehe',
 	usage: '[Someone]',
-	options: require('../options/someone.js'),
+	options: require('../../discordcmds/options/someone.js'),
 	async execute(message, args, client) {
 		try {
 			action(message, args, 'giggle', 'giggles', 'hehehehehehehe');

@@ -1,9 +1,9 @@
 const fs = require('fs');
 module.exports = (prefix, HelpEmbed) => {
-	const funCommands = fs.readdirSync('./discordcmds/actions').filter(file => file.endsWith('.js'));
+	const actionCommands = fs.readdirSync('./universalcmds/actions').filter(file => file.endsWith('.js'));
 	const commands = [];
-	for (const file of funCommands) {
-		const command = require(`../discordcmds/actions/${file}`);
+	for (const file of actionCommands) {
+		const command = require(`../universalcmds/actions/${file}`);
 		commands.push(`${prefix}${command.name}`);
 	}
 	HelpEmbed.setDescription(`

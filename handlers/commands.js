@@ -10,7 +10,16 @@ module.exports = client => {
 		for (const file of commandFiles) {
 			const command = require(`../${client.type.name}cmds/${folder}/${file}`);
 			client.commands.set(command.name, command);
-			amount = amount + 1;
+			amount++;
+		}
+	}
+	const universalcmdFolders = readdirSync('./universalcmds');
+	for (const folder of universalcmdFolders) {
+		const universalcmdFiles = readdirSync(`./universalcmds/${folder}`).filter(file => file.endsWith('.js'));
+		for (const file of universalcmdFiles) {
+			const command = require(`../universalcmds/${folder}/${file}`);
+			client.commands.set(command.name, command);
+			amount++;
 		}
 	}
 	client.logger.info(`${amount} message commands loaded`);
