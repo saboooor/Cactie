@@ -5,7 +5,7 @@ module.exports = client => {
 	client.reactions = new Collection();
 	const reactionFiles = fs.readdirSync(`./reactions/${client.type.name}`).filter(file => file.endsWith('.js'));
 	for (const file of reactionFiles) {
-		const reaction = require(`../reactions/${client.type.name}/${file}`);
+		const reaction = require(`../../reactions/${client.type.name}/${file}`);
 		client.reactions.set(reaction.name, reaction);
 		amount = amount + 1;
 	}

@@ -10,7 +10,7 @@ module.exports = client => {
 		for (const folder of commandFolders) {
 			const commandFiles = readdirSync(`./commands/${type}/${folder}`).filter(file => file.endsWith('.js') && folder != 'options' && folder != 'message');
 			for (const file of commandFiles) {
-				const command = require(`../commands/${type}/${folder}/${file}`);
+				const command = require(`../../commands/${type}/${folder}/${file}`);
 				client.commands.set(command.name, command);
 				amount++;
 			}
