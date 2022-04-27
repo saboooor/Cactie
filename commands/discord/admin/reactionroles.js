@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['rr'],
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
 	permission: 'Administrator',
-	options: require('../options/reactionroles.js'),
+	options: require('../../options/reactionroles.js'),
 	async execute(message, args, client) {
 		try {
 			// Create Embed with title and color

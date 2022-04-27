@@ -9,7 +9,7 @@ module.exports = {
 	permission: 'BanMembers',
 	botperm: 'BanMembers',
 	cooldown: 5,
-	options: require('../options/punish.js'),
+	options: require('../../options/punish.js'),
 	async execute(message, args, client) {
 		try {
 			// Get user and check if user is valid

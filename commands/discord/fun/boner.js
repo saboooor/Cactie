@@ -7,7 +7,7 @@ module.exports = {
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 10,
-	options: require('../options/someone.js'),
+	options: require('../../options/someone.js'),
 	async execute(message, args, client) {
 		try {
 			// Get settings and check if bonercmd is enabled

@@ -9,7 +9,7 @@ module.exports = {
 	permission: 'Administrator',
 	botperm: 'ManageMessages',
 	usage: '<Message Id> [Response]',
-	options: require('../options/suggestresponse.js'),
+	options: require('../../options/suggestresponse.js'),
 	async execute(message, args, client) {
 		try {
 			// Fetch the message

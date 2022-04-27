@@ -13,7 +13,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	options: require('../options/index.js'),
+	options: require('../../options/index.js'),
 	async execute(message, args, client) {
 		try {
 			// Get player and index from arg and check if index exists

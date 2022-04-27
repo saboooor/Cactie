@@ -11,7 +11,7 @@ module.exports = {
 	args: true,
 	invc: true,
 	samevc: true,
-	options: require('../options/text.js'),
+	options: require('../../options/text.js'),
 	async execute(message, args, client) {
 		try {
 			const player = client.manager.get(message.guild.id);

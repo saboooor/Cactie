@@ -9,7 +9,7 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Suggestion>',
-	options: require('../options/suggest.js'),
+	options: require('../../options/suggest.js'),
 	async execute(message, args, client) {
 		try {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

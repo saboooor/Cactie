@@ -9,7 +9,7 @@ module.exports = {
 	permission: 'ManageMessages',
 	botperm: 'ManageRoles',
 	cooldown: 5,
-	options: require('../options/punish.js'),
+	options: require('../../options/punish.js'),
 	async execute(message, args, client) {
 		try {
 			// Get mute role and check if role is valid

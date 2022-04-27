@@ -8,7 +8,7 @@ module.exports = {
 	srvunmute: true,
 	invc: true,
 	samevc: true,
-	options: require('../options/play.js'),
+	options: require('../../options/play.js'),
 	async execute(message, args, client) {
 		try {
 			// Since playtop and play are so similar, use the same code in a function

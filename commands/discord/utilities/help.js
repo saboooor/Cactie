@@ -7,7 +7,7 @@ module.exports = {
 	botperm: 'AddReactions',
 	usage: '[Type]',
 	cooldown: 10,
-	options: require('../options/help.js'),
+	options: require('../../options/help.js'),
 	async execute(message, args, client) {
 		try {
 			const helpdesc = require(`../../../lang/${message.lang.language.name}/helpdesc.json`);

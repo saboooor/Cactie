@@ -8,7 +8,7 @@ module.exports = {
 	permission: 'KickMembers',
 	botperm: 'KickMembers',
 	cooldown: 5,
-	options: require('../options/kick.js'),
+	options: require('../../options/kick.js'),
 	async execute(message, args, client) {
 		try {
 			// Get user and check if user is valid

@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Let the 8 ball decide your fate!',
 	args: true,
 	usage: '<Question>',
-	options: require('../options/question.js'),
+	options: require('../../options/question.js'),
 	async execute(message, args, client) {
 		try {
 			// Get the array of 8 ball responses

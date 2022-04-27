@@ -6,7 +6,7 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Timings Link>',
-	options: require('../options/url.js'),
+	options: require('../../options/url.js'),
 	async execute(message, args, client) {
 		try {
 			const timingsresult = await analyzeTimings(message, client, args);

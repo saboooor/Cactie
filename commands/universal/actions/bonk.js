@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Bonk someone!',
 	usage: '<Someone>',
 	args: true,
-	options: require('../../discordcmds/options/someonereq.js'),
+	options: require('../../options/someonereq.js'),
 	async execute(message, args, client) {
 		try {
 			action(message, args, 'bonk', 'bonks', 'get bonked 🔨');

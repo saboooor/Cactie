@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Discord member information',
 	aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
 	usage: '[User]',
-	options: require('../options/user.js'),
+	options: require('../../options/user.js'),
 	async execute(message, args, client) {
 		try {
 			let member = message.member;

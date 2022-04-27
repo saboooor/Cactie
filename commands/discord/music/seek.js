@@ -13,7 +13,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	options: require('../options/seek.js'),
+	options: require('../../options/seek.js'),
 	async execute(message, args, client) {
 		try {
 			// Get player and current song
