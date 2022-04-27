@@ -3,7 +3,7 @@ const { Collection } = require('discord.js');
 module.exports = client => {
 	let amount = 0;
 	client.slashcommands = new Collection();
-	const types = ['discord', 'universal']
+	const types = ['discord', 'universal'];
 	types.forEach(type => {
 		const slashcommandFolders = readdirSync(`./commands/${type}`);
 		for (const folder of slashcommandFolders) {
@@ -13,7 +13,7 @@ module.exports = client => {
 				client.slashcommands.set(slashcommand.name, slashcommand);
 				amount++;
 			}
-		}	
-	})
+		}
+	});
 	client.logger.info(`${amount} slash commands loaded`);
 };
