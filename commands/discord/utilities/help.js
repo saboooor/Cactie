@@ -24,7 +24,9 @@ module.exports = {
 				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
 				const array = [];
 				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
-				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n\n${array.join('\n')}`);
+				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
+				if (category.footer) HelpEmbed.setFooter({ text: category.embed });
+				if (category.field) HelpEmbed.addFields([category.field]);
 			}
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
