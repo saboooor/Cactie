@@ -7,6 +7,10 @@
         "name": "Fun",
         "description": "These commands are made just for fun"
     },
+    "animals": {
+        "name": "Animals",
+        "description": "These commands show cute animals"
+    },
     "music": {
         "name": "Music",
         "description": "These commands play music in your voice channel"

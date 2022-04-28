@@ -13,7 +13,7 @@ module.exports = {
 			const helpdesc = require(`../../../lang/${message.lang.language.name}/helpdesc.json`);
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
-			const HelpEmbed = new EmbedBuilder()
+			let HelpEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
 			let arg = args[0];
@@ -25,7 +25,7 @@ module.exports = {
 				const array = [];
 				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
-				if (category.footer) HelpEmbed.setFooter({ text: category.embed });
+				if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 				if (category.field) HelpEmbed.setFields([category.field]);
 			}
 			else if (arg == 'supportpanel') {
@@ -95,6 +95,9 @@ module.exports = {
 			const collector = helpMsg.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async interaction => {
 				await interaction.deferUpdate();
+				HelpEmbed = new EmbedBuilder()
+					.setColor(Math.floor(Math.random() * 16777215))
+					.setTitle('**HELP**');
 				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
 				else {
 					const category = helpdesc[interaction.values[0].split('_')[1]];
@@ -102,7 +105,7 @@ module.exports = {
 					const array = [];
 					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
 					HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
-					if (category.footer) HelpEmbed.setFooter({ text: category.embed });
+					if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 					if (category.field) HelpEmbed.setFields([category.field]);
 				}
 				row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
