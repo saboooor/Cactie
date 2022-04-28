@@ -97,8 +97,8 @@ module.exports = {
 				await interaction.deferUpdate();
 				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
 				else {
-					const category = helpdesc[arg.toLowerCase()];
-					const commands = client.commands.filter(c => c.category == arg.toLowerCase());
+					const category = helpdesc[interaction.values[0].split('_')[1]];
+					const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);
 					const array = [];
 					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
 					HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
