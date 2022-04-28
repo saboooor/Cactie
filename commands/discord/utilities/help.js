@@ -22,8 +22,9 @@ module.exports = {
 				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => client.logger.error(err.stack));
 				const category = helpdesc[arg.toLowerCase()];
 				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
-				console.log(commands);
-				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}`);
+				const array = [];
+				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
+				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n\n${array.join('\n')}`);
 			}
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
