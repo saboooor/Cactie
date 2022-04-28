@@ -13,7 +13,8 @@
     },
     "nsfw": {
         "name": "NSFW",
-        "description": "These commands have sensitive content that is NSFW"
+        "description": "These commands have sensitive content that is NSFW",
+        "embed": "*All NSFW commands are based on Reddit and Redgifs API. NOT cherry picked.*"
     },
     "tickets": {
         "name": "Tickets",
@@ -25,7 +26,8 @@
     },
     "actions": {
         "name": "Actions",
-        "description": "These commands let you do stuff to people"
+        "description": "These commands let you do stuff to people",
+        "embed": "*All these commands can be suffixed with a user @ to do the action on them.*"
     },
     "supportpanel": {
         "name": "Support Panel (Admin only)",

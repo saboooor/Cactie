@@ -20,7 +20,10 @@ module.exports = {
 			if (arg) arg = arg.toLowerCase();
 			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
 				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => client.logger.error(err.stack));
-				require(`../../../help/${arg}.js`)(prefix, HelpEmbed, srvconfig);
+				const category = helpdesc[arg.toLowerCase()];
+				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
+				console.log(commands);
+				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}`);
 			}
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
