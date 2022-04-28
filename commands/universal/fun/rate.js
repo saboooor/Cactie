@@ -3,10 +3,10 @@ module.exports = {
 	description: 'Rate someone or something! Or yourself.',
 	usage: '[Something or someone]',
 	options: require('../../options/someone.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the rating messages
-			const ratings = require(`../../../lang/${message.lang.language.name}/rate.json`);
+			const ratings = require(`../../../lang/${message.lang ? message.lang.language.name : lang.language.name}/rate.json`);
 
 			// If arg isn't set, set it to the author's name/nick
 			if (!args[0]) args[0] = message.member.displayName;
