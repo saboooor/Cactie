@@ -95,7 +95,7 @@ module.exports = {
 			const collector = helpMsg.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async interaction => {
 				await interaction.deferUpdate();
-				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
+				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) {HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');}
 				else {
 					const category = helpdesc[arg.toLowerCase()];
 					const commands = client.commands.filter(c => c.category == arg.toLowerCase());
