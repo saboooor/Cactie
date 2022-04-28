@@ -7,17 +7,26 @@
         "name": "Fun",
         "description": "These commands are made just for fun"
     },
+    "animals": {
+        "name": "Animals",
+        "description": "These commands show cute animals"
+    },
     "music": {
         "name": "Music",
         "description": "These commands play music in your voice channel"
     },
     "nsfw": {
         "name": "NSFW",
-        "description": "These commands have sensitive content that is NSFW"
+        "description": "These commands have sensitive content that is NSFW",
+        "footer": "*All NSFW commands are based on Reddit and Redgifs API. NOT cherry picked.*"
     },
     "tickets": {
         "name": "Tickets",
-        "description": "These commands are related to the bot's tickets system"
+        "description": "These commands are related to the bot's tickets system",
+        "field": {
+            "name": "**How to create support tickets:**",
+            "value": "**1.** Set the support team / staff role by doing /settings supportrole\n**2.** Set the ticket's category channel by doing /settings ticketcategory (Optional)\n**3.** Set a log channel by doing /settings logchannel (Optional)\n**4.** Execute /help supportpanel if you want to use a reaction or button to create a ticket\n**5.** Create a ticket to test it out"
+        }
     },
     "utilities": {
         "name": "Utilities",
@@ -25,7 +34,8 @@
     },
     "actions": {
         "name": "Actions",
-        "description": "These commands let you do stuff to people"
+        "description": "These commands let you do stuff to people",
+        "footer": "*All these commands can be suffixed with a user @ to do the action on them.*"
     },
     "supportpanel": {
         "name": "Support Panel (Admin only)",
