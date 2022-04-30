@@ -29,7 +29,7 @@ module.exports = {
 				const sleepamt = Math.round(Math.random() * (1200 - 400 + 1) + 400);
 				await sleep(sleepamt);
 				ppEmbed.setDescription('8' + shaft.join('') + 'D');
-				pp.update({ embeds: [ppEmbed] });
+				pp.edit({ embeds: [ppEmbed] });
 				shaft.push('=');
 			}
 			await sleep(500);
@@ -40,12 +40,12 @@ module.exports = {
 			// Chance of getting a SIKE u have no pp
 			if (Math.round(Math.random() * 10) == 5) {
 				ppEmbed.setDescription('SIKE').setFooter(`${args[0] ? args.join(' ') : message.member.user.name} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}`);
-				return pp.update({ embeds: [ppEmbed] });
+				return pp.edit({ embeds: [ppEmbed] });
 			}
 
 			// Set pp size inches to footer and edit message to final result
 			ppEmbed.setFooter(`${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"`);
-			pp.update({ embeds: [ppEmbed] });
+			pp.edit({ embeds: [ppEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},
