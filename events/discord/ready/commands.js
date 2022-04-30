@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ApplicationCommandType } = require('discord.js');
 module.exports = async (client) => {
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
@@ -53,6 +53,7 @@ module.exports = async (client) => {
 		await client.application?.commands.create(cmd.toJSON());
 	});
 	await commands.forEach(async command => {
+		if (command.type == ApplicationCommandType.Message || command.type == ApplicationCommandType.User) return;
 		if (client.slashcommands.find(c => c.name == command.name)) return;
 		client.logger.info(`Detected /${command.name} has been deleted! Deleting command...`);
 		await command.delete();
