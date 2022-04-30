@@ -20,7 +20,7 @@ module.exports = {
 
 			// Fetch the messages and bulk delete them
 			const messages = await message.channel.messages.fetch({ limit: args[0] });
-			message.channel.bulkDelete(messages);
+			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
 
 			// Reply with response
 			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${args[0]} messages!**` });
