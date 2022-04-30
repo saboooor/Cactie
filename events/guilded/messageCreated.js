@@ -2,7 +2,7 @@ const { Collection } = require('discord.js');
 const { Embed, UserType } = require('guilded.js');
 module.exports = async (client, message) => {
 	// Check if message is from a bot and if so return, and fetch member if not already fetched
-	if (message.createdByBotId || message.createdByWebhookId) return;
+	if (message.createdByBotId || message.createdByWebhookId || (!message.content && !message.embeds)) return;
 	message.member = client.members.cache.get(`${message.serverId}:${message.createdById}`);
 	if (!message.member) message.member = await client.members.fetch(message.serverId, message.createdById);
 	if (message.member.user.type == UserType.Bot) return;
