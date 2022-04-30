@@ -4,7 +4,7 @@ let current = null;
 module.exports = async function action(message, args, type, plural, footer) {
 	// Check if arg is a user and set it
 	let user = null;
-	if (args[0]) {
+	if (args[0] && message.client.type.name == 'discord') {
 		user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (user) args[0] = user.displayName;
 	}
@@ -18,12 +18,15 @@ module.exports = async function action(message, args, type, plural, footer) {
 		current = i;
 	}
 
+	const username = message.client.type.name == 'discord' ? message.member.displayName : message.member.user.name;
+	const iconURL = message.client.type.name == 'discord' ? message.member.user.displayAvatarURL() : message.member.user.avatar;
+
 	// Create embed with bonk gif and author / footer
 	const BonkEmbed = new EmbedBuilder()
-		.setAuthor({ name: `${message.member.displayName} ${plural} ${args[0] ? args.join(' ') : ''}`, iconURL: message.member.user.avatarURL() })
+		.setAuthor({ name: `${username} ${plural} ${args[0] ? args.join(' ') : ''}`, iconURL: iconURL })
 		.setImage(gifs[type][i])
 		.setFooter({ text: footer });
 
 	// Reply with bonk message, if user is set then mention the user
-	message.reply({ content: user ? `${user}` : null, embeds: [BonkEmbed] });
+	message.reply({ content: user ? `${user}` : undefined, embeds: [BonkEmbed] });
 };
