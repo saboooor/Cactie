@@ -12,10 +12,10 @@ module.exports = async (client, interaction) => {
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
-	if (data[0]) interaction.lang = require(`../../../lang/${data[0].language}/msg.json`);
-	else if (interaction.locale.split('-')[0] == 'en') interaction.lang = require('../../../lang/English/msg.json');
-	else if (interaction.locale.split('-')[0] == 'pt') interaction.lang = require('../../../lang/Portuguese/msg.json');
-	else interaction.lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
+	if (data[0]) lang = require(`../../../lang/${data[0].language}/msg.json`);
+	else if (interaction.locale.split('-')[0] == 'en') lang = require('../../../lang/English/msg.json');
+	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../../lang/Portuguese/msg.json');
 
 	// Check if bot has the permissions necessary to run the button
 	if (button.botperm
@@ -53,7 +53,7 @@ module.exports = async (client, interaction) => {
 			await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
 			interaction.reply = interaction.editReply;
 		}
-		button.execute(interaction, client);
+		button.execute(interaction, client, lang);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

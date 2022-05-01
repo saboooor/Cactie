@@ -23,8 +23,8 @@ module.exports = async (client, message) => {
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
-	if (data[0]) message.lang = require(`../../../lang/${data[0].language}/msg.json`);
-	else message.lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	let lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	if (data[0]) lang = require(`../../../lang/${data[0].language}/msg.json`);
 
 	// Use mention as prefix instead of prefix too
 	if (message.content.replace('!', '').startsWith(`<@${client.user.id}>`)) {
@@ -37,7 +37,7 @@ module.exports = async (client, message) => {
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: message.lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
+			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
 			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 
@@ -61,7 +61,7 @@ module.exports = async (client, message) => {
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: message.lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
+			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
 			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
 		}
 		return;
@@ -84,7 +84,7 @@ module.exports = async (client, message) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
 		// Get a random cooldown message
-		const messages = require(`../../../lang/${message.lang.language.name}/cooldown.json`);
+		const messages = require(`../../../lang/${lang.language.name}/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -156,11 +156,11 @@ module.exports = async (client, message) => {
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(message.lang.rolereq.replace('{role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
+			return client.error(lang.rolereq.replace('{role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(message.lang.permreq.replace('{perm}', command.permission), message, true);
+			return client.error(lang.permreq.replace('{perm}', command.permission), message, true);
 		}
 	}
 
@@ -197,16 +197,16 @@ module.exports = async (client, message) => {
 	if (command.djRole && srvconfig.djrole != 'false') {
 		// Get dj role, if it doesn't exist, send error message because invalid setting value
 		const role = message.guild.roles.cache.get(srvconfig.djrole);
-		if (!role) return client.error(message.lang.dj.notfound, message, true);
+		if (!role) return client.error(lang.dj.notfound, message, true);
 
 		// Check if user has role, if not, send error message
-		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(message.lang.rolereq.replace('${role}', role.name), message, true);
+		if (!message.member.roles.cache.has(srvconfig.djrole)) return client.error(lang.rolereq.replace('${role}', role.name), message, true);
 	}
 
 	// execute the command
 	try {
 		client.logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
-		command.execute(message, args, client);
+		command.execute(message, args, client, lang);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

@@ -8,7 +8,7 @@ module.exports = {
 	player: true,
 	playing: true,
 	srvunmute: true,
-	async execute(interaction, client) {
+	async execute(interaction, client, lang) {
 		try {
 			// Get player, current song, and song position / length
 			const player = client.manager.get(interaction.guild.id);
@@ -18,13 +18,13 @@ module.exports = {
 
 			// Create embed and disable button
 			const NPEmbed = new EmbedBuilder()
-				.setDescription(`<:music:${music}> **${interaction.lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
+				.setDescription(`<:music:${music}> **${lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);
 			const btn = new ButtonBuilder()
 				.setCustomId('music_updatenp')
-				.setLabel(interaction.lang.refresh)
+				.setLabel(lang.refresh)
 				.setEmoji({ id: refresh })
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(true);

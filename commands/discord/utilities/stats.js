@@ -11,7 +11,7 @@ module.exports = {
 	aliases: ['status', 'mcstatus', 'mcstats'],
 	usage: '[Server]',
 	options: require('../../options/stats.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			if (!args[0]) args = ['pup'];
 			const srvs = [];
@@ -84,7 +84,7 @@ module.exports = {
 			const row = new ActionRowBuilder().addComponents([
 				new ButtonBuilder()
 					.setCustomId('stats_refresh')
-					.setLabel(message.lang.refresh)
+					.setLabel(lang.refresh)
 					.setEmoji({ id: refresh })
 					.setStyle(ButtonStyle.Secondary),
 			]);

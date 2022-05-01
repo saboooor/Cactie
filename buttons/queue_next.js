@@ -5,7 +5,7 @@ const { music } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'queue_next',
 	player: true,
-	async execute(interaction, client) {
+	async execute(interaction, client, lang) {
 		try {
 			// Get the player, queue, and embed
 			const player = interaction.client.manager.get(interaction.guild.id);
@@ -25,14 +25,14 @@ module.exports = {
 
 			// Clear fields, add new page to fields
 			QueueEmbed.setFields([]);
-			if (song) QueueEmbed.addFields([{ name: `<:music:${music}> **${interaction.lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
+			if (song) QueueEmbed.addFields([{ name: `<:music:${music}> **${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
 			let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 			if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped, { server: 'https://bin.birdflop.com' })}`;
 			if (!tracks.length) QueueEmbed.addFields([{ name: 'No tracks up next', value: `in ${page > 1 ? `page ${page}` : 'the queue'}.` }]);
 			else QueueEmbed.addFields([{ name: `<:music:${music}> Queue List`, value: mapped }]);
 
 			// Set current page number in footer and reply
-			QueueEmbed.setFooter({ text: interaction.lang.page.replace('{1}', page > maxPages ? maxPages : page).replace('{2}', maxPages) });
+			QueueEmbed.setFooter({ text: lang.page.replace('{1}', page > maxPages ? maxPages : page).replace('{2}', maxPages) });
 			return interaction.message.edit({ embeds: [QueueEmbed] });
 		}
 		catch (err) { client.error(err, interaction); }

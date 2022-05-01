@@ -10,7 +10,7 @@ module.exports = {
 	playing: true,
 	srvunmute: true,
 	ephemeral: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player, current song, and song position / length and send embed
 			const player = client.manager.get(message.guild.id);
@@ -18,7 +18,7 @@ module.exports = {
 			const total = song.duration;
 			const current = player.position;
 			const NPEmbed = new EmbedBuilder()
-				.setDescription(`<:music:${music}> **${message.lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
+				.setDescription(`<:music:${music}> **${lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.color);
@@ -34,7 +34,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
 						.setCustomId('music_updatenp')
-						.setLabel(message.lang.refresh)
+						.setLabel(lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
 				]);
@@ -43,7 +43,7 @@ module.exports = {
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/music')
 						.setEmoji({ id: music })
-						.setLabel(message.lang.dashboard.name)
+						.setLabel(lang.dashboard.name)
 						.setStyle('LINK'),
 				]);
 			}

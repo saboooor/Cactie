@@ -10,7 +10,7 @@ module.exports = {
 	srvunmute: true,
 	invc: true,
 	samevc: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the player
 			const player = client.manager.get(message.guild.id);
@@ -22,9 +22,9 @@ module.exports = {
 				if (!player.loopQueueAmount) player.loopQueueAmount = [];
 				let alr = false;
 				for (const i of player.loopQueueAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error(message.lang.music.queue.loop.alr, message, true);
+				if (alr) return client.error(lang.music.queue.loop.alr, message, true);
 				player.loopQueueAmount.push(message.member.id);
-				if (player.loopQueueAmount.length < requiredAmount) return message.reply({ content: `**${message.lang.music.queue.loop.ing[player.queueRepeat ? 'off' : 'on']}** \`${player.loopQueueAmount.length} / ${requiredAmount}\`` });
+				if (player.loopQueueAmount.length < requiredAmount) return message.reply({ content: `**${lang.music.queue.loop.ing[player.queueRepeat ? 'off' : 'on']}** \`${player.loopQueueAmount.length} / ${requiredAmount}\`` });
 				player.loopQueueAmount = null;
 			}
 
@@ -34,7 +34,7 @@ module.exports = {
 			// Send message to channel
 			const LoopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:refresh:${refresh}> **${message.lang.music.queue.loop[player.queueRepeat ? 'on' : 'off']}**`);
+				.setDescription(`<:refresh:${refresh}> **${lang.music.queue.loop[player.queueRepeat ? 'on' : 'off']}**`);
 			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
 
 			// Wait 10 seconds and compress the message

@@ -7,7 +7,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player and skip and clear the queue and reply
 			const player = client.manager.get(message.guild.id);
@@ -15,7 +15,7 @@ module.exports = {
 			player.queue.clear();
 			const StopEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:alert:${warn}> **${message.lang.music.stop}**`);
+				.setDescription(`<:alert:${warn}> **${lang.music.stop}**`);
 			message.reply({ embeds: [StopEmbed] });
 		}
 		catch (err) { client.error(err, message); }

@@ -10,7 +10,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player
 			const player = client.manager.get(message.guild.id);
@@ -19,7 +19,7 @@ module.exports = {
 			player.queue.reverse();
 			const ReverseEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:rewind:${rewind}> **${message.lang.music.queue.reversed}**`);
+				.setDescription(`<:rewind:${rewind}> **${lang.music.queue.reversed}**`);
 			message.reply({ embeds: [ReverseEmbed] }).catch(err => client.logger.error(err.stack));
 		}
 		catch (err) { client.error(err, message); }

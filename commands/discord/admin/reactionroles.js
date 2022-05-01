@@ -8,7 +8,7 @@ module.exports = {
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
 	permission: 'Administrator',
 	options: require('../../options/reactionroles.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Create Embed with title and color
 			const RREmbed = new EmbedBuilder()
@@ -67,7 +67,7 @@ module.exports = {
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.toJSON().fields.length > 12) {
 					RREmbed.toJSON().fields.splice(12, RREmbed.toJSON().fields.length);
-					RREmbed.setFooter({ text: message.lang.page.replace('{1}', '1').replace('{2}', Math.ceil(RREmbed.toJSON().fields.length / 12)), iconURL: message.member.user.avatarURL() });
+					RREmbed.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', Math.ceil(RREmbed.toJSON().fields.length / 12)), iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
 					const btns = new ActionRowBuilder()

@@ -12,10 +12,10 @@ module.exports = async (client, interaction) => {
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
-	if (data[0]) interaction.lang = require(`../../../lang/${data[0].language}/msg.json`);
-	else if (interaction.locale.split('-')[0] == 'en') interaction.lang = require('../../../lang/English/msg.json');
-	else if (interaction.locale.split('-')[0] == 'pt') interaction.lang = require('../../../lang/Portuguese/msg.json');
-	else interaction.lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	let lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	if (data[0]) lang = require(`../../../lang/${data[0].language}/msg.json`);
+	else if (interaction.locale.split('-')[0] == 'en') lang = require('../../../lang/English/msg.json');
+	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../../lang/Portuguese/msg.json');
 
 	// Make args variable from interaction options for compatibility with dash command code
 	// If command is context menu, set it to client instead since it's (interaction, client)
@@ -47,7 +47,7 @@ module.exports = async (client, interaction) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(interaction.user.id)) {
 		// Get a random cooldown message
-		const messages = require(`../../../lang/${interaction.lang.language.name}/cooldown.json`);
+		const messages = require(`../../../lang/${lang.language.name}/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -111,11 +111,11 @@ module.exports = async (client, interaction) => {
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
 			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(interaction.lang.rolereq.replace('{role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
+			return client.error(lang.rolereq.replace('{role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
 		}
 		else {
 			client.logger.error(`User is missing ${command.permission} permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(interaction.lang.permreq.replace('{perm}', command.permission), interaction, true);
+			return client.error(lang.permreq.replace('{perm}', command.permission), interaction, true);
 		}
 	}
 
@@ -152,10 +152,10 @@ module.exports = async (client, interaction) => {
 	if (command.djRole && srvconfig.djrole != 'false') {
 		// Get dj role, if it doesn't exist, send error message because invalid setting value
 		const role = interaction.guild.roles.cache.get(srvconfig.djrole);
-		if (!role) return interaction.reply({ content: interaction.lang.dj.notfound, ephemeral: true });
+		if (!role) return interaction.reply({ content: lang.dj.notfound, ephemeral: true });
 
 		// Check if user has role, if not, send error message
-		if (!interaction.member.roles.cache.has(srvconfig.djrole)) return client.error(interaction.lang.rolereq.replace('${role}', role.name), interaction, true);
+		if (!interaction.member.roles.cache.has(srvconfig.djrole)) return client.error(lang.rolereq.replace('${role}', role.name), interaction, true);
 	}
 
 	// Defer and execute the command
@@ -166,7 +166,7 @@ module.exports = async (client, interaction) => {
 			await interaction.deferReply({ ephemeral: command.ephemeral });
 			interaction.reply = interaction.editReply;
 		}
-		command.execute(interaction, args, client);
+		command.execute(interaction, args, client, lang);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

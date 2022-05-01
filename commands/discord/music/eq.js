@@ -12,23 +12,23 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Add embed and buttons to message and send, the eq will be set in the buttons or dashboard
 			const EQEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle(message.lang.music.eq.name)
-				.setDescription(message.lang.music.eq.choose);
-			if (client.user.id == '848775888673439745') EQEmbed.addFields([{ name: message.lang.music.eq.precise, value: `[${message.lang.dashboard.use}](https://cactie.smhsmh.club/music)` }]);
-			const but = new ButtonBuilder().setCustomId('filter_clear').setLabel(message.lang.off).setStyle(ButtonStyle.Danger);
-			const but2 = new ButtonBuilder().setCustomId('filter_bass').setLabel(message.lang.music.eq.bass).setStyle(ButtonStyle.Primary);
-			const but3 = new ButtonBuilder().setCustomId('filter_party').setLabel(message.lang.music.eq.party).setStyle(ButtonStyle.Primary);
-			const but4 = new ButtonBuilder().setCustomId('filter_radio').setLabel(message.lang.music.eq.radio).setStyle(ButtonStyle.Primary);
-			const but5 = new ButtonBuilder().setCustomId('filter_pop').setLabel(message.lang.music.eq.pop).setStyle(ButtonStyle.Primary);
-			const but6 = new ButtonBuilder().setCustomId('filter_treb').setLabel(message.lang.music.eq.treb).setStyle(ButtonStyle.Primary);
-			const but7 = new ButtonBuilder().setCustomId('filter_boost').setLabel(message.lang.music.eq.boost).setStyle(ButtonStyle.Primary);
-			const but8 = new ButtonBuilder().setCustomId('filter_soft').setLabel(message.lang.music.eq.soft).setStyle(ButtonStyle.Primary);
-			const but9 = new ButtonBuilder().setCustomId('filter_maxed').setLabel(message.lang.music.eq.maxed).setStyle(ButtonStyle.Primary);
+				.setTitle(lang.music.eq.name)
+				.setDescription(lang.music.eq.choose);
+			if (client.user.id == '848775888673439745') EQEmbed.addFields([{ name: lang.music.eq.precise, value: `[${lang.dashboard.use}](https://cactie.smhsmh.club/music)` }]);
+			const but = new ButtonBuilder().setCustomId('filter_clear').setLabel(lang.off).setStyle(ButtonStyle.Danger);
+			const but2 = new ButtonBuilder().setCustomId('filter_bass').setLabel(lang.music.eq.bass).setStyle(ButtonStyle.Primary);
+			const but3 = new ButtonBuilder().setCustomId('filter_party').setLabel(lang.music.eq.party).setStyle(ButtonStyle.Primary);
+			const but4 = new ButtonBuilder().setCustomId('filter_radio').setLabel(lang.music.eq.radio).setStyle(ButtonStyle.Primary);
+			const but5 = new ButtonBuilder().setCustomId('filter_pop').setLabel(lang.music.eq.pop).setStyle(ButtonStyle.Primary);
+			const but6 = new ButtonBuilder().setCustomId('filter_treb').setLabel(lang.music.eq.treb).setStyle(ButtonStyle.Primary);
+			const but7 = new ButtonBuilder().setCustomId('filter_boost').setLabel(lang.music.eq.boost).setStyle(ButtonStyle.Primary);
+			const but8 = new ButtonBuilder().setCustomId('filter_soft').setLabel(lang.music.eq.soft).setStyle(ButtonStyle.Primary);
+			const but9 = new ButtonBuilder().setCustomId('filter_maxed').setLabel(lang.music.eq.maxed).setStyle(ButtonStyle.Primary);
 			const row = new ActionRowBuilder().addComponents([but, but2, but3, but4, but5]);
 			const row2 = new ActionRowBuilder().addComponents([but6, but7, but8, but9]);
 			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2] });
@@ -50,7 +50,7 @@ module.exports = {
 				// Check if the preset is clear or not
 				if (preset == 'clear') {
 					// Update the message with the new EQ
-					EQEmbed.setDescription(`🎛️ ${message.lang.music.eq.set} **${message.lang.off}**`);
+					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.off}**`);
 				}
 				else {
 					// Wait 30ms after clear cuz idk i have to do it
@@ -61,7 +61,7 @@ module.exports = {
 					await player.setEQ(...bands);
 
 					// Update the message with the new EQ
-					EQEmbed.setDescription(`🎛️ ${message.lang.music.eq.set} **${message.lang.music.eq[preset]}**`);
+					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.music.eq[preset]}**`);
 				}
 				await EQMsg.edit({ embeds: [EQEmbed] });
 			});

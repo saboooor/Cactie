@@ -8,11 +8,10 @@ module.exports = {
 	usage: '[Type]',
 	cooldown: 10,
 	options: require('../../options/help.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
-			const helpdesc = require(`../../../lang/${message.lang.language.name}/helpdesc.json`);
+			const helpdesc = require(`../../../lang/${lang.language.name}/helpdesc.json`);
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			const prefix = await srvconfig.prefix.replace(/([^\\]|^|\*|_|`|~)(\*|_|`|~)/g, '$1\\$2');
 			let HelpEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('**HELP**');
@@ -98,7 +97,7 @@ module.exports = {
 				HelpEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setTitle('**HELP**');
-				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!');
+				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) { HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!'); }
 				else {
 					const category = helpdesc[interaction.values[0].split('_')[1]];
 					const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);

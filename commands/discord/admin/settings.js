@@ -15,10 +15,10 @@ module.exports = {
 	noDefer: true,
 	permission: 'Administrator',
 	options: require('../../options/settings.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the settings descriptions
-			const desc = require(`../../../lang/${message.lang.language.name}/settingsdesc.json`);
+			const desc = require(`../../../lang/${lang.language.name}/settingsdesc.json`);
 
 			// Create Embed with title and color
 			const SettingsEmbed = new EmbedBuilder()
@@ -46,8 +46,8 @@ module.exports = {
 			// Set embed description with page and stuff
 			SettingsEmbed.setDescription(configlist.join('\n'))
 				.addFields([{ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' }])
-				.setFooter({ text: message.lang.page.replace('{1}', '1').replace('{2}', maxPages) });
-			if (client.user.id == '848775888673439745') SettingsEmbed.addFields([{ name: message.lang.dashboard.confusing, value: message.lang.dashboard.use }]);
+				.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', maxPages) });
+			if (client.user.id == '848775888673439745') SettingsEmbed.addFields([{ name: lang.dashboard.confusing, value: lang.dashboard.use }]);
 
 			// Add buttons for page changing
 			const pages = new ActionRowBuilder()
@@ -62,7 +62,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club')
-						.setLabel(message.lang.dashboard.name)
+						.setLabel(lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
 				]);
 

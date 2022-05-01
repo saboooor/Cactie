@@ -8,9 +8,8 @@ module.exports = async (client, player, track) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${track.requester.id}'`);
-	let lang;
+	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
-	else lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const StartEmbed = new EmbedBuilder()
 		.setDescription(`<:play:${play}> **${lang.music.track.started}** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
 		.setFooter({ text: track.requester.tag, iconURL: track.requester.displayAvatarURL() })

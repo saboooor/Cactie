@@ -5,6 +5,7 @@ module.exports = async (client, reaction, user) => {
 	if (!message.channel || message.channel.isDM()) return;
 	let emojiId = reaction.emoji.id;
 	if (!emojiId) emojiId = reaction.emoji.name;
+
 	const reactionrole = (await client.query(`SELECT * FROM reactionroles WHERE messageId = '${message.id}' AND emojiId = '${emojiId}'`))[0];
 	if (reactionrole) {
 		const role = message.guild.roles.cache.get(reactionrole.roleId);
@@ -32,32 +33,5 @@ module.exports = async (client, reaction, user) => {
 		}
 		await sleep(1000);
 		await msg.delete().catch(err => client.logger.error(err.stack));
-	}
-	if (emojiId == '🎫') {
-		if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;
-		reaction.users.remove(user.id);
-		client.commands.get('ticket').execute(message, user, client, reaction);
-	}
-	else if (emojiId == '⛔') {
-		client.commands.get('delete').execute(message, user, client, reaction);
-	}
-	else if (emojiId == '🔓') {
-		reaction.users.remove(user.id);
-		client.commands.get('open').execute(message, user, client, reaction);
-	}
-	else if (emojiId == '🔒') {
-		if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
-		reaction.users.remove(user.id);
-		client.commands.get('close').execute(message, user, client, reaction);
-	}
-	else if (emojiId == '📜') {
-		if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-		reaction.users.remove(user.id);
-		client.commands.get('subticket').execute(message, user, client, reaction);
-	}
-	else if (emojiId == '🔊') {
-		if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-		reaction.users.remove(user.id);
-		client.commands.get('voiceticket').execute(message, user, client, reaction);
 	}
 };

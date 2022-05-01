@@ -12,7 +12,7 @@ module.exports = {
 	srvunmute: true,
 	invc: true,
 	samevc: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the player
 			const player = client.manager.get(message.guild.id);
@@ -24,9 +24,9 @@ module.exports = {
 				if (!player.loopTrackAmount) player.loopTrackAmount = [];
 				let alr = false;
 				for (const i of player.loopTrackAmount) { if (i == message.member.id) alr = true; }
-				if (alr) return client.error(message.lang.music.track.loopalr, message, true);
+				if (alr) return client.error(lang.music.track.loopalr, message, true);
 				player.loopTrackAmount.push(message.member.id);
-				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**${message.lang.music.track.looping[player.trackRepeat ? 'off' : 'on']}** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
+				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**${lang.music.track.looping[player.trackRepeat ? 'off' : 'on']}** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
 				player.loopTrackAmount = null;
 			}
 
@@ -38,7 +38,7 @@ module.exports = {
 			const LoopEmbed = new EmbedBuilder()
 				.setColor(song.color)
 				.setThumbnail(song.img)
-				.setDescription(`<:refresh:${refresh}> **${message.lang.music.track.loop[player.trackRepeat ? 'on' : 'off']}** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
+				.setDescription(`<:refresh:${refresh}> **${lang.music.track.loop[player.trackRepeat ? 'on' : 'off']}** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() });
 			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
 

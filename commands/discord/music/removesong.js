@@ -14,14 +14,14 @@ module.exports = {
 	samevc: true,
 	djRole: true,
 	options: require('../../options/index.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player and index from arg and check if index exists
 			const player = client.manager.get(message.guild.id);
 			const position = Number(args[0]) - 1;
 			if (isNaN(position) || position > player.queue.size) {
 				const number = isNaN(position) ? args[0] : position + 1;
-				return client.error(`${message.lang.music.queue.indexnotfound.replace('{index}', number)}\nTotal Songs: ${player.queue.size}`, message, true);
+				return client.error(`${lang.music.queue.indexnotfound.replace('{index}', number)}\nTotal Songs: ${player.queue.size}`, message, true);
 			}
 
 			// Get song from index and remove it and reply

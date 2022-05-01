@@ -7,10 +7,10 @@ module.exports = {
 	usage: '<Opponent User>',
 	cooldown: 10,
 	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-		if (!member) return client.error(message.lang.invalidmember, message, true);
+		if (!member) return client.error(lang.invalidmember, message, true);
 		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		const emoji = {
 			rock: ['🪨', 'Rock', '🪨 Rock'],

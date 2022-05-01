@@ -9,7 +9,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the player and destroy it
 			const player = client.manager.get(message.guild.id);
@@ -18,7 +18,7 @@ module.exports = {
 			// Send message to channel
 			const LeaveEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:out:${leave}> **${message.lang.music.left}**`);
+				.setDescription(`<:out:${leave}> **${lang.music.left}**`);
 			message.reply({ embeds: [LeaveEmbed] });
 		}
 		catch (err) { client.error(err, message); }

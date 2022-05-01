@@ -6,14 +6,14 @@ module.exports = {
 	aliases: ['j'],
 	cooldown: 2,
 	invc: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the voice channel the user is in
 			const { channel } = message.member.voice;
 
 			let player = client.manager.get(message.guild.id);
 			if (player) {
-				if (!player.paused) return client.error(`${message.lang.music.alrplaying}\n${message.lang.music.join.move}`, message, true);
+				if (!player.paused) return client.error(`${lang.music.alrplaying}\n${lang.music.join.move}`, message, true);
 				player.voiceChannel = channel.id;
 				player.textChannel = message.channel.id;
 			}
@@ -32,7 +32,7 @@ module.exports = {
 			// Send message to channel
 			const JoinEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:in:${join}> **${message.lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
+				.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
 		}
 		catch (err) { client.error(err, message); }

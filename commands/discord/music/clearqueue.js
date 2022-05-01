@@ -9,7 +9,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player
 			const player = client.manager.get(message.guild.id);
@@ -18,7 +18,7 @@ module.exports = {
 			player.queue.clear();
 			const ClearEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:no:${no}> **${message.lang.music.queue.cleared}**`)
+				.setDescription(`<:no:${no}> **${lang.music.queue.cleared}**`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ClearEmbed] });
 		}

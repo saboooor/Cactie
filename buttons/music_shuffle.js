@@ -7,7 +7,7 @@ module.exports = {
 	srvunmute: true,
 	invc: true,
 	samevc: true,
-	async execute(interaction, client) {
+	async execute(interaction, client, lang) {
 		try {
 			// Get the player
 			const player = client.manager.get(interaction.guild.id);
@@ -19,9 +19,9 @@ module.exports = {
 				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.channel.send({ content: interaction.lang.music.queue.shuffle.alr });
+				if (alr) return interaction.channel.send({ content: lang.music.queue.shuffle.alr });
 				player.shuffleAmount.push(interaction.member.id);
-				if (player.shuffleAmount.length < requiredAmount) return interaction.channel.send({ content: `<:shuffle:${shuffle}> **${interaction.lang.music.queue.shuffle.ing}** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
+				if (player.shuffleAmount.length < requiredAmount) return interaction.channel.send({ content: `<:shuffle:${shuffle}> **${lang.music.queue.shuffle.ing}** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
 				player.shuffleAmount = null;
 			}
 
@@ -29,7 +29,7 @@ module.exports = {
 			player.queue.shuffle();
 			const ShuffleEmbed = new EmbedBuilder()
 				.setColor(Math.round(Math.random() * 16777215))
-				.setDescription(`<:shuffle:${shuffle}> **${interaction.lang.music.queue.shuffle.ed}**`)
+				.setDescription(`<:shuffle:${shuffle}> **${lang.music.queue.shuffle.ed}**`)
 				.setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() });
 			await interaction.channel.send({ embeds: [ShuffleEmbed] });
 		}

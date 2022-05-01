@@ -9,7 +9,7 @@ module.exports = {
 	aliases: ['q'],
 	cooldown: 4,
 	player: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get the player, queue, and embed
 			const player = client.manager.get(message.guild.id);
@@ -26,7 +26,7 @@ module.exports = {
 			const tracks = queue.slice(start, end);
 
 			// Add current song as a field and queue list
-			if (song) QueueEmbed.addFields([{ name: `<:music:${music}> **${message.lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
+			if (song) QueueEmbed.addFields([{ name: `<:music:${music}> **${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
 			let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 			if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped, { server: 'https://bin.birdflop.com' })}`;
 			if (!tracks.length) QueueEmbed.addFields([{ name: 'No tracks up next', value: `in ${page > 1 ? `page ${page}` : 'the queue'}.` }]);
@@ -35,7 +35,7 @@ module.exports = {
 			// Get max pages and add it to footer and reply with buttons
 			const maxPages = Math.ceil(queue.length / 10);
 			if (maxPages < 2) return message.reply({ embeds: [QueueEmbed] });
-			QueueEmbed.setFooter({ text: message.lang.page.replace('{1}', page > maxPages ? maxPages : page).replace('{2}', maxPages) });
+			QueueEmbed.setFooter({ text: lang.page.replace('{1}', page > maxPages ? maxPages : page).replace('{2}', maxPages) });
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()

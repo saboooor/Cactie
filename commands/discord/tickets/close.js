@@ -5,7 +5,7 @@ module.exports = {
 	name: 'close',
 	description: 'Close a ticket',
 	botperm: 'ManageChannels',
-	async execute(message, user, client, reaction) {
+	async execute(message, user, client, lang, reaction) {
 		try {
 			// Set author to command sender
 			let author = message.member.user;

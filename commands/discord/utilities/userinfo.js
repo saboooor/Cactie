@@ -7,12 +7,12 @@ module.exports = {
 	aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
 	usage: '[User]',
 	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			let member = message.member;
 			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member && args[0]) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(message.lang.invalidmember, message, true);
+			if (!member) return client.error(lang.invalidmember, message, true);
 			const roles = Array.from(member.roles.cache).sort(function(a, b) {
 				if (b[1].rawPosition < a[1].rawPosition) return -1;
 				if (b[1].rawPosition > a[1].rawPosition) return 1;

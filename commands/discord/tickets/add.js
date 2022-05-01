@@ -6,7 +6,7 @@ module.exports = {
 	args: true,
 	usage: '<User Mention or Id>',
 	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Check if channel is subticket and set the channel to the parent channel
 			if (message.channel.isThread()) message.channel = message.channel.parent;
@@ -21,7 +21,7 @@ module.exports = {
 
 			// Check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(message.lang.invalidmember, message, true);
+			if (!member) return client.error(lang.invalidmember, message, true);
 
 			// Check if user is already in the ticket, if not, add them to the ticket data
 			if (ticketData.users.includes(member.id)) return client.error('This user has already been added!', message, true);

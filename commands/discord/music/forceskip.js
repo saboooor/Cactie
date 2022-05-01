@@ -12,7 +12,7 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player
 			const player = client.manager.get(message.guild.id);
@@ -21,7 +21,7 @@ module.exports = {
 			player.stop();
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()
-				.setDescription(`<:skip:${skip}> **${message.lang.music.track.skipped}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:skip:${skip}> **${lang.music.track.skipped}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });

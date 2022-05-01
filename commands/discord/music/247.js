@@ -10,13 +10,13 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player and set 24/7 to the opposite of current state and send message
 			const player = client.manager.players.get(message.guild.id);
 			const twentyFourSevenEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:refresh:${refresh}> **${message.lang.music.h24[player.twentyFourSeven ? 'off' : 'on']}**`);
+				.setDescription(`<:refresh:${refresh}> **${lang.music.h24[player.twentyFourSeven ? 'off' : 'on']}**`);
 			player.twentyFourSeven = !player.twentyFourSeven;
 			message.reply({ embeds: [twentyFourSevenEmbed] });
 		}

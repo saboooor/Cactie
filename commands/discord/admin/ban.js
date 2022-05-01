@@ -10,12 +10,12 @@ module.exports = {
 	botperm: 'BanMembers',
 	cooldown: 5,
 	options: require('../../options/punish.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(message.lang.invalidmember, message, true);
+			if (!member) return client.error(lang.invalidmember, message, true);
 			const user = member.user;
 
 			// Get member and author and check if role is lower than member's role

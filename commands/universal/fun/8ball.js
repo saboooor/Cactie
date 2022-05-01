@@ -8,7 +8,7 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			// Get the array of 8 ball responses
-			const ball = require(`../../../lang/${message.lang ? message.lang.language.name : lang.language.name}/8ball.json`);
+			const ball = require(`../../../lang/${lang ? lang.language.name : lang.language.name}/8ball.json`);
 
 			// Get random index and reply with the string in the array of the index
 			const i = Math.floor(Math.random() * ball.length);

@@ -9,6 +9,7 @@ module.exports = {
 	aliases: ['lang'],
 	usage: '<Language>',
 	args: true,
+	options: require('../../options/lang.js'),
 	async execute(message, args, client, lang) {
 		try {
 			if (args[0].toLowerCase() == 'reset') {

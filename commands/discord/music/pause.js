@@ -11,11 +11,11 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	djRole: true,
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Get player and check if already paused
 			const player = client.manager.get(message.guild.id);
-			if (player.paused) return client.error(message.lang.music.pause.alr, message, true);
+			if (player.paused) return client.error(lang.music.pause.alr, message, true);
 
 			// Pause the player
 			player.pause(true);
@@ -23,7 +23,7 @@ module.exports = {
 			// Send message to channel with current song
 			const song = player.queue.current;
 			const PauseEmbed = new EmbedBuilder()
-				.setDescription(`<:pause:${pause}> **${message.lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
+				.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
 				.setColor(song.color)
 				.setThumbnail(song.img);
 			const pausemsg = await message.reply({ embeds: [PauseEmbed] });

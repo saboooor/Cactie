@@ -7,7 +7,7 @@ const { refresh } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'ptero',
 	description: 'Controls pterodactyl servers on godzillagroin',
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
 			if (!args[0]) {
@@ -59,7 +59,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Danger),
 					new ButtonBuilder()
 						.setCustomId('ptero_update')
-						.setLabel(message.lang.refresh)
+						.setLabel(lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Success),
 				]);

@@ -11,8 +11,8 @@ module.exports = async (client, message) => {
 	const srvconfig = await client.getData('settings', 'guildId', message.serverId);
 
 	// Get the language for the user if specified or guild language
-	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.createdById}'`);
+	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
 	// Check if reaction keywords are in message, if so, react
