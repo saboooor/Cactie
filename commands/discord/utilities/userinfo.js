@@ -53,7 +53,7 @@ module.exports = {
 				.setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())
 				.setDescription(`${member.user}`)
 				.addFields([{ name: 'Status', value: member.presence ? member.presence.status : 'offline' }]);
-			if (activitieslist.join('\n')) UsrEmbed.addFields({ name: 'Activities', value: activitieslist.join('\n') });
+			if (activitieslist.join('\n')) UsrEmbed.addFields([{ name: 'Activities', value: activitieslist.join('\n') }]);
 			if (member.user.bannerURL()) UsrEmbed.setImage(member.user.bannerURL());
 			UsrEmbed.addFields([
 				{ name: 'Joined Server At', value: `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>` },
