@@ -30,6 +30,6 @@
     "nodeactyl": "^3.2.2",
     "solenolyrics": "^5.0.0",
     "winston": "^3.5.1",
-    "yaml": "^1.10.2"
+    "yaml": "^2.0.0"
   }
 }
