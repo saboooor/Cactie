@@ -3,7 +3,7 @@ const { fileFromPath } = require('formdata-node/file-from-path');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { EmbedBuilder } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
-const { nsfw, refresh } = require('../lang/int/emoji.json');
+const { nsfw, refresh, warn } = require('../lang/int/emoji.json');
 const fs = require('fs');
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
@@ -61,8 +61,12 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		// Check file size
 		const stats = fs.statSync(file);
 		const fileSizeInBytes = stats.size;
-		if (fileSizeInBytes > 50000000) return redditFetch(subreddits, message, client, attempts + 1);
+		if (fileSizeInBytes > 50000000) {
+			msg.edit({ content: `<:alert:${warn}> **GIF too big**` });
+			return redditFetch(subreddits, message, client, attempts + 1);
+		}
 
+		msg.edit({ content: `<:refresh:${refresh}> **Uploading GIF...**` });
 		// Create form and upload
 		const form = new FormData();
 		form.set('file', await fileFromPath(file));
