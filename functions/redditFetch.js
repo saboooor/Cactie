@@ -16,7 +16,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		return client.error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json\n${err}`, message);
 	});
 	if (!pong) return;
-	if (pong.message == 'Not Found') return client.error('Invalid subreddit!', message);
+	if (pong.message == 'Not Found') return client.error(`Invalid subreddit! r/${subreddit}`, message);
 	if (!pong[0]) pong[0] = pong;
 	if (!pong[0]) {
 		client.logger.error(JSON.stringify(pong));
