@@ -42,6 +42,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		const gif = await fetch(`https://api.redgifs.com/v2/gifs/${data.url.split('redgifs.com/watch/')[1]}`);
 		const gifData = await gif.json();
 		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return redditFetch(subreddits, message, client, attempts + 1);
+		if (gifData.gif.duration > 20) return redditFetch(subreddits, message, client, attempts + 1);
 		data.url = gifData.gif.urls.sd;
 		client.logger.info(`Redgifs URL: ${data.url}`);
 		PostEmbed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})`, url: gifData.user.profileUrl.startsWith('http') ? gifData.user.profileUrl : null })
