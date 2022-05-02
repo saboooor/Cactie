@@ -54,9 +54,9 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	const msg = await message.reply({ embeds: [PostEmbed] });
 	if (data.url.endsWith('.gifv') || data.url.endsWith('.mp4') || data.url.endsWith('DASH_480.mp4?source=fallback')) {
 		if (client.type.name == 'guilded') return redditFetch(subreddits, message, client, attempts + 1);
-		msg.edit({ content: `<:refresh:${refresh}> **Processing GIF...**` });
+
 		// Convert file to gif
-		await ffmpegSync(data.url.replace('.gifv', '.mp4'), file);
+		await ffmpegSync(data.url.replace('.gifv', '.mp4'), file, msg);
 
 		// Check file size
 		const stats = fs.statSync(file);
