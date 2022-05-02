@@ -2,8 +2,8 @@ const ffmpeg = require('fluent-ffmpeg');
 const { refresh, warn } = require('../lang/int/emoji.json');
 let count = 0;
 module.exports = function ffmpegSync(url, path, msg) {
-	return new Promise(resolve =>{
-		const cmd = ffmpeg(url.replace('.gifv', '.mp4'))
+	return new Promise((resolve, reject) =>{
+		const cmd = ffmpeg(url.replace('.gifv', '.mp4'), { timeout: '30' })
 			.outputOption('-vf', 'scale=-1:360:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse,fps=24')
 			.save(path)
 			.on('end', () => resolve())
@@ -21,6 +21,6 @@ module.exports = function ffmpegSync(url, path, msg) {
 					cmd.kill();
 				}
 			})
-			.on('error', (err) => { return msg.client.logger.error(err); });
+			.on('error', (err) => reject(err));
 	});
 };

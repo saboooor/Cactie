@@ -58,7 +58,11 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		msg.edit({ content: `<:refresh:${refresh}> **Processing GIF...**` });
 
 		// Convert file to gif
-		await ffmpegSync(data.url.replace('.gifv', '.mp4'), file, msg);
+		await ffmpegSync(data.url.replace('.gifv', '.mp4'), file, msg).catch(err => {
+			client.logger.error(err);
+			msg.edit({ content: `<:alert:${warn}> **Error while processing GIF**\n${err}` });
+			return redditFetch(subreddits, message, client, attempts + 1);
+		});
 
 		// Check file size
 		const stats = fs.statSync(file);
