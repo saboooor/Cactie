@@ -70,7 +70,7 @@ module.exports = {
 				h.commits.forEach(commit => {
 				// check if commit description is more than 1000, if so, split it into multiple fields
 					if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields([{ name: commit.author, value: `${chunk}` }]); });
-					else JarEmbed.addFields([{ name: commit.author, value: `${commit.description}\n*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` }]);
+					else JarEmbed.addFields([{ name: commit.author, value: `${commit.description}\n${client.type.name == 'discord' ? `*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` : `\`${new Date(commit.timestamp)}\``}` }]);
 				});
 				// add field for download
 				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://api.purpurmc.org/v2/purpur/${c}/${f}/download)` }]);

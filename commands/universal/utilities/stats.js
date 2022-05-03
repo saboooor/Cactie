@@ -1,4 +1,4 @@
-const { EmbedBuilder, MessageAttachment, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, Attachment, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
@@ -28,7 +28,7 @@ module.exports = {
 				if (usages.current_state == 'offline') StatsEmbed.setColor(0xE74C3C);
 				if (usages.current_state == 'starting') StatsEmbed.setColor(0xFF6400);
 				if (server.client) {
-					const duration = `<t:${Math.round((Date.now() - client.uptime) / 1000)}:R>`;
+					const duration = client.type.name == 'discord' ? `<t:${Math.round((Date.now() - client.uptime) / 1000)}:R>` : `${Date.now() - client.uptime}`;
 					if (duration) StatsEmbed.addFields([{ name: '**Last Started:**', value: duration, inline: true }]);
 				}
 				if (info.node) StatsEmbed.addFields([{ name: '**Node:**', value: info.node, inline: true }]);
@@ -52,8 +52,8 @@ module.exports = {
 				if (!StatsEmbed.toJSON().title && pong.hostname) StatsEmbed.setTitle(pong.hostname);
 				else if (!StatsEmbed.toJSON().title && pong.port == 25565) StatsEmbed.setTitle(pong.ip);
 				else if (!StatsEmbed.toJSON().title) StatsEmbed.setTitle(`${pong.ip}:${pong.port}`);
-				StatsEmbed.setDescription(`Last Pinged: <t:${pong.debug.cachetime}:R>`);
-				if (!pong.debug.cachetime) StatsEmbed.setDescription(`Last Pinged: <t:${Math.round(Date.now() / 1000)}:R>`);
+				StatsEmbed.setDescription(`Last Pinged: ${client.type.name == 'discord' ? `<t:${pong.debug.cachetime}:R>` : `\`${new Date(parseInt(pong.debug.cachetime + '000'))}\``}`);
+				if (!pong.debug.cachetime) StatsEmbed.setDescription(`Last Pinged: ${client.type.name == 'discord' ? `<t:${Math.round(Date.now() / 1000)}:R>` : `\`${Date.now()}\``}`);
 				if (pong.version) StatsEmbed.addFields([{ name: '**Version:**', value: pong.version, inline: true }]);
 				if (pong.protocol != -1 && pong.protocol) StatsEmbed.addFields([{ name: '**Protocol:**', value: `${pong.protocol} (${protocols[pong.protocol]})`, inline: true }]);
 				if (pong.software) StatsEmbed.addFields([{ name: '**Software:**', value: pong.software, inline: true }]);
@@ -68,7 +68,7 @@ module.exports = {
 				if (pong.motd) StatsEmbed.addFields([{ name: '**MOTD:**', value: pong.motd.clean.join('\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&le;/g, '≤').replace(/&ge;/g, '≥') }]);
 				if (pong.icon) {
 					const base64string = Buffer.from(pong.icon.replace(/^data:image\/png;base64,/, ''), 'base64');
-					iconpng.push(new MessageAttachment(base64string, 'icon.png'));
+					iconpng.push(new Attachment(base64string, 'icon.png'));
 					StatsEmbed.setThumbnail('attachment://icon.png');
 				}
 				else {
