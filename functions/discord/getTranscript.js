@@ -1,22 +1,17 @@
 const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = async function getTranscript(messages) {
-	const channel = messages.first().client.type.name == 'guilded' ? await messages.first().client.channels.fetch(messages.first().channelId) : await messages.first().channel;
 	const logs = {
-		channel: channel.name,
+		channel: messages.first().channel.name,
 		time: new Date().toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }),
 		logs: [],
 	};
 	messages.forEach(async msg => {
-		if (msg.client.type.name == 'guilded') {
-			msg.member = msg.client.members.cache.get(`${msg.serverId}:${msg.createdById}`);
-			if (!msg.member) msg.member = await msg.client.members.fetch(msg.serverId, msg.createdById).catch(err => msg.client.logger.warn(err));
-		}
 		const json = {
 			time: new Date(msg.createdTimestamp).toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }),
 			author: {
-				color: (msg.member && msg.member.roles) ? (msg.member.roles.highest ? msg.member.roles.highest.color.toString(16) : 'ffffff') : 'ffffff',
-				name: msg.member ? (msg.member.displayName ?? msg.member.nickname) ?? (msg.member.user.tag ?? msg.member.user.name) : (msg.author ? msg.author.tag : msg.createdById ?? 'Unknown'),
-				avatar: msg.client.type.name == 'discord' ? (msg.member && msg.member.avatarURL() ? msg.member.avatarURL() : msg.author.avatarURL()) : msg.member ? msg.member.user.avatar : '',
+				color: msg.member && msg.member.roles ? (msg.member.roles.highest ? msg.member.roles.highest.color.toString(16) : 'ffffff') : 'ffffff',
+				name: msg.member && msg.member.displayName ? msg.member.displayName : msg.author.tag ?? 'Unknown User',
+				avatar: msg.member && msg.member.avatarURL() ? msg.member.avatarURL() : msg.author.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
 			},
 		};
 		if (msg.embeds && msg.embeds[0]) {

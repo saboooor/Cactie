@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const getTranscript = require('../../../functions/getTranscript.js');
+const getTranscript = require('../../../functions/discord/getTranscript.js');
 const { yes } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'clear',
