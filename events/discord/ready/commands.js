@@ -6,12 +6,10 @@ module.exports = async (client) => {
 		if (command.type == 'Message') return;
 		const cmd = new SlashCommandBuilder()
 			.setName(command.name)
-			.setDescription(command.description)
-			.setDefaultPermission(command.permission != 'Administrator');
+			.setDescription(command.description);
 		if (command.options) command.options(cmd);
 		const sourcecmd = commands.find(c => c.name == command.name);
 		const desc = sourcecmd ? cmd.toJSON().description == sourcecmd.toJSON().description : false;
-		const perm = sourcecmd ? cmd.toJSON().defaultPermission == sourcecmd.toJSON().defaultPermission : false;
 		let opt = true;
 		if (sourcecmd) {
 			cmd.toJSON().options.forEach(option => {
@@ -50,8 +48,11 @@ module.exports = async (client) => {
 				}
 			});
 		}
-		if (opt && desc && perm) return;
+		if (opt && desc) return;
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
+		const commandjson = cmd.toJSON();
+		commandjson.dm_permission = false;
+		console.log(commandjson);
 		await client.application?.commands.create(cmd.toJSON());
 	});
 	await commands.forEach(async command => {
