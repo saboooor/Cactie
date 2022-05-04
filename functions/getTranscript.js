@@ -3,7 +3,7 @@ module.exports = {
 	guilded: async function getTranscript(messages) {
 		const logs = {
 			channel: (await messages.first().client.channels.fetch(messages.first().channelId)).name,
-			time: new Date().toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }),
+			time: Date.now(),
 			logs: [],
 		};
 		const unknownusers = [];
@@ -49,7 +49,7 @@ module.exports = {
 	discord: async function getTranscript(messages) {
 		const logs = {
 			channel: messages.first().channel.name,
-			time: new Date().toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }),
+			time: Date.now(),
 			logs: [],
 		};
 		messages.forEach(async msg => {

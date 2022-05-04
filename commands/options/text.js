@@ -3,6 +3,7 @@ module.exports = async function options(cmd) {
 	cmd.addStringOption(
 		new SlashCommandStringOption()
 			.setName('text')
-			.setDescription('The command argument'),
+			.setDescription('The command argument')
+			.setRequired(true),
 	);
 };
