@@ -26,7 +26,7 @@ module.exports = {
 			const pingmsg = await interaction.channel.send(`${guesser}`);
 			pingmsg.delete().catch(err => client.logger.error(err.stack));
 
-			const filter = i => i.customId == 'guess_answer' && i.member.id == guesser.id;
+			const filter = i => i.customId == 'guess_answer' && i.member.id == guesser.replace(/\D/g, '');
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
 
 			collector.on('collect', async btnint => {

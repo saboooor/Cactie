@@ -41,7 +41,7 @@ module.exports = {
 			const pingmsg = await interaction.channel.send(`${host}`);
 			pingmsg.delete().catch(err => client.logger.error(err.stack));
 
-			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.id;
+			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.replace(/\D/g, '');
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async btnint => {
 				btnint.deferUpdate();
