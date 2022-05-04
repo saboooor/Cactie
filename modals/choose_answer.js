@@ -20,9 +20,11 @@ module.exports = {
 				]);
 			const TwentyOneQuestions = new EmbedBuilder(embedJSON)
 				.setColor(0xeed84a)
-				.setDescription(`**Host:**\n${interaction.member}\n${guesser} Ask a question or guess the answer.`)
+				.setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser}\nAsk a question or guess the answer by clicking the button below.`)
 				.setFooter({ text: '21 Questions left' });
 			interaction.message.edit({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
+			const pingmsg = await interaction.channel.send(`${guesser}`);
+			pingmsg.delete().catch(err => client.logger.error(err.stack));
 
 			const filter = i => i.customId == 'guess_answer' && i.member.id == guesser.id;
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });

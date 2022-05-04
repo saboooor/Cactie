@@ -35,9 +35,11 @@ module.exports = {
 			const TwentyOneQuestions = new EmbedBuilder(embedJSON)
 				.setColor(0xeed84a)
 				.setDescription(`**Playing with:**\n${interaction.member}`)
-				.addFields([{ name: field.value, value: `${host} Please answer this question` }])
+				.addFields([{ name: field.value, value: `${host}\nPlease answer this question by clicking the buttons below` }])
 				.setFooter({ text: `${embedJSON.footer.text.split(' ')[0] - 1} Questions left` });
 			interaction.message.edit({ content: `${host}`, embeds: [TwentyOneQuestions], components: [row] });
+			const pingmsg = await interaction.channel.send(`${host}`);
+			pingmsg.delete().catch(err => client.logger.error(err.stack));
 
 			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.id;
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
@@ -72,6 +74,8 @@ module.exports = {
 					]);
 				TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${interaction.member} Ask a question or guess the answer.`);
 				interaction.message.edit({ content: `${interaction.member}`, embeds: [TwentyOneQuestions], components: [guessrow] });
+				const pingmsg2 = await interaction.channel.send(`${interaction.member}`);
+				pingmsg2.delete().catch(err => client.logger.error(err.stack));
 				collector.stop();
 			});
 

@@ -22,10 +22,9 @@ module.exports = {
 		const TwentyOneQuestions = new EmbedBuilder()
 			.setColor(0x63d471)
 			.setTitle('21 Questions')
-			.setDescription(`**Playing with:**\n${member}\n${message.member} Please choose an answer.`);
+			.setDescription(`**Playing with:**\n${member}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`);
 
-		const questionmsg = await message.reply({ content: `${message.member} ${member}`, embeds: [TwentyOneQuestions], components: [row] });
-		questionmsg.edit({ content: `${message.member}` });
+		const questionmsg = await message.reply({ content: `${message.member}`, embeds: [TwentyOneQuestions], components: [row] });
 
 		const filter = i => i.customId == 'choose_answer' && i.member.id == message.member.id;
 		const collector = questionmsg.createMessageComponentCollector({ filter, time: 3600000 });
