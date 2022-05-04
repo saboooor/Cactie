@@ -1,7 +1,7 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
 module.exports = async (client, interaction) => {
 	// Check if interaction is command
-	if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
+	if (!interaction.isChatInputCommand()) return;
 
 	// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
 	const command = client.slashcommands.get(interaction.commandName);
@@ -18,20 +18,13 @@ module.exports = async (client, interaction) => {
 	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../../lang/Portuguese/msg.json');
 
 	// Make args variable from interaction options for compatibility with dash command code
-	// If command is context menu, set it to client instead since it's (interaction, client)
-	const args = interaction.isContextMenuCommand() ? client : interaction.options._hoistedOptions;
-	if (interaction.isContextMenuCommand()) {
-		// Set message variable to the message of the context menu
-		const msgs = await interaction.channel.messages.fetch({ around: interaction.targetId, limit: 1 });
-		interaction.message = msgs.first();
-	}
-	else {
-		// Set args to value of options
-		args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+	const args = interaction.options._hoistedOptions;
 
-		// If subcommand exists, set the subcommand to args[0]
-		if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
-	}
+	// Set args to value of options
+	args.forEach(arg => args[args.indexOf(arg)] = arg.value);
+
+	// If subcommand exists, set the subcommand to args[0]
+	if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
 
 	// Get cooldowns and check if cooldown exists, if not, create it
 	const { cooldowns } = client;
