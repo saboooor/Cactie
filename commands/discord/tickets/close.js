@@ -1,6 +1,6 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const getTranscript = require('../../../functions/discord/getTranscript.js');
+const getTranscript = require('../../../functions/getTranscript.js').discord;
 module.exports = {
 	name: 'close',
 	description: 'Close a ticket',

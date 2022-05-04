@@ -1,7 +1,4 @@
-const getTranscript = {
-	discord: require('../../../functions/discord/getTranscript.js'),
-	guilded: require('../../../functions/guilded/getTranscript.js'),
-};
+const getTranscript = require('../../../functions/getTranscript.js');
 module.exports = {
 	name: 'transcript',
 	description: 'GetTranscript',

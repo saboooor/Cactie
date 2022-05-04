@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const getTranscript = require('../functions/discord/getTranscript.js');
+const getTranscript = require('../functions/getTranscript.js').discord;
 module.exports = {
 	name: 'delete_ticket',
 	botperm: 'ManageChannels',
