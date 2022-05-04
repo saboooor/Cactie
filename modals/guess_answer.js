@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { yes, no } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'guess_answer',
 	ephemeral: true,
@@ -13,17 +14,21 @@ module.exports = {
 					new ButtonBuilder()
 						.setCustomId('guess_yes')
 						.setLabel('Yes')
+						.setEmoji({ id: yes })
 						.setStyle(ButtonStyle.Success),
 					new ButtonBuilder()
 						.setCustomId('guess_no')
 						.setLabel('No')
+						.setEmoji({ id: no })
 						.setStyle(ButtonStyle.Danger),
 					new ButtonBuilder()
 						.setCustomId('guess_sometimes')
 						.setLabel('Sometimes')
+						.setEmoji({ name: '🤷🏽' })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
 						.setCustomId('guess_finish')
+						.setEmoji({ name: '🎉' })
 						.setLabel('You guessed it!')
 						.setStyle(ButtonStyle.Primary),
 				]);
@@ -32,18 +37,18 @@ module.exports = {
 				.setDescription(`**Playing with:**\n${interaction.member}`)
 				.addFields([{ name: field.value, value: `${host} Please answer this question` }])
 				.setFooter({ text: `${embedJSON.footer.text.split(' ')[0] - 1} Questions left` });
-			interaction.message.edit({ embeds: [TwentyOneQuestions], components: [row] });
+			interaction.message.edit({ content: `${host}`, embeds: [TwentyOneQuestions], components: [row] });
 
-			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer';
+			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.id;
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async btnint => {
 				btnint.deferUpdate();
 				const guess_ans = btnint.customId.split('_')[1];
 				if (guess_ans == 'yes') {
-					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = '✅ Yes';
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = `<:yes:${yes}> Yes`;
 				}
 				if (guess_ans == 'no') {
-					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = '❎ No';
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = `<:no:${no}> No`;
 				}
 				if (guess_ans == 'sometimes') {
 					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = '🤷🏽 Sometimes';
@@ -51,12 +56,12 @@ module.exports = {
 				if (guess_ans == 'finish') {
 					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = `🎉 You guessed it!\n\n**The answer is**\n\`${answer}\``;
 					TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**${interaction.member} guessed the answer!**`);
-					return interaction.message.edit({ embeds: [TwentyOneQuestions], components: [] });
+					return interaction.message.edit({ content: `${interaction.member}`, embeds: [TwentyOneQuestions], components: [] });
 				}
 				if (TwentyOneQuestions.toJSON().footer.text == '0 Questions left') {
 					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = `${TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value}\n\n**You ran out of questions!\nThe answer was**\n\`${answer}\``;
 					TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**${interaction.member} ran out of questions!**`);
-					return interaction.message.edit({ embeds: [TwentyOneQuestions], components: [] });
+					return interaction.message.edit({ content: `${interaction.member}`, embeds: [TwentyOneQuestions], components: [] });
 				}
 				const guessrow = new ActionRowBuilder()
 					.addComponents([
@@ -66,7 +71,7 @@ module.exports = {
 							.setStyle(ButtonStyle.Primary),
 					]);
 				TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${interaction.member} Ask a question or guess the answer.`);
-				interaction.message.edit({ embeds: [TwentyOneQuestions], components: [guessrow] });
+				interaction.message.edit({ content: `${interaction.member}`, embeds: [TwentyOneQuestions], components: [guessrow] });
 				collector.stop();
 			});
 

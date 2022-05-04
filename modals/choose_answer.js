@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+const { srch } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'choose_answer',
 	deferReply: true,
@@ -14,15 +15,16 @@ module.exports = {
 					new ButtonBuilder()
 						.setCustomId('guess_answer')
 						.setLabel('Ask a question about the answer')
+						.setEmoji({ id: srch })
 						.setStyle(ButtonStyle.Primary),
 				]);
 			const TwentyOneQuestions = new EmbedBuilder(embedJSON)
 				.setColor(0xeed84a)
 				.setDescription(`**Host:**\n${interaction.member}\n${guesser} Ask a question or guess the answer.`)
-				.setFooter({ text: '2 Questions left' });
-			interaction.message.edit({ embeds: [TwentyOneQuestions], components: [row] });
+				.setFooter({ text: '21 Questions left' });
+			interaction.message.edit({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
 
-			const filter = i => i.customId == 'guess_answer';
+			const filter = i => i.customId == 'guess_answer' && i.member.id == guesser.id;
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
 
 			collector.on('collect', async btnint => {
