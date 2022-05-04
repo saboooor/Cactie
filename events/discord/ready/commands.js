@@ -11,6 +11,7 @@ module.exports = async (client) => {
 		if (command.options) command.options(cmd);
 		const sourcecmd = commands.find(c => c.name == command.name);
 		const desc = sourcecmd ? cmd.toJSON().description == sourcecmd.toJSON().description : false;
+		const perm = sourcecmd ? cmd.toJSON().defaultPermission == sourcecmd.toJSON().defaultPermission : false;
 		let opt = true;
 		if (sourcecmd) {
 			cmd.toJSON().options.forEach(option => {
@@ -49,7 +50,7 @@ module.exports = async (client) => {
 				}
 			});
 		}
-		if (opt && desc) return;
+		if (opt && desc && perm) return;
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
 		await client.application?.commands.create(cmd.toJSON());
 	});
