@@ -88,6 +88,10 @@ module.exports = async (client, interaction) => {
 		}
 	}
 
+	// Log
+	const cmdlog = args.join ? `${command.name} ${args.join(' ')}` : command.name;
+	client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
+
 	// Check if user has the permissions necessary to use the command
 	if (command.permission) {
 		client.logger.info(JSON.stringify(interaction.member.permissions));
@@ -153,8 +157,6 @@ module.exports = async (client, interaction) => {
 
 	// Defer and execute the command
 	try {
-		const cmdlog = args.join ? `${command.name} ${args.join(' ')}` : command.name;
-		client.logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
 		if (!command.noDefer) {
 			await interaction.deferReply({ ephemeral: command.ephemeral });
 			interaction.reply = interaction.editReply;

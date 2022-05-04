@@ -140,6 +140,9 @@ module.exports = async (client, message) => {
 		}
 	}
 
+	// Log
+	client.logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
+
 	// Check if user has the permissions necessary to use the command
 	if (command.permission) {
 		client.logger.info(JSON.stringify(message.member.permissions));
@@ -205,7 +208,6 @@ module.exports = async (client, message) => {
 
 	// execute the command
 	try {
-		client.logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
 		command.execute(message, args, client, lang);
 	}
 	catch (err) {

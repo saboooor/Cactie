@@ -15,9 +15,11 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			const queue = player.queue;
 			const song = queue.current;
-			const QueueEmbed = new EmbedBuilder()
-				.setColor(song.color)
-				.setThumbnail(song.img);
+			const QueueEmbed = new EmbedBuilder();
+			if (song) {
+				QueueEmbed.setColor(song.color)
+					.setThumbnail(song.img);
+			}
 
 			// Get first page or page specified
 			const page = args.length && Number(args[0]) ? Number(args[0]) : 1;
