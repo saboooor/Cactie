@@ -44,7 +44,7 @@ module.exports = {
 		}
 		logs.logs.reverse();
 		const balls = await fetch('https://smhsmh.club/transcript', { method: 'POST', body: JSON.stringify(logs), headers: { 'Content-Type': 'application/json' } });
-		return `${balls.statusText}`;
+		return balls.statusText;
 	},
 	discord: async function getTranscript(messages) {
 		const logs = {
