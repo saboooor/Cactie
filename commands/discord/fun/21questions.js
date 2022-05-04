@@ -24,7 +24,8 @@ module.exports = {
 			.setTitle('21 Questions')
 			.setDescription(`**Playing with:**\n${member}\n${message.member} Please choose an answer.`);
 
-		const questionmsg = await message.reply({ content: `${message.member}`, embeds: [TwentyOneQuestions], components: [row] });
+		const questionmsg = await message.reply({ content: `${message.member}${member}`, embeds: [TwentyOneQuestions], components: [row] });
+		questionmsg.edit({ content: `${message.member}` });
 
 		const filter = i => i.customId == 'choose_answer';
 		const collector = questionmsg.createMessageComponentCollector({ filter, time: 3600000 });
