@@ -6,7 +6,8 @@ module.exports = async (client) => {
 		if (command.type == 'Message') return;
 		const cmd = new SlashCommandBuilder()
 			.setName(command.name)
-			.setDescription(command.description);
+			.setDescription(command.description)
+			.setDefaultPermission(command.permission != 'Administrator');
 		if (command.options) command.options(cmd);
 		const sourcecmd = commands.find(c => c.name == command.name);
 		const desc = sourcecmd ? cmd.toJSON().description == sourcecmd.toJSON().description : false;
