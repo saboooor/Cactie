@@ -1,0 +1,79 @@
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+module.exports = {
+	name: 'guess_answer',
+	ephemeral: true,
+	async execute(interaction, client) {
+		try {
+			const field = interaction.components[0].components[0].toJSON();
+			const answer = field.custom_id;
+			const embedJSON = interaction.message.embeds[0].toJSON();
+			const host = embedJSON.description.split('\n')[1];
+			const row = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('guess_yes')
+						.setLabel('Yes')
+						.setStyle(ButtonStyle.Success),
+					new ButtonBuilder()
+						.setCustomId('guess_no')
+						.setLabel('No')
+						.setStyle(ButtonStyle.Danger),
+					new ButtonBuilder()
+						.setCustomId('guess_sometimes')
+						.setLabel('Sometimes')
+						.setStyle(ButtonStyle.Secondary),
+					new ButtonBuilder()
+						.setCustomId('guess_finish')
+						.setLabel('You guessed it!')
+						.setStyle(ButtonStyle.Primary),
+				]);
+			const TwentyOneQuestions = new EmbedBuilder(embedJSON)
+				.setColor(0xeed84a)
+				.setDescription(`**Playing with:**\n${interaction.member}`)
+				.addFields([{ name: field.value, value: `${host} Please answer this question` }])
+				.setFooter({ text: `${embedJSON.footer.text.split(' ')[0] - 1} Questions left` });
+			interaction.message.edit({ embeds: [TwentyOneQuestions], components: [row] });
+
+			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer';
+			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
+			collector.on('collect', async btnint => {
+				btnint.deferUpdate();
+				const guess_ans = btnint.customId.split('_')[1];
+				if (guess_ans == 'yes') {
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = '✅ Yes';
+				}
+				if (guess_ans == 'no') {
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = '❎ No';
+				}
+				if (guess_ans == 'sometimes') {
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = '🤷🏽 Sometimes';
+				}
+				if (guess_ans == 'finish') {
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = `🎉 You guessed it!\n\n**The answer is**\n\`${answer}\``;
+					TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**${interaction.member} guessed the answer!**`);
+					return interaction.message.edit({ embeds: [TwentyOneQuestions], components: [] });
+				}
+				if (TwentyOneQuestions.toJSON().footer.text == '0 Questions left') {
+					TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value = `${TwentyOneQuestions.data.fields[TwentyOneQuestions.data.fields.length - 1].value}\n\n**You ran out of questions!\nThe answer was**\n\`${answer}\``;
+					TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**${interaction.member} ran out of questions!**`);
+					return interaction.message.edit({ embeds: [TwentyOneQuestions], components: [] });
+				}
+				const guessrow = new ActionRowBuilder()
+					.addComponents([
+						new ButtonBuilder()
+							.setCustomId('guess_answer')
+							.setLabel('Ask a question about the answer')
+							.setStyle(ButtonStyle.Primary),
+					]);
+				TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${interaction.member} Ask a question or guess the answer.`);
+				interaction.message.edit({ embeds: [TwentyOneQuestions], components: [guessrow] });
+				collector.stop();
+			});
+
+			collector.on('end', () => {
+				if (collector.collected.size == 0) interaction.message.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] });
+			});
+		}
+		catch (err) { client.error(err, interaction); }
+	},
+};
