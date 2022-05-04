@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { yes, no } = require('../lang/int/emoji.json');
+const { yes, no, srch } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'guess_answer',
 	ephemeral: true,
@@ -70,6 +70,7 @@ module.exports = {
 						new ButtonBuilder()
 							.setCustomId('guess_answer')
 							.setLabel('Ask a question about the answer')
+							.setEmoji({ id: srch })
 							.setStyle(ButtonStyle.Primary),
 					]);
 				TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${interaction.member} Ask a question or guess the answer.`);
