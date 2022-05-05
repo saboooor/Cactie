@@ -5,7 +5,7 @@ module.exports = async (client) => {
 	await client.guilds.cache.forEach(async guild => {
 		const owner = await guild.fetchOwner();
 		if (!owners.includes(owner.id)) owners.push(owner.id);
-		const member = await pupguild.members.fetch(owner.id);
+		const member = await pupguild.members.fetch(owner.id).catch(() => { return; });
 		if (!member) return;
 		if (member.roles.cache.has(role.id)) return;
 		member.roles.add(role.id);
