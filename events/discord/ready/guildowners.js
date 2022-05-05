@@ -3,15 +3,14 @@ module.exports = async (client) => {
 	const role = pupguild.roles.cache.get('811355441464475669');
 	const owners = [];
 	await client.guilds.cache.forEach(async guild => {
-		const owner = await guild.fetchOwner();
-		if (!owners.includes(owner.id)) owners.push(owner.id);
-		const member = await pupguild.members.fetch(owner.id).catch(() => { return; });
+		if (!owners.includes(guild.ownerId)) owners.push(guild.ownerId);
+		const member = pupguild.members.cache.get(guild.ownerId);
 		if (!member) return;
 		if (member.roles.cache.has(role.id)) return;
 		member.roles.add(role.id);
 		client.logger.info(`Added client user role to ${member.user.tag}`);
 	});
-	await pupguild.role.members.forEach(async member => {
+	await role.members.forEach(async member => {
 		if (owners.includes(member.id)) return;
 		member.roles.remove(role.id);
 		client.logger.info(`Removed client user role from ${member.user.tag}`);
