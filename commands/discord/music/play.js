@@ -9,10 +9,10 @@ module.exports = {
 	invc: true,
 	samevc: true,
 	options: require('../../options/play.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Since playtop and play are so similar, use the same code in a function
-			playSongs(message.member, message, args, client);
+			playSongs(message.member, message, args, client, lang);
 		}
 		catch (err) { client.error(err, message); }
 	},

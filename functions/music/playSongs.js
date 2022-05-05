@@ -3,7 +3,7 @@ const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
 const { play, music, warn, leave, no, srch } = require('../../lang/int/emoji.json');
-module.exports = async function playSongs(requester, message, args, client, top, query, lang) {
+module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;
 	let player = client.manager.get(message.guild.id);
@@ -105,7 +105,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 			collector.on('collect', async interaction => {
 				// Check if the user is the requester
 				interaction.deferUpdate();
-				playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, top, false);
+				playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, lang, top, false);
 				await playMsg.edit({ content: `<:play:${play}> **${lang.music.search.picked.replace('{num}', interaction.customId)}**`, embeds: [], components: [] })
 					.then(() => collector.stop());
 			});
@@ -207,7 +207,7 @@ module.exports = async function playSongs(requester, message, args, client, top,
 		if (interaction.customId == 'music_search') {
 			// Since playtop and play are so similar, use the same code in a function
 			if (args.join(' ').includes(songs[0].identifier)) args = [songs[0].title.split('\n')[0]];
-			playSongs(requester, message, args, client, false, true);
+			playSongs(requester, message, args, client, lang, false, true);
 		}
 	});
 

@@ -10,11 +10,11 @@ module.exports = {
 	samevc: true,
 	djRole: true,
 	options: require('../../options/play.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
 			// Since playtop and play are so similar, use the same code in a function
 			// True is the value of checking if the command is playtop
-			playSongs(message.member, message, args, client, true);
+			playSongs(message.member, message, args, client, lang, true);
 		}
 		catch (err) { client.error(err, message); }
 	},
