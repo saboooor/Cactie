@@ -1,6 +1,6 @@
 module.exports = async (client) => {
 	const pupguild = client.guilds.cache.get('811354612547190794');
-	const role = pupguild.roles.cache.find(r => r.name == `${client.user.name} User`);
+	const role = pupguild.roles.cache.find(r => r.name == `${client.user.username} User`);
 	const owners = [];
 	await client.guilds.cache.forEach(async guild => {
 		if (!owners.includes(guild.ownerId)) owners.push(guild.ownerId);
