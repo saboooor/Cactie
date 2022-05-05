@@ -18,6 +18,7 @@ module.exports = client => {
 						.setLabel('Support Server')
 						.setStyle(ButtonStyle.Link),
 				]));
+			client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ embeds: [errEmbed] });
 		}
 		message.reply({ embeds: [errEmbed], components: row }).catch(err => {
 			client.logger.warn(err);

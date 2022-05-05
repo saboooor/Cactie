@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ApplicationCommandType, PermissionsBitField } = require('discord.js');
+const { SlashCommandBuilder, ApplicationCommandType } = require('discord.js');
 module.exports = async (client) => {
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
@@ -50,9 +50,6 @@ module.exports = async (client) => {
 		}
 		if (opt && desc) return;
 		client.logger.info(`Detected /${command.name} has some changes! Overwriting command...`);
-		const commandjson = cmd.toJSON();
-		commandjson.dm_permission = false;
-		if (command.permission) commandjson.default_member_permissions = PermissionsBitField.Flags[command.permission];
 		await client.application?.commands.create(cmd.toJSON());
 	});
 	await commands.forEach(async command => {
