@@ -53,7 +53,6 @@ module.exports = async (client) => {
 		const commandjson = cmd.toJSON();
 		commandjson.dm_permission = false;
 		if (command.permission) commandjson.default_member_permissions = PermissionsBitField.Flags[command.permission];
-		console.log(commandjson);
 		await client.application?.commands.create(cmd.toJSON());
 	});
 	await commands.forEach(async command => {
