@@ -15,4 +15,10 @@ module.exports = async (client) => {
 		member.roles.remove(role.id);
 		client.logger.info(`Removed cactie user role from ${member.user.tag}`);
 	});
+
+	const commrole = pupguild.roles.cache.get('971827078775328858');
+	pupguild.members.cache.forEach(member => {
+		if (member.roles.cache.has(commrole.id)) return;
+		member.roles.add(commrole.id);
+	});
 };
