@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
 	name: 'invite',
 	description: 'Get Cactie\'s invite links',
@@ -8,13 +8,27 @@ module.exports = {
 		try {
 			const InvEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.addFields([
-					{ name: '**Add Cactie Bot to your server:**', value: '[Invite Cactie to your server using this link!](https://cactie.smhsmh.club/invite)' },
-					{ name: '**Add the secondary Cactie Dev Bot:**', value: '[Invite Cactie Dev to your server using this link!](https://cactie.smhsmh.club/dev)' },
-					{ name: '**Bot Support:**', value: '[Join Cactie\'s discord server!](https://cactie.smhsmh.club/discord)' },
-					{ name: '**Nether Depths:**', value: '[Also check out Nether Depths!](https://netherdepths.com/discord)' },
+				.setTitle('Want to invite this bot to your server?')
+				.setDescription('Use the buttons below!');
+			const row1 = new ActionRowBuilder
+				.addComponents([
+					new ButtonBuilder()
+						.setURL('https://cactie.smhsmh.club/invite')
+						.setLabel('Invite Cactie to your server!')
+						.setStyle(ButtonStyle.Link),
+					new ButtonBuilder()
+						.setURL('https://cactie.smhsmh.club/discord')
+						.setLabel('Join the support server!')
+						.setStyle(ButtonStyle.Link),
 				]);
-			await message.reply({ embeds: [InvEmbed] });
+			const row2 = new ActionRowBuilder
+				.addComponents([
+					new ButtonBuilder()
+						.setURL('https://netherdepths.com')
+						.setLabel('Also check out Nether Depths!')
+						.setStyle(ButtonStyle.Link),
+				]);
+			await message.reply({ embeds: [InvEmbed], components: [row1, row2] });
 		}
 		catch (err) { client.error(err, message); }
 	},
