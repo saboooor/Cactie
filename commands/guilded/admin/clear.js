@@ -10,6 +10,8 @@ module.exports = {
 	botperm: 'ManageMessages',
 	async execute(message, args, client) {
 		try {
+			return client.error('Admin commands are currently unavailable due to a lack of API endpoint.', message);
+
 			// Check if arg is a number and is more than 100
 			if (isNaN(args[0])) return client.error('That is not a number!', message, true);
 			if (args[0] > 50) return client.error('You can only clear 50 messages at once!', message, true);
