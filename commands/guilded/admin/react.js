@@ -12,6 +12,7 @@ module.exports = {
 			const messagelink = args[0].split('/');
 			if (!messagelink[7]) messagelink[7] = message.channelId;
 			if (!messagelink[8]) messagelink[8] = args[0];
+			messagelink[8] = messagelink[8].replace('chat?messageId=', '');
 			await client.messages.addReaction(messagelink[7], messagelink[8], args[1]);
 			message.reply({ embeds: [ReactEmbed] });
 		}
