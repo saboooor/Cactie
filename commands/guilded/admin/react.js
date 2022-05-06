@@ -6,7 +6,7 @@ module.exports = {
 	usage: '<Message Link / Id (only in channel)> <Emoji>',
 	async execute(message, args, client) {
 		try {
-			const Embed = new EmbedBuilder()
+			const ReactEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reacted to message!');
 			const messagelink = args[0].split('/');
