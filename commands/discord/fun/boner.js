@@ -1,21 +1,19 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder } = require('discord.js');
+const srvs = {};
 module.exports = {
 	name: 'boner',
 	description: 'See your boner expand!',
 	voteOnly: true,
 	usage: '[Someone]',
 	aliases: ['pp'],
-	cooldown: 10,
+	cooldown: 2,
 	options: require('../../options/someone.js'),
 	async execute(message, args, client) {
 		try {
 			// Get settings and check if bonercmd is enabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
-
-			// Get random number out of the maxppsize for the amount of inches
-			const random = Math.round(Math.random() * srvconfig.maxppsize);
 
 			// Check if arg is a user and set it
 			let user = null;
@@ -27,19 +25,43 @@ module.exports = {
 			// Create initial embed and reply with it
 			const ppEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`);
-			const pp = await message.reply({ embeds: [ppEmbed] });
+				.setTitle('Boner');
+
+			// If current message exists, delete the old message
+			if (srvs[message.channel.id] && srvs[message.channel.id].msg) srvs[message.channel.id].msg.delete().catch(err => client.logger.warn(err));
+
+			// Set the data with the fields and largest number for editing the message
+			srvs[message.channel.id] = {
+				fields: srvs[message.channel.id] ? srvs[message.channel.id].fields : [],
+				largestNumber: srvs[message.channel.id] ? srvs[message.channel.id].largestNumber : 0,
+				msg: await message.reply({ embeds: [ppEmbed] }),
+			};
+
+			// Push the field to the fields array
+			srvs[message.channel.id].fields.push({
+				name: `${args[0] ? args.join(' ') : message.member.displayName}'s pp size`,
+				value: '8D',
+				finished: false,
+				number: Math.round(Math.random() * srvconfig.maxppsize),
+			});
+
+			// Set the field index
+			const i = srvs[message.channel.id].fields.length - 1;
+
+			// Set the largest number
+			if (srvs[message.channel.id].fields[i].number > srvs[message.channel.id].largestNumber) srvs[message.channel.id].largestNumber = srvs[message.channel.id].fields[i].number;
 
 			// For pushing equals signs
 			const shaft = [];
 
 			// Add equal signs to shaft every second and edit the message
-			for (let step = 0; step < random; step++) {
+			for (let step = 0; step < srvs[message.channel.id].fields[i].number; step++) {
 				const sleepamt = Math.round(Math.random() * (2000 - 800 + 1) + 800);
 				await sleep(sleepamt);
-				ppEmbed.setDescription('8' + shaft.join('') + 'D');
-				pp.edit({ embeds: [ppEmbed] });
+				srvs[message.channel.id].fields[i].value = `8${shaft.join('')}D`;
+				ppEmbed.setFields(srvs[message.channel.id].fields);
 				shaft.push('=');
+				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] });
 			}
 			await sleep(1000);
 
@@ -47,14 +69,15 @@ module.exports = {
 			const hard = Math.round(Math.random());
 
 			// Chance of getting a SIKE u have no pp
-			if (Math.round(Math.random() * 10) == 5) {
-				ppEmbed.setDescription('SIKE').setFooter({ text: `${args[0] ? args.join(' ') : message.member.displayName} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}` });
-				return pp.edit({ embeds: [ppEmbed] });
-			}
+			if (Math.round(Math.random() * 10) == 5) srvs[message.channel.id].fields[i].value = `SIKE\n${args[0] ? args.join(' ') : message.member.displayName} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}`;
+			else srvs[message.channel.id].fields[i].value = `8${shaft.join('')}D\n${hard == 1 ? 'soft' : 'hard'} pp size = ${srvs[message.channel.id].fields[i].number}"`;
 
-			// Set pp size inches to footer and edit message to final result
-			ppEmbed.setFooter({ text: `${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"` });
-			pp.edit({ embeds: [ppEmbed] });
+			// Set the field and edit
+			ppEmbed.setFields(srvs[message.channel.id].fields);
+			if (srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] });
+
+			// Delete the data once all the fields are finished
+			if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number) delete srvs[message.channel.id];
 		}
 		catch (err) { client.error(err, message); }
 	},
