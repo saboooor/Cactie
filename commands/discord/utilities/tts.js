@@ -59,7 +59,7 @@ module.exports = {
 
 			ttsplayer.on(AudioPlayerStatus.Idle, async () => {
 				counter++;
-				if (!resources[channel.guild.id][counter]) return resources[channel.guild.id] = null;
+				if (!resources[channel.guild.id][counter]) return delete resources[channel.guild.id];
 				const res = resources[channel.guild.id];
 				ttsplayer.play(res[counter]);
 				if (message.commandName) message.reply({ content: `**Playing text to speech message:${res.length > 1 ? ` (Part ${counter + 1} of ${res.length})` : ''}**\n${args.join(' ').length > 1024 ? short : `\`\`\`\n${args.join(' ')}\n\`\`\``}` });

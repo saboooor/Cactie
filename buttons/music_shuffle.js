@@ -16,13 +16,12 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.djrole != 'false') {
 				const requiredAmount = Math.floor((interaction.guild.me.voice.channel.members.size - 1) / 2);
-				if (!player.shuffleAmount) player.shuffleAmount = [];
 				let alr = false;
 				for (const i of player.shuffleAmount) { if (i == interaction.member.id) alr = true; }
 				if (alr) return interaction.channel.send({ content: lang.music.queue.shuffle.alr });
 				player.shuffleAmount.push(interaction.member.id);
 				if (player.shuffleAmount.length < requiredAmount) return interaction.channel.send({ content: `<:shuffle:${shuffle}> **${lang.music.queue.shuffle.ing}** \`${player.shuffleAmount.length} / ${requiredAmount}\`` });
-				player.shuffleAmount = null;
+				player.shuffleAmount = [];
 			}
 
 			// Shuffle queue and reply

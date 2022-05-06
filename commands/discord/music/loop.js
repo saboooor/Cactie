@@ -21,13 +21,12 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
 				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
-				if (!player.loopTrackAmount) player.loopTrackAmount = [];
 				let alr = false;
 				for (const i of player.loopTrackAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return client.error(lang.music.track.loopalr, message, true);
 				player.loopTrackAmount.push(message.member.id);
 				if (player.loopTrackAmount.length < requiredAmount) return message.reply({ content: `**${lang.music.track.looping[player.trackRepeat ? 'off' : 'on']}** \`${player.loopTrackAmount.length} / ${requiredAmount}\`` });
-				player.loopTrackAmount = null;
+				player.loopTrackAmount = [];
 			}
 
 			// Toggle loop

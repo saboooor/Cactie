@@ -2,8 +2,8 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { convertTime } = require('../../functions/music/convert.js');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
-	player.skipAmount = null; player.loopTrackAmount = null;
-	player.loopQueueAmount = null; player.shuffleAmount = null;
+	player.skipAmount = []; player.loopTrackAmount = [];
+	player.loopQueueAmount = []; player.shuffleAmount = [];
 	if (!player.voiceChannel) return;
 	const guild = client.guilds.cache.get(player.guild);
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
