@@ -1,5 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
-const InvEmbed = new EmbedBuilder()
+const { Embed } = require('guilded.js');
+const InvEmbed = new Embed()
 	.setColor(Math.floor(Math.random() * 16777215))
 	.addFields([
 		{ name: '**Add Cactie Bot to your server:**', value: '[Invite Cactie to your server using this link!](https://cactie.smhsmh.club/invite)' },
