@@ -10,7 +10,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Want to invite this bot to your server?')
 				.setDescription('Use the buttons below!');
-			const row1 = new ActionRowBuilder
+			const row1 = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
 						.setURL('https://cactie.smhsmh.club/invite')
