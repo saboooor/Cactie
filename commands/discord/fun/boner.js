@@ -41,7 +41,6 @@ module.exports = {
 			srvs[message.channel.id].fields.push({
 				name: `${args[0] ? args.join(' ') : message.member.displayName}'s pp size`,
 				value: '8D',
-				finished: false,
 				number: Math.round(Math.random() * srvconfig.maxppsize),
 			});
 
@@ -61,7 +60,7 @@ module.exports = {
 				srvs[message.channel.id].fields[i].value = `8${shaft.join('')}D`;
 				ppEmbed.setFields(srvs[message.channel.id].fields);
 				shaft.push('=');
-				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] });
+				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => client.logger.warn(err));
 			}
 			await sleep(1000);
 
@@ -74,7 +73,7 @@ module.exports = {
 
 			// Set the field and edit
 			ppEmbed.setFields(srvs[message.channel.id].fields);
-			if (srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] });
+			if (srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => client.logger.warn(err));
 
 			// Delete the data once all the fields are finished
 			if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number) delete srvs[message.channel.id];
