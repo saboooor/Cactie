@@ -3,9 +3,11 @@ module.exports = {
 	name: 'react',
 	description: 'Adds a reaction to a message',
 	args: true,
-	usage: '<Message Link / Id (only in channel)> <Emoji>',
+	usage: '<Message Link / Id (only in channel)> <Emoji Id>',
 	async execute(message, args, client) {
 		try {
+			return client.error('Admin commands are currently unavailable due to a lack of API endpoint.', message);
+
 			const ReactEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reacted to message!');

@@ -9,8 +9,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setAuthor(`${message.member.nickname ? `${message.member.nickname} (${message.member.user.name})` : message.member.user.name}`)
 				.setImage(message.member.user.avatar);
-			const row = [];
-			message.reply({ embeds: [UsrEmbed], components: row });
+			message.reply({ embeds: [UsrEmbed] });
 		}
 		catch (err) { client.error(err, message); }
 	},
