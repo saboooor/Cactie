@@ -64,7 +64,7 @@ module.exports = {
 			// If voiceticket is set, delete the voiceticket
 			if (ticketData.voiceticket !== 'false') {
 				const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
-				voiceticket.delete();
+				voiceticket.delete().catch(() => client.error('The voice ticket could not be found! Please do not manually delete the voice channel next time as the bot will do it automatically on close.', message, true));
 				await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', 'false');
 			}
 

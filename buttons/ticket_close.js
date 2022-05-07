@@ -28,7 +28,7 @@ module.exports = {
 			// Check if there's a voice ticket and delete it
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
 				const voiceticket = interaction.guild.channels.cache.get(ticketData.voiceticket);
-				voiceticket.delete();
+				voiceticket.delete().catch(() => client.error('The voice ticket could not be found! Please do not manually delete the voice channel next time as the bot will do it automatically on close.', interaction, true));
 				await client.setData('ticketdata', 'channelId', interaction.channel.id, 'voiceticket', 'false');
 			}
 
