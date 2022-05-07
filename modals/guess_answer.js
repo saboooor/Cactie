@@ -8,7 +8,7 @@ module.exports = {
 			const field = interaction.components[0].components[0].toJSON();
 			const answer = field.custom_id;
 			const embedJSON = interaction.message.embeds[0].toJSON();
-			const host = embedJSON.description.split('\n')[1];
+			const host = interaction.guild.members.cache.get(embedJSON.description.split('\n')[1].replace(/\D/g, ''));
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
@@ -36,12 +36,13 @@ module.exports = {
 				.setColor(0xeed84a)
 				.setDescription(`**Playing with:**\n${interaction.member}`)
 				.addFields([{ name: field.value, value: `${host}\nPlease answer this question by clicking the buttons below` }])
+				.setThumbnail(host.user.avatarURL())
 				.setFooter({ text: `${embedJSON.footer.text.split(' ')[0] - 1} Questions left` });
 			interaction.message.edit({ content: `${host}`, embeds: [TwentyOneQuestions], components: [row] });
 			const pingmsg = await interaction.channel.send(`${host}`);
 			pingmsg.delete().catch(err => client.logger.error(err.stack));
 
-			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.replace(/\D/g, '');
+			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.id;
 			const collector = interaction.message.createMessageComponentCollector({ filter, time: 3600000 });
 			collector.on('collect', async btnint => {
 				btnint.deferUpdate();

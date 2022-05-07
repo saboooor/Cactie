@@ -22,7 +22,8 @@ module.exports = {
 		const TwentyOneQuestions = new EmbedBuilder()
 			.setColor(0x63d471)
 			.setTitle('21 Questions')
-			.setDescription(`**Playing with:**\n${member}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`);
+			.setDescription(`**Playing with:**\n${member}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`)
+			.setThumbnail(message.member.user.avatarURL());
 
 		const questionmsg = await message.reply({ content: `${message.member}`, embeds: [TwentyOneQuestions], components: [row] });
 
