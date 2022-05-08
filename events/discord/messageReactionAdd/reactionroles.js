@@ -12,7 +12,7 @@ module.exports = async (client, reaction, user) => {
 		if (!role) return client.error('The role can\'t be found!', message, true);
 		let member = await message.guild.members.cache.get(user.id);
 		if (!member) member = await message.guild.members.fetch(user.id);
-		let msg = null;
+		let msg;
 		if (reactionrole.type == 'toggle') {
 			reaction.users.remove(user.id);
 			if (!member.roles.cache.has(role.id)) {

@@ -11,7 +11,7 @@ module.exports = async (client, message) => {
 	const GitEmbed = new EmbedBuilder(message.embeds[0].toJSON());
 
 	// get the server name from pterodactyl.json and branch name from embed title and check if it's this bot
-	let server = null;
+	let server;
 	if (GitEmbed.toJSON().title.startsWith('[Cactie:master]') && servers['pup'].client) server = servers['pup'];
 	else if (GitEmbed.toJSON().title.startsWith('[Cactie:dev]') && servers['pup dev'].client) server = servers['pup dev'];
 	if (!server || !server.client) return;

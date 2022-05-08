@@ -9,7 +9,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
 		.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 
-	let url = null;
+	let url;
 
 	args.forEach(arg => {
 		if (arg.startsWith('https://timin') && arg.includes('?id=')) url = arg.replace('/d=', '/?id=').split('#')[0].split('\n')[0];
@@ -197,7 +197,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		if (total_ticks == normal_ticks) {
 			const end_time = data.end;
 			const start_time = data.start;
-			let tps = null;
+			let tps;
 			if (end_time == start_time) tps = 20;
 			else tps = total_ticks / (end_time - start_time);
 			if (tps < worst_tps) worst_tps = tps;

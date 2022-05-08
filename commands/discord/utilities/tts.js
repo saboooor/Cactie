@@ -16,7 +16,7 @@ module.exports = {
 		try {
 			const player = client.manager.get(message.guild.id);
 			const channel = message.member.voice.channel;
-			let playerjson = null;
+			let playerjson;
 			if (player) {
 				player.queue.unshift(player.queue.current);
 				const { textChannel, queue, trackRepeat, queueRepeat, position, paused, volume } = player;

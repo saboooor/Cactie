@@ -30,7 +30,7 @@ module.exports = {
 				if (!fetchedMsg) return client.error('That message doesn\'t exist!\nDid you send a valid *message link*?', message, true);
 				const role = await message.guild.roles.cache.get(args[3].replace(/\D/g, ''));
 				if (!role) return client.error('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
-				let reaction = null;
+				let reaction;
 				try { reaction = await fetchedMsg.react(args[1]); }
 				catch (err) { return client.error(`\`${err}\`\nUse an emote from a server that ${client.user.username} is in or an emoji.`, message, true); }
 				await client.query(`INSERT INTO reactionroles (guildId, channelId, messageId, emojiId, roleId, type) VALUES ('${messagelink[4]}', '${messagelink[5]}', '${messagelink[6]}', '${reaction._emoji[reaction._emoji.id ? 'id' : 'name']}', '${args[3].replace(/\D/g, '')}', '${args[4].toLowerCase()}');`);

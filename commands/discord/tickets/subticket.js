@@ -52,7 +52,7 @@ module.exports = {
 
 			// Ping the staff if enabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			let ping = null;
+			let ping;
 			if (srvconfig.ticketmention == 'here' || srvconfig.ticketmention == 'everyone') ping = `@${srvconfig.ticketmention}`;
 			else if (srvconfig.ticketmention != 'false') ping = `<@${srvconfig.ticketmention}>`;
 

@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const gifs = require('../lang/int/actiongifs.json');
-let current = null;
+let current;
 module.exports = async function action(message, args, type, plural, footer) {
 	// Check if arg is a user and set it
-	let user = null;
+	let user;
 	if (args[0] && message.client.type.name == 'discord') {
 		user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (user) args[0] = user.displayName;

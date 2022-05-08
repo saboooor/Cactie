@@ -13,7 +13,7 @@ module.exports = {
 			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
 
 			// Check if arg is a user and set it
-			let user = null;
+			let user;
 			if (args[0]) {
 				user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 				if (user) args[0] = user.displayName;

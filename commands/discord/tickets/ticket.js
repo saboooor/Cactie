@@ -75,7 +75,7 @@ module.exports = {
 			if (args && args[0] && !reaction) CreateEmbed.addFields([{ name: 'Description', value: args.join(' ') }]);
 
 			// Ping the staff if enabled
-			let ping = null;
+			let ping;
 			if (srvconfig.ticketmention == 'here' || srvconfig.ticketmention == 'everyone') ping = `@${srvconfig.ticketmention}`;
 			else if (srvconfig.ticketmention != 'false') ping = `<@${srvconfig.ticketmention}>`;
 
