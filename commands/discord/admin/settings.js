@@ -68,7 +68,7 @@ module.exports = {
 
 			const modalyes = modal[args[0]] && modal[args[0]].type == 'text';
 			if (message.commandName) {
-				if (args[0] && modalyes) return evalModal(client, message, args[0], srvconfig, null, null, desc);
+				if (args[0] && modalyes || args[0] == 'reset') return evalModal(client, message, args[0], srvconfig, null, null, desc);
 				await message.deferReply();
 				message.reply = message.editReply;
 			}
@@ -76,7 +76,7 @@ module.exports = {
 			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 
 			if (message.commandName && args[0]) {
-				if (!srvconfig[args[0]] && args[0] != 'reset') return client.error(`\`${args[0]}\` is an invalid setting!`, message, true);
+				if (!srvconfig[args[0]]) return client.error(`\`${args[0]}\` is an invalid setting!`, message, true);
 				evalModal(client, message, args[0], srvconfig, SettingsEmbed, SettingsMsg, desc);
 			}
 
