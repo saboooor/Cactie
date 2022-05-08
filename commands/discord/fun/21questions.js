@@ -11,6 +11,7 @@ module.exports = {
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 		if (!member) return client.error(lang.invalidmember, message, true);
+		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		const row = new ActionRowBuilder()
 			.addComponents([
 				new ButtonBuilder()
