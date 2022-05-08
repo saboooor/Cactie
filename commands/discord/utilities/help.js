@@ -30,7 +30,7 @@ module.exports = {
 			else if (arg == 'supportpanel') {
 				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
 				const Panel = new EmbedBuilder()
-					.setColor(0x5662f6)
+					.setColor(0x2f3136)
 					.setTitle('Need help? No problem!')
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL() });
 				if (srvconfig.tickets == 'buttons') {

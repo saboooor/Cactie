@@ -17,7 +17,7 @@ module.exports = {
 			if (!channel) channel = message.channel;
 			const suggestion = args.join(' ');
 			const SuggestEmbed = new EmbedBuilder()
-				.setColor(0x5662f6)
+				.setColor(0x2f3136)
 				.setAuthor({ name: `${message.member.displayName} (${message.member.user.tag})`, iconURL: message.member.user.avatarURL() })
 				.setTitle('Suggestion')
 				.setDescription(suggestion)
@@ -38,8 +38,8 @@ module.exports = {
 				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
 				suggestMsg.edit({ embeds: [SuggestEmbed] });
 				const CreateEmbed = new EmbedBuilder()
-					.setColor(0x5662f6)
-					.setTitle('Suggest Created')
+					.setColor(0x2f3136)
+					.setTitle('Suggestion Created')
 					.setDescription('You may go in detail about your suggestion or have a discussion about it in this thread');
 				await sleep(1000);
 				await thread.send({ content: `${message.member}`, embeds: [CreateEmbed] });

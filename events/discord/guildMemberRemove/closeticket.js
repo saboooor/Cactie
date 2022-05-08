@@ -89,7 +89,7 @@ module.exports = async (client, member) => {
 
 	// Add reaction panel if ticket mode is set to reactions
 	if (srvconfig.tickets == 'reactions') {
-		CloseEmbed.setColor(0x5662f6)
+		CloseEmbed.setColor(0x2f3136)
 			.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 		const Panel = await channel.send({ embeds: [CloseEmbed] });
 		Panel.react('🔓');

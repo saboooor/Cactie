@@ -38,8 +38,8 @@ module.exports = {
 			// Give permissions to the user and reply
 			message.channel.permissionOverwrites.edit(member, { ViewChannel: false });
 			const AddEmbed = new EmbedBuilder()
-				.setColor(0xFF6400)
-				.setDescription(`${message.member.user} remove ${member} from the ticket`);
+				.setColor(0x2f3136)
+				.setDescription(`${message.member.user} removed ${member} from the ticket`);
 			message.reply({ embeds: [AddEmbed] });
 			client.logger.info(`Removed ${member.user.tag} from #${message.channel.name}`);
 		}

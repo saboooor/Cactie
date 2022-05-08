@@ -19,7 +19,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Primary),
 				]);
 			const TwentyOneQuestions = new EmbedBuilder(embedJSON)
-				.setColor(0xeed84a)
+				.setColor(0x5b62fa)
 				.setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser}\nAsk a question or guess the answer by clicking the button below.`)
 				.setThumbnail(guesser.user.avatarURL())
 				.setFooter({ text: '21 Questions left' });

@@ -11,7 +11,6 @@ module.exports = {
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 		if (!member) return client.error(lang.invalidmember, message, true);
-		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
 		const row = new ActionRowBuilder()
 			.addComponents([
 				new ButtonBuilder()
@@ -20,7 +19,7 @@ module.exports = {
 					.setStyle(ButtonStyle.Secondary),
 			]);
 		const TwentyOneQuestions = new EmbedBuilder()
-			.setColor(0x63d471)
+			.setColor(0x2f3136)
 			.setTitle('21 Questions')
 			.setDescription(`**Playing with:**\n${member}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`)
 			.setThumbnail(message.member.user.avatarURL());

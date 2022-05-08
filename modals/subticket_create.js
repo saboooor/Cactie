@@ -34,7 +34,7 @@ module.exports = {
 				if (member) users.push(member.user);
 			});
 			const CreateEmbed = new EmbedBuilder()
-				.setColor(0x5662f6)
+				.setColor(0x2f3136)
 				.setTitle('Subticket Created')
 				.setDescription('Please explain your issue and we\'ll be with you shortly.')
 				.addFields([{ name: 'Description', value: interaction.fields.getTextInputValue('description') }])

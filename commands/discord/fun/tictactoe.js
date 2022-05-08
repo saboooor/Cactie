@@ -80,7 +80,7 @@ module.exports = {
 			let draw = true;
 			Object.keys(btns).map(i => { if (!btns[i].toJSON().disabled) draw = false; });
 			if (draw) {
-				TicTacToe.setColor(0xff00ff)
+				TicTacToe.setColor(0x2f3136)
 					.setFields([{ name: 'Result:', value: 'Draw!' }])
 					.setThumbnail();
 				rows.push(again);

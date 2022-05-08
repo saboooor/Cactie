@@ -8,7 +8,7 @@ module.exports = {
 	options: require('../../options/minecraft.js'),
 	async execute(message, args, client) {
 		try {
-			const JarEmbed = new EmbedBuilder().setColor(Math.floor(Math.random() * 16777215));
+			const JarEmbed = new EmbedBuilder().setColor(0x2f3136);
 			args[0] = args[0].toLowerCase();
 			if (args[0] == 'paper' || args[0] == 'waterfall' || args[0] == 'velocity') {
 				// fetch the latest mc version
@@ -59,8 +59,7 @@ module.exports = {
 				// check if error
 				if (h.error) return client.error(h.error, message, true);
 				// initial embed creation
-				JarEmbed.setColor(0x95639C)
-					.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
+				JarEmbed.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
 					.setURL(`https://api.purpurmc.org/v2/purpur/${c}/${f}`)
 					.setThumbnail('https://cdn.discordapp.com/attachments/742476351012864162/865391752675065896/purpur.png')
 					.setDescription(`${h.commits.length} commit(s)`)

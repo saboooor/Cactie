@@ -109,7 +109,7 @@ module.exports = async (client, message) => {
 	// Check if args are required and see if args are there, if not, send error
 	if (command.args && args.length < 1) {
 		const Usage = new EmbedBuilder()
-			.setColor(0x5662f6)
+			.setColor(0x2f3136)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
 		if (command.similarcmds) Usage.setFooter({ text: `Did you mean to use ${srvconfig.prefix}${command.similarcmds}?` });

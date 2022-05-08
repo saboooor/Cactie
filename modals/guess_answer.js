@@ -33,7 +33,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Primary),
 				]);
 			const TwentyOneQuestions = new EmbedBuilder(embedJSON)
-				.setColor(0xeed84a)
+				.setColor(0xde4b37)
 				.setDescription(`**Playing with:**\n${interaction.member}`)
 				.addFields([{ name: field.value, value: `${host}\nPlease answer this question by clicking the buttons below` }])
 				.setThumbnail(host.user.avatarURL())

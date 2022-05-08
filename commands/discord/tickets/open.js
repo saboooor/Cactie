@@ -39,7 +39,7 @@ module.exports = {
 
 			// Reply with ticket open message
 			const OpenEmbed = new EmbedBuilder()
-				.setColor(0xFF6400)
+				.setColor(0x2f3136)
 				.setDescription(`Ticket Opened by ${author}`);
 			message.reply({ embeds: [OpenEmbed] });
 			client.logger.info(`Reopened ticket #${message.channel.name}`);
