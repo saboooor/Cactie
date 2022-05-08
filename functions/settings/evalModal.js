@@ -5,7 +5,7 @@ const { on, off } = require('../../lang/int/emoji.json');
 const modal = require('../../lang/int/settingsmodal.json');
 const updateSettingPanel = require('./updateSettingPanel.js');
 module.exports = async function evalModal(client, interaction, setting, srvconfig, SettingsEmbed, SettingsMsg, desc) {
-	if (setting == 'guildId') {
+	if (setting == 'reset') {
 		// Create and show a modal for the user to confirm reset
 		const propModal = new ModalBuilder()
 			.setTitle('Reset all settings')
