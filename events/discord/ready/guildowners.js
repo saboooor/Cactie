@@ -1,10 +1,10 @@
 module.exports = async (client) => {
-	const pupguild = client.guilds.cache.get('811354612547190794');
-	const role = pupguild.roles.cache.find(r => r.name == `${client.user.username} User`);
+	const cactieguild = client.guilds.cache.get('811354612547190794');
+	const role = cactieguild.roles.cache.find(r => r.name == `${client.user.username} User`);
 	const owners = [];
 	await client.guilds.cache.forEach(async guild => {
 		if (!owners.includes(guild.ownerId)) owners.push(guild.ownerId);
-		const member = pupguild.members.cache.get(guild.ownerId);
+		const member = cactieguild.members.cache.get(guild.ownerId);
 		if (!member) return;
 		if (member.roles.cache.has(role.id)) return;
 		member.roles.add(role.id);
@@ -16,8 +16,8 @@ module.exports = async (client) => {
 		client.logger.info(`Removed cactie user role from ${member.user.tag}`);
 	});
 
-	const commrole = pupguild.roles.cache.get('971827078775328858');
-	pupguild.members.cache.forEach(member => {
+	const commrole = cactieguild.roles.cache.get('971827078775328858');
+	cactieguild.members.cache.forEach(member => {
 		if (member.roles.cache.has(commrole.id)) return;
 		member.roles.add(commrole.id);
 	});

@@ -12,8 +12,8 @@ module.exports = async (client, message) => {
 
 	// get the server name from pterodactyl.json and branch name from embed title and check if it's this bot
 	let server = null;
-	if (GitEmbed.toJSON().title.startsWith('[Pup:master]') && servers['pup'].client) server = servers['pup'];
-	else if (GitEmbed.toJSON().title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
+	if (GitEmbed.toJSON().title.startsWith('[Cactie:master]') && servers['pup'].client) server = servers['pup'];
+	else if (GitEmbed.toJSON().title.startsWith('[Cactie:dev]') && servers['pup dev'].client) server = servers['pup dev'];
 	if (!server || !server.client) return;
 
 	// Check if all commits in message skip the update

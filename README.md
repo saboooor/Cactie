@@ -11,9 +11,9 @@ SUPPORT WILL NOT BE GIVEN FOR PEOPLE THAT USE THIS REPO AS A COMPLETELY SEPARATE
 
 [![Discord](https://discord.com/api/guilds/811354612547190794/widget.png)](https://discord.gg/Bsefgbaedz)
 [![Guilded](https://guilded.nico.engineer/shields/vanity/cactie?style=flat)](https://guilded.gg/cactie)
-[![CodeFactor](https://www.codefactor.io/repository/github/saboooor/pup/badge/master)](https://www.codefactor.io/repository/github/saboooor/pup/overview/master)
-![Lines](https://tokei.rs/b1/github/saboooor/pup)
+[![CodeFactor](https://www.codefactor.io/repository/github/saboooor/cactie/badge/master)](https://www.codefactor.io/repository/github/saboooor/cactie/overview/master)
+![Lines](https://tokei.rs/b1/github/saboooor/cactie)
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
 
 ### Contributors
-![Contributors](https://contrib.rocks/image?repo=saboooor/Pup)
+![Contributors](https://contrib.rocks/image?repo=saboooor/cactie)
