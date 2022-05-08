@@ -1,4 +1,3 @@
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	guilded: async function getTranscript(messages) {
 		const logs = {

@@ -1,4 +1,3 @@
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { MessageAttachment } = require('discord.js');
 module.exports = async (client, message) => {
 	// If channel is DM,send the dm to the dms channel

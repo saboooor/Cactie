@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'serverjar',
 	aliases: ['mcjar', 'jar', 'srvjar'],

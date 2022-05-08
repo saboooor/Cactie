@@ -1,6 +1,5 @@
 const { FormData } = require('formdata-node');
 const { fileFromPath } = require('formdata-node/file-from-path');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { EmbedBuilder } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
 const { nsfw, refresh, warn } = require('../lang/int/emoji.json');

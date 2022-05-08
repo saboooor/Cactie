@@ -1,7 +1,6 @@
 const { createPaste } = require('hastebin');
 const { EmbedBuilder } = require('discord.js');
 const { NodeactylClient } = require('nodeactyl');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const servers = require('../config/pterodactyl.json');
 const protocols = require('../lang/int/mcprotocol.json');
 module.exports = {
@@ -36,9 +35,11 @@ module.exports = {
 				info.name ? StatsEmbed.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`) : StatsEmbed.setTitle(arg);
 				if (server.client) StatsEmbed.setThumbnail(client.user.avatarURL());
 			}
-			if (server.ip || arg) {
-				const ip = server.ip ?? arg;
-				const json = await fetch(`https://api.mcsrvstat.us/2/${ip}`);
+			else {
+				server = { ip: arg };
+			}
+			if (server.ip) {
+				const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
 				const pong = await json.json();
 				const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
 				if (!pong.online) return interaction.reply({ content: `**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
