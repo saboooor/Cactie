@@ -9,7 +9,7 @@ module.exports = {
 	usage: '<Description>',
 	options: require('../../options/ticket.js'),
 	botperm: 'CreatePublicThreads',
-	async execute(message, args, client, reaction) {
+	async execute(message, args, client, lang, reaction) {
 		try {
 			// If the reaction isn't on the ticket panel, don't proceed
 			if (reaction && message.author.id != client.user.id) return;

@@ -8,7 +8,7 @@ module.exports = {
 	usage: '[Description]',
 	botperm: 'ManageChannels',
 	options: require('../../options/ticket.js'),
-	async execute(message, args, client, reaction) {
+	async execute(message, args, client, lang, reaction) {
 		try {
 			// Set author to command sender
 			let author = message.member.user;

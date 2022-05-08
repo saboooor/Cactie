@@ -5,7 +5,7 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['voicenew', 'voice'],
 	botperm: 'ManageChannels',
-	async execute(message, args, client, reaction) {
+	async execute(message, args, client, lang, reaction) {
 		try {
 			// If the reaction isn't on the ticket panel, don't proceed
 			if (reaction && message.author.id != client.user.id) return;
