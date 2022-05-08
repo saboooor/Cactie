@@ -55,10 +55,6 @@ module.exports = {
 						id: author.id,
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
-					{
-						id: role.id,
-						allow: [PermissionsBitField.Flags.ViewChannel],
-					},
 				],
 				reason: args.join(' '),
 			});

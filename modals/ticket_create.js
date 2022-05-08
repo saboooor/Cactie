@@ -41,10 +41,6 @@ module.exports = {
 						id: author.id,
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
-					{
-						id: role.id,
-						allow: [PermissionsBitField.Flags.ViewChannel],
-					},
 				],
 				reason: interaction.fields.getTextInputValue('description'),
 			});
