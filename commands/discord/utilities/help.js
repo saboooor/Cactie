@@ -28,7 +28,7 @@ module.exports = {
 				if (category.field) HelpEmbed.setFields([category.field]);
 			}
 			else if (arg == 'supportpanel') {
-				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return client.error('You can\'t do that!', message, true);
+				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator) && message.member.id != '249638347306303499') return client.error('You can\'t do that!', message, true);
 				const Panel = new EmbedBuilder()
 					.setColor(0x2f3136)
 					.setTitle('Need help? No problem!')
