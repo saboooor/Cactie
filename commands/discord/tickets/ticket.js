@@ -38,10 +38,6 @@ module.exports = {
 			if (!parent) parent = { id: null };
 			else if (!parent.isCategory()) parent = { id: null };
 
-			// Find role and if no role then reply with error
-			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return client.error('You need to set a role with /settings supportrole!', message, true);
-
 			// Create ticket and set database
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {
 				parent: parent.id,
@@ -66,6 +62,12 @@ module.exports = {
 				],
 				reason: args.join(' '),
 			});
+
+			// Find role and set perms and if no role then send error
+			const role = message.guild.roles.cache.get(srvconfig.supportrole);
+			if (role) await message.channel.permissionOverwrites.edit(role.id, { ViewChannel: true });
+			else ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings supportrole`' });
+
 			await client.query(`INSERT INTO ticketdata (guildId, channelId, opener, users) VALUES ('${message.guild.id}', '${ticket.id}', '${author.id}', '${author.id}');`);
 			message.reply({ content: `Ticket created at ${ticket}!` });
 			client.logger.info(`Ticket created at #${ticket.name}`);

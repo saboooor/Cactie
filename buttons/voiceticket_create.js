@@ -20,9 +20,6 @@ module.exports = {
 			let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
 
-			// Find role and if no role then reply with error
-			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return client.error('You need to set a role with /settings supportrole!', interaction, true);
 
 			// Create voice channel for voiceticket
 			const author = interaction.guild.members.cache.get(ticketData.opener).user;
@@ -42,12 +39,12 @@ module.exports = {
 						id: author.id,
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
-					{
-						id: role.id,
-						allow: [PermissionsBitField.Flags.ViewChannel],
-					},
 				],
 			});
+
+			// Find role and add their permissions to the channel
+			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
+			if (role) interaction.channel.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 			// Add voiceticket to ticket database
 			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'voiceticket', voiceticket.id);

@@ -28,10 +28,6 @@ module.exports = {
 			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 			if (!parent) parent = { id: null };
 
-			// Find role and if no role then reply with error
-			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			if (!role) return client.error('You need to set a role with /settings supportrole!', message, true);
-
 			// Create voice channel for voiceticket
 			const author = message.guild.members.cache.get(ticketData.opener).user;
 			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} ${author.username}`, {
@@ -50,12 +46,12 @@ module.exports = {
 						id: author.id,
 						allow: [PermissionsBitField.Flags.ViewChannel],
 					},
-					{
-						id: role.id,
-						allow: [PermissionsBitField.Flags.ViewChannel],
-					},
 				],
 			});
+
+			// Find role and add their permissions to the channel
+			const role = message.guild.roles.cache.get(srvconfig.supportrole);
+			if (role) message.channel.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 			// Add voiceticket to ticket database
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', voiceticket.id);
