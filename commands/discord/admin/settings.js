@@ -76,7 +76,7 @@ module.exports = {
 			const SettingsMsg = await message.reply({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
 
 			if (message.commandName && args[0]) {
-				if (!srvconfig[args[0]]) return client.error(`\`${args[0]}\` is an invalid setting!`, message, true);
+				if (!srvconfig[args[0]] && args[0] != 'reset') return client.error(`\`${args[0]}\` is an invalid setting!`, message, true);
 				evalModal(client, message, args[0], srvconfig, SettingsEmbed, SettingsMsg, desc);
 			}
 
