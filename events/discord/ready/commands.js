@@ -29,6 +29,7 @@ module.exports = async (client) => {
 				}
 				if (option.options) {
 					option.options.forEach(suboption => {
+						if (!sourceopt.options) return opt = false;
 						const sourcesubopt = sourceopt.options.find(o => o.name == suboption.name);
 						if (!sourcesubopt) return opt = false;
 						if (suboption.type != sourcesubopt.type) return opt = false;

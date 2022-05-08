@@ -28,11 +28,15 @@ module.exports = {
 				if (category.field) HelpEmbed.setFields([category.field]);
 			}
 			else if (arg == 'supportpanel') {
-				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
+				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return client.error('You can\'t do that!', message, true);
 				const Panel = new EmbedBuilder()
 					.setColor(0x2f3136)
 					.setTitle('Need help? No problem!')
 					.setFooter({ text: `${message.guild.name} Support`, iconURL: message.guild.iconURL() });
+				let channel;
+				if (args[1]) channel = message.guild.channels.cache.get(args[1]);
+				if (!channel) channel = message.channel;
+
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
 					const row = new ActionRowBuilder()
@@ -43,12 +47,12 @@ module.exports = {
 								.setEmoji({ name: '🎫' })
 								.setStyle(ButtonStyle.Primary),
 						]);
-					message.channel.send({ embeds: [Panel], components: [row] });
+					await channel.send({ embeds: [Panel], components: [row] });
 					return message.reply('Support panel created! You may now delete this message');
 				}
 				else if (srvconfig.tickets == 'reactions') {
 					Panel.setDescription('React with 🎫 to open a ticket!');
-					const panelMsg = await message.channel.send({ embeds: [Panel] });
+					const panelMsg = await channel.send({ embeds: [Panel] });
 					await panelMsg.react('🎫');
 				}
 				else if (srvconfig.tickets == 'false') {
