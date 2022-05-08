@@ -19,16 +19,11 @@ module.exports = {
 			let playerjson = null;
 			if (player) {
 				player.queue.unshift(player.queue.current);
+				const { textChannel, queue, trackRepeat, queueRepeat, position, paused, volume } = player;
 				playerjson = {
 					voiceChannel: player.options.voiceChannel,
-					textChannel: player.textChannel,
 					guild: player.guild,
-					queue: player.queue,
-					trackRepeat: player.trackRepeat,
-					queueRepeat: player.queueRepeat,
-					position: player.position,
-					volume: player.volume,
-					paused: player.paused,
+					textChannel, queue, trackRepeat, queueRepeat, position, paused, volume,
 				};
 				if (player.nowPlayingMessage) player.nowPlayingMessage.delete().catch(err => client.logger.error(err.stack));
 				player.destroy();

@@ -34,13 +34,11 @@ module.exports = {
 			}
 
 			// Find category and if no category then set it to null
-			let parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
-			if (!parent) parent = { id: null };
-			else if (!parent.isCategory()) parent = { id: null };
+			const parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 
 			// Create ticket and set database
 			const ticket = await message.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {
-				parent: parent.id,
+				parent: parent ? parent.id : null,
 				topic: `Ticket Opened by ${author.tag}`,
 				permissionOverwrites: [
 					{

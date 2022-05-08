@@ -7,13 +7,7 @@ module.exports = async (client, node) => {
 	data.splice(0, 1);
 	data.forEach(async playerdata => {
 		const playerjson = JSON.parse(playerdata);
-		const player = client.manager.create({
-			guild: playerjson.guild,
-			voiceChannel: playerjson.voiceChannel,
-			textChannel: playerjson.textChannel,
-			volume: playerjson.volume,
-			selfDeafen: true,
-		});
+		const player = client.manager.create({ ...playerjson, selfDeafen: true });
 		if (player.state != 'CONNECTED') player.connect();
 		playerjson.queue.forEach(async queueitem => {
 			if (queueitem) {
@@ -38,10 +32,8 @@ module.exports = async (client, node) => {
 		});
 		if (!player.playing && player.queue.current) await player.play();
 		player.seek(playerjson.position);
-		player.setVolume(playerjson.volume);
 		player.setTrackRepeat(playerjson.trackRepeat);
 		player.setQueueRepeat(playerjson.queueRepeat);
-		player.pause(playerjson.paused);
 	});
 	fs.writeFileSync('playercache.txt', '');
 };

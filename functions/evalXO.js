@@ -1,6 +1,6 @@
 const { ButtonStyle } = require('discord.js');
 module.exports = function evalXO(reslist) {
-	const result = { winner: null };
+	const result = {};
 
 	// horizontal
 	if (reslist[0] == reslist[1] && reslist[1] == reslist[2] && reslist[0] != ButtonStyle.Secondary) result.rows = [11, 12, 13];

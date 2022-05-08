@@ -36,11 +36,9 @@ module.exports = {
 				info.name ? StatsEmbed.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`) : StatsEmbed.setTitle(arg);
 				if (server.client) StatsEmbed.setThumbnail(client.user.avatarURL());
 			}
-			else {
-				server = { ip: arg };
-			}
-			if (server.ip) {
-				const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
+			if (server.ip || arg) {
+				const ip = server.ip ?? arg;
+				const json = await fetch(`https://api.mcsrvstat.us/2/${ip}`);
 				const pong = await json.json();
 				const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
 				if (!pong.online) return interaction.reply({ content: `**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });

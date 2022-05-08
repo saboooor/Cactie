@@ -15,19 +15,13 @@ module.exports = client => {
 					const srvconfig = await client.getData('settings', 'guildId', player.guild);
 					const role = guild.roles.cache.get(srvconfig.djrole);
 					if (member && member.voice && member.voice.channel && member.voice.channel.id === player.options.voiceChannel) {
+						const { queue, trackRepeat, queueRepeat, position, playing, paused, volume, bands } = player;
 						const playerjson = {
 							voiceChannelId: player.options.voiceChannel,
 							voiceChannelName: guild.channels.cache.get(player.options.voiceChannel).name,
 							guild: player.guild,
-							queue: player.queue,
-							current: player.queue.current,
-							trackRepeat: player.trackRepeat,
-							queueRepeat: player.queueRepeat,
-							position: player.position,
-							playing: player.playing,
-							paused: player.paused,
-							volume: player.volume,
-							bands: player.bands,
+							current: queue.current,
+							queue, trackRepeat, queueRepeat, position, playing, paused, volume, bands,
 							hasdj: srvconfig.djrole == 'false' ? true : member.roles.cache.has(srvconfig.djrole),
 							djrole: role ? role.name : null,
 						};

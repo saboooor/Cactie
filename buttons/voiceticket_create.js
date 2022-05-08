@@ -17,15 +17,13 @@ module.exports = {
 
 			// Find category and if no category then set it to null
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			let parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
-			if (!parent) parent = { id: null };
-
+			const parent = interaction.guild.channels.cache.get(srvconfig.ticketcategory);
 
 			// Create voice channel for voiceticket
 			const author = interaction.guild.members.cache.get(ticketData.opener).user;
 			const voiceticket = await interaction.guild.channels.create(`Voiceticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} ${author.username}`, {
 				type: ChannelType.GuildVoice,
-				parent: parent.id,
+				parent: parent ? parent.id : null,
 				permissionOverwrites: [
 					{
 						id: interaction.guild.id,

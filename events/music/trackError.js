@@ -4,9 +4,7 @@ module.exports = async (client, player, track, payload) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
-	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${track.requester.id}'`);
-	let lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
+	const lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const FailEmbed = new EmbedBuilder()
 		.setColor(0xE74C3C)
 		.setDescription(`❌ **${lang.music.track.failed}**`)

@@ -1,6 +1,6 @@
 const createField = require('./createField.js');
 module.exports = function eval_field(TimingsEmbed, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client) {
-	const dict_of_vars = { 'plugins': plugins, 'server_properties': server_properties, 'bukkit': bukkit, 'spigot': spigot, 'paper': paper, 'purpur': purpur };
+	const dict_of_vars = { plugins, server_properties, bukkit, spigot, paper, purpur };
 	option.forEach(option_data => {
 		let add_to_field = true;
 		option_data.expressions.forEach(expression => {
