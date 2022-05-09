@@ -19,8 +19,8 @@ module.exports = {
 			if (args[0] > 100) return client.error('You can only clear 100 messages at once!', message, true);
 
 			// Fetch the messages and bulk delete them
-			let messages = await message.channel.messages.fetch({ limit: args[0] });
-			if (args[1]) messages = messages.filter(msg => msg.author.id == args[1]);
+			const filter = msg => args[1] ? msg.author.id == args[1] : true;
+			let messages = await message.channel.messages.fetch({ filter, limit: args[0] });
 			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
 
 			// Reply with response
