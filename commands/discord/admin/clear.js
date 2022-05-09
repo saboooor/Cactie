@@ -25,15 +25,15 @@ module.exports = {
 			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
 				
 			// Reply with response
-			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${message.size} messages!**` });
-			client.logger.info(`Cleared ${message.size} messages from #${message.channel.name} in ${message.guild.name}`);
+			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${messages.size} messages!**` });
+			client.logger.info(`Cleared ${messages.size} messages from #${message.channel.name} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				const ClearEmbed = new EmbedBuilder()
-					.setTitle(`${message.member.user.tag} cleared ${message.size} messages`)
+					.setTitle(`${message.member.user.tag} cleared ${messages.size} messages`)
 					.addFields([
 						{ name: 'Channel', value: `${message.channel}` },
 						{ name: 'Transcript', value: `${await getTranscript(messages)}` },
