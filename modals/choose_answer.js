@@ -22,7 +22,7 @@ module.exports = {
 				.setColor(0x5b62fa)
 				.setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser}\nAsk a question or guess the answer by clicking the button below.`)
 				.setThumbnail(guesser.user.avatarURL())
-				.setFooter({ text: '21 Questions left' });
+				.setFooter({ text: `${embedJSON.title} left` });
 			interaction.message.edit({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
 			const pingmsg = await interaction.channel.send(`${guesser}`);
 			pingmsg.delete().catch(err => client.logger.error(err.stack));
@@ -48,7 +48,7 @@ module.exports = {
 			});
 
 			collector.on('end', () => {
-				if (!interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') && !interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) interaction.message.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] });
+				if (!interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') && !interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) interaction.message.edit({ content: `A game of ${embedJSON.title} should not last longer than an hour are you high`, components: [], embeds: [] });
 			});
 		}
 		catch (err) { client.error(err, interaction); }

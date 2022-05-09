@@ -4,10 +4,11 @@ module.exports = {
 	description: 'Play 21 Questions with an opponent',
 	aliases: ['21q'],
 	args: true,
-	usage: '<Opponent User>',
+	usage: '<Opponent User> [Amount of questions (default 21)]',
 	cooldown: 10,
-	options: require('../../options/user.js'),
+	options: require('../../options/21q.js'),
 	async execute(message, args, client, lang) {
+		if (args[1] && (args[1] < 1 || args[1] > 25)) return client.error('The amount of questions must be between 1 and 25!')
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 		if (!member) return client.error(lang.invalidmember, message, true);
@@ -21,7 +22,7 @@ module.exports = {
 			]);
 		const TwentyOneQuestions = new EmbedBuilder()
 			.setColor(0x2f3136)
-			.setTitle('21 Questions')
+			.setTitle(`${args[1] ? args[1] : 21} Questions`)
 			.setDescription(`**Playing with:**\n${member}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`)
 			.setThumbnail(message.member.user.avatarURL());
 
@@ -49,7 +50,7 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (collector.collected.size == 0) questionmsg.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] });
+			if (collector.collected.size == 0) questionmsg.edit({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than an hour are you high`, components: [], embeds: [] });
 		});
 	},
 };
