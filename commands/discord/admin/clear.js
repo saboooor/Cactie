@@ -19,20 +19,20 @@ module.exports = {
 			if (args[0] > 100) return client.error('You can only clear 100 messages at once!', message, true);
 
 			// Fetch the messages and bulk delete them
-			const filter = msg => args[1] ? msg.author.id == args[1] : true;
-			let messages = await message.channel.messages.fetch({ filter, limit: args[0] });
+			let messages = await message.channel.messages.fetch({ limit: args[0] });
+			if (args[1]) messages = messages.filter(msg => msg.author.id == args[1]);
 			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
 
 			// Reply with response
-			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${args[0]} messages!**` });
-			client.logger.info(`Cleared ${args[0]} messages from #${message.channel.name} in ${message.guild.name}`);
+			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${message.size} messages!**` });
+			client.logger.info(`Cleared ${message.size} messages from #${message.channel.name} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				const ClearEmbed = new EmbedBuilder()
-					.setTitle(`${message.member.user.tag} cleared ${args[0]} messages`)
+					.setTitle(`${message.member.user.tag} cleared ${message.size} messages`)
 					.addFields([
 						{ name: 'Channel', value: `${message.channel}` },
 						{ name: 'Transcript', value: `${await getTranscript(messages)}` },
