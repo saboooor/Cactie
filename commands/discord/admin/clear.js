@@ -22,7 +22,7 @@ module.exports = {
 			let messages = await message.channel.messages.fetch({ limit: args[0] });
 			if (args[1]) messages = messages.filter(msg => msg.author.id == args[1]);
 			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
-			if (!message.size) return client.error('There are no messages in that scope, try a higher number?')
+			if (!message.size) return client.error('There are no messages in that scope, try a higher number?', message, true)
 				
 			// Reply with response
 			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${message.size} messages!**` });
