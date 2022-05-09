@@ -7,7 +7,7 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	aliases: ['purge'],
-	usage: '<Message Amount>',
+	usage: '<Message Amount> [User to clear the messages of]',
 	similarcmds: 'clearqueue',
 	permission: 'ManageMessages',
 	botperm: 'ManageMessages',
@@ -20,6 +20,7 @@ module.exports = {
 
 			// Fetch the messages and bulk delete them
 			const messages = await message.channel.messages.fetch({ limit: args[0] });
+			if (args[1]) messages.filter(msg => msg.author.id == args[1]);
 			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
 
 			// Reply with response

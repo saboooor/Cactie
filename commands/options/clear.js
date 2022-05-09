@@ -7,5 +7,9 @@ module.exports = async function options(cmd) {
 			.setRequired(true)
 			.setMinValue(1)
 			.setMaxValue(100),
+	).addUserOption(
+		new SlashCommandUserOption()
+			.setName('user')
+			.setDescription('Clear messages authored by this user only')
 	);
 };
