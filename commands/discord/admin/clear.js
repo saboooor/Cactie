@@ -20,7 +20,7 @@ module.exports = {
 
 			// Fetch the messages and bulk delete them
 			const filter = msg => args[1] ? msg.author.id == args[1] : true;
-			let messages = await message.channel.messages.fetch({ filter, limit: args[0] });
+			const messages = await message.channel.messages.fetch({ filter, limit: args[0] });
 			message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
 
 			// Reply with response
