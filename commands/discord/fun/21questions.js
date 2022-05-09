@@ -8,7 +8,7 @@ module.exports = {
 	cooldown: 10,
 	options: require('../../options/21q.js'),
 	async execute(message, args, client, lang) {
-		if (args[1] && (args[1] < 1 || args[1] > 25)) return client.error('The amount of questions must be between 1 and 25!')
+		if (args[1] && (args[1] < 1 || args[1] > 25)) return client.error('The amount of questions must be between 1 and 25!');
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 		if (!member) return client.error(lang.invalidmember, message, true);
