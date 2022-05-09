@@ -3,7 +3,7 @@ const { join } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'move',
 	description: 'Move Cactie from one voice channel to another',
-	aliases: ['mv'],
+	aliases: ['mv', 'movechannel', 'textchannel', 'musicchannel'],
 	cooldown: 2,
 	player: true,
 	invc: true,
@@ -24,7 +24,7 @@ module.exports = {
 			// Send message to channel
 			const JoinEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:in:${join}> **${lang.music.joined.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
+				.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
 		}
 		catch (err) { client.error(err, message); }
