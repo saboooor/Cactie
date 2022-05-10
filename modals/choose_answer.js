@@ -48,7 +48,10 @@ module.exports = {
 			});
 
 			collector.on('end', () => {
-				if (!interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') && !interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) interaction.message.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] });
+				if (!interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') && !interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) {
+					interaction.message.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] })
+						.catch(err => client.logger.warn(err));
+				}
 			});
 		}
 		catch (err) { client.error(err, interaction); }

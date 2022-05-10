@@ -97,8 +97,8 @@ module.exports = {
 
 			// When the collector stops, delete the message
 			collector.on('end', () => {
-				SettingsMsg.delete().catch(err => client.logger.error(err.stack));
-				if (!message.commandName) message.delete().catch(err => client.logger.error(err.stack));
+				SettingsMsg.delete().catch(err => client.logger.error(err));
+				if (!message.commandName) message.delete().catch(err => client.logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, message); }

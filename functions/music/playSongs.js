@@ -113,7 +113,8 @@ module.exports = async function playSongs(requester, message, args, client, lang
 			// When the collector stops, remove the undo button from it
 			collector.on('end', () => {
 				if (playMsg.content.startsWith(`<:play:${play}> `)) return;
-				playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] });
+				playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] })
+					.catch(err => client.logger.warn(err));
 			});
 
 			return;

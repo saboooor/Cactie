@@ -83,7 +83,7 @@ module.exports = {
 			});
 
 			// When the collector stops, remove the buttons from it
-			collector.on('end', () => { pteroMsg.edit({ components: [] }); });
+			collector.on('end', () => { pteroMsg.edit({ components: [] }).catch(err => client.logger.warn(err)); });
 		}
 		catch (err) { client.error(err, message); }
 	},

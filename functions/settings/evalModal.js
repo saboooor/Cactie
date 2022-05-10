@@ -66,7 +66,7 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 				btnint.deferUpdate();
 			});
 			// When the collector stops, delete the message
-			collector.on('end', () => { msg.delete().catch(err => client.logger.error(err.stack)); });
+			collector.on('end', () => { msg.delete().catch(err => client.logger.error(err)); });
 			return;
 		}
 		interaction.deferUpdate();
@@ -100,8 +100,8 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 			menuint.deferUpdate();
 		});
 		menuCollector.on('end', () => {
-			if (menuMsg.content != '\u200b') menuMsg.delete().catch(err => client.logger.error(err.stack));
-			else menuMsg.edit({ components: [] });
+			if (menuMsg.content != '\u200b') menuMsg.delete().catch(err => client.logger.error(err));
+			else menuMsg.edit({ components: [] }).catch(err => client.logger.warn(err));
 		});
 	}
 	else if (modal[setting].type == 'id') {

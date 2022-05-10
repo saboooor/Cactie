@@ -82,7 +82,7 @@ module.exports = {
 			});
 
 			collector.on('end', () => {
-				if (collector.collected.size == 0) interaction.message.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] });
+				if (collector.collected.size == 0) interaction.message.edit({ content: 'A game of 21 Questions should not last longer than an hour are you high', components: [], embeds: [] }).catch(err => client.logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, interaction); }

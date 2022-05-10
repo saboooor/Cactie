@@ -118,7 +118,8 @@ module.exports = {
 			collector.on('end', () => {
 				HelpEmbed.setDescription('Help command timed out.')
 					.setFooter({ text: 'please do the help command again if you still need a list of commands.' });
-				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] });
+				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] })
+					.catch(err => client.logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, message); }

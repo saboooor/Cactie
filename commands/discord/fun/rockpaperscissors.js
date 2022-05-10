@@ -71,7 +71,8 @@ module.exports = {
 
 		collector.on('end', () => {
 			if (TicTacToe.toJSON().fields) return;
-			rpsmsg.edit({ content: 'A game of rock paper scissors should not last longer than 15 minutes are you high', components: [], embeds: [] });
+			rpsmsg.edit({ content: 'A game of rock paper scissors should not last longer than 15 minutes are you high', components: [], embeds: [] })
+				.catch(err => client.logger.warn(err));
 		});
 	},
 };

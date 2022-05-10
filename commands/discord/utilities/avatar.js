@@ -47,7 +47,7 @@ module.exports = {
 				});
 
 				// When the collector stops, remove the button from it
-				collector.on('end', () => { avatarmsg.edit({ components: [] }); });
+				collector.on('end', () => { avatarmsg.edit({ components: [] }).catch(err => client.logger.warn(err)); });
 			}
 		}
 		catch (err) { client.error(err, message); }
