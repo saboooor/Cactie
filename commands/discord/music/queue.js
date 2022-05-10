@@ -17,7 +17,8 @@ module.exports = {
 			const song = queue.current;
 			const QueueEmbed = new EmbedBuilder();
 			if (song) {
-				QueueEmbed.setColor(song.color)
+				QueueEmbed
+					.setColor(song.colors[0])
 					.setThumbnail(song.img);
 			}
 

@@ -13,7 +13,7 @@ module.exports = {
 			const colors = await getColors(args[0], { count: args[1] ? parseInt(args[1]) : 1 });
 			const embeds = colors.map(color => {
 				return new EmbedBuilder()
-					.setColor(parseInt(color.hex().replace('#', '0x')))
+					.setColor(color.num())
 					.setTitle(`**${color.hex()}**`);
 			});
 			message.reply({ embeds });

@@ -29,7 +29,7 @@ module.exports = {
 			player.queue.remove(position);
 			const RemEmbed = new EmbedBuilder()
 				.setDescription(`<:no:${no}> **Removed**\n[${song.title}](${song.uri})`)
-				.setColor(song.color)
+				.setColor(song.colors[0])
 				.setThumbnail(song.img);
 			const loopmsg = await message.reply({ embeds: [RemEmbed] });
 

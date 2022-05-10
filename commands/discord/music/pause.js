@@ -24,7 +24,7 @@ module.exports = {
 			const song = player.queue.current;
 			const PauseEmbed = new EmbedBuilder()
 				.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
-				.setColor(song.color)
+				.setColor(song.colors[0])
 				.setThumbnail(song.img);
 			const pausemsg = await message.reply({ embeds: [PauseEmbed] });
 

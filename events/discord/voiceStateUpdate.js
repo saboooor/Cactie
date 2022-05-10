@@ -24,11 +24,11 @@ module.exports = async (client, oldState, newState) => {
 
 	const PauseEmbed = new EmbedBuilder()
 		.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
-		.setColor(song.color)
+		.setColor(song.colors[0])
 		.setThumbnail(song.img);
 	const ResEmbed = new EmbedBuilder()
 		.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
-		.setColor(song.color)
+		.setColor(song.colors[0])
 		.setThumbnail(song.img);
 	const textChannel = newState.guild.channels.cache.get(player.textChannel);
 	if (newState.serverMute == true && oldState.serverMute == false && oldState.id == client.user.id) {

@@ -22,7 +22,7 @@ module.exports = {
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()
 				.setDescription(`<:skip:${skip}> **${lang.music.track.skipped}**\n[${song.title}](${song.uri})`)
-				.setColor(song.color)
+				.setColor(song.colors[0])
 				.setThumbnail(song.img)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			const skipmsg = await message.reply({ embeds: [SkipEmbed] });

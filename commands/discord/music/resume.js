@@ -22,7 +22,7 @@ module.exports = {
 			player.pause(false);
 			const ResEmbed = new EmbedBuilder()
 				.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
-				.setColor(song.color)
+				.setColor(song.colors[0])
 				.setThumbnail(song.img);
 			const resmsg = await message.reply({ embeds: [ResEmbed] });
 

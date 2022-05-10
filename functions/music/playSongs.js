@@ -1,6 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
+const getColors = require('get-image-colors');
 const getlfmCover = require('./getlfmCover.js');
 const { play, music, warn, leave, no, srch } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
@@ -168,11 +169,12 @@ module.exports = async function playSongs(requester, message, args, client, lang
 			if (img && typeof img === 'string') song.img = img;
 		}
 
+		// Set song color from album art
+		if (song.img) song.colors = (await getColors(song.img, { count: 2 })).map(color => { return color.num(); });
+		else song.colors = [Math.floor(Math.random() * 16777215), Math.floor(Math.random() * 16777215)];
+
 		// If song image isn't set, set it to the default music image
 		if (!song.img) song.img = 'https://cactie.smhsmh.club/assets/images/musicplaceholder.png';
-
-		// Set song color (this will be replaced with the dominant color of the image if i find a good module for it)
-		song.color = Math.floor(Math.random() * 16777215);
 
 		// If artist exists, set the title to the author and title separated by new lines
 		if (song.author) song.title = `${song.title}\n${song.author}`;

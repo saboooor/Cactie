@@ -35,7 +35,7 @@ module.exports = {
 			// Send message to channel with current song looped
 			const song = player.queue.current;
 			const LoopEmbed = new EmbedBuilder()
-				.setColor(song.color)
+				.setColor(song.colors[0])
 				.setThumbnail(song.img)
 				.setDescription(`<:refresh:${refresh}> **${lang.music.track.loop[player.trackRepeat ? 'on' : 'off']}** \`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})`)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() });

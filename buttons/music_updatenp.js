@@ -21,7 +21,7 @@ module.exports = {
 				.setDescription(`<:music:${music}> **${lang.music.np}** \`[${convertTime(current)} / ${convertTime(total).replace('7:12:56', 'LIVE')}]\`\n[${song.title}](${song.uri})\n\`${progressbar(total, current, 20, '▬', '🔘')}\``)
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
-				.setColor(song.color);
+				.setColor(song.colors[0]);
 			const btn = new ButtonBuilder()
 				.setCustomId('music_updatenp')
 				.setLabel(lang.refresh)
