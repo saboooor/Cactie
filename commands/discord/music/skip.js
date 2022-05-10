@@ -40,9 +40,9 @@ module.exports = {
 						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 
-					// After 10 seconds, delete or compress message
+					// After 10 seconds, compress message
 					await sleep(10000);
-					message.commandName ? message.editReply({ embeds: [compressEmbed(SkipEmbed)] }) : skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
+					return skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
 				}
 			}
 
