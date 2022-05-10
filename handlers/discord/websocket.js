@@ -1,6 +1,5 @@
 const { WebSocketServer } = require('ws');
 const { wsport } = require('../../config/bot.json');
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = client => {
 	if (!wsport) return client.logger.info('Skipped websocket server loading!');
 	const wss = new WebSocketServer({ port: wsport });
@@ -94,8 +93,6 @@ module.exports = client => {
 					const guild = client.guilds.cache.get(player.guild);
 					const member = guild.members.cache.get(userid);
 					if (member && member.voice && member.voice.channel.id === player.options.voiceChannel) {
-						await player.clearEQ();
-						await sleep(30);
 						bands = [
 							{ band: 0, gain: bands[0] },
 							{ band: 1, gain: bands[1] },
@@ -113,7 +110,15 @@ module.exports = client => {
 							{ band: 13, gain: bands[13] },
 							{ band: 14, gain: bands[14] },
 						];
-						await player.setEQ(...bands);
+						player.effects = {
+							...player.effects,
+							equalizer: bands,
+						};
+						await player.node.send({
+							op: 'filters',
+							guildId: player.guild,
+							...player.effects,
+						});
 					}
 				});
 			}

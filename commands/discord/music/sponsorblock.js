@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'sponsorblock',
 	description: 'Enables sponsorblock on the current player (EXPERIMENTAL)',
+	voteOnly: true,
 	aliases: ['autoseek'],
 	player: true,
 	playing: true,

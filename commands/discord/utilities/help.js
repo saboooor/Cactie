@@ -22,7 +22,7 @@ module.exports = {
 				const category = helpdesc[arg.toLowerCase()];
 				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
 				const array = [];
-				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
+				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
 				if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 				if (category.field) HelpEmbed.setFields([category.field]);
@@ -106,7 +106,7 @@ module.exports = {
 					const category = helpdesc[interaction.values[0].split('_')[1]];
 					const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);
 					const array = [];
-					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
+					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
 					HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
 					if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 					if (category.field) HelpEmbed.setFields([category.field]);

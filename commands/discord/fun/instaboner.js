@@ -2,7 +2,6 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'instaboner',
 	description: 'See your boner expand INSTANTLY!',
-	voteOnly: true,
 	usage: '[Someone]',
 	aliases: ['instapp'],
 	options: require('../../options/someone.js'),

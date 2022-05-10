@@ -4,7 +4,6 @@ const srvs = {};
 module.exports = {
 	name: 'boner',
 	description: 'See your boner expand!',
-	voteOnly: true,
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 2,
