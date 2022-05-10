@@ -136,7 +136,7 @@
         "volume": {
             "current": "Current Volume",
             "set": "Volume set",
-            "between": "Volume must be between 0 and 100!"
+            "between": "Volume must be between 0 and 1000!"
         }
     }
 }

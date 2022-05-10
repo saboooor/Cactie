@@ -5,6 +5,6 @@ module.exports = async function options(cmd) {
 			.setName('volume')
 			.setDescription('The volume to set')
 			.setMinValue(1)
-			.setMaxValue(100),
+			.setMaxValue(1000),
 	);
 };

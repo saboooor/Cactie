@@ -42,7 +42,7 @@ module.exports = {
 
 			// Send updated embed with disabled button and re-enable it after 5 seconds
 			await interaction.reply({ embeds: [NPEmbed], components: [row] });
-			await sleep(5000);
+			await sleep(2000);
 			btn.setDisabled(false);
 			await interaction.reply({ components: [row] });
 		}

@@ -136,7 +136,7 @@
         "volume": {
             "current": "Cuwwent Vowume",
             "set": "Vowume set",
-            "between": "Vowume must be between 0 a-and 100!"
+            "between": "Vowume must be between 0 a-and 1000!"
         }
     }
 }

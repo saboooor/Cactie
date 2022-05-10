@@ -26,7 +26,7 @@ module.exports = {
 
 			// Parse arg as number and if volume isn't between 0 and 100, reply with error
 			const volume = Number(args[0]);
-			if (!volume || volume < 0 || volume > 100) return client.error(lang.music.volume.between, message, true);
+			if (!volume || volume < 0 || volume > 1000) return client.error(lang.music.volume.between, message, true);
 
 			// Set the volume and reply
 			player.setVolume(volume);
