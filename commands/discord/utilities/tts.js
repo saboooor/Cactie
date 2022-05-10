@@ -88,7 +88,7 @@ module.exports = {
 							};
 							const track = TrackUtils.build(trackjson);
 							track.img = queueitem.img;
-							track.color = queueitem.color;
+							track.colors = queueitem.colors;
 							track.requester = client.guilds.cache.get(newplayer.guild).members.cache.get(queueitem.requester.id).user;
 							await newplayer.queue.add(track);
 						}

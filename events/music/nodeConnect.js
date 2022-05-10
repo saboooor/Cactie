@@ -25,7 +25,7 @@ module.exports = async (client, node) => {
 				};
 				const track = TrackUtils.build(trackjson);
 				track.img = queueitem.img;
-				track.color = queueitem.color;
+				track.colors = queueitem.colors;
 				track.requester = client.guilds.cache.get(player.guild).members.cache.get(queueitem.requester.id).user;
 				await player.queue.add(track);
 			}
