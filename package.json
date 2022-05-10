@@ -23,6 +23,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "formdata-node": "^4.3.2",
     "fs": "^0.0.1-security",
+    "get-image-colors": "^4.0.1",
     "google-tts-api": "^2.0.2",
     "guilded.js": "^0.9.0",
     "hastebin": "^0.2.1",
