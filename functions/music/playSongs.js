@@ -185,7 +185,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 	// If the player isn't playing, play it
 	// eslint-disable-next-line no-inline-comments
-	if (!player.playing) await player.play(undefined/* , { skipSegments: ['music_offtopic'] }*/);
+	if (!player.playing) await player.play();
 
 	// Send embed
 	playMsg.edit({ content: `<:play:${play}> **${lang.music.search.found.replace('{query}', search)}**`, embeds: [PlayEmbed], components: row });
