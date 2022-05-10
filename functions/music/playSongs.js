@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { TrackUtils } = require('erela.js');
+const { TrackUtils } = require('erela.js-vk');
 const { convertTime } = require('./convert.js');
 const getColors = require('get-image-colors');
 const getlfmCover = require('./getlfmCover.js');

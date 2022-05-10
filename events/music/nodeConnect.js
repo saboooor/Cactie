@@ -1,4 +1,4 @@
-const { TrackUtils } = require('erela.js');
+const { TrackUtils } = require('erela.js-vk');
 const fs = require('fs');
 module.exports = async (client, node) => {
 	client.logger.info(`Node "${node.options.identifier}" connected`);

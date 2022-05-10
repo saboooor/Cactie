@@ -1,4 +1,4 @@
-const { Manager, Structure } = require('erela.js');
+const { Manager, Structure } = require('erela.js-vk');
 const { LavasfyClient } = require('lavasfy');
 const compressEmbed = require('../../functions/compressEmbed.js');
 const { nodes, SpotifyID, SpotifySecret } = require('../../config/music.json');

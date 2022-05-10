@@ -17,7 +17,7 @@
     "@discordjs/voice": "^0.10.0-dev.1650931746-df64d3e",
     "body-parser": "^1.20.0",
     "discord.js": "^14.0.0-dev.1651493371-4ba0f56",
-    "erela.js": "^2.3.3",
+    "erela.js-vk": "^2.3.3-vk-10",
     "eslint": "^8.15.0",
     "express": "^4.18.1",
     "fluent-ffmpeg": "^2.1.2",
