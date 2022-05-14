@@ -59,7 +59,7 @@ module.exports = {
 
 			// Delete thread if exists with transcript
 			if (thread) {
-				if (!message.guild.me.permissions.has(PermissionsBitField.Flags.ManageThreads) || !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageThreads)) {
+				if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.ManageThreads) || !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageThreads)) {
 					client.logger.error(`Missing ManageThreads permission in #${message.channel.name} at ${message.guild.name}`);
 					return client.error('I don\'t have the ManageThreads permission!', message, true);
 				}

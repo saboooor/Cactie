@@ -26,7 +26,7 @@ module.exports = client => {
 							hasdj: srvconfig.djrole == 'false' ? true : member.roles.cache.has(srvconfig.djrole),
 							djrole: role ? role.name : null,
 						};
-						if (!playerjson.hasdj && Math.floor((guild.me.voice.channel.members.size - 1) / 2) <= 1) playerjson.hasdj = true;
+						if (!playerjson.hasdj && Math.floor((guild.members.me.voice.channel.members.size - 1) / 2) <= 1) playerjson.hasdj = true;
 						ws.send(JSON.stringify(playerjson));
 					}
 				});

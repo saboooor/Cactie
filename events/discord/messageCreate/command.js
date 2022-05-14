@@ -1,8 +1,8 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
 module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
-	if (!message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)
-	|| !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)
+	if (!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)
+	|| !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)
 	|| message.webhookId
 	|| message.author.bot) return;
 
@@ -169,9 +169,9 @@ module.exports = async (client, message) => {
 
 	// Check if bot has the permissions necessary to run the command
 	if (command.botperm
-		&& (!message.guild.me.permissions
-			|| (!message.guild.me.permissions.has(PermissionsBitField.Flags[command.botperm])
-				&& !message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])
+		&& (!message.guild.members.me.permissions
+			|| (!message.guild.members.me.permissions.has(PermissionsBitField.Flags[command.botperm])
+				&& !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])
 			)
 		)) {
 		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
@@ -188,10 +188,10 @@ module.exports = async (client, message) => {
 	if (command.playing && !player.queue.current) return client.error('I\'m not playing music!\nPlay some music before using this command!', message, true);
 
 	// Check if bot is server muted and command needs unmute
-	if (command.srvunmute && message.guild.me.voice.serverMute) return client.error('I\'m Server Muted!\nUnmute me before using this command!', message, true);
+	if (command.srvunmute && message.guild.members.me.voice.serverMute) return client.error('I\'m Server Muted!\nUnmute me before using this command!', message, true);
 
 	// Check if user is in the same vc as bot and command needs it
-	if (command.samevc && player && message.member.voice.channel.id != message.guild.me.voice.channel.id) return client.error(`You must be in the same channel as ${client.user.username} to use this command!`, message, true);
+	if (command.samevc && player && message.member.voice.channel.id != message.guild.members.me.voice.channel.id) return client.error(`You must be in the same channel as ${client.user.username} to use this command!`, message, true);
 
 	// Check if user is in vc and command needs user to be in vc
 	if (command.invc && !message.member.voice.channel) return client.error('You must be in a voice channel!\nJoin a voice channel before using this command!', message, true);

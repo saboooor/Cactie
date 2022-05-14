@@ -48,7 +48,7 @@ module.exports = {
 
 			// Check if djrole is set, if so, check if user has djrole, if not, vote for skip instead of skipping
 			if (srvconfig.djrole != 'false') {
-				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
+				const requiredAmount = Math.floor((message.guild.members.me.voice.channel.members.size - 1) / 2);
 				let alr = false;
 				for (const i of player.skipAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return client.error(lang.music.track.skipalr, message, true);

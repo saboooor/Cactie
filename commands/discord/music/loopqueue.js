@@ -18,7 +18,7 @@ module.exports = {
 			// Check if djrole is set, if so, check if user has djrole, if not, vote for loop queue instead of looping queue
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
-				const requiredAmount = Math.floor((message.guild.me.voice.channel.members.size - 1) / 2);
+				const requiredAmount = Math.floor((message.guild.members.me.voice.channel.members.size - 1) / 2);
 				let alr = false;
 				for (const i of player.loopQueueAmount) { if (i == message.member.id) alr = true; }
 				if (alr) return client.error(lang.music.queue.loop.alr, message, true);

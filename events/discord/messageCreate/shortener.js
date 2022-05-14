@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
 	// If message shortener is set and is smaller than the amount of lines in the message, delete the message and move the message into bin.birdflop.com
-	if (message.guild.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageMessages)
+	if (message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageMessages)
 		&& message.content.split('\n').length > srvconfig.msgshortener
 		&& srvconfig.msgshortener != '0'
 		&& message.author.id !== '249638347306303499'
