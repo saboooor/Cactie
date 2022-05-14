@@ -1,6 +1,8 @@
 const fs = require('fs');
-
+const YAML = require('yaml');
+const G = require('guilded.js');
 const D = require('discord.js');
+
 const discord = new D.Client({
 	shards: 'auto',
 	partials: [
@@ -31,16 +33,9 @@ discord.startTimestamp = Date.now();
 for (const handler of fs.readdirSync('./handlers/universal').filter(file => file.endsWith('.js'))) require(`./handlers/universal/${handler}`)(discord);
 for (const handler of fs.readdirSync('./handlers/discord').filter(file => file.endsWith('.js'))) require(`./handlers/discord/${handler}`)(discord);
 
-const { guildedtoken } = require('./config/bot.json');
-const G = require('guilded.js');
-const guilded = new G.Client({ token: guildedtoken });
+const { con } = YAML.parse(fs.readFileSync('./config/config.yml', 'utf8'));
+const guilded = new G.Client({ token: con.guilded.token });
 guilded.type = { color: '\u001b[33m', name: 'guilded' };
 guilded.startTimestamp = Date.now();
 for (const handler of fs.readdirSync('./handlers/universal').filter(file => file.endsWith('.js'))) require(`./handlers/universal/${handler}`)(guilded);
 for (const handler of fs.readdirSync('./handlers/guilded').filter(file => file.endsWith('.js'))) require(`./handlers/guilded/${handler}`)(guilded);
-
-process.on('unhandledRejection', (reason) => {
-	if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction')) {
-		discord.logger.error(JSON.stringify(reason.requestBody));
-	}
-});

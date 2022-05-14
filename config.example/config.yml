@@ -1,0 +1,29 @@
+con:
+  discord:
+    token: '' # Discord bot token
+  guilded:
+    token: '' # Guilded bot token
+# websocket: # Music dashboard websocket port
+# vote:
+#   webhook: # webhook port
+#   auth: # webhook auth (from vote site)
+
+mysql: # MySQL database credentials
+  host: ''
+  user: ''
+  password: ''
+  database: ''
+
+music:
+  spotify: # Spotify api id and secret
+    id: ''
+    secret: ''
+  lastfm: '' # last.fm api key
+  nodes:
+    - host: '' # lavalink node host ip
+      port: 2333
+      password: ''
+      identifier: '' # lavalink node name
+      retryAmount: 3
+      retryDelay: 5000
+      secure: false

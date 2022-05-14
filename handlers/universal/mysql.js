@@ -1,22 +1,18 @@
 const mariadb = require('mariadb/callback');
-const { readdirSync } = require('fs');
-const { host, user, pass, db } = require('../../config/mysql.json');
+const fs = require('fs');
+const YAML = require('yaml');
+const { mysql } = YAML.parse(fs.readFileSync('./config/config.yml', 'utf8'));
 module.exports = async client => {
 	// Database Functions
 	let amount = 0;
-	readdirSync('./functions/database/').forEach(file => {
+	fs.readdirSync('./functions/database/').forEach(file => {
 		require(`../../functions/database/${file}`)(client);
 		amount = amount + 1;
 	});
 	client.logger.info(`${amount} database functions loaded `);
 
 	// Create a connection to the database
-	client.con = mariadb.createConnection({
-		host: host,
-		user: user,
-		password: pass,
-		database: db,
-	});
+	client.con = mariadb.createConnection(mysql);
 
 	// Query function
 	client.query = function query(args) {

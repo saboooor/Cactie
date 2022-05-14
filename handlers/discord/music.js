@@ -1,8 +1,9 @@
 const { Manager, Structure } = require('erela.js-vk');
 const { LavasfyClient } = require('lavasfy');
 const compressEmbed = require('../../functions/compressEmbed.js');
-const { nodes, SpotifyID, SpotifySecret } = require('../../config/music.json');
 const fs = require('fs');
+const YAML = require('yaml');
+const { music } = YAML.parse(fs.readFileSync('./config/config.yml', 'utf8'));
 const { refresh } = require('../../lang/int/emoji.json');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const queuerow = new ActionRowBuilder()
@@ -32,20 +33,20 @@ module.exports = client => {
 				}
 			},
 	);
-	nodes.forEach(node => node.id = node.identifier);
+	music.nodes.forEach(node => node.id = node.identifier);
 	client.Lavasfy = new LavasfyClient(
 		{
-			clientID: SpotifyID,
-			clientSecret: SpotifySecret,
+			clientID: music.spotify.id,
+			clientSecret: music.spotify.secret,
 			playlistPageLoadLimit: 4,
 			filterAudioOnlyResult: true,
 			autoResolve: true,
 			useSpotifyMetadata: true,
 		},
-		nodes,
+		music.nodes,
 	);
 	client.manager = new Manager({
-		nodes: nodes,
+		nodes: music.nodes,
 		send: (id, payload) => {
 			const guild = client.guilds.cache.get(id);
 			if (guild) guild.shard.send(payload);

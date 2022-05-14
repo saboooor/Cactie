@@ -1,9 +1,11 @@
 const { WebSocketServer } = require('ws');
-const { wsport } = require('../../config/bot.json');
+const fs = require('fs');
+const YAML = require('yaml');
+const { con } = YAML.parse(fs.readFileSync('./config/config.yml', 'utf8'));
 module.exports = client => {
-	if (!wsport) return client.logger.info('Skipped websocket server loading!');
-	const wss = new WebSocketServer({ port: wsport });
-	client.logger.info(`Websocket server loaded on port ${wsport}`);
+	if (!con.websocket) return client.logger.info('Skipped websocket server loading!');
+	const wss = new WebSocketServer({ port: con.websocket });
+	client.logger.info(`Websocket server loaded on port ${con.websocket}`);
 	wss.on('connection', function connection(ws) {
 		ws.on('message', async function message(data) {
 			if (`${data}`.startsWith('music info for:')) {

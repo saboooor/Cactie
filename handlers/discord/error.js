@@ -26,5 +26,10 @@ module.exports = client => {
 		});
 	};
 	client.rest.on('rateLimited', (info) => client.logger.warn(`Encountered ${info.method} rate limit!`));
+	process.on('unhandledRejection', (reason) => {
+		if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction')) {
+			client.logger.error(JSON.stringify(reason.requestBody));
+		}
+	});
 	client.logger.info('Error Handler Loaded');
 };

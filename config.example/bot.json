@@ -1,6 +1,0 @@
-{
-    "discordtoken": "[DISCORD BOT TOKEN HERE]",
-    "guildedtoken": "[GUILDED BOT TOKEN HERE]",
-    "webhookport": "[WEBHOOK PORT HERE]",
-    "gitauth": "[GITHUB WEBHOOK AUTH HERE]"
-}
