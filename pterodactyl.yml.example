@@ -1,0 +1,40 @@
+pterodactyl:
+  apikey: "" # api key from pterodactyl
+  url: "" # pterodactyl panel url
+
+servers:
+
+- name: "Server Name" # name of the server
+  short: "sn" # short variation of the name without spaces
+# Use these two properties if you want to override the default apikey and url
+# apikey: "" 
+# url: "https://mc.bloom.host"
+  guildid: "878773741428035625" # The discord server assigned to the server
+  roleid: "878783408791228477" # The role who has access to manage the server
+  id: "569081b4" # The id of the server in the pterodactyl panel
+# minecraft: # The minecraft server information
+#   ip: "lefilo.smhsmh.club" # The ip of the minecraft server
+# # botid: "743741294190395402" # The bot id of discordsrv
+# changelogs:
+#   console:
+#    - "878774118982500462"
+#   cmd: "bcast &4&lNEW UPDATE &#444444•&c "
+#   main:
+#     - "879105835219943435"
+
+# example server
+- name: "Nether Depths"
+  short: "nd"
+  apikey: "asufnasofjsa8ncsa0j8sa0jd" # this server has a different panel so use a different api key 
+  url: "https://panel.netherdepths.com" # this server has a different panel so use a different url
+  guildid: "878773741428035625"
+  roleid: "878783408791228477"
+  id: "569081b4"
+  minecraft:
+    ip: "play.netherdepths.com"
+  changelogs:
+    console:
+      - "878774118982500462"
+    cmd: "bcast &4&lNEW UPDATE &#444444•&c "
+    main:
+      - "879105835219943435"

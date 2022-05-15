@@ -1,12 +1,13 @@
-const servers = require('../../config/pterodactyl.json');
+const fs = require('fs');
+const YAML = require('yaml');
+const { servers } = YAML.parse(fs.readFileSync('./pterodactyl.yml', 'utf8'));
 module.exports = {
 	name: 'whatip',
 	triggers: ['what'],
 	additionaltriggers: ['ip'],
 	private: true,
 	execute(message) {
-		const serverlist = Object.keys(servers).map(i => { return servers[i].name.toLowerCase(); }), srvs = [];
-		serverlist.forEach(i => { if (servers[i] && servers[i].guildid == message.guild.id) srvs.push(servers[i].ip); });
-		if (srvs[0]) message.channel.send({ content: srvs[0] });
+		const srv = servers.find(s => s.guildid == message.guild.id && s.minecraft && s.minecraft.ip);
+		if (srv) message.channel.send({ content: srv.minecraft.ip });
 	},
 };

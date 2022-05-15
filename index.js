@@ -33,7 +33,7 @@ discord.startTimestamp = Date.now();
 for (const handler of fs.readdirSync('./handlers/universal').filter(file => file.endsWith('.js'))) require(`./handlers/universal/${handler}`)(discord);
 for (const handler of fs.readdirSync('./handlers/discord').filter(file => file.endsWith('.js'))) require(`./handlers/discord/${handler}`)(discord);
 
-const { con } = YAML.parse(fs.readFileSync('./config/config.yml', 'utf8'));
+const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
 const guilded = new G.Client({ token: con.guilded.token });
 guilded.type = { color: '\u001b[33m', name: 'guilded' };
 guilded.startTimestamp = Date.now();

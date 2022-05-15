@@ -1,7 +1,8 @@
 const { NodeactylClient } = require('nodeactyl');
 const { EmbedBuilder } = require('discord.js');
-const servers = require('../../../config/pterodactyl.json');
 const fs = require('fs');
+const YAML = require('yaml');
+const { servers, pterodactyl } = YAML.parse(fs.readFileSync('./pterodactyl.yml', 'utf8'));
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, message) => {
 	// get embed and check if it's an embed in the git channel
@@ -11,10 +12,10 @@ module.exports = async (client, message) => {
 	const GitEmbed = new EmbedBuilder(message.embeds[0].toJSON());
 
 	// get the server name from pterodactyl.json and branch name from embed title and check if it's this bot
-	let server;
-	if (GitEmbed.toJSON().title.startsWith('[Cactie:master]') && servers['pup'].client) server = servers['pup'];
-	else if (GitEmbed.toJSON().title.startsWith('[Cactie:dev]') && servers['pup dev'].client) server = servers['pup dev'];
-	if (!server || !server.client) return;
+	let srv;
+	if (GitEmbed.toJSON().title.startsWith('[Cactie:master]') && servers.find(s => s.name == 'Cactie').client) srv = servers.find(s => s.name == 'Cactie');
+	else if (GitEmbed.toJSON().title.startsWith('[Cactie:dev]') && servers.find(s => s.name == 'Cactie Dev').client) srv = servers.find(s => s.name == 'Cactie Dev');
+	if (!srv) return;
 
 	// Check if all commits in message skip the update
 	const commits = GitEmbed.toJSON().description.split('\n');
@@ -44,6 +45,6 @@ module.exports = async (client, message) => {
 
 	// wait 1 sec and restart the bot
 	await sleep(1000);
-	const Client = new NodeactylClient(server.url, server.apikey);
-	await Client.restartServer(server.id);
+	const Client = new NodeactylClient(pterodactyl.url, pterodactyl.apikey);
+	await Client.restartServer(srv.id);
 };

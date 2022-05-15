@@ -2,33 +2,26 @@ const { NodeactylClient } = require('nodeactyl');
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const pteroUpdate = require('../../../functions/ptero/pteroUpdate.js');
 const ptero = require('../../../functions/ptero/ptero.js');
-const servers = require('../../../config/pterodactyl.json');
+const fs = require('fs');
+const YAML = require('yaml');
+const { servers, pterodactyl } = YAML.parse(fs.readFileSync('./pterodactyl.yml', 'utf8'));
 const { refresh } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'ptero',
 	description: 'Controls pterodactyl servers on godzillagroin',
+	args: true,
+	usage: '<server abbreviation>',
 	async execute(message, args, client, lang) {
 		try {
-			const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
-			if (!args[0]) {
-				args = [];
-				serverlist.forEach(i => {
-					i = i.replace('\n', '').split(' (')[0].toLowerCase();
-					if (servers[i].guildid == message.guild.id) args.push(servers[i].name);
-				});
-				if (args[1]) args = ['dumb'];
-				if (!args[0]) args = ['pup'];
-			}
-			const srvs = Object.keys(servers).map(i => { return servers[i]; });
-			let server = servers[args.join(' ').toLowerCase()];
-			if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
-			if (!server) return message.reply({ content: `**Invalid Server**\nPlease use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
-			const Client = new NodeactylClient(server.url, server.apikey);
+			const serverlist = servers.map(s => { return `\n${s.short} (${s.name})`; });
+			const server = servers.find(srv => args[0].toLowerCase() == srv.short);
+			if (!server) return client.error(`Invalid Server!\nPlease use an option from the list below:\n${serverlist.join('')}`, message, true);
+			const Client = new NodeactylClient(server.url ?? pterodactyl.url, server.apikey ?? pterodactyl.apikey);
 			const info = await Client.getServerDetails(server.id);
 			const usages = await Client.getServerUsages(server.id);
 			const PteroEmbed = new EmbedBuilder()
 				.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
-				.setURL(`${server.url}/server/${server.id}`);
+				.setURL(`${server.url ?? pterodactyl.url}/server/${server.id}`);
 			if (usages.current_state == 'running') PteroEmbed.setColor(0x2ECC71);
 			if (usages.current_state == 'stopping') PteroEmbed.setColor(0xFF6400);
 			if (usages.current_state == 'offline') PteroEmbed.setColor(0xE74C3C);

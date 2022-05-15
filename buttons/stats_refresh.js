@@ -1,21 +1,20 @@
 const { createPaste } = require('hastebin');
 const { EmbedBuilder } = require('discord.js');
 const { NodeactylClient } = require('nodeactyl');
-const servers = require('../config/pterodactyl.json');
+const fs = require('fs');
+const YAML = require('yaml');
+const { servers, pterodactyl } = YAML.parse(fs.readFileSync('./pterodactyl.yml', 'utf8'));
 const protocols = require('../lang/int/mcprotocol.json');
 module.exports = {
 	name: 'stats_refresh',
 	async execute(interaction, client) {
 		try {
-			const srvs = [];
-			Object.keys(servers).map(i => { srvs.push(servers[i]); });
 			const StatsEmbed = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 			StatsEmbed.setFields([]);
-			const arg = StatsEmbed.toJSON().url.replace('https://', '').split('.pup')[0].replace('colon', ':');
-			let server = servers[arg.toLowerCase()];
-			if (!server) server = srvs.find(srv => arg.toLowerCase() == srv.short);
+			const arg = StatsEmbed.toJSON().url.replace('https://', '').split('.pup')[0].replace(/colon/g, ':');
+			let server = servers.find(srv => arg == srv.short);
 			if (server && server.id) {
-				const Client = new NodeactylClient(server.url, server.apikey);
+				const Client = new NodeactylClient(server.url ?? pterodactyl.url, server.apikey ?? pterodactyl.apikey);
 				const info = await Client.getServerDetails(server.id);
 				const usages = await Client.getServerUsages(server.id);
 				if (usages.current_state == 'running') StatsEmbed.setColor(0x2ECC71);
@@ -35,13 +34,11 @@ module.exports = {
 				info.name ? StatsEmbed.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`) : StatsEmbed.setTitle(arg);
 				if (server.client) StatsEmbed.setThumbnail(client.user.avatarURL());
 			}
-			else {
-				server = { ip: arg };
-			}
-			if (server.ip) {
-				const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
+			else { server = { minecraft: { ip: arg } }; }
+			if (server.minecraft && server.minecraft.ip) {
+				const json = await fetch(`https://api.mcsrvstat.us/2/${server.minecraft.ip}`);
 				const pong = await json.json();
-				const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
+				const serverlist = servers.map(s => { return `\n${s.name} (${s.short})`; });
 				if (!pong.online) return interaction.reply({ content: `**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
 				if (!StatsEmbed.toJSON().title && pong.hostname) StatsEmbed.setTitle(pong.hostname);
 				else if (!StatsEmbed.toJSON().title && pong.port == 25565) StatsEmbed.setTitle(pong.ip);

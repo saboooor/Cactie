@@ -1,7 +1,9 @@
 const { EmbedBuilder, Attachment, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
-const servers = require('../../../config/pterodactyl.json');
+const fs = require('fs');
+const YAML = require('yaml');
+const { servers, pterodactyl } = YAML.parse(fs.readFileSync('./pterodactyl.yml', 'utf8'));
 const protocols = require('../../../lang/int/mcprotocol.json');
 const { refresh } = require('../../../lang/int/emoji.json');
 module.exports = {
@@ -12,14 +14,12 @@ module.exports = {
 	options: require('../../options/stats.js'),
 	async execute(message, args, client, lang) {
 		try {
-			if (!args[0]) args = ['pup'];
-			const srvs = [];
-			Object.keys(servers).map(i => { srvs.push(servers[i]); });
-			let server = servers[args.join(' ').toLowerCase()];
-			if (!server) server = srvs.find(srv => args[0].toLowerCase() == srv.short);
+			let server = servers.find(s => s.name.toLowerCase() == args.join(' ').toLowerCase());
+			if (!server && args[0]) server = servers.find(srv => args[0].toLowerCase() == srv.short);
+			if (!server && !args[0]) server = servers.find(srv => srv.client);
 			const StatsEmbed = new EmbedBuilder().setColor(Math.floor(Math.random() * 16777215));
 			if (server && server.id) {
-				const Client = new NodeactylClient(server.url, server.apikey);
+				const Client = new NodeactylClient(server.url ?? pterodactyl.url, server.apikey ?? pterodactyl.apikey);
 				const info = await Client.getServerDetails(server.id);
 				const usages = await Client.getServerUsages(server.id);
 				if (usages.current_state == 'running') StatsEmbed.setColor(0x2ECC71);
@@ -39,12 +39,12 @@ module.exports = {
 				info.name ? StatsEmbed.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`) : StatsEmbed.setTitle(args.join(' '));
 				if (server.client) StatsEmbed.setThumbnail(client.user.avatarURL());
 			}
-			else { server = { ip: args[0] }; }
+			else { server = { minecraft: { ip: args[0] } }; }
 			const iconpng = [];
-			if (server.ip) {
-				const json = await fetch(`https://api.mcsrvstat.us/2/${server.ip}`);
+			if (server.minecraft && server.minecraft.ip) {
+				const json = await fetch(`https://api.mcsrvstat.us/2/${server.minecraft.ip}`);
 				const pong = await json.json();
-				const serverlist = Object.keys(servers).map(i => { return `\n${servers[i].name} (${servers[i].short})`; });
+				const serverlist = servers.map(s => { return `\n${s.name} (${s.short})`; });
 				if (!pong.online) return message.reply({ content: `**Invalid Server**\nYou can use any valid Minecraft server IP\nor use an option from the list below:\`\`\`yml${serverlist.join('')}\`\`\`` });
 				if (!StatsEmbed.toJSON().title && pong.hostname) StatsEmbed.setTitle(pong.hostname);
 				else if (!StatsEmbed.toJSON().title && pong.port == 25565) StatsEmbed.setTitle(pong.ip);
@@ -77,7 +77,7 @@ module.exports = {
 				}
 				if (!pong.debug.query) StatsEmbed.setFooter({ text: 'Query disabled! If you want more info, contact the owner to enable query.' });
 			}
-			StatsEmbed.setURL(`https://${args[0].replace(':', 'colon')}.pup`);
+			StatsEmbed.setURL(`https://${server.short ? server.short : server.minecraft.ip.replace(/:/g, 'colon')}.pup`);
 			const row = new ActionRowBuilder().addComponents([
 				new ButtonBuilder()
 					.setCustomId('stats_refresh')

@@ -1,14 +1,15 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const servers = require('../../config/pterodactyl.json');
-const srvs = Object.keys(servers).map(i => { return servers[i]; });
+const fs = require('fs');
+const YAML = require('yaml');
+const { servers } = YAML.parse(fs.readFileSync('./pterodactyl.yml', 'utf8'));
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 module.exports = async function pteroUpdate(interaction, Client) {
-	const server = srvs.find(srv => interaction.message.embeds[0].url.split('server/')[1] == srv.id);
+	const server = servers.find(srv => interaction.message.embeds[0].url.split('server/')[1] == srv.id);
 	const info = await Client.getServerDetails(server.id);
 	const usages = await Client.getServerUsages(server.id);
 	const PteroEmbed = new EmbedBuilder()
 		.setTitle(`${info.name} (${usages.current_state.replace(/\b(\w)/g, s => s.toUpperCase())})`)
-		.setURL(`${server.url}/server/${server.id}`);
+		.setURL(interaction.message.embeds[0].url);
 	if (usages.current_state == 'running') PteroEmbed.setColor(0x2ECC71);
 	if (usages.current_state == 'stopping') PteroEmbed.setColor(0xFF6400);
 	if (usages.current_state == 'offline') PteroEmbed.setColor(0xE74C3C);
