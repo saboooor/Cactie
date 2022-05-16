@@ -15,9 +15,6 @@ mysql: # MySQL database credentials
   database: ''
 
 music:
-  spotify: # Spotify api id and secret
-    id: ''
-    secret: ''
   lastfm: '' # last.fm api key
   nodes:
     - host: '' # lavalink node host ip

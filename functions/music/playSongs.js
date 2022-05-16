@@ -1,5 +1,4 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { TrackUtils } = require('erela.js-vk');
 const { convertTime } = require('./convert.js');
 const getColors = require('get-image-colors');
 const getlfmCover = require('./getlfmCover.js');
@@ -44,112 +43,75 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		]);
 	const row = [];
 
-	// Check if search is a spotify link, if not, search YouTube
-	if (search.match(client.Lavasfy.spotifyPattern)) {
-		// Get lavasfy token and node and search spotify
-		await client.Lavasfy.requestToken();
-		const node = await client.Lavasfy.getNode('midget');
-		const Searched = await node.load(search);
+	// Search YouTube
+	const Searched = await player.search(search);
 
-		// Get track and check if result is a playlist
-		const track = Searched.tracks[0];
-		if (Searched.loadType === 'PLAYLIST_LOADED') {
-			// Add description to embed and build every song in the playlist
-			PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.playlist[top ? 'top' : 'end']}** \`[${Searched.tracks.length}]\`\n[${Searched.playlistInfo.name}](${search})`)
-				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
-			await Searched.tracks.forEach(song => {
-				// Some songs don't have a url, just use google lol
-				if (!song.info.uri) song.info.uri = 'https://google.com';
-				songs.push(TrackUtils.build(song));
-			});
-			row.push(undo);
+	if (query) {
+		const tracks = Searched.tracks.slice(0, 5);
+		const tracklist = tracks.map(track => {
+			return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\``;
+		});
+		PlayEmbed.setDescription(`<:srch:${srch}> **${lang.music.search.results}**\n${tracklist.join('\n')}`);
+
+		const balls = new ActionRowBuilder();
+		for (let number = 1; number <= 5; number++) {
+			balls.addComponents([
+				new ButtonBuilder()
+					.setCustomId(`${number}`)
+					.setLabel(`${number}`)
+					.setStyle(ButtonStyle.Secondary),
+			]);
 		}
-		else if (Searched.loadType.startsWith('TRACK')) {
-			// Add description to embed and build the song
-			PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.song[top ? 'top' : 'end']}**\n[${track.info.title}](${track.info.uri})`)
-				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
-			// Some songs don't have a url, just use google lol
-			if (!track.info.uri) track.info.uri = 'https://google.com';
-			songs.push(TrackUtils.build(track));
-			row.push(undo);
-		}
-		else {
-			// There's no result for the search, send error message
-			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> ${lang.music.search.failed}`);
-			return playMsg.edit({ content: null, embeds: [PlayEmbed] });
-		}
+		row.push(balls);
+		await playMsg.edit({ content: `<:srch:${srch}> ${lang.music.search.pick}\n\`${search}\``, embeds: [PlayEmbed], components: row });
+
+		const collector = playMsg.createMessageComponentCollector({ time: 60000 });
+		collector.on('collect', async interaction => {
+			// Check if the user is the requester
+			interaction.deferUpdate();
+			playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, lang, top, false);
+			await playMsg.edit({ content: `<:play:${play}> **${lang.music.search.picked.replace('{num}', interaction.customId)}**`, embeds: [], components: [] })
+				.then(() => collector.stop());
+		});
+
+		// When the collector stops, remove the undo button from it
+		collector.on('end', () => {
+			if (playMsg.content.startsWith(`<:play:${play}> `)) return;
+			playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] })
+				.catch(err => client.logger.warn(err));
+		});
+
+		return;
+	}
+
+	// Get first track and check if result is not found or a playlist, if not, then just add the song
+	const track = Searched.tracks[0];
+	if (Searched.loadType === 'NO_MATCHES' || !track) {
+		// There's no result for the search, send error message
+		PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> ${lang.music.search.failed}`);
+		return playMsg.edit({ content: null, embeds: [PlayEmbed] });
+	}
+	else if (Searched.loadType == 'PLAYLIST_LOADED') {
+		// Add description to embed and push every song in the playlist
+		PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.playlist[top ? 'top' : 'end']}** \`[${Searched.tracks.length} / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
+			.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
+		await Searched.tracks.forEach(song => {
+			// Set image if thumbnail exists
+			if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
+			songs.push(song);
+		});
+		row.push(undo);
 	}
 	else {
-		// Search YouTube
-		const Searched = await player.search(search);
+		// Set image if thumbnail exists
+		if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
-		if (query) {
-			const tracks = Searched.tracks.slice(0, 5);
-			const tracklist = tracks.map(track => {
-				return `**${tracks.indexOf(track) + 1}** • [${track.title}\n${track.author}](${track.uri}) \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\``;
-			});
-			PlayEmbed.setDescription(`<:srch:${srch}> **${lang.music.search.results}**\n${tracklist.join('\n')}`);
-
-			const balls = new ActionRowBuilder();
-			for (let number = 1; number <= 5; number++) {
-				balls.addComponents([
-					new ButtonBuilder()
-						.setCustomId(`${number}`)
-						.setLabel(`${number}`)
-						.setStyle(ButtonStyle.Secondary),
-				]);
-			}
-			row.push(balls);
-			await playMsg.edit({ content: `<:srch:${srch}> ${lang.music.search.pick}\n\`${search}\``, embeds: [PlayEmbed], components: row });
-
-			const collector = playMsg.createMessageComponentCollector({ time: 60000 });
-			collector.on('collect', async interaction => {
-				// Check if the user is the requester
-				interaction.deferUpdate();
-				playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, lang, top, false);
-				await playMsg.edit({ content: `<:play:${play}> **${lang.music.search.picked.replace('{num}', interaction.customId)}**`, embeds: [], components: [] })
-					.then(() => collector.stop());
-			});
-
-			// When the collector stops, remove the undo button from it
-			collector.on('end', () => {
-				if (playMsg.content.startsWith(`<:play:${play}> `)) return;
-				playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] })
-					.catch(err => client.logger.warn(err));
-			});
-
-			return;
-		}
-
-		// Get first track and check if result is not found or a playlist, if not, then just add the song
-		const track = Searched.tracks[0];
-		if (Searched.loadType === 'NO_MATCHES' || !track) {
-			// There's no result for the search, send error message
-			PlayEmbed.setColor(0xE74C3C).setDescription(`<:alert:${warn}> ${lang.music.search.failed}`);
-			return playMsg.edit({ content: null, embeds: [PlayEmbed] });
-		}
-		else if (Searched.loadType == 'PLAYLIST_LOADED') {
-			// Add description to embed and push every song in the playlist
-			PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.playlist[top ? 'top' : 'end']}** \`[${Searched.tracks.length} / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
-				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
-			await Searched.tracks.forEach(song => {
-				// Set image if thumbnail exists
-				if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
-				songs.push(song);
-			});
-			row.push(undo);
-		}
-		else {
-			// Set image if thumbnail exists
-			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
-
-			// Add description to embed and the song
-			PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.song[top ? 'top' : 'end']}** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
-				.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() })
-				.setThumbnail(track.img);
-			songs.push(Searched.tracks[0]);
-			row.push(undo);
-		}
+		// Add description to embed and the song
+		PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.song[top ? 'top' : 'end']}** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
+			.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() })
+			.setThumbnail(track.img);
+		songs.push(Searched.tracks[0]);
+		row.push(undo);
 	}
 
 	// Playtop doesn't really matter if queue is empty
