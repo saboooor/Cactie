@@ -17,8 +17,8 @@ module.exports = {
 			const EQEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle(lang.music.eq.name)
-				.setDescription(lang.music.eq.choose);
-			if (client.user.id == '848775888673439745') EQEmbed.addFields([{ name: lang.music.eq.precise, value: `[${lang.dashboard.use}](https://cactie.smhsmh.club/music)` }]);
+				.setDescription(lang.music.eq.choose)
+				.addFields([{ name: lang.music.eq.precise, value: `[${lang.dashboard.use}](https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music)` }]);
 			const but = new ButtonBuilder().setCustomId('filter_clear').setLabel(lang.off).setStyle(ButtonStyle.Danger);
 			const but2 = new ButtonBuilder().setCustomId('filter_bass').setLabel(lang.music.eq.bass).setStyle(ButtonStyle.Primary);
 			const but3 = new ButtonBuilder().setCustomId('filter_party').setLabel(lang.music.eq.party).setStyle(ButtonStyle.Primary);

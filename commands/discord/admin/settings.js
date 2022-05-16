@@ -46,8 +46,8 @@ module.exports = {
 			// Set embed description with page and stuff
 			SettingsEmbed.setDescription(configlist.join('\n'))
 				.addFields([{ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' }])
-				.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', maxPages) });
-			if (client.user.id == '848775888673439745') SettingsEmbed.addFields([{ name: lang.dashboard.confusing, value: lang.dashboard.use }]);
+				.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', maxPages) })
+				.addFields([{ name: lang.dashboard.confusing, value: lang.dashboard.use }]);
 
 			// Add buttons for page changing
 			const pages = new ActionRowBuilder()
@@ -61,7 +61,7 @@ module.exports = {
 						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
-						.setURL('https://cactie.smhsmh.club')
+						.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club`)
 						.setLabel(lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
 				]);

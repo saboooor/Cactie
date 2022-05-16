@@ -84,7 +84,7 @@ module.exports = {
 			const row2 = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL('https://cactie.smhsmh.club/discord')
+						.setURL('https://cactie.smhsmh.club/support/discord')
 						.setLabel('Support Discord')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()

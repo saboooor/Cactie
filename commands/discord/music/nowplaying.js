@@ -37,16 +37,12 @@ module.exports = {
 						.setLabel(lang.refresh)
 						.setEmoji({ id: refresh })
 						.setStyle(ButtonStyle.Secondary),
-				]);
-			if (client.user.id == '848775888673439745') {
-				row.addComponents([
 					new ButtonBuilder()
-						.setURL('https://cactie.smhsmh.club/music')
+						.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
 						.setEmoji({ id: music })
 						.setLabel(lang.dashboard.name)
 						.setStyle('LINK'),
 				]);
-			}
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
 
 			// Set the now playing message

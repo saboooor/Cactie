@@ -27,16 +27,13 @@ module.exports = async (client, player, track) => {
 				.setCustomId('music_skip')
 				.setEmoji({ id: skip })
 				.setStyle(ButtonStyle.Secondary),
-		]);
-	if (client.user.id == '848775888673439745') {
-		row.addComponents([
 			new ButtonBuilder()
-				.setURL('https://cactie.smhsmh.club/music')
+				.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
 				.setEmoji({ id: music })
 				.setLabel(lang.dashboard.name)
 				.setStyle(ButtonStyle.Link),
+
 		]);
-	}
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
 		.get(player.textChannel)
