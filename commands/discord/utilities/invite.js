@@ -17,7 +17,7 @@ module.exports = {
 						.setLabel('Invite Cactie to your server!')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
-						.setURL('https://cactie.smhsmh.club/discord')
+						.setURL('https://cactie.smhsmh.club/support/discord')
 						.setLabel('Join the support server!')
 						.setStyle(ButtonStyle.Link),
 				]);

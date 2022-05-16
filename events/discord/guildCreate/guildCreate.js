@@ -9,11 +9,11 @@ module.exports = async (client, guild) => {
 				.setLabel(msg.dashboard.name)
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL('https://cactie.smhsmh.club/discord')
+				.setURL('https://cactie.smhsmh.club/support/discord')
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL('https://cactie.smhsmh.club/discord')
+				.setURL('https://top.gg/bot/765287593762881616')
 				.setLabel('Vote on top.gg')
 				.setStyle(ButtonStyle.Link),
 		]);
