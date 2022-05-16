@@ -20,6 +20,7 @@ module.exports = client => {
 		});
 
 		if (!player) return ws.send(JSON.stringify({ type: 'error', message: `Player not found!\nPlay some music with ${client.user.username} first!` }));
+		if (!guild.channels.cache.get(player.options.voiceChannel)) ws.send(JSON.stringify({ type: 'error', message: `Player not found!\nPlay some music with ${client.user.username} first!` }));
 		player.websockets ? player.websockets.push(ws) : player.websockets = [ws];
 		const { volume, paused, position, queue } = player;
 		const srvconfig = await client.getData('settings', 'guildId', player.guild);
