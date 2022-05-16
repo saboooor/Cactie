@@ -31,11 +31,11 @@ module.exports = {
 				.setDescription(`<:no:${no}> **Removed**\n[${song.title}](${song.uri})`)
 				.setColor(song.colors[0])
 				.setThumbnail(song.img);
-			const loopmsg = await message.reply({ embeds: [RemEmbed] });
+			const remmsg = await message.reply({ embeds: [RemEmbed] });
 
 			// Wait 10 seconds and compress the message
 			await sleep(10000);
-			message.commandName ? message.editReply({ embeds: [compressEmbed(RemEmbed)] }) : loopmsg.edit({ embeds: [compressEmbed(RemEmbed)] });
+			remmsg.edit({ embeds: [compressEmbed(RemEmbed)] }).catch(err => client.logger.error(err));
 		}
 		catch (err) { client.error(err, message); }
 	},

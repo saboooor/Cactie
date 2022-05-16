@@ -2,7 +2,19 @@ const { EmbedBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { forward } = require('../../lang/int/emoji.json');
 module.exports = async (client, payload) => {
-	if (payload.op == 'event' && payload.type == 'SegmentSkipped') {
+	if (payload.op == 'playerUpdate') {
+		const player = client.manager.get(payload.guildId);
+		if (player.websockets) {
+			player.websockets.forEach(ws => {
+				ws.send(JSON.stringify({
+					type: 'progress',
+					max: player.queue.current.duration,
+					pos: player.position,
+				}));
+			});
+		}
+	}
+	else if (payload.op == 'event' && payload.type == 'SegmentSkipped') {
 		const player = client.manager.get(payload.guildId);
 		const guild = client.guilds.cache.get(player.guild);
 		const channel = guild.channels.cache.get(player.textChannel);

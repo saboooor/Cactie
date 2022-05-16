@@ -43,4 +43,14 @@ module.exports = async (client, player, track) => {
 		.send({ embeds: [StartEmbed], components: [row] });
 	player.setNowplayingMessage(NowPlaying);
 	player.timeout = null;
+
+	if (player.websockets) {
+		player.websockets.forEach(ws => {
+			ws.send(JSON.stringify({
+				type: 'track',
+				current: track,
+				queue: player.queue,
+			}));
+		});
+	}
 };

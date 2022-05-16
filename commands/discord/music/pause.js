@@ -30,7 +30,7 @@ module.exports = {
 
 			// Wait 10 seconds and compress the message
 			await sleep(10000);
-			message.commandName ? message.editReply({ embeds: [compressEmbed(PauseEmbed)] }) : pausemsg.edit({ embeds: [compressEmbed(PauseEmbed)] });
+			pausemsg.edit({ embeds: [compressEmbed(PauseEmbed)] }).catch(err => client.logger.error(err));
 		}
 		catch (err) { client.error(err, message); }
 	},
