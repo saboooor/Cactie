@@ -48,7 +48,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	if (search.match(client.Lavasfy.spotifyPattern)) {
 		// Get lavasfy token and node and search spotify
 		await client.Lavasfy.requestToken();
-		const node = await client.Lavasfy.getNode('lavamusic');
+		const node = await client.Lavasfy.getNode('midget');
 		const Searched = await node.load(search);
 
 		// Get track and check if result is a playlist
