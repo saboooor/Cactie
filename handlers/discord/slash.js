@@ -7,7 +7,7 @@ module.exports = client => {
 	types.forEach(type => {
 		const slashcommandFolders = readdirSync(`./commands/${type}`);
 		for (const folder of slashcommandFolders) {
-			const slashcommandFiles = readdirSync(`./commands/${type}/${folder}`).filter(file => file.endsWith('.js') && folder != 'nsfw' && folder != 'options' && folder != 'private');
+			const slashcommandFiles = readdirSync(`./commands/${type}/${folder}`).filter(file => file.endsWith('.js') && folder != 'nsfw' && folder != 'animals' && folder != 'options' && folder != 'private');
 			for (const file of slashcommandFiles) {
 				const slashcommand = require(`../../commands/${type}/${folder}/${file}`);
 				client.slashcommands.set(slashcommand.name, slashcommand);
