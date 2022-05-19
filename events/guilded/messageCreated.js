@@ -101,7 +101,7 @@ module.exports = async (client, message) => {
 			.setColor(0x2f3136)
 			.setTitle('Usage')
 			.setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
-		if (command.similarcmds) Usage.setFooter(`Did you mean to use ${srvconfig.prefix}${command.similarcmds}?`);
+		if (command.similarcmds) Usage.setFooter(`Did you mean to use ${command.similarcmds}?`);
 		return message.reply({ embeds: [Usage] });
 	}
 
