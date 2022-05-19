@@ -19,14 +19,6 @@ module.exports = {
 							.setStyle(TextInputStyle.Paragraph)
 							.setRequired(false),
 					]),
-					new ActionRowBuilder().addComponents([
-						new TextInputBuilder()
-							.setCustomId('time')
-							.setLabel('Time')
-							.setPlaceholder('Forever. (Examples: 1d, 1h, 1m, 1s)')
-							.setStyle(TextInputStyle.Short)
-							.setRequired(false),
-					]),
 				]);
 			interaction.showModal(modal);
 		}

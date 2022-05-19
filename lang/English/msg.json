@@ -23,6 +23,56 @@
         "latency": "Message Latency",
         "api": "API Latency"
     },
+    "actions": {
+        "awooga": {
+            "plural": "AWOOGAS",
+            "footer": "👀👀"
+        },
+        "bite": {
+            "plural": "bites",
+            "footer": "you taste good 👁️👅👁️"
+        },
+        "bonk": {
+            "plural": "bonks",
+            "footer": "get bonked 🔨"
+        },
+        "giggle": {
+            "plural": "giggles",
+            "footer": "hehehehehehe 🤭"
+        },
+        "hug": {
+            "plural": "hugs",
+            "footer": "🤗"
+        },
+        "hump": {
+            "plural": "humps",
+            "footer": "HUMPING?? 😳"
+        },
+        "kill": {
+            "plural": "kills",
+            "footer": "u die lol 🔫"
+        },
+        "kiss": {
+            "plural": "kisses",
+            "footer": "mwah 😚"
+        },
+        "lick": {
+            "plural": "licks",
+            "footer": "you taste good 👁️👅👁️"
+        },
+        "mad": {
+            "plural": "is mad",
+            "footer": "stay mad 😤😡🤬"
+        },
+        "nuzzle": {
+            "plural": "nuzzles",
+            "footer": "🤗"
+        },
+        "stare": {
+            "plural": "stares",
+            "footer": "🧍🏽"
+        }
+    },
     "music": {
         "search": {
             "ing": "Searching for `{query}`...",

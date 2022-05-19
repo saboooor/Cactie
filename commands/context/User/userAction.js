@@ -1,8 +1,9 @@
 const { ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
+const action = require('../../../functions/action.js');
 module.exports = {
 	name: 'Do action on user',
 	noDefer: true,
-	async execute(interaction, client, member) {
+	async execute(interaction, client, member, lang) {
 		try {
 			const row = new ActionRowBuilder()
 				.addComponents([
@@ -61,7 +62,15 @@ module.exports = {
 						]),
 				]);
 
-			interaction.reply({ content: `**Please select an action to do on ${member.displayName}**`, components: [row] });
+			const selectmsg = await interaction.reply({ content: `**Please select an action to do on ${member.displayName}**`, components: [row] });
+
+			const filter = i => i.customId == 'action';
+			const collector = selectmsg.createMessageComponentCollector({ filter, time: 120000 });
+			collector.on('collect', async btnint => {
+				const actionName = btnint.values[0].split('_')[1];
+				action(btnint.message, btnint.member, [btnint.member.id], actionName, lang);
+				collector.stop();
+			});
 		}
 		catch (err) { console.log(err); }
 	},

@@ -4,7 +4,11 @@ module.exports = async (client, interaction) => {
 	if (!interaction.isModalSubmit()) return;
 
 	// Get the modal from the available modals in the bot, if there isn't one, just return because discord will throw an error itself
-	const modal = client.modals.get(interaction.customId);
+	const customIdSplit = interaction.customId.split('_');
+	const modalInfo = customIdSplit.pop();
+	const modalName = customIdSplit.join('_');
+	let modal = client.modals.get(interaction.customId);
+	if (!modal) modal = client.modals.get(modalName);
 	if (!modal) return;
 
 	// Get current settings for the guild
@@ -22,7 +26,7 @@ module.exports = async (client, interaction) => {
 		client.logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
 		await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
 		interaction.reply = interaction.editReply;
-		modal.execute(interaction, client, lang);
+		modal.execute(interaction, client, lang, modalInfo);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

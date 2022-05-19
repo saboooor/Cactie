@@ -5,9 +5,9 @@ module.exports = {
 	usage: '<Someone>',
 	args: true,
 	options: require('../../options/someonereq.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
-			action(message, args, 'lick', 'licks', 'you taste good 👁️👅👁️');
+			action(message, message.member, args, 'lick', lang);
 		}
 		catch (err) { client.error(err, message); }
 	},

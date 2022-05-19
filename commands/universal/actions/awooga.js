@@ -4,9 +4,9 @@ module.exports = {
 	description: 'AWOOGAA!',
 	usage: '[Someone]',
 	options: require('../../options/someone.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
-			action(message, args, 'awooga', 'AWOOGAS', '👀👀');
+			action(message, message.member, args, 'awooga', lang);
 		}
 		catch (err) { client.error(err, message); }
 	},

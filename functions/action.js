@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const gifs = require('../lang/int/actiongifs.json');
 let current;
-module.exports = async function action(message, args, type, plural, footer) {
+module.exports = async function action(message, author, args, type, lang) {
 	// Check if arg is a user and set it
 	let user;
 	if (args[0] && message.client.type.name == 'discord') {
@@ -12,21 +12,28 @@ module.exports = async function action(message, args, type, plural, footer) {
 	// Get random index of gif list
 	let i = Math.floor(Math.random() * gifs[type].length);
 
+	// If index is the same as the last one, get a new one
 	if (i === current) {
 		do i = Math.floor(Math.random() * gifs[type].length);
 		while (i === current);
 		current = i;
 	}
 
-	const username = message.client.type.name == 'discord' ? message.member.displayName : message.member.user.name;
-	const iconURL = message.client.type.name == 'discord' ? message.member.user.displayAvatarURL() : message.member.user.avatar;
+	// Get the username and iconURL
+	const username = message.client.type.name == 'discord' ? author.displayName : author.user.name;
+	const iconURL = message.client.type.name == 'discord' ? author.user.displayAvatarURL() : author.user.avatar;
 
 	// Create embed with bonk gif and author / footer
 	const BonkEmbed = new EmbedBuilder()
-		.setAuthor({ name: `${username} ${plural} ${args[0] ? args.join(' ') : ''}`, iconURL: iconURL })
+		.setAuthor({ name: `${username} ${lang.actions[type].plural} ${args[0] ? args.join(' ') : ''}`, iconURL: iconURL })
 		.setImage(gifs[type][i])
-		.setFooter({ text: footer });
+		.setFooter({ text: lang.actions[type].footer });
 
 	// Reply with bonk message, if user is set then mention the user
-	message.reply({ content: user ? `${user}` : undefined, embeds: [BonkEmbed] });
+	if (message.member.id == message.client.user.id) {
+		message.delete();
+		message.channel.send({ content: user ? `${user}` : undefined, embeds: [BonkEmbed], components: [] });
+		return;
+	}
+	else { message.reply({ content: user ? `${user}` : undefined, embeds: [BonkEmbed] }); }
 };

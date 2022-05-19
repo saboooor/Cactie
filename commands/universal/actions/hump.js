@@ -4,9 +4,9 @@ module.exports = {
 	description: 'Hump someone??',
 	usage: '[Someone]',
 	options: require('../../options/someone.js'),
-	async execute(message, args, client) {
+	async execute(message, args, client, lang) {
 		try {
-			action(message, args, 'hump', 'humps', 'humping?? 👀');
+			action(message, message.member, args, 'hump', lang);
 		}
 		catch (err) { client.error(err, message); }
 	},
