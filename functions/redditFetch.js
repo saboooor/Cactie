@@ -1,5 +1,4 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { MessageEmbed, MessageAttachment } = require('discord.js');
 const ffmpegSync = require('./ffmpegSync.js');
 const fs = require('fs');

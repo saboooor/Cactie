@@ -1,5 +1,4 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { left, right } = require('../../lang/int/emoji.json');
 const YAML = require('yaml');
 const fs = require('fs');

@@ -1,5 +1,4 @@
 const { MessageEmbed, MessageAttachment } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 module.exports = {
 	name: 'dm',
 	description: 'DM someone through Cactie bot.',

@@ -1,5 +1,4 @@
 const { MessageAttachment, MessageEmbed, Collection, MessageButton, MessageActionRow } = require('discord.js');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const { createPaste } = require('hastebin');
 const gitUpdate = require('../functions/gitUpdate');
 function clean(text) {

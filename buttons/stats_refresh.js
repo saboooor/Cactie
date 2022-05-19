@@ -1,6 +1,5 @@
 const { createPaste } = require('hastebin');
 const { NodeactylClient } = require('nodeactyl');
-const fetch = (...args) => import('node-fetch').then(({ default: e }) => e(...args));
 const servers = require('../config/pterodactyl.json');
 const protocols = require('../lang/int/mcprotocol.json');
 module.exports = {
