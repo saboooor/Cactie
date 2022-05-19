@@ -4,6 +4,7 @@ module.exports = {
 	ephemeral: true,
 	async execute(interaction, client) {
 		try {
+			// Get the field and setting from the modal
 			const field = interaction.components[0].components[0].toJSON();
 			const value = field.value;
 			const prop = field.custom_id;
@@ -15,6 +16,7 @@ module.exports = {
 			// Maxppsize can only be less than 76
 			if (prop == 'maxppsize' && value > 76) return client.error('"maxppsize" must be 75 or less!', interaction, true);
 
+			// Set the new value and reply
 			await client.setData('settings', 'guildId', interaction.guild.id, prop, value);
 			client.logger.info(`Successfully set ${prop} to ${value} in ${interaction.guild.name}`);
 			interaction.reply({ content: `**Successfully set ${prop} to \`${value}\`!**` });

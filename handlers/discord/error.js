@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = client => {
+	// Create a function for error messaging
 	client.error = function error(err, message, userError) {
 		err = err.stack ? err.stack : err;
 		client.logger.error(err);
