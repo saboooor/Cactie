@@ -9,8 +9,8 @@ module.exports = async function gitUpdate(client, message) {
 
 	// get the server name from pterodactyl.json and branch name from embed title and check if it's this bot
 	let server = null;
-	if (embed.title.startsWith('[Pup:master]') && servers['pup'].client) server = servers['pup'];
-	else if (embed.title.startsWith('[Pup:dev]') && servers['pup dev'].client) server = servers['pup dev'];
+	if (embed.title.startsWith('[Cactie:master]') && servers['pup'].client) server = servers['pup'];
+	else if (embed.title.startsWith('[Cactie:dev]') && servers['pup dev'].client) server = servers['pup dev'];
 	if (!server || !server.client) return;
 
 	// Check if all commits in message skip the update
