@@ -20,6 +20,7 @@ module.exports = {
 
 			// Fetch the messages and bulk delete them
 			let messages = await message.channel.messages.fetch({ limit: args[0] });
+			messages = messages.filter(msg => msg.createdTimestamp > Date.now() - 1209600);
 			if (args[1]) messages = messages.filter(msg => msg.author.id == args[1]);
 			if (args[2]) messages = messages.filter(msg => msg.content.includes(args[2]));
 			if (!messages.size) return client.error('There are no messages in that scope, try a higher number?', message, true);
