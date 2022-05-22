@@ -14,5 +14,6 @@ module.exports = async (client, guild) => {
 			{ name: 'Locale', value: guild.preferredLocale },
 		]);
 	if (guild.vanityURLCode) AddEmbed.addField({ name: 'Vanity URL', value: `https://discord.gg/${guild.vanityURLCode}\n(${guild.vanityURLUses} uses)` });
+	if (guild.splash) AddEmbed.setImage(guild.discoverySplashURL());
 	client.guilds.cache.get('811354612547190794').channels.cache.get('865682839616618506').send({ embeds: [AddEmbed] });
 };
