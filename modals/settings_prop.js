@@ -6,9 +6,13 @@ module.exports = {
 		try {
 			// Get the field and setting from the modal
 			const field = interaction.components[0].components[0].toJSON();
-			const value = field.value;
+			let value = field.value;
 			const prop = field.custom_id;
 
+			// If the value is blank, set to false
+			if (value == '') value = 'false';
+			// No spaces in disabledcmds
+			if (prop == 'disabledcmds') value = value.replace(/ /g, '');
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !interaction.guild.systemChannel && value != 'false') return client.error(`Please set a system channel in ${interaction.guild.name} settings first!`, interaction, true);
 			// Msgshortener can only be a number

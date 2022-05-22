@@ -9,6 +9,7 @@ module.exports = async (client, interaction) => {
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+	if (srvconfig.disabledcmds.includes(command.name)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);

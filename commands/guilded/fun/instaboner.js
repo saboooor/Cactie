@@ -6,9 +6,8 @@ module.exports = {
 	aliases: ['instapp'],
 	async execute(message, args, client) {
 		try {
-			// Get settings and check if bonercmd is enabled
+			// Get settings
 			const srvconfig = await client.getData('settings', 'guildId', message.serverId);
-			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
 
 			// Create initial embed
 			const ppEmbed = new Embed()

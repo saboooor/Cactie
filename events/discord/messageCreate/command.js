@@ -55,6 +55,7 @@ module.exports = async (client, message) => {
 
 	// Get the command name from the first arg and get rid of the first arg
 	const commandName = args.shift().toLowerCase();
+	if (srvconfig.disabledcmds.includes(commandName)) return message.reply({ content: `${commandName} is disabled on this server.` });
 
 	// Get the command from the commandName, if it doesn't exist, return
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));

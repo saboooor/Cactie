@@ -7,9 +7,8 @@ module.exports = {
 	options: require('../../options/someone.js'),
 	async execute(message, args, client) {
 		try {
-			// Get settings and check if bonercmd is enabled
+			// Get settings
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (srvconfig.bonercmd == 'false') return client.error('This command is disabled!', message, true);
 
 			// Check if arg is a user and set it
 			let user;

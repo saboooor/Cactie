@@ -34,11 +34,12 @@ module.exports = async function evalModal(client, interaction, setting, srvconfi
 					new TextInputBuilder()
 						.setCustomId(setting)
 						.setLabel(setting)
-						.setValue(`${srvconfig[setting]}`)
+						.setValue(`${srvconfig[setting] == 'false' ? '' : srvconfig[setting]}`)
 						.setPlaceholder(modal[setting].placeholder)
 						.setStyle(TextInputStyle[modal[setting].style])
 						.setMinLength(modal[setting].min)
-						.setMaxLength(modal[setting].max),
+						.setMaxLength(modal[setting].max)
+						.setRequired(modal[setting].required),
 				]),
 			]);
 		interaction.showModal(propModal);

@@ -4,38 +4,50 @@
         "min": 1,
         "max": 10,
         "style": "Short",
-        "placeholder": "-"
+        "placeholder": "-",
+        "required": true
     },
-    "leavemessage":{
+    "leavemessage": {
         "type": "text",
-        "min": 3,
+        "min": 0,
         "max": 2000,
         "style": "Paragraph",
-        "placeholder": "Set false to disable.\nVars: \"{USER MENTION}\" \"{USER TAG}\""
+        "placeholder": "Keep empty to disable.\nVars: \"{USER MENTION}\" \"{USER TAG}\"",
+        "required": false
     },
-    "joinmessage":{
+    "joinmessage": {
         "type": "text",
-        "min": 3,
+        "min": 0,
         "max": 2000,
         "style": "Paragraph",
-        "placeholder": "Set false to disable.\nVars: \"{USER MENTION}\" \"{USER TAG}\""
+        "placeholder": "Keep empty to disable.\nVars: \"{USER MENTION}\" \"{USER TAG}\"",
+        "required": false
     },
-    "maxppsize":{
+    "maxppsize": {
         "type": "text",
         "min": 1,
         "max": 2,
         "style": "Short",
-        "placeholder": "Must be a *number* between 1 and 75."
+        "placeholder": "Must be a *number* between 1 and 75.",
+        "required": true
     },
-    "msgshortener":{
+    "msgshortener": {
         "type": "text",
         "min": 1,
         "max": 4,
         "style": "Short",
-        "placeholder": "Must be a *number*.\nSet to 0 to disable."
+        "placeholder": "Must be a *number*.\nSet to 0 to disable.",
+        "required": true
+    },
+    "disabledcmds": {
+        "type": "text",
+        "min": 0,
+        "max": 2000,
+        "style": "Paragraph",
+        "placeholder": "Commands to disable.\nSeparate with commas.",
+        "required": false
     },
     "reactions": { "type": "bool" },
-    "bonercmd": { "type": "bool" },
     "suggestthreads": { "type": "bool" },
     "tickets": {
         "type": "select",
