@@ -61,7 +61,7 @@ module.exports = {
 						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
-						.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club`)
+						.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/dashboard/${message.guild.id}`)
 						.setLabel(lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
 				]);

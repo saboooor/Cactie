@@ -1,17 +1,6 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const modal = require('../../lang/int/settingsmodal.json');
-const { left, right, on, off } = require('../../lang/int/emoji.json');
-const pages = new ActionRowBuilder()
-	.addComponents([
-		new ButtonBuilder()
-			.setCustomId('settings_page_prev')
-			.setEmoji({ id: left })
-			.setStyle(ButtonStyle.Secondary),
-		new ButtonBuilder()
-			.setCustomId('settings_page_next')
-			.setEmoji({ id: right })
-			.setStyle(ButtonStyle.Secondary),
-	]);
+const { on, off } = require('../../lang/int/emoji.json');
 module.exports = async function updateSettingPanel(SettingsEmbed, SettingsMsg, client, srvconfig, desc, newPage) {
 	srvconfig = await client.getData('settings', 'guildId', srvconfig.guildId);
 	const maxPages = Math.ceil(Object.keys(srvconfig).length / 5);
@@ -39,5 +28,5 @@ module.exports = async function updateSettingPanel(SettingsEmbed, SettingsMsg, c
 	// Update embed description with new page and reply
 	SettingsEmbed.setDescription(configlist.join('\n'));
 	if (newPage) SettingsEmbed.setFooter({ text: `Page ${page} of ${maxPages}` });
-	SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, pages] });
+	SettingsMsg.edit({ embeds: [SettingsEmbed], components: [settingbtns, SettingsMsg.components[1]] });
 };

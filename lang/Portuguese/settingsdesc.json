@@ -10,6 +10,7 @@
     "maxppsize": "*Tamanho máximo da pp no comando boner e instaboner (<75)*",
     "tickets": "*Alterna o sistema de tickets (buttons/reactions/false)*",
     "disabledcmds": "*Disable certain commands from the bot (commands separated by commas)*",
+    "auditlogs": "*Logs certain events in the guild (log types separated by commas)*\n*Logchannel must be set*",
     "suggestionchannel": "*O canal onde o bot coloca as sugestões (false/channelId)*",
     "suggestthreads": "*Cria uma thread quando a sugestão é criada para discussão (true/false)*",
     "pollchannel": "*O canal onde o bot coloca as votações (false/channelId)*",

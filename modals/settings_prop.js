@@ -11,8 +11,15 @@ module.exports = {
 
 			// If the value is blank, set to false
 			if (value == '') value = 'false';
-			// No spaces in disabledcmds
-			if (prop == 'disabledcmds') value = value.replace(/ /g, '');
+			// No spaces in disabledcmds or auditlogs
+			if (prop == 'disabledcmds' || prop == 'auditlogs') value = value.replace(/ /g, '');
+			// Check if auditlog has supported logs
+			if (prop == 'auditlogs' && value != 'false') {
+				value = value.toLowerCase();
+				const logs = value.split(',');
+				const supportedLogs = ['messagecreate'];
+				for (const log of logs) if (!supportedLogs.includes(log.toLowerCase())) return client.error(`${log} is not a valid log type!\nThe valid log types are:\n${supportedLogs.join(', ')}`, interaction, true);
+			}
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
 			if ((prop == 'leavemessage' || prop == 'joinmessage') && !interaction.guild.systemChannel && value != 'false') return client.error(`Please set a system channel in ${interaction.guild.name} settings first!`, interaction, true);
 			// Msgshortener can only be a number

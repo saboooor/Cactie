@@ -5,6 +5,7 @@ const { on, off } = require('../../lang/int/emoji.json');
 const modal = require('../../lang/int/settingsmodal.json');
 const updateSettingPanel = require('./updateSettingPanel.js');
 module.exports = async function evalModal(client, interaction, setting, srvconfig, SettingsEmbed, SettingsMsg, desc) {
+	if (setting == 'auditlogs' && !interaction.guild.channels.cache.get(srvconfig.logchannel)) return client.error('Please set a log channel before proceeding with /settings logchannel', interaction, true);
 	if (setting == 'reset') {
 		// Create and show a modal for the user to confirm reset
 		const propModal = new ModalBuilder()

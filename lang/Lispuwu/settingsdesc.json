@@ -10,6 +10,7 @@
     "maxppsize": "*Maximum pp thize in boner and inthtaboner commandth (<75)*",
     "tickets": "*Toggweth the ticket thythtem (buttons/reactions/false)*",
     "disabledcmds": "*Disable certain commands from the bot (commands separated by commas)*",
+    "auditlogs": "*Logs certain events in the guild (log types separated by commas)*\n*Logchannel must be set*",
     "suggestionchannel": "*The channyew whewe the bot putth thuggethtionth in (false/channyewId)*",
     "suggestthreads": "*Cweateth a thwead when a thuggethtion ith cweated f-f-fow dithcuththion (true/false)*",
     "pollchannel": "*The channyew whewe the bot putth powwth in (false/channyewId)*",

@@ -10,6 +10,7 @@
     "maxppsize": "*Maximum pp size in boner and instaboner commands (<75)*",
     "tickets": "*Toggles the ticket system (buttons/reactions/false)*",
     "disabledcmds": "*Disable certain commands from the bot (commands separated by commas)*",
+    "auditlogs": "*Logs certain events in the guild (log types separated by commas)*\n*Logchannel must be set*",
     "suggestionchannel": "*The channel where the bot puts suggestions in (false/channelId)*",
     "suggestthreads": "*Creates a thread when a suggestion is created for discussion (true/false)*",
     "pollchannel": "*The channel where the bot puts polls in (false/channelId)*",

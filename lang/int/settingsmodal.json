@@ -47,6 +47,14 @@
         "placeholder": "Commands to disable.\nSeparate with commas.",
         "required": false
     },
+    "auditlogs": {
+        "type": "text",
+        "min": 0,
+        "max": 2000,
+        "style": "Paragraph",
+        "placeholder": "Log types to log. Leave empty to disable.\nSeparate with commas.",
+        "required": false
+    },
     "reactions": { "type": "bool" },
     "suggestthreads": { "type": "bool" },
     "tickets": {

@@ -9,6 +9,7 @@
     "joinmessage": "*The message when someonye joins the sewvew. (<message>/false)\nVawiabwes: {USER MENTION} {USER TAG}*",
     "maxppsize": "*Maximum pp size in boner and instaboner commands (<75)*",
     "tickets": "*Toggwes the ticket system (buttons/reactions/false)*",
+    "auditlogs": "*Logs certain events in the guild (log types separated by commas)*\n*Logchannel must be set*",
     "disabledcmds": "*Disable certain commands from the bot (commands separated by commas)*",
     "suggestionchannel": "*The channyew whewe the bot puts suggestions in (false/channyewId)*",
     "suggestthreads": "*Cweates a thwead when a suggestion is cweated f-f-fow discussion (true/false)*",
