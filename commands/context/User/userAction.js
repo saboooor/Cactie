@@ -68,7 +68,7 @@ module.exports = {
 			const collector = selectmsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async btnint => {
 				const actionName = btnint.values[0].split('_')[1];
-				action(btnint.message, btnint.member, [btnint.member.id], actionName, lang);
+				action(btnint.message, btnint.member, [member.id], actionName, lang);
 				collector.stop();
 			});
 		}
