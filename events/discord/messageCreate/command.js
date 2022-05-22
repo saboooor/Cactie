@@ -23,7 +23,10 @@ module.exports = async (client, message) => {
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
-	let lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	let lang = require('../../../lang/English/msg.json');
+	if (message.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../../lang/English/msg.json');
+	else if (message.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../../lang/Portuguese/msg.json');
+	if (srvconfig.language != 'false') lang = require(`../../../lang/${srvconfig.language}/msg.json`);
 	if (data[0]) lang = require(`../../../lang/${data[0].language}/msg.json`);
 
 	// Use mention as prefix instead of prefix too

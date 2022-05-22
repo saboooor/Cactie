@@ -12,7 +12,7 @@ module.exports = {
 	options: require('../../options/lang.js'),
 	async execute(message, args, client, lang) {
 		try {
-			if (args[0].toLowerCase() == 'reset') {
+			if (args[0].toLowerCase() == 'reset' || args[0].toLowerCase() == 'false') {
 				// Delete settings database for guild and reply
 				client.delData('memberdata', 'memberId', message.createdById);
 				return message.reply({ content: '**Your language has been reset.**' });
