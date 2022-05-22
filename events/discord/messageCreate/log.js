@@ -1,7 +1,7 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 module.exports = async (client, message) => {
 	// Check if message was sent in a guild
-	if (!message.guild || message.author.id == client.user.id) return;
+	if (!message.guild || message.author.bot) return;
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
