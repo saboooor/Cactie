@@ -45,9 +45,11 @@ module.exports = {
 
 			// Set embed description with page and stuff
 			SettingsEmbed.setDescription(configlist.join('\n'))
-				.addFields([{ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' }])
-				.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', maxPages) })
-				.addFields([{ name: lang.dashboard.confusing, value: lang.dashboard.use }]);
+				.addFields([
+					{ name: 'Usage', value: 'Click the buttons below to edit the specified setting or navigate' },
+					{ name: lang.dashboard.confusing, value: lang.dashboard.use },
+				])
+				.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', maxPages) });
 
 			// Add buttons for page changing
 			const pages = new ActionRowBuilder()
