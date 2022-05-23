@@ -10,7 +10,8 @@ module.exports = {
 	botperm: 'ManageMessages',
 	async execute(message, args, client) {
 		try {
-			return client.error('Admin commands are currently unavailable due to a lack of API endpoint.', message);
+			// Check if user is owner
+			if (!message.member.isOwner) return client.error('You need to be the server owner to use this command!', message, true);
 
 			// Check if arg is a number and is more than 100
 			if (isNaN(args[0])) return client.error('That is not a number!', message, true);

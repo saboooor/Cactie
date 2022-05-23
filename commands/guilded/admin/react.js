@@ -6,8 +6,8 @@ module.exports = {
 	usage: '<Message Link / Id (only in channel)> <Emoji Id>',
 	async execute(message, args, client) {
 		try {
-			return client.error('Admin commands are currently unavailable due to a lack of API endpoint.', message);
-
+			// Check if user is owner
+			if (!message.member.isOwner) return client.error('You need to be the server owner to use this command!', message, true);
 			const ReactEmbed = new Embed()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Reacted to message!');
