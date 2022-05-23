@@ -133,7 +133,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 		// Set song color from album art
 		if (song.img) song.colors = (await getColors(song.img, { count: 2 })).map(color => { return color.num(); });
-		else song.colors = [Math.floor(Math.random() * 16777215), Math.floor(Math.random() * 16777215)];
+		else song.colors = [0x212121, 0x4e4e4e];
 
 		// If song image isn't set, set it to the default music image
 		if (!song.img) song.img = 'https://cactie.smhsmh.club/assets/images/musicplaceholder.png';
