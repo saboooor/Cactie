@@ -15,7 +15,7 @@ module.exports = {
 			if (prop == 'disabledcmds' || prop == 'auditlogs') value = value.replace(/ /g, '');
 			// Check if auditlog has supported logs
 			if (prop == 'auditlogs' && value != 'false') {
-				value = value.toLowerCase();
+				value = value.replace(/\n/g, '').toLowerCase();
 				const logs = value.split(',');
 				const supportedLogs = ['messagecreate', 'memberjoin', 'memberleave'];
 				for (const log of logs) if (!supportedLogs.includes(log.toLowerCase())) return client.error(`${log} is not a valid log type!\nThe valid log types are:\n${supportedLogs.join(', ')}`, interaction, true);
