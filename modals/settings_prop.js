@@ -17,7 +17,7 @@ module.exports = {
 			if (prop == 'auditlogs' && value != 'false') {
 				value = value.toLowerCase();
 				const logs = value.split(',');
-				const supportedLogs = ['messagecreate'];
+				const supportedLogs = ['messagecreate', 'memberjoin', 'memberleave'];
 				for (const log of logs) if (!supportedLogs.includes(log.toLowerCase())) return client.error(`${log} is not a valid log type!\nThe valid log types are:\n${supportedLogs.join(', ')}`, interaction, true);
 			}
 			// Leavemessage / Joinmessage can only be enabled if the systemChannel is set (may change later to a separate setting)
