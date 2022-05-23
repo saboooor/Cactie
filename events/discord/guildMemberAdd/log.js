@@ -1,13 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, member) => {
-	// Check if message was sent in a guild
-	if (!member.guild) return;
-
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
 
 	// Check if log is enabled and send log
-	if (srvconfig.auditlogs.split(',').includes('memberjoin')) {
+	if (['memberjoin', 'member', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) {
 		const logchannel = member.guild.channels.cache.get(srvconfig.logchannel);
 		if (!logchannel) return;
 		const logEmbed = new EmbedBuilder()
