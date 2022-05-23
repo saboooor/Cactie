@@ -43,5 +43,8 @@
 		"space-unary-ops": "error",
 		"spaced-comment": "error",
 		"yoda": "error"
+	},
+	"globals": {
+		"fetch": "readonly"
 	}
 }
