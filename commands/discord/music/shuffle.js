@@ -26,6 +26,15 @@ module.exports = {
 
 			// Shuffle queue and reply
 			player.queue.shuffle();
+			if (player.websockets) {
+				player.websockets.forEach(ws => {
+					ws.send(JSON.stringify({
+						type: 'track',
+						current: player.queue.current,
+						queue: player.queue,
+					}));
+				});
+			}
 			const ShuffleEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:shuffle:${shuffle}> **${lang.music.queue.shuffle.ed}**`)

@@ -22,7 +22,7 @@ module.exports = client => {
 		if (!player) return ws.send(JSON.stringify({ type: 'error', message: `Player not found!\nPlay some music with ${client.user.username} first!` }));
 		if (!guild.channels.cache.get(player.options.voiceChannel)) return ws.send(JSON.stringify({ type: 'error', message: `Player not found!\nPlay some music with ${client.user.username} first!` }));
 		player.websockets ? player.websockets.push(ws) : player.websockets = [ws];
-		const { volume, paused, position, queue } = player;
+		const { paused, position, queue } = player;
 		const srvconfig = await client.getData('settings', 'guildId', player.guild);
 		const role = guild.roles.cache.get(srvconfig.djrole);
 
@@ -33,8 +33,12 @@ module.exports = client => {
 				voiceChannel: `#${guild.channels.cache.get(player.options.voiceChannel).name}`,
 				hasdj: srvconfig.djrole == 'false' ? true : member.roles.cache.has(srvconfig.djrole),
 				djrole: role ? role.name : null,
-				volume, paused,
 			},
+		}));
+
+		ws.send(JSON.stringify({
+			type: 'volume',
+			volume: player.volume,
 		}));
 
 		if (queue && queue.current) {
@@ -44,6 +48,10 @@ module.exports = client => {
 				queue,
 			}));
 			ws.send(JSON.stringify({
+				type: 'playing',
+				paused,
+			}));
+			ws.send(JSON.stringify({
 				type: 'progress',
 				max: queue.current.duration,
 				pos: position,
@@ -51,7 +59,41 @@ module.exports = client => {
 		}
 
 		ws.on('message', async function message(data) {
-			console.log(data.data);
+			const json = JSON.parse(`${data}`);
+			if (json.req == 'shuffle') {
+				await player.queue.shuffle();
+				player.websockets.forEach(playerws => {
+					playerws.send(JSON.stringify({
+						type: 'track',
+						current: queue.current,
+						queue,
+					}));
+				});
+			}
+			if (json.req == 'toggleplay') {
+				await player.pause(!player.paused);
+				player.websockets.forEach(playerws => {
+					playerws.send(JSON.stringify({
+						type: 'playing',
+						paused: player.paused,
+					}));
+				});
+			}
+			if (json.req == 'skip') {
+				if (json.amount) await player.queue.remove(0, json.amount);
+				await player.stop();
+			}
+			if (json.req == 'volume') {
+				await player.setVolume(json.volume);
+				player.websockets.forEach(playerws => {
+					if (playerws == ws) return;
+					playerws.send(JSON.stringify({
+						type: 'volume',
+						volume: player.volume,
+					}));
+				});
+			}
+			if (json.req == 'seek') await player.seek(json.time);
 		});
 
 		ws.on('close', async function close() {
