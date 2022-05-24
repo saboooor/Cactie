@@ -38,7 +38,7 @@ module.exports = async (client, message) => {
 			guild: player.guild,
 			textChannel, queue, trackRepeat, queueRepeat, position, paused, volume,
 		};
-		const prevlines = fs.readFileSync('playercache.txt');
+		const prevlines = fs.existsSync('playercache.txt') ? fs.readFileSync('playercache.txt') : '';
 		fs.writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
 		player.destroy();
 	});

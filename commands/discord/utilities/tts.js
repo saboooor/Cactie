@@ -1,7 +1,7 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { createAudioResource, getVoiceConnection, createAudioPlayer, joinVoiceChannel, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { createPaste } = require('hastebin');
-const { TrackUtils } = require('erela.js-vk');
+const { TrackUtils } = require('erela.js');
 const googleTTS = require('google-tts-api');
 const resources = {};
 module.exports = {

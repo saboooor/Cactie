@@ -28,8 +28,20 @@ module.exports = {
 			if (song) QueueEmbed.addFields([{ name: `<:music:${music}> **${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
 			let mapped = tracks.map((track, i) => `**${start + (++i)}** • ${track.title} \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\` [${track.requester}]`).join('\n');
 			if (mapped.length > 1024) mapped = `List too long, shortened to a link\n${await createPaste(mapped, { server: 'https://bin.birdflop.com' })}`;
-			if (!tracks.length) QueueEmbed.addFields([{ name: 'No tracks up next', value: `in ${page > 1 ? `page ${page}` : 'the queue'}.` }]);
-			else QueueEmbed.addFields([{ name: `<:music:${music}> Queue List`, value: mapped }]);
+			if (!tracks.length) {
+				QueueEmbed.addFields([{
+					name: 'No tracks up next',
+					value: `in ${page > 1 ? `page ${page}` : 'the queue'}.`,
+				}]);
+			}
+			else {
+				tracks.forEach((track, i) => {
+					QueueEmbed.addFields([{
+						name: `${i + 1} • ${track.title.split('\n')[0]}`,
+						value: `${track.title.split('\n')[1] ? `${track.title.split('\n')[1]}\n` : ''}\`[${convertTime(track.duration)}]\` [${track.requester}]`,
+					}]);
+				});
+			}
 
 			// Set current page number in footer and reply
 			QueueEmbed.setFooter({ text: lang.page.replace('{1}', page > maxPages ? maxPages : page).replace('{2}', maxPages) });

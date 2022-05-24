@@ -1,7 +1,8 @@
-const { TrackUtils } = require('erela.js-vk');
+const { TrackUtils } = require('erela.js');
 const fs = require('fs');
 module.exports = async (client, node) => {
 	client.logger.info(`Node "${node.options.identifier}" connected`);
+	if (!fs.existsSync('playercache.txt')) return;
 	let data = fs.readFileSync('playercache.txt');
 	data = data.toString().split('\n');
 	data.splice(0, 1);

@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { convertTime } = require('./convert.js');
 const getColors = require('get-image-colors');
 const getlfmCover = require('./getlfmCover.js');
-const { play, music, warn, leave, no, srch } = require('../../lang/int/emoji.json');
+const { play, music, warn, leave, no, srch, refresh } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;
@@ -95,21 +95,13 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		// Add description to embed and push every song in the playlist
 		PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.playlist[top ? 'top' : 'end']}** \`[${Searched.tracks.length} / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
 			.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
-		await Searched.tracks.forEach(song => {
-			// Set image if thumbnail exists
-			if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
-			songs.push(song);
-		});
+		await Searched.tracks.forEach(song => songs.push(song));
 		row.push(undo);
 	}
 	else {
-		// Set image if thumbnail exists
-		if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
-
 		// Add description to embed and the song
 		PlayEmbed.setDescription(`<:music:${music}> **${lang.music.added.song[top ? 'top' : 'end']}** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
-			.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() })
-			.setThumbnail(track.img);
+			.setFooter({ text: requester.user.tag, iconURL: requester.user.displayAvatarURL() });
 		songs.push(Searched.tracks[0]);
 		row.push(undo);
 	}
@@ -120,12 +112,16 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	// If playtop, reverse list of songs to add them in the right order
 	if (top) songs.reverse();
 
+	// Found songs, update message while processing
+	playMsg.edit({ content: `<:play:${play}> **${lang.music.search.found.replace('{query}', search)}**\n<:refresh:${refresh}> **Processing songs... Please wait**`, components: row });
+
 	// For each song, set the requester, add the album art, and separate artist and title, then add them to the queue
 	for (const song of songs) {
 		// Set requester
 		song.requester = requester.user;
 
 		// If song image isn't set and artist is set, get album art from last.fm
+		if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
 		if (!song.img && song.author) {
 			const img = await getlfmCover(song.title, song.author.split(',')[0], client).catch(err => client.logger.warn(err));
 			if (img && typeof img === 'string') song.img = img;
@@ -141,7 +137,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		// If artist exists, set the title to the author and title separated by new lines
 		if (song.author) song.title = `${song.title}\n${song.author}`;
 
-		// Add song to start of playlist
+		// Add songs to queue
 		await player.queue[top ? 'unshift' : 'add'](song);
 	}
 
