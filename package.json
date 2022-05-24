@@ -22,7 +22,6 @@
     "express": "^4.18.1",
     "fs": "^0.0.1-security",
     "get-image-colors": "^4.0.1",
-    "google-tts-api": "^2.0.2",
     "guilded.js": "^0.12.0",
     "hastebin": "^0.2.1",
     "last-fm": "^5.3.0",
