@@ -5,7 +5,7 @@ module.exports = async (client) => {
 	schedule('* * * * *', async () => {
 		await client.manager.players.forEach(async player => {
 			if (player.timeout && player.timeout < Date.now()) {
-				if (!player.voiceChannel) return player.destroy();
+				if (!player.textChannel) return player.destroy();
 				const AlertEmbed = new EmbedBuilder()
 					.setColor(Math.floor(Math.random() * 16777215))
 					.setDescription(`<:alert:${warn}> **Left because of 5 minutes of inactivity!**`)
