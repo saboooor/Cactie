@@ -32,10 +32,6 @@ module.exports = {
 								.setEmoji({ name: '🤗' })
 								.setValue('action_hug'),
 							new SelectMenuOptionBuilder()
-								.setLabel(`Hump ${member.displayName}`)
-								.setEmoji({ name: '😳' })
-								.setValue('action_hump'),
-							new SelectMenuOptionBuilder()
 								.setLabel(`Kill ${member.displayName}`)
 								.setEmoji({ name: '🔪' })
 								.setValue('action_kill'),
