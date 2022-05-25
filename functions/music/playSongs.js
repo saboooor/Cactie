@@ -123,7 +123,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		// If song image isn't set and artist is set, get album art from last.fm
 		if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
 		if (!song.img && song.author) {
-			const img = await getlfmCover(song.title, song.author.split(',')[0], client).catch(err => client.logger.warn(err));
+			const img = await getlfmCover(song.title, song.author, client).catch(err => client.logger.warn(err));
 			if (img && typeof img === 'string') song.img = img;
 		}
 
