@@ -3,8 +3,8 @@ const { ActivityType } = require('discord.js');
 module.exports = async (client) => {
 	schedule('*/10 * * * * *', async () => {
 		const activities = [
-			['Game', 'with you ;)'],
-			['Game', '/help'],
+			['Playing', 'with you ;)'],
+			['Playing', '/help'],
 			['Watching', 'cactie.smhsmh.club'],
 			['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
 			['Competing', `${client.guilds.cache.size} servers!`],
