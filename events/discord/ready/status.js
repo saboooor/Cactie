@@ -14,6 +14,6 @@ module.exports = async (client) => {
 		];
 		const i = Math.floor(Math.random() * activities.length);
 		const activity = activities[i];
-		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }] });
+		client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0]] }], status: 'dnd' });
 	});
 };
