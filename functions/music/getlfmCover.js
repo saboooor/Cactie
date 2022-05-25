@@ -9,14 +9,14 @@ module.exports = async function getlfmCover(title, author) {
 		lastfm.trackSearch({ q: title }, async (err, data) => {
 			if (err) reject(err);
 			data.result.forEach(result => {
-				if (!author.toLowerCase().includes(result.artistName.toLowerCase()) || !result.images[0] || result.images[0].includes('2a96cbd8b46e442fc41c2b86b821562f')) return;
+				if ((result.artistName.toLowerCase() != 'various artists' && !author.toLowerCase().includes(result.artistName.toLowerCase())) || !result.images[0] || result.images[0].includes('2a96cbd8b46e442fc41c2b86b821562f')) return;
 				if (!img) img = result.images.pop();
 			});
 			if (!img) {
 				lastfm.albumSearch({ q: title }, async (alberr, albdata) => {
 					if (alberr) reject(alberr);
 					albdata.result.forEach(result => {
-						if (!author.toLowerCase().includes(result.artistName.toLowerCase()) || !result.images[0] || result.images[0].includes('2a96cbd8b46e442fc41c2b86b821562f')) return;
+						if ((result.artistName.toLowerCase() != 'various artists' && !author.toLowerCase().includes(result.artistName.toLowerCase())) || !result.images[0] || result.images[0].includes('2a96cbd8b46e442fc41c2b86b821562f')) return;
 						if (!img) img = result.images.pop();
 					});
 					if (img) resolve(img);
