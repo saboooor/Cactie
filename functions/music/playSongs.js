@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('./convert.js');
 const getColors = require('get-image-colors');
-const getlfmCover = require('./getlfmCover.js');
+const getCover = require('./getCover.js');
 const { play, music, warn, leave, no, srch, refresh } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
@@ -123,7 +123,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		// If song image isn't set and artist is set, get album art from last.fm
 		if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
 		if (!song.img && song.author) {
-			const img = await getlfmCover(song.title, song.author, client).catch(err => client.logger.warn(err));
+			const img = await getCover(song.title, song.author, client).catch(err => client.logger.warn(err));
 			if (img && typeof img === 'string') song.img = img;
 		}
 
