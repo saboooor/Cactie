@@ -20,7 +20,7 @@ module.exports = async function getlfmCover(title, author) {
 						if (!img) img = result.images.pop();
 					});
 					if (img) resolve(img);
-					else reject('No album/track image found');
+					else resolve('https://cactie.smhsmh.club/assets/images/musicplaceholder.png');
 				});
 			}
 			else {
