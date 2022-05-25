@@ -1,7 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = async (client) => {
 	client.logger.info('Bot started!');
-	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }], status: 'dnd' });
+	client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: 'PLAYING' }] });
+	client.user.setStatus('dnd');
 	if (!client.application?.owner) await client.application?.fetch();
 	const commands = await client.application?.commands.fetch();
 	await client.slashcommands.forEach(async command => {
