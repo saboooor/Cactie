@@ -11,7 +11,7 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setTitle('Here are my reactions');
 			client.reactions.forEach(reaction => {
-				if (!reaction.private) ReactionEmbed.addFields([{ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` }]);
+				ReactionEmbed.addFields([{ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` }]);
 			});
 			message.reply({ embeds: [ReactionEmbed] });
 		}

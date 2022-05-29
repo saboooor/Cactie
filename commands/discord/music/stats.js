@@ -1,7 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 module.exports = {
-	name: 'nodestats',
+	name: 'stats',
 	description: 'Check music backend stats',
+	cooldown: 10,
 	async execute(message, args, client) {
 		try {
 			const all = client.manager.nodes.map(node =>

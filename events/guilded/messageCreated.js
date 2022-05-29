@@ -18,7 +18,7 @@ module.exports = async (client, message) => {
 
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {
-		if ((srvconfig.reactions != 'false' || reaction.private)
+		if (srvconfig.reactions != 'false'
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
 		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
 			reaction.execute(message);

@@ -120,4 +120,3 @@ data/
 package-lock.json
 playercache.txt
 config.yml
-pterodactyl.yml
