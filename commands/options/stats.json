@@ -1,8 +1,8 @@
 [
     {
         "type": "STRING",
-        "name": "server",
-        "description": "Specify a server",
-        "required": false
+        "name": "ip",
+        "description": "Specify a server IP",
+        "required": true
     }
 ]

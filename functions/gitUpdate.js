@@ -1,5 +1,3 @@
-const { NodeactylClient } = require('nodeactyl');
-const servers = require('../config/pterodactyl.json');
 const fs = require('fs');
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async function gitUpdate(client, message) {
@@ -7,11 +5,8 @@ module.exports = async function gitUpdate(client, message) {
 	const embed = message.embeds[0];
 	if (!message.webhookId || !message.channel.id == '812082273393704960' || !embed || !embed.title) return;
 
-	// get the server name from pterodactyl.json and branch name from embed title and check if it's this bot
-	let server = null;
-	if (embed.title.startsWith('[Cactie:master]') && servers['pup'].client) server = servers['pup'];
-	else if (embed.title.startsWith('[Cactie:dev]') && servers['pup dev'].client) server = servers['pup dev'];
-	if (!server || !server.client) return;
+	// check branch
+	if (!embed.title.startsWith('[Cactie:master]')) return;
 
 	// Check if all commits in message skip the update
 	const commits = embed.description.split('\n');
@@ -46,6 +41,5 @@ module.exports = async function gitUpdate(client, message) {
 
 	// wait 1 sec and restart the bot
 	await sleep(1000);
-	const Client = new NodeactylClient(server.url, server.apikey);
-	await Client.restartServer(server.id);
+	process.exit(1);
 };

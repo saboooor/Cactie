@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = {
-	name: 'nodestats',
+	name: 'stats',
 	description: 'Check music backend stats',
 	async execute(message, args, client) {
 		try {

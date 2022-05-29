@@ -1,0 +1,29 @@
+con:
+  discord:
+    token: 'ODQ0NDA0NjgxODY2NDc3NTk4.YKR7JA.ADxGKxMtYwYYNwYU7bBqcKm1k-s' # Discord bot token
+  guilded:
+    token: 'gapi_2TJP5m+Lv4VjEMaQSSvxw9VRv+bqttcLQOn4WWtx/c7reJhoK2v9yTQG7J1Y4aZBB8wT08lD1S1E2X6d85B53g==' # Guilded bot token
+  websocket: 19132
+# vote:
+#   webhook: # webhook port
+#   auth: # webhook auth (from vote site)
+
+mysql: # MySQL database credentials
+  host: 'godzillagroin.netherdepths.com'
+  user: 'u9_ApopBOQtwn'
+  password: 'mhZnvx=2Nei@ZxEVK9nDfZG@'
+  database: 's9_PupCanary'
+
+music:
+  spotify: # Spotify api id and secret
+    id: '87cceaf2b72145f6bada64d2aba3c063'
+    secret: '88e628498cd447a3bf92cbc4256d0a88'
+  lastfm: 'eef9005618a2ddd848890c979b620757' # last.fm api key
+  nodes:
+    - host: '66.23.206.245' # lavalink node host ip
+      port: 2333
+      password: 'aSBmdWNrZWQgeW91ciBtb20='
+      identifier: 'midget' # lavalink node name
+      retryAmount: 3
+      retryDelay: 5000
+      secure: false

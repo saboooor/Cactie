@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'dmbomb',
+	name: 'psa',
 	description: 'Broadcasts a message to all server owners.',
 	async execute(message, args, client) {
 		// Check if user is sab lolololol

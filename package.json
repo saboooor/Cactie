@@ -29,7 +29,6 @@
     "mariadb": "^3.0.0",
     "ms": "^2.1.3",
     "node-cron": "^3.0.0",
-    "nodeactyl": "^3.2.2",
     "solenolyrics": "^5.0.0",
     "winston": "^3.7.2",
     "yaml": "^2.1.0"
