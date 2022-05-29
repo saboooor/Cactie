@@ -1,4 +1,4 @@
-const { SlashCommandIntegeOption, SlashCommandStringOption } = require('discord.js');
+const { SlashCommandIntegerOption, SlashCommandStringOption } = require('discord.js');
 module.exports = async function options(cmd) {
 	cmd.addIntegerOption(
 		new SlashCommandIntegerOption()
