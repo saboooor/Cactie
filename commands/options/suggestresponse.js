@@ -1,7 +1,7 @@
 const { SlashCommandStringOption } = require('discord.js');
 module.exports = async function options(cmd) {
 	cmd.addStringOption(
-		new SlashCommandIntegerOption()
+		new SlashCommandStringOption()
 			.setName('messageid')
 			.setDescription('The Id of the suggestion message')
 			.setRequired(true),
