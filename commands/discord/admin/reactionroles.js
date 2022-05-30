@@ -25,7 +25,7 @@ module.exports = {
 				if (messagelink[4] != message.guild.id) return client.error('That message is not in this server!\nDid you send a valid *message link*?', message, true);
 				const channel = await message.guild.channels.cache.get(messagelink[5]);
 				if (!channel) return client.error('That channel doesn\'t exist!\nDid you send a valid *message link*?', message, true);
-				const msgs = await channel.messages.fetch({ around: messagelink[6], limit: 1 });
+				const msgs = await channel.messages.fetch(messagelink[6]);
 				const fetchedMsg = msgs.first();
 				if (!fetchedMsg) return client.error('That message doesn\'t exist!\nDid you send a valid *message link*?', message, true);
 				const role = await message.guild.roles.cache.get(args[3].replace(/\D/g, ''));
