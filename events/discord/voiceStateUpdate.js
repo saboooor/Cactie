@@ -38,7 +38,7 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of server mute`);
 		PauseEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.srvmute}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] }).catch(err => client.logger.warn(err));
 		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
 	}
@@ -46,7 +46,7 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(false);
 		client.logger.info(`Resumed player in ${newState.guild.name} because of server unmute`);
 		ResEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.srvunmute}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] }).catch(err => client.logger.warn(err));
 		else textChannel.send({ embeds: [ResEmbed] });
 		return player.timeout = null;
 	}
@@ -73,7 +73,7 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of empty channel`);
 		PauseEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.leave}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] }).catch(err => client.logger.warn(err));
 		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
 	}
@@ -81,7 +81,7 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(false);
 		client.logger.info(`Resumed player in ${newState.guild.name} because of user join`);
 		ResEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.join}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] }).catch(err => client.logger.warn(err));
 		else if (!oldState.guild.members.cache.get(oldState.id).user.bot) textChannel.send({ embeds: [ResEmbed] });
 		return player.timeout = null;
 	}
@@ -90,7 +90,7 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(true);
 		client.logger.info(`Paused player in ${newState.guild.name} because of user deafen`);
 		PauseEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.deafened}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] }).catch(err => client.logger.warn(err));
 		else textChannel.send({ embeds: [PauseEmbed] });
 		return player.timeout = Date.now() + 300000;
 	}
@@ -98,7 +98,7 @@ module.exports = async (client, oldState, newState) => {
 		player.pause(false);
 		client.logger.info(`Resumed player in ${newState.guild.name} because of user undeafen`);
 		ResEmbed.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.undeafened}` });
-		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] });
+		if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResEmbed] }).catch(err => client.logger.warn(err));
 		else textChannel.send({ embeds: [ResEmbed] });
 		return player.timeout = null;
 	}
