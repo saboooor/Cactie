@@ -20,10 +20,7 @@ module.exports = {
 			if (messagelink[4] != message.guild.id) return client.error('That message is not in this server!', message, true);
 			const channel = await message.guild.channels.cache.get(messagelink[5]);
 			if (!channel) return client.error('That channel doesn\'t exist!', message, true);
-			const msgs = await channel.messages.fetch({ around: messagelink[6], limit: 1 });
-			const fetchedMsg = msgs.first();
-			if (!fetchedMsg) return client.error('That message doesn\'t exist!');
-			await fetchedMsg.react(args[1]).catch(err => { return client.error(`Reaction failed!\n\`${err}\`\nUse an emote from a server that ${client.user.username} is in or an emoji.`, message, true); });
+			await channel.messages.react(messagelink[6], args[1]).catch(err => { return client.error(`Reaction failed!\n\`${err}\`\nUse an emote from a server that ${client.user.username} is in or an emoji.`, message, true); });
 			message.reply({ embeds: [ReactEmbed] });
 		}
 		catch (err) { client.error(err, message); }

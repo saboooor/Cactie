@@ -44,17 +44,9 @@ module.exports = {
 				await sleep(1000);
 				await thread.send({ content: `${message.member}`, embeds: [CreateEmbed] });
 			}
-			if (!message.commandName) {
-				if (channel != message.channel) {
-					const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });
-					await sleep(5000);
-					created.delete().catch(err => client.logger.error(err.stack));
-				}
-				message.delete().catch(err => client.logger.warn(err));
-			}
-			else {
-				message.reply({ content: `**Suggestion Created at ${channel}!**` });
-			}
+			const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });
+			await sleep(5000);
+			if (!message.commandName) created.delete().catch(err => client.logger.error(err.stack));
 		}
 		catch (err) { client.error(err, message); }
 	},
