@@ -47,5 +47,8 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	PostEmbed.setImage(data.url);
 	let files;
 	if (data.url.endsWith('.mp4') || data.url.endsWith('.gifv') || data.url.endsWith('DASH_480.mp4?source=fallback')) files = [{ attachment: data.url, name: data.url.split('/').pop() }];
-	message.reply({ embeds: [PostEmbed], files });
+	message.reply({ embeds: [PostEmbed], files }).catch(err => {
+		client.logger.error(err);
+		return redditFetch(subreddits, message, client, attempts + 1);
+	});
 };

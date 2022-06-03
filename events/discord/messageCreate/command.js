@@ -13,7 +13,7 @@ module.exports = async (client, message) => {
 		return message.msgreply(object).catch(err => {
 			client.logger.warn(err);
 			return message.channel.send(object).catch(err => {
-				client.logger.error(err.stack);
+				throw Error(err);
 			});
 		});
 	};
