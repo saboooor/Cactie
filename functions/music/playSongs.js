@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { convertTime } = require('./convert.js');
 const getColors = require('get-image-colors');
 const getCover = require('./getCover.js');
-const { play, music, warn, leave, no, srch, refresh } = require('../../lang/int/emoji.json');
+const { play, music, warn, leave, no, srch, refresh, join } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;
@@ -15,6 +15,12 @@ module.exports = async function playSongs(requester, message, args, client, lang
 			volume: 50,
 			selfDeafen: true,
 		});
+
+		// Send message to channel
+		const JoinEmbed = new EmbedBuilder()
+			.setColor(Math.floor(Math.random() * 16777215))
+			.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${channel}`)}**`);
+		message.channel.send({ embeds: [JoinEmbed] });
 	}
 
 	// If player isn't connected, connect it
@@ -22,10 +28,29 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 	// Get search results from YouTube, Spotify, or Apple Music
 	const search = args.join(' '); const songs = [];
-	const playMsg = await message.reply({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
+	let playMsg;
 
 	// Create embed for responses
 	const PlayEmbed = new EmbedBuilder();
+
+	// If the text channel is not the voice channel, send notice
+	if (message.channel.id != player.textChannel) {
+		const textChannel = client.channels.cache.get(player.textChannel);
+		playMsg = await textChannel.send({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
+
+		const row = new ActionRowBuilder()
+			.addComponents([new ButtonBuilder()
+				.setURL(playMsg.url)
+				.setLabel('Go to channel')
+				.setStyle(ButtonStyle.Link),
+			]);
+
+		PlayEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`);
+		message.reply({ embeds: [PlayEmbed], components: [row] });
+	}
+	else {
+		playMsg = await message.reply({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
+	}
 
 	// Create undo button
 	const undo = new ActionRowBuilder()

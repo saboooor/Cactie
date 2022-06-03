@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { join } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'join',
@@ -34,6 +34,22 @@ module.exports = {
 				.setColor(Math.floor(Math.random() * 16777215))
 				.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
+
+			// If the text channel is not the voice channel, send notice
+			if (message.channel.id == player.textChannel) return;
+
+			const textChannel = client.channels.cache.get(player.textChannel);
+			const msg = await textChannel.send({ embeds: [JoinEmbed] });
+
+			const row = new ActionRowBuilder()
+				.addComponents([new ButtonBuilder()
+					.setURL(msg.url)
+					.setLabel('Go to channel')
+					.setStyle(ButtonStyle.Link),
+				]);
+
+			JoinEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`);
+			message.channel.send({ embeds: [JoinEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, message); }
 	},

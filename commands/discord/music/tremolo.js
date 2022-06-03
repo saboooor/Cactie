@@ -33,7 +33,7 @@ module.exports = {
 			const filterEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
 				.setTitle('Tremolo effect set!')
-				.setDescription(`**Frequency:** ${player.effects.tremolo.frequency}\n**Depth:** ${player.effects.tremolo.depth * 100}% (${player.effects.echo.depth})`)
+				.setDescription(`**Frequency:** ${player.effects.tremolo.frequency}\n**Depth:** ${player.effects.tremolo.depth * 100}% (${player.effects.tremolo.depth})`)
 				.setFields([{ name: 'Command Usage', value: '`/tremolo [Frequency] [Depth between 0 and 1]`' }])
 				.setFooter({ text: 'To clear all effects, do /cleareffects' });
 

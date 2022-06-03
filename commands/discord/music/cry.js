@@ -34,7 +34,7 @@ module.exports = {
 			const filterEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
 				.setTitle('Vibrato effect set!')
-				.setDescription(`**Frequency:** ${player.effects.vibrato.frequency}\n**Depth:** ${player.effects.vibrato.depth * 100}% (${player.effects.echo.depth})`)
+				.setDescription(`**Frequency:** ${player.effects.vibrato.frequency}\n**Depth:** ${player.effects.vibrato.depth * 100}% (${player.effects.vibrato.depth})`)
 				.setFields([{ name: 'Command Usage', value: '`/cry [Frequency] [Depth between 0 and 1]`' }])
 				.setFooter({ text: 'To clear all effects, do /cleareffects' });
 
