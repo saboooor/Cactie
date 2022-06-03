@@ -22,7 +22,7 @@ module.exports = {
 				player = client.manager.create({
 					guild: message.guild.id,
 					voiceChannel: channel.id,
-					textChannel: message.channel.id,
+					textChannel: message.guild.features.includes('TEXT_IN_VOICE_ENABLED') ? channel.id : message.channel.id,
 					volume: 50,
 					selfDeafen: true,
 				});
@@ -32,7 +32,7 @@ module.exports = {
 			// Send message to channel
 			const JoinEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
-				.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${message.channel}`)}**`);
+				.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
 		}
 		catch (err) { client.error(err, message); }

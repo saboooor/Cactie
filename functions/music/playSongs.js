@@ -11,7 +11,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		player = client.manager.create({
 			guild: message.guild.id,
 			voiceChannel: channel.id,
-			textChannel: message.channel.id,
+			textChannel: message.guild.features.includes('TEXT_IN_VOICE_ENABLED') ? channel.id : message.channel.id,
 			volume: 50,
 			selfDeafen: true,
 		});
