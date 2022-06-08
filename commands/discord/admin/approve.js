@@ -14,7 +14,7 @@ module.exports = {
 		try {
 			// Fetch the message
 			let approving = !isNaN(args[0]) ? await message.channel.messages.fetch(args[0]) : null;
-			let fetchedMsg = approving ? approving.first() : null;
+			let fetchedMsg = approving ? approving : null;
 
 			// Check if the message exists, if not, check in suggestionchannel, if not, check if it's in thread, if not, return
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
