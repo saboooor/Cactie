@@ -30,12 +30,13 @@ module.exports = {
 					...player.effects,
 					vibrato: {
 						frequency: Number(args[1]) ?? 14,
-						depth: Number(args[2]) / 100 ?? 1,
+						depth: Number(args[2] / 100) ?? 1,
 					},
 				};
 			}
 			else if (type == 'echo') {
-				// Check if decay is between 0 and 1
+				// Check if delay is over 0 and decay is between 0 and 1
+				if (args[1] && args[1] <= 0) return message.reply('The delay must be higher than 0!');
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The decay must be between 0 and 100!');
 
 				// Set effects
@@ -43,7 +44,7 @@ module.exports = {
 					...player.effects,
 					echo: {
 						delay: Number(args[1]) ?? 0.5,
-						decay: Number(args[2]) / 100 ?? 0.2,
+						decay: Number(args[2] / 100) ?? 0.2,
 					},
 				};
 			}
@@ -80,7 +81,7 @@ module.exports = {
 					...player.effects,
 					tremolo: {
 						frequency: Number(args[1]) ?? 14,
-						depth: Number(args[2]) / 100 ?? 1,
+						depth: Number(args[2] / 100) ?? 1,
 					},
 				};
 			}
