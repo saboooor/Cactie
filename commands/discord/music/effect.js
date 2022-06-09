@@ -7,7 +7,6 @@ module.exports = {
 	args: true,
 	voteOnly: true,
 	player: true,
-	playing: true,
 	options: require('../../options/effect.js'),
 	async execute(message, args, client) {
 		try {
