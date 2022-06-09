@@ -14,7 +14,7 @@ module.exports = async function getMessages(channel, limit = 100) {
             sum_messages.push(messages);
             last_id = messages.last().id;
     
-            if (messages.size != 100 || sum_messages >= limit) break;
+            if (messages.size != 100 || sum_messages.length >= Math.ceil(limit / 100)) break;
         }    
     }
 
