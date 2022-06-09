@@ -147,9 +147,9 @@ module.exports = {
 			collector.on('collect', async btnint => {
 				btnint.deferUpdate();
 				player.effects.current = !player.effects.current;
-				effectMsg.edit({ embeds: [filterEmbed], component: [player.effects.current ? queuerow : songrow] })
+				effectMsg.edit({ embeds: [filterEmbed], component: [player.effects.current ? queuerow : songrow] });
 			});
-			collector.on('end', () => effectMsg.edit({ embeds: [filterEmbed] }))
+			collector.on('end', () => effectMsg.edit({ embeds: [filterEmbed] }));
 		}
 		catch (err) { client.error(err, message); }
 	},
