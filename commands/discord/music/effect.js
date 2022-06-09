@@ -1,4 +1,5 @@
-const { EmbedBuilder } = require('discord.js');
+function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
+const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
 module.exports = {
 	name: 'effect',
 	description: 'Add various effects to the music (EXPERIMENTAL)',
@@ -111,7 +112,7 @@ module.exports = {
 
 			// Set fields according to effects
 			Object.keys(player.effects).forEach(effect => {
-				const field = { name: effect };
+				const field = { name: capFirstLetter(effect) };
 				if (effect == 'vibrato') field.value = `${player.effects.vibrato.frequency} Hz, ${player.effects.vibrato.depth * 100}%`;
 				else if (effect == 'echo') field.value = `${player.effects.echo.delay}s, ${player.effects.echo.decay * 100}%`;
 				else if (effect == 'pan') field.value = `${player.effects.rotation.rotationHz} Hz`;
@@ -121,8 +122,34 @@ module.exports = {
 				filterEmbed.addFields([field]);
 			});
 
+			// Button for only current song
+			const songrow = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('music_effect_current')
+						.setLabel('Only apply effects to current song')
+						.setStyle(ButtonStyle.Secondary),
+				]);
+			const queuerow = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('music_effect_current')
+						.setLabel('Apply effects to all songs')
+						.setStyle(ButtonStyle.Secondary),
+				]);
+
 			// Respond
-			message.reply({ embeds: [filterEmbed] });
+			const effectMsg = await message.reply({ embeds: [filterEmbed], component: [player.effects.current ? queuerow : songrow] });
+
+			// Collector for current song toggle
+			const filter = i => i.customId == 'music_effect_current';
+			const collector = effectMsg.createMessageComponentCollector({ filter, time: 60000 });
+			collector.on('collect', async btnint => {
+				btnint.deferUpdate();
+				player.effects.current = !player.effects.current;
+				effectMsg.edit({ embeds: [filterEmbed], component: [player.effects.current ? queuerow : songrow] })
+			});
+			collector.on('end', () => effectMsg.edit({ embeds: [filterEmbed] }))
 		}
 		catch (err) { client.error(err, message); }
 	},

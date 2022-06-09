@@ -4,6 +4,7 @@ const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = []; player.loopTrackAmount = [];
 	player.loopQueueAmount = []; player.shuffleAmount = [];
+	player.effects.current = false;
 	if (!player.voiceChannel) return;
 	const guild = client.guilds.cache.get(player.guild);
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
