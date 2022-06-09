@@ -57,7 +57,7 @@ module.exports = async (client, interaction) => {
 
 	// Set item to the command type
 	let item;
-	if (command.type == 'Message') item = (await interaction.channel.messages.fetch(interaction.targetId)).first();
+	if (command.type == 'Message') item = await interaction.channel.messages.fetch(interaction.targetId);
 	if (command.type == 'User') item = await interaction.guild.members.fetch(interaction.targetId);
 
 	// Defer and execute the command
