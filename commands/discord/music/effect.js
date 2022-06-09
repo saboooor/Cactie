@@ -36,14 +36,14 @@ module.exports = {
 			}
 			else if (type == 'echo') {
 				// Check if decay is between 0 and 1
-				if (args[2] && (args[2] <= 0 || args[2] > 1)) return message.reply('The decay must be between 0 and 1!');
+				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The decay must be between 0 and 100!');
 
 				// Set effects
 				player.effects = {
 					...player.effects,
 					echo: {
 						delay: Number(args[1]) ?? 0.5,
-						decay: Number(args[2]) ?? 0.2,
+						decay: Number(args[2]) / 100 ?? 0.2,
 					},
 				};
 			}
@@ -58,8 +58,8 @@ module.exports = {
 			}
 			else if (type == 'timescale') {
 				// Check if speed or pitch is more than 0
-				if (args[1] <= 0) return message.reply('The speed must be more than 0!');
-				if (args[2] <= 0) return message.reply('The pitch must be more than 0!');
+				if (args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
+				if (args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
 
 				// Set effects
 				player.effects = {
@@ -73,14 +73,14 @@ module.exports = {
 			else if (type == 'tremolo') {
 				// Check if frequency is between 0 and 14 and depth between 0 and 1
 				if (args[1] && args[1] <= 0) return message.reply('The frequency must be higher than 0!');
-				if (args[2] && (args[2] <= 0 || args[2] > 1)) return message.reply('The must be between 0 and 1!');
+				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The must be between 0 and 100!');
 
 				// Set effects
 				player.effects = {
 					...player.effects,
 					tremolo: {
 						frequency: Number(args[1]) ?? 14,
-						depth: Number(args[2]) ?? 1,
+						depth: Number(args[2]) / 100 ?? 1,
 					},
 				};
 			}
@@ -98,7 +98,7 @@ module.exports = {
 			}
 			else {
 				// Return error if type is invalid
-				return message.reply('**You must specify a valid effect type!**\nHere\'s a list of the effects:\n```\ncry [Frequency] [Depth]\necho [Delay] [Decay]\npan [Rotation in Hz]\ntimescale <Speed> <Pitch>\ntremolo [Frequency] [Depth]\nunderwater\n```');
+				return message.reply('**You must specify a valid effect type!**\nHere\'s a list of the effects:\n```\ncry [Frequency in Hz] [Depth in %]\necho [Delay in seconds] [Decay in %]\npan [Rotation in Hz]\ntimescale <Speed in x> <Pitch in x>\ntremolo [Frequency in Hz] [Depth in %]\nunderwater\n```');
 			}
 
 			// Send player effects to node
