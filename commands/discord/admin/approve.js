@@ -13,18 +13,15 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Fetch the message
-			let approving = !isNaN(args[0]) ? await message.channel.messages.fetch(args[0]) : null;
-			let fetchedMsg = approving ? approving : null;
+			let fetchedMsg = !isNaN(args[0]) ? await message.channel.messages.fetch(args[0]) : null;
 
 			// Check if the message exists, if not, check in suggestionchannel, if not, check if it's in thread, if not, return
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			if (!fetchedMsg) {
-				approving = !isNaN(args[0]) ? await message.guild.channels.cache.get(srvconfig.suggestionchannel).messages.fetch(args[0]) : null;
-				fetchedMsg = approving ? approving : null;
+				fetchedMsg = !isNaN(args[0]) ? await message.guild.channels.cache.get(srvconfig.suggestionchannel).messages.fetch(args[0]) : null;
 			}
 			if (!fetchedMsg && message.channel.parent.isText()) {
-				approving = await message.channel.parent.messages.fetch(message.channel.id);
-				fetchedMsg = approving ? approving : null;
+				fetchedMsg = await message.channel.parent.messages.fetch(message.channel.id);
 			}
 			if (!fetchedMsg) return client.error('Could not find the message, try doing the command in the channel the suggestion was sent in?', message, true);
 
