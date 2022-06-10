@@ -1,7 +1,7 @@
 const { MessageAttachment } = require('discord.js');
 module.exports = async (client, message) => {
 	// If channel is DM,send the dm to the dms channel
-	if (message.channel.isDM()) {
+	if (message.channel.isDMBased()) {
 		const files = [];
 		for (const attachment of message.attachments) {
 			const response = await fetch(attachment[1].url, { method: 'GET' });

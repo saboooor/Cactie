@@ -1,7 +1,7 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { createPaste } = require('hastebin');
 module.exports = async (client, message) => {
-	if (message.webhookId || message.author.bot || message.channel.isDM()) return;
+	if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 

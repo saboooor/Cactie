@@ -2,7 +2,7 @@ function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 module.exports = async (client, reaction, user) => {
 	if (user.bot) return;
 	const message = await reaction.message.fetch().catch(err => client.logger.error(err.stack));
-	if (!message.channel || message.channel.isDM()) return;
+	if (!message.channel || message.channel.isDMBased()) return;
 	let emojiId = reaction.emoji.id;
 	if (!emojiId) emojiId = reaction.emoji.name;
 
