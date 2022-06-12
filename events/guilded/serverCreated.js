@@ -9,12 +9,12 @@ module.exports = async (client, member) => {
 		.setThumbnail(guild.iconURL)
 		.setFooter({ text: `Owner: ${owner.user.name}`, iconURL: owner.user.avatar });
 	if (guild.raw.banner) srvEmbed.setImage(guild.raw.banner);
+	if (guild.timezone) srvEmbed.addFields([{ name: 'Timezone', value: `${guild.timezone}` }]);
 	const timestamp = new Date(guild.createdAt);
 	const string = timestamp.toLocaleString('default', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
 	const members = await client.members.fetchMany(guild.id);
 	srvEmbed.addFields([
 		{ name: 'Members', value: `${members.size}` },
-		{ name: 'Time zone', value: `${guild.timezone}` },
 		{ name: 'Created At', value: `${string}` },
 	]);
 	if (guild.shortURL) srvEmbed.addFields([{ name: 'Vanity URL', value: `guilded.gg/${guild.shortURL}` }]);
