@@ -37,7 +37,8 @@ module.exports = {
 			const parent = message.guild.channels.cache.get(srvconfig.ticketcategory);
 
 			// Create ticket and set database
-			const ticket = await message.guild.channels.create(`ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`, {
+			const ticket = await message.guild.channels.create({
+				name: `ticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1].toLowerCase() : ''}-${author.username.toLowerCase().replace(' ', '-')}`,
 				parent: parent ? parent.id : null,
 				topic: `Ticket Opened by ${author.tag}`,
 				permissionOverwrites: [

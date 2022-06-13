@@ -29,7 +29,8 @@ module.exports = {
 
 			// Create voice channel for voiceticket
 			const author = message.guild.members.cache.get(ticketData.opener).user;
-			const voiceticket = await message.guild.channels.create(`Voiceticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} ${author.username}`, {
+			const voiceticket = await message.guild.channels.create({
+				name: `Voiceticket${client.user.username.split(' ')[1] ? client.user.username.split(' ')[1] : ''} ${author.username}`,
 				type: ChannelType.GuildVoice,
 				parent: parent ? parent.id : null,
 				permissionOverwrites: [
