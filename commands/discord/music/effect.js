@@ -30,7 +30,7 @@ module.exports = {
 					...player.effects,
 					vibrato: {
 						frequency: Number(args[1]) ?? 14,
-						depth: Number(args[2] / 100) ?? 1,
+						depth: (Number(args[2]) ?? 100) / 100,
 					},
 				};
 			}
@@ -44,7 +44,7 @@ module.exports = {
 					...player.effects,
 					echo: {
 						delay: Number(args[1]) ?? 0.5,
-						decay: Number(args[2] / 100) ?? 0.2,
+						decay: (Number(args[2]) ?? 20) / 100,
 					},
 				};
 			}
@@ -81,7 +81,7 @@ module.exports = {
 					...player.effects,
 					tremolo: {
 						frequency: Number(args[1]) ?? 14,
-						depth: Number(args[2] / 100) ?? 1,
+						depth: (Number(args[2]) ?? 100) / 100,
 					},
 				};
 			}
