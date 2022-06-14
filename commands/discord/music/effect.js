@@ -125,7 +125,7 @@ module.exports = {
 				else if (effect == 'timescale') field.value = `${player.effects.timescale.speed}x, ${player.effects.timescale.pitch}x`;
 				else if (effect == 'tremolo') field.value = `${player.effects.tremolo.frequency} Hz, ${player.effects.tremolo.depth * 100}%`;
 				else if (effect == 'karaoke') field.value = 'Underwater';
-				else if (effect == 'equalizer') field.value = `${player.effects.equalizer.map(b => `**${b.band}** ${progressbar(4.25, b.gain / 0.25 + 0.25, 20, '▬', '🔘')}`).join('\n')}`;
+				else if (effect == 'equalizer') field.value = `${player.effects.equalizer.map(b => `**${b.band}** ${progressbar(4.25 * 100, b.gain / 0.25 + 0.25 * 100, 20, '▬', '🔘')}`).join('\n')}`;
 				filterEmbed.addFields([field]);
 			});
 
