@@ -114,7 +114,7 @@ module.exports = {
 				const field = { name: capFirstLetter(effect), value: '\u200b' };
 				if (effect == 'vibrato') field.value = `${player.effects.vibrato.frequency} Hz, ${player.effects.vibrato.depth * 100}%`;
 				else if (effect == 'echo') field.value = `${player.effects.echo.delay}s, ${player.effects.echo.decay * 100}%`;
-				else if (effect == 'pan') field.value = `${player.effects.rotation.rotationHz} Hz`;
+				else if (effect == 'rotation') field.value = `${player.effects.rotation.rotationHz} Hz`;
 				else if (effect == 'timescale') field.value = `${player.effects.timescale.speed}x, ${player.effects.timescale.pitch}x`;
 				else if (effect == 'tremolo') field.value = `${player.effects.tremolo.frequency} Hz, ${player.effects.tremolo.depth * 100}%`;
 				else if (effect == 'karaoke') field.value = 'Underwater';
