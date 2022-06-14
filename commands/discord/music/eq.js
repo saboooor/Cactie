@@ -13,6 +13,9 @@ module.exports = {
 	djRole: true,
 	async execute(message, args, client, lang) {
 		try {
+			// Get the player
+			const player = client.manager.get(message.guild.id);
+
 			// Add embed and buttons to message and send, the eq will be set in the buttons or dashboard
 			const EQEmbed = new EmbedBuilder()
 				.setColor(Math.floor(Math.random() * 16777215))
@@ -30,17 +33,36 @@ module.exports = {
 			const but9 = new ButtonBuilder().setCustomId('filter_maxed').setLabel(lang.music.eq.maxed).setStyle(ButtonStyle.Primary);
 			const row = new ActionRowBuilder().addComponents([but, but2, but3, but4, but5]);
 			const row2 = new ActionRowBuilder().addComponents([but6, but7, but8, but9]);
-			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2] });
+			// Button for only current song
+			const songrow = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('music_effect_current')
+						.setLabel('Only apply effects to current song')
+						.setStyle(ButtonStyle.Secondary),
+				]);
+			const queuerow = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('music_effect_current')
+						.setLabel('Apply effects to all songs')
+						.setStyle(ButtonStyle.Secondary),
+				]);
+			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
 
 			// Create a collector for the EQ buttons
-			const filter = i => i.user.id == message.member.id && i.customId.startsWith('filter_');
+			const filter = i => i.user.id == message.member.id && (i.customId.startsWith('filter_') || i.customId == 'music_effect_current');
 			const collector = EQMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the filter buttons
 				interaction.deferUpdate();
 
-				// Get the player and EQ preset
-				const player = client.manager.get(interaction.guild.id);
+				if (interaction.customId == 'music_effect_current') {
+					player.effectcurrentonly = !player.effectcurrentonly;
+					EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
+				}
+
+				// Get the EQ preset
 				const preset = interaction.customId.split('_')[1];
 
 				// Clear the EQ before setting the new one
@@ -76,7 +98,7 @@ module.exports = {
 					// Update the message with the new EQ
 					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.music.eq[preset]}**`);
 				}
-				await EQMsg.edit({ embeds: [EQEmbed] });
+				await EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
 			});
 
 			// When the collector stops, remove the undo button from it
