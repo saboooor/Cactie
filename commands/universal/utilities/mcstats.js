@@ -12,7 +12,7 @@ module.exports = {
 		try {
 			const StatsEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
-				.setImage(`https://api.loohpjames.com/serverbanner.png?ip=${args[0]}`);
+				.setImage(`https://api.loohpjames.com/serverbanner.png?ip=${args[0]}?backgroundurl=transparent?`);
 			const iconpng = [];
 			const json = await fetch(`https://api.mcsrvstat.us/2/${args[0]}`);
 			const pong = await json.json();
