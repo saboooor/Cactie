@@ -64,8 +64,11 @@ module.exports = {
 			}
 			else if (type == 'timescale') {
 				// Check if speed or pitch is more than 0
-				if (isNaN(Number(args[1])) || args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
-				if (isNaN(Number(args[2])) || args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
+				if (args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
+				if (args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
+
+				if (isNaN(Number(args[1]))) args[1] = 1;
+				if (isNaN(Number(args[2]))) args[2] = 1;
 
 				// Set effects
 				player.effects.timescale = {
