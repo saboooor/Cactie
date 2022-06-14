@@ -107,6 +107,7 @@ module.exports = {
 					else if (effect == 'timescale') field.value = `${player.effects.timescale.speed}x, ${player.effects.timescale.pitch}x`;
 					else if (effect == 'tremolo') field.value = `${player.effects.tremolo.frequency} Hz, ${player.effects.tremolo.depth * 100}%`;
 					else if (effect == 'karaoke') field.value = 'Underwater';
+					else if (effect == 'equalizer') field.value = `${player.effects.equalizer.bands.map(b => `**${b.band}** ${b.gain}dB`).join('\n')}`;
 					EQEmbed.addFields([field]);
 				});
 
