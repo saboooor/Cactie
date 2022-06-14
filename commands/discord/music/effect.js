@@ -138,7 +138,7 @@ module.exports = {
 				]);
 
 			// Respond
-			const effectMsg = await message.reply({ embeds: [filterEmbed], component: [player.effectcurrentonly ? queuerow : songrow] });
+			const effectMsg = await message.reply({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow] });
 
 			// Collector for current song toggle
 			const filter = i => i.customId == 'music_effect_current';
@@ -146,7 +146,7 @@ module.exports = {
 			collector.on('collect', async btnint => {
 				btnint.deferUpdate();
 				player.effectcurrentonly = !player.effectcurrentonly;
-				effectMsg.edit({ embeds: [filterEmbed], component: [player.effectcurrentonly ? queuerow : songrow] });
+				effectMsg.edit({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow] });
 			});
 			collector.on('end', () => effectMsg.edit({ embeds: [filterEmbed] }));
 		}
