@@ -1,4 +1,4 @@
-const { EmbedBuilder, Attachment, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createPaste } = require('hastebin');
 const protocols = require('../../../lang/int/mcprotocol.json');
 const { refresh } = require('../../../lang/int/emoji.json');
@@ -34,14 +34,6 @@ module.exports = {
 				StatsEmbed.addFields([{ name: '**Players:**', value: pong.players.list.join('\n').replace(/_/g, '\\_') }]);
 			}
 			if (pong.motd) StatsEmbed.addFields([{ name: '**MOTD:**', value: pong.motd.clean.join('\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&le;/g, '≤').replace(/&ge;/g, '≥') }]);
-			if (pong.icon) {
-				const base64string = Buffer.from(pong.icon.replace(/^data:image\/png;base64,/, ''), 'base64');
-				iconpng.push(new Attachment(base64string, 'server-icon.png'));
-				StatsEmbed.setThumbnail('attachment://server-icon.png');
-			}
-			else {
-				StatsEmbed.setThumbnail('https://i.redd.it/9thcbxqlasl51.png');
-			}
 			if (pong.plugins && pong.plugins.raw[0]) {
 				const link = await createPaste(pong.plugins.raw.join('\n'), { server: 'https://bin.birdflop.com' });
 				StatsEmbed.addFields([{ name: '**Plugins:**', value: `[Click Here](${link})`, inline: true }]);
