@@ -154,7 +154,7 @@ module.exports = {
 				player.effectcurrentonly = !player.effectcurrentonly;
 				effectMsg.edit({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow] });
 			});
-			collector.on('end', () => effectMsg.edit({ embeds: [filterEmbed] }));
+			collector.on('end', () => effectMsg.edit({ components: [] }));
 		}
 		catch (err) { client.error(err, message); }
 	},
