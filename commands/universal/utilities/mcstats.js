@@ -10,7 +10,9 @@ module.exports = {
 	options: require('../../options/stats.js'),
 	async execute(message, args, client, lang) {
 		try {
-			const StatsEmbed = new EmbedBuilder().setColor(Math.floor(Math.random() * 16777215));
+			const StatsEmbed = new EmbedBuilder()
+				.setColor(0x2f3136)
+				.setImage(`https://api.loohpjames.com/serverbanner.png?ip=${args[0]}`);
 			const iconpng = [];
 			const json = await fetch(`https://api.mcsrvstat.us/2/${args[0]}`);
 			const pong = await json.json();
