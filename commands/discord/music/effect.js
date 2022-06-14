@@ -1,4 +1,5 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
+const { progressbar } = require('../../../functions/music/progressbar.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
 	name: 'effect',
@@ -124,7 +125,7 @@ module.exports = {
 				else if (effect == 'timescale') field.value = `${player.effects.timescale.speed}x, ${player.effects.timescale.pitch}x`;
 				else if (effect == 'tremolo') field.value = `${player.effects.tremolo.frequency} Hz, ${player.effects.tremolo.depth * 100}%`;
 				else if (effect == 'karaoke') field.value = 'Underwater';
-				else if (effect == 'equalizer') field.value = `${player.effects.equalizer.map(b => `**${b.band}** ${b.gain / 0.25}x`).join('\n')}`;
+				else if (effect == 'equalizer') field.value = `${player.effects.equalizer.map(b => `**${b.band}** ${progressbar(4.25, b.gain / 0.25 + 0.25, 20, '▬', '🔘')}`).join('\n')}`;
 				filterEmbed.addFields([field]);
 			});
 
