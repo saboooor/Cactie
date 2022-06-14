@@ -1,5 +1,5 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
-const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
 	name: 'effect',
 	description: 'Add various effects to the music (EXPERIMENTAL)',
@@ -138,15 +138,15 @@ module.exports = {
 				]);
 
 			// Respond
-			const effectMsg = await message.reply({ embeds: [filterEmbed], component: [player.effects.current ? queuerow : songrow] });
+			const effectMsg = await message.reply({ embeds: [filterEmbed], component: [player.effectcurrentonly ? queuerow : songrow] });
 
 			// Collector for current song toggle
 			const filter = i => i.customId == 'music_effect_current';
 			const collector = effectMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async btnint => {
 				btnint.deferUpdate();
-				player.effects.current = !player.effects.current;
-				effectMsg.edit({ embeds: [filterEmbed], component: [player.effects.current ? queuerow : songrow] });
+				player.effectcurrentonly = !player.effectcurrentonly;
+				effectMsg.edit({ embeds: [filterEmbed], component: [player.effectcurrentonly ? queuerow : songrow] });
 			});
 			collector.on('end', () => effectMsg.edit({ embeds: [filterEmbed] }));
 		}
