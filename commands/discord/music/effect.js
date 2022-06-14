@@ -29,8 +29,8 @@ module.exports = {
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The depth must be between 0 and 100!');
 
 				// Check if args are set
-				if (isNaN(args[1])) args[1] = 14;
-				if (isNaN(args[2])) args[2] = 100;
+				if (isNaN(Number(args[1]))) args[1] = 14;
+				if (isNaN(Number(args[2]))) args[2] = 100;
 
 				// Set effects
 				player.effects.vibrato = {
@@ -44,8 +44,8 @@ module.exports = {
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The decay must be between 0 and 100!');
 
 				// Check if args are set
-				if (isNaN(args[1])) args[1] = 0.5;
-				if (isNaN(args[2])) args[2] = 20;
+				if (isNaN(Number(args[1]))) args[1] = 0.5;
+				if (isNaN(Number(args[2]))) args[2] = 20;
 
 				// Set effects
 				player.effects.echo = {
@@ -64,8 +64,8 @@ module.exports = {
 			}
 			else if (type == 'timescale') {
 				// Check if speed or pitch is more than 0
-				if (isNaN(args[1]) || args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
-				if (isNaN(args[2]) || args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
+				if (isNaN(Number(args[1])) || args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
+				if (isNaN(Number(args[2])) || args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
 
 				// Set effects
 				player.effects.timescale = {
@@ -79,8 +79,8 @@ module.exports = {
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The must be between 0 and 100!');
 
 				// Check if args are set
-				if (isNaN(args[1])) args[1] = 14;
-				if (isNaN(args[2])) args[2] = 100;
+				if (isNaN(Number(args[1]))) args[1] = 14;
+				if (isNaN(Number(args[2]))) args[2] = 100;
 
 				// Set effects
 				player.effects.tremolo = {
