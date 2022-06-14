@@ -1,3 +1,4 @@
+function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const presets = require('../../../lang/int/eqpresets.json');
 module.exports = {
@@ -16,9 +17,12 @@ module.exports = {
 			// Get the player
 			const player = client.manager.get(message.guild.id);
 
+			// Set effect if it isn't
+			player.effects = { ...player.effects };
+
 			// Add embed and buttons to message and send, the eq will be set in the buttons or dashboard
 			const EQEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor(0x2f3136)
 				.setTitle(lang.music.eq.name)
 				.setDescription(lang.music.eq.choose)
 				.addFields([{ name: lang.music.eq.precise, value: `[${lang.dashboard.use}](https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music)` }]);
@@ -70,25 +74,20 @@ module.exports = {
 
 				// Check if the preset is clear or not
 				if (preset == 'clear') {
-					player.effects = {
-						...player.effects,
-						equalizer: undefined,
-					};
+					player.effects.equalizer = undefined;
 					await player.node.send({
 						op: 'filters',
 						guildId: player.guild,
 						...player.effects,
 					});
+
 					// Update the message with the new EQ
 					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.off}**`);
 				}
 				else {
 					// Get bands from preset
 					const bands = presets[preset];
-					player.effects = {
-						...player.effects,
-						equalizer: bands,
-					};
+					player.effects.equalizer = bands,
 					await player.node.send({
 						op: 'filters',
 						guildId: player.guild,
@@ -98,6 +97,20 @@ module.exports = {
 					// Update the message with the new EQ
 					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.music.eq[preset]}**`);
 				}
+
+				// Set fields according to effects
+				Object.keys(player.effects).forEach(effect => {
+					const field = { name: capFirstLetter(effect), value: '\u200b' };
+					if (effect == 'vibrato') field.value = `${player.effects.vibrato.frequency} Hz, ${player.effects.vibrato.depth * 100}%`;
+					else if (effect == 'echo') field.value = `${player.effects.echo.delay}s, ${player.effects.echo.decay * 100}%`;
+					else if (effect == 'rotation') field.value = `${player.effects.rotation.rotationHz} Hz`;
+					else if (effect == 'timescale') field.value = `${player.effects.timescale.speed}x, ${player.effects.timescale.pitch}x`;
+					else if (effect == 'tremolo') field.value = `${player.effects.tremolo.frequency} Hz, ${player.effects.tremolo.depth * 100}%`;
+					else if (effect == 'karaoke') field.value = 'Underwater';
+					EQEmbed.addFields([field]);
+				});
+
+				// Update the message
 				await EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
 			});
 
