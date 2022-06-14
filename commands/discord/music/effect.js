@@ -18,6 +18,9 @@ module.exports = {
 			// Get player
 			const player = client.manager.get(message.guild.id);
 
+			// Set effect if it isn't
+			player.effects = { ...player.effects };
+
 			// Get the type
 			const type = args[0].toLowerCase();
 			if (type == 'cry') {
@@ -25,13 +28,14 @@ module.exports = {
 				if (args[1] && (args[1] <= 0 || args[1] > 14)) return message.reply('The frequency must be between 0 and 14!');
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The depth must be between 0 and 100!');
 
+				// Check if args are set
+				if (isNaN(args[1])) args[1] = 14;
+				if (isNaN(args[2])) args[2] = 100;
+
 				// Set effects
-				player.effects = {
-					...player.effects,
-					vibrato: {
-						frequency: Number(args[1]) ?? 14,
-						depth: (Number(args[2]) ?? 100) / 100,
-					},
+				player.effects.vibrato = {
+					frequency: Number(args[1]),
+					depth: Number(args[2]) / 100,
 				};
 			}
 			else if (type == 'echo') {
@@ -39,36 +43,34 @@ module.exports = {
 				if (args[1] && args[1] <= 0) return message.reply('The delay must be higher than 0!');
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The decay must be between 0 and 100!');
 
+				// Check if args are set
+				if (isNaN(args[1])) args[1] = 0.5;
+				if (isNaN(args[2])) args[2] = 20;
+
 				// Set effects
-				player.effects = {
-					...player.effects,
-					echo: {
-						delay: Number(args[1]) ?? 0.5,
-						decay: (Number(args[2]) ?? 20) / 100,
-					},
+				player.effects.echo = {
+					delay: Number(args[1]),
+					decay: Number(args[2]),
 				};
 			}
 			else if (type == 'pan') {
+				// Check if arg is set
+				if (isNaN(args[1])) args[1] = 1;
+
 				// Set effects
-				player.effects = {
-					...player.effects,
-					rotation: {
-						rotationHz: Number(args[1]) ?? 1,
-					},
+				player.effects.rotation = {
+					rotationHz: Number(args[1]),
 				};
 			}
 			else if (type == 'timescale') {
 				// Check if speed or pitch is more than 0
-				if (args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
-				if (args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
+				if (isNaN(args[1]) || args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
+				if (isNaN(args[2]) || args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
 
 				// Set effects
-				player.effects = {
-					...player.effects,
-					timescale: {
-						speed: Number(args[1]),
-						pitch: Number(args[2]),
-					},
+				player.effects.timescale = {
+					speed: Number(args[1]),
+					pitch: Number(args[2]),
 				};
 			}
 			else if (type == 'tremolo') {
@@ -76,13 +78,14 @@ module.exports = {
 				if (args[1] && args[1] <= 0) return message.reply('The frequency must be higher than 0!');
 				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The must be between 0 and 100!');
 
+				// Check if args are set
+				if (isNaN(args[1])) args[1] = 14;
+				if (isNaN(args[2])) args[2] = 100;
+
 				// Set effects
-				player.effects = {
-					...player.effects,
-					tremolo: {
-						frequency: Number(args[1]) ?? 14,
-						depth: (Number(args[2]) ?? 100) / 100,
-					},
+				player.effects.tremolo = {
+					frequency: Number(args[1]),
+					depth: Number(args[2]) / 100,
 				};
 			}
 			else if (type == 'underwater') {
