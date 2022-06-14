@@ -111,7 +111,7 @@ module.exports = {
 
 			// Set fields according to effects
 			Object.keys(player.effects).forEach(effect => {
-				const field = { name: capFirstLetter(effect) };
+				const field = { name: capFirstLetter(effect), value: '\u200b' };
 				if (effect == 'vibrato') field.value = `${player.effects.vibrato.frequency} Hz, ${player.effects.vibrato.depth * 100}%`;
 				else if (effect == 'echo') field.value = `${player.effects.echo.delay}s, ${player.effects.echo.decay * 100}%`;
 				else if (effect == 'pan') field.value = `${player.effects.rotation.rotationHz} Hz`;
