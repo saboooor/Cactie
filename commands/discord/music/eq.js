@@ -75,7 +75,7 @@ module.exports = {
 
 				// Check if the preset is clear or not
 				if (preset == 'clear') {
-					player.effects.equalizer = undefined;
+					delete player.effects.equalizer;
 					await player.node.send({
 						op: 'filters',
 						guildId: player.guild,
