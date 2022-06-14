@@ -41,7 +41,7 @@ module.exports = {
 						.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
 						.setEmoji({ id: music })
 						.setLabel(lang.dashboard.name)
-						.setStyle('LINK'),
+						.setStyle(ButtonStyle.Link),
 				]);
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
 
