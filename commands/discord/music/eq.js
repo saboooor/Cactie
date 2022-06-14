@@ -59,7 +59,7 @@ module.exports = {
 
 				if (interaction.customId == 'music_effect_current') {
 					player.effectcurrentonly = !player.effectcurrentonly;
-					EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
+					return EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
 				}
 
 				// Get the EQ preset
