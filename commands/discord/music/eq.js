@@ -100,6 +100,7 @@ module.exports = {
 				}
 
 				// Set fields according to effects
+				EQEmbed.setFields([]);
 				Object.keys(player.effects).forEach(effect => {
 					const field = { name: capFirstLetter(effect), value: '\u200b' };
 					if (effect == 'vibrato') field.value = `${player.effects.vibrato.frequency} Hz, ${player.effects.vibrato.depth * 100}%`;
@@ -108,7 +109,7 @@ module.exports = {
 					else if (effect == 'timescale') field.value = `${player.effects.timescale.speed}x, ${player.effects.timescale.pitch}x`;
 					else if (effect == 'tremolo') field.value = `${player.effects.tremolo.frequency} Hz, ${player.effects.tremolo.depth * 100}%`;
 					else if (effect == 'karaoke') field.value = 'Underwater';
-					else if (effect == 'equalizer') field.value = `${player.effects.equalizer.map(b => `**${b.band}** ${progressbar(425, Math.round((b.gain / 0.25 + 0.25) * 100), 20, '▬', '🔘')}`).join('\n')}`;
+					else if (effect == 'equalizer') field.value = `${player.effects.equalizer.map(b => `**${b.band}** ${progressbar(250, (b.gain * 100) + 125, 20, '▬', '🔘')}`).join('\n')}`;
 					EQEmbed.addFields([field]);
 				});
 

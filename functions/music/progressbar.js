@@ -5,6 +5,7 @@ module.exports = {
 			return bar;
 		}
 		else {
+			console.log(current);
 			const percentage = current / total;
 			const progress = Math.round((size * percentage));
 			const emptyProgress = size - progress;
