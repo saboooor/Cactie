@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
@@ -39,12 +39,26 @@ module.exports = async (client, player, track) => {
 				.setEmoji({ id: music })
 				.setLabel(lang.dashboard.name)
 				.setStyle(ButtonStyle.Link),
-
 		]);
+	const row2 = new ActionRowBuilder().addComponents([
+		new SelectMenuBuilder()
+			.setCustomId('music_options')
+			.setEmoji({ id: '⚙' })
+			.setLabel('More Controls... (EXPERIMENTAL)')
+			.setStyle(ButtonStyle.Secondary)
+			.addOptions([
+				new SelectMenuOptionBuilder()
+					.setLabel('Effects')
+					.setValue('music_effects'),
+				new SelectMenuOptionBuilder()
+					.setLabel('Equalizer')
+					.setValue('music_equalizer'),
+			]),
+	]);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
 		.get(player.textChannel)
-		.send({ embeds: [StartEmbed], components: [row] });
+		.send({ embeds: [StartEmbed], components: [row, row2] });
 	player.setNowplayingMessage(NowPlaying);
 	player.timeout = null;
 

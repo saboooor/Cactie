@@ -1,5 +1,5 @@
 function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
 const { refresh, music, shuffle, skip } = require('../lang/int/emoji.json');
@@ -38,13 +38,33 @@ module.exports = {
 					.setEmoji({ id: skip })
 					.setStyle(ButtonStyle.Secondary),
 				btn,
+				new ButtonBuilder()
+					.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
+					.setEmoji({ id: music })
+					.setLabel(lang.dashboard.name)
+					.setStyle(ButtonStyle.Link),
+			]);
+			const row2 = new ActionRowBuilder().addComponents([
+				new SelectMenuBuilder()
+					.setCustomId('music_options')
+					.setEmoji({ id: '⚙' })
+					.setLabel('More Controls... (EXPERIMENTAL)')
+					.setStyle(ButtonStyle.Secondary)
+					.addOptions([
+						new SelectMenuOptionBuilder()
+							.setLabel('Effects')
+							.setValue('music_effects'),
+						new SelectMenuOptionBuilder()
+							.setLabel('Equalizer')
+							.setValue('music_equalizer'),
+					]),
 			]);
 
 			// Send updated embed with disabled button and re-enable it after 5 seconds
-			await interaction.reply({ embeds: [NPEmbed], components: [row] });
+			await interaction.reply({ embeds: [NPEmbed], components: [row, row2] });
 			await sleep(2000);
 			btn.setDisabled(false);
-			await interaction.reply({ components: [row] });
+			await interaction.reply({ components: [row, row2] });
 		}
 		catch (err) { client.error(err, interaction); }
 	},

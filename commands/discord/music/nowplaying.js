@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
 const { convertTime } = require('../../../functions/music/convert.js');
 const { progressbar } = require('../../../functions/music/progressbar.js');
 const { shuffle, skip, music, refresh } = require('../../../lang/int/emoji.json');
@@ -43,7 +43,22 @@ module.exports = {
 						.setLabel(lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
 				]);
-			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
+			const row2 = new ActionRowBuilder().addComponents([
+				new SelectMenuBuilder()
+					.setCustomId('music_options')
+					.setEmoji({ id: '⚙' })
+					.setLabel('More Controls... (EXPERIMENTAL)')
+					.setStyle(ButtonStyle.Secondary)
+					.addOptions([
+						new SelectMenuOptionBuilder()
+							.setLabel('Effects')
+							.setValue('music_effects'),
+						new SelectMenuOptionBuilder()
+							.setLabel('Equalizer')
+							.setValue('music_equalizer'),
+					]),
+			]);
+			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row, row2] });
 
 			// Set the now playing message
 			if (!message.commandName) player.setNowplayingMessage(npmsg);
