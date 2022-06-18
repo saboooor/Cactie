@@ -144,17 +144,40 @@ module.exports = {
 						.setLabel('Apply effects to all songs')
 						.setStyle(ButtonStyle.Secondary),
 				]);
+				// Button for clearing all effects
+			const disablerow = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('music_effect_disable')
+						.setLabel('Disable all effects')
+						.setStyle(ButtonStyle.Danger),
+				]);
 
 			// Respond
-			const effectMsg = await message.reply({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow] });
+			const effectMsg = await message.reply({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow, disablerow] });
 
 			// Collector for current song toggle
-			const filter = i => i.customId == 'music_effect_current';
+			const filter = i => i.customId.startsWith('music_effect');
 			const collector = effectMsg.createMessageComponentCollector({ filter, time: 60000 });
-			collector.on('collect', async btnint => {
-				btnint.deferUpdate();
-				player.effectcurrentonly = !player.effectcurrentonly;
-				effectMsg.edit({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow] });
+			collector.on('collect', async interaction => {
+				interaction.deferUpdate();
+				if (interaction.customId.endsWith('current')) player.effectcurrentonly = !player.effectcurrentonly;
+				if (interaction.customId.endsWith('disable')) {
+					// Clear all effects
+					player.effects = {};
+
+					// Send filters to node
+					await player.node.send({
+						op: 'filters',
+						guildId: player.guild,
+						...player.effects,
+					});
+
+					// Set EQ embed
+					filterEmbed.setDescription('Cleared all effects successfully!')
+						.setFields([]);
+				}
+				return effectMsg.edit({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow, disablerow] });
 			});
 			collector.on('end', () => effectMsg.edit({ components: [] }));
 		}

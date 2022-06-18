@@ -53,18 +53,43 @@ module.exports = {
 						.setLabel('Apply effects to all songs')
 						.setStyle(ButtonStyle.Secondary),
 				]);
-			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
+			// Button for clearing all effects
+			const disablerow = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('music_effect_disable')
+						.setLabel('Disable all effects')
+						.setStyle(ButtonStyle.Danger),
+				]);
+
+			// Send EQ Panel
+			const EQMsg = await message.reply({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
 
 			// Create a collector for the EQ buttons
-			const filter = i => i.user.id == message.member.id && (i.customId.startsWith('filter_') || i.customId == 'music_effect_current');
+			const filter = i => i.user.id == message.member.id && (i.customId.startsWith('filter_') || i.customId.startsWith('music_effect'));
 			const collector = EQMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the filter buttons
 				interaction.deferUpdate();
 
-				if (interaction.customId == 'music_effect_current') {
-					player.effectcurrentonly = !player.effectcurrentonly;
-					return EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
+				if (interaction.customId.startsWith('music_effect')) {
+					if (interaction.customId.endsWith('current')) player.effectcurrentonly = !player.effectcurrentonly;
+					if (interaction.customId.endsWith('disable')) {
+						// Clear all effects
+						player.effects = {};
+
+						// Send filters to node
+						await player.node.send({
+							op: 'filters',
+							guildId: player.guild,
+							...player.effects,
+						});
+
+						// Set EQ embed
+						EQEmbed.setDescription('Cleared all effects successfully!')
+							.setFields([]);
+					}
+					return EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
 				}
 
 				// Get the EQ preset
@@ -75,12 +100,8 @@ module.exports = {
 
 				// Check if the preset is clear or not
 				if (preset == 'clear') {
+					// Delete the EQ key from the effects
 					delete player.effects.equalizer;
-					await player.node.send({
-						op: 'filters',
-						guildId: player.guild,
-						...player.effects,
-					});
 
 					// Update the message with the new EQ
 					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.off}**`);
@@ -89,15 +110,17 @@ module.exports = {
 					// Get bands from preset
 					const bands = presets[preset];
 					player.effects.equalizer = bands,
-					await player.node.send({
-						op: 'filters',
-						guildId: player.guild,
-						...player.effects,
-					});
 
 					// Update the message with the new EQ
 					EQEmbed.setDescription(`🎛️ ${lang.music.eq.set} **${lang.music.eq[preset]}**`);
 				}
+
+				// Send filters to node
+				await player.node.send({
+					op: 'filters',
+					guildId: player.guild,
+					...player.effects,
+				});
 
 				// Set fields according to effects
 				EQEmbed.setFields([]);
@@ -114,7 +137,7 @@ module.exports = {
 				});
 
 				// Update the message
-				await EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow] });
+				await EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
 			});
 
 			// When the collector stops, remove the undo button from it
