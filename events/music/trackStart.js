@@ -1,4 +1,5 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
+const { ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
@@ -47,10 +48,12 @@ module.exports = async (client, player, track) => {
 			.addOptions([
 				new SelectMenuOptionBuilder()
 					.setLabel('Effects')
-					.setValue('music_effects'),
+					.setValue('music_effects')
+					.setDescription('Set various effects on the music'),
 				new SelectMenuOptionBuilder()
 					.setLabel('Equalizer')
-					.setValue('music_equalizer'),
+					.setValue('music_equalizer')
+					.setDescription('Use the equalizer'),
 			]),
 	]);
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);

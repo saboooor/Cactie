@@ -1,4 +1,5 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, SelectMenuBuilder, SelectMenuOptionBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
+const { ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../../functions/music/convert.js');
 const { progressbar } = require('../../../functions/music/progressbar.js');
 const { shuffle, skip, music, refresh } = require('../../../lang/int/emoji.json');
@@ -50,10 +51,12 @@ module.exports = {
 					.addOptions([
 						new SelectMenuOptionBuilder()
 							.setLabel('Effects')
-							.setValue('music_effects'),
+							.setValue('music_effects')
+							.setDescription('Set various effects on the music'),
 						new SelectMenuOptionBuilder()
 							.setLabel('Equalizer')
-							.setValue('music_equalizer'),
+							.setValue('music_equalizer')
+							.setDescription('Use the equalizer'),
 					]),
 			]);
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row, row2] });
