@@ -57,6 +57,18 @@ module.exports = {
 							.setLabel('Equalizer')
 							.setValue('music_equalizer')
 							.setDescription('Use the equalizer'),
+						new SelectMenuOptionBuilder()
+							.setLabel('Pause/Unpause')
+							.setValue('music_pause')
+							.setDescription('Pause/Unpause the music'),
+						new SelectMenuOptionBuilder()
+							.setLabel('Queue')
+							.setValue('music_queue')
+							.setDescription('View the queue'),
+						new SelectMenuOptionBuilder()
+							.setLabel('Enable SponsorBlock (EXPERIMENTAL)')
+							.setValue('music_sponsorblock')
+							.setDescription('Skip Non-Music Segments'),
 					]),
 			]);
 			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row, row2] });
