@@ -47,7 +47,7 @@ module.exports = {
 			const row2 = new ActionRowBuilder().addComponents([
 				new SelectMenuBuilder()
 					.setCustomId('music_options')
-					.setLabel('More Controls... (EXPERIMENTAL)')
+					.setPlaceholder('More Controls... (EXPERIMENTAL)')
 					.setStyle(ButtonStyle.Secondary)
 					.addOptions([
 						new SelectMenuOptionBuilder()
