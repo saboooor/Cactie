@@ -47,7 +47,6 @@ module.exports = {
 				new SelectMenuBuilder()
 					.setCustomId('music_options')
 					.setPlaceholder('More Controls... (EXPERIMENTAL)')
-					.setStyle(ButtonStyle.Secondary)
 					.addOptions([
 						new SelectMenuOptionBuilder()
 							.setLabel('Effects')
