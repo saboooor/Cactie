@@ -19,17 +19,18 @@ module.exports = {
 			if (isNaN(args[0])) return client.error('That is not a number!', message, true);
 			if (args[0] > 1000) return client.error('You can only clear 1000 messages at once!', message, true);
 
-			// Fetch the messages and bulk delete them
+			// Fetch the messages and bulk delete them 100 by 100
 			const messagechunks = await getMessages(message.channel, args[0]);
-			const allmessages = new Collection();
-			messagechunks.forEach(async messages => {
-				messages = messages.filter(msg => msg.createdTimestamp > Date.now() - 1209600);
-				if (args[1]) messages = messages.filter(msg => msg.author.id == args[1]);
-				if (args[2]) messages = messages.filter(msg => msg.content.includes(args[2]));
-				if (!messages.size) return;
-				message.channel.bulkDelete(messages).catch(err => client.error(err, message, true));
-				allmessages.concat(messages);
-			});
+			for (const i in messagechunks) {
+				messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
+				if (args[1]) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == args[1]);
+				if (args[2]) messagechunks[i] = messagechunks[i].filter(msg => msg.content.includes(args[2]));
+				if (!messagechunks[i].size) return;
+				await message.channel.bulkDelete(messagechunks[i]).catch(err => client.error(err, message, true));
+			}
+
+			// Combine all message chunks and see if any messages are in there
+			const allmessages = new Collection().concat(...messagechunks);
 			if (!allmessages.size) return client.error('There are no messages in that scope, try a higher number?', message, true);
 
 			// Reply with response

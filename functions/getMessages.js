@@ -1,10 +1,10 @@
 module.exports = async function getMessages(channel, limit = 100) {
-	const sum_messages = [];
+	const messagechunks = [];
 	let remaining = limit;
 	let last_id;
 	if (limit <= 100) {
 		const messages = await channel.messages.fetch({ limit });
-		sum_messages.push(messages);
+		messagechunks.push(messages);
 	}
 	else {
 		while (remaining > 0) {
@@ -17,10 +17,10 @@ module.exports = async function getMessages(channel, limit = 100) {
 			if (last_id) options.before = last_id;
 
 			const messages = await channel.messages.fetch(options);
-			sum_messages.push(messages);
+			messagechunks.push(messages);
 			last_id = messages.last().id;
 		}
 	}
 
-	return sum_messages;
+	return messagechunks;
 };
