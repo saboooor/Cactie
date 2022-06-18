@@ -43,7 +43,6 @@ module.exports = async (client, player, track) => {
 	const row2 = new ActionRowBuilder().addComponents([
 		new SelectMenuBuilder()
 			.setCustomId('music_options')
-			.setEmoji({ id: '⚙' })
 			.setLabel('More Controls... (EXPERIMENTAL)')
 			.setStyle(ButtonStyle.Secondary)
 			.addOptions([
