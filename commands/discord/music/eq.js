@@ -26,7 +26,8 @@ module.exports = {
 				.setColor(0x2f3136)
 				.setTitle(lang.music.eq.name)
 				.setDescription(lang.music.eq.choose)
-				.addFields([{ name: lang.music.eq.precise, value: `[${lang.dashboard.use}](https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music)` }]);
+				.addFields([{ name: lang.music.eq.precise, value: `[${lang.dashboard.use}](https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music)` }])
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.avatarURL() });
 			const but = new ButtonBuilder().setCustomId('filter_clear').setLabel(lang.off).setStyle(ButtonStyle.Danger);
 			const but2 = new ButtonBuilder().setCustomId('filter_bass').setLabel(lang.music.eq.bass).setStyle(ButtonStyle.Primary);
 			const but3 = new ButtonBuilder().setCustomId('filter_party').setLabel(lang.music.eq.party).setStyle(ButtonStyle.Primary);

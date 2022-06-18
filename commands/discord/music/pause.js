@@ -15,17 +15,17 @@ module.exports = {
 		try {
 			// Get player and check if already paused
 			const player = client.manager.get(message.guild.id);
-			if (player.paused) return client.error(lang.music.pause.alr, message, true);
 
 			// Pause the player
-			player.pause(true);
+			player.pause(!player.paused);
 
 			// Send message to channel with current song
 			const song = player.queue.current;
 			const PauseEmbed = new EmbedBuilder()
 				.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
 				.setColor(song.colors[0])
-				.setThumbnail(song.img);
+				.setThumbnail(song.img)
+				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.avatarURL() });
 			const pausemsg = await message.reply({ embeds: [PauseEmbed] });
 
 			// Wait 10 seconds and compress the message

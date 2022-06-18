@@ -1,10 +1,10 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
-	if (!interaction.isButton()) return;
+	if (!interaction.isButton() && !interaction.isSelectMenu()) return;
 
 	// Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
-	const button = client.buttons.get(interaction.customId);
+	const button = client.buttons.get(interaction.customId ?? interaction.value);
 	if (!button) return;
 
 	// Get current settings for the guild
@@ -27,7 +27,7 @@ module.exports = async (client, interaction) => {
 				&& !interaction.guild.members.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm])
 			)
 		)) {
-		client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId} in #${interaction.channel.name} at ${interaction.guild.name}`);
+		client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId ?? interaction.value} in #${interaction.channel.name} at ${interaction.guild.name}`);
 		return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(err => client.logger.warn(err));
 	}
 
