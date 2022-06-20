@@ -40,7 +40,7 @@ module.exports = {
 					else JarEmbed.addFields([{ name: commit.commit, value: commit.message }]);
 				});
 				// add field for download
-				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/waterfall/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` }]);
+				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` }]);
 			}
 			else if (args[0] == 'purpur') {
 				// fetch the latest mc version
