@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
 	name: 'serverjar',
 	aliases: ['mcjar', 'jar', 'srvjar'],
@@ -10,6 +10,7 @@ module.exports = {
 		try {
 			const JarEmbed = new EmbedBuilder().setColor(0x2f3136);
 			args[0] = args[0].toLowerCase();
+			const row = new ActionRowBuilder();
 			if (args[0] == 'paper' || args[0] == 'waterfall' || args[0] == 'velocity') {
 				// fetch the latest mc version
 				const a = await fetch(`https://papermc.io/api/v2/projects/${args[0]}`);
@@ -39,8 +40,13 @@ module.exports = {
 					if (commit.message.length > 1000) commit.message.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields([{ name: commit.commit, value: `${chunk}` }]); });
 					else JarEmbed.addFields([{ name: commit.commit, value: commit.message }]);
 				});
-				// add field for download
-				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name})` }]);
+				// add button for download
+				row.addComponents([
+					new ButtonBuilder()
+						.setLabel(`Download ${args[0]} ${h.version} build ${h.build}`)
+						.setURL(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}`)
+						.setStyle(ButtonStyle.Link),
+				]);
 			}
 			else if (args[0] == 'purpur') {
 				// fetch the latest mc version
@@ -70,14 +76,19 @@ module.exports = {
 					if (commit.description.length > 1000) commit.description.match(/[\s\S]{1,1000}/g).forEach(chunk => { JarEmbed.addFields([{ name: commit.author, value: `${chunk}` }]); });
 					else JarEmbed.addFields([{ name: commit.author, value: `${commit.description}\n${client.type.name == 'discord' ? `*<t:${commit.timestamp / 1000}>\n<t:${commit.timestamp / 1000}:R>*` : `\`${new Date(commit.timestamp)}\``}` }]);
 				});
-				// add field for download
-				JarEmbed.addFields([{ name: 'Download', value: `[Click Here](https://api.purpurmc.org/v2/purpur/${c}/${f}/download)` }]);
+				// add button for download
+				row.addComponents([
+					new ButtonBuilder()
+						.setLabel(`Download Purpur ${h.version} build ${h.build}`)
+						.setURL(`https://api.purpurmc.org/v2/purpur/${c}/${f}/download`)
+						.setStyle(ButtonStyle.Link),
+				]);
 			}
 			else {
 				return client.error('Invalid Minecraft server fork.', message, true);
 			}
 			// send embed
-			message.reply({ embeds: [JarEmbed] });
+			message.reply({ embeds: [JarEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, message); }
 	},
