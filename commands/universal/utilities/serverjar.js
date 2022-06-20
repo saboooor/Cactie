@@ -43,8 +43,8 @@ module.exports = {
 				// add button for download
 				row.addComponents([
 					new ButtonBuilder()
-						.setLabel(`Download ${args[0]} ${h.version} build ${h.build}`)
-						.setURL(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}`)
+						.setLabel(`Download ${h.downloads.application.name}`)
+						.setURL(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}`)
 						.setStyle(ButtonStyle.Link),
 				]);
 			}
@@ -79,7 +79,7 @@ module.exports = {
 				// add button for download
 				row.addComponents([
 					new ButtonBuilder()
-						.setLabel(`Download Purpur ${h.version} build ${h.build}`)
+						.setLabel(`Download Purpur ${h.version} build ${h.build} JAR`)
 						.setURL(`https://api.purpurmc.org/v2/purpur/${c}/${f}/download`)
 						.setStyle(ButtonStyle.Link),
 				]);
