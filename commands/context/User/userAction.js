@@ -1,6 +1,7 @@
 const { ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
 const { ButtonBuilder, ButtonStyle } = require('discord.js');
 const action = require('../../../functions/action.js');
+const { x } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'Do action on user',
 	noDefer: true,
@@ -62,7 +63,7 @@ module.exports = {
 				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('action_cancel')
-						.setEmoji({ name: '✖️' })
+						.setEmoji({ id: x })
 						.setLabel('Cancel')
 						.setStyle(ButtonStyle.Danger),
 				]);
