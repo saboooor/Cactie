@@ -1,4 +1,5 @@
 const { ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
+const { ButtonBuilder, ButtonStyle } = require('discord.js');
 const action = require('../../../functions/action.js');
 module.exports = {
 	name: 'Do action on user',
@@ -57,12 +58,21 @@ module.exports = {
 								.setValue('action_stare'),
 						]),
 				]);
+			const nvm = new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('action_cancel')
+						.setEmoji({ name: '❌' })
+						.setLabel('Cancel')
+						.setStyle(ButtonStyle.Danger),
+				]);
 
-			const selectmsg = await interaction.reply({ content: `**Please select an action to do on ${member.displayName}**`, components: [row] });
+			const selectmsg = await interaction.reply({ content: `**Please select an action to do on ${member.displayName}**`, components: [row, nvm] });
 
-			const filter = i => i.customId == 'action';
+			const filter = i => i.customId == 'action' || i.customId == 'cancel';
 			const collector = selectmsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async btnint => {
+				if (btnint.customId == 'cancel') selectmsg.delete();
 				const actionName = btnint.values[0].split('_')[1];
 				action(btnint.message, btnint.member, [member.id], actionName, lang);
 				collector.stop();
