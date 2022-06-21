@@ -62,7 +62,7 @@ module.exports = {
 				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('action_cancel')
-						.setEmoji({ name: '❌' })
+						.setEmoji({ name: '✖️' })
 						.setLabel('Cancel')
 						.setStyle(ButtonStyle.Danger),
 				]);
