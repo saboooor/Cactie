@@ -1,7 +1,7 @@
 const { EmbedBuilder, InteractionType } = require('discord.js');
 module.exports = async (client, interaction) => {
 	// Check if interaction is modal
-	if (!interaction.type == InteractionType.ModalSubmit) return;
+	if (interaction.type != InteractionType.ModalSubmit) return;
 
 	// Get the modal from the available modals in the bot, if there isn't one, just return because discord will throw an error itself
 	const customIdSplit = interaction.customId.split('_');
