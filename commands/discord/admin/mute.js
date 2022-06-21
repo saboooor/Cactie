@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Mute someone in the server',
 	ephemeral: true,
 	args: true,
-	usage: '<User> [Time and/or Reason]',
+	usage: '<User @ or Id> [Time] [Reason]',
 	permission: 'ManageMessages',
 	botperm: 'ManageRoles',
 	cooldown: 5,

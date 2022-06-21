@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Unban someone that was banned from the server',
 	ephemeral: true,
 	args: true,
-	usage: '<User>',
+	usage: '<User @ or Id>',
 	permission: 'BanMembers',
 	botperm: 'BanMembers',
 	cooldown: 5,

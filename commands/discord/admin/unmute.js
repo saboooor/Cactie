@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Unmute someone that was muted in the server',
 	ephemeral: true,
 	args: true,
-	usage: '<User>',
+	usage: '<User @ or Id>',
 	permission: 'ManageMessages',
 	botperm: 'ManageRoles',
 	cooldown: 5,

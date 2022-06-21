@@ -4,7 +4,7 @@ module.exports = {
 	description: 'Kick someone from the server',
 	ephemeral: true,
 	args: true,
-	usage: '<User> [Reason]',
+	usage: '<User @ or Id> [Reason]',
 	permission: 'KickMembers',
 	botperm: 'KickMembers',
 	cooldown: 5,
