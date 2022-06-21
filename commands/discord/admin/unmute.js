@@ -36,7 +36,7 @@ module.exports = {
 
 			// Actually get rid of the mute role or untimeout
 			if (role) await member.roles.remove(role);
-			else await member.timeout(0);
+			else await member.timeout(null);
 
 			// Create embed with color and title
 			const UnmuteEmbed = new EmbedBuilder()
