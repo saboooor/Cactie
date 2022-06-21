@@ -62,7 +62,7 @@ module.exports = {
 			const nvm = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setCustomId('action_cancel')
+						.setCustomId('cancel')
 						.setEmoji({ id: x })
 						.setLabel('Cancel')
 						.setStyle(ButtonStyle.Danger),
