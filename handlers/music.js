@@ -1,7 +1,6 @@
 const { Manager, Structure } = require('erela.js');
-const { LavasfyClient } = require('lavasfy');
 const compressEmbed = require('../functions/compressEmbed.js');
-const { nodes, SpotifyID, SpotifySecret } = require('../config/music.json');
+const { nodes } = require('../config/music.json');
 const fs = require('fs');
 module.exports = client => {
 	Structure.extend(
@@ -15,17 +14,6 @@ module.exports = client => {
 			},
 	);
 	nodes.forEach(node => node.id = node.identifier);
-	client.Lavasfy = new LavasfyClient(
-		{
-			clientID: SpotifyID,
-			clientSecret: SpotifySecret,
-			playlistPageLoadLimit: 4,
-			filterAudioOnlyResult: true,
-			autoResolve: true,
-			useSpotifyMetadata: true,
-		},
-		nodes,
-	);
 	client.manager = new Manager({
 		nodes: nodes,
 		send: (id, payload) => {

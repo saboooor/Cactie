@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js');
-const { TrackUtils } = require('erela.js');
 const { convertTime } = require('./convert.js');
 const getlfmCover = require('./getlfmCover.js');
 const { play, music } = require('../../lang/int/emoji.json');
@@ -30,69 +29,34 @@ module.exports = async function playSongs(message, args, client, top) {
 	// Create embed for responses
 	const embed = new MessageEmbed().setTimestamp();
 
-	// Check if search is a spotify link, if not, search YouTube
-	if (search.match(client.Lavasfy.spotifyPattern)) {
-		// Get lavasfy token and node and search spotify
-		await client.Lavasfy.requestToken();
-		const node = await client.Lavasfy.getNode('lavamusic');
-		const Searched = await node.load(search);
-
-		// Get track and check if result is a playlist
-		const track = Searched.tracks[0];
-		if (Searched.loadType === 'PLAYLIST_LOADED') {
-			// Add description to embed and build every song in the playlist
-			embed.setDescription(`<:music:${music}> **Added Playlist to queue** \`[${Searched.tracks.length} songs]\`\n[${Searched.playlistInfo.name}](${search})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
-			await Searched.tracks.forEach(song => {
-				// Some songs don't have a url, just use google lol
-				if (!song.info.uri) song.info.uri = 'https://google.com';
-				songs.push(TrackUtils.build(song));
-			});
-		}
-		else if (Searched.loadType.startsWith('TRACK')) {
-			// Add description to embed and build the song
-			embed.setDescription(`<:music:${music}> **Added Song to queue**\n[${track.info.title}](${track.info.uri})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
-			// Some songs don't have a url, just use google lol
-			if (!track.info.uri) track.info.uri = 'https://google.com';
-			songs.push(TrackUtils.build(track));
-		}
-		else {
-			// There's no result for the search, send error message
-			embed.setColor('RED').setDescription('No results found.');
-			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
-		}
+	// Search YouTube
+	const Searched = await player.search(search);
+	// Get first track and check if result is not found or a playlist, if not, then just add the song
+	const track = Searched.tracks[0];
+	if (Searched.loadType === 'NO_MATCHES' || !track) {
+		// There's no result for the search, send error message
+		embed.setColor('RED').setDescription('No results found.');
+		return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
+	}
+	else if (Searched.loadType == 'PLAYLIST_LOADED') {
+		// Add description to embed and push every song in the playlist
+		embed.setDescription(`<:music:${music}> **Added Playlist to queue** \`[${Searched.tracks.length} songs / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
+			.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
+		await Searched.tracks.forEach(song => {
+			// Set image if thumbnail exists
+			if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
+			songs.push(song);
+		});
 	}
 	else {
-		// Search YouTube
-		const Searched = await player.search(search);
-		// Get first track and check if result is not found or a playlist, if not, then just add the song
-		const track = Searched.tracks[0];
-		if (Searched.loadType === 'NO_MATCHES' || !track) {
-			// There's no result for the search, send error message
-			embed.setColor('RED').setDescription('No results found.');
-			return slash ? message.editReply({ content: '⚠️ **Failed to search**', embeds: [embed] }) : msg.edit({ content: '⚠️ **Failed to search**', embeds: [embed] });
-		}
-		else if (Searched.loadType == 'PLAYLIST_LOADED') {
-			// Add description to embed and push every song in the playlist
-			embed.setDescription(`<:music:${music}> **Added Playlist to queue** \`[${Searched.tracks.length} songs / ${convertTime(Searched.playlist.duration)}]\`\n[${Searched.playlist.name}](${search})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
-			await Searched.tracks.forEach(song => {
-				// Set image if thumbnail exists
-				if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
-				songs.push(song);
-			});
-		}
-		else {
-			// Set image if thumbnail exists
-			if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
+		// Set image if thumbnail exists
+		if (track.displayThumbnail) track.img = track.displayThumbnail('hqdefault');
 
-			// Add description to embed and the song
-			embed.setDescription(`<:music:${music}> **Added Song to queue** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
-				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
-				.setThumbnail(track.img);
-			songs.push(Searched.tracks[0]);
-		}
+		// Add description to embed and the song
+		embed.setDescription(`<:music:${music}> **Added Song to queue** \`[${convertTime(track.duration).replace('7:12:56', 'LIVE')}]\`\n[${track.title}](${track.uri})`)
+			.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() })
+			.setThumbnail(track.img);
+		songs.push(Searched.tracks[0]);
 	}
 
 	// Playtop doesn't really matter if queue is empty
