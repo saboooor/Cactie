@@ -120,3 +120,4 @@ data/
 .DS_Store
 package-lock.json
 playercache.txt
+config.yml
