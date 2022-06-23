@@ -1,4 +1,5 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discordjs@builders');
+const { ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 const YAML = require('yaml');
 const fs = require('fs');
