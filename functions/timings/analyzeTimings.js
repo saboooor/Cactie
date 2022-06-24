@@ -87,7 +87,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	else if (flags.includes('-Daikars.new.flags=true')) {
 		if (!flags.includes('-XX:+PerfDisableSharedMem')) fields.push({ name: '❌ Outdated Flags', value: 'Add `-XX:+PerfDisableSharedMem` to flags.', inline: true });
 		if (!flags.includes('-XX:G1MixedGCCountTarget=4')) fields.push({ name: '❌ Outdated Flags', value: 'Add `XX:G1MixedGCCountTarget=4` to flags.', inline: true });
-		if (!flags.includes('-XX:+UseG1GC') && jvm_version.startswith('1.8.')) fields.push({ name: '❌ Aikar\'s Flags', value: 'You must use G1GC when using Aikar\'s flags.', inline: true });
+		if (!flags.includes('-XX:+UseG1GC') && jvm_version.startsWith('1.8.')) fields.push({ name: '❌ Aikar\'s Flags', value: 'You must use G1GC when using Aikar\'s flags.', inline: true });
 		if (flags.includes('-Xmx')) {
 			let max_mem = 0;
 			const flaglist = flags.split(' ');
