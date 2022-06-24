@@ -55,6 +55,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const bukkit = request.timingsMaster.config ? request.timingsMaster.config.bukkit : null;
 	const spigot = request.timingsMaster.config ? request.timingsMaster.config.spigot : null;
 	const paper = request.timingsMaster.config ? request.timingsMaster.config.paper : null;
+	const pufferfish = request.timingsMaster.config ? request.timingsMaster.config.pufferfish : null;
 	const purpur = request.timingsMaster.config ? request.timingsMaster.config.purpur : null;
 
 	const TIMINGS_CHECK = {
@@ -68,6 +69,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 			bukkit: await YAML.parse(fs.readFileSync('./lang/int/timings/config/bukkit.yml', 'utf8')),
 			spigot: await YAML.parse(fs.readFileSync('./lang/int/timings/config/spigot.yml', 'utf8')),
 			paper: await YAML.parse(fs.readFileSync(`./lang/int/timings/config/paper-v${paper._version ? 28 : 27}.yml`, 'utf8')),
+			pufferfish: await YAML.parse(fs.readFileSync('./lang/int/timings/config/pufferfish.yml', 'utf8')),
 			purpur: await YAML.parse(fs.readFileSync('./lang/int/timings/config/purpur.yml', 'utf8')),
 		},
 	};
@@ -187,7 +189,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i]; }).forEach(config => {
 			Object.keys(config).forEach(option_name => {
 				const option = config[option_name];
-				evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, purpur, client);
+				evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur, client);
 			});
 		});
 	}
