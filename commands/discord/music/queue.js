@@ -27,7 +27,7 @@ module.exports = {
 			const tracks = queue.slice(start, end);
 
 			// Add current song as a field and queue list
-			if (song) QueueEmbed.setFields([{ name: `<:music:${music}> **${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
+			if (song) QueueEmbed.setFields([{ name: `**${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
 			if (!tracks.length) {
 				QueueEmbed.addFields([{
 					name: 'No tracks up next',
@@ -78,7 +78,7 @@ module.exports = {
 				const newTracks = queue.slice(newStart, newEnd);
 
 				// Add current song as a field and queue list
-				if (song) QueueEmbed.setFields([{ name: `<:music:${music}> **${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
+				if (song) QueueEmbed.setFields([{ name: `**${lang.music.np}**`, value: `[${song.title}](${song.uri})\n\`[${convertTime(song.duration).replace('7:12:56', 'LIVE')}]\` [${song.requester}]` }]);
 				if (!newTracks.length) {
 					QueueEmbed.addFields([{
 						name: 'No tracks up next',
