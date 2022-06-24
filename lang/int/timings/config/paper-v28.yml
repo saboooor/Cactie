@@ -1,113 +1,183 @@
-max-auto-save-chunks-per-tick:
+chunks.max-auto-save-chunks-per-tick:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["max-auto-save-chunks-per-tick"]) >= 24
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["chunks"]["max-auto-save-chunks-per-tick"]) >= 24
   prefix: "❌"
-  value: "Decrease this in paper.yml.\nRecommended: 6."
-optimize-explosions:
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 6."
+environment.optimize-explosions:
 - expressions:
-  - paper["world-settings"]["default"]["optimize-explosions"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["environment"]["optimize-explosions"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml."
-mob-spawner-tick-rate:
+  value: "Enable this in config/paper-world-defaults.yml."
+tick-rates.mob-spawner:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["mob-spawner-tick-rate"]) == 1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["tick-rates"]["mob-spawner"]) == 1
   prefix: "❌"
-  value: "Increase this in paper.yml.\nRecommended: 2."
-game-mechanics.disable-chest-cat-detection:
+  value: "Increase this in config/paper-world-defaults.yml.\nRecommended: 2."
+entities.behavior.disable-chest-cat-detection:
 - expressions:
-  - paper["world-settings"]["default"]["game-mechanics"]["disable-chest-cat-detection"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["entities"]["behavior"]["disable-chest-cat-detection"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml"
-container-update-tick-rate:
+  value: "Enable this in config/paper-world-defaults.yml"
+tick-rates.container-update:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["container-update-tick-rate"]) == 1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["tick-rates"]["container-update"]) == 1
   prefix: "❌"
-  value: "Increase this in paper.yml.\nRecommended: 3."
-grass-spread-tick-rate:
+  value: "Increase this in config/paper-world-defaults.yml.\nRecommended: 3."
+tick-rates.grass-spread:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["grass-spread-tick-rate"]) == 1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["tick-rates"]["grass-spread"]) == 1
   prefix: "❌"
-  value: "Increase this in paper.yml.\nRecommended: 4."
-despawn-ranges.soft:
+  value: "Increase this in config/paper-world-defaults.yml.\nRecommended: 4."
+entities.spawning.despawn-ranges.ambient.soft:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["despawn-ranges"]["soft"]) >= 32
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["ambient"]["soft"]) >= 32
   prefix: "❌"
-  value: "Decrease this in paper.yml.\nRecommended: 28."
-despawn-ranges.hard:
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.ambient.hard:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["despawn-ranges"]["hard"]) >= 128
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["ambient"]["hard"]) >= 128
   prefix: "❌"
-  value: "Decrease this in paper.yml.\nRecommended: 96."
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.axolotls.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["axolotls"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.axolotls.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["axolotls"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.creature.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["creature"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.creature.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["creature"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.misc.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["misc"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.misc.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["misc"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.monster.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["monster"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.monster.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["monster"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.underground_water_creature.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["underground_water_creature"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.underground_water_creature.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["underground_water_creature"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.water_ambient.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["water_ambient"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.water_ambient.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["water_ambient"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
+entities.spawning.despawn-ranges.water_creature.soft:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["water_creature"]["soft"]) >= 32
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 28."
+entities.spawning.despawn-ranges.water_creature.hard:
+- expressions:
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["despawn-ranges"]["water_creature"]["hard"]) >= 128
+  prefix: "❌"
+  value: "Decrease this in config/paper-world-defaults.yml.\nRecommended: 96."
 hopper.disable-move-event:
 - expressions:
-  - paper["world-settings"]["default"]["hopper"]["disable-move-event"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["hopper"]["disable-move-event"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml"
-non-player-arrow-despawn-rate:
+  value: "Enable this in config/paper-world-defaults.yml"
+entities.spawning.non-player-arrow-despawn-rate:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["non-player-arrow-despawn-rate"]) == -1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["non-player-arrow-despawn-rate"]) == -1
   prefix: "❌"
-  value: "Set a value in paper.yml.\nRecommended: 60"
-creative-arrow-despawn-rate:
+  value: "Set a value in config/paper-world-defaults.yml.\nRecommended: 60"
+entities.spawning.creative-arrow-despawn-rate:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["creative-arrow-despawn-rate"]) == -1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["creative-arrow-despawn-rate"]) == -1
   prefix: "❌"
-  value: "Set a value in paper.yml.\nRecommended: 60"
-prevent-moving-into-unloaded-chunks:
+  value: "Set a value in config/paper-world-defaults.yml.\nRecommended: 60"
+chunks.prevent-moving-into-unloaded-chunks:
 - expressions:
-  - paper["world-settings"]["default"]["prevent-moving-into-unloaded-chunks"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["chunks"]["prevent-moving-into-unloaded-chunks"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml."
-use-faster-eigencraft-redstone:
+  value: "Enable this in config/paper-world-defaults.yml."
+misc.redstone-implementation:
 - expressions:
-  - paper["world-settings"]["default"]["use-faster-eigencraft-redstone"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["misc"]["redstone-implementation"] != "ALTERNATE_CURRENT"
   prefix: "❌"
-  value: "Enable this in paper.yml."
-fix-climbing-bypassing-cramming-rule:
+  value: "Set this to \"ALTERNATE_CURRENT\" in config/paper-world-defaults.yml."
+collisions.fix-climbing-bypassing-cramming-rule:
 - expressions:
-  - paper["world-settings"]["default"]["fix-climbing-bypassing-cramming-rule"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["collisions"]["fix-climbing-bypassing-cramming-rule"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml."
-armor-stands-do-collision-entity-lookups:
+  value: "Enable this in config/paper-world-defaults.yml."
+entities.armor-stands.do-collision-entity-lookups:
 - expressions:
-  - paper["world-settings"]["default"]["armor-stands-do-collision-entity-lookups"] == "true"
+  - paper["__________WORLDS__________"]["__defaults__"]["entities"]["armor-stands"]["do-collision-entity-lookups"] == "true"
   prefix: "❌"
-  value: "Disable this in paper.yml."
-armor-stands-tick:
+  value: "Disable this in config/paper-world-defaults.yml."
+entities.armor-stands.tick:
 - expressions:
-  - paper["world-settings"]["default"]["armor-stands-tick"] == "true"
+  - paper["__________WORLDS__________"]["__defaults__"]["entities"]["armor-stands"]["tick"] == "true"
   - 'plugins.find( plugin => plugin.name == "PetBlocks" ) !== undefined'
   - 'plugins.find( plugin => plugin.name == "BlockBalls" ) !== undefined'
   - 'plugins.find( plugin => plugin.name == "ArmorStandTools" ) !== undefined'
   prefix: "❌"
-  value: "Disable this in paper.yml."
-per-player-mob-spawns:
+  value: "Disable this in config/paper-world-defaults.yml."
+entities.spawning.per-player-mob-spawns:
 - expressions:
-  - paper["world-settings"]["default"]["per-player-mob-spawns"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["per-player-mob-spawns"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml."
-alt-item-despawn-rate.enabled:
+  value: "Enable this in config/paper-world-defaults.yml."
+entities.spawning.alt-item-despawn-rate.enabled:
 - expressions:
-  - paper["world-settings"]["default"]["alt-item-despawn-rate"]["enabled"] == "false"
+  - paper["__________WORLDS__________"]["__defaults__"]["entities"]["spawning"]["alt-item-despawn-rate"]["enabled"] == "false"
   prefix: "❌"
-  value: "Enable this in paper.yml."
-entity-per-chunk-save-limit.experience_orb:
+  value: "Enable this in config/paper-world-defaults.yml."
+chunks.entity-per-chunk-save-limit.experience_orb:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["entity-per-chunk-save-limit"]["experience_orb"]) == -1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["chunks"]["entity-per-chunk-save-limit"]["experience_orb"]) == -1
   prefix: "❌"
-  value: "Set a value in paper.yml. Recommended: 16."
-entity-per-chunk-save-limit.snowball:
+  value: "Set a value in config/paper-world-defaults.yml. Recommended: 16."
+chunks.entity-per-chunk-save-limit.snowball:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["entity-per-chunk-save-limit"]["snowball"]) == -1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["chunks"]["entity-per-chunk-save-limit"]["snowball"]) == -1
   prefix: "❌"
-  value: "Set a value in paper.yml. Recommended: 16."
-entity-per-chunk-save-limit.ender_pearl:
+  value: "Set a value in config/paper-world-defaults.yml. Recommended: 16."
+chunks.entity-per-chunk-save-limit.ender_pearl:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["entity-per-chunk-save-limit"]["ender_pearl"]) == -1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["chunks"]["entity-per-chunk-save-limit"]["ender_pearl"]) == -1
   prefix: "❌"
-  value: "Set a value in paper.yml. Recommended: 16."
-entity-per-chunk-save-limit.arrow:
+  value: "Set a value in config/paper-world-defaults.yml. Recommended: 16."
+chunks.entity-per-chunk-save-limit.arrow:
 - expressions:
-  - parseInt(paper["world-settings"]["default"]["entity-per-chunk-save-limit"]["arrow"]) == -1
+  - parseInt(paper["__________WORLDS__________"]["__defaults__"]["chunks"]["entity-per-chunk-save-limit"]["arrow"]) == -1
   prefix: "❌"
-  value: "Set a value in paper.yml. Recommended: 16."
+  value: "Set a value in config/paper-world-defaults.yml. Recommended: 16."
