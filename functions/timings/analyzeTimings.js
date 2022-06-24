@@ -52,11 +52,16 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	const TIMINGS_CHECK = await YAML.parse(fs.readFileSync('./lang/int/timings_check.yml', 'utf8'));
 
-	if (TIMINGS_CHECK.version && version) {
+	// fetch the latest mc version
+	const req = await fetch('https://api.purpurmc.org/v2/purpur');
+	const json = await req.json();
+	const latest = json.versions[json.versions.length - 1];
+
+	if (TIMINGS_CHECK.version && latest) {
 		// ghetto version check
-		if (version.split('(MC: ')[1].split(')')[0] != TIMINGS_CHECK.version) {
+		if (version.split('(MC: ')[1].split(')')[0] != latest) {
 			version = version.replace('git-', '').replace('MC: ', '');
-			fields.push({ name: '❌ Outdated', value: `You are using \`${version}\`. Update to \`${TIMINGS_CHECK.version}\`.`, inline: true });
+			fields.push({ name: '❌ Outdated', value: `You are using \`${version}\`. Update to \`${latest}\`.`, inline: true });
 		}
 	}
 
