@@ -45,6 +45,7 @@ module.exports = {
 					// Send the embed
 					timingsmsg.edit({ embeds: [TimingsEmbed] });
 				});
+				collector.on('end', async i => i.message.edit({ components: [] }));
 			}
 		}
 		catch (err) { client.error(err, message); }
