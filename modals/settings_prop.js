@@ -20,7 +20,8 @@ module.exports = {
 				const categories = {
 					member: ['memberjoin', 'memberleave'],
 					channel: ['channelcreate', 'channeldelete'],
-					other: ['messagecreate', 'all'],
+					voice: ['voicejoin', 'voiceleave', 'voicemove', 'voicedeafen', 'voicemute', 'voiceserverdeafen', 'voiceservermute'],
+					other: ['all'],
 				};
 				const list = Object.keys(categories).map(key => { return `${key}:\n${categories[key].join(', ')}`; }).join('\n\n');
 				for (const log of logs) if (![...Object.keys(categories), ...Object.values(categories).flat()].includes(log)) return client.error(`${log} is not a valid log type!\nThe valid log types are:\n\n${list}\n\nYou may also put the category names to select everything in the category`, interaction, true);
