@@ -66,7 +66,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	}
 
 	if (version.split('(MC: ')[1].split(')')[0] == '1.19') {
-		message.channel.send('Due to Paper 1.19\'s config changes, the timings analysis may not show all results. This will be fixed soon. Check back later <t:1659333600:R>');
+		message.channel.send('**Due to Paper 1.19\'s config changes, the timings analysis may not show all results.**\nThis will be fixed soon by August at the latest.');
 	}
 
 	if (TIMINGS_CHECK.servers) {
