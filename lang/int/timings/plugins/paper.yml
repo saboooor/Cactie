@@ -84,12 +84,12 @@ bPermissions:
     bPermissions is an outdated permission plugin.
     Consider replacing it with [LuckPerms](https://luckperms.net/download).
 PhantomSMP:
-  - expressions:
+- expressions:
   - paper["world-settings"]["default"]["phantoms-only-attack-insomniacs"] == "false"
   prefix: "❌"
   value: |-
     You probably don't need PhantomSMP as Paper already has its features.
-  - expressions:
+- expressions:
   - paper["world-settings"]["default"]["phantoms-only-attack-insomniacs"] == "true"
   prefix: "❌"
   value: |-

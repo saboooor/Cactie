@@ -50,23 +50,37 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 
-	const TIMINGS_CHECK = await YAML.parse(fs.readFileSync('./lang/int/timings_check.yml', 'utf8'));
+	const plugins = Object.keys(request.timingsMaster.plugins).map(i => { return request.timingsMaster.plugins[i]; });
+	const server_properties = request.timingsMaster.config ? request.timingsMaster.config['server.properties'] : null;
+	const bukkit = request.timingsMaster.config ? request.timingsMaster.config.bukkit : null;
+	const spigot = request.timingsMaster.config ? request.timingsMaster.config.spigot : null;
+	const paper = request.timingsMaster.config ? request.timingsMaster.config.paper : null;
+	const purpur = request.timingsMaster.config ? request.timingsMaster.config.purpur : null;
+
+	const TIMINGS_CHECK = {
+		servers: await YAML.parse(fs.readFileSync('./lang/int/timings/servers.yml', 'utf8')),
+		plugins: {
+			paper: await YAML.parse(fs.readFileSync('./lang/int/timings/plugins/paper.yml', 'utf8')),
+			purpur: await YAML.parse(fs.readFileSync('./lang/int/timings/plugins/purpur.yml', 'utf8')),
+		},
+		config: {
+			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/timings/config/server.properties.yml', 'utf8')),
+			bukkit: await YAML.parse(fs.readFileSync('./lang/int/timings/config/bukkit.yml', 'utf8')),
+			spigot: await YAML.parse(fs.readFileSync('./lang/int/timings/config/spigot.yml', 'utf8')),
+			paper: await YAML.parse(fs.readFileSync(`./lang/int/timings/config/paper-v${paper._version ? 28 : 27}.yml`, 'utf8')),
+			purpur: await YAML.parse(fs.readFileSync('./lang/int/timings/config/purpur.yml', 'utf8')),
+		},
+	};
 
 	// fetch the latest mc version
 	const req = await fetch('https://api.purpurmc.org/v2/purpur');
 	const json = await req.json();
 	const latest = json.versions[json.versions.length - 1];
 
-	if (TIMINGS_CHECK.version && latest) {
-		// ghetto version check
-		if (version.split('(MC: ')[1].split(')')[0] != latest) {
-			version = version.replace('git-', '').replace('MC: ', '');
-			fields.push({ name: '❌ Outdated', value: `You are using \`${version}\`. Update to \`${latest}\`.`, inline: true });
-		}
-	}
-
-	if (version.split('(MC: ')[1].split(')')[0] == '1.19') {
-		message.channel.send('**Due to Paper 1.19\'s config changes, the timings analysis may not show all results.**\nThis will be fixed soon by August at the latest.');
+	// ghetto version check
+	if (version.split('(MC: ')[1].split(')')[0] != latest) {
+		version = version.replace('git-', '').replace('MC: ', '');
+		fields.push({ name: '❌ Outdated', value: `You are using \`${version}\`. Update to \`${latest}\`.`, inline: true });
 	}
 
 	if (TIMINGS_CHECK.servers) {
@@ -153,13 +167,6 @@ module.exports = async function analyzeTimings(message, client, args) {
 			fields.push({ name: `❌ ${handler_name}`, value: 'This datapack uses command functions which are laggy.', inline: true });
 		}
 	});
-
-	const plugins = Object.keys(request.timingsMaster.plugins).map(i => { return request.timingsMaster.plugins[i]; });
-	const server_properties = request.timingsMaster.config['server.properties'];
-	const bukkit = request.timingsMaster.config ? request.timingsMaster.config.bukkit : null;
-	const spigot = request.timingsMaster.config ? request.timingsMaster.config.spigot : null;
-	const paper = request.timingsMaster.config ? request.timingsMaster.config.paper : null;
-	const purpur = request.timingsMaster.config ? request.timingsMaster.config.purpur : null;
 
 	if (TIMINGS_CHECK.plugins) {
 		Object.keys(TIMINGS_CHECK.plugins).forEach(server_name => {
