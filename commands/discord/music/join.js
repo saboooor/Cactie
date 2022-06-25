@@ -31,7 +31,7 @@ module.exports = {
 
 			// Send message to channel
 			const JoinEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor(0x2f3136)
 				.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${channel}`)}**`);
 			message.reply({ embeds: [JoinEmbed] });
 
@@ -48,7 +48,9 @@ module.exports = {
 					.setStyle(ButtonStyle.Link),
 				]);
 
-			JoinEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
+			JoinEmbed
+				.setColor(0xff0000)
+				.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
 				.setFooter('You may also send commands in the channel');
 			message.channel.send({ embeds: [JoinEmbed], components: [row] });
 		}

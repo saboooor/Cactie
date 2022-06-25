@@ -18,7 +18,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 		// Send message to channel
 		const JoinEmbed = new EmbedBuilder()
-			.setColor(Math.floor(Math.random() * 16777215))
+			.setColor(0x2f3136)
 			.setDescription(`<:in:${join}> **${lang.music.join.ed.replace('{vc}', `${channel}`).replace('{txt}', `${channel}`)}**`);
 		message.channel.send({ embeds: [JoinEmbed] });
 	}
@@ -31,7 +31,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	let playMsg;
 
 	// Create embed for responses
-	const PlayEmbed = new EmbedBuilder();
+	const PlayEmbed = new EmbedBuilder().setColor(0x2f3136);
 
 	// If the text channel is not the voice channel, send notice
 	if (message.channel.id != player.textChannel) {
@@ -45,8 +45,9 @@ module.exports = async function playSongs(requester, message, args, client, lang
 				.setStyle(ButtonStyle.Link),
 			]);
 
-		PlayEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
-			.setFooter('You may also send commands in the channel');
+		PlayEmbed.setColor(0xff0000)
+			.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
+			.setFooter('You may also send commands in that channel');
 		message.reply({ embeds: [PlayEmbed], components: [row] });
 	}
 	else {
