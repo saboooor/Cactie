@@ -32,7 +32,7 @@ module.exports = async (client, oldState, newState) => {
 		.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
 		.setColor(song.colors[0])
 		.setThumbnail(song.img)
-		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.leave}` });
+		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.join}` });
 
 	// Pause and log
 	player.pause(false);
@@ -43,5 +43,5 @@ module.exports = async (client, oldState, newState) => {
 	else textChannel.send({ embeds: [ResumeEmbed] });
 
 	// Set the player timeout
-	return player.timeout = Date.now() + 300000;
+	return player.timeout = null;
 };

@@ -12,7 +12,7 @@ module.exports = async (client, oldState, newState) => {
 
 	// Check if everyone is deafened
 	const deafened = members.filter(member => member.voice.selfDeaf);
-	if (deafened.size !== members.size - 1) return;
+	if (deafened.size !== members.size) return;
 
 	// check if the bot is active (playing, paused or empty does not matter (return otherwise)
 	if (!player || player.state !== 'CONNECTED') return;
@@ -44,5 +44,5 @@ module.exports = async (client, oldState, newState) => {
 	else textChannel.send({ embeds: [PauseEmbed] });
 
 	// Set the player timeout
-	return player.timeout = Date.now() + 300000;
+	return player.timeout = null;
 };
