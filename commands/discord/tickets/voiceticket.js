@@ -51,7 +51,7 @@ module.exports = {
 
 			// Find role and add their permissions to the channel
 			const role = message.guild.roles.cache.get(srvconfig.supportrole);
-			if (role) message.channel.permissionOverwrites.edit(role.id, { ViewChannel: true });
+			if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 			// Add voiceticket to ticket database
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'voiceticket', voiceticket.id);

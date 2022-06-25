@@ -46,7 +46,7 @@ module.exports = {
 
 			// Find role and set perms and if no role then send error
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (role) await interaction.channel.permissionOverwrites.edit(role.id, { ViewChannel: true });
+			if (role) await ticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 			else ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings supportrole`' });
 
 			await client.query(`INSERT INTO ticketdata (guildId, channelId, opener, users) VALUES ('${interaction.guild.id}', '${ticket.id}', '${author.id}', '${author.id}');`);

@@ -43,7 +43,7 @@ module.exports = {
 
 			// Find role and add their permissions to the channel
 			const role = interaction.guild.roles.cache.get(srvconfig.supportrole);
-			if (role) interaction.channel.permissionOverwrites.edit(role.id, { ViewChannel: true });
+			if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 			// Add voiceticket to ticket database
 			await client.setData('ticketdata', 'channelId', interaction.channel.id, 'voiceticket', voiceticket.id);
