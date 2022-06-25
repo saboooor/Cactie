@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { join } = require('../../../lang/int/emoji.json');
 module.exports = async (client, member) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
@@ -10,7 +11,7 @@ module.exports = async (client, member) => {
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
 			.setAuthor({ name: member.user.tag, iconURL: member.user.avatarURL() })
-			.setTitle('Member joined')
+			.setTitle(`<:in:${join}> Member joined`)
 			.setFields([
 				{ name: 'User', value: `${member}` },
 				{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` },

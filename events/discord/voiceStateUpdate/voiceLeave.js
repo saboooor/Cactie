@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { leave } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually left
 	if (newState.channelId != null || oldState.channelId == null) return;
@@ -13,7 +14,7 @@ module.exports = async (client, oldState, newState) => {
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
 			.setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.avatarURL() })
-			.setTitle('Member left voice channel')
+			.setTitle(`<:out:${leave}> Member left voice channel`)
 			.setFields([
 				{ name: 'Member', value: `${newState.member}`, inline: true },
 				{ name: 'Channel', value: `${oldState.channel}`, inline: true },

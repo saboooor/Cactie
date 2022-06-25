@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { right } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually moved channels
 	if (oldState.channelId == null || newState.channelId == null || oldState.channelId == newState.channelId) return;
@@ -13,7 +14,7 @@ module.exports = async (client, oldState, newState) => {
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
 			.setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.avatarURL() })
-			.setTitle('Member moved voice channels')
+			.setTitle(`<:right:${right}> Member moved voice channels`)
 			.setFields([
 				{ name: 'Member', value: `${newState.member}`, inline: true },
 				{ name: 'Channels', value: `${oldState.channel} **»** ${newState.channel}`, inline: true },
