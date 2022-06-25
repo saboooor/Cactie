@@ -6,8 +6,8 @@ module.exports = async (client, oldState, newState) => {
 
 	// get guild and player
 	const guild = newState.guild;
-	const textChannel = guild.channels.cache.get(player.textChannel);
 	const player = client.manager.get(guild.id);
+	const textChannel = guild.channels.cache.get(player.textChannel);
 	const members = newState.channel.members.filter(member => !member.user.bot);
 
 	// Check if everyone is deafened
