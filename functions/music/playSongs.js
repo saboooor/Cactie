@@ -33,22 +33,6 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	const PlayEmbed = new EmbedBuilder().setColor(0x2f3136);
 	const playMsg = await message.reply({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
 
-	// If the text channel is not the voice channel, send notice
-	if (message.channel.id != player.textChannel) {
-		const textChannel = client.channels.cache.get(player.textChannel);
-		const row = new ActionRowBuilder()
-			.addComponents([new ButtonBuilder()
-				.setURL(playMsg.url)
-				.setLabel('Go to channel')
-				.setStyle(ButtonStyle.Link),
-			]);
-
-		PlayEmbed.setColor(0xff0000)
-			.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
-			.setFooter({ text: 'You may also send commands in that channel' });
-		message.channel.send({ embeds: [PlayEmbed], components: [row] });
-	}
-
 	// Create undo button
 	const undo = new ActionRowBuilder()
 		.addComponents([
@@ -169,6 +153,23 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 	// Send embed
 	playMsg.edit({ content: `<:play:${play}> **${lang.music.search.found.replace('{query}', search)}**`, embeds: [PlayEmbed], components: row });
+
+	// If the text channel is not the voice channel, send notice
+	if (message.channel.id != player.textChannel) {
+		const textChannel = client.channels.cache.get(player.textChannel);
+		const textinvcmsg = await textChannel.send({ content: `<:play:${play}> **${lang.music.search.found.replace('{query}', search)}**`, embeds: [PlayEmbed], components: row });
+		const textinvclink = new ActionRowBuilder()
+			.addComponents([new ButtonBuilder()
+				.setURL(textinvcmsg.url)
+				.setLabel('Go to channel')
+				.setStyle(ButtonStyle.Link),
+			]);
+
+		PlayEmbed.setColor(0xff0000)
+			.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
+			.setFooter({ text: 'You may also send commands in that channel' });
+		message.channel.send({ embeds: [PlayEmbed], components: [textinvclink] });
+	}
 
 	// Create a collector for the undo button
 	const filter = i => requester.id == i.user.id && i.customId.startsWith('music_');
