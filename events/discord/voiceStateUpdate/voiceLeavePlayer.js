@@ -21,11 +21,11 @@ module.exports = async (client, oldState, newState) => {
 	// Set lang
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${song.requester.id}'`);
-	let lang = require('../../lang/English/msg.json');
-	if (guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
+	let lang = require('../../../lang/English/msg.json');
+	if (guild.preferredLocale.split('-')[0] == 'en') lang = require('../../../lang/English/msg.json');
+	else if (guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../../lang/Portuguese/msg.json');
+	if (srvconfig.language != 'false') lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	if (data[0]) lang = require(`../../../lang/${data[0].language}/msg.json`);
 
 	// Create pause embed
 	const PauseEmbed = new EmbedBuilder()
