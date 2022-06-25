@@ -28,16 +28,14 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 	// Get search results from YouTube, Spotify, or Apple Music
 	const search = args.join(' '); const songs = [];
-	let playMsg;
 
 	// Create embed for responses
 	const PlayEmbed = new EmbedBuilder().setColor(0x2f3136);
+	const playMsg = await message.reply({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
 
 	// If the text channel is not the voice channel, send notice
 	if (message.channel.id != player.textChannel) {
 		const textChannel = client.channels.cache.get(player.textChannel);
-		playMsg = await textChannel.send({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
-
 		const row = new ActionRowBuilder()
 			.addComponents([new ButtonBuilder()
 				.setURL(playMsg.url)
@@ -48,10 +46,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		PlayEmbed.setColor(0xff0000)
 			.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
 			.setFooter('You may also send commands in that channel');
-		message.reply({ embeds: [PlayEmbed], components: [row] });
-	}
-	else {
-		playMsg = await message.reply({ content: `<:srch:${srch}> **${lang.music.search.ing.replace('{query}', search)}**` });
+		message.channel.send({ embeds: [PlayEmbed], components: [row] });
 	}
 
 	// Create undo button
