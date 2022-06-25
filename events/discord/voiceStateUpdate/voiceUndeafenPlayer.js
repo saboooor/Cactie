@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { pause } = require('../../../lang/int/emoji.json');
+const { play } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually was undeafened
 	if (!oldState.selfDeaf || newState.selfDeaf) return;
@@ -30,14 +30,14 @@ module.exports = async (client, oldState, newState) => {
 
 	// Create pause embed
 	const PauseEmbed = new EmbedBuilder()
-		.setDescription(`<:pause:${pause}> **${lang.music.pause.ed}**\n[${song.title}](${song.uri})`)
+		.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
 		.setColor(song.colors[0])
 		.setThumbnail(song.img)
-		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.deafened}` });
+		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.undeafened}` });
 
 	// Pause and log
-	player.pause(true);
-	client.logger.info(`Paused player in ${guild.name} because of all deafened`);
+	player.pause(false);
+	client.logger.info(`Resumed player in ${guild.name} because of undeafen`);
 
 	// Send embed as now playing message
 	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [PauseEmbed] }).catch(err => client.logger.warn(err));
