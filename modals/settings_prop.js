@@ -7,7 +7,7 @@ module.exports = {
 			// Get the field and setting from the modal
 			const field = interaction.components[0].components[0];
 			let value = field.value;
-			const prop = field.custom_id;
+			const prop = field.customId;
 
 			// If the value is blank, set to false
 			if (value == '') value = 'false';

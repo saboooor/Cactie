@@ -7,7 +7,7 @@ module.exports = {
 		try {
 			// Get the field and answer from the modal
 			const field = interaction.components[0].components[0];
-			const answer = field.custom_id;
+			const answer = field.customId;
 
 			// Get the opponent from the embed description
 			const embedJSON = interaction.message.embeds[0].toJSON();
