@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 const { play } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
-	// Check if the user actually was undeafened
-	if (!oldState.selfDeaf || newState.selfDeaf) return;
+	// Check if the bot actually was server muted
+	if (oldState.member.id != client.user.id || !oldState.serverMute || newState.serverMute) return;
 
 	// get guild and player
 	const guild = newState.guild;
@@ -33,11 +33,11 @@ module.exports = async (client, oldState, newState) => {
 		.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
 		.setColor(song.colors[0])
 		.setThumbnail(song.img)
-		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.undeafened}` });
+		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.srvunmute}` });
 
 	// Pause and log
 	player.pause(false);
-	client.logger.info(`Resumed player in ${guild.name} because of undeafen`);
+	client.logger.info(`Resumed player in ${guild.name} because of server unmute`);
 
 	// Send embed as now playing message
 	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [ResumeEmbed] }).catch(err => client.logger.warn(err));
