@@ -48,7 +48,8 @@ module.exports = {
 					.setStyle(ButtonStyle.Link),
 				]);
 
-			JoinEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`);
+			JoinEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
+				.setFooter('You may also send commands in the channel');
 			message.channel.send({ embeds: [JoinEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, message); }

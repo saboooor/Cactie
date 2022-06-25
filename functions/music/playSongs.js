@@ -45,7 +45,8 @@ module.exports = async function playSongs(requester, message, args, client, lang
 				.setStyle(ButtonStyle.Link),
 			]);
 
-		PlayEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`);
+		PlayEmbed.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
+			.setFooter('You may also send commands in the channel');
 		message.reply({ embeds: [PlayEmbed], components: [row] });
 	}
 	else {
