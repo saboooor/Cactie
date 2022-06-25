@@ -51,7 +51,7 @@ module.exports = {
 			JoinEmbed
 				.setColor(0xff0000)
 				.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
-				.setFooter('You may also send commands in the channel');
+				.setFooter({ text: 'You may also send commands in that channel' });
 			message.channel.send({ embeds: [JoinEmbed], components: [row] });
 		}
 		catch (err) { client.error(err, message); }

@@ -45,7 +45,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 		PlayEmbed.setColor(0xff0000)
 			.setDescription(`**I'm sending updates to ${textChannel}**\nClick the button below to go to the channel`)
-			.setFooter('You may also send commands in that channel');
+			.setFooter({ text: 'You may also send commands in that channel' });
 		message.channel.send({ embeds: [PlayEmbed], components: [row] });
 	}
 
