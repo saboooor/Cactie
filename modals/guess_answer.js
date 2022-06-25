@@ -6,7 +6,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Get the field and answer from the modal
-			const field = interaction.components[0].components[0].toJSON();
+			const field = interaction.components[0].components[0];
 			const answer = field.custom_id;
 
 			// Get the opponent from the embed description

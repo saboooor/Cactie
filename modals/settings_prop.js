@@ -5,7 +5,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Get the field and setting from the modal
-			const field = interaction.components[0].components[0].toJSON();
+			const field = interaction.components[0].components[0];
 			let value = field.value;
 			const prop = field.custom_id;
 
