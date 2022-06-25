@@ -15,6 +15,7 @@
     "suggestthreads": "*Cweateth a thwead when a thuggethtion ith cweated f-f-fow dithcuththion (true/false)*",
     "pollchannel": "*The channyew whewe the bot putth powwth in (false/channyewId)*",
     "logchannel": "*The c-channyew whewe the bot putth vawiouth wogth (false/channyewId)*",
+    "ticketlogchannel": "*The c-channyew whewe the bot putth ticket wogth (false/channyewId)*",
     "ticketcategory": "*The kittehegowy wittehegowy whewe the b-b-bot c-cweateth ticketth i-i-in (false/kittehegowyId)*",
     "supportrole": "*The t-ticket thuppowt team wowe (woweId)*",
     "ticketmention": "*Pingth evewy wewy time a nyew ticket i-ith cweated (false/here/everyone/woweId)*",

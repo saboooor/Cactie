@@ -80,6 +80,11 @@
         "from": "channels",
         "func": "isText"
     },
+    "ticketlogchannel": {
+        "type": "id",
+        "from": "channels",
+        "func": "isText"
+    },
     "ticketcategory": {
         "type": "id",
         "from": "channels",

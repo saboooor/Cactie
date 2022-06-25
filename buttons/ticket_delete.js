@@ -13,7 +13,7 @@ module.exports = {
 
 			// Check if ticket log channel is set in settings
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			if (srvconfig.logchannel != 'false') {
+			if (srvconfig.ticketlogchannel != 'false') {
 				// Get transcript of ticket
 				await interaction.reply({ content: 'Creating transcript...' });
 				const messages = await interaction.channel.messages.fetch({ limit: 100 });
@@ -37,7 +37,7 @@ module.exports = {
 				if (users[0]) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 
 				// Send embed to ticket log channel
-				await interaction.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
+				await interaction.guild.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [DelEmbed] });
 				client.logger.info(`Created transcript of ${interaction.channel.name}: ${link}`);
 			}
 

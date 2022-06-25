@@ -15,6 +15,7 @@
     "suggestthreads": "*Cria uma thread quando a sugestão é criada para discussão (true/false)*",
     "pollchannel": "*O canal onde o bot coloca as votações (false/channelId)*",
     "logchannel": "*O canal onde o bot coloca logs variados (false/channelId)*",
+    "ticketlogchannel": "*O canal onde o bot coloca logs de tickets (false/channelId)*",
     "ticketcategory": "*Categoria onde o bot coloca os tickets (false/categoryId)*",
     "supportrole": "*Papel de suporte de tickets (roleId)*",
     "ticketmention": "*Ping sempre que um ticket é criado (false/here/everyone/roleId)*",
