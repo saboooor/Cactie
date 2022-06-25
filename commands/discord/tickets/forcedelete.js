@@ -50,7 +50,7 @@ module.exports = {
 
 			// Check if ticket log channel is set in settings and send the embed to the log channel
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (srvconfig.logchannel != 'false') await message.guild.channels.cache.get(srvconfig.logchannel).send({ embeds: [DelEmbed] });
+			if (srvconfig.ticketlogchannel != 'false') await message.guild.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [DelEmbed] });
 
 			// Actually delete ticket and ticket database
 			client.delData('ticketdata', 'channelId', message.channel.id);

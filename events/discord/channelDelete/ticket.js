@@ -1,0 +1,37 @@
+const { EmbedBuilder } = require('discord.js');
+module.exports = async (client, channel) => {
+	// Check if ticket is an actual ticket
+	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${channel.id}'`))[0];
+	if (!ticketData) return;
+	if (ticketData.users) ticketData.users = ticketData.users.split(',');
+
+	// Check if ticket log channel is set in settings
+	const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
+	const logchannel = await channel.guild.channels.cache.get(srvconfig.ticketlogchannel);
+	if (logchannel) {
+		// Get list of users for embed
+		const users = [];
+		await ticketData.users.forEach(userid => {
+			const ticketmember = channel.guild.members.cache.get(userid);
+			if (ticketmember) users.push(ticketmember);
+		});
+
+		// Create embed
+		const DelEmbed = new EmbedBuilder()
+			.setColor(Math.floor(Math.random() * 16777215))
+			.setTitle(`Deleted ${channel.name}`)
+			.addFields([
+				{ name: '**Reason**', value: 'Channel deleted manually' },
+			]);
+		if (users[0]) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
+
+		// Send embed to ticket log channel
+		await logchannel.send({ embeds: [DelEmbed] });
+	}
+
+	if (ticketData.voiceticket !== 'false') {
+		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket);
+		voiceticket.delete().catch(err => client.logger.warn(err.stack));
+	}
+	client.delData('ticketdata', 'channelId', channel.id);
+};
