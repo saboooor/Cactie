@@ -13,7 +13,7 @@ module.exports = async (client, oldState, newState) => {
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
 			.setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.avatarURL() })
-			.setTitle('Member Moved Voice Channels')
+			.setTitle('Member moved voice channels')
 			.setFields([
 				{ name: 'Member', value: `${newState.member}`, inline: true },
 				{ name: 'Channels', value: `${oldState.channel} **»** ${newState.channel}`, inline: true },
