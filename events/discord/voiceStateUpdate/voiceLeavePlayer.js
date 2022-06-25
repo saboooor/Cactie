@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { pause } = require('../../lang/int/emoji.json');
+const { pause } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually left
 	if (newState.channelId != null || oldState.channelId == null) return;

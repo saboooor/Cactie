@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { pause } = require('../../lang/int/emoji.json');
+const { pause } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually was undeafened
 	if (!oldState.selfDeaf || newState.selfDeaf) return;

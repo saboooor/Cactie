@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { play } = require('../../lang/int/emoji.json');
+const { play } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually joined
 	if (oldState.channelId != null || newState.channelId == null) return;
