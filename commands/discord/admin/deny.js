@@ -94,7 +94,7 @@ module.exports = {
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				DenyEmbed.setTitle(`${message.member.user.tag} approved a suggestion`).setFields([]);
+				DenyEmbed.setTitle(`${message.member.user.tag} denied a suggestion`).setFields([]);
 				if (args.join(' ')) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 				const msglink = new ActionRowBuilder()
 					.addComponents([new ButtonBuilder()
