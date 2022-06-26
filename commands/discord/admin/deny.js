@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const getTranscript = require('../../../functions/getTranscript.js').discord;
 module.exports = {
 	name: 'deny',
@@ -20,7 +20,7 @@ module.exports = {
 			if (!fetchedMsg) {
 				fetchedMsg = !isNaN(args[0]) ? await message.guild.channels.cache.get(srvconfig.suggestionchannel).messages.fetch(args[0]) : null;
 			}
-			if (!fetchedMsg && message.channel.parent.isText()) {
+			if (!fetchedMsg && message.channel.parent.type == ChannelType.GuildText) {
 				fetchedMsg = await message.channel.parent.messages.fetch(message.channel.id);
 			}
 			if (!fetchedMsg) return client.error('Could not find the message, try doing the command in the channel the suggestion was sent in?', message, true);
@@ -66,7 +66,7 @@ module.exports = {
 			}
 
 			// Check if there's a message and put in new field and send update dm
-			if (!isNaN(args[0]) && !message.channel.parent.isText()) args = args.slice(1);
+			if (!isNaN(args[0]) && message.channel.parent.type != ChannelType.GuildText) args = args.slice(1);
 			if (args.join(' ')) {
 				// check if there's a response already, if so, edit the field and don't add a new field
 				let newField = true;

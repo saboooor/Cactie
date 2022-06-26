@@ -68,27 +68,27 @@
     "suggestionchannel": {
         "type": "id",
         "from": "channels",
-        "func": "isText"
+        "channeltype": "GuildText"
     },
     "pollchannel": {
         "type": "id",
         "from": "channels",
-        "func": "isText"
+        "channeltype": "GuildText"
     },
     "logchannel": {
         "type": "id",
         "from": "channels",
-        "func": "isText"
+        "channeltype": "GuildText"
     },
     "ticketlogchannel": {
         "type": "id",
         "from": "channels",
-        "func": "isText"
+        "channeltype": "GuildText"
     },
     "ticketcategory": {
         "type": "id",
         "from": "channels",
-        "func": "isCategory"
+        "channeltype": "GuildCategory"
     },
     "supportrole": {
         "type": "id",
