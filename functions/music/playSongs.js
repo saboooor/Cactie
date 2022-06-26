@@ -157,7 +157,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	// If the text channel is not the voice channel, send notice
 	if (message.channel.id != player.textChannel) {
 		const textChannel = client.channels.cache.get(player.textChannel);
-		const textinvcmsg = await textChannel.send({ content: `<:play:${play}> **${lang.music.search.found.replace('{query}', search)}**`, embeds: [PlayEmbed], components: row });
+		const textinvcmsg = await textChannel.send({ embeds: [PlayEmbed] });
 		const textinvclink = new ActionRowBuilder()
 			.addComponents([new ButtonBuilder()
 				.setURL(textinvcmsg.url)
