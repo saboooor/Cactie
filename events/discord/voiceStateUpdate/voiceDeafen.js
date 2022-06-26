@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { deafen } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the user actually undeafened
 	if (oldState.selfDeaf || !newState.selfDeaf) return;
@@ -13,7 +14,7 @@ module.exports = async (client, oldState, newState) => {
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
 			.setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.avatarURL() })
-			.setTitle('Member deafened')
+			.setTitle(`<:deafen:${deafen}> Member deafened`)
 			.setFields([
 				{ name: 'Member', value: `${newState.member}`, inline: true },
 				{ name: 'Channel', value: `${newState.channel}`, inline: true },
