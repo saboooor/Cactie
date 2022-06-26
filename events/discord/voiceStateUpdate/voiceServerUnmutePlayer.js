@@ -7,6 +7,7 @@ module.exports = async (client, oldState, newState) => {
 	// get guild and player
 	const guild = newState.guild;
 	const player = client.manager.get(guild.id);
+	if (!player) return;
 	const textChannel = guild.channels.cache.get(player.textChannel);
 	const members = newState.channel.members.filter(member => !member.user.bot);
 
