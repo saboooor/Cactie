@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { yes } = require('../../../lang/int/emoji.json');
 module.exports = async (client, channel) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
@@ -10,7 +11,7 @@ module.exports = async (client, channel) => {
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
 			.setAuthor({ name: `# ${channel.name}` })
-			.setTitle('Channel created')
+			.setTitle(`<:yes:${yes}> Channel created`)
 			.setFields([
 				{ name: 'Category', value: `${channel.guild.channels.cache.get(channel.parentId) ? channel.guild.channels.cache.get(channel.parentId).name : 'None'}` },
 				{ name: 'Topic', value: `${channel.topic ?? 'None'}` },
