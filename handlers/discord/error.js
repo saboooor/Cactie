@@ -23,7 +23,7 @@ module.exports = client => {
 		}
 		message.reply({ embeds: [errEmbed], components: row }).catch(err => {
 			client.logger.warn(err);
-			message.channel.send({ embeds: [errEmbed], components: row });
+			message.channel.send({ embeds: [errEmbed], components: row }).catch(err => client.logger.warn(err));
 		});
 	};
 	client.rest.on('rateLimited', (info) => client.logger.warn(`Encountered ${info.method} rate limit!`));
