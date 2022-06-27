@@ -15,9 +15,6 @@ module.exports = {
 			// Check if ticket is already closed
 			if (interaction.channel.name.startsWith('closed')) return client.error('This ticket is already closed!', interaction, true);
 
-			// Check if user is ticket author
-			if (interaction.user.id != ticketData.opener) return client.error('You can\'t close this ticket!', interaction, true);
-
 			// Change channel name to closed
 			interaction.channel.setName(interaction.channel.name.replace('ticket', 'closed'));
 

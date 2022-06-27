@@ -79,6 +79,6 @@ module.exports = {
 				collector.stop();
 			});
 		}
-		catch (err) { console.log(err); }
+		catch (err) { client.error(err, interaction); }
 	},
 };

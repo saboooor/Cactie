@@ -7,7 +7,6 @@ module.exports = async (client, channel) => {
 	// Check if log is enabled and send log
 	if (['channeldelete', 'channel', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) {
 		const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel);
-		console.log(channel);
 		if (!logchannel) return;
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
