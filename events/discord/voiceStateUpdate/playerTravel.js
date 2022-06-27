@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { play } = require('../../../lang/int/emoji.json');
+const { pause, play } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the mute state actually changed
 	if (oldState.channelId == newState.channelId) return;
@@ -22,6 +22,17 @@ module.exports = async (client, oldState, newState) => {
 	if (srvconfig.language != 'false') lang = require(`../../../lang/${srvconfig.language}/msg.json`);
 	if (data[0]) lang = require(`../../../lang/${data[0].language}/msg.json`);
 
+	// Chcck if player should be paused or not or the event should be ignored
+	let playerpause;
+	const members = voiceChannel.members.filter(member => !member.user.bot);
+	if (members.size == 0) playerpause = true;
+	else if (!oldState.channelId && newState.channelId && members.size == 1) playerpause = false;
+	else return;
+
+	// Pause and log
+	player.pause(playerpause);
+	client.logger.info(playerpause ? `Paused player in ${guild.name} because of empty channel` : `Resumed player in ${guild.name} because of user join`);
+
 	// Create pause/resume embeds
 	const PauseEmbed = new EmbedBuilder()
 		.setColor(song.colors[0])
@@ -34,20 +45,10 @@ module.exports = async (client, oldState, newState) => {
 		.setDescription(`<:play:${play}> **${lang.music.pause.un}**\n[${song.title}](${song.uri})`)
 		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.join}` });
 
-	let pause;
-	const members = voiceChannel.members.filter(member => !member.user.bot);
-	if (members.size == 0) pause = true;
-	else if (!oldState.channelId && newState.channelId && members.size == 1) pause = false;
-	else return;
-
-	// Pause and log
-	player.pause(pause);
-	client.logger.info(pause ? `Paused player in ${guild.name} because of empty channel` : `Resumed player in ${guild.name} because of user join`);
-
 	// Send embed as now playing message
-	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [pause ? PauseEmbed : ResumeEmbed] }).catch(err => client.logger.warn(err));
-	else textChannel.send({ embeds: [pause ? PauseEmbed : ResumeEmbed] });
+	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => client.logger.warn(err));
+	else textChannel.send({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] });
 
 	// Set the player timeout
-	return player.timeout = null;
+	return player.timeout = playerpause ? Date.now() + 300000 : null;
 };
