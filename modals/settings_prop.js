@@ -20,7 +20,7 @@ module.exports = {
 				const categories = {
 					member: ['memberjoin', 'memberleave'],
 					channel: ['channelcreate', 'channeldelete'],
-					voice: ['voicejoin', 'voiceleave', 'voicemove', 'voicedeafen', 'voicemute', 'voiceserverdeafen', 'voiceservermute'],
+					voice: ['voicejoin', 'voiceleave', 'voicemove', 'voicedeafen', 'voicemute'],
 					other: ['all'],
 				};
 				const list = Object.keys(categories).map(key => { return `${key}:\n${categories[key].join(', ')}`; }).join('\n\n');
