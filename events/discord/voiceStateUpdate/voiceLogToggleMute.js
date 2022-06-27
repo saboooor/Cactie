@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { mute, srvmute, unmute } = require('../../../lang/int/emoji.json');
 module.exports = async (client, oldState, newState) => {
 	// Check if the mute state actually changed
-	if (oldState.selfMute == newState.selfMute && oldState.serverDeaf == newState.serverDeaf) return;
+	if (oldState.selfMute == newState.selfMute && oldState.serverMute == newState.serverMute) return;
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', newState.guild.id);
@@ -24,8 +24,8 @@ module.exports = async (client, oldState, newState) => {
 	// Check if the user unmuted or muted and set title accordingly
 	if (!oldState.selfMute && newState.selfMute) logEmbed.setTitle(`<:mute:${mute}> Member muted`);
 	else if (oldState.selfMute && !newState.selfMute) logEmbed.setTitle(`<:unmute:${unmute}> Member unmuted`);
-	else if (!oldState.serverDeaf && newState.serverDeaf) logEmbed.setTitle(`<:srvmute:${srvmute}> Member server-muted`);
-	else if (oldState.serverDeaf && !newState.serverDeaf) logEmbed.setTitle(`<:unmute:${unmute}> Member server-unmuted`);
+	else if (!oldState.serverMute && newState.serverMute) logEmbed.setTitle(`<:srvmute:${srvmute}> Member server-muted`);
+	else if (oldState.serverMute && !newState.serverMute) logEmbed.setTitle(`<:unmute:${unmute}> Member server-unmuted`);
 
 	// Send log
 	logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
