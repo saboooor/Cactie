@@ -9,7 +9,7 @@ module.exports = async (client, member) => {
 	if (!member.guild.systemChannel) {
 		const owner = await member.guild.fetchOwner();
 		client.logger.warn(`${member.guild.name} (${owner.tag}) doesn't have a system channel set!`);
-		return owner.send({ content: `Join messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system messages channel or turn off join messages with the command \`/settings joinmessage\`` })
+		return owner.send({ content: `Join messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system messages channel or turn off join messages with the \`/settings\` command` })
 			.catch(err => client.logger.warn(err));
 	}
 

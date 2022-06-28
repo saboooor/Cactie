@@ -21,8 +21,8 @@ module.exports = async (client, guild) => {
 		.setColor(Math.floor(Math.random() * 16777215))
 		.setTitle(`Thanks for adding ${client.user.username} to ${guild.name}!`)
 		.setDescription(`
-My prefix is \`${srvconfig.prefix}\`, you may change this with \`/settings prefix\`
-Type \`${srvconfig.prefix}help\` for help, and \`${srvconfig.prefix}invite\` to invite me to other servers!
+My text command prefix is \`${srvconfig.prefix}\`, you may change this through the settings with \`/settings\`
+Type \`/help\` for help, and \`/invite\` to invite me to other servers!
 Please take some time going through the settings so that ${client.user.username} works well! \`/settings\`
 		`)
 		.setThumbnail('https://cactie.smhsmh.club/assets/images/Cactie.png');
