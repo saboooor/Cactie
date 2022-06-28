@@ -1,8 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const modal = require('../../../lang/int/settingsmodal.json');
-const fs = require('fs');
-const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
-modal.language.options = languages;
 const unsupportedSettings = ['leavemessage', 'joinmessage', 'tickets', 'suggestionchannel', 'pollchannel', 'ticketcategory', 'ticketmention', 'supportrole', 'adminrole', 'msgshortener', 'djrole', 'suggestthreads', 'mutecmd', 'auditlogs'];
 module.exports = {
 	name: 'settings',
@@ -11,7 +7,6 @@ module.exports = {
 	usage: '[Option]',
 	noDefer: true,
 	permission: 'Administrator',
-	options: require('../../options/settings.js'),
 	async execute(message, args, client, lang) {
 		try {
 			// Get the settings descriptions
@@ -41,7 +36,7 @@ module.exports = {
 				const value = args.join(' ');
 
 				if (!srvconfig[prop]) return client.error(`'${prop}' is an invalid setting!`, message, true);
-				if (unsupportedSettings.includes(prop)) return client.error(`'${prop}' doesn't exist on Guilded yet!`, message, true);
+				if (unsupportedSettings.includes(prop)) return client.error(`'${prop}' isn't supported on Guilded yet!`, message, true);
 
 				if (prop == 'maxppsize' && (isNaN(value) || value > 75)) return client.error(`'${prop}' must be a valid number that is under 75!`, message, true);
 				if (prop == 'logchannel' && value != 'false' && !(await client.channels.fetch(prop))) return client.error(`'${prop}' must be a valid channel Id!`, message, true);
