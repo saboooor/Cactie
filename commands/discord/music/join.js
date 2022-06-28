@@ -42,10 +42,11 @@ module.exports = {
 			const msg = await textChannel.send({ embeds: [JoinEmbed] });
 
 			const row = new ActionRowBuilder()
-				.addComponents([new ButtonBuilder()
-					.setURL(msg.url)
-					.setLabel('Go to channel')
-					.setStyle(ButtonStyle.Link),
+				.addComponents([
+					new ButtonBuilder()
+						.setURL(msg.url)
+						.setLabel('Go to channel')
+						.setStyle(ButtonStyle.Link),
 				]);
 
 			JoinEmbed

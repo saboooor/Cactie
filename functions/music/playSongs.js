@@ -162,10 +162,11 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		const textChannel = client.channels.cache.get(player.textChannel);
 		const textinvcmsg = await textChannel.send({ embeds: [PlayEmbed] });
 		const textinvclink = new ActionRowBuilder()
-			.addComponents([new ButtonBuilder()
-				.setURL(textinvcmsg.url)
-				.setLabel('Go to channel')
-				.setStyle(ButtonStyle.Link),
+			.addComponents([
+				new ButtonBuilder()
+					.setURL(textinvcmsg.url)
+					.setLabel('Go to channel')
+					.setStyle(ButtonStyle.Link),
 			]);
 
 		PlayEmbed.setColor(0xff0000)
