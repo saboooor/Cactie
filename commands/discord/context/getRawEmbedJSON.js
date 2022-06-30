@@ -2,6 +2,7 @@ const { createPaste } = require('hastebin');
 module.exports = {
 	name: 'Get Raw Embed JSON',
 	ephemeral: true,
+	type: 'Message',
 	async execute(interaction, client, message) {
 		try {
 			// Check if message has embeds

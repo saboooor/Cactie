@@ -4,6 +4,7 @@ const { progressbar } = require('../../../functions/music/progressbar.js');
 module.exports = {
 	name: 'User Info',
 	ephemeral: true,
+	type: 'User',
 	async execute(interaction, client, member) {
 		try {
 			const roles = Array.from(member.roles.cache).sort(function(a, b) {

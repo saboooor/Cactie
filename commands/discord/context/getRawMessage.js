@@ -2,6 +2,7 @@ const { createPaste } = require('hastebin');
 module.exports = {
 	name: 'Get Raw Message',
 	ephemeral: true,
+	type: 'Message',
 	async execute(interaction, client, message) {
 		try {
 			// Get content and check if it exists

@@ -4,7 +4,7 @@ module.exports = async (client, interaction) => {
 	if (!interaction.isContextMenuCommand()) return;
 
 	// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
-	const command = client.contextcmds.get(interaction.commandName);
+	const command = client.slashcommands.get(interaction.commandName);
 	if (!command) return;
 
 	// Get current settings for the guild
@@ -66,7 +66,7 @@ module.exports = async (client, interaction) => {
 			await interaction.deferReply({ ephemeral: command.ephemeral });
 			interaction.reply = interaction.editReply;
 		}
-		client.logger.info(`${interaction.user.tag} issued context menu command: '${command.name}', in ${interaction.guild.name}`.replace(' ,', ','));
+		client.logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item.id}, in ${interaction.guild.name}`.replace(' ,', ','));
 		command.execute(interaction, client, item, lang);
 	}
 	catch (err) {

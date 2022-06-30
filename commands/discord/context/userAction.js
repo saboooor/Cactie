@@ -5,6 +5,7 @@ const { x } = require('../../../lang/int/emoji.json');
 module.exports = {
 	name: 'Do action on user',
 	noDefer: true,
+	type: 'User',
 	async execute(interaction, client, member, lang) {
 		try {
 			const row = new ActionRowBuilder()
