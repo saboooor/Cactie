@@ -8,7 +8,7 @@ const evalField = require('./evalField.js');
 module.exports = async function analyzeTimings(message, client, args) {
 	const TimingsEmbed = new EmbedBuilder()
 		.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
-		.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
+		.setFooter({ text: `Requested by ${(message.author ?? message.member.user).tag}`, iconURL: (message.author ?? message.member.user).avatarURL() });
 
 	let url;
 	const fields = [];
@@ -41,7 +41,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	TimingsEmbed.setAuthor({ name: 'Timings Analysis', iconURL: server_icon, url: url });
 
 	if (!request_raw || !request) {
-		fields.push({ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true });
+		TimingsEmbed.addFields([{ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true }]);
 		return [{ embeds: [TimingsEmbed] }];
 	}
 
@@ -54,7 +54,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const server_properties = request.timingsMaster.config ? request.timingsMaster.config['server.properties'] : null;
 	const bukkit = request.timingsMaster.config ? request.timingsMaster.config.bukkit : null;
 	const spigot = request.timingsMaster.config ? request.timingsMaster.config.spigot : null;
-	const paper = request.timingsMaster.config ? request.timingsMaster.config.paper : null;
+	const paper = request.timingsMaster.config ? (request.timingsMaster.config.paper ?? request.timingsMaster.config.paperspigot) : null;
 	const pufferfish = request.timingsMaster.config ? request.timingsMaster.config.pufferfish : null;
 	const purpur = request.timingsMaster.config ? request.timingsMaster.config.purpur : null;
 
@@ -248,7 +248,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const issues = [...fields];
 	if (issues.length >= 13) {
 		fields.splice(12, issues.length, { name: `Plus ${issues.length - 12} more recommendations`, value: client.type.name == 'guilded' ? 'Do the recommendations listed on this page and do the command again to see more' : 'Click the buttons below to see more' });
-		TimingsEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: message.member.user.avatarURL() });
+		TimingsEmbed.setFooter({ text: `Requested by ${(message.author ?? message.member.user).tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: (message.author ?? message.member.user).avatarURL() });
 		components.push(
 			new ActionRowBuilder()
 				.addComponents([
