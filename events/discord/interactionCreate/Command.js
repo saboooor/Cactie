@@ -65,9 +65,6 @@ module.exports = async (client, interaction) => {
 	timestamps.set(interaction.user.id, now);
 	setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
-	// Check if slash command is being sent in a DM, if so, send error message because commands in DMs are stupid
-	if (interaction.channel.isDMBased()) return client.error('You can\'t execute commands in DMs!', interaction, true);
-
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly && client.user.id == '848775888673439745') {
 		// Get vote data for user

@@ -8,7 +8,7 @@ module.exports = async (client, interaction) => {
 	if (!command) return;
 
 	// Get current settings for the guild
-	const srvconfig = interaction.channel.isDMBased() ? { language: 'English' } : await client.getData('settings', 'guildId', interaction.guild.id);
+	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
 	// Get the language for the user if specified or guild language
 	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
