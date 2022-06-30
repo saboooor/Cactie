@@ -1,6 +1,4 @@
 {
-    "get": "Get all settings",
-    "reset": "Reset all settings",
     "guildId": "*O ID desta guild (só leitura)*",
     "prefix": "*O prefixo do bot é*",
     "language": "*The language Cactie will use (overrides the server language)*",

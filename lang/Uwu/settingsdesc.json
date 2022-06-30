@@ -1,6 +1,4 @@
 {
-    "get": "Get all settings",
-    "reset": "Reset all settings",
     "guildId": "*This guiwd's Id (Wead o-onwy) OwO*",
     "prefix": "*The bot's pwefix*",
     "language": "*The language Cactie will use (overrides the server language)*",
