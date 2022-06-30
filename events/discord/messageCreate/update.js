@@ -27,11 +27,11 @@ module.exports = async (client, message) => {
 	await client.manager.players.forEach(async player => {
 		await client.guilds.cache.get(player.guild).channels.cache.get(player.textChannel).send({ embeds: [GitEmbed] });
 		player.queue.unshift(player.queue.current);
-		const { textChannel, queue, trackRepeat, queueRepeat, position, paused, volume } = player;
+		const { textChannel, queue, trackRepeat, queueRepeat, position, paused, volume, effects, effectcurrentonly } = player;
 		const playerjson = {
 			voiceChannel: player.options.voiceChannel,
 			guild: player.guild,
-			textChannel, queue, trackRepeat, queueRepeat, position, paused, volume,
+			textChannel, queue, trackRepeat, queueRepeat, position, paused, volume, effects, effectcurrentonly,
 		};
 		const prevlines = fs.existsSync('playercache.txt') ? fs.readFileSync('playercache.txt') : '';
 		fs.writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);

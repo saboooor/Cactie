@@ -32,6 +32,11 @@ module.exports = async (client, node) => {
 			}
 		});
 		if (!player.playing && player.queue.current) await player.play();
+		await player.node.send({
+			op: 'filters',
+			guildId: player.guild,
+			...playerjson.effects,
+		});
 		player.pause(playerjson.paused);
 		player.seek(playerjson.position);
 		player.setTrackRepeat(playerjson.trackRepeat);
