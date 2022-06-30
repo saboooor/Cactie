@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
 const { ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const { play, shuffle, skip, music } = require('../../lang/int/emoji.json');
+const { shuffle, skip, pause, play, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = []; player.loopTrackAmount = [];
 	player.loopQueueAmount = []; player.shuffleAmount = [];
@@ -37,6 +37,10 @@ module.exports = async (client, player, track) => {
 				.setEmoji({ id: shuffle })
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonBuilder()
+				.setCustomId('music_pause')
+				.setEmoji({ id: player.paused ? play : pause })
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
 				.setCustomId('music_skip')
 				.setEmoji({ id: skip })
 				.setStyle(ButtonStyle.Secondary),
@@ -59,10 +63,6 @@ module.exports = async (client, player, track) => {
 					.setLabel('Equalizer')
 					.setValue('music_equalizer')
 					.setDescription('Use the equalizer'),
-				new SelectMenuOptionBuilder()
-					.setLabel('Pause/Unpause')
-					.setValue('music_pause')
-					.setDescription('Pause/Unpause the music'),
 				new SelectMenuOptionBuilder()
 					.setLabel('Queue')
 					.setValue('music_queue')

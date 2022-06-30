@@ -3,7 +3,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, Select
 const { ButtonStyle } = require('discord.js');
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
-const { refresh, music, shuffle, skip } = require('../lang/int/emoji.json');
+const { shuffle, skip, pause, play, music, refresh } = require('../lang/int/emoji.json');
 module.exports = {
 	name: 'music_updatenp',
 	player: true,
@@ -35,6 +35,10 @@ module.exports = {
 					.setEmoji({ id: shuffle })
 					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder()
+					.setCustomId('music_pause')
+					.setEmoji({ id: player.paused ? play : pause })
+					.setStyle(ButtonStyle.Secondary),
+				new ButtonBuilder()
 					.setCustomId('music_skip')
 					.setEmoji({ id: skip })
 					.setStyle(ButtonStyle.Secondary),
@@ -58,10 +62,6 @@ module.exports = {
 							.setLabel('Equalizer')
 							.setValue('music_equalizer')
 							.setDescription('Use the equalizer'),
-						new SelectMenuOptionBuilder()
-							.setLabel('Pause/Unpause')
-							.setValue('music_pause')
-							.setDescription('Pause/Unpause the music'),
 						new SelectMenuOptionBuilder()
 							.setLabel('Queue')
 							.setValue('music_queue')
