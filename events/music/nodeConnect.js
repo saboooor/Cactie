@@ -32,6 +32,7 @@ module.exports = async (client, node) => {
 			}
 		});
 		if (!player.playing && player.queue.current) await player.play();
+		player.pause(playerjson.paused);
 		player.seek(playerjson.position);
 		player.setTrackRepeat(playerjson.trackRepeat);
 		player.setQueueRepeat(playerjson.queueRepeat);
