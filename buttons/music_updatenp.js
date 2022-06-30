@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
 const { ButtonStyle } = require('discord.js');
 const { convertTime } = require('../functions/music/convert.js');
@@ -23,12 +22,6 @@ module.exports = {
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.colors[0]);
-			const btn = new ButtonBuilder()
-				.setCustomId('music_updatenp')
-				.setLabel(lang.refresh)
-				.setEmoji({ id: refresh })
-				.setStyle(ButtonStyle.Secondary)
-				.setDisabled(true);
 			const row = new ActionRowBuilder().addComponents([
 				new ButtonBuilder()
 					.setCustomId('music_shuffle')
@@ -42,7 +35,11 @@ module.exports = {
 					.setCustomId('music_skip')
 					.setEmoji({ id: skip })
 					.setStyle(ButtonStyle.Secondary),
-				btn,
+				new ButtonBuilder()
+					.setCustomId('music_updatenp')
+					.setLabel(lang.refresh)
+					.setEmoji({ id: refresh })
+					.setStyle(ButtonStyle.Secondary),
 				new ButtonBuilder()
 					.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
 					.setEmoji({ id: music })
@@ -73,11 +70,8 @@ module.exports = {
 					]),
 			]);
 
-			// Send updated embed with disabled button and re-enable it after 5 seconds
+			// Send updated embed
 			await interaction.reply({ embeds: [NPEmbed], components: [row, row2] });
-			await sleep(2000);
-			btn.setDisabled(false);
-			await interaction.reply({ components: [row, row2] });
 		}
 		catch (err) { client.error(err, interaction); }
 	},
