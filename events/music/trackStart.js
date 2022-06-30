@@ -6,6 +6,11 @@ module.exports = async (client, player, track) => {
 	player.skipAmount = []; player.loopTrackAmount = [];
 	player.loopQueueAmount = []; player.shuffleAmount = [];
 	if (player.effectcurrentonly) {
+		// Send empty filters to node
+		await player.node.send({
+			op: 'filters',
+			guildId: player.guild,
+		});
 		player.effects = {};
 		player.effectcurrentonly = false;
 	}
