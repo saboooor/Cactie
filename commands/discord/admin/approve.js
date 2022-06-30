@@ -85,9 +85,11 @@ module.exports = {
 			}
 			ApproveEmbed.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 			if (ApproveEmbed.toJSON().url) {
-				message.guild.members.cache.get(ApproveEmbed.toJSON().url.split('a')[1])
-					.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
-					.catch(err => client.logger.warn(err));
+				const member = message.guild.members.cache.get(ApproveEmbed.toJSON().url.split('a')[1]);
+				if (member) {
+					member.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
+						.catch(err => client.logger.warn(err));
+				}
 			}
 
 			// Update message and reply with approved

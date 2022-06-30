@@ -46,7 +46,6 @@ module.exports = {
 			const filter = i => i.customId.startsWith('page_');
 			const collector = SettingsMsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async interaction => {
-				console.log(interaction);
 				// Defer interaction
 				interaction.deferUpdate();
 				let page = parseInt(SettingsEmbed.toJSON().footer ? SettingsEmbed.toJSON().footer.text.split(' ')[1] : maxPages);
