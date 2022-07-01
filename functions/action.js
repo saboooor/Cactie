@@ -4,7 +4,7 @@ let current;
 module.exports = async function action(message, author, args, type, lang) {
 	// Check if arg is a user and set it
 	let user;
-	if (args[0] && message.client.type.name == 'discord') {
+	if (args[0]) {
 		user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (user) args[0] = user.displayName;
 	}
@@ -19,13 +19,9 @@ module.exports = async function action(message, author, args, type, lang) {
 		current = i;
 	}
 
-	// Get the username and iconURL
-	const username = message.client.type.name == 'discord' ? author.displayName : author.user.name;
-	const iconURL = message.client.type.name == 'discord' ? author.user.displayAvatarURL() : author.user.avatar;
-
 	// Create embed with bonk gif and author / footer
 	const BonkEmbed = new EmbedBuilder()
-		.setAuthor({ name: `${username} ${lang.actions[type].plural} ${args[0] ? args.join(' ') : ''}`, iconURL: iconURL })
+		.setAuthor({ name: `${author.displayName} ${lang.actions[type].plural} ${args[0] ? args.join(' ') : ''}`, iconURL: author.user.displayAvatarURL() })
 		.setImage(gifs[type][i])
 		.setFooter({ text: lang.actions[type].footer });
 

@@ -1,28 +1,26 @@
 const fs = require('fs');
-const YAML = require('yaml');
-const G = require('guilded.js');
-const D = require('discord.js');
+const { Client, Partials, GatewayIntentBits } = require('discord.js');
 
 // Create Discord client
-const discord = new D.Client({
+const client = new Client({
 	shards: 'auto',
 	partials: [
-		D.Partials.Message,
-		D.Partials.Channel,
-		D.Partials.Reaction,
-		D.Partials.GuildMember,
-		D.Partials.User,
+		Partials.Message,
+		Partials.Channel,
+		Partials.Reaction,
+		Partials.GuildMember,
+		Partials.User,
 	],
 	intents: [
-		D.GatewayIntentBits.Guilds,
-		D.GatewayIntentBits.GuildMessages,
-		D.GatewayIntentBits.GuildMembers,
-		D.GatewayIntentBits.GuildBans,
-		D.GatewayIntentBits.GuildPresences,
-		D.GatewayIntentBits.GuildMessageReactions,
-		D.GatewayIntentBits.DirectMessages,
-		D.GatewayIntentBits.GuildVoiceStates,
-		D.GatewayIntentBits.MessageContent,
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.MessageContent,
 	],
 	allowedMentions: {
 		parse: ['users', 'roles', 'everyone'],
@@ -30,22 +28,8 @@ const discord = new D.Client({
 	},
 });
 
-// Set type for later use and startTimestamp for ready counter
-discord.type = { color: '\u001b[34m', name: 'discord' };
-discord.startTimestamp = Date.now();
+// Set startTimestamp for ready counter
+client.startTimestamp = Date.now();
 
 // Load the universal and discord-specific handlers
-for (const handler of fs.readdirSync('./handlers/universal').filter(file => file.endsWith('.js'))) require(`./handlers/universal/${handler}`)(discord);
-for (const handler of fs.readdirSync('./handlers/discord').filter(file => file.endsWith('.js'))) require(`./handlers/discord/${handler}`)(discord);
-
-// Load the config and login the guilded client
-const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
-const guilded = new G.Client({ token: con.guilded.token });
-
-// Set type for later use and startTimestamp for ready counter
-guilded.type = { color: '\u001b[33m', name: 'guilded' };
-guilded.startTimestamp = Date.now();
-
-// Load the universal and guilded-specific handlers
-for (const handler of fs.readdirSync('./handlers/universal').filter(file => file.endsWith('.js'))) require(`./handlers/universal/${handler}`)(guilded);
-for (const handler of fs.readdirSync('./handlers/guilded').filter(file => file.endsWith('.js'))) require(`./handlers/guilded/${handler}`)(guilded);
+for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(client);

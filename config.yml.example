@@ -1,8 +1,5 @@
 con:
-  discord:
-    token: '' # Discord bot token
-  guilded:
-    token: '' # Guilded bot token
+  token: '' # Discord bot token
 # websocket: # Music dashboard websocket port
 # vote:
 #   webhook: # webhook port

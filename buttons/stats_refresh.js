@@ -18,8 +18,8 @@ module.exports = {
 			if (!StatsEmbed.toJSON().title && pong.hostname) StatsEmbed.setTitle(pong.hostname);
 			else if (!StatsEmbed.toJSON().title && pong.port == 25565) StatsEmbed.setTitle(pong.ip);
 			else if (!StatsEmbed.toJSON().title) StatsEmbed.setTitle(`${pong.ip}:${pong.port}`);
-			if (pong.debug.cachetime) StatsEmbed.setDescription(`Last Pinged: ${client.type.name == 'discord' ? `<t:${pong.debug.cachetime}:R>` : `\`${new Date(parseInt(pong.debug.cachetime + '000'))}\``}`);
-			else StatsEmbed.setDescription(`Last Pinged: ${client.type.name == 'discord' ? `<t:${Math.round(Date.now() / 1000)}:R>` : `\`${Date.now()}\``}`);
+			if (pong.debug.cachetime) StatsEmbed.setDescription(`Last Pinged: <t:${pong.debug.cachetime}:R>`);
+			else StatsEmbed.setDescription(`Last Pinged: <t:${Math.round(Date.now() / 1000)}:R>`);
 			if (pong.version) StatsEmbed.addFields([{ name: '**Version:**', value: pong.version, inline: true }]);
 			if (pong.protocol != -1 && pong.protocol) StatsEmbed.addFields([{ name: '**Protocol:**', value: `${pong.protocol} (${protocols[pong.protocol]})`, inline: true }]);
 			if (pong.software) StatsEmbed.addFields([{ name: '**Software:**', value: pong.software, inline: true }]);

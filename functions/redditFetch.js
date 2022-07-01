@@ -21,8 +21,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
-	if (data.over_18 && client.type.name == 'discord' && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err.stack, message));
-	if (data.over_18 && client.type.name == 'guilded' && (await client.channels.fetch(message.channelId)).name.toLowerCase() != 'nsfw') return client.error('The content on this command is NSFW!\nTo view this sensitive content:\n- Execute this command in a channel named \'NSFW\'\n- Create a channel named \'NSFW\'', message, true);
+	if (data.over_18 && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err.stack, message));
 	const timestamp = parseInt(`${data.created}` + '000');
 	const PostEmbed = new EmbedBuilder()
 		.setColor(Math.floor(Math.random() * 16777215))
@@ -33,7 +32,6 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		.setFooter({ text: `Fetched from r/${data.subreddit}` })
 		.setTimestamp(timestamp);
 	if (data.url.includes('redgifs.com/watch/')) {
-		if (client.type.name == 'guilded') return redditFetch(subreddits, message, client, attempts + 1);
 		const gif = await fetch(`https://api.redgifs.com/v2/gifs/${data.url.split('redgifs.com/watch/')[1]}`);
 		const gifData = await gif.json();
 		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return redditFetch(subreddits, message, client, attempts + 1);
