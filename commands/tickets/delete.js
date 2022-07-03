@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const getTranscript = require('../../functions/getTranscript.js').discord;
+const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'delete',
 	description: 'Delete a ticket',

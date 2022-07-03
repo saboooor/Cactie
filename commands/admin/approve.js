@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
-const getTranscript = require('../../functions/getTranscript.js').discord;
+const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'approve',
 	description: 'Approve a suggestion.',
