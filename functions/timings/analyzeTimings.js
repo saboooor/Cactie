@@ -23,7 +23,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		}
 	});
 
-	if (!url) return false;
+	if (!url) return [{ content: 'Invalid Timings URL! Note that this bot does not yet support Spark profiles yet, expect support approximately <t:1664604000:R>' }];
 
 	client.logger.info(`Timings analyzed from ${(message.author ?? message.member.user).tag} (${(message.author ?? message.member.user).id}): ${url}`);
 

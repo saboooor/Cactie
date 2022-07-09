@@ -7,7 +7,7 @@ module.exports = async (client, player, track, payload) => {
 	let lang = require('../../lang/English/msg.json');
 	if (guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../../lang/${srvconfig.language}/msg.json`);
+	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const FailEmbed = new EmbedBuilder()
 		.setColor(0xE74C3C)
 		.setDescription(`❌ **${lang.music.track.failed}**`)
