@@ -26,6 +26,7 @@ module.exports = async (client, oldState, newState) => {
 	else if (oldState.selfMute && !newState.selfMute) logEmbed.setTitle(`<:unmute:${unmute}> Member unmuted`);
 	else if (!oldState.serverMute && newState.serverMute) logEmbed.setTitle(`<:srvmute:${srvmute}> Member server-muted`);
 	else if (oldState.serverMute && !newState.serverMute) logEmbed.setTitle(`<:unmute:${unmute}> Member server-unmuted`);
+	else logEmbed.setTitle('logToggleMute');
 
 	// Send log
 	logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
