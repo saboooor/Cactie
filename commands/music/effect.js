@@ -179,7 +179,7 @@ module.exports = {
 				}
 				return effectMsg.edit({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow, disablerow] });
 			});
-			collector.on('end', () => effectMsg.edit({ components: [] }));
+			collector.on('end', () => effectMsg.edit({ components: [] }).catch(err => client.logger.warn(err)));
 		}
 		catch (err) { client.error(err, message); }
 	},
