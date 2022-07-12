@@ -37,12 +37,6 @@ module.exports = async (client, oldState, newState) => {
 		logEmbed.setTitle(`<:right:${right}> Member moved voice channels`)
 			.addFields([{ name: 'Channels', value: `${oldState.channel} <:right:${right}> ${newState.channel}`, inline: true }]);
 	}
-	// Check if user moved
-	else {
-		// Check if log is enabled and set title accordingly
-		if (!['voice', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-		logEmbed.setTitle('logTravel');
-	}
 
 	// Send log
 	logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));

@@ -26,7 +26,7 @@ module.exports = async (client, oldState, newState) => {
 	else if (oldState.selfDeaf && !newState.selfDeaf) logEmbed.setTitle(`<:undeafen:${undeafen}> Member undeafened`);
 	else if (!oldState.serverDeaf && newState.serverDeaf) logEmbed.setTitle(`<:srvdeafen:${srvdeafen}> Member server-deafened`);
 	else if (oldState.serverDeaf && !newState.serverDeaf) logEmbed.setTitle(`<:undeafen:${undeafen}> Member server-undeafened`);
-	else logEmbed.setTitle('logToggleDeafen');
+	else return;
 
 	// Send log
 	logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
