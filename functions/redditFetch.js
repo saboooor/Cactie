@@ -7,6 +7,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(err => {
 		return client.error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json\n${err}`, message);
 	});
+	if (!json) return;
 	const pong = await json.json().catch(err => {
 		return client.error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json\n${err}`, message);
 	});
