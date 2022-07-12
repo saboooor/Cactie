@@ -1,3 +1,4 @@
 module.exports = async (client, player) => {
-	client.logger.info(`Player has been destroyed in ${client.guilds.cache.get(player.guild).name}`);
+	const guild = client.guilds.cache.get(player.guild);
+	client.logger.info(`Player has been destroyed in ${guild ? guild.name : player.guild}`);
 };
