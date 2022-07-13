@@ -20,6 +20,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	}
 	const data = pong[0].data.children[0].data;
 	if (data.selftext) return redditFetch(subreddits, message, client, attempts + 1);
+	if (data.link_flair_text && (data.link_flair_text.toLowerCase().includes('help') || data.link_flair_text.toLowerCase().includes('que'))) return redditFetch(subreddits, message, client, attempts + 1);
 	client.logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
 	if (data.over_18 && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err.stack, message));
@@ -30,7 +31,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		.setTitle(`${data.over_18 ? `<:nsfw:${nsfw}>  ` : ''}${data.title}`)
 		.setDescription(`**${data.ups} Upvotes** (${data.upvote_ratio * 100}%)`)
 		.setURL(`https://reddit.com${data.permalink}`)
-		.setFooter({ text: `Fetched from r/${data.subreddit}` })
+		.setFooter({ text: `Fetched from r/${data.subreddit}${data.link_flair_text ? ` • Flair: ${data.link_flair_text}` : ''}` })
 		.setTimestamp(timestamp);
 	if (data.url.includes('redgifs.com/watch/')) {
 		const gif = await fetch(`https://api.redgifs.com/v2/gifs/${data.url.split('redgifs.com/watch/')[1]}`);
