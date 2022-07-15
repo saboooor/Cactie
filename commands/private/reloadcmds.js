@@ -10,7 +10,7 @@ module.exports = {
 			const commands = await client.application?.commands.fetch();
 			for (let command of client.slashcommands) {
 				command = command[1];
-				if (command.type) return;
+				if (command.type) continue;
 				client.logger.info(`Overwriting /${command.name}`);
 				const cmd = new SlashCommandBuilder()
 					.setName(command.name)
@@ -21,10 +21,11 @@ module.exports = {
 			}
 			for (let command of commands) {
 				command = command[1];
-				if (client.slashcommands.find(c => c.name == command.name)) return;
+				if (client.slashcommands.find(c => c.name == command.name)) continue;
 				client.logger.info(`Detected /${command.name} has been deleted! Deleting command...`);
 				await command.delete();
 			}
+			message.reply('All slash commands have been updated!');
 		}
 		catch (err) { client.error(err, message); }
 	},
