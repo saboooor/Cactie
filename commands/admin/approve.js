@@ -87,7 +87,7 @@ module.exports = {
 			if (ApproveEmbed.toJSON().url) {
 				const member = message.guild.members.cache.get(ApproveEmbed.toJSON().url.split('a')[1]);
 				if (member) {
-					member.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
+					member.send({ content: `**Your suggestion at ${message.guild.name} has been approved.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
 						.catch(err => client.logger.warn(err));
 				}
 			}
