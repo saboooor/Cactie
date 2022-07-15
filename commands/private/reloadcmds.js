@@ -10,6 +10,8 @@ module.exports = {
 			const commands = await client.application?.commands.fetch();
 			for (let command of client.slashcommands) {
 				command = command[1];
+				if (command.type) return;
+				client.logger.info(`Overwriting /${command.name}`);
 				const cmd = new SlashCommandBuilder()
 					.setName(command.name)
 					.setDescription(command.description);

@@ -1,8 +1,9 @@
 const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
+const { no } = require('../../lang/int/emoji.json');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = {
 	name: 'deny',
-	description: 'Deny a suggestion',
+	description: 'Deny a suggestion.',
 	ephemeral: true,
 	aliases: ['reject', 'decline'],
 	args: true,
@@ -13,32 +14,35 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Fetch the message
-			let fetchedMsg = !isNaN(args[0]) ? await message.channel.messages.fetch(args[0]) : null;
+			const messageId = args.shift();
+			let suggestMsg = !isNaN(messageId) ? await message.channel.messages.fetch(messageId).catch(() => { return null; }) : null;
 
-			// Check if the message exists, if not, check in suggestionchannel, if not, check if it's in thread, if not, return
+			// Check if the message exists, if not, check in suggestionchannel, if not, check if it's in parent, if not, return
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			if (!fetchedMsg) {
-				fetchedMsg = !isNaN(args[0]) ? await message.guild.channels.cache.get(srvconfig.suggestionchannel).messages.fetch(args[0]) : null;
-			}
-			if (!fetchedMsg && message.channel.parent.type == ChannelType.GuildText) {
-				fetchedMsg = await message.channel.parent.messages.fetch(message.channel.id);
-			}
-			if (!fetchedMsg) return client.error('Could not find the message, try doing the command in the channel the suggestion was sent in?', message, true);
+			const suggestChannel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
+			if (!suggestMsg) suggestMsg = !isNaN(messageId) ? await suggestChannel.messages.fetch(messageId).catch(() => { return null; }) : null;
+			if (!suggestMsg && message.channel.parent && message.channel.parent.type == ChannelType.GuildText) suggestMsg = !isNaN(messageId) ? await message.channel.parent.messages.fetch(messageId).catch(() => { return null; }) : null;
+			if (!suggestMsg) return client.error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
 
 			// Check if message was sent by the bot
-			if (fetchedMsg.author != client.user) return;
+			if (suggestMsg.author.id != client.user.id) return;
 
 			// Get embed and check if embed is a suggestion
-			const DenyEmbed = new EmbedBuilder(fetchedMsg.embeds[0].toJSON());
+			const DenyEmbed = new EmbedBuilder(suggestMsg.embeds[0].toJSON());
 			if (!DenyEmbed || !DenyEmbed.toJSON().author || !DenyEmbed.toJSON().title.startsWith('Suggestion')) return;
 
+			// Delete command message
+			if (!message.commandName) message.delete().catch(err => client.logger.error(err.stack));
+
 			// Remove all reactions and set color to red and denied title
-			fetchedMsg.reactions.removeAll();
-			DenyEmbed.setColor(0xE74C3C).setTitle('Suggestion (Denied)');
+			suggestMsg.reactions.removeAll();
+			DenyEmbed.setColor(0xE74C3C)
+				.setTitle('Suggestion (Denied)')
+				.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 
 			// Fetch result / reaction emojis and add field if not already added
 			const emojis = [];
-			await fetchedMsg.reactions.cache.forEach(reaction => {
+			await suggestMsg.reactions.cache.forEach(reaction => {
 				let emoji = client.emojis.cache.get(reaction._emoji.id);
 				if (!emoji) emoji = reaction._emoji.name;
 				emojis.push(`${emoji} **${reaction.count}**`);
@@ -47,9 +51,6 @@ module.exports = {
 
 			// Get suggestion thread
 			const thread = message.guild.channels.cache.get(DenyEmbed.toJSON().url.split('a')[2]);
-
-			// Delete command message
-			if (!message.commandName && !thread) message.delete().catch(err => client.logger.error(err.stack));
 
 			// Delete thread if exists with transcript
 			if (thread) {
@@ -65,22 +66,15 @@ module.exports = {
 				thread.delete();
 			}
 
-			// Check if there's a message and put in new field and send update dm
-			if (!isNaN(args[0]) && message.channel.parent.type != ChannelType.GuildText) args = args.slice(1);
+			// Check if there's a message and put in new field
 			if (args.join(' ')) {
 				// check if there's a response already, if so, edit the field and don't add a new field
-				let newField = true;
-				if (DenyEmbed.toJSON().fields) {
-					DenyEmbed.toJSON().fields.forEach(field => {
-						if (field.name == 'Response') {
-							newField = false;
-							field.value = args.join(' ');
-						}
-					});
-				}
-				if (newField) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
+				const field = DenyEmbed.toJSON().fields ? DenyEmbed.toJSON().fields.find(f => f.name == 'Response') : null;
+				if (field) field.value = args.join(' ');
+				else DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 			}
-			DenyEmbed.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
+
+			// Send deny dm to op
 			if (DenyEmbed.toJSON().url) {
 				const member = message.guild.members.cache.get(DenyEmbed.toJSON().url.split('a')[1]);
 				if (member) {
@@ -90,8 +84,8 @@ module.exports = {
 			}
 
 			// Update message and reply with denied
-			await fetchedMsg.edit({ embeds: [DenyEmbed] });
-			if (message.commandName) message.reply({ content: 'Suggestion Denied!' });
+			await suggestMsg.edit({ embeds: [DenyEmbed] });
+			if (message.commandName) message.reply({ content: `<:no:${no}> **Suggestion Denied!**` }).catch(() => { return null; });
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
@@ -100,7 +94,7 @@ module.exports = {
 				if (args.join(' ')) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 				const msglink = new ActionRowBuilder()
 					.addComponents([new ButtonBuilder()
-						.setURL(fetchedMsg.url)
+						.setURL(suggestMsg.url)
 						.setLabel('Go to Message')
 						.setStyle(ButtonStyle.Link),
 					]);

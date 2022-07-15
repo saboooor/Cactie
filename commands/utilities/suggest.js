@@ -41,7 +41,7 @@ module.exports = {
 					.setColor(0x2f3136)
 					.setTitle('Suggestion Created')
 					.setDescription('You may go in detail about your suggestion or have a discussion about it in this thread')
-					.setFooter(`This suggestion's Id is ${suggestMsg.id}`);
+					.setFooter({ text: `This suggestion's Id is ${suggestMsg.id}` });
 				await sleep(1000);
 				await thread.send({ content: `${message.member}`, embeds: [CreateEmbed] });
 			}
