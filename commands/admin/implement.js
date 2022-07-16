@@ -49,8 +49,14 @@ module.exports = {
 			// Send implement dm to op
 			if (ImplementEmbed.toJSON().url) {
 				const member = message.guild.members.cache.get(ImplementEmbed.toJSON().url.split('a')[1]);
+				const row = new ActionRowBuilder().addComponents([
+					new ButtonBuilder()
+						.setURL(suggestMsg.url)
+						.setLabel('Go to suggestion')
+						.setStyle(ButtonStyle.Link),
+				]);
 				if (member) {
-					member.send({ content: `**Your suggestion at ${message.guild.name} has been implemented.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}` })
+					member.send({ content: `**Your suggestion at ${message.guild.name} has been implemented.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}`, components: [row] })
 						.catch(err => client.logger.warn(err));
 				}
 			}
