@@ -20,7 +20,7 @@ module.exports = {
 			if (args[0] > 1000) return client.error('You can only clear 1000 messages at once!', message, true);
 
 			// Fetch the messages and bulk delete them 100 by 100
-			const messagechunks = await getMessages(message.channel, args[0]);
+			const messagechunks = await getMessages(message.channel, args[0]).catch(err => { client.logger.error(err); });
 			for (const i in messagechunks) {
 				messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
 				if (args[1]) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == args[1]);

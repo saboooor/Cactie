@@ -3,7 +3,7 @@ module.exports = async function getMessages(channel, limit = 100) {
 	let remaining = limit;
 	let last_id;
 	if (limit <= 100) {
-		const messages = await channel.messages.fetch({ limit });
+		const messages = await channel.messages.fetch({ limit }).catch(err => { throw err; });
 		messagechunks.push(messages);
 	}
 	else {
@@ -16,7 +16,7 @@ module.exports = async function getMessages(channel, limit = 100) {
 			else { remaining = remaining - 100; }
 			if (last_id) options.before = last_id;
 
-			const messages = await channel.messages.fetch(options);
+			const messages = await channel.messages.fetch(options).catch(err => { throw err; });
 			messagechunks.push(messages);
 			last_id = messages.last().id;
 		}
