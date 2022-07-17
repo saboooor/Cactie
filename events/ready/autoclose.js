@@ -26,7 +26,7 @@ module.exports = client => {
 				const users = [];
 				await data.users.forEach(userid => users.push(guild.members.cache.get(userid)));
 				const CloseDMEmbed = new EmbedBuilder()
-					.setColor(Math.floor(Math.random() * 16777215))
+					.setColor('Random')
 					.setTitle(`Closed ${channel.name}`)
 					.addFields([
 						{ name: '**Transcript**', value: `${link}` },

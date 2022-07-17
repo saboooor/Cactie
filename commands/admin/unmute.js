@@ -40,7 +40,7 @@ module.exports = {
 
 			// Create embed with color and title
 			const UnmuteEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(`Unmuted ${member.user.tag}`);
 
 			// Reply with unban log

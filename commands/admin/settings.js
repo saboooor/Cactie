@@ -12,7 +12,7 @@ module.exports = {
 
 			// Create Embed with title and color
 			const SettingsEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle('Bot Settings');
 
 			// Get settings and make an array out of it to split and make pages

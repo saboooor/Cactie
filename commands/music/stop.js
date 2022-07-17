@@ -14,7 +14,7 @@ module.exports = {
 			player.stop();
 			player.queue.clear();
 			const StopEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setDescription(`<:alert:${warn}> **${lang.music.stop}**`);
 			message.reply({ embeds: [StopEmbed] });
 		}

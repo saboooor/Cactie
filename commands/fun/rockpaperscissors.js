@@ -28,7 +28,7 @@ module.exports = {
 			]);
 		});
 		const TicTacToe = new EmbedBuilder()
-			.setColor(Math.floor(Math.random() * 16777215))
+			.setColor('Random')
 			.setTitle('Rock Paper Scissors')
 			.setDescription('Select an option!')
 			.setFields([{ name: '**Waiting for:**', value: `${message.member}\n${member}` }]);

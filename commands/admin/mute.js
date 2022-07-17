@@ -39,7 +39,7 @@ module.exports = {
 
 			// Create embed and check if duration / reason are set and do stuff
 			const MuteEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(`Muted ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 			// Add reason if specified

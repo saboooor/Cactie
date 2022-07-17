@@ -7,7 +7,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			const InvEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle('Want to invite this bot to your server?')
 				.setDescription('Use the buttons below!');
 			const row1 = new ActionRowBuilder()

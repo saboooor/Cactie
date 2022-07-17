@@ -19,7 +19,7 @@ module.exports = {
 
 			// Create initial embed
 			const ppEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(`${args[0] ? args.join(' ') : message.member.displayName}'s pp size`);
 
 			// Randomly pick between hard or soft

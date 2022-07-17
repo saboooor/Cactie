@@ -19,7 +19,7 @@ module.exports = {
 			).join('\n\n----------------------------\n');
 			const StatsEmbed = new EmbedBuilder()
 				.setDescription(all)
-				.setColor(Math.floor(Math.random() * 16777215));
+				.setColor('Random');
 			await message.reply({ embeds: [StatsEmbed] });
 		}
 		catch (err) { client.error(err, message); }

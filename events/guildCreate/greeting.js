@@ -18,7 +18,7 @@ module.exports = async (client, guild) => {
 				.setStyle(ButtonStyle.Link),
 		]);
 	const greetingEmbed = new EmbedBuilder()
-		.setColor(Math.floor(Math.random() * 16777215))
+		.setColor('Random')
 		.setTitle(`Thanks for adding ${client.user.username} to ${guild.name}!`)
 		.setDescription(`
 My text command prefix is \`${srvconfig.prefix}\`, you may change this through the settings with \`/settings\`

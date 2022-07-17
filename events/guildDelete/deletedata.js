@@ -4,7 +4,7 @@ module.exports = async (client, guild) => {
 	const owner = await guild.fetchOwner();
 	const timestamp = Math.round(guild.createdTimestamp / 1000);
 	const RemEmbed = new EmbedBuilder()
-		.setColor(Math.floor(Math.random() * 16777215))
+		.setColor('Random')
 		.setTitle(`${client.user.username} has been removed from ${guild.name}`)
 		.setThumbnail(guild.iconURL())
 		.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL() })

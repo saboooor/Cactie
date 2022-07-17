@@ -101,7 +101,7 @@ module.exports = async (client, message) => {
 			const timeLeft = (expirationTime - now) / 1000;
 			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => client.logger.error(err.stack));
 			const cooldownEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(messages[random])
 				.setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
 			return message.reply({ embeds: [cooldownEmbed] });
@@ -218,7 +218,7 @@ module.exports = async (client, message) => {
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()
-			.setColor(Math.floor(Math.random() * 16777215))
+			.setColor('Random')
 			.setTitle('INTERACTION FAILED')
 			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() })
 			.addFields([

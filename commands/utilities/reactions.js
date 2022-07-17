@@ -8,7 +8,7 @@ module.exports = {
 	execute(message, args, client) {
 		try {
 			const ReactionEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle('Here are my reactions');
 			client.reactions.forEach(reaction => {
 				ReactionEmbed.addFields([{ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` }]);

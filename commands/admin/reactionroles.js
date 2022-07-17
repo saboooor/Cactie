@@ -12,7 +12,7 @@ module.exports = {
 		try {
 			// Create Embed with title and color
 			const RREmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle('Reaction Roles');
 			const components = [];
 

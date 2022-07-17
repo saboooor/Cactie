@@ -22,7 +22,7 @@ module.exports = {
 
 			// Create initial embed and reply with it
 			const ppEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle('Boner');
 
 			// If current message exists, delete the old message

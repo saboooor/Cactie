@@ -36,7 +36,7 @@ module.exports = {
 				});
 			}
 			const ShuffleEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setDescription(`<:shuffle:${shuffle}> **${lang.music.queue.shuffle.ed}**`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ShuffleEmbed] });

@@ -8,7 +8,7 @@ module.exports = {
 		try {
 			const owner = await message.guild.fetchOwner();
 			const srvEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(message.guild.name)
 				.setThumbnail(message.guild.iconURL())
 				.setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL() });

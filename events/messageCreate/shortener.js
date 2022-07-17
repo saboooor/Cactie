@@ -22,7 +22,7 @@ module.exports = async (client, message) => {
 		message.delete().catch(err => client.logger.error(err.stack));
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
 		const shortEmbed = new EmbedBuilder()
-			.setColor(Math.floor(Math.random() * 16777215))
+			.setColor('Random')
 			.setTitle('Shortened long message')
 			.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL() })
 			.setDescription(link)

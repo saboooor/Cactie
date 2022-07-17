@@ -19,7 +19,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 			if (!args.length) {
 				const VolEmbed = new EmbedBuilder()
-					.setColor(Math.floor(Math.random() * 16777215))
+					.setColor('Random')
 					.setDescription(`<:volume:${vol}> ${lang.music.volume.current}: **${player.volume}%**`);
 				return message.reply({ embeds: [VolEmbed] });
 			}
@@ -31,7 +31,7 @@ module.exports = {
 			// Set the volume and reply
 			player.setVolume(volume);
 			const VolEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setDescription(`<:volume:${vol}> ${lang.music.volume.set}: **${volume}%**`);
 			message.reply({ embeds: [VolEmbed] });
 		}

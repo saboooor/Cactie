@@ -4,7 +4,7 @@ module.exports = async function addVote(body, client) {
 	if (!user) client.logger.info(`Got vote from ${body.id || body.user}!`);
 	else client.logger.info(`Got vote from ${user.tag}!`);
 	const VoteEmbed = new EmbedBuilder()
-		.setColor(Math.floor(Math.random() * 16777215))
+		.setColor('Random')
 		.setTitle('Vote Received!')
 		.setDescription(`Thank you for voting, <@${user.id || body.id || body.user}>!`);
 	client.guilds.cache.get('811354612547190794').channels.cache.get('931848198773948427').send({ embeds: [VoteEmbed] });

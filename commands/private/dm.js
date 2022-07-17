@@ -28,7 +28,7 @@ module.exports = {
 
 			// Create response embed and respond
 			const DMEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setDescription(`**Message sent to ${user}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			message.reply({ embeds: [DMEmbed] });
 		}

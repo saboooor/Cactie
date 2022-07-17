@@ -35,7 +35,7 @@ module.exports = {
 
 				// Create embed and send it to the main ticket channel
 				const CloseEmbed = new EmbedBuilder()
-					.setColor(Math.floor(Math.random() * 16777215))
+					.setColor('Random')
 					.setTitle(`Deleted ${message.channel.name}`)
 					.addFields([
 						{ name: '**Transcript**', value: `${link}` },
@@ -86,7 +86,7 @@ module.exports = {
 
 			// Send the embed to all the users' DMs
 			const CloseDMEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(`Closed ${message.channel.name}`)
 				.addFields([
 					{ name: '**Transcript**', value: `${link}` },

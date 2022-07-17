@@ -27,7 +27,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.over_18 && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err.stack, message));
 	const timestamp = parseInt(`${data.created}` + '000');
 	const PostEmbed = new EmbedBuilder()
-		.setColor(Math.floor(Math.random() * 16777215))
+		.setColor('Random')
 		.setAuthor({ name: `u/${data.author}`, url: `https://reddit.com/u/${data.author}` })
 		.setTitle(`${data.over_18 ? `<:nsfw:${nsfw}>  ` : ''}${data.title}`)
 		.setDescription(`**${data.ups} Upvotes** (${data.upvote_ratio * 100}%)`)

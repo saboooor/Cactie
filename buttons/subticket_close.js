@@ -12,7 +12,7 @@ module.exports = {
 
 			// Create embed and send it to the main ticket channel
 			const CloseEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle(`Deleted ${interaction.channel.name}`)
 				.addFields([
 					{ name: '**Transcript**', value: `${link}` },

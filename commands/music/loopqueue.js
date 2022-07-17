@@ -32,7 +32,7 @@ module.exports = {
 
 			// Send message to channel
 			const LoopEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setDescription(`<:refresh:${refresh}> **${lang.music.queue.loop[player.queueRepeat ? 'on' : 'off']}**`);
 			const loopmsg = await message.reply({ embeds: [LoopEmbed] });
 

@@ -36,7 +36,7 @@ module.exports = {
 					player.stop();
 					const SkipEmbed = new EmbedBuilder()
 						.setDescription(`<:skip:${skip}> **${lang.music.track.skipto.replace('{amnt}', `${position}`)}**`)
-						.setColor(Math.floor(Math.random() * 16777215))
+						.setColor('Random')
 						.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 					const skipmsg = await message.reply({ embeds: [SkipEmbed] });
 

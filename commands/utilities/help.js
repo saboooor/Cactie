@@ -13,7 +13,7 @@ module.exports = {
 			const helpdesc = require(`../../lang/${lang.language.name}/helpdesc.json`);
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			let HelpEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setTitle('**HELP**');
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
@@ -99,7 +99,7 @@ module.exports = {
 			collector.on('collect', async interaction => {
 				await interaction.deferUpdate();
 				HelpEmbed = new EmbedBuilder()
-					.setColor(Math.floor(Math.random() * 16777215))
+					.setColor('Random')
 					.setTitle('**HELP**');
 				if (interaction.values[0] == 'help_nsfw' && !helpMsg.channel.nsfw) { HelpEmbed.setDescription('**NSFW commands are only available in NSFW channels.**\nThis is not an NSFW channel!'); }
 				else {

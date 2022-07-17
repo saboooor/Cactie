@@ -48,7 +48,7 @@ module.exports = async (client, member) => {
 
 	// Send the embed to all the users' DMs
 	const CloseDMEmbed = new EmbedBuilder()
-		.setColor(Math.floor(Math.random() * 16777215))
+		.setColor('Random')
 		.setTitle(`Closed ${channel.name}`)
 		.addFields([
 			{ name: '**Transcript**', value: `${link}` },

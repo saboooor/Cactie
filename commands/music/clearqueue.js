@@ -17,7 +17,7 @@ module.exports = {
 			// Clear the queue and send message
 			player.queue.clear();
 			const ClearEmbed = new EmbedBuilder()
-				.setColor(Math.floor(Math.random() * 16777215))
+				.setColor('Random')
 				.setDescription(`<:no:${no}> **${lang.music.queue.cleared}**`)
 				.setFooter({ text: message.member.user.tag, iconURL: message.member.user.displayAvatarURL() });
 			message.reply({ embeds: [ClearEmbed] });

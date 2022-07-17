@@ -19,7 +19,7 @@ module.exports = async (client, payload) => {
 		const guild = client.guilds.cache.get(player.guild);
 		const channel = guild.channels.cache.get(player.textChannel);
 		const BlockEmbed = new EmbedBuilder()
-			.setColor(Math.floor(Math.random() * 16777215))
+			.setColor('Random')
 			.setDescription(`<:forward:${forward}> **Skipped ${payload.segment.category}**\nfrom \`${convertTime(payload.segment.start)}\` to \`${convertTime(payload.segment.end)}\``);
 		await channel.send({ embeds: [BlockEmbed] });
 		client.logger.info(`Skipped ${payload.segment.category} from ${convertTime(payload.segment.start)} to ${convertTime(payload.segment.end)} in ${guild.name}`);

@@ -9,7 +9,7 @@ module.exports = async (client, player) => {
 	else if (guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
 	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	const EndEmbed = new EmbedBuilder()
-		.setColor(Math.floor(Math.random() * 16777215))
+		.setColor('Random')
 		.setDescription(`<:alert:${warn}> **${lang.music.ended}**`);
 	const NowPlaying = await channel.send({ embeds: [EndEmbed] });
 	player.setNowplayingMessage(NowPlaying);

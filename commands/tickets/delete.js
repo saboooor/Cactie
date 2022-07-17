@@ -46,7 +46,7 @@ module.exports = {
 
 				// Create embed
 				const DelEmbed = new EmbedBuilder()
-					.setColor(Math.floor(Math.random() * 16777215))
+					.setColor('Random')
 					.setTitle(`Deleted ${message.channel.name}`)
 					.addFields([
 						{ name: '**Transcript**', value: `${link}` },
