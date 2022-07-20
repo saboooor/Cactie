@@ -3,7 +3,7 @@ const { progressbar } = require('../../functions/music/progressbar.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
 	name: 'effect',
-	description: 'Add various effects to the music (EXPERIMENTAL)',
+	description: 'Add various effects to the music',
 	usage: '<Cry/Echo/Pan/Timescale/Tremolo/Underwater> <Arguments>',
 	args: true,
 	voteOnly: true,
