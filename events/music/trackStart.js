@@ -1,5 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
-const { ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { shuffle, skip, pause, play, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {

@@ -1,5 +1,4 @@
-const { ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder } = require('@discordjs/builders');
-const { ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const action = require('../../functions/action.js');
 const { x } = require('../../lang/int/emoji.json');
 module.exports = {
