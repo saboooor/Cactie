@@ -4,7 +4,6 @@ const getColors = require('get-image-colors');
 const getCover = require('./getCover.js');
 const { play, music, warn, leave, no, srch, refresh, join } = require('../../lang/int/emoji.json');
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
-	return message.reply({ content: 'Currently music is temporarily disabled due to backend errors. Sorry for the inconvenience.' });
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;
 	let player = client.manager.get(message.guild.id);
