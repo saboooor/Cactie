@@ -1,29 +1,29 @@
-const analyzeTimings = require('../../functions/timings/analyzeTimings.js');
+const analyzeProfile = require('../../functions/timings/analyzeProfile.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
-	name: 'timings',
-	description: 'Analyze Paper timings to help optimize your server.',
+	name: 'profile',
+	description: 'Analyze Spark profiles to help optimize your server.',
 	cooldown: 10,
 	args: true,
-	usage: '<Timings Link>',
+	usage: '<Spark Profile Link>',
 	options: require('../../options/url.js'),
 	async execute(message, args, client) {
 		try {
-			const timingsresult = await analyzeTimings(message, client, args);
-			const timingsmsg = await message.reply(timingsresult[0]);
+			const profileresult = await analyzeProfile(message, client, args);
+			const profilemsg = await message.reply(profileresult[0]);
 
-			// Get the issues from the timings result
-			const issues = timingsresult[1];
+			// Get the issues from the profile result
+			const issues = profileresult[1];
 			if (issues) {
 				const filter = i => i.user.id == message.member.id && i.customId.startsWith('analysis_');
-				const collector = timingsmsg.createMessageComponentCollector({ filter, time: 300000 });
+				const collector = profilemsg.createMessageComponentCollector({ filter, time: 300000 });
 				collector.on('collect', async i => {
 					// Defer button
 					i.deferUpdate();
 
 					// Get the embed
-					const TimingsEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
-					const footer = TimingsEmbed.toJSON().footer;
+					const ProfileEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
+					const footer = ProfileEmbed.toJSON().footer;
 
 					// Force analysis button
 					if (i.customId == 'analysis_force') {
@@ -49,10 +49,10 @@ module.exports = {
 									]),
 							);
 						}
-						TimingsEmbed.setFields(fields);
+						ProfileEmbed.setFields(fields);
 
 						// Send the embed
-						return timingsmsg.edit({ embeds: [TimingsEmbed], components });
+						return profilemsg.edit({ embeds: [ProfileEmbed], components });
 					}
 
 					// Calculate total amount of pages and get current page from embed footer
@@ -68,14 +68,14 @@ module.exports = {
 
 					// Update the embed
 					text[text.length - 1] = `Page ${page} of ${Math.ceil(issues.length / 12)}`;
-					TimingsEmbed
+					ProfileEmbed
 						.setFields(fields)
 						.setFooter({ iconURL: footer.iconURL, text: text.join(' • ') });
 
 					// Send the embed
-					timingsmsg.edit({ embeds: [TimingsEmbed] });
+					profilemsg.edit({ embeds: [ProfileEmbed] });
 				});
-				collector.on('end', () => timingsmsg.edit({ components: [] }).catch(err => client.logger.warn(err)));
+				collector.on('end', () => profilemsg.edit({ components: [] }).catch(err => client.logger.warn(err)));
 			}
 		}
 		catch (err) { client.error(err, message); }
