@@ -4,27 +4,36 @@ const YAML = require('yaml');
 const fs = require('fs');
 const createField = require('./createField.js');
 const evalField = require('./evalField.js');
+function componentToHex(c) {
+	const hex = c.toString(16);
+	return hex.length == 1 ? '0' + hex : hex;
+}
 
 module.exports = async function analyzeTimings(message, client, args) {
+	const author = message.author ?? message.user;
 	const TimingsEmbed = new EmbedBuilder()
 		.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
-		.setFooter({ text: `Requested by ${(message.author ?? message.member.user).tag}`, iconURL: (message.author ?? message.member.user).avatarURL() });
+		.setFooter({ text: `Requested by ${author.tag}`, iconURL: author.avatarURL() });
 
 	let url;
 	const fields = [];
 
-	args.forEach(arg => {
-		if (arg.startsWith('https://timin') && arg.includes('?id=')) url = arg.replace('/d=', '/?id=').split('#')[0].split('\n')[0];
+	for (const arg of args) {
+		if (arg.startsWith('https://spark.lucko.me')) {
+			TimingsEmbed.addFields([{ name: '⚠️ Spark Profile', value: 'This is a Spark Profile. Use /profile instead for this type of report.' }]);
+			return [{ embeds: [TimingsEmbed] }];
+		}
+		if (arg.startsWith('https://timin') && arg.includes('?id=')) url = arg.replace('/d=', '/?id=').replace('timin.gs', 'timings.aikar.co').split('#')[0].split('\n')[0];
 		if (arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url=')) {
 			TimingsEmbed.addFields([{ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' }])
 				.setURL(url);
 			return [{ embeds: [TimingsEmbed] }];
 		}
-	});
+	}
 
-	if (!url) return [{ content: 'Invalid Timings URL! Note that this bot does not yet support Spark profiles yet, expect support approximately <t:1664604000:R>' }];
+	if (!url) return [{ content: 'Invalid Timings URL' }];
 
-	client.logger.info(`Timings analyzed from ${(message.author ?? message.member.user).tag} (${(message.author ?? message.member.user).id}): ${url}`);
+	client.logger.info(`Timings analyzed from ${author.tag} (${author.id}): ${url}`);
 
 	const timings_host = url.split('?id=')[0];
 	const timings_id = url.split('?id=')[1];
@@ -37,8 +46,19 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const response_json = await fetch(timings_json);
 	const request = await response_json.json();
 
+	if (!request_raw) {
+		TimingsEmbed.fields = ({
+			name: '❌ Processing Error',
+			value: 'The bot cannot process this timings report. Please use an alternative timings report.',
+			inline: true,
+		});
+		TimingsEmbed.setColor(parseInt('0xff0000'));
+		TimingsEmbed.setDescription('');
+		return [{ embeds: [TimingsEmbed] }];
+	}
+
 	const server_icon = timings_host + 'image.php?id=' + request_raw.icon;
-	TimingsEmbed.setAuthor({ name: 'Timings Analysis', iconURL: server_icon, url: url });
+	TimingsEmbed.setAuthor({ name: 'Timings Analysis', iconURL: (server_icon ?? 'https://i.imgur.com/deE1oID.png'), url: url });
 
 	if (!request_raw || !request) {
 		TimingsEmbed.addFields([{ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true }]);
@@ -59,18 +79,18 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const purpur = request.timingsMaster.config ? request.timingsMaster.config.purpur : null;
 
 	const TIMINGS_CHECK = {
-		servers: await YAML.parse(fs.readFileSync('./lang/int/timings/servers.yml', 'utf8')),
+		servers: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/servers.yml', 'utf8')),
 		plugins: {
-			paper: await YAML.parse(fs.readFileSync('./lang/int/timings/plugins/paper.yml', 'utf8')),
-			purpur: await YAML.parse(fs.readFileSync('./lang/int/timings/plugins/purpur.yml', 'utf8')),
+			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/timings/plugins/paper.yml', 'utf8')),
+			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/timings/plugins/purpur.yml', 'utf8')),
 		},
 		config: {
-			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/timings/config/server.properties.yml', 'utf8')),
-			bukkit: await YAML.parse(fs.readFileSync('./lang/int/timings/config/bukkit.yml', 'utf8')),
-			spigot: await YAML.parse(fs.readFileSync('./lang/int/timings/config/spigot.yml', 'utf8')),
-			paper: await YAML.parse(fs.readFileSync(`./lang/int/timings/config/paper-v${paper && paper._version ? 28 : 27}.yml`, 'utf8')),
-			pufferfish: await YAML.parse(fs.readFileSync('./lang/int/timings/config/pufferfish.yml', 'utf8')),
-			purpur: await YAML.parse(fs.readFileSync('./lang/int/timings/config/purpur.yml', 'utf8')),
+			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/analysis_config/server.properties.yml', 'utf8')),
+			bukkit: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/bukkit.yml', 'utf8')),
+			spigot: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/spigot.yml', 'utf8')),
+			paper: await YAML.parse(fs.readFileSync(`./lang/int/analysis_config/timings/paper-v${paper._version ? 28 : 27}.yml`, 'utf8')),
+			pufferfish: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/timings/pufferfish.yml', 'utf8')),
+			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/purpur.yml', 'utf8')),
 		},
 	};
 
@@ -236,17 +256,12 @@ module.exports = async function analyzeTimings(message, client, args) {
 		green = 255;
 	}
 
-	function componentToHex(c) {
-		const hex = c.toString(16);
-		return hex.length == 1 ? '0' + hex : hex;
-	}
 	TimingsEmbed.setColor(parseInt('0x' + componentToHex(Math.round(red)) + componentToHex(Math.round(green)) + '00'));
 
 	if (timing_cost > 500) {
 		const suggestions = fields.length - 1;
-		TimingsEmbed.setFields([{ name: '❌ Timingcost (URGENT)', value: `Your timingcost is ${timing_cost}. Your cpu is critically overloaded and/or slow. Hiding ${suggestions} comparitively negligible suggestions until you resolve this fundamental problem. Find a [better host](https://www.birdflop.com).`, inline: true }]);
-		TimingsEmbed.setColor(0xff0000);
-		TimingsEmbed.setDescription('');
+		TimingsEmbed.setColor(0xff0000).setDescription('')
+			.setFields([{ name: '❌ Timingcost (URGENT)', value: `Your timingcost is ${timing_cost}. This value would be at most 200 on a reasonable server. Your cpu is critically overloaded and/or slow. Hiding ${suggestions} comparitively negligible suggestions until you resolve this fundamental problem. Find a [better host](https://www.birdflop.com).`, inline: true }]);
 		return [{ embeds: [TimingsEmbed] }];
 	}
 
@@ -254,20 +269,20 @@ module.exports = async function analyzeTimings(message, client, args) {
 		TimingsEmbed.addFields([{ name: '✅ All good', value: 'Analyzed with no recommendations.' }]);
 		return [{ embeds: [TimingsEmbed] }];
 	}
-	const components = [];
+	let components = [];
 	const issues = [...fields];
 	if (issues.length >= 13) {
 		fields.splice(12, issues.length, { name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
-		TimingsEmbed.setFooter({ text: `Requested by ${(message.author ?? message.member.user).tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: (message.author ?? message.member.user).avatarURL() });
+		TimingsEmbed.setFooter({ text: `Requested by ${author.tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: author.avatarURL() });
 		components.push(
 			new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setCustomId('timings_prev')
+						.setCustomId('analysis_prev')
 						.setEmoji({ id: left })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
-						.setCustomId('timings_next')
+						.setCustomId('analysis_next')
 						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
@@ -278,5 +293,21 @@ module.exports = async function analyzeTimings(message, client, args) {
 		);
 	}
 	TimingsEmbed.addFields(fields);
-	return [{ embeds: [TimingsEmbed], components: components }, issues];
+	if (worst_tps >= 19) {
+		TimingsEmbed.setFields([{ name: '✅ Your server isn\'t lagging', value: `Your server is running fine with its lowest TPS being ${worst_tps}.` }]);
+		components = [
+			new ActionRowBuilder()
+				.addComponents([
+					new ButtonBuilder()
+						.setCustomId('analysis_force')
+						.setLabel('Dismiss and force analysis')
+						.setStyle(ButtonStyle.Secondary),
+					new ButtonBuilder()
+						.setURL('https://github.com/pemigrade/botflop')
+						.setLabel('Botflop')
+						.setStyle(ButtonStyle.Link),
+				]),
+		];
+	}
+	return [{ embeds: [TimingsEmbed], components }, issues];
 };
