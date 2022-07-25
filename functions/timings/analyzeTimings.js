@@ -86,8 +86,8 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const TIMINGS_CHECK = {
 		servers: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/servers.yml', 'utf8')),
 		plugins: {
-			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/timings/plugins/paper.yml', 'utf8')),
-			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/timings/plugins/purpur.yml', 'utf8')),
+			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/plugins/paper.yml', 'utf8')),
+			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/plugins/purpur.yml', 'utf8')),
 		},
 		config: {
 			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/analysis_config/server.properties.yml', 'utf8')),
