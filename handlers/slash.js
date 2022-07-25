@@ -1,7 +1,6 @@
 const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
 module.exports = client => {
-	let amount = 0;
 	client.slashcommands = new Collection();
 	const slashcommandFolders = readdirSync('./commands');
 	for (const folder of slashcommandFolders) {
@@ -9,8 +8,7 @@ module.exports = client => {
 		for (const file of slashcommandFiles) {
 			const slashcommand = require(`../commands/${folder}/${file}`);
 			client.slashcommands.set(slashcommand.name, slashcommand);
-			amount++;
 		}
 	}
-	client.logger.info(`${amount} slash commands loaded`);
+	client.logger.info(`${client.slashcommands.size} slash commands loaded`);
 };

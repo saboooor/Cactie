@@ -1,15 +1,14 @@
 const fs = require('fs');
 module.exports = client => {
 	const eventFolders = fs.readdirSync('./events/');
-	let count = 0;
-	eventFolders.forEach(event => {
-		const jsFiles = fs.readdirSync(`./events/${event}`).filter(subfile => subfile.endsWith('.js'));
-		jsFiles.forEach(jsFile => {
-			const js = require(`../events/${event}/${jsFile}`);
+	let jsFiles;
+	for (const event of eventFolders) {
+		jsFiles = fs.readdirSync(`./events/${event}`).filter(subfile => subfile.endsWith('.js'));
+		for (const file of jsFiles) {
+			const js = require(`../events/${event}/${file}`);
 			client.on(event, js.bind(null, client));
-			delete require.cache[require.resolve(`../events/${event}/${jsFile}`)];
-			count++;
-		});
-	});
-	client.logger.info(`${count} event listeners loaded`);
+			delete require.cache[require.resolve(`../events/${event}/${file}`)];
+		}
+	}
+	client.logger.info(`${jsFiles.length} event listeners loaded`);
 };

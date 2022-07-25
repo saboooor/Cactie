@@ -4,12 +4,9 @@ const YAML = require('yaml');
 const { mysql } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
 module.exports = async client => {
 	// Database Functions
-	let amount = 0;
-	fs.readdirSync('./functions/database/').forEach(file => {
-		require(`../functions/database/${file}`)(client);
-		amount = amount + 1;
-	});
-	client.logger.info(`${amount} database functions loaded `);
+	const databaseFunctions = fs.readdirSync('./functions/database/').filter(file => file.endsWith('.js'));
+	for (const file of databaseFunctions) require(`../functions/database/${file}`)(client);
+	client.logger.info(`${databaseFunctions.length} database functions loaded `);
 
 	// Create a connection to the database
 	client.con = mariadb.createConnection(mysql);

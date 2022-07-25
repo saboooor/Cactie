@@ -1,9 +1,6 @@
 const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
 module.exports = client => {
-	// Set the counter to count the amount of commands
-	let count = 0;
-
 	// Set the cooldowns and commands collections
 	client.cooldowns = new Collection();
 	client.commands = new Collection();
@@ -16,8 +13,7 @@ module.exports = client => {
 			const command = require(`../commands/${folder}/${file}`);
 			command.category = folder;
 			client.commands.set(command.name, command);
-			count++;
 		}
 	}
-	client.logger.info(`${count} text commands loaded`);
+	client.logger.info(`${client.commands.size} text commands loaded`);
 };
