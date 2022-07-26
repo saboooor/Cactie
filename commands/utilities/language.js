@@ -1,8 +1,6 @@
+function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 const fs = require('fs');
 const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
-function capitalizeFirstLetter(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
 module.exports = {
 	name: 'language',
 	description: 'Change the language of the bot',
@@ -17,7 +15,7 @@ module.exports = {
 				client.delData('memberdata', 'memberId', message.member.id);
 				return message.reply({ content: '**Your language has been reset.**' });
 			}
-			const newlang = capitalizeFirstLetter(args[0].toLowerCase());
+			const newlang = capFirstLetter(args[0].toLowerCase());
 			if (lang.language.name == newlang) return message.reply({ content: lang.language.alrset });
 			if (!languages.includes(newlang)) return message.reply({ content: `${lang.language.invalid}\`\`\`yml\n${languages.join(', ')}\`\`\`` });
 			await client.setData('memberdata', 'memberId', message.member.id, 'language', newlang);

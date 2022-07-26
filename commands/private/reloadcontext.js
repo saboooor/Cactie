@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
 module.exports = {
 	name: 'reloadcontext',

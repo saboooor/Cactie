@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { SlashCommandBuilder } = require('discord.js');
 module.exports = {
 	name: 'reloadcmds',

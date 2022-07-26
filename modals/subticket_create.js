@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'subticket_create',

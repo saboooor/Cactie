@@ -45,6 +45,7 @@
 		"yoda": "error"
 	},
 	"globals": {
-		"fetch": "readonly"
+		"fetch": "readonly",
+		"sleep": "readonly"
 	}
 }

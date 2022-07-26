@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { upvote, downvote } = require('../../lang/int/emoji.json');
 module.exports = {

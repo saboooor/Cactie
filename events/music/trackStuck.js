@@ -1,4 +1,3 @@
-function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
 const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, player, track) => {
 	const guild = client.guilds.cache.get(player.guild);
