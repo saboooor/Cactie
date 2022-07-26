@@ -12,9 +12,9 @@ module.exports = {
 			const timingsresult = await analyzeTimings(message, client, args);
 			const timingsmsg = await message.reply(timingsresult[0]);
 
-			// Get the issues from the timings result
-			const issues = timingsresult[1];
-			if (issues) {
+			// Get the suggestions from the timings result
+			const suggestions = timingsresult[1];
+			if (suggestions) {
 				const filter = i => i.user.id == message.member.id && i.customId.startsWith('analysis_');
 				const collector = timingsmsg.createMessageComponentCollector({ filter, time: 300000 });
 				collector.on('collect', async i => {
@@ -27,10 +27,10 @@ module.exports = {
 
 					// Force analysis button
 					if (i.customId == 'analysis_force') {
-						const fields = [...issues];
+						const fields = [...suggestions];
 						const components = [];
-						if (issues.length >= 13) {
-							fields.splice(12, issues.length, { name: '✅ Your server isn\'t lagging', value: `**Plus ${issues.length - 12} more recommendations**\nClick the buttons below to see more` });
+						if (suggestions.length >= 13) {
+							fields.splice(12, suggestions.length, { name: `**Plus ${suggestions.length - 12} more recommendations**`, value: 'Click the buttons below to see more' });
 							components.push(
 								new ActionRowBuilder()
 									.addComponents([
@@ -64,10 +64,10 @@ module.exports = {
 					const page = i.customId == 'analysis_next' ? lastPage == maxPages ? 1 : lastPage + 1 : lastPage - 1 ? lastPage - 1 : maxPages;
 					const end = page * 12;
 					const start = end - 12;
-					const fields = issues.slice(start, end);
+					const fields = suggestions.slice(start, end);
 
 					// Update the embed
-					text[text.length - 1] = `Page ${page} of ${Math.ceil(issues.length / 12)}`;
+					text[text.length - 1] = `Page ${page} of ${Math.ceil(suggestions.length / 12)}`;
 					TimingsEmbed
 						.setFields(fields)
 						.setFooter({ iconURL: footer.iconURL, text: text.join(' • ') });

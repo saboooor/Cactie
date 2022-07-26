@@ -241,10 +241,10 @@ module.exports = async function analyzeProfile(message, client, args) {
 		return [{ embeds: [ProfileEmbed] }];
 	}
 	let components = [];
-	const issues = [...fields];
-	if (issues.length >= 13) {
-		fields.splice(12, issues.length, { name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
-		ProfileEmbed.setFooter({ text: `Requested by ${author.tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: author.avatarURL() });
+	const suggestions = [...fields];
+	if (suggestions.length >= 13) {
+		fields.splice(12, suggestions.length, { name: `Plus ${suggestions.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
+		ProfileEmbed.setFooter({ text: `Requested by ${author.tag} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: author.avatarURL() });
 		components.push(
 			new ActionRowBuilder()
 				.addComponents([
@@ -263,9 +263,10 @@ module.exports = async function analyzeProfile(message, client, args) {
 				]),
 		);
 	}
-	ProfileEmbed.addFields(fields);
+
 	if (avgtps >= 19) {
-		ProfileEmbed.setFields([{ name: '✅ Your server isn\'t lagging', value: `Your server is running fine with an average TPS of ${avgtps}.` }]);
+		ProfileEmbed.setDescription(null).setColor(0x00ff00)
+			.setFields([{ name: '✅ Your server isn\'t lagging', value: `Your server is running fine with an average TPS of ${avgtps}.` }]);
 		components = [
 			new ActionRowBuilder()
 				.addComponents([
@@ -280,5 +281,6 @@ module.exports = async function analyzeProfile(message, client, args) {
 				]),
 		];
 	}
-	return [{ embeds: [ProfileEmbed], components }, issues];
+	else { ProfileEmbed.addFields(fields); }
+	return [{ embeds: [ProfileEmbed], components }, suggestions];
 };

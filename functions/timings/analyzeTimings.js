@@ -263,22 +263,15 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	TimingsEmbed.setColor(parseInt('0x' + componentToHex(Math.round(red)) + componentToHex(Math.round(green)) + '00'));
 
-	if (timing_cost > 500) {
-		const suggestions = fields.length - 1;
-		TimingsEmbed.setColor(0xff0000).setDescription(null)
-			.setFields([{ name: '❌ Timingcost (URGENT)', value: `Your timingcost is ${timing_cost}. This value would be at most 200 on a reasonable server. Your cpu is critically overloaded and/or slow. Hiding ${suggestions} comparitively negligible suggestions until you resolve this fundamental problem. Find a [better host](https://www.birdflop.com).`, inline: true }]);
-		return [{ embeds: [TimingsEmbed] }];
-	}
-
 	if (fields.length == 0) {
 		TimingsEmbed.addFields([{ name: '✅ All good', value: 'Analyzed with no recommendations.' }]);
 		return [{ embeds: [TimingsEmbed] }];
 	}
 	let components = [];
-	const issues = [...fields];
-	if (issues.length >= 13) {
-		fields.splice(12, issues.length, { name: `Plus ${issues.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
-		TimingsEmbed.setFooter({ text: `Requested by ${author.tag} • Page 1 of ${Math.ceil(issues.length / 12)}`, iconURL: author.avatarURL() });
+	const suggestions = [...fields];
+	if (suggestions.length >= 13) {
+		fields.splice(12, suggestions.length, { name: `Plus ${suggestions.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
+		TimingsEmbed.setFooter({ text: `Requested by ${author.tag} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: author.avatarURL() });
 		components.push(
 			new ActionRowBuilder()
 				.addComponents([
@@ -297,9 +290,16 @@ module.exports = async function analyzeTimings(message, client, args) {
 				]),
 		);
 	}
-	TimingsEmbed.addFields(fields);
-	if (worst_tps >= 19) {
-		TimingsEmbed.setFields([{ name: '✅ Your server isn\'t lagging', value: `Your server is running fine with its lowest TPS being ${worst_tps}.` }]);
+	if (worst_tps >= 19 || timing_cost > 500) {
+		TimingsEmbed.setDescription(null);
+		if (worst_tps >= 19) {
+			TimingsEmbed.setColor(0x00ff00)
+				.setFields([{ name: '✅ Your server isn\'t lagging', value: `Your server is running fine with its lowest TPS being ${worst_tps}.` }]);
+		}
+		if (timing_cost > 500) {
+			TimingsEmbed.setColor(0xff0000)
+				.setFields([{ name: '❌ Timingcost (URGENT)', value: `Your timingcost is ${timing_cost}. This value would be at most 200 on a reasonable server. Your cpu is critically overloaded and/or slow. Hiding ${suggestions.length} comparitively negligible suggestions until you resolve this fundamental problem. Find a [better host](https://www.birdflop.com).`, inline: true }]);
+		}
 		components = [
 			new ActionRowBuilder()
 				.addComponents([
@@ -314,5 +314,6 @@ module.exports = async function analyzeTimings(message, client, args) {
 				]),
 		];
 	}
-	return [{ embeds: [TimingsEmbed], components }, issues];
+	else { TimingsEmbed.addFields(fields); }
+	return [{ embeds: [TimingsEmbed], components }, suggestions];
 };
