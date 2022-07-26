@@ -16,17 +16,10 @@ module.exports = {
 
 			// Check if djrole is set, if so, vote for skip instead of skipping
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
-			if (srvconfig.djrole != 'false') {
-				const requiredAmount = Math.floor((interaction.guild.members.me.voice.channel.members.size - 1) / 2);
-				let alr = false;
-				for (const i of player.skipAmount) { if (i == interaction.member.id) alr = true; }
-				if (alr) return interaction.channel.send({ content: lang.music.track.skipalr });
-				player.skipAmount.push(interaction.member.id);
-				if (player.skipAmount.length < requiredAmount) return interaction.channel.send({ content: `<:skip:${skip}> **${lang.music.track.skipping}** \`${player.skipAmount.length} / ${requiredAmount}\` ${lang.music.track.forceskipmsg}` });
-				player.skipAmount = [];
-			}
+			if (srvconfig.djrole != 'false') return;
 
-			// Skip the song and reply with song that was skipped
+			if (interaction.values[0]) player.queue.remove(0, interaction.values[0]);
+
 			player.stop();
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()

@@ -1,6 +1,6 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
-const { shuffle, skip, pause, play, music } = require('../../lang/int/emoji.json');
+const { shuffle, pause, play, music } = require('../../lang/int/emoji.json');
 module.exports = async (client, player, track) => {
 	player.skipAmount = []; player.loopTrackAmount = [];
 	player.loopQueueAmount = []; player.shuffleAmount = [];
@@ -28,7 +28,6 @@ module.exports = async (client, player, track) => {
 		.setThumbnail(track.img)
 		.setColor(track.colors[0]);
 
-	// Add button for skip
 	const row = new ActionRowBuilder()
 		.addComponents([
 			new ButtonBuilder()
@@ -40,19 +39,42 @@ module.exports = async (client, player, track) => {
 				.setEmoji({ id: player.paused ? play : pause })
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonBuilder()
-				.setCustomId('music_skip')
-				.setEmoji({ id: skip })
-				.setStyle(ButtonStyle.Secondary),
-			new ButtonBuilder()
 				.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
 				.setEmoji({ id: music })
 				.setLabel(lang.dashboard.name)
 				.setStyle(ButtonStyle.Link),
 		]);
+	const components = [row];
+
+	if (player.queue.length) {
+		const selectMenuQueue = player.queue.slice(0, 24);
+		const selectMenu = new SelectMenuBuilder()
+			.setCustomId('music_skip')
+			.setPlaceholder('Queue // Skip to...')
+			.addOptions(
+				selectMenuQueue.map((queueItem, i) => {
+					return new SelectMenuOptionBuilder()
+						.setLabel(`${i + 1}. ${queueItem.title.split('\n')[0]}`)
+						.setDescription(queueItem.title.split('\n')[1] ?? 'Skip to this song')
+						.setValue(`${i}`);
+				}),
+			);
+		if (player.queue.length > 24) {
+			selectMenu.addOptions([
+				new SelectMenuOptionBuilder()
+					.setLabel(`${player.queue.length - 24} more songs...`)
+					.setDescription('Click here to show')
+					.setValue('queue'),
+			]);
+		}
+		const row2 = new ActionRowBuilder().addComponents([selectMenu]);
+		components.push(row2);
+	}
+
 	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
 		.get(player.textChannel)
-		.send({ embeds: [StartEmbed], components: [row] });
+		.send({ embeds: [StartEmbed], components });
 	player.setNowplayingMessage(NowPlaying);
 	player.timeout = null;
 

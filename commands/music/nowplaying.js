@@ -1,7 +1,7 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
-const { shuffle, skip, pause, play, music, refresh } = require('../../lang/int/emoji.json');
+const { shuffle, pause, play, music, refresh } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',
@@ -22,6 +22,7 @@ module.exports = {
 				.setFooter({ text: song.requester.tag, iconURL: song.requester.displayAvatarURL() })
 				.setThumbnail(song.img)
 				.setColor(song.colors[0]);
+
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
@@ -31,10 +32,6 @@ module.exports = {
 					new ButtonBuilder()
 						.setCustomId('music_pause')
 						.setEmoji({ id: player.paused ? play : pause })
-						.setStyle(ButtonStyle.Secondary),
-					new ButtonBuilder()
-						.setCustomId('music_skip')
-						.setEmoji({ id: skip })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
 						.setCustomId('music_updatenp')
@@ -47,7 +44,34 @@ module.exports = {
 						.setLabel(lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
 				]);
-			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
+			const components = [row];
+
+			if (player.queue.length) {
+				const selectMenuQueue = player.queue.slice(0, 24);
+				const selectMenu = new SelectMenuBuilder()
+					.setCustomId('music_skip')
+					.setPlaceholder('Queue // Skip to...')
+					.addOptions(
+						selectMenuQueue.map((queueItem, i) => {
+							return new SelectMenuOptionBuilder()
+								.setLabel(`${i + 1}. ${queueItem.title.split('\n')[0]}`)
+								.setDescription(queueItem.title.split('\n')[1] ?? 'Skip to this song')
+								.setValue(`${i}`);
+						}),
+					);
+				if (player.queue.length > 24) {
+					selectMenu.addOptions([
+						new SelectMenuOptionBuilder()
+							.setLabel(`${player.queue.length - 24} more songs...`)
+							.setDescription('Click here to show')
+							.setValue('queue'),
+					]);
+				}
+				const row2 = new ActionRowBuilder().addComponents([selectMenu]);
+				components.push(row2);
+			}
+
+			const npmsg = await message.reply({ embeds: [NPEmbed], components });
 
 			// Set the now playing message
 			if (!message.commandName) player.setNowplayingMessage(npmsg);
