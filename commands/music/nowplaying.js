@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { progressbar } = require('../../functions/music/progressbar.js');
 const { shuffle, skip, pause, play, music, refresh } = require('../../lang/int/emoji.json');
@@ -47,30 +47,7 @@ module.exports = {
 						.setLabel(lang.dashboard.name)
 						.setStyle(ButtonStyle.Link),
 				]);
-			const row2 = new ActionRowBuilder().addComponents([
-				new SelectMenuBuilder()
-					.setCustomId('music_options')
-					.setPlaceholder('More Controls... (EXPERIMENTAL)')
-					.addOptions([
-						new SelectMenuOptionBuilder()
-							.setLabel('Effects')
-							.setValue('music_effects')
-							.setDescription('Set various effects on the music'),
-						new SelectMenuOptionBuilder()
-							.setLabel('Equalizer')
-							.setValue('music_equalizer')
-							.setDescription('Use the equalizer'),
-						new SelectMenuOptionBuilder()
-							.setLabel('Queue')
-							.setValue('music_queue')
-							.setDescription('View the queue'),
-						new SelectMenuOptionBuilder()
-							.setLabel('Enable SponsorBlock (EXPERIMENTAL)')
-							.setValue('music_sponsorblock')
-							.setDescription('Skip Non-Music Segments'),
-					]),
-			]);
-			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row, row2] });
+			const npmsg = await message.reply({ embeds: [NPEmbed], components: [row] });
 
 			// Set the now playing message
 			if (!message.commandName) player.setNowplayingMessage(npmsg);

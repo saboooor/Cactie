@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 module.exports = {
 	name: 'sponsorblock',
-	description: 'Enables sponsorblock on the player (EXPERIMENTAL)',
+	description: 'Enables sponsorblock on the player',
 	voteOnly: true,
 	aliases: ['autoseek'],
 	player: true,
@@ -18,7 +18,8 @@ module.exports = {
 			const sbEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
 				.setTitle('Sponsorblock enabled!')
-				.setDescription('The bot will now skip past irrelevant segments.');
+				.setDescription('The bot will now skip past irrelevant segments.')
+				.setFooter({ text: 'Please note that the track will freeze and skip if the first segment is too long.' });
 
 			// Reply with message
 			message.reply({ embeds: [sbEmbed] });
