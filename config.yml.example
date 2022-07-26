@@ -21,3 +21,6 @@ music:
     retryAmount: 3
     retryDelay: 5000
     secure: false
+
+clientParams:
+  dashboardDomain: 'https://cactie.smhsmh.club'

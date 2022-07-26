@@ -39,7 +39,7 @@ module.exports = async (client, player, track) => {
 				.setEmoji({ id: player.paused ? play : pause })
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonBuilder()
-				.setURL(`https://${client.user.username.replace(' ', '').toLowerCase()}.smhsmh.club/music`)
+				.setURL(`${client.dashboardDomain}/music`)
 				.setEmoji({ id: music })
 				.setLabel(lang.dashboard.name)
 				.setStyle(ButtonStyle.Link),

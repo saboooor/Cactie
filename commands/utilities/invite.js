@@ -13,11 +13,11 @@ module.exports = {
 			const row1 = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL('https://cactie.smhsmh.club/invite')
+						.setURL(`${client.dashboardDomain}/invite`)
 						.setLabel('Invite Cactie to your server!')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
-						.setURL('https://cactie.smhsmh.club/support/discord')
+						.setURL(`${client.dashboardDomain}/support/discord`)
 						.setLabel('Join the support server!')
 						.setStyle(ButtonStyle.Link),
 				]);

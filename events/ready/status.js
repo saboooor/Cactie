@@ -5,7 +5,7 @@ module.exports = async (client) => {
 		const activities = [
 			['Playing', 'with you ;)'],
 			['Playing', '/help'],
-			['Watching', 'cactie.smhsmh.club'],
+			['Watching', client.dashboardDomain],
 			['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
 			['Competing', `${client.guilds.cache.size} servers!`],
 			['Listening', '3 Big Balls'],

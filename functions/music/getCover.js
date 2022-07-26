@@ -2,7 +2,7 @@ const LastFM = require('last-fm');
 const fs = require('fs');
 const YAML = require('yaml');
 const { music } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
-const lastfm = new LastFM(music.lastfm, { userAgent: 'Cactie/2.0.0 (https://cactie.smhsmh.club)' });
+const lastfm = new LastFM(music.lastfm, { userAgent: 'Cactie/3.0.0 (https://cactie.smhsmh.club)' });
 module.exports = async function getCover(title, author, player) {
 	return new Promise((resolve, reject) => {
 		let img;

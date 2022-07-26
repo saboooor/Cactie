@@ -5,11 +5,11 @@ module.exports = async (client, guild) => {
 	const row = new ActionRowBuilder()
 		.addComponents([
 			new ButtonBuilder()
-				.setURL('https://cactie.smhsmh.club')
+				.setURL(client.dashboardDomain)
 				.setLabel(msg.dashboard.name)
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL('https://cactie.smhsmh.club/support/discord')
+				.setURL(`${client.dashboardDomain}/support/discord`)
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
@@ -25,7 +25,7 @@ My text command prefix is \`${srvconfig.prefix}\`, you may change this through t
 Type \`/help\` for help, and \`/invite\` to invite me to other servers!
 Please take some time going through the settings so that ${client.user.username} works well! \`/settings\`
 		`)
-		.setThumbnail('https://cactie.smhsmh.club/assets/images/Cactie.png');
+		.setThumbnail(`${client.dashboardDomain}/assets/images/Cactie.png`);
 	const message = { embeds: [greetingEmbed], components: [row] };
 	const owner = await guild.fetchOwner();
 	if (!guild.systemChannel) owner.send(message).catch(err => client.logger.warn(err));

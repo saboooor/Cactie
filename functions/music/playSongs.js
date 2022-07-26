@@ -141,7 +141,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		if (!song.colors) song.colors = [0x212121, 0x4e4e4e];
 
 		// If song image isn't set, set it to the default music image
-		if (!song.img) song.img = 'https://cactie.smhsmh.club/assets/images/musicplaceholder.png';
+		if (!song.img) song.img = `${client.dashboardDomain}/assets/images/musicplaceholder.png`;
 
 		// If artist exists, set the title to the author and title separated by new lines
 		if (song.author) song.title = `${song.title}\n${song.author}`;
