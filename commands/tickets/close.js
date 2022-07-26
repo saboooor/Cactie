@@ -92,7 +92,7 @@ module.exports = {
 					{ name: '**Transcript**', value: `${link}` },
 					{ name: '**Closed by**', value: `${author}` },
 				]);
-			if (users[0]) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
+			if (users.length) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 			users.forEach(usr => {
 				usr.send({ embeds: [CloseDMEmbed] })
 					.catch(err => client.logger.warn(err));

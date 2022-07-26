@@ -37,7 +37,7 @@ module.exports = {
 			}
 			else if (args[0] == 'remove') {
 				if (!args[1]) return client.error('Usage: /reactionroles remove <Reaction Role Number>');
-				if (!reactionroles[0]) {
+				if (!reactionroles.length) {
 					RREmbed.addFields([{ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' }]);
 					return message.reply({ embeds: [RREmbed] });
 				}

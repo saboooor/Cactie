@@ -15,7 +15,7 @@ module.exports = {
 
 			// Check if arg is a user and set it
 			let user;
-			if (args[0]) {
+			if (args.length) {
 				user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 				if (user) args[0] = user.displayName;
 			}

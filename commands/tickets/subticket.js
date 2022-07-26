@@ -48,7 +48,7 @@ module.exports = {
 				.setFooter({ text: 'To close this subticket do /close, or click the button below' });
 
 			// Add description if specified
-			if (args[0]) CreateEmbed.addFields([{ name: 'Description', value: args.join(' ') }]);
+			if (args.length) CreateEmbed.addFields([{ name: 'Description', value: args.join(' ') }]);
 
 			// Ping the staff if enabled
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

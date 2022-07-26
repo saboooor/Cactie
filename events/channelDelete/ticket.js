@@ -23,7 +23,7 @@ module.exports = async (client, channel) => {
 			.addFields([
 				{ name: '**Reason**', value: 'Channel deleted manually' },
 			]);
-		if (users[0]) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
+		if (users.length) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 
 		// Send embed to ticket log channel
 		await logchannel.send({ embeds: [DelEmbed] });

@@ -54,7 +54,7 @@ module.exports = async (client, member) => {
 			{ name: '**Transcript**', value: `${link}` },
 			{ name: '**Cause**', value: `${member} left the server` },
 		]);
-	if (users[0]) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
+	if (users.length) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 	client.logger.info(`Created transcript of ${channel.name}: ${link}`);
 	users.forEach(usr => {
 		usr.send({ embeds: [CloseDMEmbed] })

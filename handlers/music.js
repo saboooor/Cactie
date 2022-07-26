@@ -23,7 +23,7 @@ module.exports = client => {
 		(Player) =>
 			class extends Player {
 				setNowplayingMessage(message) {
-					if (this.nowPlayingMessage && this.nowPlayingMessage.embeds[0]) {
+					if (this.nowPlayingMessage && this.nowPlayingMessage.embeds.length) {
 						const NPEmbed = new EmbedBuilder(this.nowPlayingMessage.embeds[0].toJSON());
 						const row = NPEmbed.toJSON().description.startsWith('<:play:948091865977196554> ') ? [queuerow] : [];
 						this.nowPlayingMessage.edit({ embeds: [compressEmbed(NPEmbed)], components: row }).catch(err => client.logger.error(err.stack));

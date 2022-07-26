@@ -14,7 +14,7 @@ module.exports = {
 	options: require('../../options/play.js'),
 	async execute(message, args, client, lang) {
 		try {
-			if (!args[0]) {
+			if (!args.length) {
 				// Get player and current song and check if already resumed
 				const player = client.manager.get(message.guild.id);
 				if (!player || !player.queue.current) return client.error('Nothing is playing! Play something by doing the same command with a Song URL/Name/Playlist URL', message, true);

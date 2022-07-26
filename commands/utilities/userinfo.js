@@ -10,8 +10,8 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			let member = message.member;
-			if (args[0]) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member && args[0]) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
+			if (args.length) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!member && args.length) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 			if (!member) return client.error(lang.invalidmember, message, true);
 			const roles = Array.from(member.roles.cache).sort(function(a, b) {
 				if (b[1].rawPosition < a[1].rawPosition) return -1;

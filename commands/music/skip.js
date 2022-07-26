@@ -19,7 +19,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
 			// If arg is set, force skip to index (This requires dj role)
-			if (args[0]) {
+			if (args.length) {
 				// If djrole is set, check if user has dj role
 				if (srvconfig.djrole != 'false') {
 					const role = message.guild.roles.cache.get(srvconfig.djrole);

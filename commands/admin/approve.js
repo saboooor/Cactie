@@ -47,7 +47,7 @@ module.exports = {
 				if (!emoji) emoji = reaction._emoji.name;
 				emojis.push(`${emoji} **${reaction.count}**`);
 			});
-			if (!ApproveEmbed.toJSON().fields && emojis[0]) ApproveEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
+			if (!ApproveEmbed.toJSON().fields && emojis.length) ApproveEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
 
 			// Get suggestion thread
 			const thread = message.guild.channels.cache.get(ApproveEmbed.toJSON().url.split('a')[2]);

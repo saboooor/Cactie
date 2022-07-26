@@ -52,7 +52,7 @@ module.exports = {
 						{ name: '**Transcript**', value: `${link}` },
 						{ name: '**Deleted by**', value: `${author}` },
 					]);
-				if (users[0]) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
+				if (users.length) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${users}` }]);
 
 				// Send embed to ticket log channel
 				await message.guild.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [DelEmbed] });

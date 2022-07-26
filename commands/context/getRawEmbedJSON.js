@@ -6,7 +6,7 @@ module.exports = {
 	async execute(interaction, client, message) {
 		try {
 			// Check if message has embeds
-			if (!message.embeds[0]) return interaction.reply({ content: 'There is no embed in this message!', ephemeral: true });
+			if (!message.embeds.length) return interaction.reply({ content: 'There is no embed in this message!', ephemeral: true });
 
 			// Get embed
 			const MsgEmbed = message.embeds[0].toJSON();

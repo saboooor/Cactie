@@ -13,7 +13,7 @@ module.exports = async function getTranscript(messages) {
 				avatar: msg.member && msg.member.avatarURL() ? msg.member.avatarURL() : msg.author.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
 			},
 		};
-		if (msg.embeds && msg.embeds[0]) {
+		if (msg.embeds && msg.embeds.length) {
 			json.embeds = [];
 			msg.embeds.forEach(MsgEmbed => {
 				const embedjson = {};
