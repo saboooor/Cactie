@@ -1,4 +1,4 @@
-const { Manager, Structure } = require('erela.js');
+const { Manager, Structure } = require('@phamleduy04/erela.js');
 const compressEmbed = require('../functions/compressEmbed.js');
 const fs = require('fs');
 const YAML = require('yaml');
