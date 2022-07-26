@@ -17,35 +17,13 @@ module.exports = {
 				author = user;
 			}
 
-			// Check if channel is subticket and set the channel to the parent channel
+			// Check if channel is thread and set the channel to the parent channel
 			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is an actual ticket
 			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.isThread() ? message.channel.parent.id : message.channel.id}'`))[0];
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
-
-			// If the channel is a subticket, delete the subticket instead
-			if (message.channel.isThread()) {
-				// Fetch the messages of the channel and get the transcript
-				const messages = await message.channel.messages.fetch({ limit: 100 });
-				const link = await getTranscript(messages);
-				client.logger.info(`Created transcript of ${message.channel.name}: ${link}`);
-
-				// Create embed and send it to the main ticket channel
-				const CloseEmbed = new EmbedBuilder()
-					.setColor('Random')
-					.setTitle(`Deleted ${message.channel.name}`)
-					.addFields([
-						{ name: '**Transcript**', value: `${link}` },
-						{ name: '**Deleted by**', value: `${message.member.user}` },
-					]);
-				message.channel.parent.send({ embeds: [CloseEmbed] }).catch(err => client.logger.error(err.stack));
-
-				// Log and delete the thread
-				client.logger.info(`Deleted subticket #${message.channel.name}`);
-				return message.channel.delete();
-			}
 
 			// Check if ticket is already closed
 			if (message.channel.name.startsWith('closed')) return client.error('This ticket is already closed!', message, true);

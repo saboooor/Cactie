@@ -33,11 +33,6 @@ module.exports = async (client, reaction, user) => {
 		reaction.users.remove(user.id);
 		client.commands.get('close').execute(message, user, client, lang, reaction);
 	}
-	else if (emojiId == '📜') {
-		if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-		reaction.users.remove(user.id);
-		client.commands.get('subticket').execute(message, user, client, lang, reaction);
-	}
 	else if (emojiId == '🔊') {
 		if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
 		reaction.users.remove(user.id);

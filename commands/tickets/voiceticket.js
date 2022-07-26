@@ -17,7 +17,7 @@ module.exports = {
 			// Check if ticket already has a voiceticket
 			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') return client.error('This ticket already has a voiceticket!', message, true);
 
-			// Check if channel is subticket and set the channel to the parent channel
+			// Check if channel is thread and set the channel to the parent channel
 			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is closed

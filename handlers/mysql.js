@@ -15,12 +15,10 @@ module.exports = async client => {
 	client.query = function query(args) {
 		if (!args.startsWith('SELECT *')) client.logger.info('Query: ' + args);
 		return new Promise((resolve, reject) => {
-			client.con.query(args, (err, rows, fields) =>{
-				if(err) return err;
+			client.con.query(args, (err, rows, fields) => {
+				if (err) reject(err);
 				resolve(rows, fields);
-			}).on('error', err => {
-				reject(`Error: ${err.message}`);
-			});
+			}).on('error', err => reject(`Error: ${err.message}`));
 		});
 	};
 	client.logger.info('MySQL database loaded');

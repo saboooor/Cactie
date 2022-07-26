@@ -18,7 +18,7 @@ module.exports = {
 				author = user;
 			}
 
-			// Check if channel is subticket and set the channel to the parent channel
+			// Check if channel is thread and set the channel to the parent channel
 			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is an actual ticket

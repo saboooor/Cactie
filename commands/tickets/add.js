@@ -8,7 +8,7 @@ module.exports = {
 	options: require('../../options/user.js'),
 	async execute(message, args, client, lang) {
 		try {
-			// Check if channel is subticket and set the channel to the parent channel
+			// Check if channel is a thread and set the channel to the parent channel
 			if (message.channel.isThread()) message.channel = message.channel.parent;
 
 			// Check if ticket is an actual ticket
