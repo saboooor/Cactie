@@ -13,11 +13,11 @@ mysql: # MySQL database credentials
 
 music:
   lastfm: '' # last.fm api key
-  nodes:
-    - host: '' # lavalink node host ip
-      port: 2333
-      password: ''
-      identifier: '' # lavalink node name
-      retryAmount: 3
-      retryDelay: 5000
-      secure: false
+  lavalink:
+    host: '' # lavalink node host ip
+    port: 2333
+    password: ''
+    identifier: '' # lavalink node name
+    retryAmount: 3
+    retryDelay: 5000
+    secure: false

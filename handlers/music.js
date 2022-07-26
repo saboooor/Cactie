@@ -1,4 +1,4 @@
-const { Manager, Structure } = require('erela.js');
+const { Manager, Structure } = require('@phamleduy04/erela.js');
 const compressEmbed = require('../functions/compressEmbed.js');
 const fs = require('fs');
 const YAML = require('yaml');
@@ -32,9 +32,8 @@ module.exports = client => {
 				}
 			},
 	);
-	music.nodes.forEach(node => node.id = node.identifier);
 	client.manager = new Manager({
-		nodes: music.nodes,
+		nodes: [music.lavalink],
 		send: (id, payload) => {
 			const guild = client.guilds.cache.get(id);
 			if (guild) guild.shard.send(payload);
