@@ -2,6 +2,10 @@ const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuild
 const { convertTime } = require('../functions/music/convert.js');
 const { progressbar } = require('../functions/music/progressbar.js');
 const { shuffle, pause, play, music, refresh } = require('../lang/int/emoji.json');
+const truncateString = (string, maxLength) =>
+	string.length > maxLength
+		? `${string.substring(0, maxLength)}…`
+		: string;
 module.exports = {
 	name: 'music_updatenp',
 	player: true,
@@ -53,8 +57,8 @@ module.exports = {
 					.addOptions(
 						selectMenuQueue.map((queueItem, i) => {
 							return new SelectMenuOptionBuilder()
-								.setLabel(`${i + 1}. ${queueItem.title.split('\n')[0]}`)
-								.setDescription(queueItem.title.split('\n')[1] ?? 'Skip to this song')
+								.setLabel(`${i + 1}. ${truncateString(queueItem.title.split('\n')[0], 22)}`)
+								.setDescription(truncateString(queueItem.title.split('\n')[1], 47) ?? 'Skip to this song')
 								.setValue(`${i}`);
 						}),
 					);
