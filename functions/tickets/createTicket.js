@@ -33,11 +33,11 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 		permissionOverwrites: [
 			{
 				id: member.guild.id,
-				deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessagesInThreads],
+				deny: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
 				id: client.user.id,
-				allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessagesInThreads],
+				allow: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
 				id: member.id,

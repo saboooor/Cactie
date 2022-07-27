@@ -1,5 +1,6 @@
 const createTicket = require('../../functions/tickets/createTicket.js');
 const closeTicket = require('../../functions/tickets/closeTicket.js');
+const deleteTicket = require('../../functions/tickets/deleteTicket.js');
 module.exports = async (client, reaction, user) => {
 	// Check if the reaction was sent by a bot
 	if (user.bot) return;
@@ -32,14 +33,14 @@ module.exports = async (client, reaction, user) => {
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '⛔') {
-			await client.commands.get('delete').execute(message, member, client, lang, reaction);
+			await deleteTicket(client, srvconfig, message.member, message.channel);
 		}
 		else if (emojiId == '🔓') {
 			await client.commands.get('open').execute(message, member, client, lang, reaction);
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '🔒') {
-			if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
+			if (message.embeds[0] && !message.embeds[0].title.includes('Ticket Created')) return;
 			await closeTicket(client, srvconfig, member, message.channel);
 			await reaction.users.remove(member.id);
 		}

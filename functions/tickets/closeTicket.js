@@ -1,6 +1,9 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 module.exports = async function closeTicket(client, srvconfig, member, channel) {
+	// Check if channel is thread and set the channel to the parent channel
+	if (channel.isThread()) channel = channel.parent;
+
 	// Check if channel is a ticket
 	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${channel.id}'`))[0];
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
