@@ -77,13 +77,14 @@ module.exports = async function playSongs(requester, message, args, client, lang
 			interaction.deferUpdate();
 			playSongs(requester, playMsg, [Searched.tracks[interaction.customId - 1].uri], client, lang, top, false);
 			await playMsg.edit({ content: `<:play:${play}> **${lang.music.search.picked.replace('{num}', interaction.customId)}**`, embeds: [], components: [] })
-				.then(() => collector.stop());
+				.catch(err => logger.warn(err));
+			collector.stop();
 		});
 
 		// When the collector stops, remove the undo button from it
-		collector.on('end', () => {
+		collector.on('end', async () => {
 			if (playMsg.content.startsWith(`<:play:${play}> `)) return;
-			playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] })
+			await playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] })
 				.catch(err => logger.warn(err));
 		});
 
