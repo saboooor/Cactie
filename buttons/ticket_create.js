@@ -4,7 +4,6 @@ module.exports = {
 	botperm: 'ManageChannels',
 	deferReply: true,
 	ephemeral: true,
-	noDefer: true,
 	async execute(interaction, client) {
 		try {
 			// Create and show a modal for the user to fill out the ticket's description

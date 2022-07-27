@@ -8,8 +8,10 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	if (ticketData) {
 		try {
 			const channel = await member.guild.channels.fetch(ticketData.channelId);
-			channel.send({ content: `❗ **${member} Ticket already exists!**` });
-			throw new Error(`You've already created a ticket at #${channel.name}!`);
+			if (channel.startsWith('ticket')) {
+				await channel.send({ content: `❗ **${member} Ticket already exists!**` });
+				return `**You've already created a ticket at ${channel}!**`;
+			}
 		}
 		catch (err) {
 			client.logger.error(`Ticket data found but can't be fetched: ${err}`);
