@@ -8,7 +8,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	if (ticketData) {
 		try {
 			const channel = await member.guild.channels.fetch(ticketData.channelId);
-			if (channel.startsWith('ticket')) {
+			if (channel.name.startsWith('ticket')) {
 				await channel.send({ content: `❗ **${member} Ticket already exists!**` });
 				return `**You've already created a ticket at ${channel}!**`;
 			}

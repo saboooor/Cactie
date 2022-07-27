@@ -1,6 +1,8 @@
 const createTicket = require('../../functions/tickets/createTicket.js');
 const closeTicket = require('../../functions/tickets/closeTicket.js');
 const deleteTicket = require('../../functions/tickets/deleteTicket.js');
+const reopenTicket = require('../../functions/tickets/reopenTicket.js');
+const createVoice = require('../../functions/tickets/createVoice.js');
 module.exports = async (client, reaction, user) => {
 	// Check if the reaction was sent by a bot
 	if (user.bot) return;
@@ -18,14 +20,6 @@ module.exports = async (client, reaction, user) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
-	// Get the language for the user if specified or guild language
-	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${message.author.id}'`);
-	let lang = require('../../lang/English/msg.json');
-	if (message.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (message.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
-
 	try {
 		if (emojiId == '🎫') {
 			if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;
@@ -33,10 +27,10 @@ module.exports = async (client, reaction, user) => {
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '⛔') {
-			await deleteTicket(client, srvconfig, message.member, message.channel);
+			await deleteTicket(client, srvconfig, member, message.channel);
 		}
 		else if (emojiId == '🔓') {
-			await client.commands.get('open').execute(message, member, client, lang, reaction);
+			await reopenTicket(client, srvconfig, member, message.channel);
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '🔒') {
@@ -46,7 +40,7 @@ module.exports = async (client, reaction, user) => {
 		}
 		else if (emojiId == '🔊') {
 			if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-			await client.commands.get('voiceticket').execute(message, member, client, lang, reaction);
+			await createVoice(client, srvconfig, member, message.channel);
 			await reaction.users.remove(member.id);
 		}
 	}
