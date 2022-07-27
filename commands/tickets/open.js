@@ -1,4 +1,4 @@
-const reopenTicket = require('../functions/tickets/reopenTicket.js');
+const reopenTicket = require('../../functions/tickets/reopenTicket.js');
 module.exports = {
 	name: 'open',
 	description: 'Repen a ticket',
