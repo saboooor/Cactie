@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const getTranscript = require('../getTranscript.js');
-module.exports = async function closeTicket(client, srvconfig, member, channel, force) {
+module.exports = async function deleteTicket(client, srvconfig, member, channel, force) {
 	// Check if channel is thread and set the channel to the parent channel
 	if (channel.isThread()) channel = channel.parent;
 

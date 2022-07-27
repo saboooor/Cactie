@@ -1,10 +1,11 @@
-const { EmbedBuilder } = require('discord.js');
+const manageUsers = require('../../functions/tickets/manageUsers.js');
 module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket',
+	ephemeral: true,
 	botperm: 'ManageChannels',
 	args: true,
-	usage: '<User Mention or Id>',
+	usage: '<User>',
 	options: require('../../options/user.js'),
 	async execute(message, args, client, lang) {
 		try {
@@ -16,31 +17,15 @@ module.exports = {
 			if (!ticketData) return;
 			if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
-			// Check if ticket is closed
-			if (message.channel.name.startsWith('closed')) return client.error('This ticket is closed!', message, true);
-
 			// Check if user is valid
 			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) return client.error(lang.invalidmember, message, true);
 
-			// Check if user is already in the ticket, if not, add them to the ticket data
-			if (ticketData.users.includes(member.id)) return client.error('This user has already been added!', message, true);
-			ticketData.users.push(member.id);
-			client.setData('ticketdata', 'channelId', message.channel.id, 'users', ticketData.users.join(','));
+			// Add user to ticket
+			const msg = await manageUsers(client, message.member, message.channel, member, true);
 
-			// If the ticket has a voiceticket, give permissions to the user there
-			if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
-				const voiceticket = message.guild.channels.cache.get(ticketData.voiceticket);
-				voiceticket.permissionOverwrites.edit(member, { ViewChannel: true });
-			}
-
-			// Give permissions to the user and reply
-			message.channel.permissionOverwrites.edit(member, { ViewChannel: true });
-			const AddEmbed = new EmbedBuilder()
-				.setColor(0x2f3136)
-				.setDescription(`${message.member.user} added ${member} to the ticket`);
-			message.reply({ embeds: [AddEmbed] });
-			client.logger.info(`Added ${member.user.tag} to #${message.channel.name}`);
+			// Send message
+			await message.reply(msg);
 		}
 		catch (err) { client.error(err, message); }
 	},
