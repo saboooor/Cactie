@@ -1,9 +1,18 @@
+const createTicket = require('../../functions/tickets/createTicket.js');
+const closeTicket = require('../../functions/tickets/closeTicket.js');
 module.exports = async (client, reaction, user) => {
+	// Check if the reaction was sent by a bot
 	if (user.bot) return;
+
+	// Get the reaction's message and check if it's in a guild
 	const message = await reaction.message.fetch().catch(err => client.logger.error(err.stack));
-	if (!message.channel || message.channel.isDMBased()) return;
-	let emojiId = reaction.emoji.id;
-	if (!emojiId) emojiId = reaction.emoji.name;
+	if (!message.guild) return;
+
+	// Get the member
+	const member = await message.guild.members.fetch(user.id).catch(err => client.logger.error(err.stack));
+
+	// Get the reaction's emoji
+	const emojiId = reaction.emoji.id ?? reaction.emoji.name;
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -16,26 +25,33 @@ module.exports = async (client, reaction, user) => {
 	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
-	if (emojiId == '🎫') {
-		if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;
-		reaction.users.remove(user.id);
-		client.commands.get('ticket').execute(message, user, client, lang, reaction);
+	try {
+		if (emojiId == '🎫') {
+			if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;
+			await createTicket(client, srvconfig, member);
+			await reaction.users.remove(member.id);
+		}
+		else if (emojiId == '⛔') {
+			client.commands.get('delete').execute(message, member, client, lang, reaction);
+		}
+		else if (emojiId == '🔓') {
+			reaction.users.remove(member.id);
+			client.commands.get('open').execute(message, member, client, lang, reaction);
+		}
+		else if (emojiId == '🔒') {
+			if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
+			await closeTicket(client, srvconfig, member, message.channel);
+			await reaction.users.remove(member.id);
+		}
+		else if (emojiId == '🔊') {
+			if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
+			reaction.users.remove(member.id);
+			client.commands.get('voiceticket').execute(message, member, client, lang, reaction);
+		}
 	}
-	else if (emojiId == '⛔') {
-		client.commands.get('delete').execute(message, user, client, lang, reaction);
-	}
-	else if (emojiId == '🔓') {
-		reaction.users.remove(user.id);
-		client.commands.get('open').execute(message, user, client, lang, reaction);
-	}
-	else if (emojiId == '🔒') {
-		if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
-		reaction.users.remove(user.id);
-		client.commands.get('close').execute(message, user, client, lang, reaction);
-	}
-	else if (emojiId == '🔊') {
-		if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-		reaction.users.remove(user.id);
-		client.commands.get('voiceticket').execute(message, user, client, lang, reaction);
+	catch (err) {
+		const msg = await client.error(err, message, true);
+		await sleep(5000);
+		await msg.delete();
 	}
 };
