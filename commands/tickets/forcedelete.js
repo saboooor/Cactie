@@ -13,6 +13,6 @@ module.exports = {
 			// Create a ticket
 			await deleteTicket(client, srvconfig, message.member, message.channel, true);
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { client.error(err, message, true); }
 	},
 };

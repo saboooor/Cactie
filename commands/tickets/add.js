@@ -19,6 +19,6 @@ module.exports = {
 			// Send message
 			await message.reply(msg);
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { client.error(err, message, true); }
 	},
 };

@@ -14,6 +14,6 @@ module.exports = {
 			// Send the message
 			interaction.reply(msg);
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { client.error(err, interaction, true); }
 	},
 };
