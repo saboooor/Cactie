@@ -2,6 +2,7 @@ const deleteTicket = require('../../functions/tickets/deleteTicket.js');
 module.exports = {
 	name: 'forcedelete',
 	description: 'Force delete a ticket',
+	ephemeral: true,
 	permission: 'Administrator',
 	botperm: 'ManageChannels',
 	async execute(message, user, client) {
