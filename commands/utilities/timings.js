@@ -1,5 +1,6 @@
 const analyzeTimings = require('../../functions/timings/analyzeTimings.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { left, right } = require('../../lang/int/emoji.json');
 module.exports = {
 	name: 'timings',
 	description: 'Analyze Paper timings to help optimize your server.',
@@ -36,11 +37,11 @@ module.exports = {
 									.addComponents([
 										new ButtonBuilder()
 											.setCustomId('analysis_prev')
-											.setEmoji({ name: '⬅️' })
+											.setEmoji({ id: left })
 											.setStyle(ButtonStyle.Secondary),
 										new ButtonBuilder()
 											.setCustomId('analysis_next')
-											.setEmoji({ name: '➡️' })
+											.setEmoji({ id: right })
 											.setStyle(ButtonStyle.Secondary),
 										new ButtonBuilder()
 											.setURL('https://github.com/pemigrade/botflop')
