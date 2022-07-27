@@ -32,11 +32,11 @@ module.exports = async (client, reaction, user) => {
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '⛔') {
-			client.commands.get('delete').execute(message, member, client, lang, reaction);
+			await client.commands.get('delete').execute(message, member, client, lang, reaction);
 		}
 		else if (emojiId == '🔓') {
-			reaction.users.remove(member.id);
-			client.commands.get('open').execute(message, member, client, lang, reaction);
+			await client.commands.get('open').execute(message, member, client, lang, reaction);
+			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '🔒') {
 			if (message.embeds[0] && !message.embeds[0].title.includes('icket Created')) return;
@@ -45,8 +45,8 @@ module.exports = async (client, reaction, user) => {
 		}
 		else if (emojiId == '🔊') {
 			if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-			reaction.users.remove(member.id);
-			client.commands.get('voiceticket').execute(message, member, client, lang, reaction);
+			await client.commands.get('voiceticket').execute(message, member, client, lang, reaction);
+			await reaction.users.remove(member.id);
 		}
 	}
 	catch (err) {
