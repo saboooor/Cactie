@@ -1,10 +1,11 @@
 const { createLogger, format, transports } = require('winston');
 const rn = new Date();
-const date = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
+const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
 function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = client => {
-	// Set the client date for link in error and recovery messages
-	client.date = date;
+	// Set the global vars
+	global.sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+	global.logDate = logDate;
 
 	// Create a logger
 	client.logger = createLogger({
@@ -15,11 +16,11 @@ module.exports = client => {
 		),
 		transports: [
 			new transports.Console(),
-			new transports.File({ filename: `logs/${date}.log` }),
+			new transports.File({ filename: `logs/${logDate}.log` }),
 		],
 		rejectionHandlers: [
 			new transports.Console(),
-			new transports.File({ filename: `logs/${date}.log` }),
+			new transports.File({ filename: `logs/${logDate}.log` }),
 		],
 	});
 	client.logger.info('Logger started');

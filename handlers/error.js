@@ -7,7 +7,7 @@ module.exports = client => {
 		const errEmbed = new EmbedBuilder()
 			.setColor(0xE74C3C)
 			.setTitle('An error has occured!')
-			.setURL(`https://panel.netherdepths.com/server/${message.client.user.username == 'Cactie' ? '41769d86' : '3f2661e1'}/files/edit#/logs/${client.date}.log`)
+			.setURL(`https://panel.netherdepths.com/server/${message.client.user.username == 'Cactie' ? '41769d86' : '3f2661e1'}/files/edit#/logs/${logDate}.log`)
 			.setDescription(`\`\`\`\n${err}\n\`\`\``);
 		const row = [];
 		if (!userError) {
