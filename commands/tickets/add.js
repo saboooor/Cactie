@@ -9,20 +9,12 @@ module.exports = {
 	options: require('../../options/user.js'),
 	async execute(message, args, client, lang) {
 		try {
-			// Check if channel is a thread and set the channel to the parent channel
-			if (message.channel.isThread()) message.channel = message.channel.parent;
-
-			// Check if ticket is an actual ticket
-			const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
-			if (!ticketData) return;
-			if (ticketData.users) ticketData.users = ticketData.users.split(',');
-
 			// Check if user is valid
-			const member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(lang.invalidmember, message, true);
+			const targetMember = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+			if (!targetMember) return client.error(lang.invalidmember, message, true);
 
 			// Add user to ticket
-			const msg = await manageUsers(client, message.member, message.channel, member, true);
+			const msg = await manageUsers(client, message.member, message.channel, targetMember, true);
 
 			// Send message
 			await message.reply(msg);
