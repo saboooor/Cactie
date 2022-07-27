@@ -20,7 +20,7 @@ module.exports = {
 			const user = client.users.cache.get(ban.user.id);
 			await user.send({ content: `**You've been unbanned in ${message.guild.name}**` })
 				.catch(err => {
-					client.logger.warn(err);
+					logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
 				});
 
@@ -34,7 +34,7 @@ module.exports = {
 
 			// Reply with unban log
 			message.reply({ embeds: [UnbanEmbed] });
-			client.logger.info(`Unbanned user: ${ban.user.tag} in ${message.guild.name}`);
+			logger.info(`Unbanned user: ${ban.user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

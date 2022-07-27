@@ -32,10 +32,10 @@ module.exports = {
 			// Send ban message to target
 			await member.send({ content: `**You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
 				.catch(err => {
-					client.logger.warn(err);
+					logger.warn(err);
 					interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			client.logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+			logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set unban timestamp to member data for auto-unban
 			if (!isNaN(time)) await client.setData('memberdata', 'memberId', `${member.id}-${interaction.guild.id}`, 'bannedUntil', Date.now() + time);

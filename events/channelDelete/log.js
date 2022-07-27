@@ -16,6 +16,6 @@ module.exports = async (client, channel) => {
 				{ name: 'Category', value: `${channel.guild.channels.cache.get(channel.parentId) ? channel.guild.channels.cache.get(channel.parentId).name : 'None'}` },
 				{ name: 'Topic', value: `${channel.topic ?? 'None'}` },
 			]);
-		logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
+		logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 	}
 };

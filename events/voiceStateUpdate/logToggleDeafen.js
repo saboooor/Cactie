@@ -29,5 +29,5 @@ module.exports = async (client, oldState, newState) => {
 	else return;
 
 	// Send log
-	logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
+	logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 };

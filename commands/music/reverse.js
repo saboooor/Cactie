@@ -20,7 +20,7 @@ module.exports = {
 			const ReverseEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setDescription(`<:rewind:${rewind}> **${lang.music.queue.reversed}**`);
-			message.reply({ embeds: [ReverseEmbed] }).catch(err => client.logger.error(err.stack));
+			message.reply({ embeds: [ReverseEmbed] }).catch(err => logger.error(err.stack));
 		}
 		catch (err) { client.error(err, message); }
 	},

@@ -34,7 +34,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	// Create a transcript of the ticket
 	const messages = await channel.messages.fetch({ limit: 100 });
 	const link = await getTranscript(messages);
-	client.logger.info(`Created transcript of ${channel.name}: ${link}`);
+	logger.info(`Created transcript of ${channel.name}: ${link}`);
 
 	// Create embed for DMs
 	const CloseDMEmbed = new EmbedBuilder()
@@ -51,7 +51,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 		await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
 		const ticketmember = await channel.guild.members.fetch(userid).catch(() => { return null; });
 		if (!ticketmember) continue;
-		await ticketmember.send({ embeds: [CloseDMEmbed] }).catch(err => client.logger.warn(err));
+		await ticketmember.send({ embeds: [CloseDMEmbed] }).catch(err => logger.warn(err));
 	}
 
 	// Create embed for log
@@ -90,6 +90,6 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	}
 
 	// Log
-	client.logger.info(`Closed ticket #${channel.name}`);
+	logger.info(`Closed ticket #${channel.name}`);
 	return '**Ticket closed successfully!**';
 };

@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 module.exports = async function addVote(body, client) {
 	const user = client.users.cache.get(body.id) || client.users.cache.get(body.user);
-	if (!user) client.logger.info(`Got vote from ${body.id || body.user}!`);
-	else client.logger.info(`Got vote from ${user.tag}!`);
+	if (!user) logger.info(`Got vote from ${body.id || body.user}!`);
+	else logger.info(`Got vote from ${user.tag}!`);
 	const VoteEmbed = new EmbedBuilder()
 		.setColor('Random')
 		.setTitle('Vote Received!')

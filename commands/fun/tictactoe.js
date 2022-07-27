@@ -48,7 +48,7 @@ module.exports = {
 
 		collector.on('collect', async interaction => {
 			if (interaction.user.id != (turn ? message.member.id : member.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			interaction.deferUpdate().catch(err => client.logger.error(err.stack));
+			interaction.deferUpdate().catch(err => logger.error(err.stack));
 			const btn = btns[interaction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
 				btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
@@ -90,13 +90,13 @@ module.exports = {
 			// Go on to next turn if no matches
 			xomsg.edit({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 			const pingmsg = await interaction.channel.send(`${turn ? message.member : member}`);
-			pingmsg.delete().catch(err => client.logger.error(err.stack));
+			pingmsg.delete().catch(err => logger.error(err.stack));
 		});
 
 		collector.on('end', () => {
 			if (TicTacToe.toJSON().fields[0].name == 'Result:') return;
 			xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] })
-				.catch(err => client.logger.warn(err));
+				.catch(err => logger.warn(err));
 		});
 	},
 };

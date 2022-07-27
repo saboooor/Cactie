@@ -49,10 +49,10 @@ module.exports = {
 			// Send mute message to target
 			await member.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
 				.catch(err => {
-					client.logger.warn(err);
+					logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			client.logger.info(`Muted user: ${member.user.tag} in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+			logger.info(`Muted user: ${member.user.tag} in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set member data for unmute time if set
 			if (!isNaN(time) && role) await client.setData('memberdata', 'memberId', `${member.id}-${message.guild.id}`, 'mutedUntil', Date.now() + time);

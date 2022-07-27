@@ -31,7 +31,7 @@ module.exports = async (client, channel) => {
 
 	if (ticketData.voiceticket !== 'false') {
 		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket);
-		voiceticket.delete().catch(err => client.logger.warn(err.stack));
+		voiceticket.delete().catch(err => logger.warn(err.stack));
 	}
 	client.delData('ticketdata', 'channelId', channel.id);
 };

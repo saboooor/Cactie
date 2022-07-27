@@ -15,5 +15,5 @@ module.exports = client => {
 			client.commands.set(command.name, command);
 		}
 	}
-	client.logger.info(`${client.commands.size} text commands loaded`);
+	logger.info(`${client.commands.size} text commands loaded`);
 };

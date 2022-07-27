@@ -27,15 +27,15 @@ module.exports = async (client, interaction) => {
 				&& !interaction.guild.members.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm])
 			)
 		)) {
-		client.logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId ?? interaction.value} in #${interaction.channel.name} at ${interaction.guild.name}`);
-		return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(err => client.logger.warn(err));
+		logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId ?? interaction.value} in #${interaction.channel.name} at ${interaction.guild.name}`);
+		return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(err => logger.warn(err));
 	}
 
 	// Get player
 	const player = client.manager.get(interaction.guild.id);
 
 	// Log
-	client.logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
+	logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
 
 	// Check if player exists and command needs it
 	if (button.player && !player) return client.error('I\'m not in a voice channel!\nPlay some music before using this button!', interaction, true);
@@ -72,7 +72,7 @@ module.exports = async (client, interaction) => {
 			]);
 		if (interaction.guild) interactionFailed.addFields([{ name: '**Guild:**', value: interaction.guild.name }, { name: '**Channel:**', value: interaction.channel.name }]);
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
-		client.logger.error(err.stack);
+		interaction.user.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
+		logger.error(err.stack);
 	}
 };

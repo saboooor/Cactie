@@ -3,9 +3,9 @@ const fs = require('fs');
 const YAML = require('yaml');
 const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
 module.exports = client => {
-	if (!con.websocket) return client.logger.info('Skipped websocket server loading!');
+	if (!con.websocket) return logger.info('Skipped websocket server loading!');
 	const wss = new WebSocketServer({ port: con.websocket });
-	client.logger.info(`Websocket server loaded on port ${con.websocket}`);
+	logger.info(`Websocket server loaded on port ${con.websocket}`);
 	wss.on('connection', async function connection(ws, req) {
 		const userId = req.url.split('=')[1];
 

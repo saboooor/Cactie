@@ -26,7 +26,7 @@ module.exports = async (client, interaction) => {
 
 	// Defer and execute the modal
 	try {
-		client.logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
+		logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
 		await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
 		interaction.reply = interaction.editReply;
 		modal.execute(interaction, client, lang, modalInfo);
@@ -43,7 +43,7 @@ module.exports = async (client, interaction) => {
 			]);
 		if (interaction.guild) interactionFailed.addFields([{ name: '**Guild:**', value: interaction.guild.name }, { name: '**Channel:**', value: interaction.channel.name }]);
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
-		client.logger.error(err.stack);
+		interaction.user.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
+		logger.error(err.stack);
 	}
 };

@@ -28,6 +28,6 @@ module.exports = async function reopenTicket(client, srvconfig, member, channel)
 		.setColor(0xFF6400)
 		.setDescription(`Ticket Opened by ${member}`);
 	channel.send({ embeds: [OpenEmbed] });
-	client.logger.info(`Reopened ticket #${channel.name}`);
+	logger.info(`Reopened ticket #${channel.name}`);
 	return '**Ticket reopened successfully!**';
 };

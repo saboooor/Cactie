@@ -23,6 +23,6 @@ module.exports = async (client, channel) => {
 					.setLabel('Go to channel')
 					.setStyle(ButtonStyle.Link),
 			]);
-		logchannel.send({ embeds: [logEmbed], components: [row] }).catch(err => client.logger.error(err));
+		logchannel.send({ embeds: [logEmbed], components: [row] }).catch(err => logger.error(err));
 	}
 };

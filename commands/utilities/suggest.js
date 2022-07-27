@@ -26,7 +26,7 @@ module.exports = {
 			await suggestMsg.react(downvote);
 			if (srvconfig.suggestthreads) {
 				if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.CreatePublicThreads) || !message.guild.members.me.permissionsIn(channel).has(PermissionsBitField.Flags.CreatePublicThreads)) {
-					client.logger.error(`Missing CreatePublicThreads permission in #${channel.name} at ${message.guild.name}`);
+					logger.error(`Missing CreatePublicThreads permission in #${channel.name} at ${message.guild.name}`);
 					return client.error('I don\'t have the CreatePublicThreads permission!', message, true);
 				}
 				const thread = await suggestMsg.startThread({
@@ -46,7 +46,7 @@ module.exports = {
 			}
 			const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });
 			await sleep(5000);
-			if (!message.commandName) created.delete().catch(err => client.logger.error(err.stack));
+			if (!message.commandName) created.delete().catch(err => logger.error(err.stack));
 		}
 		catch (err) { client.error(err, message); }
 	},

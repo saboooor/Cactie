@@ -32,7 +32,7 @@ module.exports = {
 			if (!DenyEmbed || !DenyEmbed.toJSON().author || !DenyEmbed.toJSON().title.startsWith('Suggestion')) return;
 
 			// Delete command message
-			if (!message.commandName) message.delete().catch(err => client.logger.error(err.stack));
+			if (!message.commandName) message.delete().catch(err => logger.error(err.stack));
 
 			// Remove all reactions and set color to red and denied title
 			suggestMsg.reactions.removeAll();
@@ -55,7 +55,7 @@ module.exports = {
 			// Delete thread if exists with transcript
 			if (thread) {
 				if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.ManageThreads) || !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageThreads)) {
-					client.logger.error(`Missing ManageThreads permission in #${message.channel.name} at ${message.guild.name}`);
+					logger.error(`Missing ManageThreads permission in #${message.channel.name} at ${message.guild.name}`);
 					return client.error('I don\'t have the ManageThreads permission!', message, true);
 				}
 				const messages = await thread.messages.fetch({ limit: 100 });
@@ -85,7 +85,7 @@ module.exports = {
 				]);
 				if (member) {
 					member.send({ content: `**Your suggestion at ${message.guild.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}`, components: [row] })
-						.catch(err => client.logger.warn(err));
+						.catch(err => logger.warn(err));
 				}
 			}
 

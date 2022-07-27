@@ -8,12 +8,12 @@ module.exports = async (client) => {
 		if (!member) return;
 		if (member.roles.cache.has(role.id)) return;
 		member.roles.add(role.id);
-		client.logger.info(`Added cactie user role to ${member.user.tag}`);
+		logger.info(`Added cactie user role to ${member.user.tag}`);
 	});
 	await role.members.forEach(async member => {
 		if (owners.includes(member.id)) return;
 		member.roles.remove(role.id);
-		client.logger.info(`Removed cactie user role from ${member.user.tag}`);
+		logger.info(`Removed cactie user role from ${member.user.tag}`);
 	});
 
 	const commrole = cactieguild.roles.cache.get('971827078775328858');

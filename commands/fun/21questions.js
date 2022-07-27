@@ -50,7 +50,7 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (collector.collected.size == 0) questionmsg.edit({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than an hour are you high`, components: [], embeds: [] }).catch(err => client.logger.warn(err));
+			if (collector.collected.size == 0) questionmsg.edit({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than an hour are you high`, components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };

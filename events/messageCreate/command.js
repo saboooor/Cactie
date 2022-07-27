@@ -11,7 +11,7 @@ module.exports = async (client, message) => {
 	message.msgreply = message.reply;
 	message.reply = function reply(object) {
 		return message.msgreply(object).catch(err => {
-			client.logger.warn(err);
+			logger.warn(err);
 			return message.channel.send(object).catch(err => {
 				throw Error(err);
 			});
@@ -41,14 +41,14 @@ module.exports = async (client, message) => {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
-			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => logger.error(err.stack)); }, 10000);
 		}
 
 		// Check if channel is a ticket
 		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
 		if (ticketData && ticketData.resolved == 'true') {
 			await client.setData('ticketdata', 'channelId', message.channel.id, 'resolved', 'false');
-			client.logger.info(`Unresolved #${message.channel.name}`);
+			logger.info(`Unresolved #${message.channel.name}`);
 		}
 		return;
 	}
@@ -65,7 +65,7 @@ module.exports = async (client, message) => {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
-			setTimeout(() => { prefix.delete().catch(err => client.logger.error(err.stack)); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => logger.error(err.stack)); }, 10000);
 		}
 		return;
 	}
@@ -99,7 +99,7 @@ module.exports = async (client, message) => {
 		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
 		if (now < expirationTime && message.author.id != '249638347306303499') {
 			const timeLeft = (expirationTime - now) / 1000;
-			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => client.logger.error(err.stack));
+			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => logger.error(err.stack));
 			const cooldownEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setTitle(messages[random])
@@ -147,12 +147,12 @@ module.exports = async (client, message) => {
 	}
 
 	// Log
-	client.logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
+	logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
 
 	// Check if user has the permissions necessary to use the command
 	if (command.permission) {
-		client.logger.info(JSON.stringify(message.member.permissions));
-		client.logger.info(command.permission);
+		logger.info(JSON.stringify(message.member.permissions));
+		logger.info(command.permission);
 	}
 	if (command.permission
 		&& message.author.id !== '249638347306303499'
@@ -164,11 +164,11 @@ module.exports = async (client, message) => {
 		)
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
-			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
+			logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			return client.error(lang.rolereq.replace('{role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
 		}
 		else {
-			client.logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
+			logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
 			return client.error(lang.permreq.replace('{perm}', command.permission), message, true);
 		}
 	}
@@ -180,7 +180,7 @@ module.exports = async (client, message) => {
 				&& !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])
 			)
 		)) {
-		client.logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
+		logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
 		return client.error(`I don't have the ${command.botperm} permission!`, message, true);
 	}
 
@@ -229,7 +229,7 @@ module.exports = async (client, message) => {
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 			]);
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-		message.author.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
-		client.logger.error(err.stack);
+		message.author.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
+		logger.error(err.stack);
 	}
 };

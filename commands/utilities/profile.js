@@ -76,7 +76,7 @@ module.exports = {
 					// Send the embed
 					profilemsg.edit({ embeds: [ProfileEmbed] });
 				});
-				collector.on('end', () => profilemsg.edit({ components: [] }).catch(err => client.logger.warn(err)));
+				collector.on('end', () => profilemsg.edit({ components: [] }).catch(err => logger.warn(err)));
 			}
 		}
 		catch (err) { client.error(err, message); }

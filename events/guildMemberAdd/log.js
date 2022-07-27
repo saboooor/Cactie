@@ -16,6 +16,6 @@ module.exports = async (client, member) => {
 				{ name: 'User', value: `${member}` },
 				{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` },
 			]);
-		logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
+		logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 	}
 };

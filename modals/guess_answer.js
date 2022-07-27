@@ -49,7 +49,7 @@ module.exports = {
 
 			// Ping the host to and delete the ping message
 			const pingmsg = await interaction.channel.send(`${host}`);
-			pingmsg.delete().catch(err => client.logger.error(err.stack));
+			pingmsg.delete().catch(err => logger.error(err.stack));
 
 			// Create a collector for the buttons
 			const filter = i => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member.id == host.id;
@@ -102,7 +102,7 @@ module.exports = {
 
 				// Ping the opponent and delete the ping message
 				const pingmsg2 = await interaction.channel.send(`${interaction.member}`);
-				pingmsg2.delete().catch(err => client.logger.error(err.stack));
+				pingmsg2.delete().catch(err => logger.error(err.stack));
 
 				// Stop the answer collector
 				collector.stop();
@@ -110,7 +110,7 @@ module.exports = {
 
 			// When the answer collector stops, edit the message with a timeout message
 			collector.on('end', () => {
-				if (collector.collected.size == 0) interaction.message.edit({ content: `A game of ${embedJSON.title} should not last longer than an hour are you high`, components: [], embeds: [] }).catch(err => client.logger.warn(err));
+				if (collector.collected.size == 0) interaction.message.edit({ content: `A game of ${embedJSON.title} should not last longer than an hour are you high`, components: [], embeds: [] }).catch(err => logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, interaction); }

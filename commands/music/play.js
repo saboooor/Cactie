@@ -30,7 +30,7 @@ module.exports = {
 
 				// Wait 10 seconds and compress the message
 				await sleep(10000);
-				return resmsg.edit({ embeds: [compressEmbed(ResEmbed)] }).catch(err => client.logger.error(err));
+				return resmsg.edit({ embeds: [compressEmbed(ResEmbed)] }).catch(err => logger.error(err));
 			}
 			// Since playtop and play are so similar, use the same code in a function
 			playSongs(message.member, message, args, client, lang);

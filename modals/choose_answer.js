@@ -34,7 +34,7 @@ module.exports = {
 
 			// Ping the user and delete the ping message
 			const pingmsg = await interaction.channel.send(`${guesser}`);
-			pingmsg.delete().catch(err => client.logger.error(err.stack));
+			pingmsg.delete().catch(err => logger.error(err.stack));
 
 			// Create a collector for the button
 			const filter = i => i.customId == 'guess_answer' && i.member.id == guesser.id;
@@ -60,7 +60,7 @@ module.exports = {
 			collector.on('end', () => {
 				if (!interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') && !interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) {
 					interaction.message.edit({ content: `A game of ${embedJSON.title} should not last longer than an hour are you high`, components: [], embeds: [] })
-						.catch(err => client.logger.warn(err));
+						.catch(err => logger.warn(err));
 				}
 			});
 		}

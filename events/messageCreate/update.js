@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
 	if (!update) return;
 
 	// send a notice to everyone currently playing music and log and save music queues
-	client.logger.info('Detected a new commit on GitHub, updating...');
+	logger.info('Detected a new commit on GitHub, updating...');
 	GitEmbed.setAuthor({ name: `${client.user.username} is updating! Sorry for the inconvenience!` })
 		.setFooter({ text: 'I\'ll be back up in a few seconds to keep your music playing!' });
 	await client.manager.players.forEach(async player => {

@@ -10,5 +10,5 @@ module.exports = client => {
 			client.slashcommands.set(slashcommand.name, slashcommand);
 		}
 	}
-	client.logger.info(`${client.slashcommands.size} slash commands loaded`);
+	logger.info(`${client.slashcommands.size} slash commands loaded`);
 };

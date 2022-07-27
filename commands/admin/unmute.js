@@ -30,7 +30,7 @@ module.exports = {
 			// Send unmute message to user
 			await member.send({ content: '**You\'ve been unmuted**' })
 				.catch(err => {
-					client.logger.warn(err);
+					logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
 				});
 
@@ -45,7 +45,7 @@ module.exports = {
 
 			// Reply with unban log
 			message.reply({ embeds: [UnmuteEmbed] });
-			client.logger.info(`Unmuted ${member.user.tag} in ${message.guild.name}`);
+			logger.info(`Unmuted ${member.user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);

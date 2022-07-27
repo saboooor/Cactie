@@ -27,7 +27,7 @@ module.exports = {
 
 			// Send message to ticket and log
 			message.reply({ content: `${users}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });
-			client.logger.info(`Marked ticket #${message.channel.name} as resolved`);
+			logger.info(`Marked ticket #${message.channel.name} as resolved`);
 		}
 		catch (err) { client.error(err, message); }
 	},

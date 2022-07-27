@@ -12,8 +12,8 @@ module.exports = async (client, player, track, payload) => {
 		.setDescription(`❌ **${lang.music.track.failed}**`)
 		.setFooter({ text: payload.error });
 	const errorMsg = await channel.send({ embeds: [FailEmbed] });
-	client.logger.error(payload.error);
-	client.logger.error(`Failed to load track in ${guild.name}`);
+	logger.error(payload.error);
+	logger.error(`Failed to load track in ${guild.name}`);
 	await sleep(30000);
-	errorMsg.delete().catch(err => client.logger.error(err.stack));
+	errorMsg.delete().catch(err => logger.error(err.stack));
 };

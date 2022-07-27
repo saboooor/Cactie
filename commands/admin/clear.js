@@ -20,7 +20,7 @@ module.exports = {
 			if (args[0] > 1000) return client.error('You can only clear 1000 messages at once!', message, true);
 
 			// Fetch the messages and bulk delete them 100 by 100
-			const messagechunks = await getMessages(message.channel, args[0]).catch(err => { client.logger.error(err); });
+			const messagechunks = await getMessages(message.channel, args[0]).catch(err => { logger.error(err); });
 			for (const i in messagechunks) {
 				messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
 				if (args[1]) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == args[1]);
@@ -35,7 +35,7 @@ module.exports = {
 
 			// Reply with response
 			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${allmessages.size} messages!**` });
-			client.logger.info(`Cleared ${allmessages.size} messages from #${message.channel.name} in ${message.guild.name}`);
+			logger.info(`Cleared ${allmessages.size} messages from #${message.channel.name} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

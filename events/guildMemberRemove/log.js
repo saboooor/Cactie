@@ -17,6 +17,6 @@ module.exports = async (client, member) => {
 				{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` },
 			]);
 		if (member.joinedTimestamp) logEmbed.addFields([{ name: 'Joined Server At', value: `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>` }]);
-		logchannel.send({ embeds: [logEmbed] }).catch(err => client.logger.error(err));
+		logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 	}
 };

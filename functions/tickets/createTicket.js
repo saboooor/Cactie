@@ -14,7 +14,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 			}
 		}
 		catch (err) {
-			client.logger.error(`Ticket data found but can't be fetched: ${err}`);
+			logger.error(`Ticket data found but can't be fetched: ${err}`);
 			client.delData('ticketdata', 'channelId', ticketData.channelId);
 		}
 	}
@@ -102,6 +102,6 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	}
 
 	// Resolve with message
-	client.logger.info(`Ticket created at #${ticket.name}`);
+	logger.info(`Ticket created at #${ticket.name}`);
 	return `**Ticket created at ${ticket}!**`;
 };

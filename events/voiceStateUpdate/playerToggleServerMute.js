@@ -29,7 +29,7 @@ module.exports = async (client, oldState, newState) => {
 
 	// Pause and log
 	player.pause(playerpause);
-	client.logger.info(playerpause ? `Paused player in ${guild.name} because of bot server muted` : `Resumed player in ${guild.name} because of bot server unmuted`);
+	logger.info(playerpause ? `Paused player in ${guild.name} because of bot server muted` : `Resumed player in ${guild.name} because of bot server unmuted`);
 
 	// Create pause embed
 	const PauseEmbed = new EmbedBuilder()
@@ -44,7 +44,7 @@ module.exports = async (client, oldState, newState) => {
 		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.srvunmute}` });
 
 	// Send embed as now playing message
-	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => client.logger.warn(err));
+	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => logger.warn(err));
 	else textChannel.send({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] });
 
 	// Set the player timeout

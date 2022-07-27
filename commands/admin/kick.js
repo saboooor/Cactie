@@ -31,7 +31,7 @@ module.exports = {
 			// Send kick message to target
 			await member.send({ content: `**You've been kicked from ${message.guild.name}.${args[1] ? ` Reason: ${args.slice(1).join(' ')}` : ''}**` })
 				.catch(err => {
-					client.logger.warn(err);
+					logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
 				});
 
@@ -40,7 +40,7 @@ module.exports = {
 
 			// Actually kick the dude
 			await member.kick({ reason: `Kicked by ${message.member.user.tag} for ${args.slice(1).join(' ')}` });
-			client.logger.info(`Kicked user: ${member.user.tag} from ${message.guild.name}`);
+			logger.info(`Kicked user: ${member.user.tag} from ${message.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);

@@ -33,7 +33,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	if (!url) return [{ content: 'Invalid Timings URL' }];
 
-	client.logger.info(`Timings analyzed from ${author.tag} (${author.id}): ${url}`);
+	logger.info(`Timings analyzed from ${author.tag} (${author.id}): ${url}`);
 
 	const timings_host = url.split('?id=')[0];
 	const timings_id = url.split('?id=')[1];
@@ -66,7 +66,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 	}
 
 	let version = request.timingsMaster.version;
-	client.logger.info(version);
+	logger.info(version);
 
 	if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 

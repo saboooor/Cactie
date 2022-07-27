@@ -28,6 +28,6 @@ Please take some time going through the settings so that ${client.user.username}
 		.setThumbnail(`${client.dashboardDomain}/assets/images/Cactie.png`);
 	const message = { embeds: [greetingEmbed], components: [row] };
 	const owner = await guild.fetchOwner();
-	if (!guild.systemChannel) owner.send(message).catch(err => client.logger.warn(err));
-	else guild.systemChannel.send(message).catch(err => client.logger.warn(err));
+	if (!guild.systemChannel) owner.send(message).catch(err => logger.warn(err));
+	else guild.systemChannel.send(message).catch(err => logger.warn(err));
 };

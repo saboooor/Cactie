@@ -84,7 +84,7 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		collector.on('end', () => {
 			if (playMsg.content.startsWith(`<:play:${play}> `)) return;
 			playMsg.edit({ content: `<:alert:${warn}> **${lang.music.search.timeout}**`, embeds: [], components: [] })
-				.catch(err => client.logger.warn(err));
+				.catch(err => logger.warn(err));
 		});
 
 		return;
@@ -129,13 +129,13 @@ module.exports = async function playSongs(requester, message, args, client, lang
 		// If song image isn't set and artist is set, get album art from last.fm
 		if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
 		if (!song.img && song.author) {
-			const img = await getCover(song.title, song.author, player).catch(err => client.logger.warn(err));
+			const img = await getCover(song.title, song.author, player).catch(err => logger.warn(err));
 			if (img && typeof img === 'string') song.img = img;
 		}
 
 		// Set song color from album art
 		if (song.img) {
-			const colors = await getColors(song.img, { count: 2 }).catch(err => client.logger.warn(err));
+			const colors = await getColors(song.img, { count: 2 }).catch(err => logger.warn(err));
 			if (colors) song.colors = colors.map(color => { return color.num(); });
 		}
 		if (!song.colors) song.colors = [0x212121, 0x4e4e4e];
@@ -201,5 +201,5 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	});
 
 	// When the collector stops, remove the undo button from it
-	collector.on('end', () => playMsg.edit({ components: [] }).catch(err => client.logger.warn(err)));
+	collector.on('end', () => playMsg.edit({ components: [] }).catch(err => logger.warn(err)));
 };

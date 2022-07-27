@@ -17,5 +17,5 @@ module.exports = async (client, member) => {
 			await closeTicket(client, srvconfig, member, channel);
 		});
 	}
-	catch (err) { client.logger.error(err); }
+	catch (err) { logger.error(err); }
 };

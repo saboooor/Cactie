@@ -25,7 +25,7 @@ module.exports = {
 				.setTitle('Boner');
 
 			// If current message exists, delete the old message
-			if (srvs[message.channel.id] && srvs[message.channel.id].msg) srvs[message.channel.id].msg.delete().catch(err => client.logger.warn(err));
+			if (srvs[message.channel.id] && srvs[message.channel.id].msg) srvs[message.channel.id].msg.delete().catch(err => logger.warn(err));
 
 			// Set the data with the fields and largest number for editing the message
 			srvs[message.channel.id] = {
@@ -57,7 +57,7 @@ module.exports = {
 				srvs[message.channel.id].fields[i].value = `8${shaft.join('')}D`;
 				ppEmbed.setFields(srvs[message.channel.id].fields);
 				shaft.push('=');
-				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => client.logger.warn(err));
+				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => logger.warn(err));
 			}
 			await sleep(1000);
 
@@ -70,7 +70,7 @@ module.exports = {
 
 			// Set the field and edit
 			ppEmbed.setFields(srvs[message.channel.id].fields);
-			if (srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => client.logger.warn(err));
+			if (srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => logger.warn(err));
 
 			// Delete the data once all the fields are finished
 			if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number) delete srvs[message.channel.id];

@@ -26,7 +26,7 @@ module.exports = {
 			// Send kick message to target
 			await member.send({ content: `**You've been kicked from ${interaction.guild.name}.${reason ? ` Reason: ${reason}` : ''}**` })
 				.catch(err => {
-					client.logger.warn(err);
+					logger.warn(err);
 					interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
 				});
 
@@ -35,7 +35,7 @@ module.exports = {
 
 			// Actually kick the dude
 			await member.kick({ reason: `Kicked by ${author.user.tag} for ${reason}` });
-			client.logger.info(`Kicked user: ${member.user.tag} from ${interaction.guild.name}`);
+			logger.info(`Kicked user: ${member.user.tag} from ${interaction.guild.name}`);
 
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);

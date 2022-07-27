@@ -58,7 +58,7 @@ module.exports = {
 
 			// Reply with voiceticket open message
 			message.reply({ content: `Voiceticket created at ${voiceticket}!` });
-			client.logger.info(`Voiceticket created at #${voiceticket.name}`);
+			logger.info(`Voiceticket created at #${voiceticket.name}`);
 		}
 		catch (err) { client.error(err, message); }
 	},

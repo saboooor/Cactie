@@ -76,7 +76,7 @@ module.exports = {
 					// Send the embed
 					timingsmsg.edit({ embeds: [TimingsEmbed] });
 				});
-				collector.on('end', () => timingsmsg.edit({ components: [] }).catch(err => client.logger.warn(err)));
+				collector.on('end', () => timingsmsg.edit({ components: [] }).catch(err => logger.warn(err)));
 			}
 		}
 		catch (err) { client.error(err, message); }

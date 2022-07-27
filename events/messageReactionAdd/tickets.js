@@ -6,11 +6,11 @@ module.exports = async (client, reaction, user) => {
 	if (user.bot) return;
 
 	// Get the reaction's message and check if it's in a guild
-	const message = await reaction.message.fetch().catch(err => client.logger.error(err.stack));
+	const message = await reaction.message.fetch().catch(err => logger.error(err.stack));
 	if (!message.guild) return;
 
 	// Get the member
-	const member = await message.guild.members.fetch(user.id).catch(err => client.logger.error(err.stack));
+	const member = await message.guild.members.fetch(user.id).catch(err => logger.error(err.stack));
 
 	// Get the reaction's emoji
 	const emojiId = reaction.emoji.id ?? reaction.emoji.name;

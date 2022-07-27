@@ -10,5 +10,5 @@ module.exports = client => {
 		const reaction = require(`../reactions/${file}`);
 		client.reactions.set(reaction.name, reaction);
 	}
-	client.logger.info(`${reactionFiles.length} reactions loaded`);
+	logger.info(`${reactionFiles.length} reactions loaded`);
 };

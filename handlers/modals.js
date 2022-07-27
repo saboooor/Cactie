@@ -7,5 +7,5 @@ module.exports = client => {
 		const modal = require(`../modals/${file}`);
 		client.modals.set(modal.name, modal);
 	}
-	client.logger.info(`${modalFiles.length} modals loaded`);
+	logger.info(`${modalFiles.length} modals loaded`);
 };

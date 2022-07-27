@@ -8,7 +8,7 @@ module.exports = client => {
 	global.logDate = logDate;
 
 	// Create a logger
-	client.logger = createLogger({
+	global.logger = createLogger({
 		format: format.combine(
 			format.colorize(),
 			format.timestamp(),
@@ -23,11 +23,11 @@ module.exports = client => {
 			new transports.File({ filename: `logs/${logDate}.log` }),
 		],
 	});
-	client.logger.info('Logger started');
+	logger.info('Logger started');
 
 	// Register events for disconnect, reconnect, warn, and error
-	client.on('disconnect', () => client.logger.info('Bot is disconnecting...'));
-	client.on('reconnecting', () => client.logger.info('Bot reconnecting...'));
-	client.on('warn', error => client.logger.warn(error));
-	client.on('error', error => client.logger.error(error));
+	client.on('disconnect', () => logger.info('Bot is disconnecting...'));
+	client.on('reconnecting', () => logger.info('Bot reconnecting...'));
+	client.on('warn', error => logger.warn(error));
+	client.on('error', error => logger.error(error));
 };

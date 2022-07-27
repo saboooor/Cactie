@@ -17,7 +17,7 @@ module.exports = {
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
 			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
-				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => client.logger.error(err.stack));
+				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => logger.error(err.stack));
 				const category = helpdesc[arg.toLowerCase()];
 				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
 				const array = [];
@@ -118,7 +118,7 @@ module.exports = {
 				HelpEmbed.setDescription('Help command timed out.')
 					.setFooter({ text: 'please do the help command again if you still need a list of commands.' });
 				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] })
-					.catch(err => client.logger.warn(err));
+					.catch(err => logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, message); }

@@ -15,7 +15,7 @@ module.exports = async (client) => {
 				const channel = guild.channels.cache.get(player.textChannel);
 				const LeaveMsg = await channel.send({ embeds: [AlertEmbed] });
 				player.setNowplayingMessage(LeaveMsg);
-				client.logger.info(`Destroyed player in ${guild.name} because of queue end`);
+				logger.info(`Destroyed player in ${guild.name} because of queue end`);
 				player.destroy();
 			}
 		});

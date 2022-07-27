@@ -75,7 +75,7 @@ module.exports = async (client, player, track) => {
 		components.push(row2);
 	}
 
-	client.logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
+	logger.info(`Started playing ${track.title} [${convertTime(track.duration).replace('7:12:56', 'LIVE')}] in ${guild.name} (Requested by ${track.requester.tag})`);
 	const NowPlaying = await guild.channels.cache
 		.get(player.textChannel)
 		.send({ embeds: [StartEmbed], components });

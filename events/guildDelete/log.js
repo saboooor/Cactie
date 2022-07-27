@@ -5,5 +5,5 @@ module.exports = async (client, guild) => {
 	client.delData('settings', 'guildId', guild.id);
 	client.delData('reactionroles', 'guildId', guild.id);
 	client.delData('ticketdata', 'guildId', guild.id);
-	client.logger.info(`${client.user.username} has been removed from ${guild.name}`);
+	logger.info(`${client.user.username} has been removed from ${guild.name}`);
 };

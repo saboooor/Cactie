@@ -36,7 +36,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 
 	if (!url) return [{ content: 'Invalid Spark PRofile URL' }];
 
-	client.logger.info(`Spark Profile analyzed from ${author.tag} (${author.id}): ${url}`);
+	logger.info(`Spark Profile analyzed from ${author.tag} (${author.id}): ${url}`);
 
 	let error;
 	const code = url.replace('https://spark.lucko.me/', '');
@@ -62,7 +62,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 	}
 
 	let version = sampler.metadata.platform.version;
-	client.logger.info(version);
+	logger.info(version);
 
 	if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 

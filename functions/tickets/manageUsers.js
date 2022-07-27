@@ -29,7 +29,7 @@ module.exports = async function manageUsers(client, member, channel, targetMembe
 		.setColor(0x2f3136)
 		.setDescription(add ? `${member} added ${targetMember} to the ticket` : `${member} removed ${targetMember} from the ticket`);
 	channel.send({ embeds: [AddEmbed] });
-	client.logger.info(add ? `Added ${targetMember.user.tag} to #${channel.name}` : `Removed ${targetMember.user.tag} from #${channel.name}`);
+	logger.info(add ? `Added ${targetMember.user.tag} to #${channel.name}` : `Removed ${targetMember.user.tag} from #${channel.name}`);
 
 	// Return message
 	return `**${add ? 'Added' : 'Removed'} ${targetMember} ${add ? 'to' : 'from' } the ticket**`;

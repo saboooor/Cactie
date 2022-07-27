@@ -22,8 +22,8 @@ module.exports = async (client, interaction) => {
 
 	// Check if user has the permissions necessary to use the command
 	if (command.permission) {
-		client.logger.info(JSON.stringify(interaction.member.permissions));
-		client.logger.info(command.permission);
+		logger.info(JSON.stringify(interaction.member.permissions));
+		logger.info(command.permission);
 	}
 	if (command.permission
 		&& interaction.user.id !== '249638347306303499'
@@ -35,11 +35,11 @@ module.exports = async (client, interaction) => {
 		)
 	) {
 		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
-			client.logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
+			logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return client.error(lang.rolereq.replace('{role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
 		}
 		else {
-			client.logger.error(`User is missing ${command.permission} permission from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
+			logger.error(`User is missing ${command.permission} permission from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
 			return client.error(lang.permreq.replace('{perm}', command.permission), interaction, true);
 		}
 	}
@@ -51,7 +51,7 @@ module.exports = async (client, interaction) => {
 				&& !interaction.guild.members.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.botperm])
 			)
 		)) {
-		client.logger.error(`Bot is missing ${command.botperm} permission from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
+		logger.error(`Bot is missing ${command.botperm} permission from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
 		return client.error(`I don't have the ${command.botperm} permission!`, interaction, true);
 	}
 
@@ -66,7 +66,7 @@ module.exports = async (client, interaction) => {
 			await interaction.deferReply({ ephemeral: command.ephemeral });
 			interaction.reply = interaction.editReply;
 		}
-		client.logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item.id}, in ${interaction.guild.name}`.replace(' ,', ','));
+		logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item.id}, in ${interaction.guild.name}`.replace(' ,', ','));
 		command.execute(interaction, client, item, lang);
 	}
 	catch (err) {
@@ -80,7 +80,7 @@ module.exports = async (client, interaction) => {
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 			]);
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-		interaction.user.send({ embeds: [interactionFailed] }).catch(err => client.logger.warn(err));
-		client.logger.error(err.stack);
+		interaction.user.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
+		logger.error(err.stack);
 	}
 };

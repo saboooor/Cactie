@@ -46,6 +46,8 @@
 	},
 	"globals": {
 		"fetch": "readonly",
-		"sleep": "readonly"
+		"sleep": "readonly",
+		"logDate": "readonly",
+		"logger": "readonly"
 	}
 }

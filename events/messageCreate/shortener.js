@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
 			)
 		)
 	) {
-		message.delete().catch(err => client.logger.error(err.stack));
+		message.delete().catch(err => logger.error(err.stack));
 		const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
 		const shortEmbed = new EmbedBuilder()
 			.setColor('Random')
@@ -28,6 +28,6 @@ module.exports = async (client, message) => {
 			.setDescription(link)
 			.setFooter({ text: 'Next time please use a paste service for long messages' });
 		message.channel.send({ embeds: [shortEmbed] });
-		client.logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild.name}`);
+		logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild.name}`);
 	}
 };

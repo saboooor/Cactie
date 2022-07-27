@@ -10,5 +10,5 @@ module.exports = client => {
 			delete require.cache[require.resolve(`../events/${event}/${file}`)];
 		}
 	}
-	client.logger.info(`${jsFiles.length} event listeners loaded`);
+	logger.info(`${jsFiles.length} event listeners loaded`);
 };

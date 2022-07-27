@@ -6,7 +6,7 @@ const YAML = require('yaml');
 const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
 const addVote = require('../functions/addVote');
 module.exports = client => {
-	if (!con.vote) return client.logger.info('Skipped webhook server loading!');
+	if (!con.vote) return logger.info('Skipped webhook server loading!');
 	app.use(bodyParser.json());
 	// on post to server check if authorization matches
 	app.post('/', async function(req, res) {
@@ -18,5 +18,5 @@ module.exports = client => {
 			res.statusCode = 401;
 		}
 	});
-	app.listen(con.vote.webhook, () => client.logger.info(`Webhook server loaded on port ${con.vote.webhook}`));
+	app.listen(con.vote.webhook, () => logger.info(`Webhook server loaded on port ${con.vote.webhook}`));
 };

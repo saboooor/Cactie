@@ -8,7 +8,7 @@ module.exports = {
 			// Get the song link from the embed description
 			const a = interaction.message.embeds[0].description.split('](');
 			const b = a[a.length - 1].split(')')[0];
-			client.logger.info(b);
+			logger.info(b);
 
 			// Queue up the song in the embed
 			playSongs(interaction.member, interaction.message, [b], client, lang);

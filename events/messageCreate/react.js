@@ -9,7 +9,7 @@ module.exports = async (client, message) => {
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
 		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
 			reaction.execute(message);
-			client.logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
+			logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
 		}
 	});
 };

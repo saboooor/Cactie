@@ -31,12 +31,12 @@ module.exports = async function deleteTicket(client, srvconfig, member, channel,
 
 		// Send embed to ticket log channel
 		await member.guild.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [DelEmbed] });
-		client.logger.info(`Created transcript of ${channel.name}: ${link}`);
+		logger.info(`Created transcript of ${channel.name}: ${link}`);
 	}
 
 	// Actually delete ticket and ticket database
 	await client.delData('ticketdata', 'channelId', channel.id);
-	client.logger.info(`Deleted ticket #${channel.name}`);
+	logger.info(`Deleted ticket #${channel.name}`);
 	await channel.delete();
 	return '**Ticket deleted successfully!**';
 };

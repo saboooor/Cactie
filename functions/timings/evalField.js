@@ -11,7 +11,7 @@ module.exports = function evalField(fields, option, option_name, plugins, server
 				if (add_to_field && !eval(expression)) add_to_field = false;
 			}
 			catch (err) {
-				client.logger.warn(err);
+				logger.warn(err);
 				add_to_field = false;
 			}
 		});

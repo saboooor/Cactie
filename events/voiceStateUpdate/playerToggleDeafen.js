@@ -32,7 +32,7 @@ module.exports = async (client, oldState, newState) => {
 
 	// Pause and log
 	player.pause(playerpause);
-	client.logger.info(playerpause ? `Paused player in ${guild.name} because of all deafened` : `Resumed player in ${guild.name} because of undeafen`);
+	logger.info(playerpause ? `Paused player in ${guild.name} because of all deafened` : `Resumed player in ${guild.name} because of undeafen`);
 
 	// Create pause embed
 	const PauseEmbed = new EmbedBuilder()
@@ -47,7 +47,7 @@ module.exports = async (client, oldState, newState) => {
 		.setFooter({ text: `${lang.music.vcupdate.reason}: ${lang.music.vcupdate.undeafened}` });
 
 	// Send embed as now playing message
-	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => client.logger.warn(err));
+	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => logger.warn(err));
 	else textChannel.send({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] });
 
 	// Set the player timeout

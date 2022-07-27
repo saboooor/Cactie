@@ -3,7 +3,7 @@ module.exports = client => {
 	// Create a function for error messaging
 	client.error = function error(err, message, userError) {
 		err = err.stack ? err.stack : err;
-		client.logger.error(err);
+		logger.error(err);
 		const errEmbed = new EmbedBuilder()
 			.setColor(0xE74C3C)
 			.setTitle('An error has occured!')
@@ -22,15 +22,15 @@ module.exports = client => {
 			client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ embeds: [errEmbed] });
 		}
 		message.reply({ embeds: [errEmbed], components: row }).catch(err => {
-			client.logger.warn(err);
-			message.channel.send({ embeds: [errEmbed], components: row }).catch(err => client.logger.warn(err));
+			logger.warn(err);
+			message.channel.send({ embeds: [errEmbed], components: row }).catch(err => logger.warn(err));
 		});
 	};
-	client.rest.on('rateLimited', (info) => client.logger.warn(`Encountered ${info.method} rate limit!`));
+	client.rest.on('rateLimited', (info) => logger.warn(`Encountered ${info.method} rate limit!`));
 	process.on('unhandledRejection', (reason) => {
 		if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction')) {
-			client.logger.error(JSON.stringify(reason.requestBody));
+			logger.error(JSON.stringify(reason.requestBody));
 		}
 	});
-	client.logger.info('Error Handler Loaded');
+	logger.info('Error Handler Loaded');
 };

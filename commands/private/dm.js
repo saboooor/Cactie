@@ -24,7 +24,7 @@ module.exports = {
 
 			// Send DM to user
 			user.send({ content: args.slice(1).join(' '), files: files })
-				.catch(err => client.logger.warn(err));
+				.catch(err => logger.warn(err));
 
 			// Create response embed and respond
 			const DMEmbed = new EmbedBuilder()

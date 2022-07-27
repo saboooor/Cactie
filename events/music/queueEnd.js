@@ -13,6 +13,6 @@ module.exports = async (client, player) => {
 		.setDescription(`<:alert:${warn}> **${lang.music.ended}**`);
 	const NowPlaying = await channel.send({ embeds: [EndEmbed] });
 	player.setNowplayingMessage(NowPlaying);
-	client.logger.info(`Queue ended in ${guild.name}`);
+	logger.info(`Queue ended in ${guild.name}`);
 	player.timeout = Date.now() + 300000;
 };
