@@ -216,7 +216,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 		Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i]; }).forEach(config => {
 			Object.keys(config).forEach(option_name => {
 				const option = config[option_name];
-				evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur, client);
+				evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur);
 			});
 		});
 	}

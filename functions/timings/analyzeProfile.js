@@ -199,7 +199,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 		Object.keys(PROFILE_CHECK.config).map(i => { return PROFILE_CHECK.config[i]; }).forEach(config => {
 			Object.keys(config).forEach(option_name => {
 				const option = config[option_name];
-				evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, null, purpur, client);
+				evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, null, purpur);
 			});
 		});
 	}
