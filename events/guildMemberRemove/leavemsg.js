@@ -15,5 +15,5 @@ module.exports = async (client, member) => {
 
 	// Send the join message to the system channel
 	member.guild.systemChannel.send({ content: srvconfig.leavemessage.replace(/{USER MENTION}/g, `${member}`).replace(/{USER TAG}/g, member.user.tag) });
-	logger.log(`Sent leave message to ${member.guild.name} for ${member.user.tag}`);
+	logger.info(`Sent leave message to ${member.guild.name} for ${member.user.tag}`);
 };
