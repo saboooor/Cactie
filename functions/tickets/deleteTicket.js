@@ -33,7 +33,7 @@ module.exports = async function deleteTicket(client, srvconfig, member, channel,
 		if (ticketData.users.length) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}` }]);
 
 		// Send embed to ticket log channel
-		logchannel.send({ embeds: [DelEmbed] });
+		await logchannel.send({ embeds: [DelEmbed] });
 		logger.info(`Created transcript of ${channel.name}: ${link}`);
 	}
 
