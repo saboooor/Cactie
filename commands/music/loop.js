@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
-const { convertTime } = require('../../functions/music/convert.js');
+const convertTime = require('../../functions/music/convert.js');
 const { refresh } = require('../../lang/int/emoji.json');
 
 module.exports = {

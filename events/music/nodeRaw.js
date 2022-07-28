@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { convertTime } = require('../../functions/music/convert.js');
+const convertTime = require('../../functions/music/convert.js');
 const { forward } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, payload) => {

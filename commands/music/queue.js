@@ -1,5 +1,5 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { convertTime } = require('../../functions/music/convert.js');
+const convertTime = require('../../functions/music/convert.js');
 const { left, right, music } = require('../../lang/int/emoji.json');
 
 module.exports = {

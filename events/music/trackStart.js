@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { convertTime } = require('../../functions/music/convert.js');
+const convertTime = require('../../functions/music/convert.js');
 const { shuffle, pause, play, music } = require('../../lang/int/emoji.json');
 const truncateString = (string, maxLength) =>
 	string.length > maxLength
