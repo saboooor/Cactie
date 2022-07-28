@@ -16,11 +16,11 @@ module.exports = {
 		catch (err) { client.error(err, message); }
 	},
 	async autoComplete(client, interaction) {
-		const option = interaction.options.getFocused();
-		const query = await fetch(`https://api.github.com/search/repositories?q=${option.value}&per_page=25`, { headers: { 'Accept': 'application/json' } });
+		const value = interaction.options.getFocused();
+		const query = await fetch(`https://api.github.com/search/repositories?q=${value}&per_page=25`, { headers: { 'Accept': 'application/json' } });
 		const searchResult = await query.json();
-		if (!searchResult.items) return interaction.respond([{ name: `https://github.com/${option.value}`, value: option.value }]);
-		if (!searchResult.items.length) return interaction.respond([{ name: 'No repos found', value: option.value }]);
+		if (!searchResult.items) return interaction.respond([{ name: `https://github.com/${value}`, value }]);
+		if (!searchResult.items.length) return interaction.respond([{ name: 'No repos found', value }]);
 		const results = searchResult.items.map(item => { return { name: item.full_name, value: item.html_url }; });
 		interaction.respond(results);
 	},
