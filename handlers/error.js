@@ -2,6 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 module.exports = client => {
 	// Create a function for error messaging
 	client.error = function error(err, message, userError) {
+		if (`${err}`.includes('Received one or more errors')) console.log(err);
 		err = err.stack ?? err;
 		logger.error(err);
 		const errEmbed = new EmbedBuilder()
