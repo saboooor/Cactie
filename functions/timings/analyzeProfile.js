@@ -88,7 +88,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/analysis_config/server.properties.yml', 'utf8')),
 			bukkit: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/bukkit.yml', 'utf8')),
 			spigot: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/spigot.yml', 'utf8')),
-			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/profile/config/paper.yml', 'utf8')),
+			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/profile/paper.yml', 'utf8')),
 			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/purpur.yml', 'utf8')),
 		},
 	};

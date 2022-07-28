@@ -15,4 +15,7 @@ module.exports = {
 		}
 		catch (err) { client.error(err, message); }
 	},
+	async autoComplete(client, interaction) {
+		console.log(interaction);
+	},
 };
