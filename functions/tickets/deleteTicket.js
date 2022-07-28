@@ -12,8 +12,11 @@ module.exports = async function deleteTicket(client, srvconfig, member, channel,
 	// Check if ticket is open
 	if (!force && channel.name.startsWith('ticket')) throw new Error('This ticket needs to be closed first!');
 
+	// Get the ticket log channel
+	const logchannel = await member.guild.channels.fetch(srvconfig.ticketlogchannel).catch(() => { return null; });
+
 	// Check if ticket log channel is set in settings
-	if (srvconfig.ticketlogchannel != 'false') {
+	if (logchannel) {
 		// Get transcript of ticket
 		await channel.send({ content: 'Creating transcript...' });
 		const messages = await channel.messages.fetch({ limit: 100 });
@@ -30,7 +33,7 @@ module.exports = async function deleteTicket(client, srvconfig, member, channel,
 		if (ticketData.users.length) DelEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}` }]);
 
 		// Send embed to ticket log channel
-		await member.guild.channels.cache.get(srvconfig.ticketlogchannel).send({ embeds: [DelEmbed] });
+		logchannel.send({ embeds: [DelEmbed] });
 		logger.info(`Created transcript of ${channel.name}: ${link}`);
 	}
 

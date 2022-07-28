@@ -14,7 +14,7 @@ module.exports = {
 			const msg = await createVoice(client, srvconfig, message.member, message.channel);
 
 			// Send the message
-			message.reply(msg);
+			await message.reply(msg);
 		}
 		catch (err) { client.error(err, message, true); }
 	},

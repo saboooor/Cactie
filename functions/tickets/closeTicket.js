@@ -23,7 +23,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 
 	// If voiceticket is set, delete the voiceticket
 	if (ticketData.voiceticket != 'false') {
-		const voiceticket = await channel.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
+		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
 		if (voiceticket) voiceticket.delete();
 		await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
 	}
@@ -49,7 +49,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	// Get all the users and get rid of their permissions
 	for (const userid of ticketData.users) {
 		await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
-		const ticketmember = await channel.guild.members.fetch(userid).catch(() => { return null; });
+		const ticketmember = await member.guild.members.fetch(userid).catch(() => { return null; });
 		if (!ticketmember) continue;
 		await ticketmember.send({ embeds: [CloseDMEmbed] }).catch(err => logger.warn(err));
 	}

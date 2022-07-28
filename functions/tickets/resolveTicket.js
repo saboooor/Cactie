@@ -17,7 +17,7 @@ module.exports = async function resolveTicket(client, member, channel) {
 	await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'true');
 
 	// Send message to ticket and log
-	channel.send({ content: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });
+	await channel.send({ content: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });
 	logger.info(`Marked ticket #${channel.name} as resolved`);
 	return '**Ticket marked as resolved successfully!**';
 };

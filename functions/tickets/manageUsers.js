@@ -19,8 +19,8 @@ module.exports = async function manageUsers(client, member, channel, targetMembe
 
 	// If the ticket has a voiceticket, give permissions to the user there
 	if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
-		const voiceticket = member.guild.channels.cache.get(ticketData.voiceticket);
-		voiceticket.permissionOverwrites.edit(targetMember.id, { ViewChannel: add });
+		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
+		if (voiceticket) voiceticket.permissionOverwrites.edit(targetMember.id, { ViewChannel: add });
 	}
 
 	// Give permissions to the user and reply
@@ -28,7 +28,7 @@ module.exports = async function manageUsers(client, member, channel, targetMembe
 	const AddEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setDescription(add ? `${member} added ${targetMember} to the ticket` : `${member} removed ${targetMember} from the ticket`);
-	channel.send({ embeds: [AddEmbed] });
+	await channel.send({ embeds: [AddEmbed] });
 	logger.info(add ? `Added ${targetMember.user.tag} to #${channel.name}` : `Removed ${targetMember.user.tag} from #${channel.name}`);
 
 	// Return message

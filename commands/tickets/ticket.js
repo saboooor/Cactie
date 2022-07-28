@@ -16,7 +16,7 @@ module.exports = {
 			const msg = await createTicket(client, srvconfig, message.member, args.join(' '));
 
 			// Send the message
-			message.reply(msg);
+			await message.reply(msg);
 		}
 		catch (err) { client.error(err, message, true); }
 	},

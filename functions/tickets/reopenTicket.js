@@ -27,7 +27,7 @@ module.exports = async function reopenTicket(client, srvconfig, member, channel)
 	const OpenEmbed = new EmbedBuilder()
 		.setColor(0xFF6400)
 		.setDescription(`Ticket Opened by ${member}`);
-	channel.send({ embeds: [OpenEmbed] });
+	await channel.send({ embeds: [OpenEmbed] });
 	logger.info(`Reopened ticket #${channel.name}`);
 	return '**Ticket reopened successfully!**';
 };

@@ -15,20 +15,22 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	if (ticketData.voiceticket != 'false') throw new Error('This ticket already has a voiceticket!');
 
 	// Find category and if no category then set it to null
-	const parent = channel.guild.channels.cache.get(srvconfig.ticketcategory);
+	const parent = await member.guild.channels.fetch(srvconfig.ticketcategory).catch(() => { return null; });
 
 	// Branch for ticket-dev or ticket-testing etc
 	const branch = client.user.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
 	// Create voice channel for voiceticket
-	const author = channel.guild.members.cache.get(ticketData.opener);
-	const voiceticket = await channel.guild.channels.create({
+	const author = await member.guild.members.fetch(ticketData.opener).catch(() => { return null; });
+	if (!author) throw new Error('Couldn\'t find the author of the ticket! Close this ticket.');
+
+	const voiceticket = await member.guild.channels.create({
 		name: `Voiceticket${branch} ${author.displayName}`,
 		type: ChannelType.GuildVoice,
 		parent: parent ? parent.id : null,
 		permissionOverwrites: [
 			{
-				id: channel.guild.id,
+				id: member.guild.id,
 				deny: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
@@ -46,7 +48,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	await ticketData.users.forEach(userid => voiceticket.permissionOverwrites.edit(userid, { ViewChannel: true }));
 
 	// Find role and add their permissions to the channel
-	const role = channel.guild.roles.cache.get(srvconfig.supportrole);
+	const role = await member.guild.roles.fetch(srvconfig.supportrole).catch(() => { return null; });
 	if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 	// Add voiceticket to ticket database
