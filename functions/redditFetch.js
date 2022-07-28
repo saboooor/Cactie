@@ -41,7 +41,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return redditFetch(subreddits, message, client, attempts + 1);
 		data.url = gifData.gif.urls.hd;
 		logger.info(`Redgifs URL: ${data.url}`);
-		PostEmbed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})`, url: gifData.user.profileUrl.startsWith('http') ? gifData.user.profileUrl : null })
+		PostEmbed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})` })
 			.setColor(parseInt(gifData.gif.avgColor.replace('#', '0x')))
 			.setURL(data.url);
 	}
