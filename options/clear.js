@@ -6,7 +6,7 @@ module.exports = async function options(cmd) {
 			.setDescription('The amount of messages to select')
 			.setRequired(true)
 			.setMinValue(1)
-			.setMaxValue(100),
+			.setMaxValue(1000),
 	).addUserOption(
 		new SlashCommandUserOption()
 			.setName('user')
