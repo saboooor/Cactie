@@ -5,6 +5,7 @@ module.exports = async function options(cmd) {
 			.setName('fork')
 			.setDescription('The minecraft server fork name')
 			.setChoices(
+				{ name: 'Petal', value: 'petal' },
 				{ name: 'Purpur', value: 'purpur' },
 				{ name: 'Paper', value: 'paper' },
 				{ name: 'Waterfall', value: 'waterfall' },

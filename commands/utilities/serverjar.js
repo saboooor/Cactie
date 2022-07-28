@@ -84,6 +84,33 @@ module.exports = {
 						.setStyle(ButtonStyle.Link),
 				]);
 			}
+			else if (args[0] == 'petal') {
+				// fetch the latest mc version
+				const a = await fetch('https://api.github.com/repos/Bloom-host/Petal/releases', { headers: { 'Accept': 'application/json' } });
+				const b = await a.json();
+				const latestRelease = b[0];
+
+				// initial embed creation
+				JarEmbed.setTitle(`Petal ${latestRelease.name}`)
+					.setAuthor({ name: latestRelease.author.login, iconURL: latestRelease.author.avatar_url, url: latestRelease.author.url })
+					.setURL('https://api.github.com/repos/Bloom-host/Petal')
+					.setThumbnail('https://camo.githubusercontent.com/946524e97acb9c90a2741c35fccc82410b3a8500886d2e64c44abe94ecf40990/68747470733a2f2f626c6f6f6d2e686f73742f6173736574732f696d616765732f706574616c2d6c6f676f2e706e67')
+					.setTimestamp(new Date(latestRelease.published_at))
+					.setFooter({ text: `Branch: ${latestRelease.target_commitish}` });
+
+				// add fields for extra info
+				if (latestRelease.prerelease) JarEmbed.addFields([{ name: 'Notice', value: 'This is a pre-release' }]);
+				if (latestRelease.assets[0].download_count) JarEmbed.addFields({ name: 'Downloads', value: `${latestRelease.assets[0].download_count}` });
+				if (latestRelease.body) JarEmbed.setDescription(latestRelease.body);
+
+				// add button for download
+				row.addComponents([
+					new ButtonBuilder()
+						.setLabel(`Download ${latestRelease.assets[0].name} (${latestRelease.assets[0].size / 1000000} MB)`)
+						.setURL(latestRelease.assets[0].browser_download_url)
+						.setStyle(ButtonStyle.Link),
+				]);
+			}
 			else {
 				return client.error('Invalid Minecraft server fork.', message, true);
 			}
