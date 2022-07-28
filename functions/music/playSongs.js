@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { convertTime } = require('./convert.js');
+const convertTime = require('./convert.js');
 const getColors = require('get-image-colors');
 const getCover = require('./getCover.js');
 const { play, music, warn, leave, no, srch, refresh, join } = require('../../lang/int/emoji.json');
