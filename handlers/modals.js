@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Collection } = require('discord.js');
+
 module.exports = client => {
 	client.modals = new Collection();
 	const modalFiles = fs.readdirSync('./modals').filter(file => file.endsWith('.js'));

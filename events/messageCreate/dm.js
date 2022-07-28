@@ -1,4 +1,5 @@
 const { MessageAttachment } = require('discord.js');
+
 module.exports = async (client, message) => {
 	// If channel is DM,send the dm to the dms channel
 	if (!message.channel.isDMBased()) return;

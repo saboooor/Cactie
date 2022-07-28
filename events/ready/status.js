@@ -1,5 +1,6 @@
 const { schedule } = require('node-cron');
 const { ActivityType } = require('discord.js');
+
 module.exports = async (client) => {
 	schedule('*/10 * * * * *', async () => {
 		const activities = [

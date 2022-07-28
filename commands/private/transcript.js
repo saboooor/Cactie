@@ -1,4 +1,5 @@
 const getTranscript = require('../../functions/getTranscript.js');
+
 module.exports = {
 	name: 'transcript',
 	description: 'GetTranscript',

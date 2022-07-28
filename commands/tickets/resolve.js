@@ -1,4 +1,5 @@
 const resolveTicket = require('../../functions/tickets/resolveTicket.js');
+
 module.exports = {
 	name: 'resolve',
 	description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',

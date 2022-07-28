@@ -1,4 +1,5 @@
 const action = require('../../functions/action.js');
+
 module.exports = {
 	name: 'bite',
 	description: 'Bite someone!',

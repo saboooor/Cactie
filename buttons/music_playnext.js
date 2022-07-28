@@ -1,4 +1,5 @@
 const playSongs = require('../functions/music/playSongs.js');
+
 module.exports = {
 	name: 'music_playnext',
 	invc: true,

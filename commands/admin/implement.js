@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const { yes } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'implement',
 	description: 'Mark a suggestion as implemented.',

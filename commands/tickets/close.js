@@ -1,4 +1,5 @@
 const closeTicket = require('../../functions/tickets/closeTicket.js');
+
 module.exports = {
 	name: 'close',
 	description: 'Close a ticket',

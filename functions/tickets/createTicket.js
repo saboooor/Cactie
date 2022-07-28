@@ -1,4 +1,5 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
+
 module.exports = async function createTicket(client, srvconfig, member, description) {
 	// Check if tickets are disabled
 	if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');

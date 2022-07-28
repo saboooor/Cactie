@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'react',
 	description: 'Adds a reaction to a message',

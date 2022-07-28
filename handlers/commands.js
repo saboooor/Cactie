@@ -1,5 +1,6 @@
 const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
+
 module.exports = client => {
 	// Set the cooldowns and commands collections
 	client.cooldowns = new Collection();

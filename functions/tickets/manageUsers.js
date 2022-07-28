@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async function manageUsers(client, member, channel, targetMember, add = false) {
 	// Check if channel is thread and set the channel to the parent channel
 	if (channel.isThread()) channel = channel.parent;

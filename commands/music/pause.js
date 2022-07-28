@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { pause, play } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'pause',
 	description: 'Pause/Unpause the currently playing music',

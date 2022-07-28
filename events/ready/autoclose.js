@@ -1,5 +1,6 @@
 const { schedule } = require('node-cron');
 const closeTicket = require('../../functions/tickets/closeTicket.js');
+
 module.exports = client => {
 	schedule('0 0 * * *', async () => {
 		// Get all tickets

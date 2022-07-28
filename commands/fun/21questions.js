@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+
 module.exports = {
 	name: '21questions',
 	description: 'Play 21 Questions with an opponent',

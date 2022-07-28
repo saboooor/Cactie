@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'reactionroles',
 	description: 'Configure Cactie\'s reaction roles in the server',

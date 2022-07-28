@@ -1,4 +1,5 @@
 const { SlashCommandNumberOption } = require('discord.js');
+
 module.exports = async function options(cmd) {
 	cmd.addNumberOption(
 		new SlashCommandNumberOption()

@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
 	if (!interaction.isButton() && !interaction.isSelectMenu()) return;

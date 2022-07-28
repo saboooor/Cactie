@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'meme',
 	description: 'memes haha funny',

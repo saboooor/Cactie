@@ -1,4 +1,5 @@
 const { EmbedBuilder, InteractionType } = require('discord.js');
+
 module.exports = async (client, interaction) => {
 	// Check if interaction is modal
 	if (interaction.type != InteractionType.ModalSubmit) return;

@@ -1,4 +1,5 @@
 const createTicket = require('../../functions/tickets/createTicket.js');
+
 module.exports = {
 	name: 'ticket',
 	description: 'Create a ticket',

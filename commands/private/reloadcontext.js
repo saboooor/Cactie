@@ -1,4 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
+
 module.exports = {
 	name: 'reloadcontext',
 	description: 'Reloads all context commands',

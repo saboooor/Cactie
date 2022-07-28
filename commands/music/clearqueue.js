@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { no } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'clearqueue',
 	description: 'Clear Queue',

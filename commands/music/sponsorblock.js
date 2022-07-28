@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'sponsorblock',
 	description: 'Enables sponsorblock on the player',

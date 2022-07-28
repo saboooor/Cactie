@@ -1,6 +1,7 @@
 const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const { no } = require('../../lang/int/emoji.json');
 const getTranscript = require('../../functions/getTranscript.js');
+
 module.exports = {
 	name: 'deny',
 	description: 'Deny a suggestion.',

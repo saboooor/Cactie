@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { empty } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'buttons',
 	description: 'ya just buttons idk what else',

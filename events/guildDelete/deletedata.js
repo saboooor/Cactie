@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async (client, guild) => {
 	if (!guild.available) return;
 	const owner = await guild.fetchOwner();

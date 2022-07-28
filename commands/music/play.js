@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { play } = require('../../lang/int/emoji.json');
 const playSongs = require('../../functions/music/playSongs.js');
+
 module.exports = {
 	name: 'play',
 	description: 'Play music from YouTube, Spotify, or Apple Music',

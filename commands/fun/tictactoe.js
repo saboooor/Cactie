@@ -8,6 +8,7 @@ const again = new ActionRowBuilder()
 		.setLabel('Play Again')
 		.setStyle(ButtonStyle.Secondary),
 	]);
+
 module.exports = {
 	name: 'tictactoe',
 	description: 'Play Tic Tac Toe with an opponent',

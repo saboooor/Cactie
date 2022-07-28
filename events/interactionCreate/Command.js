@@ -1,4 +1,5 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
+
 module.exports = async (client, interaction) => {
 	// Check if interaction is command
 	if (!interaction.isChatInputCommand()) return;

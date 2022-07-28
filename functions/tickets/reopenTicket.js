@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async function reopenTicket(client, srvconfig, member, channel) {
 	// Check if tickets are disabled
 	if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');

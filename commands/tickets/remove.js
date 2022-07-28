@@ -1,4 +1,5 @@
 const manageUsers = require('../../functions/tickets/manageUsers.js');
+
 module.exports = {
 	name: 'remove',
 	description: 'Remove someone from a ticket',

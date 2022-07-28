@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { srch } = require('../lang/int/emoji.json');
+
 module.exports = {
 	name: 'choose_answer',
 	deferReply: true,

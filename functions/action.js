@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const gifs = require('../lang/int/actiongifs.json');
 let current;
+
 module.exports = async function action(message, author, args, type, lang) {
 	// Check if arg is a user and set it
 	let user;

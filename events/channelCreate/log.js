@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { yes } = require('../../lang/int/emoji.json');
+
 module.exports = async (client, channel) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);

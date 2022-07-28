@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActivityType } = require('discord.js');
 const fs = require('fs');
+
 module.exports = client => {
 	process.on('unhandledRejection', async (reason) => {
 		const CrashEmbed = new EmbedBuilder()

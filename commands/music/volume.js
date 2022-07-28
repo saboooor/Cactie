@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { vol } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'volume',
 	aliases: ['v', 'vol'],

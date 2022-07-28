@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { join } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'move',
 	description: 'Move Cactie from one voice channel to another',

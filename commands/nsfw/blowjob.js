@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'blowjob',
 	description: 'r/BlowJob, r/Blowjobs, r/BlowjobOnAllFours, r/BlowjobGradeA, r/BlowjobTongue',

@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'hentai',
 	description: 'r/hentai, r/hentaifemdom, r/traphentai, r/HENTAI_GIF, r/hentaibondage, r/HentaiAnal',

@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async (client, player, track) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);

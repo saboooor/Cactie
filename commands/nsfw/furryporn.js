@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'furryporn',
 	description: 'r/furryporn, r/FurryPornSubreddit, r/yiff, r/FurryOnHuman, r/FurryFuta',

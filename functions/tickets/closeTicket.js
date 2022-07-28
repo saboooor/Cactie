@@ -1,5 +1,6 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
+
 module.exports = async function closeTicket(client, srvconfig, member, channel) {
 	// Check if channel is thread and set the channel to the parent channel
 	if (channel.isThread()) channel = channel.parent;

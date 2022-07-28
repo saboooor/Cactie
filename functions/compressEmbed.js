@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = function compressEmbed(embed) {
 	const lines = embed.toJSON().description.split('\n');
 	const MiniEmbed = new EmbedBuilder()

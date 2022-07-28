@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { shuffle } = require('../lang/int/emoji.json');
+
 module.exports = {
 	name: 'music_shuffle',
 	player: true,

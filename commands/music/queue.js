@@ -1,6 +1,7 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { left, right, music } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'queue',
 	description: 'Show the music queue and now playing.',

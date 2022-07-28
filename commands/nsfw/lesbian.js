@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'lesbian',
 	description: 'r/lesbians, r/Lesbian_gifs, r/LesbiansGIF, r/lesbianporn, r/lesbianasslick, r/lesbianpov, r/lesbianOral',

@@ -1,4 +1,5 @@
 const reopenTicket = require('../functions/tickets/reopenTicket.js');
+
 module.exports = {
 	name: 'reopen_ticket',
 	botperm: 'ManageChannels',

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: '247',
 	description: 'Toggle 24/7 in voice channel',

@@ -1,4 +1,5 @@
 const fs = require('fs');
+
 module.exports = client => {
 	const eventFolders = fs.readdirSync('./events/').filter(folder => folder != 'music');
 	let jsFiles;

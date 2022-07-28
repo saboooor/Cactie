@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 module.exports = {
 	name: 'invite',
 	description: 'Get Cactie\'s invite links',

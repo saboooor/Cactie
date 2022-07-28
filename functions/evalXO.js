@@ -1,4 +1,5 @@
 const { ButtonStyle } = require('discord.js');
+
 module.exports = function evalXO(reslist) {
 	const result = {};
 

@@ -17,6 +17,7 @@ const queuerow = new ActionRowBuilder()
 			.setLabel('Re-add to queue')
 			.setStyle(ButtonStyle.Secondary),
 	]);
+
 module.exports = client => {
 	Structure.extend(
 		'Player',

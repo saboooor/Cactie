@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { skip } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'forceskip',
 	aliases: ['fs'],

@@ -1,6 +1,7 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'settings',
 	description: 'Configure this server\' Cactie settings',

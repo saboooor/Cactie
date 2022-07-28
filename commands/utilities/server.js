@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'server',
 	description: 'Discord server info',

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { deafen, srvdeafen, undeafen } = require('../../lang/int/emoji.json');
+
 module.exports = async (client, oldState, newState) => {
 	// Check if the deaf state actually changed
 	if (oldState.selfDeaf == newState.selfDeaf && oldState.serverDeaf == newState.serverDeaf) return;

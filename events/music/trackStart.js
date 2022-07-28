@@ -5,6 +5,7 @@ const truncateString = (string, maxLength) =>
 	string.length > maxLength
 		? `${string.substring(0, maxLength)}…`
 		: string;
+
 module.exports = async (client, player, track) => {
 	player.skipAmount = []; player.loopTrackAmount = [];
 	player.loopQueueAmount = []; player.shuffleAmount = [];

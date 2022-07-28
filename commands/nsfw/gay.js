@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'gay',
 	description: 'r/gaynsfw, r/GayGifs, r/gayporn, r/Gaypornclub, r/GayPornGIFs4Ya, r/GayAnalGoneWild',

@@ -8,6 +8,7 @@ const again = new ActionRowBuilder()
 		.setLabel('Play Again')
 		.setStyle(ButtonStyle.Secondary),
 	]);
+
 module.exports = {
 	name: 'xo_again',
 	ephemeral: true,

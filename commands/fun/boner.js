@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const srvs = {};
+
 module.exports = {
 	name: 'boner',
 	description: 'See your boner expand!',

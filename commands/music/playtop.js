@@ -1,4 +1,5 @@
 const playSongs = require('../../functions/music/playSongs.js');
+
 module.exports = {
 	name: 'playtop',
 	description: 'Play music to the top of the queue',

@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { no } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'removesong',
 	description: 'Remove a song from the queue',

@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'avatar',
 	description: 'Get the avatar of a user',

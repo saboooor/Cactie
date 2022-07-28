@@ -1,4 +1,5 @@
 const playSongs = require('../../functions/music/playSongs.js');
+
 module.exports = {
 	name: 'search',
 	description: 'Search and play music from YouTube, Spotify, or Apple Music',

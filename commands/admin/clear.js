@@ -2,6 +2,7 @@ const { EmbedBuilder, Collection } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 const getMessages = require('../../functions/getMessages.js');
 const { yes } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'clear',
 	description: 'Delete multiple messages at once',

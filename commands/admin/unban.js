@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'unban',
 	description: 'Unban someone that was banned from the server',

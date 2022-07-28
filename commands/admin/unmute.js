@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'unmute',
 	description: 'Unmute someone that was muted in the server',

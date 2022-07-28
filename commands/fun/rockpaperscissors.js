@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 module.exports = {
 	name: 'rockpaperscissors',
 	description: 'Play Rock Paper Scissors with an opponent',

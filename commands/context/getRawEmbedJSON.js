@@ -1,4 +1,5 @@
 const { createPaste } = require('hastebin');
+
 module.exports = {
 	name: 'Get Raw Embed JSON',
 	ephemeral: true,

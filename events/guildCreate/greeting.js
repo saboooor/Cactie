@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const msg = require('../../lang/English/msg.json');
+
 module.exports = async (client, guild) => {
 	const srvconfig = await client.getData('settings', 'guildId', guild.id);
 	const row = new ActionRowBuilder()

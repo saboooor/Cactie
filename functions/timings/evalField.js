@@ -1,4 +1,5 @@
 const createField = require('./createField.js');
+
 module.exports = function evalField(fields, option, option_name, plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur) {
 	const dict_of_vars = { plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur };
 	option.forEach(option_data => {

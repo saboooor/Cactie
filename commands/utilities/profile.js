@@ -1,6 +1,7 @@
 const analyzeProfile = require('../../functions/timings/analyzeProfile.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'profile',
 	description: 'Analyze Spark profiles to help optimize your server.',

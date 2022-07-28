@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { nsfw } = require('../lang/int/emoji.json');
+
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	if (!attempts) attempts = 1;
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];

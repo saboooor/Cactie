@@ -1,4 +1,5 @@
 const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+
 module.exports = {
 	name: 'Kick Member',
 	noDefer: true,

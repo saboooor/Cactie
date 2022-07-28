@@ -2,6 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { createPaste } = require('hastebin');
 const protocols = require('../../lang/int/mcprotocol.json');
 const { refresh } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'mcstats',
 	description: 'Get the status of a Minecraft server',

@@ -5,6 +5,7 @@ const fs = require('fs');
 const YAML = require('yaml');
 const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
 const addVote = require('../functions/addVote');
+
 module.exports = client => {
 	if (!con.vote) return logger.info('Skipped webhook server loading!');
 	app.use(bodyParser.json());

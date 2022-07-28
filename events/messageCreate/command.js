@@ -1,4 +1,5 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
+
 module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
 	if (!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)

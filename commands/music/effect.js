@@ -1,6 +1,7 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 const { progressbar } = require('../../functions/music/progressbar.js');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 module.exports = {
 	name: 'effect',
 	description: 'Add various effects to the music',

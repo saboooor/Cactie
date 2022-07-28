@@ -2,6 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const { convertTime } = require('../../functions/music/convert.js');
 const { forward, rewind } = require('../../lang/int/emoji.json');
 const ms = require('ms');
+
 module.exports = {
 	name: 'seek',
 	description: 'Seek through the playing song',

@@ -1,5 +1,6 @@
 const { schedule } = require('node-cron');
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async (client) => {
 	schedule('* * * * *', async () => {
 		const memberdata = await client.query('SELECT * FROM `memberdata`');

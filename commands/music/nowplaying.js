@@ -6,6 +6,7 @@ const truncateString = (string, maxLength) =>
 	string.length > maxLength
 		? `${string.substring(0, maxLength)}…`
 		: string;
+
 module.exports = {
 	name: 'nowplaying',
 	description: 'Show now playing song',

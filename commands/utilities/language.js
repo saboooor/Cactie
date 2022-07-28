@@ -1,6 +1,7 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 const fs = require('fs');
 const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
+
 module.exports = {
 	name: 'language',
 	description: 'Change the language of the bot',

@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'femdom',
 	description: 'r/femdom, r/FemdomHumiliation, r/femdomgonewild, r/Pegging, r/femdom_gifs',

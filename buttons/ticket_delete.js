@@ -1,4 +1,5 @@
 const deleteTicket = require('../functions/tickets/deleteTicket.js');
+
 module.exports = {
 	name: 'delete_ticket',
 	botperm: 'ManageChannels',

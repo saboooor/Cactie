@@ -1,4 +1,5 @@
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+
 module.exports = async (client, interaction) => {
 	// Check if interaction is context menu
 	if (!interaction.isContextMenuCommand()) return;

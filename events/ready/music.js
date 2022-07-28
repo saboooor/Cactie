@@ -1,6 +1,7 @@
 const { schedule } = require('node-cron');
 const { EmbedBuilder } = require('discord.js');
 const { warn } = require('../../lang/int/emoji.json');
+
 module.exports = async (client) => {
 	schedule('* * * * *', async () => {
 		await client.manager.players.forEach(async player => {

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { join, leave, right } = require('../../lang/int/emoji.json');
+
 module.exports = async (client, oldState, newState) => {
 	// Check if the mute state actually changed
 	if (oldState.channelId == newState.channelId) return;

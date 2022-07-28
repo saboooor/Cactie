@@ -1,5 +1,6 @@
 const { warn } = require('../../lang/int/emoji.json');
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async (client, player) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);

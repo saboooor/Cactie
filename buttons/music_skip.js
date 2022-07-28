@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { skip } = require('../lang/int/emoji.json');
 const compressEmbed = require('../functions/compressEmbed');
+
 module.exports = {
 	name: 'music_skip',
 	player: true,

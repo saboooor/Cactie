@@ -1,4 +1,5 @@
 const redditFetch = require('../../functions/redditFetch.js');
+
 module.exports = {
 	name: 'oppai',
 	description: 'r/OppaiLove, r/oppai_gif',

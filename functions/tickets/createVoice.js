@@ -1,4 +1,5 @@
 const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
+
 module.exports = async function createVoice(client, srvconfig, member, channel) {
 	// Check if channel is thread and set the channel to the parent channel
 	if (channel.isThread()) channel = channel.parent;

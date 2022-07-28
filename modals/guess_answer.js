@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { yes, no, srch } = require('../lang/int/emoji.json');
+
 module.exports = {
 	name: 'guess_answer',
 	ephemeral: true,

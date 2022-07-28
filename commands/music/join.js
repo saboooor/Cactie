@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { join } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'join',
 	description: 'Join voice channel',

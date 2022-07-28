@@ -1,4 +1,5 @@
 const action = require('../../functions/action.js');
+
 module.exports = {
 	name: 'hug',
 	description: 'Hug someone!',

@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const getColors = require('get-image-colors');
 const regex = /\[([^[]+)\](\((.*)\))/g;
+
 module.exports = {
 	name: 'color',
 	description: 'Get a color or multiple colors from an image',

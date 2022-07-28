@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = async (client, guild) => {
 	logger.info(`${client.user.username} has been added to ${guild.name}`);
 	const owner = await guild.fetchOwner();

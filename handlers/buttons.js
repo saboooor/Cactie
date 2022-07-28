@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Collection } = require('discord.js');
+
 module.exports = client => {
 	client.buttons = new Collection();
 	const buttonFiles = fs.readdirSync('./buttons').filter(file => file.endsWith('.js'));

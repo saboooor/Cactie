@@ -1,4 +1,5 @@
 const { EmbedBuilder, MessageAttachment } = require('discord.js');
+
 module.exports = {
 	name: 'dm',
 	description: 'DM someone through Cactie bot.',

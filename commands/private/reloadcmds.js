@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'reloadcmds',
 	description: 'Reloads all slash commands',

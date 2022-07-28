@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const compressEmbed = require('../../functions/compressEmbed');
 const { refresh } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'loopqueue',
 	description: 'Toggle queue loop',

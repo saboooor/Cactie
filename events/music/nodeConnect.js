@@ -1,5 +1,6 @@
 const { TrackUtils } = require('@phamleduy04/erela.js');
 const fs = require('fs');
+
 module.exports = async (client, node) => {
 	logger.info(`Node "${node.options.identifier}" connected`);
 	if (!fs.existsSync('playercache.txt')) return;

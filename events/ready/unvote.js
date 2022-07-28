@@ -1,4 +1,5 @@
 const { schedule } = require('node-cron');
+
 module.exports = async (client) => {
 	schedule('* * * * *', async () => {
 		// Get all users who have voted recently

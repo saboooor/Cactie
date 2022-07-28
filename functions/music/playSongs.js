@@ -3,6 +3,7 @@ const { convertTime } = require('./convert.js');
 const getColors = require('get-image-colors');
 const getCover = require('./getCover.js');
 const { play, music, warn, leave, no, srch, refresh, join } = require('../../lang/int/emoji.json');
+
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
 	// Get current voice channel and player, if player doesn't exist, create it in that channel
 	const { channel } = requester.voice;

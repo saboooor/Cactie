@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'cleareffects',
 	description: 'Clears all effects from the song.',

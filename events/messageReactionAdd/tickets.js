@@ -3,6 +3,7 @@ const closeTicket = require('../../functions/tickets/closeTicket.js');
 const deleteTicket = require('../../functions/tickets/deleteTicket.js');
 const reopenTicket = require('../../functions/tickets/reopenTicket.js');
 const createVoice = require('../../functions/tickets/createVoice.js');
+
 module.exports = async (client, reaction, user) => {
 	// Check if the reaction was sent by a bot
 	if (user.bot) return;

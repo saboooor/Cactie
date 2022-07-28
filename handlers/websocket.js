@@ -2,6 +2,7 @@ const { WebSocketServer } = require('ws');
 const fs = require('fs');
 const YAML = require('yaml');
 const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
+
 module.exports = client => {
 	if (!con.websocket) return logger.info('Skipped websocket server loading!');
 	const wss = new WebSocketServer({ port: con.websocket });

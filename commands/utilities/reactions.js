@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+
 module.exports = {
 	name: 'reactions',
 	description: 'See what words Cactie reacts to',

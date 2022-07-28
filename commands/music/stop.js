@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { warn } = require('../../lang/int/emoji.json');
+
 module.exports = {
 	name: 'stop',
 	description: 'Stops the music',

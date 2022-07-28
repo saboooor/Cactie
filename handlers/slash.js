@@ -1,5 +1,6 @@
 const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
+
 module.exports = client => {
 	client.slashcommands = new Collection();
 	const slashcommandFolders = readdirSync('./commands');

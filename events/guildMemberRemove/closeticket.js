@@ -1,4 +1,5 @@
 const closeTicket = require('../../functions/tickets/closeTicket.js');
+
 module.exports = async (client, member) => {
 	try {
 		// Get the server config

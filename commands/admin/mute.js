@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const ms = require('ms');
+
 module.exports = {
 	name: 'mute',
 	description: 'Mute someone in the server',

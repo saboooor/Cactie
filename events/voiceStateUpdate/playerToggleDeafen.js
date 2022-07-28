@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { pause, play } = require('../../lang/int/emoji.json');
+
 module.exports = async (client, oldState, newState) => {
 	// Check if the mute state actually changed
 	if (oldState.selfDeaf == newState.selfDeaf && oldState.serverDeaf == newState.serverDeaf) return;

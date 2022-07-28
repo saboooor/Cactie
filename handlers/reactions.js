@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Collection } = require('discord.js');
+
 module.exports = client => {
 	// Set the reactions collection
 	client.reactions = new Collection();

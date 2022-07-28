@@ -2,6 +2,7 @@ const mariadb = require('mariadb/callback');
 const fs = require('fs');
 const YAML = require('yaml');
 const { mysql } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
+
 module.exports = async client => {
 	// Database Functions
 	const databaseFunctions = fs.readdirSync('./functions/database/').filter(file => file.endsWith('.js'));
