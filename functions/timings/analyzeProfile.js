@@ -222,7 +222,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 	// if (high_mec) fields.push({ name: '❌ maxEntityCramming', value: 'Decrease this by running the /gamerule command in each world. Recommended: 8.', inline: true });
 
 	const tpstypes = sampler.metadata.platformStatistics.tps;
-	const avgtps = (tpstypes.last1m + tpstypes.last5m + tpstypes.last15m) / 3;
+	const avgtps = Math.round((tpstypes.last1m + tpstypes.last5m + tpstypes.last15m) / 3);
 	let red = 0;
 	let green = 0;
 	if (avgtps < 10) {
