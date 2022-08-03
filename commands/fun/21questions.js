@@ -30,7 +30,7 @@ module.exports = {
 		const questionmsg = await message.reply({ content: `${message.member}`, embeds: [TwentyOneQuestions], components: [row] });
 
 		const filter = i => i.customId == 'choose_answer' && i.member.id == message.member.id;
-		const collector = questionmsg.createMessageComponentCollector({ filter, time: 3600000 });
+		const collector = questionmsg.createMessageComponentCollector({ filter, time: 7200000 });
 
 		collector.on('collect', async interaction => {
 			// Create and show a modal for the user to fill out the answer
@@ -51,7 +51,9 @@ module.exports = {
 		});
 
 		collector.on('end', () => {
-			if (collector.collected.size == 0) questionmsg.edit({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than an hour are you high`, components: [], embeds: [] }).catch(err => logger.warn(err));
+			if (collector.collected.size) return;
+			if (message.commandName) message.editReply({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
+			else questionmsg.edit({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };

@@ -161,7 +161,7 @@ module.exports = {
 			const filter = i => i.customId.startsWith('music_effect');
 			const collector = effectMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async interaction => {
-				interaction.deferUpdate();
+				await interaction.deferUpdate();
 				if (interaction.customId.endsWith('current')) player.effectcurrentonly = !player.effectcurrentonly;
 				if (interaction.customId.endsWith('disable')) {
 					// Clear all effects
@@ -178,9 +178,14 @@ module.exports = {
 					filterEmbed.setDescription('Cleared all effects successfully!')
 						.setFields([]);
 				}
-				return effectMsg.edit({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow, disablerow] });
+				return interaction.editReply({ embeds: [filterEmbed], components: [player.effectcurrentonly ? queuerow : songrow, disablerow] });
 			});
-			collector.on('end', () => effectMsg.edit({ components: [] }).catch(err => logger.warn(err)));
+
+			// When the collector stops, remove all buttons from it
+			collector.on('end', () => {
+				if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
+				else effectMsg.edit({ components: [] }).catch(err => logger.warn(err));
+			});
 		}
 		catch (err) { client.error(err, message); }
 	},

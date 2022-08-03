@@ -72,7 +72,7 @@ module.exports = {
 			const collector = EQMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the filter buttons
-				interaction.deferUpdate();
+				await interaction.deferUpdate();
 
 				if (interaction.customId.startsWith('music_effect')) {
 					if (interaction.customId.endsWith('current')) player.effectcurrentonly = !player.effectcurrentonly;
@@ -91,7 +91,7 @@ module.exports = {
 						EQEmbed.setDescription('Cleared all effects successfully!')
 							.setFields([]);
 					}
-					return EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
+					return interaction.editReply({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
 				}
 
 				// Get the EQ preset
@@ -139,11 +139,14 @@ module.exports = {
 				});
 
 				// Update the message
-				await EQMsg.edit({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
+				await interaction.editReply({ embeds: [EQEmbed], components: [row, row2, player.effectcurrentonly ? queuerow : songrow, disablerow] });
 			});
 
-			// When the collector stops, remove the undo button from it
-			collector.on('end', () => EQMsg.edit({ components: [] }).catch(err => logger.warn(err)));
+			// When the collector stops, remove all buttons from it
+			collector.on('end', () => {
+				if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
+				else EQMsg.edit({ components: [] }).catch(err => logger.warn(err));
+			});
 		}
 		catch (err) { client.error(err, message); }
 	},

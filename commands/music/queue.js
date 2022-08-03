@@ -66,7 +66,7 @@ module.exports = {
 			const collector = QueueMsg.createMessageComponentCollector({ filter, time: 60000 });
 			collector.on('collect', async interaction => {
 				// Defer interaction
-				interaction.deferUpdate();
+				await interaction.deferUpdate();
 
 				// Calculate total amount of pages and get current page from embed footer
 				maxPages = Math.ceil(queue.length / 10);
@@ -97,9 +97,14 @@ module.exports = {
 
 				// Set current page number in footer and reply
 				QueueEmbed.setFooter({ text: lang.page.replace('{1}', newPage > maxPages ? maxPages : newPage).replace('{2}', maxPages) });
-				return QueueMsg.edit({ embeds: [QueueEmbed] });
+				return interaction.editReply({ embeds: [QueueEmbed] });
 			});
-			collector.on('end', () => QueueMsg.edit({ components: [] }).catch(err => logger.warn(err)));
+
+			// When the collector stops, remove all buttons from it
+			collector.on('end', () => {
+				if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
+				else QueueMsg.edit({ components: [] }).catch(err => logger.warn(err));
+			});
 		}
 		catch (err) { client.error(err, message); }
 	},

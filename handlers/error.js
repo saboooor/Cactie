@@ -30,7 +30,7 @@ module.exports = client => {
 	};
 	client.rest.on('rateLimited', (info) => logger.warn(`Encountered ${info.method} rate limit!`));
 	process.on('unhandledRejection', (reason) => {
-		if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction')) {
+		if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction' || reason.rawError.message == 'Missing Access' || reason.rawError.message == 'Missing Permissions')) {
 			logger.error(JSON.stringify(reason.requestBody));
 		}
 	});

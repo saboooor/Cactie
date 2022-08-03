@@ -25,6 +25,10 @@ module.exports = {
 			// Check if user is unmuted
 			if (role && !member.roles.cache.has(role.id)) return client.error('This user is not muted!', message, true);
 
+			// Actually get rid of the mute role or untimeout
+			if (role) await member.roles.remove(role);
+			else await member.timeout(null);
+
 			// Reset the mute timer
 			if (role) await client.setData('memberdata', 'memberId', `${member.id}-${message.guild.id}`, 'mutedUntil', 0);
 
@@ -34,10 +38,6 @@ module.exports = {
 					logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
 				});
-
-			// Actually get rid of the mute role or untimeout
-			if (role) await member.roles.remove(role);
-			else await member.timeout(null);
 
 			// Create embed with color and title
 			const UnmuteEmbed = new EmbedBuilder()

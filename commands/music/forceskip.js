@@ -29,7 +29,8 @@ module.exports = {
 
 			// Wait 10 seconds and compress the message
 			await sleep(10000);
-			skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.error(err));
+			if (message.commandName) message.editReply({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.warn(err));
+			else skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.warn(err));
 		}
 		catch (err) { client.error(err, message); }
 	},

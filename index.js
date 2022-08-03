@@ -24,7 +24,6 @@ const client = new Client({
 	],
 	allowedMentions: {
 		parse: ['users', 'roles', 'everyone'],
-		repliedUser: false,
 	},
 });
 

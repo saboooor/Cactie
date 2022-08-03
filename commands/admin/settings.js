@@ -6,6 +6,7 @@ module.exports = {
 	name: 'settings',
 	description: 'Configure this server\' Cactie settings',
 	aliases: ['setting', 'dashboard'],
+	ephmeral: true,
 	async execute(message, args, client, lang) {
 		try {
 			// Get the settings descriptions
@@ -48,7 +49,7 @@ module.exports = {
 			const collector = SettingsMsg.createMessageComponentCollector({ filter, time: 120000 });
 			collector.on('collect', async interaction => {
 				// Defer interaction
-				interaction.deferUpdate();
+				await interaction.deferUpdate();
 				let page = parseInt(SettingsEmbed.toJSON().footer ? SettingsEmbed.toJSON().footer.text.split(' ')[1] : maxPages);
 				if (interaction.customId == 'page_prev') page = page - 1 ? page - 1 : maxPages;
 				else if (interaction.customId == 'page_next') page = page + 1 == maxPages + 1 ? 1 : page + 1;
@@ -60,13 +61,19 @@ module.exports = {
 				// Update embed description with new page and reply
 				SettingsEmbed.setDescription(configlist.join('\n'))
 					.setFooter({ text: `Page ${page} of ${maxPages}` });
-				SettingsMsg.edit({ embeds: [SettingsEmbed] });
+				await interaction.editReply({ embeds: [SettingsEmbed] });
 			});
 
 			// When the collector stops, delete the message
-			collector.on('end', () => {
-				SettingsMsg.delete().catch(err => logger.error(err));
-				if (!message.commandName) message.delete().catch(err => logger.warn(err));
+			collector.on('end', async () => {
+				try {
+					if (message.commandName) return await message.editReply({ components: [] });
+					await SettingsMsg.delete();
+					await message.delete();
+				}
+				catch (err) {
+					logger.warn(err);
+				}
 			});
 		}
 		catch (err) { client.error(err, message); }

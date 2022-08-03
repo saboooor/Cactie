@@ -42,7 +42,9 @@ module.exports = {
 
 					// After 10 seconds, compress message
 					await sleep(10000);
-					return skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] });
+					if (message.commandName) message.editReply({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.warn(err));
+					else skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.warn(err));
+					return;
 				}
 			}
 
@@ -69,7 +71,8 @@ module.exports = {
 
 			// After 10 seconds, delete or compress message
 			await sleep(10000);
-			skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.error(err));
+			if (message.commandName) message.editReply({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.warn(err));
+			else skipmsg.edit({ embeds: [compressEmbed(SkipEmbed)] }).catch(err => logger.warn(err));
 		}
 		catch (err) { client.error(err, message); }
 	},

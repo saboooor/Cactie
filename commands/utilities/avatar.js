@@ -40,15 +40,18 @@ module.exports = {
 
 				collector.on('collect', async interaction => {
 					// Check if the button is the avatar button
-					interaction.deferUpdate();
+					await interaction.deferUpdate();
 
 					// Toggle profile pic
-					if (UsrEmbed.toJSON().image.url == memberpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
-					if (UsrEmbed.toJSON().image.url == userpfp) return avatarmsg.edit({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
+					if (UsrEmbed.toJSON().image.url == memberpfp) return interaction.editReply({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
+					if (UsrEmbed.toJSON().image.url == userpfp) return interaction.editReply({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
 				});
 
-				// When the collector stops, remove the button from it
-				collector.on('end', () => { avatarmsg.edit({ components: [] }).catch(err => logger.warn(err)); });
+				// When the collector stops, remove all buttons from it
+				collector.on('end', () => {
+					if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
+					else avatarmsg.edit({ components: [] }).catch(err => logger.warn(err));
+				});
 			}
 		}
 		catch (err) { client.error(err, message); }

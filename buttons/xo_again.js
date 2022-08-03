@@ -17,10 +17,10 @@ module.exports = {
 		const lines = TicTacToe.toJSON().description.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
 		const ouserId = lines[1].split('**O:** ')[1].replace(/\D/g, '');
-		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.user.send({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
+		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.reply({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
-		if (!xuser || !ouser) return interaction.user.send({ content: lang.invalidmember });
+		if (!xuser || !ouser) return interaction.reply({ content: lang.invalidmember });
 		const playAgainEmbed = new EmbedBuilder()
 			.setAuthor({ name: `${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
 			.setDescription(`${interaction.user} wants to play again!`)
@@ -51,13 +51,13 @@ module.exports = {
 			.setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` }])
 			.setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
 
-		const xomsg = await interaction.message.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
+		const xomsg = await interaction.editReply({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows });
 
 		const filter = i => i.customId != 'xo_again';
 		const collector = xomsg.createMessageComponentCollector({ filter, time: 3600000 });
 		collector.on('collect', async btninteraction => {
 			if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			btninteraction.deferUpdate().catch(err => logger.error(err.stack));
+			await btninteraction.deferUpdate().catch(err => logger.error(err.stack));
 			const btn = btns[btninteraction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
 				btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
@@ -81,7 +81,7 @@ module.exports = {
 					.setFields([{ name: 'Result:', value: `${xwin ? xuser : ouser} wins!` }])
 					.setThumbnail(xwin ? xuser.user.avatarURL() : ouser.user.avatarURL());
 				rows.push(again);
-				xomsg.edit({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
+				await btninteraction.editReply({ content: `${xwin ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
 				return collector.stop();
 			}
 
@@ -93,19 +93,25 @@ module.exports = {
 					.setFields([{ name: 'Result:', value: 'Draw!' }])
 					.setThumbnail();
 				rows.push(again);
-				return xomsg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
+				return await interaction.editReply({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
 			}
 
 			// Go on to next turn if no matches
-			xomsg.edit({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
-			const pingmsg = await interaction.channel.send(`${turn ? xuser : ouser}`);
-			pingmsg.delete().catch(err => logger.error(err.stack));
+			await btninteraction.editReply({ content: `${turn ? xuser : ouser}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+
+			// Ping the user
+			try {
+				const pingmsg = await btninteraction.channel.send(`${turn ? xuser : ouser}`);
+				await pingmsg.delete();
+			}
+			catch (err) {
+				logger.warn(err);
+			}
 		});
 
 		collector.on('end', () => {
 			if (TicTacToe.toJSON().fields[0].name == 'Result:') return;
-			xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] })
-				.catch(err => logger.warn(err));
+			interaction.editReply({ content: 'A game of tic tac toe should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };
