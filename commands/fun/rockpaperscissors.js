@@ -28,13 +28,13 @@ module.exports = {
 					.setStyle(ButtonStyle.Secondary),
 			]);
 		});
-		const TicTacToe = new EmbedBuilder()
+		const RPSEmbed = new EmbedBuilder()
 			.setColor('Random')
 			.setTitle('Rock Paper Scissors')
 			.setDescription('Select an option!')
 			.setFields([{ name: '**Waiting for:**', value: `${message.member}\n${member}` }]);
 
-		const rpsmsg = await message.reply({ content: `${message.member} ${member}`, embeds: [TicTacToe], components: [row] });
+		const rpsmsg = await message.reply({ content: `${message.member} ${member}`, embeds: [RPSEmbed], components: [row] });
 
 		const filter = i => i.user.id == message.member.id || i.user.id == member.id;
 		const collector = rpsmsg.createMessageComponentCollector({ filter, time: 3600000 });
@@ -47,33 +47,35 @@ module.exports = {
 			choices[interaction.user.id] = interaction.customId;
 			await interaction.editReply({ content: `**Selected ${emoji[interaction.customId][2]}!**` });
 
-			if (interaction.user.id == message.member.id) TicTacToe.setFields([{ name: '**Waiting for:**', value: `${member}` }]);
-			else if (interaction.user.id == member.id) TicTacToe.setFields([{ name: '**Waiting for:**', value: `${message.member}` }]);
+			if (interaction.user.id == message.member.id) RPSEmbed.setFields([{ name: '**Waiting for:**', value: `${member}` }]);
+			else if (interaction.user.id == member.id) RPSEmbed.setFields([{ name: '**Waiting for:**', value: `${message.member}` }]);
 
 			if (choices[message.member.id] && choices[member.id]) {
-				TicTacToe.setFields([]);
+				RPSEmbed.setFields([]);
 				let win = true;
 				if (choices[member.id] == 'rock' && choices[message.member.id] == 'scissors') win = false;
 				else if (choices[member.id] == 'paper' && choices[message.member.id] == 'rock') win = false;
 				else if (choices[member.id] == 'scissors' && choices[message.member.id] == 'paper') win = false;
 				if (choices[message.member.id] == choices[member.id]) {
-					TicTacToe.setDescription(`**It's a tie!**\nBoth users picked ${emoji[choices[member.id]][2]}!`);
-					return rpsmsg.edit({ embeds: [TicTacToe], components: [] });
+					RPSEmbed.setDescription(`**It's a tie!**\nBoth users picked ${emoji[choices[member.id]][2]}!`);
+					return await interaction.editReply({ embeds: [RPSEmbed], components: [] });
 				}
 				const winner = win ? message.member : member;
 				const loser = win ? member : message.member;
-				TicTacToe.setDescription(`**${winner} wins!**\n\n${emoji[choices[winner.id]][2]} wins over ${emoji[choices[loser.id]][2]}!`)
+				RPSEmbed.setDescription(`**${winner} wins!**\n\n${emoji[choices[winner.id]][2]} wins over ${emoji[choices[loser.id]][2]}!`)
 					.setThumbnail(winner.user.avatarURL());
-				return rpsmsg.edit({ embeds: [TicTacToe], components: [] });
+				return await interaction.editReply({ embeds: [RPSEmbed], components: [] });
 			}
 
-			rpsmsg.edit({ embeds: [TicTacToe] });
+			// Go on to next turn if no matches
+			if (message.commandName) message.editReply({ embeds: [RPSEmbed] });
+			else rpsmsg.edit({ embeds: [RPSEmbed] });
 		});
 
 		collector.on('end', () => {
-			if (TicTacToe.toJSON().fields) return;
-			rpsmsg.edit({ content: 'A game of rock paper scissors should not last longer than 15 minutes are you high', components: [], embeds: [] })
-				.catch(err => logger.warn(err));
+			if (RPSEmbed.toJSON().fields) return;
+			if (message.commandName) message.editReply({ content: 'A game of rock paper scissors should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
+			else rpsmsg.edit({ content: 'A game of rock paper scissors should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };

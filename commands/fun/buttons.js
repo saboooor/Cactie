@@ -29,13 +29,13 @@ module.exports = {
 		const filter = i => i.user.id == message.member.id;
 		const collector = btnMsg.createMessageComponentCollector({ filter, time: 300000 });
 		collector.on('collect', async i => {
-			i.deferUpdate();
+			await i.deferUpdate();
 			const btn = btns[i.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) btn.setStyle(ButtonStyle.Danger);
 			else if (btn.toJSON().style == ButtonStyle.Danger) btn.setStyle(ButtonStyle.Primary);
 			else if (btn.toJSON().style == ButtonStyle.Primary) btn.setStyle(ButtonStyle.Success);
 			else if (btn.toJSON().style == ButtonStyle.Success) btn.setStyle(ButtonStyle.Secondary);
-			btnMsg.edit({ components: rows });
+			i.editReply({ components: rows });
 		});
 	},
 };

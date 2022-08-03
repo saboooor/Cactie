@@ -7,6 +7,7 @@ module.exports = {
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 2,
+	ViewChannel: true,
 	options: require('../../options/someone.js'),
 	async execute(message, args, client) {
 		try {
@@ -58,7 +59,9 @@ module.exports = {
 				srvs[message.channel.id].fields[i].value = `8${shaft.join('')}D`;
 				ppEmbed.setFields(srvs[message.channel.id].fields);
 				shaft.push('=');
-				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => logger.warn(err));
+				if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number && srvs[message.channel.id].msg) {
+					srvs[message.channel.id].msg.edit({ embeds: [ppEmbed] }).catch(err => logger.warn(err));
+				}
 			}
 			await sleep(1000);
 

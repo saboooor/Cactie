@@ -129,6 +129,12 @@ module.exports = async (client, interaction) => {
 		return client.error(`I don't have the ${command.botperm} permission!`, interaction, true);
 	}
 
+	// ViewChannel permission check cuz discord is weird
+	if (command.ViewChannel && !interaction.guild.members.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags.ViewChannel)) {
+		logger.error(`Bot is missing ViewChannel permission from /${command.name} in #${interaction.channel.name} at ${interaction.guild.name}`);
+		return client.error('I don\'t have access to view this channel!\nI require the permission to do this command!', interaction, true);
+	}
+
 	// Get player for music checks
 	const player = client.manager.get(interaction.guild.id);
 
