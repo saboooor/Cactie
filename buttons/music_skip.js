@@ -20,7 +20,7 @@ module.exports = {
 
 			if (interaction.values[0]) player.queue.remove(0, interaction.values[0]);
 
-			player.stop();
+			await player.stop();
 			const song = player.queue.current;
 			const SkipEmbed = new EmbedBuilder()
 				.setDescription(`<:skip:${skip}> **${lang.music.track.skipped}**\n[${song.title}](${song.uri})`)

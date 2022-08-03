@@ -26,7 +26,7 @@ module.exports = {
 			}
 
 			// Shuffle queue and reply
-			player.queue.shuffle();
+			await player.queue.shuffle();
 			if (player.websockets) {
 				player.websockets.forEach(ws => {
 					ws.send(JSON.stringify({

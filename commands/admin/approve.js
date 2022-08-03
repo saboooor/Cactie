@@ -33,7 +33,7 @@ module.exports = {
 			if (!ApproveEmbed || !ApproveEmbed.toJSON().author || !ApproveEmbed.toJSON().title.startsWith('Suggestion')) return;
 
 			// Delete command message
-			if (!message.commandName) message.delete().catch(err => logger.error(err.stack));
+			if (!message.commandName) await message.delete().catch(err => logger.error(err.stack));
 
 			// Remove all reactions and set color to green and approved title
 			suggestMsg.reactions.removeAll();
