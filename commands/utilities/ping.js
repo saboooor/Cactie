@@ -46,7 +46,7 @@ module.exports = {
 				await interaction.editReply({ embeds: [PingEmbed] });
 			});
 
-			// When the collector stops, remove the all buttons from it
+			// When the collector stops, remove all buttons from it
 			collector.on('end', () => {
 				if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
 				else pingmsg.edit({ components: [] }).catch(err => logger.warn(err));
