@@ -49,7 +49,7 @@ module.exports = {
 
 		collector.on('collect', async interaction => {
 			if (interaction.user.id != (turn ? message.member.id : member.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			interaction.deferUpdate().catch(err => logger.error(err.stack));
+			await interaction.deferUpdate().catch(err => logger.error(err.stack));
 			const btn = btns[interaction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
 				btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
@@ -73,7 +73,7 @@ module.exports = {
 					.setFields([{ name: 'Result:', value: `${xwin ? message.member : member} wins!` }])
 					.setThumbnail(xwin ? message.member.user.avatarURL() : member.user.avatarURL());
 				rows.push(again);
-				xomsg.edit({ content: `${xwin ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
+				await interaction.editReply({ content: `${xwin ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
 				return collector.stop();
 			}
 
@@ -85,19 +85,26 @@ module.exports = {
 					.setFields([{ name: 'Result:', value: 'Draw!' }])
 					.setThumbnail();
 				rows.push(again);
-				return xomsg.edit({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
+				return await interaction.editReply({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
 			}
 
 			// Go on to next turn if no matches
-			xomsg.edit({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
-			const pingmsg = await interaction.channel.send(`${turn ? message.member : member}`);
-			pingmsg.delete().catch(err => logger.error(err.stack));
+			await interaction.editReply({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+
+			// Ping the user
+			try {
+				const pingmsg = await interaction.channel.send(`${turn ? message.member : member}`);
+				await pingmsg.delete();
+			}
+			catch (err) {
+				logger.warn(err);
+			}
 		});
 
 		collector.on('end', () => {
 			if (TicTacToe.toJSON().fields[0].name == 'Result:') return;
-			xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour are you high', components: [], embeds: [] })
-				.catch(err => logger.warn(err));
+			if (message.commandName) message.editReply({ content: 'A game of tic tac toe should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
+			else xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };

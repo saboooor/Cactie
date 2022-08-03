@@ -30,10 +30,10 @@ module.exports = {
 
 			// create collector for ping again button
 			const filter = i => i.customId == 'ping_again';
-			const collector = pingmsg.createMessageComponentCollector({ filter, time: args[0] == 'reset' ? 30000 : 120000 });
+			const collector = pingmsg.createMessageComponentCollector({ filter, time: 30000 });
 			collector.on('collect', async interaction => {
 				// Check if the button is one of the settings buttons
-				interaction.deferUpdate();
+				await interaction.deferUpdate();
 
 				// Set the embed description with new ping stuff
 				PingEmbed.setDescription(`**${lang.ping.latency}** ${Date.now() - interaction.createdTimestamp}ms\n**${lang.ping.api}** ${client.ws.ping}ms`);
@@ -43,11 +43,14 @@ module.exports = {
 
 				// Set title and update message
 				PingEmbed.setTitle(pong[newIndex]);
-				pingmsg.edit({ embeds: [PingEmbed] });
+				await interaction.editReply({ embeds: [PingEmbed] });
 			});
 
 			// When the collector stops, remove the undo button from it
-			collector.on('end', () => pingmsg.edit({ components: [] }).catch(err => logger.warn(err)));
+			collector.on('end', () => {
+				if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
+				else pingmsg.edit({ components: [] }).catch(err => logger.warn(err));
+			});
 		}
 		catch (err) { client.error(err, message); }
 	},
