@@ -21,7 +21,7 @@ module.exports = {
 				const collector = timingsmsg.createMessageComponentCollector({ filter, time: 300000 });
 				collector.on('collect', async i => {
 					// Defer button
-					i.deferUpdate();
+					await i.deferUpdate();
 
 					// Get the embed
 					const TimingsEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
@@ -54,7 +54,7 @@ module.exports = {
 						TimingsEmbed.setFields(fields);
 
 						// Send the embed
-						return timingsmsg.edit({ embeds: [TimingsEmbed], components });
+						return i.editReply({ embeds: [TimingsEmbed], components });
 					}
 
 					// Calculate total amount of pages and get current page from embed footer
@@ -75,9 +75,14 @@ module.exports = {
 						.setFooter({ iconURL: footer.iconURL, text: text.join(' • ') });
 
 					// Send the embed
-					timingsmsg.edit({ embeds: [TimingsEmbed] });
+					i.editReply({ embeds: [TimingsEmbed] });
 				});
-				collector.on('end', () => timingsmsg.edit({ components: [] }).catch(err => logger.warn(err)));
+
+				// When the collector stops, remove the all buttons from it
+				collector.on('end', () => {
+					if (message.commandName) message.editReply({ components: [] }).catch(err => logger.warn(err));
+					else timingsmsg.edit({ components: [] }).catch(err => logger.warn(err));
+				});
 			}
 		}
 		catch (err) { client.error(err, message); }
