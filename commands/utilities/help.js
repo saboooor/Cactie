@@ -112,14 +112,14 @@ module.exports = {
 					if (category.field) HelpEmbed.setFields([category.field]);
 				}
 				row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
-				helpMsg.edit({ embeds: [HelpEmbed], components: [row, row2] });
+				interaction.editReply({ embeds: [HelpEmbed], components: [row, row2] });
 			});
 
 			collector.on('end', () => {
 				HelpEmbed.setDescription('Help command timed out.')
 					.setFooter({ text: 'please do the help command again if you still need a list of commands.' });
-				helpMsg.edit({ embeds: [HelpEmbed], components: [row2] })
-					.catch(err => logger.warn(err));
+				if (message.commandName) message.editReply({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
+				else helpMsg.edit({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, message); }
