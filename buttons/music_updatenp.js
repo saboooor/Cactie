@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const convertTime = require('../functions/music/convert.js');
-const { progressbar } = require('../functions/music/progressbar.js');
+const progressbar = require('../functions/music/progressbar.js');
 const { shuffle, pause, play, music, refresh } = require('../lang/int/emoji.json');
 const truncateString = (string, maxLength) =>
 	string.length > maxLength

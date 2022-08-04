@@ -1,5 +1,5 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
-const { progressbar } = require('../../functions/music/progressbar.js');
+const progressbar = require('../../functions/music/progressbar.js');
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const presets = require('../../lang/int/eqpresets.json');
 
