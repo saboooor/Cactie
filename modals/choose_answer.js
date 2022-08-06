@@ -3,13 +3,10 @@ const { srch } = require('../lang/int/emoji.json');
 
 module.exports = {
 	name: 'choose_answer',
-	deferReply: true,
-	ephemeral: true,
 	async execute(interaction, client) {
 		try {
 			// Get the answer from the field and send it back to the user ephemerally
 			const answer = interaction.fields.getTextInputValue('answer');
-			interaction.reply({ content: `**The answer you chose is:**\n\`${answer}\`` });
 
 			// Get the opponent from the embed description
 			const embedJSON = interaction.message.embeds[0].toJSON();
@@ -31,11 +28,17 @@ module.exports = {
 				.setFooter({ text: `${embedJSON.title} left` });
 
 			// Edit the message with the new embed and button
-			await interaction.message.edit({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
+			await interaction.editReply({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
+			await interaction.followUp({ content: `**The answer you chose is:**\n\`${answer}\``, ephemeral: true });
 
-			// Ping the user and delete the ping message
-			const pingmsg = await interaction.channel.send(`${guesser}`);
-			pingmsg.delete().catch(err => logger.error(err.stack));
+			// Ping the user
+			try {
+				const pingmsg = await interaction.channel.send(`${guesser}`);
+				await pingmsg.delete();
+			}
+			catch (err) {
+				logger.warn(err);
+			}
 
 			// Create a collector for the button
 			const filter = i => i.customId == 'guess_answer' && i.member.id == guesser.id;
@@ -59,10 +62,8 @@ module.exports = {
 
 			// When the collector stops, edit the message with a timeout message if the game hasn't ended already
 			collector.on('end', () => {
-				if (!interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') && !interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) {
-					interaction.message.edit({ content: `A game of ${embedJSON.title} should not last longer than an hour are you high`, components: [], embeds: [] })
-						.catch(err => logger.warn(err));
-				}
+				if (interaction.message.embeds[0].toJSON().description.endsWith('guessed the answer!**') || interaction.message.embeds[0].toJSON().description.endsWith('ran out of questions!**')) return;
+				interaction.editReply({ content: `A game of ${embedJSON.title} should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
 			});
 		}
 		catch (err) { client.error(err, interaction); }

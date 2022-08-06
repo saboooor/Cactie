@@ -101,10 +101,11 @@ module.exports = {
 			}
 		});
 
+		// When the collector stops, edit the message with a timeout message if the game hasn't ended already
 		collector.on('end', () => {
 			if (TicTacToe.toJSON().fields[0].name == 'Result:') return;
-			if (message.commandName) message.editReply({ content: 'A game of tic tac toe should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
-			else xomsg.edit({ content: 'A game of tic tac toe should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
+			if (message.commandName) message.editReply({ content: 'A game of tic tac toe should not last longer than two hours...', components: [], embeds: [] }).catch(err => logger.warn(err));
+			else xomsg.edit({ content: 'A game of tic tac toe should not last longer than two hours...', components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };

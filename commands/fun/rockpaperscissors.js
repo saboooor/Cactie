@@ -72,10 +72,11 @@ module.exports = {
 			else rpsmsg.edit({ embeds: [RPSEmbed] });
 		});
 
+		// When the collector stops, edit the message with a timeout message if the game hasn't ended already
 		collector.on('end', () => {
 			if (RPSEmbed.toJSON().fields) return;
-			if (message.commandName) message.editReply({ content: 'A game of rock paper scissors should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
-			else rpsmsg.edit({ content: 'A game of rock paper scissors should not last longer than an hour...', components: [], embeds: [] }).catch(err => logger.warn(err));
+			if (message.commandName) message.editReply({ content: 'A game of rock paper scissors should not last longer than two hours...', components: [], embeds: [] }).catch(err => logger.warn(err));
+			else rpsmsg.edit({ content: 'A game of rock paper scissors should not last longer than two hours...', components: [], embeds: [] }).catch(err => logger.warn(err));
 		});
 	},
 };

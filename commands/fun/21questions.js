@@ -50,6 +50,7 @@ module.exports = {
 			collector.stop();
 		});
 
+		// When the collector stops, edit the message with a timeout message if the game hasn't ended already
 		collector.on('end', () => {
 			if (collector.collected.size) return;
 			if (message.commandName) message.editReply({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
