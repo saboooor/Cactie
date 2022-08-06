@@ -32,7 +32,7 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - Query support with messages that include the text
 - More than 100 messages support
 
-# Music
+## Music
 - with useful features other bots don't have:
 - play again button
 - music control buttons
