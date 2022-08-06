@@ -9,7 +9,7 @@ module.exports = {
 			const text = number == 1 ? 'Head' : 'Tail';
 
 			// Reply with result
-			message.reply({ content: `'<a:coinflip:908779062644867123>' **${text}s!**` });
+			message.reply({ content: `<a:coinflip:908779062644867123> **${text}s!**` });
 		}
 		catch (err) { client.error(err, message); }
 	},
