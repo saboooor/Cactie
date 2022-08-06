@@ -4,7 +4,7 @@ module.exports = {
 	name: 'remove',
 	description: 'Remove someone from a ticket',
 	ephemeral: true,
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	args: true,
 	usage: '<User>',
 	similarcmds: 'removesong',

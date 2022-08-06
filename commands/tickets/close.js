@@ -4,7 +4,7 @@ module.exports = {
 	name: 'close',
 	description: 'Close a ticket',
 	ephemeral: true,
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	async execute(message, args, client) {
 		try {
 			// Get the server config

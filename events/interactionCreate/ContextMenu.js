@@ -1,4 +1,5 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
+const checkPerms = require('../../functions/checkPerms');
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is context menu
@@ -21,39 +22,16 @@ module.exports = async (client, interaction) => {
 	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
-	// Check if user has the permissions necessary to use the command
-	if (command.permission) {
-		logger.info(JSON.stringify(interaction.member.permissions));
-		logger.info(command.permission);
-	}
-	if (command.permission
-		&& interaction.user.id !== '249638347306303499'
-		&& (!interaction.member.permissions
-			|| (!interaction.member.permissions.has(PermissionsBitField.Flags[command.permission])
-				&& !interaction.member.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.permission])
-				&& !interaction.member.roles.cache.has(srvconfig.adminrole)
-			)
-		)
-	) {
-		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
-			logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(lang.rolereq.replace('{role}', interaction.guild.roles.cache.get(srvconfig.adminrole).name), interaction, true);
-		}
-		else {
-			logger.error(`User is missing ${command.permission} permission from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
-			return client.error(lang.permreq.replace('{perm}', command.permission), interaction, true);
-		}
+	// Check if user has the permissions necessary in the guild to use the command
+	if (command.permissions) {
+		const permCheck = checkPerms(command.permissions, interaction.member);
+		if (permCheck) return client.error(permCheck, interaction, true);
 	}
 
-	// Check if bot has the permissions necessary to run the command
-	if (command.botperm
-		&& (!interaction.guild.members.me.permissions
-			|| (!interaction.guild.members.me.permissions.has(PermissionsBitField.Flags[command.botperm])
-				&& !interaction.guild.members.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[command.botperm])
-			)
-		)) {
-		logger.error(`Bot is missing ${command.botperm} permission from '${command.name}' in #${interaction.channel.name} at ${interaction.guild.name}`);
-		return client.error(`I don't have the ${command.botperm} permission!`, interaction, true);
+	// Check if bot has the permissions necessary in the guild to run the command
+	if (command.botPerms) {
+		const permCheck = checkPerms(command.botPerms, interaction.guild.members.me);
+		if (permCheck) return client.error(permCheck, interaction, true);
 	}
 
 	// Set item to the command type

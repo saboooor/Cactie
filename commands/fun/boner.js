@@ -7,7 +7,7 @@ module.exports = {
 	usage: '[Someone]',
 	aliases: ['pp'],
 	cooldown: 2,
-	ViewChannel: true,
+	botPerms: ['ViewChannel'],
 	options: require('../../options/someone.js'),
 	async execute(message, args, client) {
 		try {

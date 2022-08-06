@@ -1,10 +1,10 @@
-const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonStyle, PermissionsBitField } = require('discord.js');
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonStyle } = require('discord.js');
+const checkPerms = require('../../functions/checkPerms');
 
 module.exports = {
 	name: 'help',
 	description: 'Get help with Cactie',
 	aliases: ['commands'],
-	botperm: 'AddReactions',
 	usage: '[Type]',
 	cooldown: 10,
 	options: require('../../options/help.js'),
@@ -18,17 +18,18 @@ module.exports = {
 			let arg = args[0];
 			if (arg) arg = arg.toLowerCase();
 			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'music' || arg == 'nsfw' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
-				if (arg == 'nsfw' && !message.channel.nsfw) return message.react('🔞').catch(err => logger.error(err.stack));
+				if (arg == 'nsfw' && !message.channel.nsfw) return client.error('This channel is not NSFW. Please do this again in the appropriate channel.', message, true);
 				const category = helpdesc[arg.toLowerCase()];
 				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
 				const array = [];
-				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
+				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
 				if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 				if (category.field) HelpEmbed.setFields([category.field]);
 			}
 			else if (arg == 'supportpanel') {
-				if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator) && message.member.id != '249638347306303499') return client.error('You can\'t do that!', message, true);
+				const permCheck = checkPerms(['Administrator'], message.member);
+				if (permCheck) return client.error(permCheck, message, true);
 				const Panel = new EmbedBuilder()
 					.setColor(0x2f3136)
 					.setTitle('Need help? No problem!')
@@ -106,7 +107,7 @@ module.exports = {
 					const category = helpdesc[interaction.values[0].split('_')[1]];
 					const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);
 					const array = [];
-					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
+					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
 					HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
 					if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 					if (category.field) HelpEmbed.setFields([category.field]);

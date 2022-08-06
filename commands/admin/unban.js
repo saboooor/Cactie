@@ -6,8 +6,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User @ or Id>',
-	permission: 'BanMembers',
-	botperm: 'BanMembers',
+	permissions: ['BanMembers'],
+	botPerms: ['BanMembers'],
 	cooldown: 5,
 	options: require('../../options/user.js'),
 	async execute(message, args, client) {

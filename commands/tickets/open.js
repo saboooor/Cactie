@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Repen a ticket',
 	ephemeral: true,
 	aliases: ['reopen'],
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	async execute(message, args, client) {
 		try {
 			// Get the server config

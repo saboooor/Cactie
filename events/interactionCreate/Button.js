@@ -1,4 +1,5 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
+const checkPerms = require('../../functions/checkPerms');
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
@@ -21,15 +22,11 @@ module.exports = async (client, interaction) => {
 	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
 	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
-	// Check if bot has the permissions necessary to run the button
-	if (button.botperm
-		&& (!interaction.guild.members.me.permissions
-			|| (!interaction.guild.members.me.permissions.has(PermissionsBitField.Flags[button.botperm])
-				&& !interaction.guild.members.me.permissionsIn(interaction.channel).has(PermissionsBitField.Flags[button.botperm])
-			)
-		)) {
-		logger.error(`Bot is missing ${button.botperm} permission from ${interaction.customId ?? interaction.value} in #${interaction.channel.name} at ${interaction.guild.name}`);
-		return interaction.reply({ content: `I don't have the ${button.botperm} permission!`, ephemeral: true }).catch(err => logger.warn(err));
+
+	// Check if bot has the permissions necessary in the guild to run the command
+	if (button.botPerms) {
+		const permCheck = checkPerms(button.botPerms, interaction.guild.members.me);
+		if (permCheck) return client.error(permCheck, interaction, true);
 	}
 
 	// Get player

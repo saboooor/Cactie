@@ -7,7 +7,7 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['rr'],
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
-	permission: 'Administrator',
+	permissions: ['Administrator'],
 	options: require('../../options/reactionroles.js'),
 	async execute(message, args, client, lang) {
 		try {

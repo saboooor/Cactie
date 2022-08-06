@@ -7,8 +7,8 @@ module.exports = {
 	ephemeral: true,
 	args: true,
 	usage: '<User @ or Id> [Time] [Reason]',
-	permission: 'ManageMessages',
-	botperm: 'ManageRoles',
+	permissions: ['ModerateMembers'],
+	botPerms: ['ManageRoles'],
 	cooldown: 5,
 	options: require('../../options/punish.js'),
 	async execute(message, args, client, lang) {

@@ -1,11 +1,11 @@
-const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const checkPerms = require('../../functions/checkPerms');
 
 module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
-	if (!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)
-	|| !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)
-	|| message.webhookId
-	|| message.author.bot) return;
+	if (message.webhookId || message.author.bot) return;
+	const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, message.channel);
+	if (initialPermCheck) return logger.warn(initialPermCheck);
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
@@ -150,39 +150,28 @@ module.exports = async (client, message) => {
 	// Log
 	logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
 
-	// Check if user has the permissions necessary to use the command
-	if (command.permission) {
-		logger.info(JSON.stringify(message.member.permissions));
-		logger.info(command.permission);
-	}
-	if (command.permission
-		&& message.author.id !== '249638347306303499'
-		&& (!message.member.permissions
-			|| (!message.member.permissions.has(PermissionsBitField.Flags[command.permission])
-				&& !message.member.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.permission])
-				&& !message.member.roles.cache.has(srvconfig.adminrole)
-			)
-		)
-	) {
-		if (command.permission == 'Administrator' && srvconfig.adminrole != 'permission') {
-			logger.error(`User is missing ${command.permission} permission (${srvconfig.adminrole}) from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(lang.rolereq.replace('{role}', message.guild.roles.cache.get(srvconfig.adminrole).name), message, true);
-		}
-		else {
-			logger.error(`User is missing ${command.permission} permission from -${command.name} in #${message.channel.name} at ${message.guild.name}`);
-			return client.error(lang.permreq.replace('{perm}', command.permission), message, true);
-		}
+	// Check if user has the permissions necessary in the channel to use the command
+	if (command.channelPermissions) {
+		const permCheck = checkPerms(command.channelPermissions, message.member, message.channel);
+		if (permCheck) return client.error(permCheck, message, true);
 	}
 
-	// Check if bot has the permissions necessary to run the command
-	if (command.botperm
-		&& (!message.guild.members.me.permissions
-			|| (!message.guild.members.me.permissions.has(PermissionsBitField.Flags[command.botperm])
-				&& !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags[command.botperm])
-			)
-		)) {
-		logger.error(`Bot is missing ${command.botperm} permission from /${command.name} in #${message.channel.name} at ${message.guild.name}`);
-		return client.error(`I don't have the ${command.botperm} permission!`, message, true);
+	// Check if user has the permissions necessary in the guild to use the command
+	if (command.permissions) {
+		const permCheck = checkPerms(command.permissions, message.member);
+		if (permCheck) return client.error(permCheck, message, true);
+	}
+
+	// Check if bot has the permissions necessary in the channel to run the command
+	if (command.botChannelPerms) {
+		const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me, message.channel);
+		if (permCheck) return client.error(permCheck, message, true);
+	}
+
+	// Check if bot has the permissions necessary in the guild to run the command
+	if (command.botPerms) {
+		const permCheck = checkPerms(command.botPerms, message.guild.members.me);
+		if (permCheck) return client.error(permCheck, message, true);
 	}
 
 	// Get player for music checks

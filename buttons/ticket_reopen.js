@@ -2,7 +2,7 @@ const reopenTicket = require('../functions/tickets/reopenTicket.js');
 
 module.exports = {
 	name: 'reopen_ticket',
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	deferReply: true,
 	async execute(interaction, client) {
 		try {

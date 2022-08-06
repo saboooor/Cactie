@@ -2,7 +2,7 @@ const closeTicket = require('../functions/tickets/closeTicket.js');
 
 module.exports = {
 	name: 'close_ticket',
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	deferReply: true,
 	ephemeral: true,
 	async execute(interaction, client) {

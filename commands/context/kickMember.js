@@ -3,8 +3,8 @@ const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = req
 module.exports = {
 	name: 'Kick Member',
 	noDefer: true,
-	permission: 'KickMembers',
-	botperm: 'KickMembers',
+	permissions: ['KickMembers'],
+	botPerms: ['KickMembers'],
 	type: 'User',
 	async execute(interaction, client, member) {
 		try {

@@ -1,6 +1,7 @@
-const { EmbedBuilder, PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
 const { yes } = require('../../lang/int/emoji.json');
 const getTranscript = require('../../functions/getTranscript.js');
+const checkPerms = require('../../functions/checkPerms');
 
 module.exports = {
 	name: 'approve',
@@ -8,8 +9,7 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['accept'],
 	args: true,
-	permission: 'Administrator',
-	botperm: 'ManageMessages',
+	permissions: ['Administrator'],
 	usage: '<Message Id> [Response]',
 	options: require('../../options/suggestresponse.js'),
 	async execute(message, args, client) {
@@ -55,10 +55,8 @@ module.exports = {
 
 			// Delete thread if exists with transcript
 			if (thread) {
-				if (!message.guild.members.me.permissions.has(PermissionsBitField.Flags.ManageThreads) || !message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ManageThreads)) {
-					logger.error(`Missing ManageThreads permission in #${message.channel.name} at ${message.guild.name}`);
-					return client.error('I don\'t have the ManageThreads permission!', message, true);
-				}
+				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me);
+				if (permCheck) return client.error(permCheck, message, true);
 				const messages = await thread.messages.fetch({ limit: 100 });
 				if (messages.size > 3) {
 					const link = await getTranscript(messages);

@@ -4,7 +4,7 @@ module.exports = {
 	name: 'add',
 	description: 'Add someone to a ticket',
 	ephemeral: true,
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	args: true,
 	usage: '<User>',
 	options: require('../../options/user.js'),

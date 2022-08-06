@@ -4,8 +4,8 @@ module.exports = {
 	name: 'forcedelete',
 	description: 'Force delete a ticket',
 	ephemeral: true,
-	permission: 'Administrator',
-	botperm: 'ManageChannels',
+	permissions: ['Administrator'],
+	botPerms: ['ManageChannels'],
 	async execute(message, user, client) {
 		try {
 			// Get the server config

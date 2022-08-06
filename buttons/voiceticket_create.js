@@ -2,7 +2,7 @@ const createVoice = require('../functions/tickets/createVoice.js');
 
 module.exports = {
 	name: 'voiceticket_create',
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	deferReply: true,
 	async execute(interaction, client) {
 		try {

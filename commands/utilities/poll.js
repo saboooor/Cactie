@@ -8,7 +8,6 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Question>',
-	botperm: 'AddReactions',
 	options: require('../../options/question.js'),
 	async execute(message, args, client) {
 		try {

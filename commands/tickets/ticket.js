@@ -6,7 +6,7 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['new'],
 	usage: '[Description]',
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	options: require('../../options/ticket.js'),
 	async execute(message, args, client) {
 		try {

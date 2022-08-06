@@ -5,7 +5,7 @@ module.exports = {
 	description: 'Create a voiceticket',
 	ephemeral: true,
 	aliases: ['voicenew', 'voice'],
-	botperm: 'ManageChannels',
+	botPerms: ['ManageChannels'],
 	async execute(message, args, client) {
 		try {
 			// Check if tickets are disabled
