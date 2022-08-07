@@ -18,7 +18,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 			if (srvconfig.djrole != 'false') return;
 
-			if (interaction.values[0]) player.queue.remove(0, interaction.values[0]);
+			if (parseInt(interaction.values[0])) player.queue.remove(0, interaction.values[0]);
 
 			await player.stop();
 			const song = player.queue.current;
