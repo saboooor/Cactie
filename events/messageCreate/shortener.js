@@ -9,12 +9,12 @@ module.exports = async (client, message) => {
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
+	// Check if message shortener is set and is smaller than the amount of lines in the message
+	if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member)) return;
+
 	// Check if the bot has permission to manage messages
 	const permCheck = checkPerms(['ManageMessages'], message.guild.members.me, message.channel);
 	if (permCheck) return logger.warn(permCheck);
-
-	// Check if message shortener is set and is smaller than the amount of lines in the message
-	if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member)) return;
 
 	// Delete the message and move the message into bin.birdflop.com
 	message.delete().catch(err => logger.error(err.stack));
