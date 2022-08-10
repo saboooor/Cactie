@@ -10,6 +10,7 @@ module.exports = client => {
 	// Create a logger
 	global.logger = createLogger({
 		format: format.combine(
+			format.errors({ stack: true }),
 			format.colorize(),
 			format.timestamp(),
 			format.printf(log => `[${log.timestamp.split('T')[1].split('.')[0]} ${log.level}]: ${log.message}`),
