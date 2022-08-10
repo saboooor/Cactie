@@ -13,7 +13,7 @@ module.exports = client => {
 			format.errors({ stack: true }),
 			format.colorize(),
 			format.timestamp(),
-			format.printf(log => `[${log.timestamp.split('T')[1].split('.')[0]} ${log.level}]: ${log.message}`),
+			format.printf(log => `[${log.timestamp.split('T')[1].split('.')[0]} ${log.level}]: ${log.message}${log.stack ? `\n${log.stack}` : ''}`),
 		),
 		transports: [
 			new transports.Console(),
