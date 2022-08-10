@@ -3,7 +3,7 @@ const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = req
 module.exports = {
 	name: 'create_ticket',
 	botPerms: ['ManageChannels'],
-	deferReply: true,
+	noDefer: true,
 	ephemeral: true,
 	async execute(interaction, client) {
 		try {
