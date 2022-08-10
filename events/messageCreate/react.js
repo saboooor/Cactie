@@ -1,5 +1,7 @@
 module.exports = async (client, message) => {
-	if (message.webhookId || message.author.bot) return;
+	// Check if author is a bot or message is in dm
+	if (!message.guild || message.webhookId || message.author.bot) return;
+
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
