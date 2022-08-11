@@ -1,6 +1,6 @@
 module.exports = async (client, reaction, user) => {
 	if (user.bot) return;
-	const message = await reaction.message.fetch().catch(err => logger.error(err.stack));
+	const message = await reaction.message.fetch().catch(err => logger.error(err));
 	if (!message.channel || message.channel.isDMBased()) return;
 	let emojiId = reaction.emoji.id;
 	if (!emojiId) emojiId = reaction.emoji.name;
@@ -14,6 +14,6 @@ module.exports = async (client, reaction, user) => {
 		const RRMsg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
 		logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
 		await sleep(1000);
-		await RRMsg.delete().catch(err => logger.error(err.stack));
+		await RRMsg.delete().catch(err => logger.error(err));
 	}
 };

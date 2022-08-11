@@ -17,7 +17,7 @@ module.exports = async (client, message) => {
 	if (permCheck) return logger.warn(permCheck);
 
 	// Delete the message and move the message into bin.birdflop.com
-	message.delete().catch(err => logger.error(err.stack));
+	message.delete().catch(err => logger.error(err));
 	const link = await createPaste(message.content, { server: 'https://bin.birdflop.com' });
 	const shortEmbed = new EmbedBuilder()
 		.setColor('Random')

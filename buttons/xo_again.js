@@ -57,7 +57,7 @@ module.exports = {
 		const collector = xomsg.createMessageComponentCollector({ filter, time: 3600000 });
 		collector.on('collect', async btninteraction => {
 			if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) return btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
-			await btninteraction.deferUpdate().catch(err => logger.error(err.stack));
+			await btninteraction.deferUpdate().catch(err => logger.error(err));
 			const btn = btns[btninteraction.customId];
 			if (btn.toJSON().style == ButtonStyle.Secondary) {
 				btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)

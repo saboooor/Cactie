@@ -8,7 +8,7 @@ module.exports = {
 		// Dm all server owners
 		await client.guilds.cache.forEach(async guild => {
 			const owner = await guild.fetchOwner();
-			owner.send(`${owner}\n\n${args.join(' ')}\n\n*You've been sent this message because ${client.user.username} is in ${guild.name} and you're the owner of the server*`).catch(err => logger.error(err.stack));
+			owner.send(`${owner}\n\n${args.join(' ')}\n\n*You've been sent this message because ${client.user.username} is in ${guild.name} and you're the owner of the server*`).catch(err => logger.error(err));
 		});
 
 		// Send confirmation

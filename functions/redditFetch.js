@@ -25,7 +25,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (data.link_flair_text && (data.link_flair_text.toLowerCase().includes('help') || data.link_flair_text.toLowerCase().includes('que'))) return redditFetch(subreddits, message, client, attempts + 1);
 	logger.info(`Image URL: ${data.url}`);
 	if (!data.url.includes('i.redd.it') && !data.url.includes('v.redd.it') && !data.url.includes('i.imgur.com') && !data.url.includes('redgifs.com/watch/')) return redditFetch(subreddits, message, client, attempts + 1);
-	if (data.over_18 && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err.stack, message));
+	if (data.over_18 && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err, message));
 	const timestamp = parseInt(`${data.created}` + '000');
 	const PostEmbed = new EmbedBuilder()
 		.setColor('Random')

@@ -42,7 +42,7 @@ module.exports = async (client, message) => {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
-			setTimeout(() => { prefix.delete().catch(err => logger.error(err.stack)); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
 		}
 
 		// Check if channel is a ticket
@@ -66,7 +66,7 @@ module.exports = async (client, message) => {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
 			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
-			setTimeout(() => { prefix.delete().catch(err => logger.error(err.stack)); }, 10000);
+			setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
 		}
 		return;
 	}
@@ -100,7 +100,7 @@ module.exports = async (client, message) => {
 		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
 		if (now < expirationTime && message.author.id != '249638347306303499') {
 			const timeLeft = (expirationTime - now) / 1000;
-			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => logger.error(err.stack));
+			if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => logger.error(err));
 			const cooldownEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setTitle(messages[random])
@@ -220,6 +220,6 @@ module.exports = async (client, message) => {
 			]);
 		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
-		logger.error(err.stack);
+		logger.error(err);
 	}
 };

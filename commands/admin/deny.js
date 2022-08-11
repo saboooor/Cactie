@@ -33,7 +33,7 @@ module.exports = {
 			if (!DenyEmbed || !DenyEmbed.toJSON().author || !DenyEmbed.toJSON().title.startsWith('Suggestion')) return;
 
 			// Delete command message
-			if (!message.commandName) await message.delete().catch(err => logger.error(err.stack));
+			if (!message.commandName) await message.delete().catch(err => logger.error(err));
 
 			// Remove all reactions and set color to red and denied title
 			suggestMsg.reactions.removeAll();

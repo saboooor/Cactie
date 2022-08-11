@@ -16,5 +16,5 @@ module.exports = async (client, player, track, payload) => {
 	logger.error(payload.error);
 	logger.error(`Failed to load track in ${guild.name}`);
 	await sleep(30000);
-	errorMsg.delete().catch(err => logger.error(err.stack));
+	errorMsg.delete().catch(err => logger.error(err));
 };

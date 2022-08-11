@@ -32,7 +32,7 @@ module.exports = {
 			if (!ImplementEmbed.toJSON().title.startsWith('Suggestion (Approved)')) return client.error('This suggestion has not been approved yet!\nApprove it first with the approve command.', message, true);
 
 			// Delete command message
-			if (!message.commandName) message.delete().catch(err => logger.error(err.stack));
+			if (!message.commandName) message.delete().catch(err => logger.error(err));
 
 			// Set color to blue and implemented title
 			ImplementEmbed.setColor(0x2ECCCC)
