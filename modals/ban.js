@@ -14,7 +14,7 @@ module.exports = {
 
 			// Get member and author and check if role is lower than member's role
 			const author = interaction.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} lower than the user's role!`, interaction, true);
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
 
 			// Get amount of time to ban, if not specified, then permanent
 			const timeField = interaction.fields.getTextInputValue('time');
