@@ -41,7 +41,7 @@ module.exports = {
 			if (srvconfig.suggestthreads) {
 				// Check permissions for thread creation
 				const threadPermCheck = checkPerms(['CreatePublicThreads'], message.guild.members.me, channel);
-				if (threadPermCheck) return client.error(permCheck, message, true);
+				if (threadPermCheck) return client.error(threadPermCheck, message, true);
 
 				// Create thread
 				const thread = await suggestMsg.startThread({

@@ -1,5 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const convertTime = require('./convert.js');
+const checkPerms = require('../checkPerms');
 const getColors = require('get-image-colors');
 const getCover = require('./getCover.js');
 const { play, music, warn, leave, no, srch, refresh, join } = require('../../lang/int/emoji.json');
@@ -9,10 +10,13 @@ module.exports = async function playSongs(requester, message, args, client, lang
 	const { channel } = requester.voice;
 	let player = client.manager.get(message.guild.id);
 	if (!player) {
+		const permCheck = checkPerms(['ViewChannel', 'SendMessages'], message.guild.members.me, channel);
+		const messageChannelPermCheck = checkPerms(['ViewChannel', 'SendMessages'], message.guild.members.me, message.channel);
+		if (messageChannelPermCheck) return client.error(messageChannelPermCheck, message, true);
 		player = client.manager.create({
 			guild: message.guild.id,
 			voiceChannel: channel.id,
-			textChannel: message.guild.features.includes('TEXT_IN_VOICE_ENABLED') ? channel.id : message.channel.id,
+			textChannel: message.guild.features.includes('TEXT_IN_VOICE_ENABLED') && !permCheck ? channel.id : message.channel.id,
 			volume: 50,
 			selfDeafen: true,
 		});
