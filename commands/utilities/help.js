@@ -49,7 +49,7 @@ module.exports = {
 								.setStyle(ButtonStyle.Primary),
 						]);
 					await channel.send({ embeds: [Panel], components: [row] });
-					return message.reply('Support panel created! You may now delete this message');
+					return message.reply({ content: 'Support panel created! You may now delete this message' });
 				}
 				else if (srvconfig.tickets == 'reactions') {
 					Panel.setDescription('React with 🎫 to open a ticket!');

@@ -27,8 +27,8 @@ module.exports = {
 			const type = args[0].toLowerCase();
 			if (type == 'cry') {
 				// Check if frequency is between 0 and 14 and depth between 0 and 1
-				if (args[1] && (args[1] <= 0 || args[1] > 14)) return message.reply('The frequency must be between 0 and 14!');
-				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The depth must be between 0 and 100!');
+				if (args[1] && (args[1] <= 0 || args[1] > 14)) return message.reply({ content: 'The frequency must be between 0 and 14!' });
+				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply({ content: 'The depth must be between 0 and 100!' });
 
 				// Check if args are set
 				if (isNaN(Number(args[1]))) args[1] = 14;
@@ -42,8 +42,8 @@ module.exports = {
 			}
 			else if (type == 'echo') {
 				// Check if delay is over 0 and decay is between 0 and 1
-				if (args[1] && args[1] <= 0) return message.reply('The delay must be higher than 0!');
-				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The decay must be between 0 and 100!');
+				if (args[1] && args[1] <= 0) return message.reply({ content: 'The delay must be higher than 0!' });
+				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply({ content: 'The decay must be between 0 and 100!' });
 
 				// Check if args are set
 				if (isNaN(Number(args[1]))) args[1] = 0.5;
@@ -66,8 +66,8 @@ module.exports = {
 			}
 			else if (type == 'timescale') {
 				// Check if speed or pitch is more than 0
-				if (args[1] <= 0) return message.reply('The speed must be more than 0! (Default: 1)');
-				if (args[2] <= 0) return message.reply('The pitch must be more than 0! (Default: 1)');
+				if (args[1] <= 0) return message.reply({ content: 'The speed must be more than 0! (Default: 1)' });
+				if (args[2] <= 0) return message.reply({ content: 'The pitch must be more than 0! (Default: 1)' });
 
 				if (isNaN(Number(args[1]))) args[1] = 1;
 				if (isNaN(Number(args[2]))) args[2] = 1;
@@ -80,8 +80,8 @@ module.exports = {
 			}
 			else if (type == 'tremolo') {
 				// Check if frequency is between 0 and 14 and depth between 0 and 1
-				if (args[1] && args[1] <= 0) return message.reply('The frequency must be higher than 0!');
-				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply('The must be between 0 and 100!');
+				if (args[1] && args[1] <= 0) return message.reply({ content: 'The frequency must be higher than 0!' });
+				if (args[2] && (args[2] <= 0 || args[2] > 100)) return message.reply({ content: 'The must be between 0 and 100!' });
 
 				// Check if args are set
 				if (isNaN(Number(args[1]))) args[1] = 14;
@@ -107,7 +107,7 @@ module.exports = {
 			}
 			else {
 				// Return error if type is invalid
-				return message.reply('**You must specify a valid effect type!**\nHere\'s a list of the effects:\n```\ncry [Frequency in Hz] [Depth in %]\necho [Delay in seconds] [Decay in %]\npan [Rotation in Hz]\ntimescale <Speed in x> <Pitch in x>\ntremolo [Frequency in Hz] [Depth in %]\nunderwater\n```');
+				return message.reply({ content: '**You must specify a valid effect type!**\nHere\'s a list of the effects:\n```\ncry [Frequency in Hz] [Depth in %]\necho [Delay in seconds] [Decay in %]\npan [Rotation in Hz]\ntimescale <Speed in x> <Pitch in x>\ntremolo [Frequency in Hz] [Depth in %]\nunderwater\n```' });
 			}
 
 			// Send player effects to node

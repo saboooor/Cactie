@@ -49,7 +49,7 @@ module.exports = {
 
 			// Ping the user
 			try {
-				const pingmsg = await interaction.channel.send(`${host}`);
+				const pingmsg = await interaction.channel.send({ content: `${host}` });
 				await pingmsg.delete();
 			}
 			catch (err) {
@@ -107,7 +107,7 @@ module.exports = {
 
 				// Ping the user
 				try {
-					const pingmsg = await interaction.channel.send(`${interaction.member}`);
+					const pingmsg = await interaction.channel.send({ content: `${interaction.member}` });
 					await pingmsg.delete();
 				}
 				catch (err) {

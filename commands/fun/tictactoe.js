@@ -93,7 +93,7 @@ module.exports = {
 
 			// Ping the user
 			try {
-				const pingmsg = await interaction.channel.send(`${turn ? message.member : member}`);
+				const pingmsg = await interaction.channel.send({ content: `${turn ? message.member : member}` });
 				await pingmsg.delete();
 			}
 			catch (err) {

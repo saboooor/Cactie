@@ -60,12 +60,12 @@ module.exports = {
 					.setTitle('Suggestion Created')
 					.setDescription('You may go into detail about your suggestion and have a discussion about it in this thread');
 				await thread.send({ content: `${message.member}`, embeds: [CreateEmbed] });
-				await thread.send(`|| This suggestion's Id is ${suggestMsg.id} ||`);
+				await thread.send({ content: `|| This suggestion's Id is ${suggestMsg.id} ||` });
 			}
 
 			// Send response message if command is slash command or different channel
 			if (channel.id == message.channel.id && message.commandName) return message.reply({ content: '**Suggestion Created!**' });
-			if (channel.id != message.channel.id) return message.reply(`**Suggestion Created at ${channel}!**`);
+			if (channel.id != message.channel.id) return message.reply({ content: `**Suggestion Created at ${channel}!**` });
 		}
 		catch (err) { client.error(err, message); }
 	},

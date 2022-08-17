@@ -38,7 +38,7 @@ module.exports = {
 
 			// Send response message if command is slash command or different channel
 			if (channel.id == message.channel.id && message.commandName) return message.reply({ content: '**Poll Created!**' });
-			if (channel.id != message.channel.id) return message.reply(`**Poll Created at ${channel}!**`);
+			if (channel.id != message.channel.id) return message.reply({ content: `**Poll Created at ${channel}!**` });
 		}
 		catch (err) { client.error(err, message); }
 	},
