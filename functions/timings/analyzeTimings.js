@@ -39,9 +39,8 @@ module.exports = async function analyzeTimings(message, client, args) {
 	const timings_id = url.split('?id=')[1];
 
 	const timings_json = timings_host + 'data.php?id=' + timings_id;
-	const url_raw = url + '&raw=1';
 
-	const response_raw = await fetch(url_raw);
+	const response_raw = await fetch(url + '&raw=1');
 	const request_raw = await response_raw.json();
 	const response_json = await fetch(timings_json);
 	const request = await response_json.json();
