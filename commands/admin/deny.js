@@ -58,7 +58,7 @@ module.exports = {
 				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me);
 				if (permCheck) return client.error(permCheck, message, true);
 				const messages = await thread.messages.fetch({ limit: 100 });
-				if (messages.size > 3) {
+				if (messages.size > 2) {
 					const link = await getTranscript(messages);
 					DenyEmbed.addFields([{ name: 'View Discussion', value: link }]);
 				}

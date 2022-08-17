@@ -12,42 +12,60 @@ module.exports = {
 	options: require('../../options/suggest.js'),
 	async execute(message, args, client) {
 		try {
+			// Get server config
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+
+			// Get channel to send poll in
 			let channel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
 			if (!channel) channel = message.channel;
-			const permCheck = checkPerms(['ViewChannel', 'SendMessages'], message.guild.members.me, channel);
+
+			// Check permissions in that channel
+			const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions'], message.guild.members.me, channel);
 			if (permCheck) return client.error(permCheck, message, true);
+
+			// Create suggestion embed
 			const suggestion = args.join(' ');
 			const SuggestEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
+				.setURL(`https://a${message.member.user.id}a.pup`)
 				.setAuthor({ name: `${message.member.displayName} (${message.member.user.tag})`, iconURL: message.member.user.avatarURL() })
 				.setTitle('Suggestion')
-				.setDescription(suggestion)
-				.setURL(`https://a${message.member.user.id}a.pup`);
+				.setDescription(suggestion);
+
+			// Send suggestion message and react
 			const suggestMsg = await channel.send({ embeds: [SuggestEmbed] });
 			await suggestMsg.react(upvote);
 			await suggestMsg.react(downvote);
+
+			// Create thread if suggestion threads are enabled
 			if (srvconfig.suggestthreads) {
+				// Check permissions for thread creation
 				const threadPermCheck = checkPerms(['CreatePublicThreads'], message.guild.members.me, channel);
 				if (threadPermCheck) return client.error(permCheck, message, true);
+
+				// Create thread
 				const thread = await suggestMsg.startThread({
 					name: `Suggestion by ${message.member.displayName}`,
 					autoArchiveDuration: 1440,
 					reason: suggestion,
 				});
+
+				// Update shitty URL database to show thread id in array
 				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
-				suggestMsg.edit({ embeds: [SuggestEmbed] });
+				await suggestMsg.edit({ embeds: [SuggestEmbed] });
+
+				// Create embed for thread
 				const CreateEmbed = new EmbedBuilder()
 					.setColor(0x2f3136)
 					.setTitle('Suggestion Created')
-					.setDescription('You may go in detail about your suggestion or have a discussion about it in this thread')
-					.setFooter({ text: `This suggestion's Id is ${suggestMsg.id}` });
-				await sleep(1000);
+					.setDescription('You may go into detail about your suggestion and have a discussion about it in this thread');
 				await thread.send({ content: `${message.member}`, embeds: [CreateEmbed] });
+				await thread.send(`|| This suggestion's Id is ${suggestMsg.id} ||`);
 			}
-			const created = await message.reply({ content: `**Suggestion Created at ${channel}!**` });
-			await sleep(5000);
-			if (!message.commandName) created.delete().catch(err => logger.error(err));
+
+			// Send response message if command is slash command or different channel
+			if (channel.id == message.channel.id && message.commandName) return message.reply({ content: '**Suggestion Created!**' });
+			if (channel.id != message.channel.id) return message.reply(`**Suggestion Created at ${channel}!**`);
 		}
 		catch (err) { client.error(err, message); }
 	},
