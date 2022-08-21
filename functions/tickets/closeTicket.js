@@ -38,29 +38,33 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	logger.info(`Created transcript of ${channel.name}: ${link}`);
 
 	// Create embed for DMs
-	const CloseDMEmbed = new EmbedBuilder()
+	const CloseEmbed = new EmbedBuilder()
 		.setColor('Random')
 		.setTitle(`Closed ${channel.name}`)
 		.addFields([
 			{ name: '**Transcript**', value: `${link}` },
 			{ name: '**Closed by**', value: `${member}` },
 		]);
-	if (ticketData.users.length) CloseDMEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}` }]);
+	if (ticketData.users.length) CloseEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}` }]);
 
 	// Get all the users and get rid of their permissions
 	for (const userid of ticketData.users) {
 		await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
 		const ticketmember = await member.guild.members.fetch(userid).catch(() => { return null; });
 		if (!ticketmember) continue;
-		await ticketmember.send({ embeds: [CloseDMEmbed] }).catch(err => logger.warn(err));
+		await ticketmember.send({ embeds: [CloseEmbed] }).catch(err => logger.warn(err));
 	}
 
-	// Create embed for log
-	const CloseEmbed = new EmbedBuilder()
-		.setColor(0xFF6400)
-		.setDescription(`Ticket Closed by ${member}`);
+	// Get the ticket log channel
+	const logchannel = await member.guild.channels.fetch(srvconfig.ticketlogchannel).catch(() => { return null; });
 
-	// If the ticket mode is set to buttons, add the buttons, if not, don't
+	// Check if ticket log channel is set in settings and send embed to ticket log channel
+	if (logchannel) await logchannel.send({ embeds: [CloseEmbed] });
+
+	CloseEmbed.addFields([{ name: '**Notice**', value: 'Any messages after this will not be transcripted unless the ticket is re-opened.' }]);
+
+	// If the ticket mode is set to buttons, add the buttons
+	// Add reaction panel if ticket mode is set to reactions
 	if (srvconfig.tickets == 'buttons') {
 		const row = new ActionRowBuilder()
 			.addComponents([
@@ -78,13 +82,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 		await channel.send({ embeds: [CloseEmbed], components: [row] });
 	}
 	else {
-		await channel.send({ embeds: [CloseEmbed] });
-	}
-
-	// Add reaction panel if ticket mode is set to reactions
-	if (srvconfig.tickets == 'reactions') {
-		CloseEmbed.setColor(0x2f3136)
-			.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
+		CloseEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
 		const Panel = await channel.send({ embeds: [CloseEmbed] });
 		await Panel.react('🔓');
 		await Panel.react('⛔');
