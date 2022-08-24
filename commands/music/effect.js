@@ -47,7 +47,7 @@ module.exports = {
 
 				// Check if args are set
 				if (isNaN(Number(args[1]))) args[1] = 0.5;
-				if (isNaN(Number(args[2]))) args[2] = 20;
+				if (isNaN(Number(args[2]))) args[2] = 0.2;
 
 				// Set effects
 				player.effects.echo = {
