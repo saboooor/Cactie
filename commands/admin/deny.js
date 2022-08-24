@@ -59,6 +59,7 @@ module.exports = {
 				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me);
 				if (permCheck) return client.error(permCheck, message, true);
 				const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
+				messagechunks.unshift([suggestMsg]);
 				const allmessages = new Collection().concat(...messagechunks);
 				if (allmessages.size > 2) {
 					const link = await getTranscript(allmessages);
