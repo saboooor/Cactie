@@ -10,7 +10,6 @@ module.exports = async (client, oldState, newState) => {
 	const player = client.manager.get(guild.id);
 	if (oldState.member.id == client.user.id && !newState.channelId && player) player.destroy();
 	if (!player || player.state !== 'CONNECTED' || (player.voiceChannel != oldState.channelId && player.voiceChannel != newState.channelId)) return;
-	const textChannel = guild.channels.cache.get(player.textChannel);
 	const voiceChannel = guild.channels.cache.get(player.voiceChannel);
 	const song = player.queue.current;
 	if (!song) return;
@@ -29,6 +28,7 @@ module.exports = async (client, oldState, newState) => {
 	const members = voiceChannel.members.filter(member => !member.user.bot);
 	if (members.size == 0) playerpause = true;
 	else if (!oldState.channelId && newState.channelId && members.size == 1) playerpause = false;
+	else if (oldState.channeld && newState.channelId && oldState.channeld != newState.channelId) player.voiceChannel = newState.channelId;
 	else return;
 
 	// Pause and log
@@ -49,7 +49,6 @@ module.exports = async (client, oldState, newState) => {
 
 	// Send embed as now playing message
 	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => logger.warn(err));
-	else player.setNowplayingMessage(await textChannel.send({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }));
 
 	// Set the player timeout
 	return player.timeout = playerpause ? Date.now() + 300000 : null;
