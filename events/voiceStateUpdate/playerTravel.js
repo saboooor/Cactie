@@ -33,7 +33,7 @@ module.exports = async (client, oldState, newState) => {
 
 	// Pause and log
 	player.pause(playerpause);
-	logger.info(playerpause ? `Paused player in ${guild.name} because of empty channel` : `Resumed player in ${guild.name} because of user join`);
+	logger.info(`${playerpause ? 'Paused' : 'Resumed'} player in ${guild.name} because of ${playerpause ? 'empty channel' : 'user join'}`);
 
 	// Create pause/resume embeds
 	const PauseEmbed = new EmbedBuilder()
@@ -49,7 +49,7 @@ module.exports = async (client, oldState, newState) => {
 
 	// Send embed as now playing message
 	if (player.nowPlayingMessage) player.nowPlayingMessage.edit({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }).catch(err => logger.warn(err));
-	else textChannel.send({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] });
+	else player.setNowplayingMessage(await textChannel.send({ embeds: [playerpause ? PauseEmbed : ResumeEmbed] }));
 
 	// Set the player timeout
 	return player.timeout = playerpause ? Date.now() + 300000 : null;
