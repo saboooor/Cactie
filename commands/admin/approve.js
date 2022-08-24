@@ -1,6 +1,7 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Collection } = require('discord.js');
 const { yes } = require('../../lang/int/emoji.json');
 const getTranscript = require('../../functions/getTranscript.js');
+const getMessages = require('../../functions/getMessages.js');
 const checkPerms = require('../../functions/checkPerms');
 
 module.exports = {
@@ -57,9 +58,10 @@ module.exports = {
 			if (thread) {
 				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me);
 				if (permCheck) return client.error(permCheck, message, true);
-				const messages = await thread.messages.fetch({ limit: 100 });
-				if (messages.size > 2) {
-					const link = await getTranscript(messages);
+				const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
+				const allmessages = new Collection().concat(...messagechunks);
+				if (allmessages.size > 2) {
+					const link = await getTranscript(allmessages);
 					ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
 				}
 				thread.delete();

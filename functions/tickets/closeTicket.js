@@ -1,5 +1,6 @@
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
+const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
+const getMessages = require('../../functions/getMessages.js');
 
 module.exports = async function closeTicket(client, srvconfig, member, channel) {
 	// Check if channel is thread and set the channel to the parent channel
@@ -33,8 +34,9 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	if (ticketData.resolved != 'false') await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
 
 	// Create a transcript of the ticket
-	const messages = await channel.messages.fetch({ limit: 100 });
-	const link = await getTranscript(messages);
+	const messagechunks = await getMessages(channel, 'infinite').catch(err => { logger.error(err); });
+	const allmessages = new Collection().concat(...messagechunks);
+	const link = await getTranscript(allmessages);
 	logger.info(`Created transcript of ${channel.name}: ${link}`);
 
 	// Create embed for DMs
