@@ -13,7 +13,7 @@ module.exports = {
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 		if (!member) return client.error(lang.invalidmember, message, true);
 		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
-		const emoji = {
+		if (member.bot) return client.error('Bots aren\'t fun to play with, yet. :)');		const emoji = {
 			rock: ['🪨', 'Rock', '🪨 Rock'],
 			paper: ['📄', 'Paper', '📄 Paper'],
 			scissors: ['✂️', 'Scissors', '✂️ Scissors'],
