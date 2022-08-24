@@ -5,6 +5,9 @@ module.exports = async (client, interaction) => {
 	// Check if interaction is button
 	if (!interaction.isButton() && !interaction.isSelectMenu()) return;
 
+	// Log every button interaction
+	logger.info(`${interaction.user.tag} clicked button with id: ${interaction.customId ?? interaction.value}, in ${interaction.guild.name}`);
+
 	// Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
 	const button = client.buttons.get(interaction.customId ?? interaction.value);
 	if (!button) return;
@@ -33,7 +36,7 @@ module.exports = async (client, interaction) => {
 	const player = client.manager.get(interaction.guild.id);
 
 	// Log
-	logger.info(`${interaction.user.tag} clicked button: ${button.name}, in ${interaction.guild.name}`);
+	logger.info(`${interaction.user.tag} clicked long-term button: ${button.name}, in ${interaction.guild.name}`);
 
 	// Check if player exists and command needs it
 	if (button.player && !player) return client.error('I\'m not in a voice channel!\nPlay some music before using this button!', interaction, true);
