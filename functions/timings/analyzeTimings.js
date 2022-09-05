@@ -92,7 +92,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/analysis_config/server.properties.yml', 'utf8')),
 			bukkit: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/bukkit.yml', 'utf8')),
 			spigot: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/spigot.yml', 'utf8')),
-			paper: await YAML.parse(fs.readFileSync(`./lang/int/analysis_config/timings/paper-v${paper._version ? 28 : 27}.yml`, 'utf8')),
+			paper: await YAML.parse(fs.readFileSync(`./lang/int/analysis_config/timings/paper-v${paper && paper._version ? 28 : 27}.yml`, 'utf8')),
 			pufferfish: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/timings/pufferfish.yml', 'utf8')),
 			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/purpur.yml', 'utf8')),
 		},
