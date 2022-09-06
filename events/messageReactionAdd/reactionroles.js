@@ -4,8 +4,11 @@ module.exports = async (client, reaction, user) => {
 	// Check if author is a bot or guild is undefined
 	if (user.bot || !reaction.message.guildId) return;
 
+	// Get the guild of the reaction
+	const guild = await client.guilds.fetch(reaction.message.guildId);
+
 	// Check if the bot has permission to manage messages
-	const permCheck = checkPerms(['ReadMessageHistory'], message.guild.members.me, message.channel);
+	const permCheck = checkPerms(['ReadMessageHistory'], guild.members.me, reaction.message.channelId);
 	if (permCheck) return logger.warn(permCheck);
 
 	// Fetch the reaction's message

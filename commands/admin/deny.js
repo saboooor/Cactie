@@ -56,7 +56,7 @@ module.exports = {
 
 			// Delete thread if exists with transcript
 			if (thread) {
-				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me);
+				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me, thread.parent.id);
 				if (permCheck) return client.error(permCheck, message, true);
 				const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
 				messagechunks.unshift([suggestMsg]);
