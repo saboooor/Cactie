@@ -76,7 +76,7 @@ module.exports = {
 				await client.query(`DELETE FROM reactionroles WHERE messageId = '${rr.messageId}' AND emojiId = '${rr.emojiId}'`);
 
 				// Get the reaction role's emoji
-				const emoji = await client.emojis.fetch(rr.emojiId).catch(() => { return rr.emojiId; });
+				const emoji = await client.emojis.cache.get(rr.emojiId).catch(() => { return rr.emojiId; });
 
 				// Set the description and add a field of the reaction role that's been removed
 				RREmbed.setDescription('Reaction Role removed!\nThe ID of other possible reactions have also changed.\nView current reaction roles with `/reactionroles get`')
@@ -86,7 +86,7 @@ module.exports = {
 				// Add reaction roles to embed
 				for (const reactionrole in reactionroles) {
 					// fetch emoji
-					const emoji = await client.emojis.fetch(reactionrole.emojiId).catch(() => { return reactionrole.emojiId; });
+					const emoji = await client.emojis.cache.get(reactionrole.emojiId).catch(() => { return reactionrole.emojiId; });
 
 					// add reaction role to embed
 					RREmbed.addFields([{ name: `#${reactionroles.indexOf(reactionrole)}`, value: `${emoji} **<@&${reactionrole.roleId}>**\n[Go to message](https://discord.com/channels/${reactionrole.guildId}/${reactionrole.channelId}/${reactionrole.messageId})\n\u200b`, inline: true }]);
