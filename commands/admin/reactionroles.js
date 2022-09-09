@@ -84,12 +84,12 @@ module.exports = {
 			}
 			else {
 				// Add reaction roles to embed
-				for (const reactionrole in reactionroles) {
+				for (const i in reactionroles) {
 					// fetch emoji
-					const emoji = client.emojis.cache.get(reactionrole.emojiId) ?? reactionrole.emojiId;
+					const emoji = client.emojis.cache.get(reactionroles[i].emojiId) ?? reactionroles[i].emojiId;
 
 					// add reaction role to embed
-					RREmbed.addFields([{ name: `#${reactionroles.indexOf(reactionrole)}`, value: `${emoji} **<@&${reactionrole.roleId}>**\n[Go to message](https://discord.com/channels/${reactionrole.guildId}/${reactionrole.channelId}/${reactionrole.messageId})\n\u200b`, inline: true }]);
+					RREmbed.addFields([{ name: `${i}.`, value: `${emoji} **<@&${reactionroles[i].roleId}>**\n[Go to message](https://discord.com/channels/${reactionroles[i].guildId}/${reactionroles[i].channelId}/${reactionroles[i].messageId})\n\u200b`, inline: true }]);
 				}
 
 				// check if there are any reaction roles set
