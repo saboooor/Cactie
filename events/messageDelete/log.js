@@ -18,7 +18,7 @@ module.exports = async (client, message) => {
 		if (message.content) logEmbed.addFields([{ name: 'Content', value: `${message.content}` }]);
 		if (message.embeds.length) {
 			embeds = [logEmbed, ...message.embeds];
-			logEmbed.addFields([{ name: 'Embeds', value: `${message.embeds.length} Below` }])
+			logEmbed.addFields([{ name: 'Embeds', value: `${message.embeds.length} Below` }]);
 		}
 		logchannel.send({ embeds }).catch(err => logger.error(err));
 	}
