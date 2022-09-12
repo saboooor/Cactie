@@ -11,12 +11,12 @@ module.exports = async (client, message) => {
 		if (!logchannel) return;
 		const logEmbed = new EmbedBuilder()
 			.setColor(0x2f3136)
-			.setAuthor({ name: message.author.tag })
+			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() })
 			.setTitle(`<:no:${no}> Message deleted`)
-			.setFields([
-				{ name: 'Channel', value: `${message.channel}` },
-				{ name: 'Content', value: `${message.content}` },
-			]);
-		logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
+			.setFields([{ name: 'Channel', value: `${message.channel}` }]);
+		let embeds = [logEmbed];
+		if (message.content) logEmbed.addFields([{ name: 'Content', value: `${message.content}` }]);
+		if (message.embeds.length) embeds = [logEmbed, ...message.embeds];
+		logchannel.send({ embeds }).catch(err => logger.error(err));
 	}
 };
