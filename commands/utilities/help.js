@@ -37,6 +37,8 @@ module.exports = {
 				let channel;
 				if (args[1]) channel = message.guild.channels.cache.get(args[1]);
 				if (!channel) channel = message.channel;
+				const permCheck2 = checkPerms(['SendMessages', 'ViewMessageHistory'], message.guild.members.me, channel.id);
+				if (permCheck2) return client.error(permCheck2, message, true);
 
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
