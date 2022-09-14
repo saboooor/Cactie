@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { refresh, right } = require('../../lang/int/emoji.json');
+const { refresh } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, oldChannel, newChannel) => {
 	// Get current settings for the guild
@@ -14,9 +14,9 @@ module.exports = async (client, oldChannel, newChannel) => {
 		.setAuthor({ name: `# ${newChannel.name}` })
 		.setTitle(`<:refresh:${refresh}> Channel Updated`);
 
-	if (oldChannel.name != newChannel.name) logEmbed.addFields([{ name: 'Name', value: `${oldChannel.name} <:right:${right}> ${newChannel.name}`, inline: true }]);
-	if (oldChannel.parent.id != newChannel.parent.id) logEmbed.addFields([{ name: 'Category', value: `${oldChannel.parent.name} <:right:${right}> ${newChannel.parent.name}`, inline: true }]);
-	if (oldChannel.topic != newChannel.topic) logEmbed.addFields([{ name: 'Category', value: `${oldChannel.topic} <:right:${right}> ${newChannel.topic}`, inline: true }]);
+	if (oldChannel.name != newChannel.name) logEmbed.addFields([{ name: 'Name', value: `**Old:** ${oldChannel.name}\n**New:** ${newChannel.name}`, inline: true }]);
+	if (oldChannel.parent.id != newChannel.parent.id) logEmbed.addFields([{ name: 'Category', value: `**Old:** ${oldChannel.parent.name}\n**New:** ${newChannel.parent.name}`, inline: true }]);
+	if (oldChannel.topic != newChannel.topic) logEmbed.addFields([{ name: 'Topic', value: `**Old:** ${oldChannel.topic}\n**New:** ${newChannel.topic}`, inline: true }]);
 
 	const row = new ActionRowBuilder()
 		.addComponents([
