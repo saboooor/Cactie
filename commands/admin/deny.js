@@ -15,15 +15,37 @@ module.exports = {
 	options: require('../../options/suggestresponse.js'),
 	async execute(message, args, client) {
 		try {
-			// Fetch the message
+			// Get the messageId
 			const messageId = args.shift();
-			let suggestMsg = !isNaN(messageId) ? await message.channel.messages.fetch(messageId).catch(() => { return null; }) : null;
 
-			// Check if the message exists, if not, check in suggestionchannel, if not, check if it's in parent, if not, return
+			// Fetch the message with the messageId
+			let suggestChannel = message.channel;
+			const permCheck = checkPerms(['ReadMessageHistory'], message.guild.members.me, suggestChannel);
+			if (permCheck) return client.error(permCheck, message, true);
+			let suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
+
+			// Get server config
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
-			const suggestChannel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
-			if (!suggestMsg) suggestMsg = !isNaN(messageId) ? await suggestChannel.messages.fetch(messageId).catch(() => { return null; }) : null;
-			if (!suggestMsg && message.channel.parent && message.channel.parent.type == ChannelType.GuildText) suggestMsg = !isNaN(messageId) ? await message.channel.parent.messages.fetch(messageId).catch(() => { return null; }) : null;
+
+			// If the suggestmsg is null, try checking for the message in the suggestionchannel if set
+			if (!suggestMsg) {
+				suggestChannel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
+				if (suggestChannel) {
+					const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild.members.me, suggestChannel);
+					if (permCheck2) return client.error(permCheck2, message, true);
+					suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
+				}
+			}
+
+			// If the suggestmsg is still null, try checking for the message in the thread's channel
+			if (!suggestMsg && message.channel.parent && message.channel.parent.type == ChannelType.GuildText) {
+				suggestChannel = message.channel.parent;
+				const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild.members.me, suggestChannel);
+				if (permCheck2) return client.error(permCheck2, message, true);
+				suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
+			}
+
+			// If the suggestmsg is still null, throw an error
 			if (!suggestMsg) return client.error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
 
 			// Check if message was sent by the bot
@@ -37,6 +59,8 @@ module.exports = {
 			if (!message.commandName) await message.delete().catch(err => logger.error(err));
 
 			// Remove all reactions and set color to red and denied title
+			const permCheck2 = checkPerms(['ManageMessages'], message.guild.members.me, suggestChannel);
+			if (permCheck2) return client.error(permCheck2, message, true);
 			suggestMsg.reactions.removeAll();
 			DenyEmbed.setColor(0xE74C3C)
 				.setTitle('Suggestion (Denied)')
@@ -57,8 +81,8 @@ module.exports = {
 
 			// Delete thread if exists with transcript
 			if (thread) {
-				const permCheck = checkPerms(['ManageThreads'], message.guild.members.me, thread.parent.id);
-				if (permCheck) return client.error(permCheck, message, true);
+				const permCheck3 = checkPerms(['ManageThreads'], message.guild.members.me, suggestChannel);
+				if (permCheck3) return client.error(permCheck3, message, true);
 				const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
 				messagechunks.unshift(new Collection().set(`${suggestMsg.id}`, suggestMsg));
 				const allmessages = new Collection().concat(...messagechunks);
@@ -97,8 +121,8 @@ module.exports = {
 			if (message.commandName) message.reply({ content: `<:no:${no}> **Suggestion Denied!**` }).catch(() => { return null; });
 
 			// Check if log channel exists and send message
-			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
-			if (logchannel) {
+			const logChannel = message.guild.channels.cache.get(srvconfig.logchannel);
+			if (logChannel) {
 				DenyEmbed.setTitle(`${message.member.user.tag} denied a suggestion`).setFields([]);
 				if (args.join(' ')) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
 				const msglink = new ActionRowBuilder()
@@ -107,7 +131,7 @@ module.exports = {
 						.setLabel('Go to Message')
 						.setStyle(ButtonStyle.Link),
 					]);
-				logchannel.send({ embeds: [DenyEmbed], components: [msglink] });
+				logChannel.send({ embeds: [DenyEmbed], components: [msglink] });
 			}
 		}
 		catch (err) { client.error(err, message); }

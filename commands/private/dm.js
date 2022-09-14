@@ -7,7 +7,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if user is in Cactie Support guild and has permission to use the command
-			const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.user.id);
+			const member = client.guilds.cache.get('811354612547190794').members.cache.get(message.member.id);
 			if (member ? !member.roles.cache.has('849452673156513813') : true) return;
 
 			// Get user and check if they exist

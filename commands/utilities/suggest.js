@@ -27,7 +27,7 @@ module.exports = {
 			const suggestion = args.join(' ');
 			const SuggestEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
-				.setURL(`https://a${message.member.user.id}a.pup`)
+				.setURL(`https://a${message.member.id}a.cactie`)
 				.setAuthor({ name: `${message.member.displayName} (${message.member.user.tag})`, iconURL: message.member.user.avatarURL() })
 				.setTitle('Suggestion')
 				.setDescription(suggestion);
@@ -51,7 +51,7 @@ module.exports = {
 				});
 
 				// Update shitty URL database to show thread id in array
-				SuggestEmbed.setURL(`https://a${message.member.user.id}a${thread.id}a.pup`);
+				SuggestEmbed.setURL(`https://a${message.member.id}a${thread.id}a.cactie`);
 				await suggestMsg.edit({ embeds: [SuggestEmbed] });
 
 				// Create embed for thread

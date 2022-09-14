@@ -37,7 +37,7 @@ module.exports = {
 				let channel;
 				if (args[1]) channel = message.guild.channels.cache.get(args[1]);
 				if (!channel) channel = message.channel;
-				const permCheck2 = checkPerms(['SendMessages', 'ViewMessageHistory'], message.guild.members.me, channel.id);
+				const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, channel);
 				if (permCheck2) return client.error(permCheck2, message, true);
 
 				if (srvconfig.tickets == 'buttons') {
