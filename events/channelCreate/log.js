@@ -14,8 +14,7 @@ module.exports = async (client, channel) => {
 		.setAuthor({ name: `# ${channel.name}` })
 		.setTitle(`<:yes:${yes}> Channel created`);
 
-	const parentChannel = channel.guild.channels.cache.get(channel.parentId);
-	if (parentChannel) logEmbed.addFields([{ name: 'Category', value: `${parentChannel}`, inline: true }]);
+	if (channel.parent) logEmbed.addFields([{ name: 'Category', value: `${channel.parent}`, inline: true }]);
 	if (channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
 
 	const row = new ActionRowBuilder()
