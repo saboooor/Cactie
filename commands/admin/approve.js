@@ -40,7 +40,8 @@ module.exports = {
 			suggestMsg.reactions.removeAll();
 			ApproveEmbed.setColor(0x2ECC71)
 				.setTitle('Suggestion (Approved)')
-				.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
+				.setFooter({ text: `Approved by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() })
+				.setTimestamp();
 
 			// Fetch result / reaction emojis and add field if not already added
 			const emojis = [];

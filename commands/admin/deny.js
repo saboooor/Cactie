@@ -40,7 +40,8 @@ module.exports = {
 			suggestMsg.reactions.removeAll();
 			DenyEmbed.setColor(0xE74C3C)
 				.setTitle('Suggestion (Denied)')
-				.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
+				.setFooter({ text: `Denied by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() })
+				.setTimestamp();
 
 			// Fetch result / reaction emojis and add field if not already added
 			const emojis = [];
