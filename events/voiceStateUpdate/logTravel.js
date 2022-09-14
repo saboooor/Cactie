@@ -20,21 +20,21 @@ module.exports = async (client, oldState, newState) => {
 	// Check if the user joined
 	if (!oldState.channelId && newState.channelId) {
 		// Check if log is enabled and set title accordingly
-		if (!['voicejoin', 'voice', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+		if (!['voicejoin', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 		logEmbed.setTitle(`<:in:${join}> Member joined voice channel`)
 			.addFields([{ name: 'Channel', value: `${newState.channel}`, inline: true }]);
 	}
 	// Check if the user left
 	else if (oldState.channelId && !newState.channelId) {
 		// Check if log is enabled and set title accordingly
-		if (!['voiceleave', 'voice', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+		if (!['voiceleave', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 		logEmbed.setTitle(`<:out:${leave}> Member left voice channel`)
 			.addFields([{ name: 'Channel', value: `${oldState.channel}`, inline: true }]);
 	}
 	// Check if user moved
 	else if (oldState.channelId != newState.channelId) {
 		// Check if log is enabled and set title accordingly
-		if (!['voicemove', 'voice', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+		if (!['voicemove', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 		logEmbed.setTitle(`<:right:${right}> Member moved voice channels`)
 			.addFields([{ name: 'Channels', value: `${oldState.channel} <:right:${right}> ${newState.channel}`, inline: true }]);
 	}

@@ -9,7 +9,7 @@ module.exports = async (client, oldState, newState) => {
 	const srvconfig = await client.getData('settings', 'guildId', newState.guild.id);
 
 	// Check if log is enabled
-	if (!['voicemute', 'voice', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+	if (!['voicemute', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 	const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
 

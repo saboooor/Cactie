@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
 	// Check if log is enabled and channel is valid
-	if (!['messagedelete', 'message', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+	if (!['messagedelete', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 	const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
 

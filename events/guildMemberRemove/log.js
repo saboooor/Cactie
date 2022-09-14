@@ -6,7 +6,7 @@ module.exports = async (client, member) => {
 	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
 
 	// Check if log is enabled and send log
-	if (!['memberleave', 'member', 'other', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+	if (!['memberleave', 'member', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 	const logchannel = member.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
 	const logEmbed = new EmbedBuilder()
