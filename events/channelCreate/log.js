@@ -12,11 +12,12 @@ module.exports = async (client, channel) => {
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setAuthor({ name: `# ${channel.name}` })
-		.setTitle(`<:yes:${yes}> Channel created`)
-		.setFields([
-			{ name: 'Category', value: `${channel.guild.channels.cache.get(channel.parentId) ? channel.guild.channels.cache.get(channel.parentId).name : 'None'}` },
-			{ name: 'Topic', value: `${channel.topic ?? 'None'}` },
-		]);
+		.setTitle(`<:yes:${yes}> Channel created`);
+
+	const parentChannel = channel.guild.channels.cache.get(channel.parentId);
+	if (parentChannel) logEmbed.addFields([{ name: 'Category', value: `${parentChannel}`, inline: true }]);
+	if (channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
+
 	const row = new ActionRowBuilder()
 		.addComponents([
 			new ButtonBuilder()
