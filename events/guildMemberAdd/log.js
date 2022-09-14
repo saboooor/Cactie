@@ -14,8 +14,8 @@ module.exports = async (client, member) => {
 			.setAuthor({ name: member.user.tag, iconURL: member.user.avatarURL() })
 			.setTitle(`<:in:${join}> Member joined`)
 			.setFields([
-				{ name: 'User', value: `${member}` },
-				{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` },
+				{ name: 'User', value: `${member}`, inline: true },
+				{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`, inline: true },
 			]);
 		logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 	}
