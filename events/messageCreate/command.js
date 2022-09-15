@@ -5,7 +5,7 @@ module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
 	if (message.webhookId || message.author.bot) return;
 	const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, message.channel);
-	if (initialPermCheck) return logger.warn(initialPermCheck);
+	if (initialPermCheck) return;
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
