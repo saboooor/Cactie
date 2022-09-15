@@ -11,7 +11,7 @@
   },
   "main": "index.js",
   "author": "Saboor Bilal",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@phamleduy04/erela.js": "^2.3.30",
     "body-parser": "^1.20.0",
