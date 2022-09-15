@@ -14,9 +14,17 @@ module.exports = async (client, oldChannel, newChannel) => {
 		.setAuthor({ name: `# ${newChannel.name}` })
 		.setTitle(`<:refresh:${refresh}> Channel Updated`);
 
-	if (oldChannel.name != newChannel.name) logEmbed.addFields([{ name: 'Name', value: `**Old:** ${oldChannel.name}\n**New:** ${newChannel.name}`, inline: true }]);
-	if (oldChannel.parent.id != newChannel.parent.id) logEmbed.addFields([{ name: 'Category', value: `**Old:** ${oldChannel.parent.name}\n**New:** ${newChannel.parent.name}`, inline: true }]);
-	if (oldChannel.topic != newChannel.topic) logEmbed.addFields([{ name: 'Topic', value: `**Old:** ${oldChannel.topic}\n**New:** ${newChannel.topic}`, inline: true }]);
+	if (oldChannel.name != newChannel.name) logEmbed.addFields([{ name: 'Name', value: `**Old:**\n${oldChannel.name}\n**New:**\n${newChannel.name}`, inline: true }]);
+	if (oldChannel.parent.id != newChannel.parent.id) logEmbed.addFields([{ name: 'Category', value: `**Old:**\n${oldChannel.parent.name ?? 'None'}\n**New:**\n${newChannel.parent.name ?? 'None'}`, inline: true }]);
+	if (oldChannel.topic != newChannel.topic) logEmbed.addFields([{ name: 'Topic', value: `**Old:**\n${oldChannel.topic ?? 'None'}\n**New:**\n${newChannel.topic ?? 'None'}`, inline: true }]);
+	if (oldChannel.nsfw != newChannel.nsfw) logEmbed.addFields([{ name: 'NSFW', value: `${newChannel.nsfw}`, inline: true }]);
+
+	if (!logEmbed.toJSON().fields) {
+		console.log('The channel updated but idk what!');
+		console.log(oldChannel);
+		console.log(newChannel);
+		return;
+	}
 
 	const row = new ActionRowBuilder()
 		.addComponents([
