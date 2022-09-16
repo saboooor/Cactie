@@ -40,7 +40,7 @@ module.exports = async (client, reaction, user) => {
 			await member.roles.add(role);
 
 			// Send message and log
-			msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${user}**` });
+			if (reactionrole.silent != 'false') msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${user}**` });
 			logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
 		}
 		else {
@@ -48,7 +48,7 @@ module.exports = async (client, reaction, user) => {
 			await member.roles.remove(role);
 
 			// Send message and log
-			msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
+			if (reactionrole.silent != 'false') msg = await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` });
 			logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
 		}
 	}
@@ -57,9 +57,12 @@ module.exports = async (client, reaction, user) => {
 		await member.roles.add(role);
 
 		// Send message and log
-		msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${user}**` });
+		if (reactionrole.silent != 'false') msg = await message.channel.send({ content: `✅ **Added ${role.name} Role to ${user}**` });
 		logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
 	}
+
+	// Check if message was sent
+	if (!msg) return;
 
 	// Delete the message after 5 seconds
 	await sleep(5000);
