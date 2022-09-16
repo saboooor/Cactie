@@ -9,7 +9,7 @@ module.exports = async (client, reaction, user) => {
 
 	// Check if the bot has permission to manage messages
 	const permCheck = checkPerms(['ReadMessageHistory'], guild.members.me, reaction.message.channelId);
-	if (permCheck) return logger.warn(permCheck);
+	if (permCheck) return;
 
 	// Fetch the reaction's message
 	const message = await reaction.message.fetch().catch(err => logger.error(err));

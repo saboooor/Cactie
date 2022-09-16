@@ -1,3 +1,4 @@
+const checkPerms = require('../../functions/checkPerms');
 const createTicket = require('../../functions/tickets/createTicket.js');
 const closeTicket = require('../../functions/tickets/closeTicket.js');
 const deleteTicket = require('../../functions/tickets/deleteTicket.js');
@@ -5,21 +6,28 @@ const reopenTicket = require('../../functions/tickets/reopenTicket.js');
 const createVoice = require('../../functions/tickets/createVoice.js');
 
 module.exports = async (client, reaction, user) => {
-	// Check if the reaction was sent by a bot
-	if (user.bot) return;
+	// Check if author is a bot or guild is undefined
+	if (user.bot || !reaction.message.guildId) return;
 
-	// Get the reaction's message and check if it's in a guild
+	// Get the guild of the reaction
+	const guild = await client.guilds.fetch(reaction.message.guildId);
+
+	// Check if the bot has permission to manage messages
+	const permCheck = checkPerms(['ReadMessageHistory'], guild.members.me, reaction.message.channelId);
+	if (permCheck) return;
+
+	// Fetch the reaction's message
 	const message = await reaction.message.fetch().catch(err => logger.error(err));
-	if (!message.guild) return;
-
-	// Get the member
-	const member = await message.guild.members.fetch(user.id).catch(err => logger.error(err));
 
 	// Get the reaction's emoji
 	const emojiId = reaction.emoji.id ?? reaction.emoji.name;
 
-	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+	// Get the member
+	const member = await guild.members.fetch(user.id).catch(err => logger.error(err));
+
+	// Get current settings for the guild and check if tickets are enabled
+	const srvconfig = await client.getData('settings', 'guildId', guild.id);
+	if (!srvconfig.tickets) return;
 
 	try {
 		if (emojiId == '🎫') {
