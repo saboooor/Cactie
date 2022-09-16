@@ -18,7 +18,6 @@
     "supportrole": "*The t-ticket thuppowt team wowe (woweId)*",
     "ticketmention": "*Pingth evewy wewy time a nyew ticket i-ith cweated (false/here/everyone/woweId)*",
     "mutecmd": "*Toggweth t-the mute command / uthe a mute wowe (false/timeout/woweId)*",
-    "adminrole": "*The wowe to wepwace the Adminithtrator pewmiththion (permission/woweId)*",
     "msgshortener": "*The amount of winyeth i-in a meththage to t-twiggew meththage thhowtenyew (nyumbew [0 = false])*",
     "djrole": "*The DJ featuwe of the bot that w-wimitth the thkip/etc commandth (false/woweId)*"
 }

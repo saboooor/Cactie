@@ -18,7 +18,6 @@
     "supportrole": "*Papel de suporte de tickets (roleId)*",
     "ticketmention": "*Ping sempre que um ticket é criado (false/here/everyone/roleId)*",
     "mutecmd": "*Alterna o comando mute / papel de mute (false/timeout/roleId)*",
-    "adminrole": "*O papel que troca o papel de Administrador (permission/roleId)*",
     "msgshortener": "*A quantidade de linhas de uma mensagem que ativa o redutor de mensagens (número [0 = false])*",
     "djrole": "*A ferramenta de DJ do bot que limita os comandos skip/etc. (false/roleId)*"
 }
