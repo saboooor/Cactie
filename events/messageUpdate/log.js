@@ -23,11 +23,9 @@ module.exports = async (client, oldMessage, newMessage) => {
 			{ name: 'Created At', value: `<t:${Math.round(newMessage.createdTimestamp / 1000)}>\n<t:${Math.round(newMessage.createdTimestamp / 1000)}:R>`, inline: true },
 		]);
 
-	// Content Updates
+	// Content Updates, If there are changes that isn't content, don't send a log
 	if (oldMessage.content != newMessage.content) logEmbed.addFields([{ name: 'Content', value: `**Old:**\n${oldMessage.content ?? 'None'}\n**New:**\n${newMessage.content ?? 'None'}` }]);
-
-	// If there are changes that aren't listed above, don't send a log
-	if (!logEmbed.toJSON().fields) return;
+	else return;
 
 	// Create abovemessage button if above message is found
 	const row = new ActionRowBuilder()
