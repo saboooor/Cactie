@@ -1,7 +1,7 @@
-const { EmbedBuilder, Collection } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript.js');
 const getMessages = require('../../functions/getMessages.js');
-const { yes } = require('../../lang/int/emoji.json');
+const { yes, no } = require('../../lang/int/emoji.json');
 
 module.exports = {
 	name: 'clear',
@@ -41,15 +41,35 @@ module.exports = {
 			// Check if log channel exists and send message
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
-			if (logchannel) {
-				const ClearEmbed = new EmbedBuilder()
-					.setTitle(`${message.member.user.tag} cleared ${allmessages.size} messages`)
-					.addFields([
-						{ name: 'Channel', value: `${message.channel}` },
-						{ name: 'Transcript', value: `${await getTranscript(allmessages)}` },
-					]);
-				logchannel.send({ embeds: [ClearEmbed] });
+			if (!logchannel) return;
+
+			// Create log embed
+			const logEmbed = new EmbedBuilder()
+				.setColor(0x2f3136)
+				.setTitle(`<:no:${no}> ${allmessages.size} Messages bulk-deleted`)
+				.setFields([
+					{ name: 'Channel', value: `${message.channel}`, inline: true },
+					{ name: 'Transcript', value: `${await getTranscript(allmessages)}` },
+				]);
+
+			// Create abovemessage button if above message is found
+			const components = [];
+			const aboveMessages = await message.channel.messages.fetch({ before: allmessages.first().id, limit: 1 }).catch(() => { return null; });
+			if (aboveMessages && aboveMessages.first()) {
+				const aboveMessage = aboveMessages.first();
+				components.push(
+					new ActionRowBuilder()
+						.addComponents([
+							new ButtonBuilder()
+								.setURL(aboveMessage.url)
+								.setLabel('Go to above message')
+								.setStyle(ButtonStyle.Link),
+						]),
+				);
 			}
+
+			// Send log
+			logchannel.send({ embeds: [logEmbed], components }).catch(err => logger.error(err));
 		}
 		catch (err) { client.error(err, message); }
 	},
