@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const fs = require('fs');
+const { existsSync, readFileSync, writeFileSync } = require('fs');
 
 module.exports = async (client, message) => {
 	// get embed and check if it's an embed in the git channel
@@ -33,8 +33,8 @@ module.exports = async (client, message) => {
 			guild: player.guild,
 			textChannel, queue, trackRepeat, queueRepeat, position, paused, volume, effects, effectcurrentonly,
 		};
-		const prevlines = fs.existsSync('playercache.txt') ? fs.readFileSync('playercache.txt') : '';
-		fs.writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
+		const prevlines = existsSync('playercache.txt') ? readFileSync('playercache.txt') : '';
+		writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
 		player.destroy();
 	});
 

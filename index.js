@@ -1,4 +1,4 @@
-const fs = require('fs');
+const { readdirSync } = require('fs');
 const { Client, Partials, GatewayIntentBits } = require('discord.js');
 
 // Create Discord client
@@ -31,4 +31,4 @@ const client = new Client({
 client.startTimestamp = Date.now();
 
 // Load the universal and discord-specific handlers
-for (const handler of fs.readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(client);
+for (const handler of readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(client);

@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActivityType } = require('discord.js');
-const fs = require('fs');
+const { existsSync, readFileSync, writeFileSync } = require('fs');
 
 module.exports = client => {
 	process.on('unhandledRejection', async (reason) => {
@@ -19,8 +19,8 @@ module.exports = client => {
 				guild: player.guild,
 				textChannel, queue, trackRepeat, queueRepeat, position, paused, volume, effects, effectcurrentonly,
 			};
-			const prevlines = fs.existsSync('playercache.txt') ? fs.readFileSync('playercache.txt') : '';
-			fs.writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
+			const prevlines = existsSync('playercache.txt') ? readFileSync('playercache.txt') : '';
+			writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
 			player.destroy();
 		});
 		client.user.setPresence({ activities: [{ name: 'Bot crashed! Sorry for the inconvenience', type: ActivityType.Game }] });

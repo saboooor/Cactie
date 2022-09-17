@@ -1,6 +1,6 @@
 const { SlashCommandStringOption } = require('discord.js');
-const fs = require('fs');
-const languages = fs.readdirSync('./lang').filter(folder => folder != 'int');
+const { readdirSync } = require('fs');
+const languages = readdirSync('./lang').filter(folder => folder != 'int');
 const choices = [{ name: 'Reset', value: 'reset' }];
 languages.forEach(language => choices.push({ name: language, value: language }));
 

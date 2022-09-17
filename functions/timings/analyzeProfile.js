@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 const YAML = require('yaml');
-const fs = require('fs');
+const { readFileSync } = require('fs');
 const createField = require('./createField.js');
 const evalField = require('./evalField.js');
 function componentToHex(c) {
@@ -64,17 +64,17 @@ module.exports = async function analyzeProfile(message, client, args) {
 	}
 
 	const PROFILE_CHECK = {
-		servers: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/servers.yml', 'utf8')),
+		servers: await YAML.parse(readFileSync('./lang/int/analysis_config/servers.yml', 'utf8')),
 		plugins: {
-			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/plugins/paper.yml', 'utf8')),
-			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/plugins/purpur.yml', 'utf8')),
+			paper: await YAML.parse(readFileSync('./lang/int/analysis_config/plugins/paper.yml', 'utf8')),
+			purpur: await YAML.parse(readFileSync('./lang/int/analysis_config/plugins/purpur.yml', 'utf8')),
 		},
 		config: {
-			'server.properties': await YAML.parse(fs.readFileSync('./lang/int/analysis_config/server.properties.yml', 'utf8')),
-			bukkit: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/bukkit.yml', 'utf8')),
-			spigot: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/spigot.yml', 'utf8')),
-			paper: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/profile/paper.yml', 'utf8')),
-			purpur: await YAML.parse(fs.readFileSync('./lang/int/analysis_config/purpur.yml', 'utf8')),
+			'server.properties': await YAML.parse(readFileSync('./lang/int/analysis_config/server.properties.yml', 'utf8')),
+			bukkit: await YAML.parse(readFileSync('./lang/int/analysis_config/bukkit.yml', 'utf8')),
+			spigot: await YAML.parse(readFileSync('./lang/int/analysis_config/spigot.yml', 'utf8')),
+			paper: await YAML.parse(readFileSync('./lang/int/analysis_config/profile/paper.yml', 'utf8')),
+			purpur: await YAML.parse(readFileSync('./lang/int/analysis_config/purpur.yml', 'utf8')),
 		},
 	};
 

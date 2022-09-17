@@ -1,6 +1,6 @@
-const fs = require('fs');
+const { readFileSync } = require('fs');
 const YAML = require('yaml');
-const { con, clientParams } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
+const { con, clientParams } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 
 module.exports = client => {
 	client.login(con.token);

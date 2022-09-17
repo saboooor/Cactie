@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const fs = require('fs');
+const { readFileSync } = require('fs');
 const YAML = require('yaml');
-const { con } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
+const { con } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 const addVote = require('../functions/addVote');
 
 module.exports = client => {

@@ -1,4 +1,4 @@
-const fs = require('fs');
+const { readdirSync } = require('fs');
 const { Collection } = require('discord.js');
 
 module.exports = client => {
@@ -6,7 +6,7 @@ module.exports = client => {
 	client.reactions = new Collection();
 
 	// Register all reactions
-	const reactionFiles = fs.readdirSync('./reactions').filter(file => file.endsWith('.js'));
+	const reactionFiles = readdirSync('./reactions').filter(file => file.endsWith('.js'));
 	for (const file of reactionFiles) {
 		const reaction = require(`../reactions/${file}`);
 		client.reactions.set(reaction.name, reaction);

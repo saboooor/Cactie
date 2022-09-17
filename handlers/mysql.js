@@ -1,11 +1,11 @@
 const mariadb = require('mariadb/callback');
-const fs = require('fs');
+const { readFileSync, readdirSync } = require('fs');
 const YAML = require('yaml');
-const { mysql } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
+const { mysql } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 
 module.exports = async client => {
 	// Database Functions
-	const databaseFunctions = fs.readdirSync('./functions/database/').filter(file => file.endsWith('.js'));
+	const databaseFunctions = readdirSync('./functions/database/').filter(file => file.endsWith('.js'));
 	for (const file of databaseFunctions) require(`../functions/database/${file}`)(client);
 	logger.info(`${databaseFunctions.length} database functions loaded `);
 

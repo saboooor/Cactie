@@ -1,10 +1,10 @@
 const { TrackUtils } = require('@phamleduy04/erela.js');
-const fs = require('fs');
+const { existsSync, readFileSync, writeFileSync } = require('fs');
 
 module.exports = async (client, node) => {
 	logger.info(`Node "${node.options.identifier}" connected`);
-	if (!fs.existsSync('playercache.txt')) return;
-	let data = fs.readFileSync('playercache.txt');
+	if (!existsSync('playercache.txt')) return;
+	let data = readFileSync('playercache.txt');
 	data = data.toString().split('\n');
 	data.splice(0, 1);
 	data.forEach(async playerdata => {
@@ -43,5 +43,5 @@ module.exports = async (client, node) => {
 		player.setTrackRepeat(playerjson.trackRepeat);
 		player.setQueueRepeat(playerjson.queueRepeat);
 	});
-	fs.writeFileSync('playercache.txt', '');
+	writeFileSync('playercache.txt', '');
 };

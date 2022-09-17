@@ -1,8 +1,8 @@
 const { Manager, Structure } = require('@phamleduy04/erela.js');
 const compressEmbed = require('../functions/compressEmbed.js');
-const fs = require('fs');
+const { readFileSync, readdirSync } = require('fs');
 const YAML = require('yaml');
-const { music } = YAML.parse(fs.readFileSync('./config.yml', 'utf8'));
+const { music } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 const { refresh } = require('../lang/int/emoji.json');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const queuerow = new ActionRowBuilder()
@@ -42,18 +42,16 @@ module.exports = client => {
 		autoPlay: true,
 	});
 	client.on('raw', (d) => client.manager.updateVoiceState(d));
-	fs.readdir('./events/music/', (err, files) => {
-		if (err) return logger.error(err);
-		// go through all the files in the events/music folder and register them
-		let amount = 0;
-		files.forEach(file => {
-			if (!file.endsWith('.js')) return;
-			const event = require(`../events/music/${file}`);
-			const eventName = file.split('.')[0];
-			client.manager.on(eventName, event.bind(null, client));
-			amount = amount + 1;
-		});
-		logger.info(`${amount} lavalink event listeners loaded`);
+	const files = readdirSync('./events/music/');
+	// go through all the files in the events/music folder and register them
+	let amount = 0;
+	files.forEach(file => {
+		if (!file.endsWith('.js')) return;
+		const event = require(`../events/music/${file}`);
+		const eventName = file.split('.')[0];
+		client.manager.on(eventName, event.bind(null, client));
+		amount = amount + 1;
 	});
+	logger.info(`${amount} lavalink event listeners loaded`);
 	logger.info('Music handler loaded');
 };
