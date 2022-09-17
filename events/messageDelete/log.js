@@ -72,10 +72,8 @@ module.exports = async (client, message) => {
 	}
 
 	// Check if there's more than 10 messages and split into multiple messages
-	if (embeds.length > 10) {
-		while (embeds.length > 10) {
-			logchannel.send({ embeds: embeds.splice(0, 9) });
-		}
+	while (embeds.length > 10) {
+		logchannel.send({ embeds: embeds.splice(0, 9) });
 	}
 
 	// Send log
