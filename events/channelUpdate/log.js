@@ -9,6 +9,8 @@ module.exports = async (client, oldChannel, newChannel) => {
 	if (!['channelupdate', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 	const logchannel = newChannel.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
+
+	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setAuthor({ name: `# ${newChannel.name}` })
