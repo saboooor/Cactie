@@ -9,13 +9,17 @@ module.exports = async (client, channel) => {
 	if (!['channeldelete', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
+
+	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setAuthor({ name: `# ${channel.name}` })
 		.setTitle(`<:no:${no}> Channel deleted`);
 
+	// Add category and topic if applicable
 	if (channel.parent) logEmbed.addFields([{ name: 'Category', value: `${channel.parent}`, inline: true }]);
 	if (channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
 
+	// Send log
 	logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 };

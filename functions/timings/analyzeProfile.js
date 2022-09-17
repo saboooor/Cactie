@@ -26,7 +26,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 		if (arg.startsWith('https://spark.lucko.me/')) url = arg;
 	}
 
-	if (!url) return [{ content: 'Invalid Spark PRofile URL' }];
+	if (!url) return [{ content: 'Invalid Spark Profile URL' }];
 
 	logger.info(`Spark Profile analyzed from ${author.tag} (${author.id}): ${url}`);
 

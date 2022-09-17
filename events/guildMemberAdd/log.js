@@ -9,6 +9,8 @@ module.exports = async (client, member) => {
 	if (!['memberjoin', 'member', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
 	const logchannel = member.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
+
+	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setAuthor({ name: member.user.tag, iconURL: member.user.avatarURL() })
@@ -17,5 +19,7 @@ module.exports = async (client, member) => {
 			{ name: 'User', value: `${member}`, inline: true },
 			{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`, inline: true },
 		]);
+
+	// Send log
 	logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
 };

@@ -35,6 +35,7 @@ module.exports = async (client, oldChannel, newChannel) => {
 	// If there are changes that aren't listed above, don't send a log
 	if (!logEmbed.toJSON().fields) return;
 
+	// Create button to go to channel
 	const row = new ActionRowBuilder()
 		.addComponents([
 			new ButtonBuilder()
@@ -42,5 +43,7 @@ module.exports = async (client, oldChannel, newChannel) => {
 				.setLabel('Go to channel')
 				.setStyle(ButtonStyle.Link),
 		]);
+
+	// Send log
 	logchannel.send({ embeds: [logEmbed], components: [row] }).catch(err => logger.error(err));
 };
