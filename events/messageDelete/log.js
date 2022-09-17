@@ -2,6 +2,9 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const { no } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, message) => {
+	// Check if the message was sent by a bot
+	if (message.author.bot) return;
+
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 
@@ -21,14 +24,34 @@ module.exports = async (client, message) => {
 		]);
 
 	// Set the embeds list
-	let embeds = [logEmbed];
+	const embeds = [logEmbed];
 
 	// Add content if there is any
 	if (message.content) logEmbed.addFields([{ name: 'Content', value: `${message.content}` }]);
 
+	// Add attachments
+	if (message.attachments.size) {
+		const images = message.attachments.filter(a => a.contentType.split('/')[0] == 'image');
+		const files = message.attachments.filter(a => a.contentType.split('/')[0] != 'image');
+		if (images.size) {
+			logEmbed.addFields([{ name: 'Images', value: `${images.size}` }]);
+			logEmbed.setImage(images.first().url);
+			images.delete(images.first().id);
+			if (images.size) {
+				images.forEach(img => {
+					const imgEmbed = new EmbedBuilder()
+						.setColor(0x2f3136)
+						.setImage(img.url);
+					embeds.push(imgEmbed);
+				});
+			}
+		}
+		if (files.size) logEmbed.addFields([{ name: 'Files', value: `${files.map(f => `**${f.name}** ${f.size / 1024 / 1024} MB\n${f.url}\n`)}` }]);
+	}
+
 	// Add embeds if there is any
 	if (message.embeds.length) {
-		embeds = [logEmbed, ...message.embeds];
+		embeds.push(...message.embeds);
 		logEmbed.addFields([{ name: 'Embeds', value: `${message.embeds.length} Below`, inline: true }]);
 	}
 
@@ -46,6 +69,13 @@ module.exports = async (client, message) => {
 						.setStyle(ButtonStyle.Link),
 				]),
 		);
+	}
+
+	// Check if there's more than 10 messages and split into multiple messages
+	if (embeds.length > 10) {
+		while (embeds.length > 10) {
+			logchannel.send({ embeds: embeds.splice(0, 9) });
+		}
 	}
 
 	// Send log
