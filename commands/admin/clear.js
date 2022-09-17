@@ -46,6 +46,7 @@ module.exports = {
 			// Create log embed
 			const logEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
+				.setAuthor({ name: message.member.user.tag, iconURL: message.member.user.tag.avatarURL() })
 				.setTitle(`<:no:${no}> ${allmessages.size} Messages bulk-deleted`)
 				.setFields([
 					{ name: 'Channel', value: `${message.channel}`, inline: true },
