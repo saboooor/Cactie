@@ -3,7 +3,7 @@ const { refresh } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, oldMessage, newMessage) => {
 	// Check if the message was sent by a bot
-	if (newMessage.author.bot) return;
+	if (newMessage.author && newMessage.author.bot) return;
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', newMessage.guild.id);
@@ -16,7 +16,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
-		.setAuthor({ name: newMessage.author.tag, iconURL: newMessage.author.avatarURL() })
+		.setAuthor({ name: newMessage.author ? newMessage.author.tag : 'Unknown User', iconURL: newMessage.author ? newMessage.author.avatarURL() : newMessage.guild.iconURL() })
 		.setTitle(`<:refresh:${refresh}> Message edited`)
 		.setFields([
 			{ name: 'Channel', value: `${newMessage.channel}`, inline: true },
@@ -24,7 +24,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 		]);
 
 	// Content Updates
-	if (oldMessage.content != newMessage.content) logEmbed.addFields([{ name: 'Topic', value: `**Old:**\n${oldMessage.content ?? 'None'}\n**New:**\n${newMessage.content ?? 'None'}`, inline: true }]);
+	if (oldMessage.content != newMessage.content) logEmbed.addFields([{ name: 'Content', value: `**Old:**\n${oldMessage.content ?? 'None'}\n**New:**\n${newMessage.content ?? 'None'}` }]);
 
 	// If there are changes that aren't listed above, don't send a log
 	if (!logEmbed.toJSON().fields) return;

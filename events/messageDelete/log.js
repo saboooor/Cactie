@@ -3,7 +3,7 @@ const { no } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, message) => {
 	// Check if the message was sent by a bot
-	if (message.author.bot) return;
+	if (message.author && message.author.bot) return;
 
 	// Get current settings for the guild
 	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
@@ -16,7 +16,7 @@ module.exports = async (client, message) => {
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
-		.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() })
+		.setAuthor({ name: message.author ? message.author.tag : 'Unknown User', iconURL: message.author ? message.author.avatarURL() : message.guild.iconURL() })
 		.setTitle(`<:no:${no}> Message deleted`)
 		.setFields([
 			{ name: 'Channel', value: `${message.channel}`, inline: true },
