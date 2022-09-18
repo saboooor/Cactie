@@ -20,7 +20,7 @@ const app = express();
 const MemoryStore = require('memorystore')(session);
 
 // export the dashboard as a function which we call in ready event.
-module.exports = async (client) => {
+module.exports = async client => {
 	// declare absolute paths.
 	const dataDir = path.join(process.cwd(), 'dashboard');
 	const templateDir = path.join(dataDir, 'templates');

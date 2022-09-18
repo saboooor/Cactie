@@ -1,4 +1,4 @@
-module.exports = async (client) => {
+module.exports = async client => {
 	const cactieguild = client.guilds.cache.get('811354612547190794');
 	const role = cactieguild.roles.cache.find(r => r.name == `${client.user.username} User`);
 	const owners = [];

@@ -2,7 +2,7 @@ const { EmbedBuilder, ActivityType } = require('discord.js');
 const { existsSync, readFileSync, writeFileSync } = require('fs');
 
 module.exports = client => {
-	process.on('unhandledRejection', async (reason) => {
+	process.on('unhandledRejection', async reason => {
 		const CrashEmbed = new EmbedBuilder()
 			.setColor(0xE74C3C)
 			.setTitle('Crash Detected')
