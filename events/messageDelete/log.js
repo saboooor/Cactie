@@ -13,6 +13,9 @@ module.exports = async (client, message) => {
 	const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
 
+	// Convert createdTimestamp into seconds
+	const createdTimestamp = Math.round(message.createdTimestamp / 1000);
+
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
@@ -20,7 +23,7 @@ module.exports = async (client, message) => {
 		.setTitle(`<:no:${no}> Message deleted`)
 		.setFields([
 			{ name: 'Channel', value: `${message.channel}`, inline: true },
-			{ name: 'Created At', value: `<t:${Math.round(message.createdTimestamp / 1000)}>\n<t:${Math.round(message.createdTimestamp / 1000)}:R>`, inline: true },
+			{ name: 'Sent at', value: `<t:${createdTimestamp}>\n<t:${createdTimestamp}:R>`, inline: true },
 		]);
 
 	// Set the embeds list

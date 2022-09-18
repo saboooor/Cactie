@@ -10,11 +10,15 @@ module.exports = async (client, channel) => {
 	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
 
+	// Convert createdTimestamp into seconds
+	const createdTimestamp = Math.round(channel.createdTimestamp / 1000);
+
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setAuthor({ name: `# ${channel.name}` })
-		.setTitle(`<:no:${no}> Channel deleted`);
+		.setTitle(`<:no:${no}> Channel deleted`)
+		.setFields([{ name: 'Created at', value: `<t:${createdTimestamp}>\n<t:${createdTimestamp}:R>`, inline: true }]);
 
 	// Add category and topic if applicable
 	if (channel.parent) logEmbed.addFields([{ name: 'Category', value: `${channel.parent}`, inline: true }]);

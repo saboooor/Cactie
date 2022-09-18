@@ -10,6 +10,9 @@ module.exports = async (client, member) => {
 	const logchannel = member.guild.channels.cache.get(srvconfig.logchannel);
 	if (!logchannel) return;
 
+	// Convert createdTimestamp into seconds
+	const createdTimestamp = Math.round(member.user.createdTimestamp / 1000);
+
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
@@ -17,7 +20,7 @@ module.exports = async (client, member) => {
 		.setTitle(`<:in:${join}> Member joined`)
 		.setFields([
 			{ name: 'User', value: `${member}`, inline: true },
-			{ name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>`, inline: true },
+			{ name: 'Created Account at', value: `<t:${createdTimestamp}>\n<t:${createdTimestamp}:R>`, inline: true },
 		]);
 
 	// Send log

@@ -14,9 +14,7 @@ module.exports = async (client, messages, channel) => {
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
 		.setTitle(`<:no:${no}> ${messages.size} Messages bulk-deleted`)
-		.setFields([
-			{ name: 'Channel', value: `${channel}`, inline: true },
-		]);
+		.setFields([{ name: 'Channel', value: `${channel}` }]);
 
 	// Create abovemessage button if above message is found
 	const components = [];
