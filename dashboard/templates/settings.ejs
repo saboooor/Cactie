@@ -1,5 +1,4 @@
 <%- include("partials/header", { colors, bot, user, path, title: `General | ${guild.name}` }) %>
-<% const commands = ['awooga', 'bite', 'bonk', 'giggle', 'hug', 'kill', 'kiss', 'lick', 'mad', 'nuzzle', 'stare', 'approve', 'ban', 'clear', 'deny', 'kick', 'mute', 'react', 'reactionroles', 'settings', 'unban', 'unmute', 'duck', 'goose', 'horse', 'kitty', 'lizard', 'meerkat', 'monkey', 'puppy', 'raccoon', 'redpanda', 'snake', 'Ban Member', 'Get Raw Embed JSON', 'Get Raw Message', 'Kick Member', 'Do action on user', 'User Info', '21questions', '8ball', 'animal', 'boner', 'buttons', 'coinflip', 'instaboner', 'meme', 'rate', 'rockpaperscissors', 'tictactoe', '247', 'cleareffects', 'clearqueue', 'effect', 'eq', 'forceskip', 'join', 'leave', 'loop', 'loopqueue', 'move', 'nowplaying', 'pause', 'play', 'playtop', 'queue', 'removesong', 'resume', 'reverse', 'search', 'seek', 'shuffle', 'skip', 'sponsorblock', 'stats', 'stop', 'volume', 'blowjob', 'confused', 'cum', 'dick', 'dilf', 'femdom', 'furryporn', 'futanari', 'gay', 'hentai', 'jackoff', 'lesbian', 'milf', 'nsfwgifs', 'nudes', 'oppai', 'petite', 'pussy', 'r34', 'thick', 'thighs', 'tits', 'trap', 'yuri', 'add', 'close', 'delete', 'forcedelete', 'open', 'remove', 'resolve', 'ticket', 'voiceticket', 'avatar', 'color', 'github', 'help', 'invite', 'language', 'mcstats', 'ping', 'poll', 'profile', 'reactions', 'server', 'serverjar', 'suggest', 'timings', 'userinfo', 'wallpaper']; %>
 <%
 function sort_by_key(array, key) {
  return array.sort(function(a, b) {
@@ -7,6 +6,13 @@ function sort_by_key(array, key) {
   return ((x < y) ? -1 : ((x > y) ? 1 : 0));
  });
 }
+
+let commands = [];
+bot.commands.forEach(cmd => {
+  if (cmd.category == 'private') return;
+  commands.push(cmd.name);
+});
+commands = sort_by_key(commands, 'category');
 
 let channels = [];
 guild.channels.cache.forEach(channel => channels.push({
@@ -16,6 +22,7 @@ guild.channels.cache.forEach(channel => channels.push({
   type: channel.type
 }));
 channels = sort_by_key(channels, 'pos');
+
 let roles = [];
 guild.roles.cache.forEach(role => roles.push({
   name: role.name,
