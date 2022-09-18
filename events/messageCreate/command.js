@@ -135,12 +135,8 @@ module.exports = async (client, message) => {
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL('https://top.gg/bot/848775888673439745/vote')
+						.setURL(`https://top.gg/bot/${client.user.id}/vote`)
 						.setLabel('top.gg')
-						.setStyle(ButtonStyle.Link),
-					new ButtonBuilder()
-						.setURL('https://discordbotlist.com/bots/pup/upvote')
-						.setLabel('dbl.com')
 						.setStyle(ButtonStyle.Link),
 				]);
 			return message.reply({ embeds: [errEmbed], components: [row] });

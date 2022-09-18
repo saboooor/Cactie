@@ -14,7 +14,7 @@ module.exports = async (client, guild) => {
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL('https://top.gg/bot/765287593762881616')
+				.setURL(`https://top.gg/bot/${client.user.id}/vote`)
 				.setLabel('Vote on top.gg')
 				.setStyle(ButtonStyle.Link),
 		]);

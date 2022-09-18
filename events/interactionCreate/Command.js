@@ -79,12 +79,8 @@ module.exports = async (client, interaction) => {
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL('https://top.gg/bot/848775888673439745/vote')
+						.setURL(`https://top.gg/bot/${client.user.id}/vote`)
 						.setLabel('top.gg')
-						.setStyle(ButtonStyle.Link),
-					new ButtonBuilder()
-						.setURL('https://discordbotlist.com/bots/pup/upvote')
-						.setLabel('dbl.com')
 						.setStyle(ButtonStyle.Link),
 				]);
 			return interaction.reply({ embeds: [errEmbed], components: [row] });

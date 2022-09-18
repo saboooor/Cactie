@@ -8,10 +8,11 @@ This is source code for my public Discord bot, Cactie.
 [![Discord](https://discord.com/api/guilds/811354612547190794/widget.png)](https://discord.gg/Bsefgbaedz)
 [![CodeFactor](https://www.codefactor.io/repository/github/saboooor/cactie/badge/master)](https://www.codefactor.io/repository/github/saboooor/cactie/overview/master)
 ![Lines](https://tokei.rs/b1/github/saboooor/cactie)
+![Discord Bots](https://top.gg/api/widget/upvotes/848775888673439745.svg)
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
 
 #### Type /help for help
-I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://cactiedev.smhsmh.club/discord) and we'll fix it ASAP
+I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://cactiedev.smhsmh.club/invite/discord) and we'll fix it ASAP
 
 ## Suggestions
 - uses threads to organize discussions
