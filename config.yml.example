@@ -22,5 +22,10 @@ music:
     retryDelay: 5000
     secure: false
 
-clientParams:
-  dashboardDomain: 'https://cactie.smhsmh.club'
+dashboard:
+  port: 6969
+  usingCustomDomain: false
+  domain: '' # Dashboard domain
+  clientSecret: '' # Client Secret from dev panel
+  secret: '' # Idfk it's a secret put it as a secret
+  colors: ['#ffffff', '#000000'] # colors for dashboard background

@@ -1,0 +1,567 @@
+<%- include("partials/header", { colors, bot, user, path, title: `General | ${guild.name}` }) %>
+<% const commands = ['awooga', 'bite', 'bonk', 'giggle', 'hug', 'kill', 'kiss', 'lick', 'mad', 'nuzzle', 'stare', 'approve', 'ban', 'clear', 'deny', 'kick', 'mute', 'react', 'reactionroles', 'settings', 'unban', 'unmute', 'duck', 'goose', 'horse', 'kitty', 'lizard', 'meerkat', 'monkey', 'puppy', 'raccoon', 'redpanda', 'snake', 'Ban Member', 'Get Raw Embed JSON', 'Get Raw Message', 'Kick Member', 'Do action on user', 'User Info', '21questions', '8ball', 'animal', 'boner', 'buttons', 'coinflip', 'instaboner', 'meme', 'rate', 'rockpaperscissors', 'tictactoe', '247', 'cleareffects', 'clearqueue', 'effect', 'eq', 'forceskip', 'join', 'leave', 'loop', 'loopqueue', 'move', 'nowplaying', 'pause', 'play', 'playtop', 'queue', 'removesong', 'resume', 'reverse', 'search', 'seek', 'shuffle', 'skip', 'sponsorblock', 'stats', 'stop', 'volume', 'blowjob', 'confused', 'cum', 'dick', 'dilf', 'femdom', 'furryporn', 'futanari', 'gay', 'hentai', 'jackoff', 'lesbian', 'milf', 'nsfwgifs', 'nudes', 'oppai', 'petite', 'pussy', 'r34', 'thick', 'thighs', 'tits', 'trap', 'yuri', 'add', 'close', 'delete', 'forcedelete', 'open', 'remove', 'resolve', 'ticket', 'voiceticket', 'avatar', 'color', 'github', 'help', 'invite', 'language', 'mcstats', 'ping', 'poll', 'profile', 'reactions', 'server', 'serverjar', 'suggest', 'timings', 'userinfo', 'wallpaper']; %>
+<%
+function sort_by_key(array, key) {
+ return array.sort(function(a, b) {
+  var x = a[key]; var y = b[key];
+  return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+ });
+}
+
+let channels = [];
+guild.channels.cache.forEach(channel => channels.push({
+  name: channel.name,
+  id: channel.id,
+  pos: channel.rawPosition,
+  type: channel.type
+}));
+channels = sort_by_key(channels, 'pos');
+let roles = [];
+guild.roles.cache.forEach(role => roles.push({
+  name: role.name,
+  id: role.id,
+  pos: role.rawPosition,
+  color: role.color
+}));
+roles = sort_by_key(roles, 'pos');
+roles.reverse();
+%>
+
+<section class="hero is-black">
+  <div class="hero-body">
+    <br><br><br><br>
+    <div class="columns">
+      <div class="column is-one-fifth">
+        <aside class="menu">
+          <p class="menu-label">
+            <img class="feather" width="32px" src="<%= guild.icon ? `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}` : '/assets/images/placeholder.svg' %>">
+            <%= guild.name %>
+          </p>
+          <hr style="background-color: #222">
+          <p class="menu-label">
+            General
+          </p>
+          <ul class="menu-list">
+            <li><a href="#general">General Settings</a></li>
+            <li><a href="#suggestions">Suggestions / Polls</a></li>
+            <li><a href="#boner">Boner Command</a></li>
+          </ul>
+          <p class="menu-label">
+            Administration
+          </p>
+          <ul class="menu-list">
+            <li><a href="#logging">Logging</a></li>
+            <li><a href="#tickets">Ticket System</a></li>
+            <li><a href="#moderation">Moderation</a></li>
+          </ul>
+            <br>
+      <form action="/dashboard/<%= guild.id %>" method="POST">
+            <button type="submit" class="button is-success is-outlined is-rounded">
+              <i data-feather="save"></i>
+              Save
+            </button>
+            <br>
+            <hr style="background-color: #222">
+          <p class="menu-label">
+            Reaction Roles
+          </p>
+          <ul class="menu-list">
+            <% reactionroles.channels.forEach(channelInfo => { %>
+              <li><a href="#<%= channelInfo.id %>"># <%= bot.channels.cache.get(channelInfo.id).name %></a></li>
+            <% }); %>
+            <li><a onclick="openModal(document.getElementById('reactionrole-create'))" class="has-text-info">Create</a></li>
+          </ul>
+          <br>
+        </aside>    
+      </div>
+      <div class="column">
+
+        <span class="anchor" id="general"></span>
+        <br>
+        <a class="title">General</a>
+        <br><br>
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Prefix</p>
+              <p class="subtitle">The bot's text command prefix</p>
+              <div class="control">
+                <input class="input" type="text" name="prefix" value="<%= settings.prefix %>" placeholder="Your prefix">
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Reactions</p>
+              <p class="subtitle">Reacts with various reactions on some words</p>
+              <input name="reactions" id="reactions" type="checkbox" <% if (settings.reactions === 'true') { %> checked <% } %> class="switch is-outlined is-success">
+              <label for="reactions" class="title">Enabled</label>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Language</p>
+              <p class="subtitle">The language Cactie will use (overrides the server language)</p>
+              <div class="select" style="width: 100%;">
+                <select name="language" value="<%= settings.language %>" placeholder="The value" style="width: 100%;">
+                  <option value="false" <% if (settings.language === 'false') { %> selected <% } %>>Use the server default</option>
+                  <option value="English" <% if (settings.language === 'English') { %> selected <% } %>>English</option>
+                  <option value="Portuguese" <% if (settings.language === 'Portuguese') { %> selected <% } %>>Portuguese</option>
+                  <option value="Lispuwu" <% if (settings.language === 'Lispuwu') { %> selected <% } %>>Lisp UwU</option>
+                  <option value="Uwu" <% if (settings.language === 'Uwu') { %> selected <% } %>>UwU</option>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <span class="anchor" id="suggestions"></span>
+        <br>
+        <a class="title">Suggestions / Polls</a>
+        <br><br>
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Suggestion Channel</p>
+              <p class="subtitle">The channel where the bot puts suggestions in</p>
+              <div class="select" style="width: 100%;">
+                <select name="suggestionchannel" value="<%= settings.suggestionchannel %>" placeholder="The suggestion channel" style="width: 100%;">
+                  <option value="false" <% if (settings.suggestionchannel === 'false') { %> selected <% } %>>Disabled</option>
+                  <% channels.forEach(channel => { %>
+                    <% if (channel.type != Djs.ChannelType.GuildText) return %>
+                    <option value="<%= channel.id %>" <% if (channel.id === settings.suggestionchannel) { %> selected <% } %> > <%= `# ${channel.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Suggestion Threads</p>
+              <p class="subtitle">Creates a thread for discussion of suggestions</p>
+              <input name="suggestthreads" id="suggestthreads" type="checkbox" <% if (settings.suggestthreads === 'true') { %> checked <% } %> class="switch is-outlined is-success">
+              <label for="suggestthreads" class="title">Enabled</label>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Poll Channel</p>
+              <p class="subtitle">The channel where the bot puts polls in</p>
+              <div class="select" style="width: 100%;">
+                <select name="pollchannel" value="<%= settings.pollchannel %>" placeholder="The poll channel" style="width: 100%;">
+                  <option value="false" <% if (settings.pollchannel === 'false') { %> selected <% } %>>Disabled</option>
+                  <% channels.forEach(channel => { %>
+                    <% if (channel.type != Djs.ChannelType.GuildText) return %>
+                    <option value="<%= channel.id %>" <% if (channel.id === settings.pollchannel) { %> selected <% } %> > <%= `# ${channel.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <span class="anchor" id="boner"></span>
+        <br>
+        <a class="title">Boner Command</a>
+        <br><br>
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Max PP Size</p>
+              <p class="subtitle">Maximum pp size in boner and instaboner commands</p>
+              <div class="control">
+                <input class="input" type="number" name="maxppsize" value="<%= settings.maxppsize %>" placeholder="The maximum PP size to set">
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <span class="anchor" id="logging"></span>
+        <br>
+        <a class="title">Logging</a>
+        <br><br>
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Join Message</p>
+              <p class="subtitle">The message when someone joins the server</p>
+              <div class="control">
+                <textarea class="textarea" type="text" name="joinmessage" value="<%= settings.joinmessage %>" placeholder="The join message, or just 'false'"></textarea>
+              </div>
+              <p>Variables: {USER MENTION} {USER TAG}</p>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Leave Message</p>
+              <p class="subtitle">The message when someone leaves the server</p>
+              <div class="control">
+                <textarea class="textarea" type="text" name="leavemessage" value="<%= settings.leavemessage %>" placeholder="The leave message, or just 'false'"></textarea>
+              </div>
+              <p>Variables: {USER MENTION} {USER TAG}</p>
+            </article>
+          </div>
+        </div>
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Audit Logs</p>
+              <p class="subtitle">Logs certain events in the guild</p>
+              <div class="control">
+                <select name="auditlogs" multiple data-type="tags" data-selectable="false" data-close-dropdown-on-item-select="false" data-placeholder="The logs to enable">
+                  <option value="member" <% if (settings.auditlogs.split(',').includes('member')) { %> selected <% } %>>All Member-Related Logs</option>
+                  <option value="memberjoin" <% if (settings.auditlogs.split(',').includes('memberjoin')) { %> selected <% } %>>Member Joined</option>
+                  <option value="memberleave" <% if (settings.auditlogs.split(',').includes('memberleave')) { %> selected <% } %>>Member Left</option>
+                  <option value="message" <% if (settings.auditlogs.split(',').includes('message')) { %> selected <% } %>>All Message-Related Logs</option>
+                  <option value="messagedelete" <% if (settings.auditlogs.split(',').includes('messagedelete')) { %> selected <% } %>>Message Deleted</option>
+                  <option value="channel" <% if (settings.auditlogs.split(',').includes('channel')) { %> selected <% } %>>All Channel-Related Logs</option>
+                  <option value="channelcreate" <% if (settings.auditlogs.split(',').includes('channelcreate')) { %> selected <% } %>>Channel Created</option>
+                  <option value="channeldelete" <% if (settings.auditlogs.split(',').includes('channeldelete')) { %> selected <% } %>>Channel Deleted</option>
+                  <option value="channelupdate" <% if (settings.auditlogs.split(',').includes('channeldelete')) { %> selected <% } %>>Channel Updated</option>
+                  <option value="voice" <% if (settings.auditlogs.split(',').includes('voice')) { %> selected <% } %>>All Voice-Related Logs</option>
+                  <option value="voicejoin" <% if (settings.auditlogs.split(',').includes('voicejoin')) { %> selected <% } %>>Joined Voice Channel</option>
+                  <option value="voiceleave" <% if (settings.auditlogs.split(',').includes('voiceleave')) { %> selected <% } %>>Left Voice Channel</option>
+                  <option value="voicemove" <% if (settings.auditlogs.split(',').includes('voicemove')) { %> selected <% } %>>Moved Voice Channels</option>
+                  <option value="voicedeafen" <% if (settings.auditlogs.split(',').includes('voicedeafen')) { %> selected <% } %>>Voice Deafened</option>
+                  <option value="voicemute" <% if (settings.auditlogs.split(',').includes('voicemute')) { %> selected <% } %>>Voice Muted</option>
+                  <option value="all" <% if (settings.auditlogs.split(',').includes('all')) { %> selected <% } %>>All Logs</option>
+                </select>
+              </div> 
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Log Channel</p>
+              <p class="subtitle">The channel where the bot puts various logs in</p>
+              <div class="select" style="width: 100%;">
+                <select name="logchannel" value="<%= settings.logchannel %>" placeholder="The log channel" style="width: 100%;">
+                  <option value="false" <% if (settings.logchannel === 'false') { %> selected <% } %>>Disabled</option>
+                  <% channels.forEach(channel => { %>
+                    <% if (channel.type != Djs.ChannelType.GuildText) return %>
+                    <option value="<%= channel.id %>" <% if (channel.id === settings.logchannel) { %> selected <% } %> > <%= `# ${channel.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <span class="anchor" id="tickets"></span>
+        <br>
+        <a class="title">Tickets</a>
+        <br><br>
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Toggle</p>
+              <p class="subtitle">Enables the ticket system</p>
+              <div class="select" style="width: 100%;">
+                <select name="tickets" value="<%= settings.tickets %>" placeholder="The ticket option" style="width: 100%;">
+                  <option value="false" <% if (settings.tickets === 'false') { %> selected <% } %>>Disabled</option>
+                  <option value="buttons" <% if (settings.tickets === 'buttons') { %> selected <% } %>>Enabled, using Buttons</option>
+                  <option value="reactions" <% if (settings.tickets === 'reactions') { %> selected <% } %>>Enabled, using Reactions</option>
+                </select>
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Category</p>
+              <p class="subtitle">The category where the bot creates tickets in</p>
+              <div class="select" style="width: 100%;">
+                <select name="ticketcategory" value="<%= settings.ticketcategory %>" placeholder="The ticket category" style="width: 100%;">
+                  <option value="false" <% if (settings.ticketcategory === 'false') { %> selected <% } %>>Disabled</option>
+                  <% channels.forEach(channel => { %>
+                    <% if (channel.type != Djs.ChannelType.GuildCategory) return %>
+                    <option value="<%= channel.id %>" <% if (channel.id === settings.ticketcategory) { %> selected <% } %> > <%= `› ${channel.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Log Channel</p>
+              <p class="subtitle">The channel where the bot puts ticket logs in</p>
+              <div class="select" style="width: 100%;">
+                <select name="ticketlogchannel" value="<%= settings.ticketlogchannel %>" placeholder="The ticket log channel" style="width: 100%;">
+                  <option value="false" <% if (settings.ticketlogchannel === 'false') { %> selected <% } %>>Disabled</option>
+                  <% channels.forEach(channel => { %>
+                    <% if (channel.type != Djs.ChannelType.GuildText) return %>
+                    <option value="<%= channel.id %>" <% if (channel.id === settings.ticketlogchannel) { %> selected <% } %> > <%= `# ${channel.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Access Role</p>
+              <p class="subtitle">The role that can access tickets</p>
+              <div class="select" style="width: 100%;">
+                <select name="supportrole" value="<%= settings.supportrole %>" placeholder="The Support Role" style="width: 100%;">
+                  <option value="false" <% if (settings.supportrole === 'false') { %> selected <% } %>>Disabled</option>
+                  <% roles.forEach(role => { %>
+                    <option value="<%= role.id %>" <% if (role.id === settings.supportrole) { %> selected <% } %>  style="color: <%= role.color ? role.color.toString(16) : 'white'; %>"> <%= `@ ${role.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Mention</p>
+              <p class="subtitle">Pings the specified role every time a new ticket is created</p>
+              <div class="select" style="width: 100%;">
+                <select name="ticketmention" value="<%= settings.ticketmention %>" placeholder="The Role to mention" style="width: 100%;">
+                  <option value="false" <% if (settings.ticketmention === 'false') { %> selected <% } %>>Disabled</option>
+                  <option value="here" <% if (settings.ticketmention === 'here') { %> selected <% } %>>@ here</option>
+                  <option value="everyone" <% if (settings.ticketmention === 'everyone') { %> selected <% } %>>@ everyone</option>
+                  <% roles.forEach(role => { %>
+                    <option value="<%= role.id %>" <% if (role.id === settings.ticketmention) { %> selected <% } %>  style="color: <%= role.color ? role.color.toString(16) : 'white'; %>"> <%= `@ ${role.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <span class="anchor" id="moderation"></span>
+        <br>
+        <a class="title">Moderation</a>
+        <br><br>
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Message Shortener</p>
+              <p class="subtitle">The amount of lines in a message to delete and send to a bin link (Setting this to 0 disables it)</p>
+              <div class="control">
+                <input class="input" type="number" name="msgshortener" value="<%= settings.msgshortener %>" placeholder="The message shortener value">
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Mute Command</p>
+              <p class="subtitle">Use the timeout feature or a role for the mute command</p>
+              <div class="select" style="width: 100%;">
+                <select name="mutecmd" value="<%= settings.mutecmd %>" placeholder="The value" style="width: 100%;">
+                  <option value="timeout" <% if (settings.mutecmd === 'timeout') { %> selected <% } %>>Use Discord's timeout feature</option>
+                  <% roles.forEach(role => { %>
+                    <option value="<%= role.id %>" <% if (role.id === settings.mutecmd) { %> selected <% } %>  style="color: <%= role.color ? role.color.toString(16) : 'white'; %>"> <%= `@ ${role.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">Disabled commands</p>
+              <p class="subtitle">Disable certain commands from the bot</p>
+              <div class="control">
+                <select name="disabledcmds" multiple data-type="tags" data-selectable="false" data-close-dropdown-on-item-select="false" data-placeholder="The commands to disable">
+                  <% commands.forEach(command => { %>
+                    <option value="<%= command %>" <% if (settings.disabledcmds.split(',').includes(command)) { %> selected <% } %>><%= command %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+          <div class="tile is-parent">
+            <article class="tile is-child box">
+              <p class="title">DJ Role</p>
+              <p class="subtitle">The DJ feature of the bot that limits the skip/etc commands</p>
+              <div class="select" style="width: 100%;">
+                <select name="djrole" value="<%= settings.djrole %>" placeholder="The DJ Role" style="width: 100%;">
+                  <option value="false" <% if (settings.djrole === 'false') { %> selected <% } %>>Disabled</option>
+                  <% roles.forEach(role => { %>
+                    <option value="<%= role.id %>" <% if (role.id === settings.djrole) { %> selected <% } %>  style="color: <%= role.color ? role.color.toString(16) : 'white'; %>"> <%= `@ ${role.name}` %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <button type="submit" class="button is-success is-outlined is-rounded portrait-only">
+          <i data-feather="save"></i>
+          Save
+        </button>
+
+      </form>
+
+        <hr style="background-color: #222"><br>
+        <span class="anchor" id="reactionroles"></span>
+        <a class="title" style="float: left">
+          Reaction Roles
+        </a>
+        <a class="button is-primary is-outlined is-rounded" style="float: right;" onclick="openModal(document.getElementById('reactionrole-create'))">
+          <i data-feather="plus"></i>Create 
+        </a>
+        <br><br><br>
+
+        <% reactionroles.channels.forEach(channelInfo => { %>
+          <span class="anchor" id="<%= channelInfo.id %>"></span>
+          <div class="box">
+            <a class="subtitle" style="float: left" href="https://discord.com/channels/<%= guild.id %>/<%= channelInfo.id %>" target=”_blank”>
+              <strong># <%= bot.channels.cache.get(channelInfo.id).name %></strong> <i data-feather="external-link" style="margin-bottom: 5px; color: #ffffff80"></i>
+            </a>
+            <a class="has-text-primary" style="float: right;" onclick="openModal(document.getElementById('reactionrole-create'), { channel: '<%= channelInfo.id %>' })">
+              Create in this channel
+            </a>
+            <br><br>
+
+            <% channelInfo.messages.forEach(messageId => { %>
+              <div class="box" style="background: #111">
+                <a class="subtitle" href="https://discord.com/channels/<%= guild.id %>/<%= channelInfo.id %>/<%= messageId %>" target=”_blank”>
+                  <strong>Message # <%= messageId %></strong> <i data-feather="external-link" style="margin-bottom: 5px; color: #ffffff80"></i>
+                </a>
+                <a class="has-text-primary" style="float: right;" onclick="openModal(document.getElementById('reactionrole-create'), { channel: '<%= channelInfo.id %>', message: '<%= messageId %>' })">
+                  Create in this message
+                </a>
+                <br><br>
+
+                <% reactionroles.raw.filter(r => r.messageId == messageId).forEach(reactionrole => { %>
+                    <div class="box" style="background: #0A0A0A">
+                      <article class="media">
+                        <figure class="media-left">
+                          <% if (!isNaN(reactionrole.emojiId)) { %>
+                            <p class="image is-64x64">
+                              <img src="https://cdn.discordapp.com/emojis/<%= reactionrole.emojiId %>.webp">
+                            </p>
+                          <% } else { %>
+                            <p class="is-size-1">
+                              <%= reactionrole.emojiId %>
+                            </p>
+                          <% } %>
+                        </figure>
+                        <div class="media-content">
+                          <p>
+                            <strong><%= reactionroles.raw.indexOf(reactionrole) %>.
+                              <span style="color: <%= guild.roles.cache.get(reactionrole.roleId) && guild.roles.cache.get(reactionrole.roleId).color ? guild.roles.cache.get(reactionrole.roleId).color.toString(16) : 'white'; %>">
+                                @<%= guild.roles.cache.get(reactionrole.roleId) ? guild.roles.cache.get(reactionrole.roleId).name : 'Role not found! Delete this reaction.' %>
+                              </span>
+                            </strong><br>
+                            <span style="color: #ffffff50">
+                              <%= reactionrole.type == 'switch' ? 'Adds the role by reacting / Removes the role by unreacting' : 'Adds / Removes the role by reacting but remove the reaction' %><br>
+                              <%= reactionrole.silent == 'false' ? 'Sends a message when reacted' : 'Keeps quiet when reacted' %>  
+                            </span>
+                          </p>
+                          <nav class="level is-mobile">
+                            <div class="level-left">
+                              <a class="level-item">
+                                <span class="icon is-small"><i class="fas fa-reply"></i></span>
+                              </a>
+                              <a class="level-item">
+                                <span class="icon is-small"><i class="fas fa-retweet"></i></span>
+                              </a>
+                              <a class="level-item">
+                                <span class="icon is-small"><i class="fas fa-heart"></i></span>
+                              </a>
+                            </div>
+                          </nav>
+                        </div>
+                        <div class="media-right">
+                          <form action="/dashboard/<%= reactionrole.guildId %>" method="post">
+                            <button type="submit" class="button is-danger is-outlined is-rounded" name="reactionroles" value="delete_<%= reactionroles.raw.indexOf(reactionrole) %>">Delete</button>
+                          </form>
+                        </div>
+                      </article>
+                    </div>
+                <% }); %>
+              </div>
+            <% }); %>
+
+          </div>
+        <% }); %>
+
+          <div id="reactionrole-create" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+              <header class="modal-card-head">
+                <p class="modal-card-title">Create a Reaction Role</p>
+                <button class="delete" aria-label="close"></button>
+              </header>
+              <form action="/dashboard/<%= guild.id %>" method="POST">
+                <section class="modal-card-body">
+                  <p class="subtitle">Channel</p>
+                  <div class="select" style="width: 100%;">
+                    <select name="channel" style="width: 100%;">
+                      <option value="0">Select the channel that will have the reaction role</option>
+                      <% channels.forEach(channel => { %>
+                        <% if (channel.type != Djs.ChannelType.GuildText) return %>
+                        <option value="<%= channel.id %>"># <%= channel.name %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <br><br>
+                  <p class="subtitle">Role</p>
+                  <div class="select" style="width: 100%;">
+                    <select name="role" style="width: 100%;">
+                      <option value="0">Select the role that will be given</option>
+                      <% roles.forEach(role => { 
+                        if (role.id == guild.id) return; %>
+                        <option value="<%= role.id %>" style="color: <%= role.color ? role.color.toString(16) : 'white'; %>"> <%= `@ ${role.name}` %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  <br><br>
+                  <p class="subtitle">Message Id <a class="has-text-info" href="https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-">What's this?</a></label></p>
+                  <div class="control">
+                    <input class="input" type="text" name="message">
+                  </div>
+                  <br>
+                  <p class="subtitle">
+                    <span class="feather">Emoji</span>
+                    <input class="input feather" type="text" name="emoji" readonly onclick="togglePicker()" value="😀" style="width: 200px">
+                    <p style="color: #666">Click on the text field to open or close the emoji picker</p>
+                    <emoji-picker style="display: none;"></emoji-picker><br>
+                  </p>
+                  <p class="subtitle">Behaviour</p>
+                  <div class="select" style="width: 100%;">
+                    <select name="type" style="width: 100%;" onchange="updateBehaviourDesc(event)">
+                      <option value="switch">Add the role by reacting / Remove the role by unreacting</option>
+                      <option value="toggle">Add / Remove the role by reacting but remove the reaction</option>
+                    </select>
+                  </div>
+                  <br>
+                  <input name="silent" id="silent" type="checkbox" class="switch is-outlined is-info">
+                  <label for="silent">Silent</label>
+                  <p style="color: #666">Don't send a message whenever the role is added/removed</p>
+                </section>
+                <footer class="modal-card-foot">
+                  <button type="submit" class="button is-success is-rounded is-outlined" name="reactionroles" value="create">Create</button>
+                  <a class="button is-white is-rounded is-outlined">Cancel</a>
+                </footer>
+              </form>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element/index.js"></script>
+<script>
+  const picker = document.querySelector('emoji-picker');
+  fetch('/emojis/<%= guild.id %>').then(res => res.json()).then(emojis => {
+    picker.customEmoji = emojis;
+  });
+  function togglePicker() {
+    picker.style.display = picker.style.display == 'none' ? 'block' : 'none';
+  }
+  picker.addEventListener('emoji-click', event => {
+    document.getElementsByName('emoji')[0].value = event.detail.unicode ?? event.detail.emoji.name;
+  });
+</script>
+
+<%- include("partials/footer") %>
