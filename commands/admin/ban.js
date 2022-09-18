@@ -17,7 +17,6 @@ module.exports = {
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
 			if (!member) return client.error(lang.invalidmember, message, true);
-			const user = member.user;
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;
@@ -31,25 +30,32 @@ module.exports = {
 			// Create embed and check if bqn has a reason / time period
 			const BanEmbed = new EmbedBuilder()
 				.setColor('Random')
-				.setTitle(`Banned ${user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+				.setTitle(`Banned ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
 			// Add reason if specified
 			const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
 			if (reason) BanEmbed.addFields([{ name: 'Reason', value: reason }]);
 
 			// Send ban message to target
-			await user.send({ content: `**You've been banned from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+			await member.send({ content: `**You've been banned from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
 				.catch(err => {
 					logger.warn(err);
 					message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
 				});
-			logger.info(`Banned user: ${user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+			logger.info(`Banned user: ${member.user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set unban timestamp to member data for auto-unban
-			if (!isNaN(time)) await client.setData('memberdata', 'memberId', `${user.id}-${message.guild.id}`, 'bannedUntil', Date.now() + time);
+			if (!isNaN(time)) {
+				const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}' AND guildId = '${message.guild.id}'`);
+				if (!data[0]) {
+					logger.info(`Generated memberdata for ${member.user.tag} in ${message.guild.name}!`);
+					await client.query(`INSERT INTO memberdata (memberId, guildId) VALUES ('${member.id}', '${message.guild.id}');`);
+				}
+				client.query(`UPDATE memberdata SET bannedUntil = '${Date.now() + time}' WHERE memberId = '${member.id}' AND guildId = '${message.guild.id}'`);
+			}
 
 			// Actually ban the dude
-			await member.ban({ reason: `${author.user.tag} banned user: ${user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
+			await member.ban({ reason: `${author.user.tag} banned user: ${member.user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
 
 			// Reply with response
 			await message.reply({ embeds: [BanEmbed] });
@@ -58,7 +64,7 @@ module.exports = {
 			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
-				BanEmbed.setTitle(`${message.member.user.tag} ${BanEmbed.toJSON().title}`);
+				BanEmbed.setTitle(`${author.user.tag} ${BanEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [BanEmbed] });
 			}
 		}

@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
-	name: 'kick',
+	name: 'ban',
 	deferReply: true,
 	ephemeral: true,
 	async execute(interaction, client, lang, memberId) {
@@ -15,6 +15,7 @@ module.exports = {
 			// Get member and author and check if role is lower than member's role
 			const author = interaction.member;
 			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+			if (member.roles.highest.rawPosition > interaction.guild.members.me.roles.highest.rawPosition) return client.error(`I can't do that! My role is ${member.roles.highest.rawPosition - interaction.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
 
 			// Get amount of time to ban, if not specified, then permanent
 			const timeField = interaction.fields.getTextInputValue('time');
@@ -39,7 +40,14 @@ module.exports = {
 			logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set unban timestamp to member data for auto-unban
-			if (!isNaN(time)) await client.setData('memberdata', 'memberId', `${member.id}-${interaction.guild.id}`, 'bannedUntil', Date.now() + time);
+			if (!isNaN(time)) {
+				const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}' AND guildId = '${interaction.guild.id}'`);
+				if (!data[0]) {
+					logger.info(`Generated memberdata for ${member.user.tag} in ${interaction.guild.name}!`);
+					await client.query(`INSERT INTO memberdata (memberId, guildId) VALUES ('${member.id}', '${interaction.guild.id}');`);
+				}
+				client.query(`UPDATE memberdata SET mutedUntil = '${Date.now() + time}' WHERE memberId = '${member.id}' AND guildId = '${interaction.guild.id}'`);
+			}
 
 			// Actually ban the dude
 			await member.ban({ reason: `${author.user.tag} banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });

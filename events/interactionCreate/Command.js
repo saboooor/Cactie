@@ -14,14 +14,12 @@ module.exports = async (client, interaction) => {
 	if (srvconfig.disabledcmds.includes(command.name)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
 	// Get the language for the user if specified or guild language
-	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
 	let lang = require('../../lang/English/msg.json');
 	if (interaction.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (interaction.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
 	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	if (interaction.locale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
 	// Make args variable from interaction options for compatibility with dash command code
 	const args = interaction.options._hoistedOptions;

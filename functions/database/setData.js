@@ -6,6 +6,6 @@ module.exports = client => {
 			logger.info(`Generated ${table} for ${args}!`);
 			client.createData(table, id, args);
 		}
-		client.query(`UPDATE ${table} Set ${prop} = '${value}' where ${id} = '${args}'`);
+		client.query(`UPDATE ${table} SET ${prop} = '${value}' WHERE ${id} = '${args}'`);
 	};
 };

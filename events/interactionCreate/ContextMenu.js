@@ -13,14 +13,12 @@ module.exports = async (client, interaction) => {
 	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
 
 	// Get the language for the user if specified or guild language
-	const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${interaction.user.id}'`);
 	let lang = require('../../lang/English/msg.json');
 	if (interaction.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (interaction.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
 	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
 	if (interaction.locale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (data[0]) lang = require(`../../lang/${data[0].language}/msg.json`);
 
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
