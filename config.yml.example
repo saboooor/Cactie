@@ -28,4 +28,5 @@ dashboard:
   domain: '' # Dashboard domain
   clientSecret: '' # Client Secret from dev panel
   secret: '' # Idfk it's a secret put it as a secret
+  wsurl: 'wss://cactiedev.smhsmh.club/ws/' # Websocket url for music player
   colors: ['#ffffff', '#000000'] # colors for dashboard background
