@@ -5,7 +5,14 @@ module.exports = {
 		const settings = await client.query('SELECT * FROM settings');
 		for (const srvconfig of settings) {
 			const guild = await client.guilds.fetch(srvconfig.guildId).catch(() => { return null; });
-			if (guild) continue;
+			if (guild) {
+				const dupes = settings.filter(s => s.guildId == srvconfig.guildId);
+				if (dupes.length > 1) {
+					client.delData('settings', 'guildId', srvconfig.guildId);
+					message.reply(`settings have been removed from ${srvconfig.guildId}`);
+				}
+				continue;
+			}
 			client.delData('settings', 'guildId', srvconfig.guildId);
 			message.reply(`settings have been removed from ${srvconfig.guildId}`);
 		}
