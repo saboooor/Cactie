@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async (client, player, track, payload) => {
 	const guild = client.guilds.cache.get(player.guild);
 	const channel = guild.channels.cache.get(player.textChannel);
-	const srvconfig = await client.getData('settings', 'guildId', guild.id);
+	const srvconfig = await client.getData('settings', { guildId: guild.id });
 	let lang = require('../../lang/English/msg.json');
 	if (guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');

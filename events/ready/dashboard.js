@@ -197,7 +197,7 @@ module.exports = async client => {
 		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard?alert=You don\'t have the permission to change this server\'s settings!');
 
 		// retrive the settings stored for this guild and load the page
-		const settings = await client.getData('settings', 'guildId', guild.id);
+		const settings = await client.getData('settings', { guildId: guild.id });
 		const reactionroles = {
 			raw: await client.query(`SELECT * FROM reactionroles WHERE guildId = '${guild.id}'`),
 			channels: [],
@@ -229,7 +229,7 @@ module.exports = async client => {
 		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard?alert=You don\'t have the permission to change this server\'s settings!');
 
 		// Get the current settings
-		const settings = await client.getData('settings', 'guildId', guild.id);
+		const settings = await client.getData('settings', { guildId: guild.id });
 		const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${guild.id}'`);
 
 		if (req.body.reactionroles) {
@@ -238,8 +238,8 @@ module.exports = async client => {
 				const id = query[1];
 				const rr = reactionroles[id];
 				if (!rr || !rr.messageId || !rr.emojiId) return res.redirect(`/dashboard/${guild.id}?alert=That's not a valid reaction role!#reactionroles`);
+				await client.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId, roleId: rr.roleId });
 				logger.info(`Deleted Reaction role: #${id} ${rr.messageId} / ${rr.emojiId}`);
-				client.query(`DELETE FROM reactionroles WHERE messageId = '${rr.messageId}' AND emojiId = '${rr.emojiId}' AND roleId = '${rr.roleId}'`);
 				res.redirect(`/dashboard/${guild.id}?alert=Reaction role deleted successfully!#reactionroles`);
 			}
 			else if (query[0] == 'create') {
@@ -286,7 +286,7 @@ module.exports = async client => {
 
 				// Log and set the data
 				logger.info(`${key}: ${value}`);
-				await client.setData('settings', 'guildId', guild.id, key, value);
+				await client.setData('settings', { guildId: guild.id }, { [key]: value });
 			}
 			res.redirect(`/dashboard/${guild.id}?alert=Settings have been saved successfully!`);
 		}

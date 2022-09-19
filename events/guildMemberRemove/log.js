@@ -3,7 +3,7 @@ const { leave } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, member) => {
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: member.guild.id });
 
 	// Check if log is enabled and send log
 	if (!['memberleave', 'member', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;

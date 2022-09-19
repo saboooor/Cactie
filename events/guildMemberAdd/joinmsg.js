@@ -1,6 +1,6 @@
 module.exports = async (client, member) => {
 	// Get the guild settings
-	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: member.guild.id });
 
 	// Check if join message is set
 	if (srvconfig.joinmessage == 'false') return;

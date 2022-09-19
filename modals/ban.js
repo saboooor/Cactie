@@ -40,14 +40,7 @@ module.exports = {
 			logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set unban timestamp to member data for auto-unban
-			if (!isNaN(time)) {
-				const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}' AND guildId = '${interaction.guild.id}'`);
-				if (!data[0]) {
-					logger.info(`Generated memberdata for ${member.user.tag} in ${interaction.guild.name}!`);
-					await client.query(`INSERT INTO memberdata (memberId, guildId) VALUES ('${member.id}', '${interaction.guild.id}');`);
-				}
-				client.query(`UPDATE memberdata SET mutedUntil = '${Date.now() + time}' WHERE memberId = '${member.id}' AND guildId = '${interaction.guild.id}'`);
-			}
+			if (!isNaN(time)) client.setData('memberdata', { memberId: member.id, guildId: interaction.guild.id }, { bannedUntil: Date.now() + time });
 
 			// Actually ban the dude
 			await member.ban({ reason: `${author.user.tag} banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
@@ -56,7 +49,7 @@ module.exports = {
 			await interaction.reply({ embeds: [BanEmbed] });
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
 			const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				BanEmbed.setTitle(`${author.user.tag} ${BanEmbed.toJSON().title}`);

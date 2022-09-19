@@ -54,8 +54,10 @@ module.exports = {
 				});
 				if (!reaction) return;
 
+				// Push to database
+				await client.createData('reactionroles', { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: reaction._emoji[reaction._emoji.id ? 'id' : 'name'], roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() });
+
 				// Add the reaction role into the database and edit the description of the embed
-				await client.query(`INSERT INTO reactionroles (guildId, channelId, messageId, emojiId, roleId, type) VALUES ('${messagelink[4]}', '${messagelink[5]}', '${messagelink[6]}', '${reaction._emoji[reaction._emoji.id ? 'id' : 'name']}', '${args[3].replace(/\D/g, '')}', '${args[4].toLowerCase()}');`);
 				RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
 			}
 			else if (args[0] == 'remove') {
@@ -73,7 +75,7 @@ module.exports = {
 				if (!rr) return client.error('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
 
 				// Remove the reaction role form the database
-				await client.query(`DELETE FROM reactionroles WHERE messageId = '${rr.messageId}' AND emojiId = '${rr.emojiId}'`);
+				await client.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId });
 
 				// Get the reaction role's emoji
 				const emoji = client.emojis.cache.get(rr.emojiId) ?? rr.emojiId;

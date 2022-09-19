@@ -6,7 +6,7 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.selfDeaf == newState.selfDeaf && oldState.serverDeaf == newState.serverDeaf) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', newState.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: newState.guild.id });
 
 	// Check if log is enabled
 	if (!['voicedeafen', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;

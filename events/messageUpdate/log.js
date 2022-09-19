@@ -7,7 +7,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 	if ((newMessage.author && newMessage.author.bot) || oldMessage.content == newMessage.content) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', newMessage.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: newMessage.guild.id });
 
 	// Check if log is enabled and channel is valid
 	if (!['messageupdate', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;

@@ -9,5 +9,5 @@ module.exports = async function addVote(body, client) {
 		.setTitle('Vote Received!')
 		.setDescription(`Thank you for voting, <@${user.id || body.id || body.user}>!`);
 	client.guilds.cache.get('811354612547190794').channels.cache.get('931848198773948427').send({ embeds: [VoteEmbed] });
-	await client.setData('lastvoted', 'userId', `${body.id || body.user}`, 'timestamp', Date.now());
+	await client.setData('lastvoted', { userId: `${body.id || body.user}` }, { timestamp: Date.now() });
 };

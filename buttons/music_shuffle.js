@@ -14,7 +14,7 @@ module.exports = {
 			const player = client.manager.get(interaction.guild.id);
 
 			// Check if djrole is set, if so, vote for shuffle instead of shuffling
-			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
 			if (srvconfig.djrole != 'false') {
 				const requiredAmount = Math.floor((interaction.guild.members.me.voice.channel.members.size - 1) / 2);
 				let alr = false;

@@ -11,7 +11,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if tickets are disabled
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 
 			// Create a ticket
 			const msg = await createTicket(client, srvconfig, message.member, args.join(' '));

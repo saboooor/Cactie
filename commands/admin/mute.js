@@ -14,7 +14,7 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			// Get mute role and check if role is valid
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 			const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
 			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
 
@@ -53,14 +53,7 @@ module.exports = {
 			else await member.timeout(time, `Muted by ${author.user.tag} for ${args.slice(1).join(' ')}`);
 
 			// Set member data for unmute time if set
-			if (!isNaN(time)) {
-				const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}' AND guildId = '${message.guild.id}'`);
-				if (!data[0]) {
-					logger.info(`Generated memberdata for ${member.user.tag} in ${message.guild.name}!`);
-					await client.query(`INSERT INTO memberdata (memberId, guildId) VALUES ('${member.id}', '${message.guild.id}');`);
-				}
-				client.query(`UPDATE memberdata SET mutedUntil = '${Date.now() + time}' WHERE memberId = '${member.id}' AND guildId = '${message.guild.id}'`);
-			}
+			if (!isNaN(time)) client.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: Date.now() + time });
 
 			// Send mute message to target
 			await member.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })

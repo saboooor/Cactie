@@ -3,7 +3,7 @@ const { no } = require('../../lang/int/emoji.json');
 
 module.exports = async (client, messages, channel) => {
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', channel.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: channel.guild.id });
 
 	// Check if log is enabled and channel is valid
 	if (!['messagedelete', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;

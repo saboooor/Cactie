@@ -26,7 +26,7 @@ module.exports = async (client, reaction, user) => {
 	const member = await guild.members.fetch(user.id).catch(err => logger.error(err));
 
 	// Get current settings for the guild and check if tickets are enabled
-	const srvconfig = await client.getData('settings', 'guildId', guild.id);
+	const srvconfig = await client.getData('settings', { guildId: guild.id });
 	if (!srvconfig.tickets) return;
 
 	try {

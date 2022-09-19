@@ -6,7 +6,7 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.selfMute == newState.selfMute && oldState.serverMute == newState.serverMute) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', newState.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: newState.guild.id });
 
 	// Check if log is enabled
 	if (!['voicemute', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;

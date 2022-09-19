@@ -15,7 +15,7 @@ module.exports = {
 			const player = client.manager.get(interaction.guild.id);
 
 			// Check if djrole is set, if so, vote for skip instead of skipping
-			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
 			if (srvconfig.djrole != 'false') return;
 
 			if (parseInt(interaction.values[0])) player.queue.remove(0, interaction.values[0]);

@@ -10,7 +10,7 @@ module.exports = async (client, interaction) => {
 	if (!command) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
 	if (srvconfig.disabledcmds.includes(command.name)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
 	// Get the language for the user if specified or guild language
@@ -66,12 +66,12 @@ module.exports = async (client, interaction) => {
 	setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
 	// Check if command can be ran only if the user voted since the past 24 hours
-	if (command.voteOnly && client.user.id == '848775888673439745') {
+	if (command.voteOnly) {
 		// Get vote data for user
-		const vote = await client.getData('lastvoted', 'userId', interaction.user.id);
+		const vote = await client.getData('lastvoted', { userId: interaction.user.id });
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
-		if (Date.now() > vote.timestamp + 86400000) {
+		if (!vote || Date.now() > vote.timestamp + 86400000) {
 			const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
 			const row = new ActionRowBuilder()

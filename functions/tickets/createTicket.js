@@ -16,7 +16,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 		}
 		catch (err) {
 			logger.error(`Ticket data found but can't be fetched: ${err}`);
-			client.delData('ticketdata', 'channelId', ticketData.channelId);
+			client.delData('ticketdata', { channelId: ticketData.channelId });
 		}
 	}
 
@@ -54,7 +54,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	else await ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings` and set the Support Role value' });
 
 	// Set the database
-	await client.query(`INSERT INTO ticketdata (guildId, channelId, opener, users) VALUES ('${member.guild.id}', '${ticket.id}', '${member.id}', '${member.id}');`);
+	await client.createData('ticketdata', { guildId: member.guild.id, channelId: ticket.id, opener: member.id, users: member.id });
 
 	// Create embed
 	const CreateEmbed = new EmbedBuilder()

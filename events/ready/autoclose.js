@@ -10,7 +10,7 @@ module.exports = client => {
 				// Fetch the guild and channel and config
 				const guild = await client.guilds.cache.get(data.guildId);
 				const channel = await guild.channels.cache.get(data.channelId);
-				const srvconfig = await client.getData('settings', 'guildId', guild.id);
+				const srvconfig = await client.getData('settings', { guildId: guild.id });
 
 				// Close the ticket
 				await closeTicket(client, srvconfig, guild.members.me, channel);

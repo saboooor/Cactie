@@ -15,7 +15,7 @@ module.exports = async (client, oldState, newState) => {
 	if (!song) return;
 
 	// Set lang
-	const srvconfig = await client.getData('settings', 'guildId', guild.id);
+	const srvconfig = await client.getData('settings', { guildId: guild.id });
 	let lang = require('../../lang/English/msg.json');
 	if (guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
 	else if (guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');

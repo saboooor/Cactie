@@ -16,7 +16,7 @@ module.exports = {
 		try {
 			// Get player and server config and create error embed
 			const player = client.manager.get(message.guild.id);
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 
 			// If arg is set, force skip to index (This requires dj role)
 			if (args.length) {

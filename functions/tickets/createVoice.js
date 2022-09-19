@@ -53,7 +53,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 	// Add voiceticket to ticket database
-	await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', voiceticket.id);
+	await client.setData('ticketdata', { channelId: channel.id }, { voiceticket: voiceticket.id });
 
 	// Create embed for log
 	const VCEmbed = new EmbedBuilder()

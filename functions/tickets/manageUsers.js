@@ -16,7 +16,7 @@ module.exports = async function manageUsers(client, member, channel, targetMembe
 	if (add && ticketData.users.includes(targetMember.id)) throw new Error('This user has already been added!');
 	else if (!add && !ticketData.users.includes(targetMember.id)) throw new Error('This user isn\'t added!');
 	add ? ticketData.users.push(targetMember.id) : ticketData.users.splice(ticketData.users.indexOf(targetMember.id), 1);
-	client.setData('ticketdata', 'channelId', channel.id, 'users', ticketData.users.join(','));
+	client.setData('ticketdata', { channelId: channel.id }, { users: ticketData.users.join(',') });
 
 	// If the ticket has a voiceticket, give permissions to the user there
 	if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {

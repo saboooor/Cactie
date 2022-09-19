@@ -18,7 +18,7 @@ module.exports = {
 			const player = client.manager.get(message.guild.id);
 
 			// Check if djrole is set, if so, check if user has djrole, if not, vote for loop instead of looping
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 			if (srvconfig.djrole != 'false' && message.guild.roles.cache.get(srvconfig.djrole) && !message.member.roles.cache.has(srvconfig.djrole)) {
 				const requiredAmount = Math.floor((message.guild.members.me.voice.channel.members.size - 1) / 2);
 				let alr = false;

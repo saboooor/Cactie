@@ -7,7 +7,7 @@ module.exports = async client => {
 		voteData.forEach(async data => {
 			if (data.timestamp + 86400000 < Date.now()) {
 				// If the user has not voted in 24 hours, remove them from the vote database
-				await client.delData('lastvoted', 'userId', data.userId);
+				await client.delData('lastvoted', { userId: data.userId });
 			}
 		});
 	});

@@ -3,7 +3,7 @@ const closeTicket = require('../../functions/tickets/closeTicket.js');
 module.exports = async (client, member) => {
 	try {
 		// Get the server config
-		const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
+		const srvconfig = await client.getData('settings', { guildId: member.guild.id });
 
 		// Get the ticket data
 		const ticketData = await client.query(`SELECT * FROM ticketdata WHERE opener = '${member.id}'`);

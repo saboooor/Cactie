@@ -45,7 +45,7 @@ module.exports = {
 			logger.info(`Kicked user: ${member.user.tag} from ${message.guild.name}`);
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				KickEmbed.setTitle(`${message.member.user.tag} ${KickEmbed.toJSON().title}`);

@@ -13,7 +13,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get server config
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 
 			// Get channel to send poll in
 			let channel = message.guild.channels.cache.get(srvconfig.pollchannel);

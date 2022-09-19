@@ -11,7 +11,7 @@ module.exports = async function deleteTicket(client, srvconfig, member, channel,
 	if (!force && channel.name.startsWith('ticket')) throw new Error('This ticket needs to be closed first!');
 
 	// Actually delete ticket and ticket database
-	await client.delData('ticketdata', 'channelId', channel.id);
+	await client.delData('ticketdata', { channelId: channel.id });
 	logger.info(`Deleted ticket #${channel.name}`);
 	await channel.delete();
 	return '**Ticket deleted successfully!**';

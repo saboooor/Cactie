@@ -1,7 +1,7 @@
 module.exports = async (client, member) => {
 	// Get member data and guild settings
 	const memberdata = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}' AND guildId = '${member.guild.id}'`);
-	const srvconfig = await client.getData('settings', 'guildId', member.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: member.guild.id });
 
 	// Mute user again if user has been muted before leaving
 	const muterole = member.guild.roles.cache.get(srvconfig.mutecmd);

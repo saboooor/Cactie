@@ -3,7 +3,7 @@ module.exports = async (client, message) => {
 	if (!message.guild || message.webhookId || message.author.bot) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+	const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 
 	// Check if reaction keywords are in message, if so, react
 	client.reactions.forEach(reaction => {

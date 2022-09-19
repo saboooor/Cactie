@@ -8,7 +8,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Check if tickets are disabled
-			const srvconfig = await client.getData('settings', 'guildId', interaction.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
 
 			// Create a ticket
 			const msg = await closeTicket(client, srvconfig, interaction.member, interaction.channel);

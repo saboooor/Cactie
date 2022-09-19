@@ -27,11 +27,11 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	if (ticketData.voiceticket != 'false') {
 		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
 		if (voiceticket) voiceticket.delete();
-		await client.setData('ticketdata', 'channelId', channel.id, 'voiceticket', 'false');
+		await client.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
 	}
 
 	// Unresolve ticket
-	if (ticketData.resolved != 'false') await client.setData('ticketdata', 'channelId', channel.id, 'resolved', 'false');
+	if (ticketData.resolved != 'false') await client.setData('ticketdata', { channelId: channel.id }, { resolved: false });
 
 	// Create a transcript of the ticket
 	const messagechunks = await getMessages(channel, 'infinite').catch(err => { logger.error(err); });

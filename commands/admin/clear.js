@@ -39,7 +39,7 @@ module.exports = {
 			logger.info(`Cleared ${allmessages.size} messages from #${message.channel.name} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', 'guildId', message.guild.id);
+			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (!logchannel) return;
 
