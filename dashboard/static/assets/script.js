@@ -30,24 +30,17 @@ function openModal(element, options) {
 	}
 	element.classList.add('is-active');
 }
-
 function closeModal(element) { element.classList.remove('is-active'); }
 
 // Add a click event on various child elements to close the parent modal
-document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button').forEach($close => {
-	const $target = $close.closest('.modal');
-
-	$close.addEventListener('click', () => {
-		closeModal($target);
-	});
-});
+document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button').forEach(close => close.addEventListener('click', () => closeModal(close.closest('.modal'))));
 
 // Hide the parent element of an x button
 function hide(event) { event.srcElement.parentElement.style.display = 'none'; }
 
+// Add notification on alert (DEPRECATED)
 const urlParams = new URLSearchParams(window.location.search);
 const alert = urlParams.get('alert');
-
 const notificationList = document.getElementById('notifications');
 if (notificationList && alert) {
 	notificationList.innerHTML = `
@@ -56,4 +49,15 @@ if (notificationList && alert) {
 			<p><strong style="color: white">${alert}</strong></p>
 		</div>
 	`;
+}
+
+async function post() {
+	const a = await fetch('/dashboard/3259835', {
+		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ a: 1, b: 'Textual content' }),
+	});
 }

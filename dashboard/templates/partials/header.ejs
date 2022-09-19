@@ -50,13 +50,16 @@
           </a>
         </div>
         <div class="navbar-end">
+          <a class="navbar-item has-tooltip-bottom" data-tooltip="This tests the new POST algorithm that will be used in the dashboard to prevent annoying reloads" onclick="post()">
+            Test new POST
+          </a>
           <a class="navbar-item" href="/invite">
             <i data-feather="plus"></i>
             Invite
           </a>
           <% if (user) { %>
             <a class="navbar-item has-tooltip-bottom" data-tooltip="Click to log out" href="/logout">
-              <img class="feather" style="border-radius: 10px;" src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>">
+              <img class="feather" style="border-radius: 50px;" src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>">
               <%= user.username %>#<%= user.discriminator %>
             </a>
           <% } else { %>
