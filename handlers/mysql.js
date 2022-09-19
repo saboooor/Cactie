@@ -54,7 +54,7 @@ module.exports = async client => {
 		let data = await client.query(`SELECT * FROM ${table} WHERE ${WHERE}`);
 		if (!data[0]) {
 			await client.createData(table, where);
-			data = await getData(table, where);
+			data = [await getData(table, where)];
 		}
 		return data[0];
 	};
