@@ -231,6 +231,8 @@ roles.reverse();
                   <option value="memberleave" <% if (settings.auditlogs.split(',').includes('memberleave')) { %> selected <% } %>>Member Left</option>
                   <option value="message" <% if (settings.auditlogs.split(',').includes('message')) { %> selected <% } %>>All Message-Related Logs</option>
                   <option value="messagedelete" <% if (settings.auditlogs.split(',').includes('messagedelete')) { %> selected <% } %>>Message Deleted</option>
+                  <option value="messagedeletebulk" <% if (settings.auditlogs.split(',').includes('messagedeletebulk')) { %> selected <% } %>>Messages Bulk-Deleted</option>
+                  <option value="messageupdate" <% if (settings.auditlogs.split(',').includes('messageupdate')) { %> selected <% } %>>Message Edited</option>
                   <option value="channel" <% if (settings.auditlogs.split(',').includes('channel')) { %> selected <% } %>>All Channel-Related Logs</option>
                   <option value="channelcreate" <% if (settings.auditlogs.split(',').includes('channelcreate')) { %> selected <% } %>>Channel Created</option>
                   <option value="channeldelete" <% if (settings.auditlogs.split(',').includes('channeldelete')) { %> selected <% } %>>Channel Deleted</option>
