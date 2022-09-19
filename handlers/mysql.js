@@ -22,7 +22,7 @@ module.exports = async client => {
 	client.createData = async function createData(table, body) {
 		const bodykeys = Object.keys(body);
 		const bodyvalues = Object.values(body);
-		const VALUES = bodyvalues.map(v => { return v === null ? 'NULL' : `'${v}'`; }).join('\', \'');
+		const VALUES = bodyvalues.map(v => { return v === null ? 'NULL' : `'${v}'`; }).join(', ');
 		try {
 			await client.query(`INSERT INTO ${table} (${bodykeys.join(', ')}) VALUES (${VALUES})`);
 			logger.info(`Created ${table}: ${JSON.stringify(body)}`);
