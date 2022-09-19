@@ -176,7 +176,7 @@ a, button, .is-parent {
 .modal-card-head, .modal-card-title, .modal-card-foot { background-color: #222; }
 .modal-card-body {
   background-color: #111;
-  height: 50vh
+  max-height: 70vh;
 }
 .modal-card-head, .modal-card-title, .modal-card-body, .modal-card-foot {
   border: none;

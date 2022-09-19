@@ -63,12 +63,12 @@ module.exports = async client => {
 	client.setData = async function setData(table, where, body) {
 		const wherekeys = Object.keys(where);
 		const WHERE = wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ');
-		const bodykeys = Object.keys(where);
+		const bodykeys = Object.keys(body);
 		const SET = bodykeys.map(k => { return `${k} = ${body[k] === null ? 'NULL' : `'${body[k]}'`}`; }).join(', ');
 		const data = await client.query(`SELECT * FROM ${table} WHERE ${WHERE}`);
 		logger.info(`Set ${table} where ${JSON.stringify(where)} to ${JSON.stringify(body)}`);
 		if (!data[0]) await client.createData(table, { where });
-		client.query(`UPDATE ${table} SET ${SET} WHERE ${WHERE}'`);
+		client.query(`UPDATE ${table} SET ${SET} WHERE ${WHERE}`);
 	};
 
 	// Log

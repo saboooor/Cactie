@@ -14,6 +14,20 @@ document.addEventListener('DOMContentLoaded', () => {
 function openModal(element, options) {
 	if (options && options.channel) document.getElementsByName('channel')[0].value = options.channel;
 	if (options && options.message) document.getElementsByName('message')[0].value = options.message;
+	if (options && options.role && options.emoji && options.type && options.silent) {
+		document.getElementsByName('role')[0].value = options.role;
+		document.getElementsByName('emoji')[0].value = options.emoji;
+		document.getElementsByName('type')[0].value = options.type;
+		document.getElementsByName('silent')[0].checked = options.silent == 'true';
+		document.querySelector('.modal-card-title').innerText = 'Edit this Reaction Role';
+		document.querySelectorAll('.create-only').forEach(e => e.style.display = 'none');
+		document.querySelectorAll('.edit-only').forEach(e => e.style.display = 'block');
+	}
+	else {
+		document.querySelector('.modal-card-title').innerText = 'Create a Reaction Role';
+		document.querySelectorAll('.create-only').forEach(e => e.style.display = 'block');
+		document.querySelectorAll('.edit-only').forEach(e => e.style.display = 'none');
+	}
 	element.classList.add('is-active');
 }
 
