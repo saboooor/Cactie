@@ -117,9 +117,8 @@ a, button, .is-parent {
   vertical-align: middle;
 }
 
-.notification, #ip {
+.notification {
   border-radius: 10px;
-  background-color: #4e834e;
   color: #fff;
 }
 
@@ -168,12 +167,12 @@ a, button, .is-parent {
   visibility: hidden;
 }
 
-.modal-card-head, .modal-card-title, .modal-card-foot { background-color: #222; }
-.modal-card-body {
-  background-color: #111;
-  max-height: 70vh;
+.modal-card {
+  border-radius: 10px;
+  max-height: 80vh;
 }
 .modal-card-head, .modal-card-title, .modal-card-body, .modal-card-foot {
+  background-color: #222;
   border: none;
   color: white;
 }

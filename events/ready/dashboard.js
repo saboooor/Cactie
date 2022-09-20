@@ -91,16 +91,10 @@ module.exports = async client => {
 
 	// initialize body-parser middleware to be able to read forms.
 	app.use(bodyParser.json());
-	app.use(
-		bodyParser.urlencoded({
-			extended: true,
-		}),
-	);
+	app.use(bodyParser.urlencoded({ extended: true }));
 
 	// host all of the files in the assets using their name in the root address.
-	app.use('/', express.static(path.join(dataDir, 'static'), {
-		extensions: ['html'],
-	}));
+	app.use('/', express.static(path.join(dataDir, 'static'), { extensions: ['html'] }));
 
 	// declare a renderTemplate function to make rendering of a template in a route as easy as possible.
 	const renderTemplate = (res, req, template, data = {}) => {
@@ -192,9 +186,9 @@ module.exports = async client => {
 	app.get('/dashboard/:guildId', checkAuth, async (req, res) => {
 		// validate the request, check if guild exists, member is in guild and if member has minimum permissions, if not, we redirect it back.
 		const guild = client.guilds.cache.get(req.params.guildId);
-		if (!guild) return res.redirect('/dashboard?alert=This server couldn\'t be found!');
+		if (!guild) return res.redirect('/dashboard');
 		const member = await guild.members.fetch(req.user.id).catch(() => { return null; });
-		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard?alert=You don\'t have the permission to change this server\'s settings!');
+		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard');
 
 		// retrive the settings stored for this guild and load the page
 		const settings = await client.getData('settings', { guildId: guild.id });
@@ -223,88 +217,69 @@ module.exports = async client => {
 	app.post('/dashboard/:guildId', checkAuth, async (req, res) => {
 		// Get the guild from the guildId in the URL and check if it exists
 		const guild = client.guilds.cache.get(req.params.guildId);
-		if (!guild) return res.redirect('/dashboard?alert=This server couldn\'t be found!');
+		if (!guild) return res.redirect('/dashboard');
 
 		// Get the member by the userId and check if permission is set
 		const member = guild.members.cache.get(req.user.id);
-		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard?alert=You don\'t have the permission to change this server\'s settings!');
+		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard');
 
-		// Get the current settings
-		const settings = await client.getData('settings', { guildId: guild.id });
-		const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${guild.id}'`);
-
-		if (req.body.reactionroles) {
-			const query = req.body.reactionroles.split('_');
-			if (query[0] == 'delete') {
-				const id = query[1];
-				const rr = reactionroles[id];
-				if (!rr || !rr.messageId || !rr.emojiId) return res.redirect(`/dashboard/${guild.id}?alert=That's not a valid reaction role!#reactionroles`);
-				await client.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId, roleId: rr.roleId });
-				logger.info(`Deleted Reaction role: #${id} ${rr.messageId} / ${rr.emojiId}`);
-				res.redirect(`/dashboard/${guild.id}?alert=Reaction role deleted successfully!#reactionroles`);
+		if (req.body.reactionrole) {
+			if (req.body.reactionrole == 'delete') {
+				await client.delData('reactionroles', req.body.json);
+				res.json({ success: true, msg: 'Reaction role deleted successfully!' });
 			}
-			else if (query[0] == 'create') {
+			else if (req.body.reactionrole == 'create') {
 				// Get the channel from the channel id in the url and check if it exists
-				const channel = await guild.channels.fetch(req.body.channel);
-				if (!channel) return res.redirect(`/dashboard/${guild.id}?alert=That channel doesn't exist!#reactionroles`);
+				const channel = await guild.channels.fetch(req.body.values.channelId);
+				if (!channel) return res.json({ success: false, msg: 'That channel doesn\'t exist!' });
 
 				// Check if the bot has sufficient permissions in the channel
 				const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions', 'ReadMessageHistory'], guild.members.me, channel);
-				if (permCheck) return res.redirect(`/dashboard/${guild.id}?alert=${permCheck}#reactionroles`);
+				if (permCheck) return res.json({ success: false, msg: permCheck });
 
 				// Check if the message exist
-				const fetchedMsg = await channel.messages.fetch(req.body.message).catch(() => { return null; });
-				if (!fetchedMsg) return res.redirect(`/dashboard/${guild.id}?alert=The Message Id is invalid!#reactionroles`);
+				const fetchedMsg = await channel.messages.fetch(req.body.values.messageId).catch(() => { return null; });
+				if (!fetchedMsg) return res.json({ success: false, msg: 'The Message Id is invalid!' });
 
 				// Attempt to add the reaction to the message
-				const reaction = await fetchedMsg.react(req.body.emoji).catch((err) => {
-					res.redirect(`/dashboard/${guild.id}?alert=Unable to react to the message! Does ${client.user.username} have access to the message? / ${err}#reactionroles`);
+				const reaction = await fetchedMsg.react(req.body.values.emojiId).catch((err) => {
+					res.json({ success: false, msg: `Unable to react to the message! Does ${client.user.username} have access to the message? / ${err}` });
 					return null;
 				});
 				if (!reaction) return;
 
 				logger.info(`Created Reaction role: ${JSON.stringify(req.body)}`);
-				await client.createData('reactionroles', { guildId: guild.id, channelId: req.body.channel, messageId: req.body.message, emojiId: req.body.emoji, roleId: req.body.role, type: req.body.type, silent: req.body.silent == 'on' });
-				res.redirect(`/dashboard/${guild.id}?alert=Reaction role added successfully!#${req.body.channel}`);
+				await client.createData('reactionroles', { guildId: guild.id, ...req.body.values });
+				res.json({ success: true, msg: 'Reaction role added successfully!' });
 			}
-			else if (query[0] == 'edit') {
+			else if (req.body.reactionrole == 'edit') {
 				// Get the channel from the channel id in the url and check if it exists
-				const channel = await guild.channels.fetch(req.body.channel);
-				if (!channel) return res.redirect(`/dashboard/${guild.id}?alert=That channel doesn't exist!#reactionroles`);
+				const channel = await guild.channels.fetch(req.body.where.channelId);
+				if (!channel) return res.json({ success: false, msg: 'That channel doesn\'t exist!' });
 
 				// Check if the bot has sufficient permissions in the channel
 				const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions', 'ReadMessageHistory'], guild.members.me, channel);
-				if (permCheck) return res.redirect(`/dashboard/${guild.id}?alert=${permCheck}#reactionroles`);
+				if (permCheck) return res.json({ success: false, msg: permCheck });
 
 				// Check if the message exist
-				const fetchedMsg = await channel.messages.fetch(req.body.message).catch(() => { return null; });
-				if (!fetchedMsg) return res.redirect(`/dashboard/${guild.id}?alert=The Message Id is invalid!#reactionroles`);
+				const fetchedMsg = await channel.messages.fetch(req.body.where.messageId).catch(() => { return null; });
+				if (!fetchedMsg) return res.json({ success: false, msg: 'The Message Id is invalid!' });
 
 				logger.info(`Edited Reaction role: ${JSON.stringify(req.body)}`);
-				await client.setData('reactionroles', { guildId: guild.id, channelId: req.body.channel, messageId: req.body.message, emojiId: req.body.emoji }, { roleId: req.body.role, type: req.body.type, silent: req.body.silent == 'on' });
-				res.redirect(`/dashboard/${guild.id}?alert=Reaction role edited successfully!#${req.body.channel}`);
+				await client.setData('reactionroles', { guildId: guild.id, ...req.body.where }, req.body.set);
+				res.json({ success: true, msg: 'Reaction role edited successfully!' });
 			}
 		}
 		else {
-			// Set false for checkboxes
-			const checkboxes = ['reactions', 'suggestthreads'];
-			checkboxes.forEach(checkbox => { if (!req.body[checkbox]) req.body[checkbox] = 'false'; });
+			// Iterate through the form body's keys and convert from array to string
+			const keys = Object.keys(req.body);
+			keys.forEach(key => { if (Array.isArray(req.body[key])) req.body[key] = req.body[key].join(','); });
 
-			// Iterate through the form body's keys
-			for (const key in req.body) {
-				// Get the value of the key and convert arrays into strings with commas
-				let value = req.body[key] == '' ? 'false' : req.body[key];
-				if (value == 'on') value = 'true';
-				if (Array.isArray(value)) value = value.join(',');
+			// Set all given data
+			await client.setData('settings', { guildId: guild.id }, req.body);
 
-				// Check if the value is unchanged
-				if (settings[key] == value) continue;
-
-				// Log and set the data
-				logger.info(`${key}: ${value}`);
-				await client.setData('settings', { guildId: guild.id }, { [key]: value });
-			}
-			res.redirect(`/dashboard/${guild.id}?alert=Settings have been saved successfully!`);
+			// Respond with success message
+			res.json({ success: true, msg: `${keys.join(', ')} ha${keys.length > 1 ? 've' : 's'} been updated successfully!` });
 		}
 	});
 
