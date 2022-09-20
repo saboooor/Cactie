@@ -30,17 +30,25 @@ module.exports = async function analyzeProfile(message, client, args) {
 
 	logger.info(`Spark Profile analyzed from ${author.tag} (${author.id}): ${url}`);
 
-	const response_raw = await fetch(url + '?raw=1');
-	const sampler = await response_raw.json();
+	let sampler, err;
 
-	if (!sampler) {
+	try {
+		const response_raw = await fetch(url + '?raw=1');
+		sampler = await response_raw.json();
+	}
+	catch (error) {
+		logger.error(error);
+		err = error;
+	}
+
+	if (!sampler || err) {
 		ProfileEmbed.setFields([{
-			name: '❌ Processing Error',
-			value: 'The bot cannot process this Spark profile. Please use an alternative Spark profile.',
+			name: '⚠️ Warning',
+			value: 'The bot cannot process this Spark profile. Please use an alternative Spark profile or use a Timings Report with /timings.',
 			inline: true,
 		}]);
 		ProfileEmbed.setColor(0xff0000);
-		ProfileEmbed.setDescription(null);
+		ProfileEmbed.setDescription(err ? `\`\`\`${err}\`\`\`` : null);
 		return [{ embeds: [ProfileEmbed] }];
 	}
 
@@ -53,7 +61,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 
 	let server_properties, bukkit, spigot, paper, purpur;
 
-	const plugins = Object.values(sampler.classSources);
+	const plugins = sampler.classSources ? Object.values(sampler.classSources) : [];
 	const configs = sampler.metadata.serverConfigurations;
 	if (configs) {
 		if (configs['server.properties']) server_properties = JSON.parse(configs['server.properties']);
@@ -61,6 +69,13 @@ module.exports = async function analyzeProfile(message, client, args) {
 		if (configs['spigot.yml']) spigot = JSON.parse(configs['spigot.yml']);
 		if (configs['paper/']) paper = JSON.parse(configs['paper/']);
 		if (configs['purpur.yml']) purpur = JSON.parse(configs['purpur.yml']);
+	}
+	else {
+		fields.push({
+			name: '❌ Processing Error',
+			value: 'The bot cannot fully process this Spark profile as the server configurations could not be found. Recommendations may be limited.',
+			inline: true,
+		});
 	}
 
 	const PROFILE_CHECK = {
@@ -164,7 +179,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 	// 	}
 	// });
 
-	if (PROFILE_CHECK.plugins) {
+	if (configs && PROFILE_CHECK.plugins) {
 		Object.keys(PROFILE_CHECK.plugins).forEach(server_name => {
 			if (Object.keys(configs).includes(server_name)) {
 				plugins.forEach(plugin => {
@@ -180,7 +195,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 		});
 	}
 
-	if (PROFILE_CHECK.config) {
+	if (configs && PROFILE_CHECK.config) {
 		Object.keys(PROFILE_CHECK.config).map(i => { return PROFILE_CHECK.config[i]; }).forEach(config => {
 			Object.keys(config).forEach(option_name => {
 				const option = config[option_name];

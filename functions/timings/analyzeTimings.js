@@ -40,24 +40,32 @@ module.exports = async function analyzeTimings(message, client, args) {
 
 	const timings_json = timings_host + 'data.php?id=' + timings_id;
 
-	const response_raw = await fetch(url + '&raw=1');
-	const request_raw = await response_raw.json();
-	const response_json = await fetch(timings_json);
-	const request = await response_json.json();
+	let request_raw, request, err;
 
-	if (!request_raw) {
+	try {
+		const response_raw = await fetch(url + '&raw=1');
+		request_raw = await response_raw.json();
+		const response_json = await fetch(timings_json);
+		request = await response_json.json();
+	}
+	catch (error) {
+		logger.error(error);
+		err = error;
+	}
+
+	if (!request_raw || !request || err) {
 		TimingsEmbed.setFields([{
 			name: '❌ Processing Error',
 			value: 'The bot cannot process this timings report. Please use an alternative timings report.',
 			inline: true,
 		}]);
 		TimingsEmbed.setColor(0xff0000);
-		TimingsEmbed.setDescription(null);
+		TimingsEmbed.setDescription(err ? `\`\`\`${err}\`\`\`` : null);
 		return [{ embeds: [TimingsEmbed] }];
 	}
 
 	const server_icon = timings_host + 'image.php?id=' + request_raw.icon;
-	TimingsEmbed.setAuthor({ name: 'Timings Analysis', iconURL: (server_icon ?? 'https://i.imgur.com/deE1oID.png'), url: url });
+	TimingsEmbed.setAuthor({ name: 'Timings Analysis', iconURL: server_icon ?? 'https://i.imgur.com/deE1oID.png', url: url });
 
 	if (!request_raw || !request) {
 		TimingsEmbed.addFields([{ name: '❌ Invalid report', value: 'Create a new timings report.', inline: true }]);
@@ -80,6 +88,13 @@ module.exports = async function analyzeTimings(message, client, args) {
 		if (configs['paper'] || configs['paperspigot']) paper = configs['paper'] ?? configs['paperspigot'];
 		if (configs['pufferfish']) pufferfish = configs['pufferfish'];
 		if (configs['purpur']) purpur = configs['purpur'];
+	}
+	else {
+		fields.push({
+			name: '⚠️ Warning',
+			value: 'The bot cannot fully process this timings report as the server configurations could not be found. Recommendations may be limited.',
+			inline: true,
+		});
 	}
 
 	const TIMINGS_CHECK = {
@@ -211,7 +226,7 @@ module.exports = async function analyzeTimings(message, client, args) {
 			}
 		});
 	}
-	if (TIMINGS_CHECK.config) {
+	if (configs && TIMINGS_CHECK.config) {
 		Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i]; }).forEach(config => {
 			Object.keys(config).forEach(option_name => {
 				const option = config[option_name];
