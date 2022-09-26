@@ -18,7 +18,7 @@ module.exports = async (client, reaction, user) => {
 	const emojiId = reaction.emoji.id ?? reaction.emoji.name;
 
 	// Get the reaction role from the database and check if it exists
-	const reactionrole = (await client.query(`SELECT * FROM reactionroles WHERE messageId = '${message.id}' AND emojiId = '${emojiId}'`))[0];
+	const reactionrole = await client.getData('reactionroles', { messageId: message.id, emojiId }, { nocreate: true });
 	if (!reactionrole || reactionrole.type == 'toggle') return;
 
 	// Get the reaction role's role

@@ -30,8 +30,8 @@ module.exports = {
 			else await member.timeout(null);
 
 			// Reset the mute timer
-			const data = await client.query(`SELECT * FROM memberdata WHERE memberId = '${member.id}' AND guildId = '${message.guild.id}'`);
-			if (data[0]) await client.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: null });
+			const data = await client.getData('memberdata', { memberId: member.id, guildId: message.guild.id }, { nocreate: true });
+			if (data) await client.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: null });
 
 			// Send unmute message to user
 			await member.send({ content: '**You\'ve been unmuted**' })

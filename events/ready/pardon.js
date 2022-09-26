@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async client => {
 	schedule('* * * * *', async () => {
 		// Get all member data
-		const memberdata = await client.query('SELECT * FROM `memberdata`');
+		const memberdata = await client.getData('memberdata', null, { all: true });
 
 		// Iterate through every row in the data
 		for (const data of memberdata) {

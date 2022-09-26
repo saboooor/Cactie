@@ -7,7 +7,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if channel is a ticket
-	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${channel.id}'`))[0];
+	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 

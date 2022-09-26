@@ -5,7 +5,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
 
 	// Check if ticket already exists
-	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE opener = '${member.id}' AND guildId = '${member.guild.id}'`))[0];
+	const ticketData = await client.getData('ticketdata', { opener: member.id, guildId: member.guild.id }, { nocreate: true });
 	if (ticketData) {
 		try {
 			const channel = await member.guild.channels.fetch(ticketData.channelId);

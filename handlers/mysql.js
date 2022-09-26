@@ -48,15 +48,15 @@ module.exports = async client => {
 	};
 
 	// getData function
-	client.getData = async function getData(table, where) {
-		const wherekeys = Object.keys(where);
-		const WHERE = wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ');
-		let data = await client.query(`SELECT * FROM ${table} WHERE ${WHERE}`);
-		if (!data[0]) {
+	client.getData = async function getData(table, where, options = {}) {
+		const wherekeys = where ? Object.keys(where) : null;
+		const WHERE = where ? wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ') : null;
+		let data = await client.query(`SELECT * FROM ${table}${WHERE ? ` WHERE ${WHERE}` : ''}`);
+		if (where && !options.nocreate && !data[0]) {
 			await client.createData(table, where);
-			data = [await getData(table, where)];
+			data = await getData(table, where, { nocreate: true, all: true });
 		}
-		return data[0];
+		return options.all ? data : data[0];
 	};
 
 	// setData function

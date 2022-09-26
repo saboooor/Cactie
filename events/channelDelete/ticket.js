@@ -1,8 +1,8 @@
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (client, channel) => {
-	// Check if ticket is an actual ticket
-	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${channel.id}'`))[0];
+	// Check if ticket is an actual ticket;
+	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) return;
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 

@@ -19,7 +19,7 @@ module.exports = {
 			const components = [];
 
 			// Get reaction roles and pages
-			const reactionroles = await client.query(`SELECT * FROM reactionroles WHERE guildId = '${message.guild.id}'`);
+			const reactionroles = await client.getData('reactionroles', { guildId: message.guild.id }, { nocreate: true, all: true });
 
 			if (args[0] == 'add') {
 				// Check if all arguments are met

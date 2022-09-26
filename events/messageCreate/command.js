@@ -44,7 +44,7 @@ module.exports = async (client, message) => {
 		}
 
 		// Check if channel is a ticket
-		const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${message.channel.id}'`))[0];
+		const ticketData = await client.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
 		if (ticketData && ticketData.resolved == 'true') {
 			await client.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
 			logger.info(`Unresolved #${message.channel.name}`);

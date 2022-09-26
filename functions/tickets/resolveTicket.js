@@ -3,7 +3,7 @@ module.exports = async function resolveTicket(client, member, channel) {
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if ticket is an actual ticket
-	const ticketData = (await client.query(`SELECT * FROM ticketdata WHERE channelId = '${channel.id}'`))[0];
+	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('Could not find this ticket in the database, please manually delete this channel.');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 

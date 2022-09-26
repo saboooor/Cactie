@@ -6,7 +6,7 @@ module.exports = async (client, member) => {
 		const srvconfig = await client.getData('settings', { guildId: member.guild.id });
 
 		// Get the ticket data
-		const ticketData = await client.query(`SELECT * FROM ticketdata WHERE opener = '${member.id}'`);
+		const ticketData = await client.getData('ticketdata', { opener: member.id }, { nocreate: true, all: true });
 		if (!ticketData.length) return;
 
 		// Close all tickets under member

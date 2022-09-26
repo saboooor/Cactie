@@ -192,9 +192,9 @@ module.exports = async client => {
 
 		// retrive the settings stored for this guild and load the page
 		const settings = await client.getData('settings', { guildId: guild.id });
-		const memberdata = await client.query(`SELECT * FROM memberdata WHERE guildId = '${guild.id}'`);
+		const memberdata = await client.getData('memberdata', { guildId: guild.id }, { all: true, nocreate: true });
 		const reactionroles = {
-			raw: await client.query(`SELECT * FROM reactionroles WHERE guildId = '${guild.id}'`),
+			raw: await client.getData('reactionroles', { guildId: guild.id }, { all: true, nocreate: true }),
 			channels: [],
 		};
 		for (const i in reactionroles.raw) {

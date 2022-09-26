@@ -2,7 +2,7 @@ module.exports = {
 	name: 'cleandb',
 	description: 'cleans the db of guilds that no longer exist',
 	async execute(message, args, client) {
-		const settings = await client.query('SELECT * FROM settings');
+		const settings = await client.getData('settings', null, { all: true });
 		for (const srvconfig of settings) {
 			const guild = await client.guilds.fetch(srvconfig.guildId).catch(() => { return null; });
 			if (guild) continue;
@@ -17,21 +17,21 @@ module.exports = {
 			}
 			lastGuildId = srvconfig.guildId;
 		});
-		const reactionroles = await client.query('SELECT * FROM reactionroles');
+		const reactionroles = await client.getData('reactionroles', null, { all: true });
 		for (const reactionrole of reactionroles) {
 			const guild = await client.guilds.fetch(reactionrole.guildId).catch(() => { return null; });
 			if (guild) continue;
 			client.delData('reactionroles', { guildId: reactionrole.guildId });
 			message.reply(`reactionroles have been removed from ${reactionrole.guildId}`);
 		}
-		const ticketdata = await client.query('SELECT * FROM ticketdata');
+		const ticketdata = await client.getData('ticketdata', null, { all: true });
 		for (const ticket of ticketdata) {
 			const guild = await client.guilds.fetch(ticket.guildId).catch(() => { return null; });
 			if (guild) continue;
 			client.delData('ticketdata', { guildId: ticket.guildId });
 			message.reply(`ticketdata has been removed from ${ticket.guildId}`);
 		}
-		const memberdata = await client.query('SELECT * FROM memberdata');
+		const memberdata = await client.getData('memberdata', null, { all: true });
 		for (const member of memberdata) {
 			const guild = await client.guilds.fetch(member.guildId).catch(() => { return null; });
 			if (guild) continue;
