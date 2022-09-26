@@ -4,7 +4,7 @@ const checkPerms = require('../../functions/checkPerms');
 module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
 	if (message.webhookId || message.author.bot) return;
-	const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, message.channel);
+	const initialPermCheck = message.guild ? checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, message.channel) : null;
 	if (initialPermCheck) return;
 
 	// make a custom function to replace message.reply
