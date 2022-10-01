@@ -273,7 +273,10 @@ module.exports = async client => {
 		else {
 			// Iterate through the form body's keys and convert from array to string
 			const keys = Object.keys(req.body);
-			keys.forEach(key => { if (Array.isArray(req.body[key])) req.body[key] = req.body[key].join(','); });
+			keys.forEach(key => {
+				if (req.body[key].replace(/ /g, '').replace(/\n/g, '') == '') req.body[key] = 'false';
+				if (Array.isArray(req.body[key])) req.body[key] = req.body[key].join(',');
+			});
 
 			// Set all given data
 			await client.setData('settings', { guildId: guild.id }, req.body);
