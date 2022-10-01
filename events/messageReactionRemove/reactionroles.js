@@ -32,7 +32,7 @@ module.exports = async (client, reaction, user) => {
 	await member.roles.remove(role);
 
 	// Send message and log
-	const msg = reactionrole.silent != 'false' ? await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` }) : null;
+	const msg = reactionrole.silent != 'true' ? await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` }) : null;
 	logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild.name}`);
 
 	// Check if message was sent

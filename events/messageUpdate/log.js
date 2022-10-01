@@ -23,15 +23,15 @@ module.exports = async (client, oldMessage, newMessage) => {
 		.setAuthor({ name: newMessage.author ? newMessage.author.tag : 'Unknown User', iconURL: newMessage.author ? newMessage.author.avatarURL() : newMessage.guild.iconURL() })
 		.setTitle(`<:refresh:${refresh}> Message edited`)
 		.setFields([
-			{ name: 'Before', value: `${oldMessage.content ?? 'None'}` },
-			{ name: 'After', value: `${newMessage.content ?? 'None'}` },
 			{ name: 'Channel', value: `${newMessage.channel}`, inline: true },
 			{ name: 'Sent at', value: `<t:${createdTimestamp}>\n<t:${createdTimestamp}:R>`, inline: true },
+			{ name: 'Before', value: `${oldMessage.content ?? 'None'}` },
 		]);
 
 	// Get diff and if it generated successfully, add it to embed
 	const diff = getDiff(oldMessage.content, newMessage.content);
 	if (diff && diff.length < 1024) logEmbed.addFields([{ name: 'Difference', value: diff }]);
+	else logEmbed.addFields([{ name: 'After', value: `${newMessage.content ?? 'None'}` }]);
 
 	// Create abovemessage button if above message is found
 	const row = new ActionRowBuilder()

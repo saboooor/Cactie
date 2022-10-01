@@ -1,6 +1,6 @@
 {
   "name": "cactie",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "description": "A bot that does stuff ig",
   "repository": {
     "type": "git",
@@ -16,9 +16,9 @@
     "@phamleduy04/erela.js": "^2.3.32",
     "body-parser": "^1.20.0",
     "diff": "^5.1.0",
-    "discord.js": "^14.3.0",
+    "discord.js": "^14.5.0",
     "ejs": "^3.1.8",
-    "eslint": "^8.23.1",
+    "eslint": "^8.24.0",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
