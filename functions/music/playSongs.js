@@ -2,7 +2,6 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const convertTime = require('./convert.js');
 const checkPerms = require('../checkPerms');
 const getColors = require('get-image-colors');
-const getCover = require('./getCover.js');
 const { play, music, warn, leave, no, srch, refresh, join } = require('../../lang/int/emoji.json');
 
 module.exports = async function playSongs(requester, message, args, client, lang, top, query) {
@@ -134,10 +133,6 @@ module.exports = async function playSongs(requester, message, args, client, lang
 
 		// If song image isn't set and artist is set, get album art from last.fm
 		if (song.displayThumbnail) song.img = song.displayThumbnail('hqdefault');
-		if (!song.img && song.author) {
-			const img = await getCover(song.title, song.author, player).catch(err => logger.warn(err));
-			if (img && typeof img === 'string') song.img = img;
-		}
 
 		// Set song color from album art
 		if (song.img) {

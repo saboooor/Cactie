@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActivityType } = require('discord.js');
-const { existsSync, readFileSync, writeFileSync } = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 
 module.exports = client => {
 	process.on('unhandledRejection', async reason => {
@@ -19,7 +19,7 @@ module.exports = client => {
 				guild: player.guild,
 				textChannel, queue, trackRepeat, queueRepeat, position, paused, volume, effects, effectcurrentonly,
 			};
-			const prevlines = existsSync('playercache.txt') ? readFileSync('playercache.txt') : '';
+			const prevlines = readFileSync('playercache.txt');
 			writeFileSync('playercache.txt', `${prevlines}\n${JSON.stringify(playerjson)}`);
 			player.destroy();
 		});
