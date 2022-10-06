@@ -29,7 +29,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 		]);
 
 	// Get diff and if it generated successfully, add it to embed
-	const diff = getDiff(oldMessage.content, newMessage.content);
+	const diff = oldMessage.content && newMessage.content ? getDiff(oldMessage.content, newMessage.content) : null;
 	if (diff && diff.length < 1024) logEmbed.addFields([{ name: 'Difference', value: diff }]);
 	else logEmbed.addFields([{ name: 'After', value: `${newMessage.content ?? 'None'}` }]);
 

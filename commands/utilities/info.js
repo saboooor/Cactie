@@ -7,7 +7,6 @@ module.exports = {
 	cooldown: 10,
 	async execute(message, args, client) {
 		try {
-			console.log(process);
 			const packageJSON = require('../../package.json');
 			const InfEmbed = new EmbedBuilder()
 				.setColor('Random')
