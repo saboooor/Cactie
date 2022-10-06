@@ -7,7 +7,7 @@ module.exports = {
 	args: true,
 	usage: '<User @ or Id>',
 	permissions: ['ModerateMembers'],
-	botPerms: ['ManageRoles'],
+	botPerms: ['ManageRoles', 'ModerateMembers'],
 	cooldown: 5,
 	options: require('../../options/user.js'),
 	async execute(message, args, client, lang) {
