@@ -51,9 +51,9 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 
 	// Get all the users and get rid of their permissions
 	for (const userid of ticketData.users) {
-		await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
 		const ticketmember = await member.guild.members.fetch(userid).catch(() => { return null; });
 		if (!ticketmember) continue;
+		await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
 		await ticketmember.send({ embeds: [CloseEmbed] }).catch(err => logger.warn(err));
 	}
 
