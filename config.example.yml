@@ -1,6 +1,5 @@
 con:
   token: '' # Discord bot token
-# websocket: # Music dashboard websocket port
 # vote:
 #   webhook: # webhook port
 #   auth: # webhook auth (from vote site)
@@ -11,22 +10,10 @@ mysql: # MySQL database credentials
   password: ''
   database: ''
 
-music:
-  lastfm: '' # last.fm api key
-  lavalink:
-    host: '' # lavalink node host ip
-    port: 2333
-    password: ''
-    identifier: '' # lavalink node name
-    retryAmount: 3
-    retryDelay: 5000
-    secure: false
-
 dashboard:
   port: 6969
   usingCustomDomain: false
   domain: '' # Dashboard domain
   clientSecret: '' # Client Secret from dev panel
   secret: '' # Idfk it's a secret put it as a secret
-  wsurl: 'wss://cactiedev.smhsmh.club/ws/' # Websocket url for music player
   colors: ['#ffffff', '#000000'] # colors for dashboard background

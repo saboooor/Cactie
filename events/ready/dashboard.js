@@ -171,8 +171,6 @@ module.exports = async client => {
 	// Dashboard endpoint.
 	app.get('/dashboard', checkAuth, (req, res) => renderTemplate(res, req, 'dashboard.ejs'));
 
-	app.get('/music', checkAuth, (req, res) => renderTemplate(res, req, 'music.ejs', { wsurl: dashboard.wsurl }));
-
 	// Get emojis
 	app.get('/emojis/:guildId', async (req, res) => {
 		const guild = client.guilds.cache.get(req.params.guildId);

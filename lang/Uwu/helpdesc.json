@@ -13,12 +13,12 @@
     },
     "music": {
         "name": "Music",
-        "description": "These commands play music in your voice channel"
+        "description": "Music has been moved to Cactie Music. Click here to learn more."
     },
     "nsfw": {
         "name": "NSFW",
         "description": "These commands have sensitive content that is NSFW, they must be used in an NSFW channel",
-        "footer": "*All NSFW commands are based on Reddit and Redgifs API. NOT cherry picked.*"
+        "footer": "*All NSFW commands are based on Reddit. NOT cherry picked.*"
     },
     "tickets": {
         "name": "Tickets",

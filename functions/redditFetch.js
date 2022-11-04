@@ -71,28 +71,6 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		.setFooter({ text: `Fetched from r/${data.subreddit}${data.link_flair_text ? ` • Flair: ${data.link_flair_text}` : ''}` })
 		.setTimestamp(timestamp);
 
-	// Check if the url is a redgifs link
-	if (data.url.includes('redgifs.com/watch/')) {
-		// Cactie does not yet have access to the redgifs API
-		return redditFetch(subreddits, message, client, attempts + 1);
-
-		// Redgifs is an NSFW website
-		if (!message.channel.nsfw) message.react(nsfw).catch(err => client.error(err, message));
-
-		// Get the gif data
-		const gif = await fetch(`https://api.redgifs.com/v2/gifs/${data.url.split('redgifs.com/watch/')[1]}`);
-		const gifData = await gif.json();
-		console.log(gifData);
-
-		// Check if the url exists
-		if (!gifData.gif || !gifData.gif.urls || !gifData.gif.urls.hd) return redditFetch(subreddits, message, client, attempts + 1);
-		data.url = gifData.gif.urls.hd;
-		logger.info(`Redgifs URL: ${data.url}`);
-		PostEmbed.setAuthor({ name: `u/${data.author} (redgifs: @${gifData.gif.userName})` })
-			.setColor(parseInt(gifData.gif.avgColor.replace('#', '0x')))
-			.setURL(data.url);
-	}
-
 	// Check if the url is a video from reddit
 	if (data.url.includes('v.redd.it')) data.url = `${data.url}/DASH_480.mp4?source=fallback`;
 

@@ -63,7 +63,7 @@ module.exports = {
 				}
 			}
 			else {
-				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Music, NSFW, Tickets, Utilities, Actions');
+				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, NSFW, Tickets, Utilities, Actions');
 			}
 			const options = [];
 			const categories = Object.keys(helpdesc);

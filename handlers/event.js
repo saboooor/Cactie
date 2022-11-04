@@ -1,7 +1,7 @@
 const { readdirSync } = require('fs');
 
 module.exports = client => {
-	const eventFolders = readdirSync('./events/').filter(folder => folder != 'music');
+	const eventFolders = readdirSync('./events/');
 	let jsFiles;
 	for (const event of eventFolders) {
 		jsFiles = readdirSync(`./events/${event}`).filter(subfile => subfile.endsWith('.js'));

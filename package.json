@@ -1,6 +1,6 @@
 {
   "name": "cactie",
-  "version": "5.2.4",
+  "version": "5.3.0",
   "description": "A bot that does stuff ig",
   "repository": {
     "type": "git",
@@ -21,7 +21,6 @@
   "author": "Saboor Bilal",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@phamleduy04/erela.js": "^2.3.32",
     "body-parser": "^1.20.1",
     "diff": "^5.1.0",
     "discord.js": "^14.6.0",
