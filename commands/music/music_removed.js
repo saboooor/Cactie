@@ -7,6 +7,7 @@ module.exports = {
 	cooldown: 5,
 	async execute(message, args, client) {
 		try {
+			if (message.guild.members.cache.get('1037611758858272809')) return;
 			const Embed = new EmbedBuilder()
 				.setColor('Random')
 				.setDescription('Music has been removed due to the Discord and Youtube Terms of Service.')
