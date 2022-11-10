@@ -11,13 +11,9 @@
         "name": "Animals",
         "description": "These commands show cute animals"
     },
-    "music": {
-        "name": "Music",
-        "description": "Music has been moved to Cactie Plus. Click here to learn more."
-    },
-    "nsfw": {
-        "name": "NSFW",
-        "description": "NSFW has been moved to Cactie Plus. Click here to learn more."
+    "cactieplus": {
+        "name": "Cactie Plus",
+        "description": "Music and NSFW have been moved. Click here to learn more."
     },
     "tickets": {
         "name": "Tickets",
