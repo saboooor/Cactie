@@ -121,7 +121,7 @@ module.exports = {
 				HelpEmbed = new EmbedBuilder()
 					.setColor('Random')
 					.setTitle('**HELP**');
-				if (arg == 'cactieplus') {
+				if (interaction.values[0].split('_')[1] == 'cactieplus') {
 					HelpEmbed.setDescription('**CACTIE PLUS**')
 						.addFields([
 							{
