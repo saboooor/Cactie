@@ -10,7 +10,6 @@ module.exports = {
 	args: true,
 	aliases: ['purge'],
 	usage: '<Message Amount> [Message Author] [Message Content Has]',
-	similarcmds: 'clearqueue or cleareffects',
 	channelPermissions: ['ManageMessages'],
 	botChannelPerms: ['ManageMessages'],
 	options: require('../../options/clear.js'),

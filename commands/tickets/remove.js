@@ -7,7 +7,6 @@ module.exports = {
 	botPerms: ['ManageChannels'],
 	args: true,
 	usage: '<User>',
-	similarcmds: 'removesong',
 	options: require('../../options/user.js'),
 	async execute(message, args, client, lang) {
 		try {
