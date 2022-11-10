@@ -10,9 +10,21 @@ module.exports = {
 			if (message.guild.members.cache.get('1037611758858272809')) return;
 			const Embed = new EmbedBuilder()
 				.setColor('Random')
-				.setDescription('Music and NSFW commands has been removed due to the Discord App Directory and Youtube Terms of Service.')
-				.addFields([{ name: 'WHAT NOW?', value: 'Use the `Watch Together` activity built into Discord to listen to music. It\'s more convenient, easier to use, faster, and you don\'t have to deal with commands.' }])
-				.addFields([{ name: 'WHAT ELSE?', value: 'Use the `Cactie Plus` bot to listen to music and use NSFW commands until Discord adds the feature to your device/account. [Click Here](https://cactie.smhsmh.club/plus) to invite the bot!' }]);
+				.setDescription('**CACTIE PLUS**')
+				.addFields([
+					{
+						name: 'Where\'s Music?',
+						value: 'Music commands aren\'t allowed on verified Discord bots due to YouTube\'s Terms of Service, therefore also not allowed on the main Cactie bot. Music commands have been moved to a separate bot.',
+					},
+					{
+						name: 'Where\'s NSFW?',
+						value: 'NSFW commands aren\'t allowed on the App Directory, therefore also not allowed on the main Cactie bot. NSFW commands have been moved to a separate bot.',
+					},
+					{
+						name: 'Cactie Plus',
+						value: 'To access NSFW and Music, [add Cactie Plus to your server by clicking here](https://canary.smhsmh.club/plus)',
+					},
+				]);
 			message.reply({ embeds: [Embed] });
 		}
 		catch (err) { client.error(err, message); }
