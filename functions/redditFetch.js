@@ -1,5 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { nsfw } = require('../lang/int/emoji.json');
 
 module.exports = async function redditFetch(subreddits, message, client, attempts) {
 	// First attempt if attempt is not specified
@@ -55,8 +54,8 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 		return redditFetch(subreddits, message, client, attempts + 1);
 	}
 
-	// If the post is NSFW, stop the user from using the function
-	if (data.over_18 && !message.channel.nsfw) return message.react(nsfw).catch(err => client.error(err, message));
+	// If the post is NSFW, retry as NSFW is not allowed.
+	if (data.over_18) return redditFetch(subreddits, message, client, attempts + 1);
 
 	// Get the timestamp of when the post was created
 	const timestamp = parseInt(`${data.created}` + '000');
@@ -65,7 +64,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	const PostEmbed = new EmbedBuilder()
 		.setColor('Random')
 		.setAuthor({ name: `u/${data.author}`, url: `https://reddit.com/u/${data.author}` })
-		.setTitle(`${data.over_18 ? `<:nsfw:${nsfw}>  ` : ''}${data.title}`)
+		.setTitle(data.title)
 		.setDescription(`**${data.ups} Upvotes** (${data.upvote_ratio * 100}%)`)
 		.setURL(`https://reddit.com${data.permalink}`)
 		.setFooter({ text: `Fetched from r/${data.subreddit}${data.link_flair_text ? ` • Flair: ${data.link_flair_text}` : ''}` })

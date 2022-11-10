@@ -34,7 +34,7 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - More than 100 messages support
 
 ## Music
-- [ONLY WITH CACTIE MUSIC](https://github.com/saboooor/Cactie-Music)
+- [ONLY WITH CACTIE PLUS](https://cactie.smhsmh.club/plus)
 - with useful features other bots don't have:
 - play again button
 - music control buttons
