@@ -3,7 +3,7 @@ const checkPerms = require('../../functions/checkPerms');
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
-	if (!interaction.isButton() && !interaction.isSelectMenu()) return;
+	if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
 
 	// Log every button interaction
 	logger.info(`${interaction.user.tag} clicked button with id: ${interaction.customId ?? interaction.value}, in ${interaction.guild.name}`);

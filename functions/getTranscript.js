@@ -33,5 +33,5 @@ module.exports = async function getTranscript(messages) {
 	});
 	logs.logs.reverse();
 	const balls = await fetch('https://smhsmh.club/transcript', { method: 'POST', body: JSON.stringify(logs), headers: { 'Content-Type': 'application/json' } });
-	return balls.statusText;
+	return (await balls.text()).replace(/"/g, '');
 };
