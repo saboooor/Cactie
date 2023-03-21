@@ -61,7 +61,7 @@ module.exports = async function analyzeProfile(message, client, args) {
 
 	let server_properties, bukkit, spigot, paper, purpur;
 
-	const plugins = sampler.classSources ? Object.values(sampler.classSources) : [];
+	const plugins = sampler.classSources ? Object.values(sampler.metadata.sources) : [];
 	const configs = sampler.metadata.serverConfigurations;
 	if (configs) {
 		if (configs['server.properties']) server_properties = JSON.parse(configs['server.properties']);
