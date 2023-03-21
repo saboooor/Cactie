@@ -62,23 +62,6 @@ module.exports = {
 					return client.error('Tickets are disabled!', message, true);
 				}
 			}
-			else if (arg == 'cactieplus') {
-				HelpEmbed.setDescription('**CACTIE PLUS**')
-					.addFields([
-						{
-							name: 'Where\'s Music?',
-							value: 'Music commands aren\'t allowed on verified Discord bots due to YouTube\'s Terms of Service, therefore also not allowed on the main Cactie bot. Music commands have been moved to a separate bot.',
-						},
-						{
-							name: 'Where\'s NSFW?',
-							value: 'NSFW commands aren\'t allowed on the App Directory, therefore also not allowed on the main Cactie bot. NSFW commands have been moved to a separate bot.',
-						},
-						{
-							name: 'Cactie Plus',
-							value: 'To access NSFW and Music, [add Cactie Plus to your server by clicking here](https://canary.smhsmh.club/plus)',
-						},
-					]);
-			}
 			else {
 				HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Tickets, Utilities, Actions');
 			}
@@ -121,33 +104,14 @@ module.exports = {
 				HelpEmbed = new EmbedBuilder()
 					.setColor('Random')
 					.setTitle('**HELP**');
-				if (interaction.values[0].split('_')[1] == 'cactieplus') {
-					HelpEmbed.setDescription('**CACTIE PLUS**')
-						.addFields([
-							{
-								name: 'Where\'s Music?',
-								value: 'Music commands aren\'t allowed on verified Discord bots due to YouTube\'s Terms of Service, therefore also not allowed on the main Cactie bot. Music commands have been moved to a separate bot.',
-							},
-							{
-								name: 'Where\'s NSFW?',
-								value: 'NSFW commands aren\'t allowed on the App Directory, therefore also not allowed on the main Cactie bot. NSFW commands have been moved to a separate bot.',
-							},
-							{
-								name: 'Cactie Plus',
-								value: 'To access NSFW and Music, [add Cactie Plus to your server by clicking here](https://canary.smhsmh.club/plus)',
-							},
-						]);
-				}
-				else {
-					const category = helpdesc[interaction.values[0].split('_')[1]];
-					const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);
-					const array = [];
-					commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
-					HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
-					if (category.footer) HelpEmbed.setFooter({ text: category.footer });
-					if (category.field) HelpEmbed.setFields([category.field]);
-					row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
-				}
+				const category = helpdesc[interaction.values[0].split('_')[1]];
+				const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);
+				const array = [];
+				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
+				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
+				if (category.footer) HelpEmbed.setFooter({ text: category.footer });
+				if (category.field) HelpEmbed.setFields([category.field]);
+				row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
 				interaction.editReply({ embeds: [HelpEmbed], components: [row, row2] });
 			});
 

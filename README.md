@@ -33,19 +33,6 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - Query support with messages that include the text
 - More than 100 messages support
 
-## Music
-- [ONLY WITH CACTIE PLUS](https://cactie.smhsmh.club/plus)
-- with useful features other bots don't have:
-- play again button
-- music control buttons
-- search command (for specific queries)
-- optional DJ role
-- familiar command system
-- equalizer
-- effects: vibrato, echo, rotation, speed, pitch, etc.
-- sponsorblock to skip empty parts of music videos
-- skip to a specific song using a dropdown
-
 ## Ticket System
 - uses the new modals feature!
 - voice chat creation with the same permissions as the ticket

@@ -11,10 +11,6 @@
         "name": "Animals",
         "description": "These commands show cute animals"
     },
-    "cactieplus": {
-        "name": "Cactie Plus",
-        "description": "Music and NSFW have been moved. Click here to learn more."
-    },
     "tickets": {
         "name": "Tickets",
         "description": "These commands are related to the bot's tickets system",
