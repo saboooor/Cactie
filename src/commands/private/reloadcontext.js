@@ -1,4 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
+const slashcommands = require('../../lists/slash').default;
 
 module.exports = {
 	name: 'reloadcontext',
@@ -12,13 +13,13 @@ module.exports = {
 			const msg = await message.channel.send({ content: 'Updating context menu commands...' });
 			for (let command of commands) {
 				command = command[1];
-				if (client.slashcommands.find(c => c.name == command.name)) continue;
+				if (slashcommands.find(c => c.name == command.name)) continue;
 				await msg.edit({ content: `Deleting ${command.name}` });
 				await command.delete();
 				await msg.edit({ content: `Deleted ${command.name}` });
 				await sleep(4000);
 			}
-			for (let command of client.slashcommands) {
+			for (let command of slashcommands) {
 				command = command[1];
 				if (!command.type) continue;
 

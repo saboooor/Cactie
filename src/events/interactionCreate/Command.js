@@ -1,12 +1,14 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const cooldowns = require('../../lists/commands').cooldowns;
+const slashcommands = require('../../lists/slash').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is command
 	if (!interaction.isChatInputCommand()) return;
 
 	// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
-	const command = client.slashcommands.get(interaction.commandName);
+	const command = slashcommands.get(interaction.commandName);
 	if (!command) return;
 
 	// Get current settings for the guild
@@ -31,7 +33,6 @@ module.exports = async (client, interaction) => {
 	if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
 
 	// Get cooldowns and check if cooldown exists, if not, create it
-	const { cooldowns } = client;
 	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
 
 	// Get current timestamp and the command's last used timestamps

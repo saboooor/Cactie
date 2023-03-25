@@ -1,3 +1,4 @@
+const commands = require('../../lists/commands').default;
 const { InteractionType } = require('discord.js');
 
 module.exports = async (client, interaction) => {
@@ -5,7 +6,7 @@ module.exports = async (client, interaction) => {
 	if (interaction.type != InteractionType.ApplicationCommandAutocomplete) return;
 
 	// Get the command from the available commands in the bot
-	const command = client.commands.get(interaction.commandName);
+	const command = commands.get(interaction.commandName);
 	if (!command || !command.autoComplete) return;
 
 	// if autocomplete is set then execute it

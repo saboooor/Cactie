@@ -1,5 +1,7 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const commands = require('../../lists/commands').default;
+const cooldowns = require('../../lists/commands').cooldowns;
 
 module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
@@ -59,7 +61,7 @@ module.exports = async (client, message) => {
 	const commandName = args.shift().toLowerCase();
 
 	// Get the command from the commandName, if it doesn't exist, return
-	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command = commands.get(commandName) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
@@ -76,7 +78,6 @@ module.exports = async (client, message) => {
 	await message.channel.sendTyping();
 
 	// Get cooldowns and check if cooldown exists, if not, create it
-	const { cooldowns } = client;
 	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
 
 	// Get current timestamp and the command's last used timestamps

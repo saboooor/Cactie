@@ -1,12 +1,13 @@
 const { EmbedBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const slashcommands = require('../../lists/slash').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is context menu
 	if (!interaction.isContextMenuCommand()) return;
 
 	// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
-	const command = client.slashcommands.get(interaction.commandName);
+	const command = slashcommands.get(interaction.commandName);
 	if (!command) return;
 
 	// Get current settings for the guild

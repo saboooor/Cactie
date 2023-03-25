@@ -1,5 +1,6 @@
-const { readdirSync } = require('fs');
-const { Client, Partials, GatewayIntentBits } = require('discord.js');
+import { readdirSync } from "fs";
+import { Client, Partials, GatewayIntentBits } from "discord.js";
+import { Logger } from "winston";
 
 // Create Discord client
 const client = new Client({
@@ -27,8 +28,15 @@ const client = new Client({
 	},
 });
 
-// Set startTimestamp for ready counter
-client.startTimestamp = Date.now();
+declare global {
+	var sleep: { (ms: number): Promise<undefined> };
+	var logDate: string;
+	var logger: Logger;
+}
 
 // Load the universal and discord-specific handlers
-for (const handler of readdirSync('./src/handlers').filter(file => file.endsWith('.js'))) require(`./src/handlers/${handler}`)(client);
+for (const handlerName of readdirSync('./src/handlers').filter((file: string) => file.endsWith('.ts') || file.endsWith('.js'))) {
+	const handler = require(`./handlers/${handlerName}`);
+	if (handler.default) handler.default(client);
+	else handler(client);
+}

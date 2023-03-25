@@ -1,4 +1,4 @@
-const { ActionRowBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const action = require('../../functions/action.js');
 const { x } = require('../../lang/int/emoji.json');
 
@@ -10,51 +10,51 @@ module.exports = {
 		try {
 			const row = new ActionRowBuilder()
 				.addComponents([
-					new SelectMenuBuilder()
+					new StringSelectMenuBuilder()
 						.setCustomId('action')
 						.setPlaceholder('Select an action!')
 						.addOptions([
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`AWOOGA at ${member.displayName}`)
 								.setEmoji({ name: '👀' })
 								.setValue('action_awooga'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Bite ${member.displayName}`)
 								.setEmoji({ name: '👅' })
 								.setValue('action_bite'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Bonk ${member.displayName}`)
 								.setEmoji({ name: '🔨' })
 								.setValue('action_bonk'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Giggle at ${member.displayName}`)
 								.setEmoji({ name: '🤭' })
 								.setValue('action_giggle'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Hug ${member.displayName}`)
 								.setEmoji({ name: '🤗' })
 								.setValue('action_hug'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Kill ${member.displayName}`)
 								.setEmoji({ name: '🔪' })
 								.setValue('action_kill'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Kiss ${member.displayName}`)
 								.setEmoji({ name: '😘' })
 								.setValue('action_kiss'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Lick ${member.displayName}`)
 								.setEmoji({ name: '👅' })
 								.setValue('action_lick'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Be mad at ${member.displayName}`)
 								.setEmoji({ name: '😡' })
 								.setValue('action_mad'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Nuzzle ${member.displayName}`)
 								.setEmoji({ name: '🤗' })
 								.setValue('action_nuzzle'),
-							new SelectMenuOptionBuilder()
+							new StringSelectMenuOptionBuilder()
 								.setLabel(`Stare at ${member.displayName}`)
 								.setEmoji({ name: '😐' })
 								.setValue('action_stare'),

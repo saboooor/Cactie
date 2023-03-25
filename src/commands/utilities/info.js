@@ -16,7 +16,7 @@ module.exports = {
 					{ name: 'Bot Version', value: `\`\`\`${packageJSON.version}\`\`\``, inline: true },
 					{ name: 'NodeJS Version', value: `\`\`\`${process.version}\`\`\``, inline: true },
 					{ name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499').tag}\`\`\`` },
-					{ name: 'Last restart', value: `<t:${Math.ceil(client.startTimestamp / 1000)}:R>` },
+					{ name: 'Last restart', value: `<t:${Math.ceil(client.readyTimestamp / 1000)}:R>` },
 				]);
 			const row1 = new ActionRowBuilder()
 				.addComponents([

@@ -1,8 +1,9 @@
-const { readdirSync } = require('fs');
+import { Client } from "discord.js";
+import { readdirSync } from 'fs';
 
-module.exports = client => {
+export default (client: Client) => {
 	const eventFolders = readdirSync('./src/events/');
-	let jsFiles;
+	let jsFiles = [];
 	for (const event of eventFolders) {
 		jsFiles = readdirSync(`./src/events/${event}`).filter(subfile => subfile.endsWith('.js'));
 		for (const file of jsFiles) {

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const buttons = require('../../lists/buttons').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
@@ -9,7 +10,7 @@ module.exports = async (client, interaction) => {
 	logger.info(`${interaction.user.tag} clicked button with id: ${interaction.customId ?? interaction.value}, in ${interaction.guild.name}`);
 
 	// Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
-	const button = client.buttons.get(interaction.customId ?? interaction.value);
+	const button = buttons.get(interaction.customId ?? interaction.value);
 	if (!button) return;
 
 	// Get current settings for the guild

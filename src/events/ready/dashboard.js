@@ -285,7 +285,7 @@ module.exports = async client => {
 	});
 
 	app.listen(dashboard.port, null, null, () => {
-		const timer = (Date.now() - client.startTimestamp) / 1000;
+		const timer = (Date.now() - client.readyTimestamp) / 1000;
 		logger.info(`Dashboard running on port ${dashboard.port}. (${client.dashboardDomain}) (${timer}s)`);
 	});
 };
