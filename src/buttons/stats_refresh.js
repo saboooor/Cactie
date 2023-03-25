@@ -41,6 +41,6 @@ module.exports = {
 			StatsEmbed.setTimestamp();
 			interaction.reply({ embeds: [StatsEmbed], files: [] });
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

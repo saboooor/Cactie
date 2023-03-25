@@ -9,12 +9,12 @@ module.exports = {
 	cooldown: 10,
 	options: require('../../options/21q.js'),
 	async execute(message, args, client, lang) {
-		if (args[1] && (args[1] < 1 || args[1] > 25)) return client.error('The amount of questions must be between 1 and 25!');
+		if (args[1] && (args[1] < 1 || args[1] > 25)) return error('The amount of questions must be between 1 and 25!');
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-		if (!member) return client.error(lang.invalidmember, message, true);
-		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
-		if (member.bot) return client.error('Bots aren\'t fun to play with, yet. :)');		if (member.bot) return client.error('Bots aren\'t fun to play with, yet. :)');
+		if (!member) return error(lang.invalidmember, message, true);
+		if (member.id == message.member.id) return error('You played yourself, oh wait, you can\'t.', message, true);
+		if (member.bot) return error('Bots aren\'t fun to play with, yet. :)');		if (member.bot) return error('Bots aren\'t fun to play with, yet. :)');
 		const row = new ActionRowBuilder()
 			.addComponents([
 				new ButtonBuilder()

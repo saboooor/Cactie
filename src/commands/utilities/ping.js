@@ -52,6 +52,6 @@ module.exports = {
 				else pingmsg.edit({ components: [] }).catch(err => logger.warn(err));
 			});
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

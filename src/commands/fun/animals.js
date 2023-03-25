@@ -8,6 +8,6 @@ module.exports = {
 	options: require('../../options/animals.js'),
 	execute(message, args, client, lang) {
 		try { commands.get(args[0]).execute(message, args, client, lang); }
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

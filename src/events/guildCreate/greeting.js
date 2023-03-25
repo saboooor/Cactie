@@ -10,7 +10,7 @@ module.exports = async (client, guild) => {
 				.setLabel(msg.dashboard.name)
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL(`${client.dashboardDomain}/support/discord`)
+				.setURL('https://luminescent.dev/discord')
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()

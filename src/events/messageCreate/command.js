@@ -148,25 +148,25 @@ module.exports = async (client, message) => {
 	// Check if user has the permissions necessary in the channel to use the command
 	if (command.channelPermissions) {
 		const permCheck = checkPerms(command.channelPermissions, message.member, message.channel);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
 		const permCheck = checkPerms(command.permissions, message.member);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if bot has the permissions necessary in the channel to run the command
 	if (command.botChannelPerms) {
 		const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me, message.channel);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (command.botPerms) {
 		const permCheck = checkPerms(command.botPerms, message.guild.members.me);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// execute the command

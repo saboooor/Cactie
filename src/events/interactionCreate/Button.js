@@ -28,7 +28,7 @@ module.exports = async (client, interaction) => {
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (button.botPerms) {
 		const permCheck = checkPerms(button.botPerms, interaction.guild.members.me);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Log

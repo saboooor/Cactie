@@ -24,13 +24,13 @@ module.exports = async (client, interaction) => {
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
 		const permCheck = checkPerms(command.permissions, interaction.member);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (command.botPerms) {
 		const permCheck = checkPerms(command.botPerms, interaction.guild.members.me);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Set item to the command type

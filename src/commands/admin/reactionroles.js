@@ -23,33 +23,33 @@ module.exports = {
 
 			if (args[0] == 'add') {
 				// Check if all arguments are met
-				if (!args[3]) return client.error('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>', message, true);
+				if (!args[3]) return error('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>', message, true);
 
 				// Get message url and split by slashes
 				const messagelink = args[2].split('/');
 
 				// Check if the guild id in the url matches the current guild id
-				if (messagelink[4] != message.guild.id) return client.error('That message is not in this server!\nDid you send a valid *message link*?', message, true);
+				if (messagelink[4] != message.guild.id) return error('That message is not in this server!\nDid you send a valid *message link*?', message, true);
 
 				// Get the channel from the channel id in the url and check if it exists
 				const channel = await message.guild.channels.fetch(messagelink[5]);
-				if (!channel) return client.error('That channel doesn\'t exist!\nDid you send a valid *message link*?', message, true);
+				if (!channel) return error('That channel doesn\'t exist!\nDid you send a valid *message link*?', message, true);
 
 				// Check if the bot has sufficient permissions in the channel
 				const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions', 'ReadMessageHistory'], message.guild.members.me, channel);
-				if (permCheck) return client.error(permCheck, message, true);
+				if (permCheck) return error(permCheck, message, true);
 
 				// Check if the message exist
 				const fetchedMsg = await channel.messages.fetch(messagelink[6]);
-				if (!fetchedMsg) return client.error('That message doesn\'t exist!\nDid you send a valid *message link*?', message, true);
+				if (!fetchedMsg) return error('That message doesn\'t exist!\nDid you send a valid *message link*?', message, true);
 
 				// Check if the role provided exists
 				const role = await message.guild.roles.fetch(args[3].replace(/\D/g, ''));
-				if (!role) return client.error('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
+				if (!role) return error('That role doesn\'t exist!\nDid you send a valid *role Id / role @*?');
 
 				// Attempt to add the reaction to the message
 				const reaction = await fetchedMsg.react(args[1]).catch(err => {
-					client.error(`\`${err}\`\nUse an emote from a server that ${client.user.username} is in or a regular emoji.`, message, true);
+					error(`\`${err}\`\nUse an emote from a server that ${client.user.username} is in or a regular emoji.`, message, true);
 					return false;
 				});
 				if (!reaction) return;
@@ -62,7 +62,7 @@ module.exports = {
 			}
 			else if (args[0] == 'remove') {
 				// Check if all arguments are met
-				if (!args[1]) return client.error('Usage: /reactionroles remove <Reaction Role Number>');
+				if (!args[1]) return error('Usage: /reactionroles remove <Reaction Role Number>');
 
 				// Check if there are any reaction roles
 				if (!reactionroles.length) {
@@ -72,7 +72,7 @@ module.exports = {
 
 				// Get the reaction role by the index provided
 				const rr = reactionroles[args[1]];
-				if (!rr) return client.error('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
+				if (!rr) return error('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
 
 				// Remove the reaction role form the database
 				await sql.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId });
@@ -121,6 +121,6 @@ module.exports = {
 			// Send Embed with buttons
 			message.reply({ embeds: [RREmbed], components: components });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

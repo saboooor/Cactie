@@ -30,7 +30,7 @@ module.exports = {
 			}
 			else if (arg == 'supportpanel') {
 				const permCheck = checkPerms(['Administrator'], message.member);
-				if (permCheck) return client.error(permCheck, message, true);
+				if (permCheck) return error(permCheck, message, true);
 				const Panel = new EmbedBuilder()
 					.setColor(0x2f3136)
 					.setTitle('Need help? No problem!')
@@ -39,7 +39,7 @@ module.exports = {
 				if (args[1]) channel = message.guild.channels.cache.get(args[1]);
 				if (!channel) channel = message.channel;
 				const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, channel);
-				if (permCheck2) return client.error(permCheck2, message, true);
+				if (permCheck2) return error(permCheck2, message, true);
 
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
@@ -60,7 +60,7 @@ module.exports = {
 					await panelMsg.react('🎫');
 				}
 				else if (srvconfig.tickets == 'false') {
-					return client.error('Tickets are disabled!', message, true);
+					return error('Tickets are disabled!', message, true);
 				}
 			}
 			else {
@@ -88,7 +88,7 @@ module.exports = {
 			const row2 = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL(`${client.dashboardDomain}/support/discord`)
+						.setURL('https://luminescent.dev/discord')
 						.setLabel('Support Discord')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
@@ -123,6 +123,6 @@ module.exports = {
 				else helpMsg.edit({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
 			});
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

@@ -54,7 +54,7 @@ module.exports = async (client, reaction, user) => {
 		}
 	}
 	catch (err) {
-		const msg = await client.error(err, message, true);
+		const msg = await error(err, message, true);
 		await sleep(5000);
 		await msg.delete();
 	}

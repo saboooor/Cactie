@@ -76,6 +76,6 @@ module.exports = {
 				}
 			});
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

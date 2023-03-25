@@ -22,6 +22,6 @@ module.exports = {
 				.replace(/@here/g, 'everyone online'),
 			);
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

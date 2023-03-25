@@ -33,6 +33,7 @@ declare global {
 	var logDate: string;
 	var logger: Logger;
 	var sql: any;
+	var error: any;
 }
 
 // Load the universal and discord-specific handlers

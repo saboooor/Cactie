@@ -9,12 +9,12 @@ module.exports = {
 			// Get user and check if user is valid
 			let member = interaction.guild.members.cache.get(memberId);
 			if (!member) member = await interaction.guild.members.fetch(memberId);
-			if (!member) return client.error(lang.invalidmember, interaction, true);
+			if (!member) return error(lang.invalidmember, interaction, true);
 
 			// Get member and author and check if role is lower than member's role
 			const author = interaction.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
-			if (member.roles.highest.rawPosition > member.guild.members.me.roles.highest.rawPosition) return client.error(`I can't do that! My role is ${member.roles.highest.rawPosition - member.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+			if (member.roles.highest.rawPosition > member.guild.members.me.roles.highest.rawPosition) return error(`I can't do that! My role is ${member.roles.highest.rawPosition - member.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
 
 			// Create embed
 			const KickEmbed = new EmbedBuilder()
@@ -47,6 +47,6 @@ module.exports = {
 				logchannel.send({ embeds: [KickEmbed] });
 			}
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

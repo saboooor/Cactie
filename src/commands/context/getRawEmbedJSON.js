@@ -21,6 +21,6 @@ module.exports = {
 			// Send the content
 			interaction.reply({ content, embeds: message.embeds });
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

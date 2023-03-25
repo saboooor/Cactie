@@ -11,9 +11,9 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-		if (!member) return client.error(lang.invalidmember, message, true);
-		if (member.id == message.member.id) return client.error('You played yourself, oh wait, you can\'t.', message, true);
-		if (member.bot) return client.error('Bots aren\'t fun to play with, yet. :)');		const emoji = {
+		if (!member) return error(lang.invalidmember, message, true);
+		if (member.id == message.member.id) return error('You played yourself, oh wait, you can\'t.', message, true);
+		if (member.bot) return error('Bots aren\'t fun to play with, yet. :)');		const emoji = {
 			rock: ['🪨', 'Rock', '🪨 Rock'],
 			paper: ['📄', 'Paper', '📄 Paper'],
 			scissors: ['✂️', 'Scissors', '✂️ Scissors'],

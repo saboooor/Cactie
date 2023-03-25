@@ -21,7 +21,7 @@ module.exports = {
 
 			// Check permissions in that channel
 			const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions'], message.guild.members.me, channel);
-			if (permCheck) return client.error(permCheck, message, true);
+			if (permCheck) return error(permCheck, message, true);
 
 			// Create suggestion embed
 			const suggestion = args.join(' ');
@@ -41,7 +41,7 @@ module.exports = {
 			if (srvconfig.suggestthreads) {
 				// Check permissions for thread creation
 				const threadPermCheck = checkPerms(['CreatePublicThreads'], message.guild.members.me, channel);
-				if (threadPermCheck) return client.error(threadPermCheck, message, true);
+				if (threadPermCheck) return error(threadPermCheck, message, true);
 
 				// Create thread
 				const thread = await suggestMsg.startThread({
@@ -67,6 +67,6 @@ module.exports = {
 			if (channel.id == message.channel.id && message.commandName) return message.reply({ content: '**Suggestion Created!**' });
 			if (channel.id != message.channel.id) return message.reply({ content: `**Suggestion Created at ${channel}!**` });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

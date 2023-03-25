@@ -13,8 +13,8 @@ module.exports = {
 		const btns = {};
 		const rows = [];
 		const [ro, co] = args[0].split('x');
-		if (ro > 5 || co > 5) return client.error('The maximum size of the board is 5x5 due to Discord limitations', message, true);
-		if (isNaN(ro) || isNaN(co) || ro == '0' || co == '0') return client.error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', message, true);
+		if (ro > 5 || co > 5) return error('The maximum size of the board is 5x5 due to Discord limitations', message, true);
+		if (isNaN(ro) || isNaN(co) || ro == '0' || co == '0') return error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', message, true);
 		for (let row = 0; row < parseInt(ro); row++) {
 			rows.push(new ActionRowBuilder());
 			for (let column = 0; column < parseInt(co); column++) {

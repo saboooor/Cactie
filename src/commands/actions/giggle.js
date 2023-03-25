@@ -7,6 +7,6 @@ module.exports = {
 	options: require('../../options/someone.js'),
 	async execute(message, args, client, lang) {
 		try { action(message, message.member, args, 'giggle', lang); }
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

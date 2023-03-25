@@ -10,17 +10,17 @@ module.exports = {
 			// Get user and check if user is valid
 			let member = interaction.guild.members.cache.get(memberId);
 			if (!member) member = await interaction.guild.members.fetch(memberId);
-			if (!member) return client.error(lang.invalidmember, interaction, true);
+			if (!member) return error(lang.invalidmember, interaction, true);
 
 			// Get member and author and check if role is lower than member's role
 			const author = interaction.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
-			if (member.roles.highest.rawPosition > interaction.guild.members.me.roles.highest.rawPosition) return client.error(`I can't do that! My role is ${member.roles.highest.rawPosition - interaction.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+			if (member.roles.highest.rawPosition > interaction.guild.members.me.roles.highest.rawPosition) return error(`I can't do that! My role is ${member.roles.highest.rawPosition - interaction.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
 
 			// Get amount of time to ban, if not specified, then permanent
 			const timeField = interaction.fields.getTextInputValue('time');
 			const time = ms(timeField ? timeField : 'perm');
-			if (time > 31536000000) return client.error('You cannot ban someone for more than 1 year!', interaction, true);
+			if (time > 31536000000) return error('You cannot ban someone for more than 1 year!', interaction, true);
 
 			// Create embed and check if bqn has a reason / time period
 			const BanEmbed = new EmbedBuilder()
@@ -56,6 +56,6 @@ module.exports = {
 				logchannel.send({ embeds: [BanEmbed] });
 			}
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

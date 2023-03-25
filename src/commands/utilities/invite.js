@@ -7,6 +7,6 @@ module.exports = {
 	cooldown: 10,
 	async execute(message, args, client) {
 		try { commands.get('info').execute(message, args, client); }
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

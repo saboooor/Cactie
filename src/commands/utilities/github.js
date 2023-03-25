@@ -54,7 +54,7 @@ module.exports = {
 			// send the embed
 			await message.reply({ embeds: [repoEmbed], components: [row] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 	async autoComplete(client, interaction) {
 		const value = interaction.options.getFocused();

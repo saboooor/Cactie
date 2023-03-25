@@ -12,6 +12,6 @@ module.exports = {
 			// Create a ticket
 			await deleteTicket(client, srvconfig, interaction.member, interaction.channel);
 		}
-		catch (err) { client.error(err, interaction, true); }
+		catch (err) { error(err, interaction, true); }
 	},
 };

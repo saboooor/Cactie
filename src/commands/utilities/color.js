@@ -11,7 +11,7 @@ module.exports = {
 	options: require('../../options/color.js'),
 	async execute(message, args, client) {
 		try {
-			if (args[0] < 1 || args[0] > 5) return client.error('The amount of colors can only be between 1 and 5!', message, true);
+			if (args[0] < 1 || args[0] > 5) return error('The amount of colors can only be between 1 and 5!', message, true);
 			const matches = [...args[0].matchAll(regex)];
 			const url = matches ? matches[0][1] : args[0];
 			const colors = await getColors(url, { count: args[1] ? parseInt(args[1]) : 1 });
@@ -22,6 +22,6 @@ module.exports = {
 			});
 			message.reply({ embeds });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

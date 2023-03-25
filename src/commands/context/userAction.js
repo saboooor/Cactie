@@ -80,6 +80,6 @@ module.exports = {
 				collector.stop();
 			});
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

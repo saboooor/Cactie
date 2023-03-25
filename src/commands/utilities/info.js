@@ -25,7 +25,7 @@ module.exports = {
 						.setLabel('Invite Cactie!')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
-						.setURL(`${client.dashboardDomain}/support/discord`)
+						.setURL('https://luminescent.dev/discord')
 						.setLabel('Join the Cactie Server!')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
@@ -42,6 +42,6 @@ module.exports = {
 				]);
 			await message.reply({ embeds: [InfEmbed], components: [row1, row2] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

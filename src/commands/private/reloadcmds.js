@@ -11,7 +11,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if user is sab lolololol
-			if (message.author.id !== '249638347306303499') return client.error('You can\'t do that!', message, true);
+			if (message.author.id !== '249638347306303499') return error('You can\'t do that!', message, true);
 			if (!client.application?.owner) await client.application?.fetch();
 			const commands = await client.application?.commands.fetch();
 			const msg = await message.channel.send({ content: 'Updating slash commands...' });
@@ -39,6 +39,6 @@ module.exports = {
 			await msg.edit({ content: 'Done!' });
 			await message.reply({ content: 'All slash commands have been updated!' });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

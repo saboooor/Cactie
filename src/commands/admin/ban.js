@@ -16,16 +16,16 @@ module.exports = {
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(lang.invalidmember, message, true);
+			if (!member) return error(lang.invalidmember, message, true);
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
-			if (member.roles.highest.rawPosition > message.guild.members.me.roles.highest.rawPosition) return client.error(`I can't do that! My role is ${member.roles.highest.rawPosition - message.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
+			if (member.roles.highest.rawPosition > message.guild.members.me.roles.highest.rawPosition) return error(`I can't do that! My role is ${member.roles.highest.rawPosition - message.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
 
 			// Get amount of time to ban, if not specified, then permanent
 			const time = ms(args[1] ? args[1] : 'perm');
-			if (time > 31536000000) return client.error('You cannot ban someone for more than 1 year!', message, true);
+			if (time > 31536000000) return error('You cannot ban someone for more than 1 year!', message, true);
 
 			// Create embed and check if bqn has a reason / time period
 			const BanEmbed = new EmbedBuilder()
@@ -61,6 +61,6 @@ module.exports = {
 				logchannel.send({ embeds: [BanEmbed] });
 			}
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

@@ -12,7 +12,7 @@ module.exports = {
 		try {
 			// Check if user is valid
 			const targetMember = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!targetMember) return client.error(lang.invalidmember, message, true);
+			if (!targetMember) return error(lang.invalidmember, message, true);
 
 			// Add user to ticket
 			const msg = await manageUsers(client, message.member, message.channel, targetMember, false);
@@ -20,6 +20,6 @@ module.exports = {
 			// Send message
 			await message.reply(msg);
 		}
-		catch (err) { client.error(err, message, true); }
+		catch (err) { error(err, message, true); }
 	},
 };
