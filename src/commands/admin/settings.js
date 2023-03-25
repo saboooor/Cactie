@@ -18,7 +18,7 @@ module.exports = {
 				.setTitle('Bot Settings');
 
 			// Get settings and make an array out of it to split and make pages
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			let configlist = Object.keys(srvconfig).slice(0, 5).map(prop => { return `**${capFirstLetter(prop)}**\n${desc[prop]}\n\`${srvconfig[prop]}\``; });
 			const maxPages = Math.ceil(Object.keys(srvconfig).length / 5);
 

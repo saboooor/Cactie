@@ -3,7 +3,7 @@ module.exports = async function resolveTicket(client, member, channel) {
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if ticket is an actual ticket
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('Could not find this ticket in the database, please manually delete this channel.');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
@@ -14,7 +14,7 @@ module.exports = async function resolveTicket(client, member, channel) {
 	if (channel.name.startsWith('closed')) throw new Error('This ticket is already closed!');
 
 	// Set resolved to true
-	await client.setData('ticketdata', { channelId: channel.id }, { resolved: true });
+	await sql.setData('ticketdata', { channelId: channel.id }, { resolved: true });
 
 	// Send message to ticket and log
 	await channel.send({ content: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });

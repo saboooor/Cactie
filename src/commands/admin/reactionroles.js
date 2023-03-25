@@ -19,7 +19,7 @@ module.exports = {
 			const components = [];
 
 			// Get reaction roles and pages
-			const reactionroles = await client.getData('reactionroles', { guildId: message.guild.id }, { nocreate: true, all: true });
+			const reactionroles = await sql.getData('reactionroles', { guildId: message.guild.id }, { nocreate: true, all: true });
 
 			if (args[0] == 'add') {
 				// Check if all arguments are met
@@ -55,7 +55,7 @@ module.exports = {
 				if (!reaction) return;
 
 				// Push to database
-				await client.createData('reactionroles', { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: reaction._emoji[reaction._emoji.id ? 'id' : 'name'], roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() });
+				await sql.createData('reactionroles', { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: reaction._emoji[reaction._emoji.id ? 'id' : 'name'], roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() });
 
 				// Add the reaction role into the database and edit the description of the embed
 				RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
@@ -75,7 +75,7 @@ module.exports = {
 				if (!rr) return client.error('That reaction role doesn\'t exist!\nUse `/reactionroles get` to view all reaction roles');
 
 				// Remove the reaction role form the database
-				await client.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId });
+				await sql.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId });
 
 				// Get the reaction role's emoji
 				const emoji = client.emojis.cache.get(rr.emojiId) ?? rr.emojiId;

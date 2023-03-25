@@ -9,6 +9,7 @@ export default (client: Client) => {
 	// Set the global vars
 	global.sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 	global.logDate = logDate;
+	global.sql = require('../functions/mysql');
 
 	// Create a logger
 	global.logger = createLogger({

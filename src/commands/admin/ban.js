@@ -45,7 +45,7 @@ module.exports = {
 			logger.info(`Banned user: ${member.user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
 			// Set unban timestamp to member data for auto-unban
-			if (!isNaN(time)) client.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { bannedUntil: Date.now() + time });
+			if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { bannedUntil: Date.now() + time });
 
 			// Actually ban the dude
 			await member.ban({ reason: `${author.user.tag} banned user: ${member.user.tag} from ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
@@ -54,7 +54,7 @@ module.exports = {
 			await message.reply({ embeds: [BanEmbed] });
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				BanEmbed.setTitle(`${author.user.tag} ${BanEmbed.toJSON().title}`);

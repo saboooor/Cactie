@@ -38,7 +38,7 @@ module.exports = {
 			logger.info(`Unbanned user: ${ban.user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				UnbanEmbed.setTitle(`${message.member.user.tag} ${UnbanEmbed.toJSON().title}`);

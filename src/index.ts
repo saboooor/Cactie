@@ -32,6 +32,7 @@ declare global {
 	var sleep: { (ms: number): Promise<undefined> };
 	var logDate: string;
 	var logger: Logger;
+	var sql: any;
 }
 
 // Load the universal and discord-specific handlers

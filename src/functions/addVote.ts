@@ -12,5 +12,5 @@ export default async function addVote(body: any, client: Client) {
 	channel?.send({ embeds: [VoteEmbed] });
 
 	// @ts-ignore
-	await client.setData('lastvoted', { userId: `${body.id || body.user}` }, { timestamp: Date.now() });
+	await sql.setData('lastvoted', { userId: `${body.id || body.user}` }, { timestamp: Date.now() });
 };

@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = async client => {
 	schedule('* * * * *', async () => {
 		// Get all member data
-		const memberdata = await client.getData('memberdata', null, { all: true });
+		const memberdata = await sql.getData('memberdata', null, { all: true });
 
 		// Iterate through every row in the data
 		for (const data of memberdata) {
@@ -16,7 +16,7 @@ module.exports = async client => {
 			if (!guild) continue;
 
 			// Get the guild config
-			const srvconfig = await client.getData('settings', { guildId: guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: guild.id });
 
 			// Get the member from the memberId, and user just in case member is invalid
 			const member = await guild.members.fetch(data.memberId).catch(() => { return null; });
@@ -32,7 +32,7 @@ module.exports = async client => {
 				logger.info(`Unmuted ${user ? user.tag : data.memberId} in ${guild.name}`);
 
 				// Set the data
-				await client.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { mutedUntil: null });
+				await sql.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { mutedUntil: null });
 
 				// Check if log channel exists and send message
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);
@@ -50,7 +50,7 @@ module.exports = async client => {
 				logger.info(`Unbanned ${user ? user.tag : data.memberId} in ${guild.name}`);
 
 				// Set the data
-				await client.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { bannedUntil: null });
+				await sql.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { bannedUntil: null });
 
 				// Check if log channel exists and send message
 				const logchannel = guild.channels.cache.get(srvconfig.logchannel);

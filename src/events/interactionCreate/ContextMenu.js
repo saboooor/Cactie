@@ -11,7 +11,7 @@ module.exports = async (client, interaction) => {
 	if (!command) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 	// Get the language for the user if specified or guild language
 	let lang = require('../../lang/English/msg.json');

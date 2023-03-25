@@ -2,12 +2,12 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (client, channel) => {
 	// Check if ticket is an actual ticket;
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) return;
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 	// Check if ticket log channel is set in settings
-	const srvconfig = await client.getData('settings', { guildId: channel.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
 	const logchannel = await channel.guild.channels.cache.get(srvconfig.ticketlogchannel);
 	if (logchannel) {
 		// Get list of users for embed
@@ -34,5 +34,5 @@ module.exports = async (client, channel) => {
 		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket);
 		voiceticket.delete().catch(err => logger.warn(err));
 	}
-	client.delData('ticketdata', { channelId: channel.id });
+	sql.delData('ticketdata', { channelId: channel.id });
 };

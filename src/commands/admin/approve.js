@@ -25,7 +25,7 @@ module.exports = {
 			let suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 
 			// Get server config
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// If the suggestmsg is null, try checking for the message in the suggestionchannel if set
 			if (!suggestMsg) {

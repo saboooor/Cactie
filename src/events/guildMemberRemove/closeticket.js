@@ -3,10 +3,10 @@ const closeTicket = require('../../functions/tickets/closeTicket.js');
 module.exports = async (client, member) => {
 	try {
 		// Get the server config
-		const srvconfig = await client.getData('settings', { guildId: member.guild.id });
+		const srvconfig = await sql.getData('settings', { guildId: member.guild.id });
 
 		// Get the ticket data
-		const ticketData = await client.getData('ticketdata', { opener: member.id }, { nocreate: true, all: true });
+		const ticketData = await sql.getData('ticketdata', { opener: member.id }, { nocreate: true, all: true });
 		if (!ticketData.length) return;
 
 		// Close all tickets under member

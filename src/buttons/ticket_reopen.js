@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Get the server config
-			const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 			// Create a ticket
 			const msg = await reopenTicket(client, srvconfig, interaction.member, interaction.channel);

@@ -7,7 +7,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if channel is a ticket
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
@@ -27,11 +27,11 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	if (ticketData.voiceticket != 'false') {
 		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
 		if (voiceticket) voiceticket.delete();
-		await client.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
+		await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
 	}
 
 	// Unresolve ticket
-	if (ticketData.resolved != 'false') await client.setData('ticketdata', { channelId: channel.id }, { resolved: false });
+	if (ticketData.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
 
 	// Create a transcript of the ticket
 	const messagechunks = await getMessages(channel, 'infinite').catch(err => { logger.error(err); });

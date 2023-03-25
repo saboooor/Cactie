@@ -22,7 +22,8 @@ module.exports = async (client, message) => {
 	};
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+	console.log(await sql.getData('settings', { guildId: message.guild.id }));
+	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 	// Get the language for the user if specified or guild language
 	let lang = require('../../lang/English/msg.json');
@@ -46,9 +47,9 @@ module.exports = async (client, message) => {
 		}
 
 		// Check if channel is a ticket
-		const ticketData = await client.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
+		const ticketData = await sql.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
 		if (ticketData && ticketData.resolved == 'true') {
-			await client.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
+			await sql.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
 			logger.info(`Unresolved #${message.channel.name}`);
 		}
 		return;
@@ -124,7 +125,7 @@ module.exports = async (client, message) => {
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly) {
 		// Get vote data for user
-		const vote = await client.getData('lastvoted', { userId: message.author.id });
+		const vote = await sql.getData('lastvoted', { userId: message.author.id });
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (!vote || Date.now() > vote.timestamp + 86400000) {

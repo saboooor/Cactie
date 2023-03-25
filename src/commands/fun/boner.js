@@ -12,7 +12,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get settings
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// Check if arg is a user and set it
 			let user;

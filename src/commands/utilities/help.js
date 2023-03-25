@@ -12,7 +12,7 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			const helpdesc = require(`../../lang/${lang.language.name}/helpdesc.json`);
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			let HelpEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setTitle('**HELP**');

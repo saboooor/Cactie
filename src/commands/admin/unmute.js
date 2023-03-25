@@ -13,7 +13,7 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			// Get settings and check if mutecmd is enabled
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
 			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
 
@@ -30,8 +30,8 @@ module.exports = {
 			else await member.timeout(null);
 
 			// Reset the mute timer
-			const data = await client.getData('memberdata', { memberId: member.id, guildId: message.guild.id }, { nocreate: true });
-			if (data) await client.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: null });
+			const data = await sql.getData('memberdata', { memberId: member.id, guildId: message.guild.id }, { nocreate: true });
+			if (data) await sql.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: null });
 
 			// Send unmute message to user
 			await member.send({ content: '**You\'ve been unmuted**' })

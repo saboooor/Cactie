@@ -1,6 +1,6 @@
 module.exports = async (client, member) => {
 	// Get the guild settings
-	const srvconfig = await client.getData('settings', { guildId: member.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: member.guild.id });
 
 	// Parse the JSON
 	srvconfig.joinmessage = JSON.parse(srvconfig.joinmessage);

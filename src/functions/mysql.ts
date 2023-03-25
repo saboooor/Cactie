@@ -5,17 +5,19 @@ import YAML from 'yaml';
 const { mysql } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 
 // Create connection
-const con = await mariadb.createConnection(mysql);
+let con: mariadb.Connection | null = null; 
+
+mariadb.createConnection(mysql).then((connection: mariadb.Connection) => {
+	logger.info('Connected to MySQL database'); con = connection;
+});
 
 // Query function
 export function query(args: string) {
 	if (!args.startsWith('SELECT *')) logger.info('Query: ' + args);
-	return new Promise((resolve, reject) => {
-		con.query(args, (err: mariadb.SqlError, rows: any[][], fields: mariadb.FieldInfo[]) => {
-			if (err) reject(err);
-			console.log({ rows, fields });
-			resolve({ rows, fields });
-		});
+	return new Promise(async (resolve, reject) => {
+		if (!con) return reject('No connection to database');
+		const a = await con.query(args);
+		resolve(a);
 	});
 };
 
@@ -69,5 +71,3 @@ export async function setData(table: string, where: any, body: any) {
 	if (!data[0]) await createData(table, where);
 	query(`UPDATE ${table} SET ${SET} WHERE ${WHERE}`);
 };
-
-logger.info('MySQL database loaded');
