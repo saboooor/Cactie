@@ -7,18 +7,26 @@ const { mysql } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 // Create connection
 let con: mariadb.Connection | null = null; 
 
-mariadb.createConnection(mysql).then((connection: mariadb.Connection) => {
-	logger.info('Connected to MySQL database'); con = connection;
-});
+function createConnection(args: any, retry: number = 0) {
+	mariadb.createConnection(mysql).then((connection: mariadb.Connection) => {
+		logger.info('Connected to MySQL database'); con = connection;
+	}).catch(async (err: mariadb.SqlError) => {
+		logger.error('Error connecting to MySQL database: ' + err);
+		if (retry > 5) return logger.error('Failed to connect to MySQL database after 5 retries');
+		logger.info('Retrying connection to MySQL database in 3 seconds');
+		await sleep(3000);
+		createConnection(args, retry + 1);
+	});
+}
+
+// Create connection
+createConnection(mysql);
 
 // Query function
-export function query(args: string) {
+export async function query(args: string) {
 	if (!args.startsWith('SELECT *')) logger.info('Query: ' + args);
-	return new Promise(async (resolve, reject) => {
-		if (!con) return reject('No connection to database');
-		const a = await con.query(args);
-		resolve(a);
-	});
+	if (!con) throw Error('No connection to database');
+	return await con.query(args);
 };
 
 export async function createData(table: string, body: any) {
@@ -51,12 +59,10 @@ export async function getData(table: string, where: any, options = { nocreate: f
 	const wherekeys = where ? Object.keys(where) : null;
 	const WHERE = wherekeys ? wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ') : null;
 	let data = await query(`SELECT * FROM ${table}${WHERE ? ` WHERE ${WHERE}` : ''}`);
-	// @ts-ignore
 	if (where && !options.nocreate && !data[0]) {
 		await createData(table, where);
 		data = await getData(table, where, { nocreate: true, all: true });
 	}
-	// @ts-ignore
 	return options.all ? data : data[0];
 };
 
@@ -67,7 +73,6 @@ export async function setData(table: string, where: any, body: any) {
 	const SET = bodykeys.map(k => { return `${k} = ${body[k] === null ? 'NULL' : `'${body[k]}'`}`; }).join(', ');
 	const data = await query(`SELECT * FROM ${table} WHERE ${WHERE}`);
 	logger.info(`Set ${table} where ${JSON.stringify(where)} to ${JSON.stringify(body)}`);
-	// @ts-ignore
 	if (!data[0]) await createData(table, where);
 	query(`UPDATE ${table} SET ${SET} WHERE ${WHERE}`);
 };

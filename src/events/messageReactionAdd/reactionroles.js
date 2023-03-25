@@ -57,7 +57,6 @@ module.exports = async (client, reaction, user) => {
 		await member.roles.add(role);
 
 		// Send message and log
-		console.log(reactionrole);
 		if (reactionrole.silent != 'true') msg = await message.channel.send({ content: `✅ **Added ${role.name} role to ${user}**` });
 		logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild.name}`);
 	}

@@ -22,7 +22,6 @@ module.exports = async (client, message) => {
 	};
 
 	// Get current settings for the guild
-	console.log(await sql.getData('settings', { guildId: message.guild.id }));
 	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 	// Get the language for the user if specified or guild language

@@ -5,11 +5,11 @@ import { Collection } from 'discord.js';
 const reactions = new Collection();
 
 // Register all reactions
-const reactionFiles = readdirSync('./src/reactions').filter(file => file.endsWith('.js'));
+const reactionFiles = readdirSync('./src/reactions').filter(file => file.endsWith('.ts'));
 for (const file of reactionFiles) {
 	const reaction = require(`../reactions/${file}`);
 	reactions.set(reaction.name, reaction);
+	if (reactionFiles.indexOf(file) == reactionFiles.length - 1) logger.info(`${reactionFiles.length} reactions loaded`);
 }
-logger.info(`${reactionFiles.length} reactions loaded`);
 
 export default reactions;

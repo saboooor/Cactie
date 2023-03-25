@@ -37,8 +37,4 @@ declare global {
 }
 
 // Load the universal and discord-specific handlers
-for (const handlerName of readdirSync('./src/handlers').filter((file: string) => file.endsWith('.ts') || file.endsWith('.js'))) {
-	const handler = require(`./handlers/${handlerName}`);
-	if (handler.default) handler.default(client);
-	else handler(client);
-}
+for (const handlerName of readdirSync('./src/handlers').filter((file: string) => file.endsWith('.ts'))) require(`./handlers/${handlerName}`).default(client)

@@ -4,6 +4,7 @@ specifiers:
   '@types/body-parser': ^1.19.2
   '@types/express': ^4.17.17
   '@types/node': ^18.15.8
+  '@types/node-cron': ^3.0.7
   body-parser: ^1.20.2
   bufferutil: ^4.0.7
   diff: ^5.1.0
@@ -62,6 +63,7 @@ optionalDependencies:
 devDependencies:
   '@types/body-parser': 1.19.2
   '@types/express': 4.17.17
+  '@types/node-cron': 3.0.7
   tslib: 2.5.0
 
 packages:
@@ -304,6 +306,10 @@ packages:
 
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
+    dev: true
+
+  /@types/node-cron/3.0.7:
+    resolution: {integrity: sha512-9PuLtBboc/+JJ7FshmJWv769gDonTpItN0Ol5TMwclpSQNjVyB2SRxSKBcTtbSysSL5R7Oea06kTTFNciCoYwA==}
     dev: true
 
   /@types/node/17.0.45:
