@@ -7,9 +7,9 @@ module.exports = client => {
 	client.commands = new Collection();
 
 	// Register all commands
-	const commandFolders = readdirSync('./commands');
+	const commandFolders = readdirSync('./src/commands');
 	for (const folder of commandFolders) {
-		const commandFiles = readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js') && folder != 'options' && folder != 'message');
+		const commandFiles = readdirSync(`./src/commands/${folder}`).filter(file => file.endsWith('.js') && folder != 'options' && folder != 'message');
 		for (const file of commandFiles) {
 			const command = require(`../commands/${folder}/${file}`);
 			command.category = folder;

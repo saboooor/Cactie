@@ -6,7 +6,7 @@ module.exports = client => {
 	client.reactions = new Collection();
 
 	// Register all reactions
-	const reactionFiles = readdirSync('./reactions').filter(file => file.endsWith('.js'));
+	const reactionFiles = readdirSync('./src/reactions').filter(file => file.endsWith('.js'));
 	for (const file of reactionFiles) {
 		const reaction = require(`../reactions/${file}`);
 		client.reactions.set(reaction.name, reaction);

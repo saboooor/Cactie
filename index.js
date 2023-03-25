@@ -15,7 +15,7 @@ const client = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildMembers,
-		GatewayIntentBits.GuildModerations,
+		GatewayIntentBits.GuildModeration,
 		GatewayIntentBits.GuildPresences,
 		GatewayIntentBits.GuildMessageReactions,
 		GatewayIntentBits.DirectMessages,
@@ -31,4 +31,4 @@ const client = new Client({
 client.startTimestamp = Date.now();
 
 // Load the universal and discord-specific handlers
-for (const handler of readdirSync('./handlers').filter(file => file.endsWith('.js'))) require(`./handlers/${handler}`)(client);
+for (const handler of readdirSync('./src/handlers').filter(file => file.endsWith('.js'))) require(`./src/handlers/${handler}`)(client);
