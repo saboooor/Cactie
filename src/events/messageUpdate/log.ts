@@ -1,17 +1,17 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { refresh } = require('../../lang/int/emoji.json');
-const getDiff = require('../../functions/getDiff').default;
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
+import { refresh } from '../../lang/int/emoji.json';
+import getDiff from '../../functions/getDiff';
 
-module.exports = async (client, oldMessage, newMessage) => {
+export default async (client: Client, oldMessage: Message, newMessage: Message) => {
 	// Check if the message was sent by a bot or the content wasn't updated
 	if ((newMessage.author && newMessage.author.bot) || oldMessage.content == newMessage.content) return;
 
 	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: newMessage.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: newMessage.guild!.id });
 
 	// Check if log is enabled and channel is valid
 	if (!['messageupdate', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-	const logchannel = newMessage.guild.channels.cache.get(srvconfig.logchannel);
+	const logchannel = newMessage.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
 	if (!logchannel) return;
 
 	// Convert createdTimestamp into seconds
@@ -20,7 +20,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
-		.setAuthor({ name: newMessage.author ? newMessage.author.tag : 'Unknown User', iconURL: newMessage.author ? newMessage.author.avatarURL() : newMessage.guild.iconURL() })
+		.setAuthor({ name: newMessage.author?.tag ?? 'Unknown User', iconURL: newMessage.author?.avatarURL() ?? undefined })
 		.setTitle(`<:refresh:${refresh}> Message edited`)
 		.setFields([
 			{ name: 'Channel', value: `${newMessage.channel}`, inline: true },
@@ -34,7 +34,7 @@ module.exports = async (client, oldMessage, newMessage) => {
 	else logEmbed.addFields([{ name: 'After', value: `${newMessage.content ?? 'None'}` }]);
 
 	// Create abovemessage button if above message is found
-	const row = new ActionRowBuilder()
+	const row = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
 			new ButtonBuilder()
 				.setURL(newMessage.url)

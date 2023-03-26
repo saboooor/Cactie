@@ -1,5 +1,7 @@
 import { Snowflake } from "discord.js";
 
+export type Table = 'tickets' | 'settings' | 'reactionroles' | 'memberdata' | 'lastvoted';
+
 export declare interface ticketData {
     guildId: Snowflake;
     channelId: Snowflake;
@@ -41,14 +43,6 @@ export declare interface reactionRoles {
     roleId: Snowflake;
     type: 'toggle' | 'single';
     silent: 'true' | 'false';
-}
-
-export declare interface memberData {
-    memberId: Snowflake;
-    guildId: Snowflake;
-    mutedUntil: string;
-    bannedUntil: string;
-    warns: string;
 }
 
 export declare interface memberData {

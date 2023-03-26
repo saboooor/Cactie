@@ -1,13 +1,13 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { no } = require('../../lang/int/emoji.json');
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Collection, Snowflake, Message, TextChannel } from 'discord.js';
+import { no } from '../../lang/int/emoji.json';
 
-module.exports = async (client, messages, channel) => {
+export default async (client: Client, messages: Collection<Snowflake, Message>, channel: TextChannel) => {
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
 
 	// Check if log is enabled and channel is valid
 	if (!['messagedeletebulk', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel);
+	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
 	if (!logchannel) return;
 
 	// Create log embed
@@ -18,11 +18,11 @@ module.exports = async (client, messages, channel) => {
 
 	// Create abovemessage button if above message is found
 	const components = [];
-	const aboveMessages = await channel.messages.fetch({ before: messages.first().id, limit: 1 }).catch(() => { return null; });
+	const aboveMessages = await channel.messages.fetch({ before: messages.first()!.id, limit: 1 }).catch(() => { return null; });
 	if (aboveMessages && aboveMessages.first()) {
-		const aboveMessage = aboveMessages.first();
+		const aboveMessage = aboveMessages.first()!;
 		components.push(
-			new ActionRowBuilder()
+			new ActionRowBuilder<ButtonBuilder>()
 				.addComponents([
 					new ButtonBuilder()
 						.setURL(aboveMessage.url)

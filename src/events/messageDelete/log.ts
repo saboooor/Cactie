@@ -1,16 +1,16 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { no } = require('../../lang/int/emoji.json');
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
+import { no } from '../../lang/int/emoji.json';
 
-module.exports = async (client, message) => {
+module.exports = async (client: Client, message: Message) => {
 	// Check if the message was sent by a bot
 	if (message.author && message.author.bot) return;
 
 	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
 
 	// Check if log is enabled and channel is valid
 	if (!['messagedelete', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-	const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
+	const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
 	if (!logchannel) return;
 
 	// Convert createdTimestamp into seconds
@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
 	// Create log embed
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
-		.setAuthor({ name: message.author ? message.author.tag : 'Unknown User', iconURL: message.author ? message.author.avatarURL() : message.guild.iconURL() })
+		.setAuthor({ name: message.author?.tag ?? 'Unknown User', iconURL: message.author?.avatarURL() ?? undefined })
 		.setTitle(`<:no:${no}> Message deleted`)
 		.setFields([
 			{ name: 'Channel', value: `${message.channel}`, inline: true },
@@ -34,12 +34,12 @@ module.exports = async (client, message) => {
 
 	// Add attachments
 	if (message.attachments.size) {
-		const images = message.attachments.filter(a => a.contentType.split('/')[0] == 'image');
-		const files = message.attachments.filter(a => a.contentType.split('/')[0] != 'image');
+		const images = message.attachments.filter(a => a.contentType?.split('/')[0] == 'image');
+		const files = message.attachments.filter(a => a.contentType?.split('/')[0] != 'image');
 		if (images.size) {
 			logEmbed.addFields([{ name: 'Images', value: `${images.size}` }]);
-			logEmbed.setImage(images.first().url);
-			images.delete(images.first().id);
+			logEmbed.setImage(images.first()!.url);
+			images.delete(images.first()!.id);
 			if (images.size) {
 				images.forEach(img => {
 					const imgEmbed = new EmbedBuilder()
@@ -54,7 +54,8 @@ module.exports = async (client, message) => {
 
 	// Add embeds if there is any
 	if (message.embeds.length) {
-		embeds.push(...message.embeds);
+		const embedBuilders = message.embeds.map(e => new EmbedBuilder(e.toJSON()));
+		embeds.push(...embedBuilders);
 		logEmbed.addFields([{ name: 'Embeds', value: `${message.embeds.length} Below`, inline: true }]);
 	}
 
@@ -62,9 +63,9 @@ module.exports = async (client, message) => {
 	const components = [];
 	const aboveMessages = await message.channel.messages.fetch({ before: message.id, limit: 1 }).catch(() => { return null; });
 	if (aboveMessages && aboveMessages.first()) {
-		const aboveMessage = aboveMessages.first();
+		const aboveMessage = aboveMessages.first()!;
 		components.push(
-			new ActionRowBuilder()
+			new ActionRowBuilder<ButtonBuilder>()
 				.addComponents([
 					new ButtonBuilder()
 						.setURL(aboveMessage.url)

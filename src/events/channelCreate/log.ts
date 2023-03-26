@@ -1,13 +1,13 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { yes } = require('../../lang/int/emoji.json');
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, TextChannel } from 'discord.js';
+import { yes } from '../../lang/int/emoji.json';
 
-module.exports = async (client, channel) => {
+module.exports = async (client: Client, channel: TextChannel) => {
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
 
 	// Check if log is enabled and send log
 	if (!['channelcreate', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel);
+	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
 	if (!logchannel) return;
 
 	// Create log embed
@@ -21,7 +21,7 @@ module.exports = async (client, channel) => {
 	if (channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
 
 	// Create button to go to channel
-	const row = new ActionRowBuilder()
+	const row = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
 			new ButtonBuilder()
 				.setURL(channel.url)

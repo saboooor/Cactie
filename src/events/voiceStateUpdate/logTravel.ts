@@ -1,7 +1,7 @@
-const { EmbedBuilder } = require('discord.js');
-const { join, leave, right } = require('../../lang/int/emoji.json');
+import { Client, EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
+import { join, leave, right } from '../../lang/int/emoji.json';
 
-module.exports = async (client, oldState, newState) => {
+export default async (client: Client, oldState: VoiceState, newState: VoiceState) => {
 	// Check if the mute state actually changed
 	if (oldState.channelId == newState.channelId) return;
 
@@ -9,12 +9,12 @@ module.exports = async (client, oldState, newState) => {
 	const srvconfig = await sql.getData('settings', { guildId: newState.guild.id });
 
 	// Check if log channel is set
-	const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel);
+	const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
 	if (!logchannel) return;
 
 	const logEmbed = new EmbedBuilder()
 		.setColor(0x2f3136)
-		.setAuthor({ name: newState.member.user.tag, iconURL: newState.member.user.avatarURL() })
+		.setAuthor({ name: newState.member?.user.tag ?? 'Unknown User', iconURL: newState.member?.user.avatarURL() ?? undefined })
 		.setFields([{ name: 'Member', value: `${newState.member}`, inline: true }]);
 
 	// Check if the user joined

@@ -4,6 +4,8 @@ import { readFileSync } from 'fs';
 import YAML from 'yaml';
 const { mysql } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 
+import { Table } from 'types/mysql';
+
 // Create connection
 let con: mariadb.Connection | null = null; 
 
@@ -29,7 +31,7 @@ export async function query(args: string) {
 	return await con.query(args);
 };
 
-export async function createData(table: string, body: any) {
+export async function createData(table: Table, body: any) {
 	const bodykeys = Object.keys(body);
 	const bodyvalues = Object.values(body);
 	const VALUES = bodyvalues.map(v => { return v === null ? 'NULL' : `'${v}'`; }).join(', ');
@@ -42,7 +44,7 @@ export async function createData(table: string, body: any) {
 	}
 };
 
-export async function delData(table: string, where: any) {
+export async function delData(table: Table, where: any) {
 	const wherekeys = Object.keys(where);
 	const WHERE = wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ');
 	try {
@@ -55,7 +57,7 @@ export async function delData(table: string, where: any) {
 };
 
 
-export async function getData(table: string, where: any, options = { nocreate: false, all: false }) {
+export async function getData(table: Table, where: any, options = { nocreate: false, all: false }) {
 	const wherekeys = where ? Object.keys(where) : null;
 	const WHERE = wherekeys ? wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ') : null;
 	let data = await query(`SELECT * FROM ${table}${WHERE ? ` WHERE ${WHERE}` : ''}`);
@@ -66,7 +68,7 @@ export async function getData(table: string, where: any, options = { nocreate: f
 	return options.all ? data : data[0];
 };
 
-export async function setData(table: string, where: any, body: any) {
+export async function setData(table: Table, where: any, body: any) {
 	const wherekeys = Object.keys(where);
 	const WHERE = wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ');
 	const bodykeys = Object.keys(body);

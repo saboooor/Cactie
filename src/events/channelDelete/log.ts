@@ -1,13 +1,13 @@
-const { EmbedBuilder } = require('discord.js');
-const { no } = require('../../lang/int/emoji.json');
+import { Client, EmbedBuilder, TextChannel } from 'discord.js';
+import { no } from '../../lang/int/emoji.json';
 
-module.exports = async (client, channel) => {
+export default async (client: Client, channel: TextChannel) => {
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
 
 	// Check if log is enabled and send log
 	if (!['channeldelete', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel);
+	const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
 	if (!logchannel) return;
 
 	// Convert createdTimestamp into seconds
