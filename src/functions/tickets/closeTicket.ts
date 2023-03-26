@@ -1,6 +1,5 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, ThreadChannel, Message, Snowflake } from 'discord.js';
 import getTranscript from '../getTranscript';
-// @ts-ignore
 import getMessages from '../getMessages';
 import { settings, ticketData } from 'types/mysql';
 
@@ -36,9 +35,12 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
 	if (ticketData.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
 
 	// Create a transcript of the ticket
-	const messagechunks = await getMessages(channel, 'infinite').catch((err: Error) => { logger.error(err); });
-	const allmessages = new Collection<Snowflake, Message>().concat(...messagechunks);
-	const link = await getTranscript(allmessages);
+	const messagechunks = await getMessages(channel, 'infinite').catch((err: Error) => { logger.error(err); return undefined; });
+	let link = 'No messages retrieved.';
+	if (messagechunks) {
+		const allmessages = new Collection<Snowflake, Message>().concat(...messagechunks);
+		link = await getTranscript(allmessages);
+	}
 	logger.info(`Created transcript of ${channel.name}: ${link}`);
 
 	// Create embed for DMs
