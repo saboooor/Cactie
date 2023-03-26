@@ -1,4 +1,4 @@
-const action = require('../../functions/action.js');
+const action = require('../../functions/action').default;
 
 module.exports = {
 	name: 'stare',

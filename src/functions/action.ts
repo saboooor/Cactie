@@ -1,12 +1,12 @@
-const { EmbedBuilder } = require('discord.js');
-const gifs = require('../lang/int/actiongifs.json');
-let current;
+import { EmbedBuilder, GuildMember, Message } from 'discord.js';
+import gifs from '../lang/int/actiongifs.json';
+let current: number;
 
-module.exports = async function action(message, author, args, type, lang) {
+export default async function action(message: Message, author: GuildMember, args: string[], type: keyof typeof gifs, lang: any) {
 	// Check if arg is a user and set it
 	let user;
 	if (args.length) {
-		user = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
+		user = message.guild?.members.cache.get(args[0].replace(/\D/g, ''));
 		if (user) args[0] = user.displayName;
 	}
 
@@ -27,7 +27,7 @@ module.exports = async function action(message, author, args, type, lang) {
 		.setFooter({ text: lang.actions[type].footer });
 
 	// Reply with bonk message, if user is set then mention the user
-	if (message.member.id == message.client.user.id) {
+	if (message.member?.id == message.client.user.id) {
 		message.delete();
 		message.channel.send({ content: user ? `${user}` : undefined, embeds: [BonkEmbed], components: [] });
 		return;
