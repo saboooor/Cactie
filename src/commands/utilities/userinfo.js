@@ -13,7 +13,7 @@ module.exports = {
 			let member = message.member;
 			if (args.length) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member && args.length) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(lang.invalidmember, message, true);
+			if (!member) return error(lang.invalidmember, message, true);
 			const roles = Array.from(member.roles.cache).sort(function(a, b) {
 				if (b[1].rawPosition < a[1].rawPosition) return -1;
 				if (b[1].rawPosition > a[1].rawPosition) return 1;
@@ -63,6 +63,6 @@ module.exports = {
 			]);
 			await message.reply({ embeds: [UsrEmbed] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

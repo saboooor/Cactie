@@ -14,30 +14,30 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			// Get mute role and check if role is valid
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const role = await message.guild.roles.cache.get(srvconfig.mutecmd);
-			if (!role && srvconfig.mutecmd != 'timeout') return client.error('This command is disabled!', message, true);
+			if (!role && srvconfig.mutecmd != 'timeout') return error('This command is disabled!', message, true);
 
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(lang.invalidmember, message, true);
+			if (!member) return error(lang.invalidmember, message, true);
 
 			// Get author and check if role is lower than member's role
 			const author = message.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
-			if (member.roles.highest.rawPosition > message.guild.members.me.roles.highest.rawPosition) return client.error(`I can't do that! My role is ${member.roles.highest.rawPosition - message.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
+			if (member.roles.highest.rawPosition > message.guild.members.me.roles.highest.rawPosition) return error(`I can't do that! My role is ${member.roles.highest.rawPosition - message.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
 
 			// Check if user is muted
-			if (role && member.roles.cache.has(role.id)) return client.error('This user is already muted! Try unmuting instead.', message, true);
+			if (role && member.roles.cache.has(role.id)) return error('This user is already muted! Try unmuting instead.', message, true);
 
 			// Check if duration is set and if it's more than a year
 			const time = ms(args[1] ? args[1] : 'perm');
-			if (role && time > 31536000000) return client.error('You cannot mute someone for more than 1 year!', message, true);
+			if (role && time > 31536000000) return error('You cannot mute someone for more than 1 year!', message, true);
 
 			// Timeout feature can't mute someone for more than 30 days
-			else if (time > 2592000000) return client.error('You cannot mute someone for more than 30 days with the timeout feature turned on!', message, true);
-			if (isNaN(time) && srvconfig.mutecmd == 'timeout') return client.error('You cannot mute someone forever with the timeout feature turned on!', message, true);
+			else if (time > 2592000000) return error('You cannot mute someone for more than 30 days with the timeout feature turned on!', message, true);
+			if (isNaN(time) && srvconfig.mutecmd == 'timeout') return error('You cannot mute someone forever with the timeout feature turned on!', message, true);
 
 			// Create embed and check if duration / reason are set and do stuff
 			const MuteEmbed = new EmbedBuilder()
@@ -53,7 +53,7 @@ module.exports = {
 			else await member.timeout(time, `Muted by ${author.user.tag} for ${args.slice(1).join(' ')}`);
 
 			// Set member data for unmute time if set
-			if (!isNaN(time)) client.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: Date.now() + time });
+			if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: message.guild.id }, { mutedUntil: Date.now() + time });
 
 			// Send mute message to target
 			await member.send({ content: `**You've been muted in ${message.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
@@ -73,6 +73,6 @@ module.exports = {
 				logchannel.send({ embeds: [MuteEmbed] });
 			}
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

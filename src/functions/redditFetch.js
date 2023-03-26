@@ -15,16 +15,16 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(e => err = e);
 
 	// If there is nothing or an error, return with an error
-	if (!json || err) return client.error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
+	if (!json || err) return error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
 
 	// Parse into json
 	let pong = await json.json().catch(e => err = e);
 
 	// If there is nothing or an error, return ith an error
-	if (!pong) return client.error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
+	if (!pong) return error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
 
 	// If subreddit isn't found, return with error
-	if (pong.message == 'Not Found') return client.error(`r/${subreddit} doesn't exist!`, message);
+	if (pong.message == 'Not Found') return error(`r/${subreddit} doesn't exist!`, message);
 
 	// If data is an array, set it to the first element in the array
 	if (pong[0]) pong = pong[0];
@@ -32,7 +32,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	// Something really rare
 	if (!pong) {
 		logger.error(JSON.stringify(pong));
-		return client.error('Invalid data! Try again later.', message);
+		return error('Invalid data! Try again later.', message);
 	}
 
 	// Get the specific post's data

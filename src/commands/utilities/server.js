@@ -23,6 +23,6 @@ module.exports = {
 			]);
 			await message.reply({ embeds: [srvEmbed] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

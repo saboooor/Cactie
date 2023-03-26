@@ -57,6 +57,6 @@ module.exports = {
 			]);
 			await interaction.reply({ embeds: [UsrEmbed] });
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

@@ -1,4 +1,5 @@
 const { ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
+const slashcommands = require('../../lists/slash').default;
 
 module.exports = {
 	name: 'reloadcontext',
@@ -6,19 +7,19 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if user is sab lolololol
-			if (message.author.id !== '249638347306303499') return client.error('You can\'t do that!', message, true);
+			if (message.author.id !== '249638347306303499') return error('You can\'t do that!', message, true);
 			if (!client.application?.owner) await client.application?.fetch();
 			const commands = await client.application?.commands.fetch();
 			const msg = await message.channel.send({ content: 'Updating context menu commands...' });
 			for (let command of commands) {
 				command = command[1];
-				if (client.slashcommands.find(c => c.name == command.name)) continue;
+				if (slashcommands.find(c => c.name == command.name)) continue;
 				await msg.edit({ content: `Deleting ${command.name}` });
 				await command.delete();
 				await msg.edit({ content: `Deleted ${command.name}` });
 				await sleep(4000);
 			}
-			for (let command of client.slashcommands) {
+			for (let command of slashcommands) {
 				command = command[1];
 				if (!command.type) continue;
 
@@ -33,6 +34,6 @@ module.exports = {
 			await msg.edit({ content: 'Done!' });
 			await message.reply({ content: 'All context menu commands have been updated!' });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const buttons = require('../../lists/buttons').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is button
@@ -9,11 +10,11 @@ module.exports = async (client, interaction) => {
 	logger.info(`${interaction.user.tag} clicked button with id: ${interaction.customId ?? interaction.value}, in ${interaction.guild.name}`);
 
 	// Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
-	const button = client.buttons.get(interaction.customId ?? interaction.value);
+	const button = buttons.get(interaction.customId ?? interaction.value);
 	if (!button) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 	// Get the language for the user if specified or guild language
 	let lang = require('../../lang/English/msg.json');
@@ -27,7 +28,7 @@ module.exports = async (client, interaction) => {
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (button.botPerms) {
 		const permCheck = checkPerms(button.botPerms, interaction.guild.members.me);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Log

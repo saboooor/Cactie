@@ -13,7 +13,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get server config
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// Get channel to send poll in
 			let channel = message.guild.channels.cache.get(srvconfig.pollchannel);
@@ -21,7 +21,7 @@ module.exports = {
 
 			// Check permissions in that channel
 			const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions'], message.guild.members.me, channel);
-			if (permCheck) return client.error(permCheck, message, true);
+			if (permCheck) return error(permCheck, message, true);
 
 			const cmd = args.shift();
 			const msg = args.join();
@@ -45,11 +45,11 @@ module.exports = {
 			else if (cmd == 'end') {
 				// Check permissions in that channel
 				const permCheck2 = checkPerms(['ReadMessageHistory', 'ManageMessages'], message.guild.members.me, channel);
-				if (permCheck2) return client.error(permCheck2, message, true);
+				if (permCheck2) return error(permCheck2, message, true);
 
 				// Check if the message exists, if not, check in suggestionchannel, if not, return
 				const pollMsg = !isNaN(msg) ? await channel.messages.fetch(msg).catch(() => { return null; }) : null;
-				if (!pollMsg) return client.error('Could not find the message.\nTry doing the command in the same channel as the poll.', message, true);
+				if (!pollMsg) return error('Could not find the message.\nTry doing the command in the same channel as the poll.', message, true);
 
 				// Check if message was sent by the bot
 				if (pollMsg.author.id != client.user.id) return;
@@ -97,6 +97,6 @@ module.exports = {
 			}
 
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

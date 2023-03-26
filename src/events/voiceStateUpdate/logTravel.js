@@ -6,7 +6,7 @@ module.exports = async (client, oldState, newState) => {
 	if (oldState.channelId == newState.channelId) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: newState.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: newState.guild.id });
 
 	// Check if log channel is set
 	const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel);

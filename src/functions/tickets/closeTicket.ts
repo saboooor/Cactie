@@ -1,21 +1,23 @@
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection } = require('discord.js');
-const getTranscript = require('../../functions/getTranscript.js');
-const getMessages = require('../../functions/getMessages.js');
+import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, ThreadChannel, Message, Snowflake } from 'discord.js';
+import getTranscript from '../getTranscript';
+// @ts-ignore
+import getMessages from '../getMessages';
+import { settings, ticketData } from 'types/mysql';
 
-module.exports = async function closeTicket(client, srvconfig, member, channel) {
+export default async function closeTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | ThreadChannel) {
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent;
+	if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
 
 	// Check if channel is a ticket
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData: ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	if (ticketData.users) ticketData.users = ticketData.users.split(',');
+	const ticketDataUsers = ticketData.users?.split(',');
 
 	// Check if ticket is already closed
 	if (channel.name.startsWith('closed')) throw new Error('This ticket is already closed!');
 
 	// Check if user is a user that has been added with -add
-	if (ticketData.users.includes(member.id) && member.id != ticketData.opener) throw new Error('You can\'t close this ticket!');
+	if (ticketDataUsers.includes(member.id) && member.id != ticketData.opener) throw new Error('You can\'t close this ticket!');
 
 	// Set the name to closed
 	await channel.setName(channel.name.replace('ticket', 'closed'));
@@ -27,15 +29,15 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	if (ticketData.voiceticket != 'false') {
 		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
 		if (voiceticket) voiceticket.delete();
-		await client.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
+		await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
 	}
 
 	// Unresolve ticket
-	if (ticketData.resolved != 'false') await client.setData('ticketdata', { channelId: channel.id }, { resolved: false });
+	if (ticketData.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
 
 	// Create a transcript of the ticket
-	const messagechunks = await getMessages(channel, 'infinite').catch(err => { logger.error(err); });
-	const allmessages = new Collection().concat(...messagechunks);
+	const messagechunks = await getMessages(channel, 'infinite').catch((err: Error) => { logger.error(err); });
+	const allmessages = new Collection<Snowflake, Message>().concat(...messagechunks);
 	const link = await getTranscript(allmessages);
 	logger.info(`Created transcript of ${channel.name}: ${link}`);
 
@@ -47,10 +49,10 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 			{ name: '**Transcript**', value: `${link}` },
 			{ name: '**Closed by**', value: `${member}` },
 		]);
-	if (ticketData.users.length) CloseEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketData.users.map(u => { return `<@${u}>`; }).join(', ')}` }]);
+	if (ticketDataUsers.length) CloseEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketDataUsers.map(u => { return `<@${u}>`; }).join(', ')}` }]);
 
 	// Get all the users and get rid of their permissions
-	for (const userid of ticketData.users) {
+	for (const userid of ticketDataUsers) {
 		const ticketmember = await member.guild.members.fetch(userid).catch(() => { return null; });
 		if (!ticketmember) continue;
 		await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
@@ -58,7 +60,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	}
 
 	// Get the ticket log channel
-	const logchannel = await member.guild.channels.fetch(srvconfig.ticketlogchannel).catch(() => { return null; });
+	const logchannel = await member.guild.channels.fetch(srvconfig.ticketlogchannel).catch(() => { return null; }) as TextChannel | null;
 
 	// Check if ticket log channel is set in settings and send embed to ticket log channel
 	if (logchannel) await logchannel.send({ embeds: [CloseEmbed] });
@@ -68,7 +70,7 @@ module.exports = async function closeTicket(client, srvconfig, member, channel) 
 	// If the ticket mode is set to buttons, add the buttons
 	// Add reaction panel if ticket mode is set to reactions
 	if (srvconfig.tickets == 'buttons') {
-		const row = new ActionRowBuilder()
+		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents([
 				new ButtonBuilder()
 					.setCustomId('delete_ticket')

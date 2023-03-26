@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Collection } = require('discord.js');
 const { yes } = require('../../lang/int/emoji.json');
-const getTranscript = require('../../functions/getTranscript.js');
+const getTranscript = require('../../functions/getTranscript').default;
 const getMessages = require('../../functions/getMessages.js');
 const checkPerms = require('../../functions/checkPerms');
 
@@ -21,18 +21,18 @@ module.exports = {
 			// Fetch the message with the messageId
 			let suggestChannel = message.channel;
 			const permCheck = checkPerms(['ReadMessageHistory'], message.guild.members.me, suggestChannel);
-			if (permCheck) return client.error(permCheck, message, true);
+			if (permCheck) return error(permCheck, message, true);
 			let suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 
 			// Get server config
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// If the suggestmsg is null, try checking for the message in the suggestionchannel if set
 			if (!suggestMsg) {
 				suggestChannel = message.guild.channels.cache.get(srvconfig.suggestionchannel);
 				if (suggestChannel) {
 					const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild.members.me, suggestChannel);
-					if (permCheck2) return client.error(permCheck2, message, true);
+					if (permCheck2) return error(permCheck2, message, true);
 					suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 				}
 			}
@@ -41,12 +41,12 @@ module.exports = {
 			if (!suggestMsg && message.channel.parent && message.channel.parent.type == ChannelType.GuildText) {
 				suggestChannel = message.channel.parent;
 				const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild.members.me, suggestChannel);
-				if (permCheck2) return client.error(permCheck2, message, true);
+				if (permCheck2) return error(permCheck2, message, true);
 				suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 			}
 
 			// If the suggestmsg is still null, throw an error
-			if (!suggestMsg) return client.error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
+			if (!suggestMsg) return error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
 
 			// Check if message was sent by the bot
 			if (suggestMsg.author.id != client.user.id) return;
@@ -60,7 +60,7 @@ module.exports = {
 
 			// Remove all reactions and set color to green and approved title
 			const permCheck2 = checkPerms(['ManageMessages'], message.guild.members.me, suggestChannel);
-			if (permCheck2) return client.error(permCheck2, message, true);
+			if (permCheck2) return error(permCheck2, message, true);
 			suggestMsg.reactions.removeAll();
 			ApproveEmbed.setColor(0x2ECC71)
 				.setTitle('Suggestion (Approved)')
@@ -82,7 +82,7 @@ module.exports = {
 			// Delete thread if exists with transcript
 			if (thread) {
 				const permCheck3 = checkPerms(['ManageThreads'], message.guild.members.me, suggestChannel);
-				if (permCheck3) return client.error(permCheck3, message, true);
+				if (permCheck3) return error(permCheck3, message, true);
 				const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
 				messagechunks.unshift(new Collection().set(`${suggestMsg.id}`, suggestMsg));
 				const allmessages = new Collection().concat(...messagechunks);
@@ -134,6 +134,6 @@ module.exports = {
 				logChannel.send({ embeds: [ApproveEmbed], components: [msglink] });
 			}
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

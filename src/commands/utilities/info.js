@@ -16,7 +16,7 @@ module.exports = {
 					{ name: 'Bot Version', value: `\`\`\`${packageJSON.version}\`\`\``, inline: true },
 					{ name: 'NodeJS Version', value: `\`\`\`${process.version}\`\`\``, inline: true },
 					{ name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499').tag}\`\`\`` },
-					{ name: 'Last restart', value: `<t:${Math.ceil(client.startTimestamp / 1000)}:R>` },
+					{ name: 'Last restart', value: `<t:${Math.ceil(client.readyTimestamp / 1000)}:R>` },
 				]);
 			const row1 = new ActionRowBuilder()
 				.addComponents([
@@ -25,7 +25,7 @@ module.exports = {
 						.setLabel('Invite Cactie!')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
-						.setURL(`${client.dashboardDomain}/support/discord`)
+						.setURL('https://luminescent.dev/discord')
 						.setLabel('Join the Cactie Server!')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
@@ -42,6 +42,6 @@ module.exports = {
 				]);
 			await message.reply({ embeds: [InfEmbed], components: [row1, row2] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

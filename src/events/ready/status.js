@@ -6,7 +6,8 @@ module.exports = async client => {
 		const activities = [
 			['Playing', 'with you ;)'],
 			['Playing', '/help'],
-			['Watching', client.dashboardDomain],
+			['Watching', 'luminescent.dev'],
+			['Watching', `${client.user.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`],
 			['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
 			['Competing', `${client.guilds.cache.size} servers!`],
 			['Listening', '3 Big Balls'],

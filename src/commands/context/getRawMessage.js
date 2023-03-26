@@ -18,6 +18,6 @@ module.exports = {
 			// Send the content
 			interaction.reply({ content });
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };

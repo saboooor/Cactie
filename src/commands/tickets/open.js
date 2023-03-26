@@ -9,7 +9,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get the server config
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// Create a ticket
 			const msg = await reopenTicket(client, srvconfig, message.member, message.channel);
@@ -17,6 +17,6 @@ module.exports = {
 			// Send the message
 			await message.reply(msg);
 		}
-		catch (err) { client.error(err, message, true); }
+		catch (err) { error(err, message, true); }
 	},
 };

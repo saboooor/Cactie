@@ -15,7 +15,7 @@ module.exports = {
 			// Fetch bans from guild and check if user in arg is banned
 			const bans = await message.guild.bans.fetch();
 			const ban = bans.get(args[0].replace(/\D/g, ''));
-			if (!ban) return client.error('Invalid User! / This user hasn\'t been banned!', message, true);
+			if (!ban) return error('Invalid User! / This user hasn\'t been banned!', message, true);
 
 			// Send unban message to user if they can be fetched by the client
 			const user = client.users.cache.get(ban.user.id);
@@ -38,13 +38,13 @@ module.exports = {
 			logger.info(`Unbanned user: ${ban.user.tag} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				UnbanEmbed.setTitle(`${message.member.user.tag} ${UnbanEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [UnbanEmbed] });
 			}
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

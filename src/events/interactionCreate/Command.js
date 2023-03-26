@@ -1,16 +1,18 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const cooldowns = require('../../lists/commands').cooldowns;
+const slashcommands = require('../../lists/slash').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is command
 	if (!interaction.isChatInputCommand()) return;
 
 	// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
-	const command = client.slashcommands.get(interaction.commandName);
+	const command = slashcommands.get(interaction.commandName);
 	if (!command) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 	if (srvconfig.disabledcmds.includes(command.name)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
 	// Get the language for the user if specified or guild language
@@ -31,7 +33,6 @@ module.exports = async (client, interaction) => {
 	if (interaction.options._subcommand) args.unshift(interaction.options._subcommand);
 
 	// Get cooldowns and check if cooldown exists, if not, create it
-	const { cooldowns } = client;
 	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
 
 	// Get current timestamp and the command's last used timestamps
@@ -68,7 +69,7 @@ module.exports = async (client, interaction) => {
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly) {
 		// Get vote data for user
-		const vote = await client.getData('lastvoted', { userId: interaction.user.id });
+		const vote = await sql.getData('lastvoted', { userId: interaction.user.id });
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (!vote || Date.now() > vote.timestamp + 86400000) {
@@ -92,25 +93,25 @@ module.exports = async (client, interaction) => {
 	// Check if user has the permissions necessary in the channel to use the command
 	if (command.channelPermissions) {
 		const permCheck = checkPerms(command.channelPermissions, interaction.member, interaction.channel);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
 		const permCheck = checkPerms(command.permissions, interaction.member);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Check if bot has the permissions necessary in the channel to run the command
 	if (command.botChannelPerms) {
 		const permCheck = checkPerms(command.botChannelPerms, interaction.guild.members.me, interaction.channel);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (command.botPerms) {
 		const permCheck = checkPerms(command.botPerms, interaction.guild.members.me);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Defer and execute the command

@@ -1,4 +1,5 @@
 const { EmbedBuilder, InteractionType } = require('discord.js');
+const modals = require('../../lists/modals').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is modal
@@ -8,12 +9,12 @@ module.exports = async (client, interaction) => {
 	const customIdSplit = interaction.customId.split('_');
 	const modalInfo = customIdSplit.pop();
 	const modalName = customIdSplit.join('_');
-	let modal = client.modals.get(interaction.customId);
-	if (!modal) modal = client.modals.get(modalName);
+	let modal = modals.get(interaction.customId);
+	if (!modal) modal = modals.get(modalName);
 	if (!modal) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 	// Get the language for the user if specified or guild language
 	let lang = require('../../lang/English/msg.json');

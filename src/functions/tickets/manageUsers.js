@@ -5,7 +5,7 @@ module.exports = async function manageUsers(client, member, channel, targetMembe
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if channel is a ticket
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
@@ -16,7 +16,7 @@ module.exports = async function manageUsers(client, member, channel, targetMembe
 	if (add && ticketData.users.includes(targetMember.id)) throw new Error('This user has already been added!');
 	else if (!add && !ticketData.users.includes(targetMember.id)) throw new Error('This user isn\'t added!');
 	add ? ticketData.users.push(targetMember.id) : ticketData.users.splice(ticketData.users.indexOf(targetMember.id), 1);
-	client.setData('ticketdata', { channelId: channel.id }, { users: ticketData.users.join(',') });
+	sql.setData('ticketdata', { channelId: channel.id }, { users: ticketData.users.join(',') });
 
 	// If the ticket has a voiceticket, give permissions to the user there
 	if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {

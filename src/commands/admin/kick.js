@@ -15,12 +15,12 @@ module.exports = {
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return client.error(lang.invalidmember, message, true);
+			if (!member) return error(lang.invalidmember, message, true);
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;
-			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return client.error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
-			if (member.roles.highest.rawPosition > message.guild.members.me.roles.highest.rawPosition) return client.error(`I can't do that! My role is ${member.roles.highest.rawPosition - message.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
+			if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) return error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
+			if (member.roles.highest.rawPosition > message.guild.members.me.roles.highest.rawPosition) return error(`I can't do that! My role is ${member.roles.highest.rawPosition - message.guild.members.me.roles.highest.rawPosition} positions lower than the user's role!`, message, true);
 
 			// Create embed
 			const KickEmbed = new EmbedBuilder()
@@ -45,13 +45,13 @@ module.exports = {
 			logger.info(`Kicked user: ${member.user.tag} from ${message.guild.name}`);
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (logchannel) {
 				KickEmbed.setTitle(`${message.member.user.tag} ${KickEmbed.toJSON().title}`);
 				logchannel.send({ embeds: [KickEmbed] });
 			}
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

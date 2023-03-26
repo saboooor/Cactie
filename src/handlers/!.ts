@@ -1,11 +1,15 @@
-const { createLogger, format, transports } = require('winston');
+import { Client } from "discord.js";
+import { createLogger, format, transports } from 'winston';
+
 const rn = new Date();
+function minTwoDigits(n: number) { return (n < 10 ? '0' : '') + n; };
 const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
-function minTwoDigits(n) { return (n < 10 ? '0' : '') + n; }
-module.exports = client => {
+
+export default (client: Client) => {
 	// Set the global vars
 	global.sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 	global.logDate = logDate;
+	global.sql = require('../functions/mysql');
 
 	// Create a logger
 	global.logger = createLogger({
@@ -27,8 +31,8 @@ module.exports = client => {
 	logger.info('Logger started');
 
 	// Register events for disconnect, reconnect, warn, and error
-	client.on('disconnect', () => logger.info('Bot is disconnecting...'));
-	client.on('reconnecting', () => logger.info('Bot reconnecting...'));
-	client.on('warn', error => logger.warn(error));
-	client.on('error', error => logger.error(error));
+	client.on('disconnect', () => { logger.info('Bot is disconnecting...'); });
+	client.on('reconnecting', () => { logger.info('Bot reconnecting...'); });
+	client.on('warn', error => { logger.warn(error); });
+	client.on('error', error => { logger.error(error); });
 };

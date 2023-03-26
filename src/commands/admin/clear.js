@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection } = require('discord.js');
-const getTranscript = require('../../functions/getTranscript.js');
+const getTranscript = require('../../functions/getTranscript').default;
 const getMessages = require('../../functions/getMessages.js');
 const { yes, no } = require('../../lang/int/emoji.json');
 
@@ -16,8 +16,8 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Check if arg is a number and is more than 100
-			if (isNaN(args[0])) return client.error('That is not a number!', message, true);
-			if (args[0] > 1000) return client.error('You can only clear 1000 messages at once!', message, true);
+			if (isNaN(args[0])) return error('That is not a number!', message, true);
+			if (args[0] > 1000) return error('You can only clear 1000 messages at once!', message, true);
 
 			// Fetch the messages and bulk delete them 100 by 100
 			const messagechunks = await getMessages(message.channel, args[0]).catch(err => { logger.error(err); });
@@ -26,19 +26,19 @@ module.exports = {
 				if (args[1]) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == args[1]);
 				if (args[2]) messagechunks[i] = messagechunks[i].filter(msg => msg.content.includes(args[2]));
 				if (!messagechunks[i].size) return;
-				await message.channel.bulkDelete(messagechunks[i]).catch(err => client.error(err, message, true));
+				await message.channel.bulkDelete(messagechunks[i]).catch(err => error(err, message, true));
 			}
 
 			// Combine all message chunks and see if any messages are in there
 			const allmessages = new Collection().concat(...messagechunks);
-			if (!allmessages.size) return client.error('There are no messages in that scope, try a higher number?', message, true);
+			if (!allmessages.size) return error('There are no messages in that scope, try a higher number?', message, true);
 
 			// Reply with response
 			if (message.commandName) message.reply({ content: `<:yes:${yes}> **Cleared ${allmessages.size} messages!**` });
 			logger.info(`Cleared ${allmessages.size} messages from #${message.channel.name} in ${message.guild.name}`);
 
 			// Check if log channel exists and send message
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			const logchannel = message.guild.channels.cache.get(srvconfig.logchannel);
 			if (!logchannel) return;
 
@@ -71,6 +71,6 @@ module.exports = {
 			// Send log
 			logchannel.send({ embeds: [logEmbed], components }).catch(err => logger.error(err));
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

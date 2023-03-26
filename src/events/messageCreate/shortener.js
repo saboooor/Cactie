@@ -7,7 +7,7 @@ module.exports = async (client, message) => {
 	if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 	// Check if message shortener is set and is smaller than the amount of lines in the message
 	if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member)) return;

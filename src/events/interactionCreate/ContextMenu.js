@@ -1,16 +1,17 @@
 const { EmbedBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const slashcommands = require('../../lists/slash').default;
 
 module.exports = async (client, interaction) => {
 	// Check if interaction is context menu
 	if (!interaction.isContextMenuCommand()) return;
 
 	// Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
-	const command = client.slashcommands.get(interaction.commandName);
+	const command = slashcommands.get(interaction.commandName);
 	if (!command) return;
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 	// Get the language for the user if specified or guild language
 	let lang = require('../../lang/English/msg.json');
@@ -23,13 +24,13 @@ module.exports = async (client, interaction) => {
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
 		const permCheck = checkPerms(command.permissions, interaction.member);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (command.botPerms) {
 		const permCheck = checkPerms(command.botPerms, interaction.guild.members.me);
-		if (permCheck) return client.error(permCheck, interaction, true);
+		if (permCheck) return error(permCheck, interaction, true);
 	}
 
 	// Set item to the command type

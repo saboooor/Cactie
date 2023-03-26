@@ -5,7 +5,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if channel is a ticket
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
@@ -53,7 +53,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
 	// Add voiceticket to ticket database
-	await client.setData('ticketdata', { channelId: channel.id }, { voiceticket: voiceticket.id });
+	await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: voiceticket.id });
 
 	// Create embed for log
 	const VCEmbed = new EmbedBuilder()

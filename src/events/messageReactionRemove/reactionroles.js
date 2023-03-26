@@ -18,12 +18,12 @@ module.exports = async (client, reaction, user) => {
 	const emojiId = reaction.emoji.id ?? reaction.emoji.name;
 
 	// Get the reaction role from the database and check if it exists
-	const reactionrole = await client.getData('reactionroles', { messageId: message.id, emojiId }, { nocreate: true });
+	const reactionrole = await sql.getData('reactionroles', { messageId: message.id, emojiId }, { nocreate: true });
 	if (!reactionrole || reactionrole.type == 'toggle') return;
 
 	// Get the reaction role's role
 	const role = message.guild.roles.cache.get(reactionrole.roleId);
-	if (!role) return client.error('The role can\'t be found!', message, true);
+	if (!role) return error('The role can\'t be found!', message, true);
 
 	// Get the reaction role's author as a member
 	const member = await message.guild.members.fetch(user.id);

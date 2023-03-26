@@ -22,14 +22,14 @@ module.exports = {
 				const d = await fetch(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}`);
 				const e = await d.json();
 				// check if error
-				if (e.error) return client.error(e.error, message, true);
+				if (e.error) return error(e.error, message, true);
 				const build = e.builds[e.builds.length - 1];
 				// fetch the build specified
 				const f = args[2] ? args[2] : build;
 				const g = await fetch(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}`);
 				const h = await g.json();
 				// check if error
-				if (h.error) return client.error(h.error, message, true);
+				if (h.error) return error(h.error, message, true);
 				// initial embed creation
 				JarEmbed.setURL(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}`)
 					.setTitle(`${args[0]} ${h.version} build ${h.build}`)
@@ -58,13 +58,13 @@ module.exports = {
 				const d = await fetch(`https://api.purpurmc.org/v2/purpur/${c}`);
 				const e = await d.json();
 				// check if error
-				if (e.error) return client.error(e.error, message, true);
+				if (e.error) return error(e.error, message, true);
 				// fetch the latest build for mc / build versions specified or latest
 				const f = args[2] ? args[2] : 'latest';
 				const g = await fetch(`https://api.purpurmc.org/v2/purpur/${c}/${f}`);
 				const h = await g.json();
 				// check if error
-				if (h.error) return client.error(h.error, message, true);
+				if (h.error) return error(h.error, message, true);
 				// initial embed creation
 				JarEmbed.setTitle(`Purpur ${h.version} build ${h.build} (${h.result})`)
 					.setURL(`https://api.purpurmc.org/v2/purpur/${c}/${f}`)
@@ -113,11 +113,11 @@ module.exports = {
 				]);
 			}
 			else {
-				return client.error('Invalid Minecraft server fork.', message, true);
+				return error('Invalid Minecraft server fork.', message, true);
 			}
 			// send embed
 			message.reply({ embeds: [JarEmbed], components: [row] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

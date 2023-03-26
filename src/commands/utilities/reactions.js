@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const reactions = require('../../lists/reactions').default;
 
 module.exports = {
 	name: 'reactions',
@@ -11,11 +12,11 @@ module.exports = {
 			const ReactionEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setTitle('Here are my reactions');
-			client.reactions.forEach(reaction => {
+				reactions.forEach(reaction => {
 				ReactionEmbed.addFields([{ name: `${reaction.name}${reaction.description ? `, ${reaction.description}` : ''}`, value: `${reaction.additionaltriggers ? `${reaction.additionaltriggers}\n` : ''}${reaction.triggers}` }]);
 			});
 			message.reply({ embeds: [ReactionEmbed] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

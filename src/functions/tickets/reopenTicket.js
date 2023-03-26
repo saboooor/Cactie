@@ -8,7 +8,7 @@ module.exports = async function reopenTicket(client, srvconfig, member, channel)
 	if (channel.isThread()) channel = channel.parent;
 
 	// Check if ticket is an actual ticket
-	const ticketData = await client.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
 	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 

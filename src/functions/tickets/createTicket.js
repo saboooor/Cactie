@@ -5,7 +5,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
 
 	// Check if ticket already exists
-	const ticketData = await client.getData('ticketdata', { opener: member.id, guildId: member.guild.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { opener: member.id, guildId: member.guild.id }, { nocreate: true });
 	if (ticketData) {
 		try {
 			const channel = await member.guild.channels.fetch(ticketData.channelId);
@@ -16,7 +16,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 		}
 		catch (err) {
 			logger.error(`Ticket data found but can't be fetched: ${err}`);
-			client.delData('ticketdata', { channelId: ticketData.channelId });
+			sql.delData('ticketdata', { channelId: ticketData.channelId });
 		}
 	}
 
@@ -54,7 +54,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	else await ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings` and set the Support Role value' });
 
 	// Set the database
-	await client.createData('ticketdata', { guildId: member.guild.id, channelId: ticket.id, opener: member.id, users: member.id });
+	await sql.createData('ticketdata', { guildId: member.guild.id, channelId: ticket.id, opener: member.id, users: member.id });
 
 	// Create embed
 	const CreateEmbed = new EmbedBuilder()

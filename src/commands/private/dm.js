@@ -12,7 +12,7 @@ module.exports = {
 
 			// Get user and check if they exist
 			const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-			if (!user) return client.error('Invalid User!', message, true);
+			if (!user) return error('Invalid User!', message, true);
 
 			// Check if message has any attachments and add it to the dm (idek if it works now tbh)
 			const files = [];
@@ -33,6 +33,6 @@ module.exports = {
 				.setDescription(`**Message sent to ${user}!**\n**Content:** ${args.slice(1).join(' ')}`);
 			message.reply({ embeds: [DMEmbed] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

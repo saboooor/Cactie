@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 const msg = require('../../lang/English/msg.json');
 
 module.exports = async (client, guild) => {
-	const srvconfig = await client.getData('settings', { guildId: guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: guild.id });
 	const row = new ActionRowBuilder()
 		.addComponents([
 			new ButtonBuilder()
@@ -10,7 +10,7 @@ module.exports = async (client, guild) => {
 				.setLabel(msg.dashboard.name)
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL(`${client.dashboardDomain}/support/discord`)
+				.setURL('https://luminescent.dev/discord')
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()

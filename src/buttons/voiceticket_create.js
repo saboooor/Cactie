@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction, client) {
 		try {
 			// Check if tickets are disabled
-			const srvconfig = await client.getData('settings', { guildId: interaction.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 			// Create a ticket
 			const msg = await createVoice(client, srvconfig, interaction.member, interaction.channel);
@@ -15,6 +15,6 @@ module.exports = {
 			// Send the message
 			interaction.reply(msg);
 		}
-		catch (err) { client.error(err, interaction, true); }
+		catch (err) { error(err, interaction, true); }
 	},
 };

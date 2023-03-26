@@ -1,4 +1,5 @@
-const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, SelectMenuBuilder, SelectMenuOptionBuilder, ButtonStyle } = require('discord.js');
+const commands = require('../../lists/commands').default;
+const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
 	async execute(message, args, client, lang) {
 		try {
 			const helpdesc = require(`../../lang/${lang.language.name}/helpdesc.json`);
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			let HelpEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setTitle('**HELP**');
@@ -20,16 +21,16 @@ module.exports = {
 
 			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
 				const category = helpdesc[arg.toLowerCase()];
-				const commands = client.commands.filter(c => c.category == arg.toLowerCase());
+				const commandList = commands.filter(c => c.category == arg.toLowerCase());
 				const array = [];
-				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
+				commandList.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
 				if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 				if (category.field) HelpEmbed.setFields([category.field]);
 			}
 			else if (arg == 'supportpanel') {
 				const permCheck = checkPerms(['Administrator'], message.member);
-				if (permCheck) return client.error(permCheck, message, true);
+				if (permCheck) return error(permCheck, message, true);
 				const Panel = new EmbedBuilder()
 					.setColor(0x2f3136)
 					.setTitle('Need help? No problem!')
@@ -38,7 +39,7 @@ module.exports = {
 				if (args[1]) channel = message.guild.channels.cache.get(args[1]);
 				if (!channel) channel = message.channel;
 				const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, channel);
-				if (permCheck2) return client.error(permCheck2, message, true);
+				if (permCheck2) return error(permCheck2, message, true);
 
 				if (srvconfig.tickets == 'buttons') {
 					Panel.setDescription('Click the button below to open a ticket!');
@@ -59,7 +60,7 @@ module.exports = {
 					await panelMsg.react('🎫');
 				}
 				else if (srvconfig.tickets == 'false') {
-					return client.error('Tickets are disabled!', message, true);
+					return error('Tickets are disabled!', message, true);
 				}
 			}
 			else {
@@ -70,7 +71,7 @@ module.exports = {
 			categories.forEach(category => {
 				if (category == 'supportpanel') return;
 				options.push(
-					new SelectMenuOptionBuilder()
+					new StringSelectMenuOptionBuilder()
 						.setLabel(helpdesc[category].name)
 						.setDescription(helpdesc[category].description)
 						.setValue(`help_${category}`)
@@ -79,7 +80,7 @@ module.exports = {
 			});
 			const row = new ActionRowBuilder()
 				.addComponents([
-					new SelectMenuBuilder()
+					new StringSelectMenuBuilder()
 						.setCustomId('help_menu')
 						.setPlaceholder('Select a help category!')
 						.addOptions(options),
@@ -87,7 +88,7 @@ module.exports = {
 			const row2 = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL(`${client.dashboardDomain}/support/discord`)
+						.setURL('https://luminescent.dev/discord')
 						.setLabel('Support Discord')
 						.setStyle(ButtonStyle.Link),
 					new ButtonBuilder()
@@ -105,9 +106,9 @@ module.exports = {
 					.setColor('Random')
 					.setTitle('**HELP**');
 				const category = helpdesc[interaction.values[0].split('_')[1]];
-				const commands = client.commands.filter(c => c.category == interaction.values[0].split('_')[1]);
+				const commandList = commands.filter(c => c.category == interaction.values[0].split('_')[1]);
 				const array = [];
-				commands.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
+				commandList.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
 				if (category.footer) HelpEmbed.setFooter({ text: category.footer });
 				if (category.field) HelpEmbed.setFields([category.field]);
@@ -122,6 +123,6 @@ module.exports = {
 				else helpMsg.edit({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
 			});
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

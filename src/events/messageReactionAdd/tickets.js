@@ -1,6 +1,6 @@
 const checkPerms = require('../../functions/checkPerms');
 const createTicket = require('../../functions/tickets/createTicket.js');
-const closeTicket = require('../../functions/tickets/closeTicket.js');
+const closeTicket = require('../../functions/tickets/closeTicket').default;
 const deleteTicket = require('../../functions/tickets/deleteTicket.js');
 const reopenTicket = require('../../functions/tickets/reopenTicket.js');
 const createVoice = require('../../functions/tickets/createVoice.js');
@@ -26,7 +26,7 @@ module.exports = async (client, reaction, user) => {
 	const member = await guild.members.fetch(user.id).catch(err => logger.error(err));
 
 	// Get current settings for the guild and check if tickets are enabled
-	const srvconfig = await client.getData('settings', { guildId: guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: guild.id });
 	if (!srvconfig.tickets) return;
 
 	try {
@@ -44,7 +44,7 @@ module.exports = async (client, reaction, user) => {
 		}
 		else if (emojiId == '🔒') {
 			if (message.embeds[0] && !message.embeds[0].title.includes('Ticket Created')) return;
-			await closeTicket(client, srvconfig, member, message.channel);
+			await closeTicket(srvconfig, member, message.channel);
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '🔊') {
@@ -54,7 +54,7 @@ module.exports = async (client, reaction, user) => {
 		}
 	}
 	catch (err) {
-		const msg = await client.error(err, message, true);
+		const msg = await error(err, message, true);
 		await sleep(5000);
 		await msg.delete();
 	}

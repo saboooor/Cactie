@@ -1,5 +1,7 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms');
+const commands = require('../../lists/commands').default;
+const cooldowns = require('../../lists/commands').cooldowns;
 
 module.exports = async (client, message) => {
 	// If the bot can't read message history or send messages, don't execute a command
@@ -20,7 +22,7 @@ module.exports = async (client, message) => {
 	};
 
 	// Get current settings for the guild
-	const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 	// Get the language for the user if specified or guild language
 	let lang = require('../../lang/English/msg.json');
@@ -44,9 +46,9 @@ module.exports = async (client, message) => {
 		}
 
 		// Check if channel is a ticket
-		const ticketData = await client.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
+		const ticketData = await sql.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
 		if (ticketData && ticketData.resolved == 'true') {
-			await client.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
+			await sql.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
 			logger.info(`Unresolved #${message.channel.name}`);
 		}
 		return;
@@ -59,7 +61,7 @@ module.exports = async (client, message) => {
 	const commandName = args.shift().toLowerCase();
 
 	// Get the command from the commandName, if it doesn't exist, return
-	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	const command = commands.get(commandName) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
@@ -76,7 +78,6 @@ module.exports = async (client, message) => {
 	await message.channel.sendTyping();
 
 	// Get cooldowns and check if cooldown exists, if not, create it
-	const { cooldowns } = client;
 	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
 
 	// Get current timestamp and the command's last used timestamps
@@ -123,7 +124,7 @@ module.exports = async (client, message) => {
 	// Check if command can be ran only if the user voted since the past 24 hours
 	if (command.voteOnly) {
 		// Get vote data for user
-		const vote = await client.getData('lastvoted', { userId: message.author.id });
+		const vote = await sql.getData('lastvoted', { userId: message.author.id });
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
 		if (!vote || Date.now() > vote.timestamp + 86400000) {
@@ -146,25 +147,25 @@ module.exports = async (client, message) => {
 	// Check if user has the permissions necessary in the channel to use the command
 	if (command.channelPermissions) {
 		const permCheck = checkPerms(command.channelPermissions, message.member, message.channel);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
 		const permCheck = checkPerms(command.permissions, message.member);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if bot has the permissions necessary in the channel to run the command
 	if (command.botChannelPerms) {
 		const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me, message.channel);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (command.botPerms) {
 		const permCheck = checkPerms(command.botPerms, message.guild.members.me);
-		if (permCheck) return client.error(permCheck, message, true);
+		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// execute the command

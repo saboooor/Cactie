@@ -6,6 +6,6 @@ module.exports = {
 	aliases: ['lizards'],
 	async execute(message, args, client) {
 		try { redditFetch(['lizards', 'BeardedDragons'], message, client); }
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

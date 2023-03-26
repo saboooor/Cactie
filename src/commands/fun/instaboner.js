@@ -9,7 +9,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get settings
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// Check if arg is a user and set it
 			let user;
@@ -37,6 +37,6 @@ module.exports = {
 			ppEmbed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"` });
 			message.reply({ embeds: [ppEmbed] });
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

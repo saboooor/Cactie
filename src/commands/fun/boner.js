@@ -12,7 +12,7 @@ module.exports = {
 	async execute(message, args, client) {
 		try {
 			// Get settings
-			const srvconfig = await client.getData('settings', { guildId: message.guild.id });
+			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// Check if arg is a user and set it
 			let user;
@@ -79,6 +79,6 @@ module.exports = {
 			// Delete the data once all the fields are finished
 			if (srvs[message.channel.id].largestNumber == srvs[message.channel.id].fields[i].number) delete srvs[message.channel.id];
 		}
-		catch (err) { client.error(err, message); }
+		catch (err) { error(err, message); }
 	},
 };

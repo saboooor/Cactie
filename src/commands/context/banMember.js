@@ -32,6 +32,6 @@ module.exports = {
 				]);
 			interaction.showModal(modal);
 		}
-		catch (err) { client.error(err, interaction); }
+		catch (err) { error(err, interaction); }
 	},
 };
