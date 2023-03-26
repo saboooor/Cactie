@@ -1,6 +1,6 @@
 const checkPerms = require('../../functions/checkPerms');
 const createTicket = require('../../functions/tickets/createTicket.js');
-const closeTicket = require('../../functions/tickets/closeTicket.js');
+const closeTicket = require('../../functions/tickets/closeTicket').default;
 const deleteTicket = require('../../functions/tickets/deleteTicket.js');
 const reopenTicket = require('../../functions/tickets/reopenTicket.js');
 const createVoice = require('../../functions/tickets/createVoice.js');
@@ -44,7 +44,7 @@ module.exports = async (client, reaction, user) => {
 		}
 		else if (emojiId == '🔒') {
 			if (message.embeds[0] && !message.embeds[0].title.includes('Ticket Created')) return;
-			await closeTicket(client, srvconfig, member, message.channel);
+			await closeTicket(srvconfig, member, message.channel);
 			await reaction.users.remove(member.id);
 		}
 		else if (emojiId == '🔊') {

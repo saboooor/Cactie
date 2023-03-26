@@ -1,4 +1,4 @@
-const closeTicket = require('../../functions/tickets/closeTicket.js');
+const closeTicket = require('../../functions/tickets/closeTicket').default;
 
 module.exports = async (client, member) => {
 	try {
@@ -15,7 +15,7 @@ module.exports = async (client, member) => {
 			const channel = member.guild.channels.cache.get(data.channelId);
 
 			// Close the ticket
-			await closeTicket(client, srvconfig, member, channel);
+			await closeTicket(srvconfig, member, channel);
 		});
 	}
 	catch (err) { logger.error(err); }
