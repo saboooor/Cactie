@@ -1,7 +1,10 @@
 const { ButtonStyle } = require('discord.js');
 
-module.exports = function evalXO(reslist) {
-	const result = {};
+export default function evalXO(reslist: (2 | 4 | 1)[]) {
+	const result: {
+		rows?: number[],
+		winner?: 'x' | 'o'
+	} = {};
 
 	// horizontal
 	if (reslist[0] == reslist[1] && reslist[1] == reslist[2] && reslist[0] != ButtonStyle.Secondary) result.rows = [11, 12, 13];

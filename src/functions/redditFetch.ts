@@ -1,9 +1,6 @@
-const { EmbedBuilder } = require('discord.js');
+import { Client, EmbedBuilder, Message } from 'discord.js';
 
-module.exports = async function redditFetch(subreddits, message, client, attempts) {
-	// First attempt if attempt is not specified
-	if (!attempts) attempts = 1;
-
+export default async function redditFetch(subreddits: string[], message: Message, client: Client, attempts: number = 1): Promise<any> {
 	// Get a random subreddit from the array of subreddits
 	const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 
@@ -18,7 +15,7 @@ module.exports = async function redditFetch(subreddits, message, client, attempt
 	if (!json || err) return error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
 
 	// Parse into json
-	let pong = await json.json().catch(e => err = e);
+	let pong = await json.json().catch((e: Error) => err = e);
 
 	// If there is nothing or an error, return ith an error
 	if (!pong) return error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);

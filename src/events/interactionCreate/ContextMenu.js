@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 const slashcommands = require('../../lists/slash').default;
 
 module.exports = async (client, interaction) => {

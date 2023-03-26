@@ -1,4 +1,4 @@
-const getMessages = require('../../functions/getMessages.js');
+const getMessages = require('../../functions/getMessages').default;
 
 module.exports = {
 	name: 'getmessages',

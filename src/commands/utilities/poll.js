@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { yes, no } = require('../../lang/int/emoji.json');
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 
 module.exports = {
 	name: 'poll',

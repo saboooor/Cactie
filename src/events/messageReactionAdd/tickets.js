@@ -1,4 +1,4 @@
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 const createTicket = require('../../functions/tickets/createTicket.js');
 const closeTicket = require('../../functions/tickets/closeTicket').default;
 const deleteTicket = require('../../functions/tickets/deleteTicket.js');

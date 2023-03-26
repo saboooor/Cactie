@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const Djs = require('discord.js');
 const Strategy = require('passport-discord').Strategy;
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 
 // Load the config
 const { readFileSync } = require('fs');
@@ -285,7 +285,6 @@ module.exports = async client => {
 	});
 
 	app.listen(dashboard.port, null, null, () => {
-		const timer = (Date.now() - client.readyTimestamp) / 1000;
-		logger.info(`Dashboard running on port ${dashboard.port}. (${client.dashboardDomain}) (${timer}s)`);
+		logger.info(`Dashboard running on port ${dashboard.port}. (${client.dashboardDomain})`);
 	});
 };

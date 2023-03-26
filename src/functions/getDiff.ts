@@ -1,6 +1,6 @@
-const Diff = require('diff');
+import Diff from 'diff';
 
-module.exports = function getDiff(before, after) {
+export default function getDiff(before: string, after: string) {
 	let diffArray;
 	try {
 		const diff = Diff.diffChars(before, after);

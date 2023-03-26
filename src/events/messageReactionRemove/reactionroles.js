@@ -1,4 +1,4 @@
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 
 module.exports = async (client, reaction, user) => {
 	// Check if author is a bot or guild is undefined

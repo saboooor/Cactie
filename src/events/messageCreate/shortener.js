@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { createPaste } = require('hastebin');
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 
 module.exports = async (client, message) => {
 	// Check if author is a bot or message is in dm

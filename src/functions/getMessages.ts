@@ -4,14 +4,14 @@ export default async function getMessages(channel: TextChannel, limit: number | 
 	const messagechunks = [];
 	let remaining = limit;
 	let last_id;
-	if (limit <= 100) {
+	if (limit != 'infinite' && limit <= 100) {
 		const messages = await channel.messages.fetch({ limit: limit as number }).catch(err => { throw err; });
 		messagechunks.push(messages);
 	}
 	else {
 		while (remaining == 'infinite' || remaining > 0) {
 			const options: FetchMessagesOptions = { limit: 100 };
-			if (remaining < 100) {
+			if (remaining != 'infinite' && remaining < 100) {
 				options.limit = remaining as number;
 				remaining = 0;
 			}

@@ -1,5 +1,5 @@
 const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 const cooldowns = require('../../lists/commands').cooldowns;
 const slashcommands = require('../../lists/slash').default;
 

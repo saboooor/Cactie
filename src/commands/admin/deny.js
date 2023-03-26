@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType,
 const { no } = require('../../lang/int/emoji.json');
 const getTranscript = require('../../functions/getTranscript').default;
 const getMessages = require('../../functions/getMessages').default;
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('../../functions/checkPerms').default;
 
 module.exports = {
 	name: 'deny',

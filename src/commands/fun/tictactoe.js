@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { x, o, empty, refresh } = require('../../lang/int/emoji.json');
-const evalXO = require('../../functions/evalXO.js');
+const evalXO = require('../../functions/evalXO').default;
 const again = new ActionRowBuilder()
 	.addComponents([new ButtonBuilder()
 		.setCustomId('xo_again')

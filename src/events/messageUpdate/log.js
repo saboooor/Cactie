@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { refresh } = require('../../lang/int/emoji.json');
-const getDiff = require('../../functions/getDiff');
+const getDiff = require('../../functions/getDiff').default;
 
 module.exports = async (client, oldMessage, newMessage) => {
 	// Check if the message was sent by a bot or the content wasn't updated

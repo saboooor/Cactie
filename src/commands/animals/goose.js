@@ -1,4 +1,4 @@
-const redditFetch = require('../../functions/redditFetch.js');
+const redditFetch = require('../../functions/redditFetch').default;
 
 module.exports = {
 	name: 'goose',
