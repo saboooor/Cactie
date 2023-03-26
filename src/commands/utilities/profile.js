@@ -1,4 +1,4 @@
-const analyzeProfile = require('../../functions/timings/analyzeProfile.js');
+const analyzeProfile = require('../../functions/timings/analyzeProfile').default;
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 
@@ -9,14 +9,59 @@ module.exports = {
 	args: true,
 	usage: '<Spark Profile Link>',
 	options: require('../../options/url.js'),
-	async execute(message, args, client) {
+	async execute(message, args) {
 		try {
-			const profileresult = await analyzeProfile(message, client, args);
-			const profilemsg = await message.reply(profileresult[0]);
+			let id;
 
-			// Get the suggestions from the profile result
-			const suggestions = profileresult[1];
-			if (!suggestions) return;
+			const AnalysisEmbed = new EmbedBuilder()
+				.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
+				.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
+
+			for (const arg of args) {
+				if ((arg.startsWith('https://timin') || arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url='))) {
+					AnalysisEmbed.addFields([{ name: '⚠️ Timings Report', value: 'This is a Timings report. Use /timings instead for this type of report.' }]);
+					return [{ embeds: [AnalysisEmbed] }];
+				}
+				if (arg.startsWith('https://spark.lucko.me/')) id = arg.replace('https://spark.lucko.me/', '');
+			}
+
+			if (!id) {
+				AnalysisEmbed.addFields([{ name: '❌ Invalid Spark Profile URL', value: 'Please provide a valid Spark Profile link.' }]);
+				return message.reply({ embeds: [AnalysisEmbed] });
+			}
+
+			const fields = (await analyzeProfile(id)).map(field => { return { ...field, inline: true } });
+
+			const suggestions = [...fields];
+			const components = [];
+			if (suggestions.length >= 13) {
+				fields.splice(12, suggestions.length, { name: `Plus ${suggestions.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
+				AnalysisEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: message.member.user.avatarURL() });
+				components.push(
+					new ActionRowBuilder()
+						.addComponents([
+							new ButtonBuilder()
+								.setCustomId('analysis_prev')
+								.setEmoji({ id: left })
+								.setStyle(ButtonStyle.Secondary),
+							new ButtonBuilder()
+								.setCustomId('analysis_next')
+								.setEmoji({ id: right })
+								.setStyle(ButtonStyle.Secondary),
+							new ButtonBuilder()
+								.setURL('https://github.com/pemigrade/botflop')
+								.setLabel('Botflop')
+								.setStyle(ButtonStyle.Link),
+						]),
+				);
+			}
+
+			AnalysisEmbed.setAuthor({ name: 'Spark Profile Analysis', url: `https://spark.lucko.me/?id=${id}` })
+				.setFields(fields);
+
+			const profilemsg = await message.reply({ embeds: [AnalysisEmbed], components });
+
+			if (suggestions.length < 13) return;
 			const filter = i => i.user.id == message.member.id && i.customId.startsWith('analysis_');
 			const collector = profilemsg.createMessageComponentCollector({ filter, time: 300000 });
 			collector.on('collect', async i => {
@@ -24,8 +69,8 @@ module.exports = {
 				await i.deferUpdate();
 
 				// Get the embed
-				const ProfileEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
-				const footer = ProfileEmbed.toJSON().footer;
+				const AnalysisEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
+				const footer = AnalysisEmbed.toJSON().footer;
 
 				// Force analysis button
 				if (i.customId == 'analysis_force') {
@@ -51,10 +96,10 @@ module.exports = {
 								]),
 						);
 					}
-					ProfileEmbed.setFields(fields);
+					AnalysisEmbed.setFields(fields);
 
 					// Send the embed
-					return i.editReply({ embeds: [ProfileEmbed], components });
+					return i.editReply({ embeds: [AnalysisEmbed], components });
 				}
 
 				// Calculate total amount of pages and get current page from embed footer
@@ -70,12 +115,12 @@ module.exports = {
 
 				// Update the embed
 				text[text.length - 1] = `Page ${page} of ${Math.ceil(suggestions.length / 12)}`;
-				ProfileEmbed
+				AnalysisEmbed
 					.setFields(fields)
 					.setFooter({ iconURL: footer.iconURL, text: text.join(' • ') });
 
 				// Send the embed
-				i.editReply({ embeds: [ProfileEmbed] });
+				i.editReply({ embeds: [AnalysisEmbed] });
 			});
 
 			// When the collector stops, remove all buttons from it

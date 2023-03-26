@@ -1,4 +1,4 @@
-const analyzeTimings = require('../../functions/timings/analyzeTimings.js');
+const analyzeTimings = require('../../functions/timings/analyzeTimings').default;
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { left, right } = require('../../lang/int/emoji.json');
 
@@ -9,14 +9,62 @@ module.exports = {
 	args: true,
 	usage: '<Timings Link>',
 	options: require('../../options/url.js'),
-	async execute(message, args, client) {
+	async execute(message, args) {
 		try {
-			const timingsresult = await analyzeTimings(message, client, args);
-			const timingsmsg = await message.reply(timingsresult[0]);
+			let id;
+		
+			const AnalysisEmbed = new EmbedBuilder()
+				.setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
+				.setFooter({ text: `Requested by ${message.member.user.tag}`, iconURL: message.member.user.avatarURL() });
 
-			// Get the suggestions from the timings result
-			const suggestions = timingsresult[1];
-			if (!suggestions) return;
+			for (const arg of args) {
+				if (arg.startsWith('https://spark.lucko.me')) {
+					AnalysisEmbed.addFields([{ name: '⚠️ Spark Profile', value: 'This is a Spark Profile. Use /profile instead for this type of report.' }]);
+				}
+				if (arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url=')) {
+					AnalysisEmbed.addFields([{ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' }])
+				}
+				if (arg.startsWith('https://timin') && arg.includes('?id=')) id = arg.replace('/d=', '/?id=').split('#')[0].split('\n')[0].split('?id=')[1];
+			}
+		
+			if (!id) {
+				AnalysisEmbed.addFields([{ name: '❌ Invalid Timings URL', value: 'Please provide a valid timings link.' }]);
+				return message.reply({ embeds: [AnalysisEmbed] });
+			}
+
+			const fields = (await analyzeTimings(id)).map(field => { return { ...field, inline: true } });
+
+			const suggestions = [...fields];
+			const components = [];
+			if (suggestions.length >= 13) {
+				fields.splice(12, suggestions.length, { name: `Plus ${suggestions.length - 12} more recommendations`, value: 'Click the buttons below to see more' });
+				AnalysisEmbed.setFooter({ text: `Requested by ${message.member.user.tag} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: message.member.user.avatarURL() });
+				components.push(
+					new ActionRowBuilder()
+						.addComponents([
+							new ButtonBuilder()
+								.setCustomId('analysis_prev')
+								.setEmoji({ id: left })
+								.setStyle(ButtonStyle.Secondary),
+							new ButtonBuilder()
+								.setCustomId('analysis_next')
+								.setEmoji({ id: right })
+								.setStyle(ButtonStyle.Secondary),
+							new ButtonBuilder()
+								.setURL('https://github.com/pemigrade/botflop')
+								.setLabel('Botflop')
+								.setStyle(ButtonStyle.Link),
+						]),
+				);
+			}
+
+
+			AnalysisEmbed.setAuthor({ name: 'Timings Analysis', url: `https://timings.aikar.co/?id=${id}` })
+				.setFields(fields);
+
+			const timingsmsg = await message.reply({ embeds: [AnalysisEmbed], components });
+	
+			if (suggestions.length < 13) return;
 			const filter = i => i.user.id == message.member.id && i.customId.startsWith('analysis_');
 			const collector = timingsmsg.createMessageComponentCollector({ filter, time: 300000 });
 			collector.on('collect', async i => {
@@ -24,8 +72,8 @@ module.exports = {
 				await i.deferUpdate();
 
 				// Get the embed
-				const TimingsEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
-				const footer = TimingsEmbed.toJSON().footer;
+				const AnalysisEmbed = new EmbedBuilder(i.message.embeds[0].toJSON());
+				const footer = AnalysisEmbed.toJSON().footer;
 
 				// Force analysis button
 				if (i.customId == 'analysis_force') {
@@ -51,10 +99,10 @@ module.exports = {
 								]),
 						);
 					}
-					TimingsEmbed.setFields(fields);
+					AnalysisEmbed.setFields(fields);
 
 					// Send the embed
-					return i.editReply({ embeds: [TimingsEmbed], components });
+					return i.editReply({ embeds: [AnalysisEmbed], components });
 				}
 
 				// Calculate total amount of pages and get current page from embed footer
@@ -70,12 +118,12 @@ module.exports = {
 
 				// Update the embed
 				text[text.length - 1] = `Page ${page} of ${Math.ceil(suggestions.length / 12)}`;
-				TimingsEmbed
+				AnalysisEmbed
 					.setFields(fields)
 					.setFooter({ iconURL: footer.iconURL, text: text.join(' • ') });
 
 				// Send the embed
-				i.editReply({ embeds: [TimingsEmbed] });
+				i.editReply({ embeds: [AnalysisEmbed] });
 			});
 
 			// When the collector stops, remove all buttons from it

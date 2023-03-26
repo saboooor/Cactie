@@ -1,6 +1,6 @@
-import { Snowflake, ChannelResolvable } from "discord.js";
+import { Snowflake } from "discord.js";
 
-declare interface ticketData {
+export declare interface ticketData {
     guildId: Snowflake;
     channelId: Snowflake;
     opener: Snowflake;
@@ -9,7 +9,7 @@ declare interface ticketData {
     voiceticket: Snowflake | 'false';
 }
 
-declare interface settings {
+export declare interface settings {
     guildId: Snowflake;
     prefix: string;
     language: string;
@@ -33,7 +33,7 @@ declare interface settings {
     djrole: Snowflake | 'false';
 }
 
-declare interface reactionRoles {
+export declare interface reactionRoles {
     guildId: Snowflake;
     channelId: Snowflake;
     messageId: Snowflake;
@@ -43,7 +43,7 @@ declare interface reactionRoles {
     silent: 'true' | 'false';
 }
 
-declare interface memberData {
+export declare interface memberData {
     memberId: Snowflake;
     guildId: Snowflake;
     mutedUntil: string;
@@ -51,7 +51,7 @@ declare interface memberData {
     warns: string;
 }
 
-declare interface memberData {
+export declare interface memberData {
     memberId: Snowflake;
     guildId: Snowflake;
     mutedUntil: string;
@@ -59,7 +59,7 @@ declare interface memberData {
     warns: string;
 }
 
-declare interface lastVoted {
+export declare interface lastVoted {
     userId: Snowflake;
     timestamp: string;
 }
