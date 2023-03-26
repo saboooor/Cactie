@@ -1,3 +1,13 @@
+
+/*
+
+This file has been deprecated and will be removed once the new dashboard is ready.
+
+*/
+
+
+
+
 // import modules.
 const url = require('url');
 const ejs = require('ejs');
