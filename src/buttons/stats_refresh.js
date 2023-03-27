@@ -1,6 +1,6 @@
 const { createPaste } = require('hastebin');
 const { EmbedBuilder } = require('discord.js');
-const protocols = require('../lang/int/mcprotocol.json');
+const protocols = require('../misc/mcprotocol.json');
 
 module.exports = {
 	name: 'stats_refresh',

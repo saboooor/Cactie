@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Collection } = require('discord.js');
-const { yes } = require('../../lang/int/emoji.json');
+const { yes } = require('../../misc/emoji.json');
 const getTranscript = require('../../functions/getTranscript').default;
 const getMessages = require('../../functions/getMessages').default;
 const checkPerms = require('../../functions/checkPerms').default;

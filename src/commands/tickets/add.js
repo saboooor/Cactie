@@ -8,11 +8,11 @@ module.exports = {
 	args: true,
 	usage: '<User>',
 	options: require('../../options/user.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			// Check if user is valid
 			const targetMember = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
-			if (!targetMember) return error(lang.invalidmember, message, true);
+			if (!targetMember) return error("Invalid member! Are they in this server?", message, true);
 
 			// Add user to ticket
 			const msg = await manageUsers(message.member, message.channel, targetMember, true);

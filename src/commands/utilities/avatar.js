@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { refresh } = require('../../lang/int/emoji.json');
+const { refresh } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'avatar',
@@ -7,12 +7,12 @@ module.exports = {
 	aliases: ['pfp', 'av'],
 	usage: '[User]',
 	options: require('../../options/user.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			let member = message.member;
 			if (args.length) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member && args.length) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return error(lang.invalidmember, message, true);
+			if (!member) return error("Invalid member! Are they in this server?", message, true);
 			member.user = await member.user.fetch();
 			const memberpfp = member.avatarURL({ size: 1024 });
 			const userpfp = member.user.avatarURL({ size: 1024 });

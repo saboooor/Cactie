@@ -13,18 +13,6 @@ module.exports = async (client, interaction) => {
 	const button = buttons.get(interaction.customId ?? interaction.value);
 	if (!button) return;
 
-	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
-
-	// Get the language for the user if specified or guild language
-	let lang = require('../../lang/English/msg.json');
-	if (interaction.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (interaction.locale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-
-
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (button.botPerms) {
 		const permCheck = checkPerms(button.botPerms, interaction.guild.members.me);
@@ -40,7 +28,7 @@ module.exports = async (client, interaction) => {
 			await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
 			interaction.reply = interaction.editReply;
 		}
-		button.execute(interaction, client, lang);
+		button.execute(interaction, client);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

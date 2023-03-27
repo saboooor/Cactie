@@ -1,12 +1,12 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const action = require('../../functions/action').default;
-const { x } = require('../../lang/int/emoji.json');
+const { x } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'Do action on user',
 	noDefer: true,
 	type: 'User',
-	async execute(interaction, client, member, lang) {
+	async execute(interaction, client, member) {
 		try {
 			const row = new ActionRowBuilder()
 				.addComponents([
@@ -76,7 +76,7 @@ module.exports = {
 			collector.on('collect', async btnint => {
 				if (btnint.customId == 'cancel') return btnint.message.delete();
 				const actionName = btnint.values[0].split('_')[1];
-				action(btnint.message, btnint.member, [member.id], actionName, lang);
+				action(btnint.message, btnint.member, [member.id], actionName);
 				collector.stop();
 			});
 		}

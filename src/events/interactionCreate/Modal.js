@@ -13,23 +13,12 @@ module.exports = async (client, interaction) => {
 	if (!modal) modal = modals.get(modalName);
 	if (!modal) return;
 
-	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
-
-	// Get the language for the user if specified or guild language
-	let lang = require('../../lang/English/msg.json');
-	if (interaction.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (interaction.locale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-
 	// Defer and execute the modal
 	try {
 		logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
 		await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
 		interaction.reply = interaction.editReply;
-		modal.execute(interaction, client, lang, modalInfo);
+		modal.execute(interaction, client, modalInfo);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

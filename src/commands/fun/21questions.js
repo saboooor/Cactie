@@ -8,11 +8,11 @@ module.exports = {
 	usage: '<Opponent User> [Amount of questions (default 21)]',
 	cooldown: 10,
 	options: require('../../options/21q.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		if (args[1] && (args[1] < 1 || args[1] > 25)) return error('The amount of questions must be between 1 and 25!');
 		let member = await message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 		if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-		if (!member) return error(lang.invalidmember, message, true);
+		if (!member) return error("Invalid member! Are they in this server?", message, true);
 		if (member.id == message.member.id) return error('You played yourself, oh wait, you can\'t.', message, true);
 		if (member.bot) return error('Bots aren\'t fun to play with, yet. :)');		if (member.bot) return error('Bots aren\'t fun to play with, yet. :)');
 		const row = new ActionRowBuilder()

@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { x, o, empty, refresh } = require('../lang/int/emoji.json');
+const { x, o, empty, refresh } = require('../misc/emoji.json');
 const evalXO = require('../functions/evalXO').default;
 const again = new ActionRowBuilder()
 	.addComponents([new ButtonBuilder()
@@ -12,7 +12,7 @@ const again = new ActionRowBuilder()
 module.exports = {
 	name: 'xo_again',
 	ephemeral: true,
-	async execute(interaction, client, lang) {
+	async execute(interaction, client) {
 		const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 		const lines = TicTacToe.toJSON().description.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
@@ -20,7 +20,7 @@ module.exports = {
 		if (xuserId != interaction.user.id && ouserId != interaction.user.id) return interaction.reply({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
 		const xuser = interaction.guild.members.cache.get(xuserId);
 		const ouser = interaction.guild.members.cache.get(ouserId);
-		if (!xuser || !ouser) return interaction.reply({ content: lang.invalidmember });
+		if (!xuser || !ouser) return interaction.reply({ content: "Invalid member! Are they in this server?" });
 		const playAgainEmbed = new EmbedBuilder()
 			.setAuthor({ name: `${interaction.user.tag}`, iconURL: interaction.user.avatarURL() })
 			.setDescription(`${interaction.user} wants to play again!`)

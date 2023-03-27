@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection } = require('discord.js');
 const getTranscript = require('../../functions/getTranscript').default;
 const getMessages = require('../../functions/getMessages').default;
-const { yes, no } = require('../../lang/int/emoji.json');
+const { yes, no } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'clear',

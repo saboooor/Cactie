@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField, Message } from "discord.js";
 
 export declare interface Command {
 	name: string;
@@ -22,5 +22,12 @@ export declare interface Reaction {
     description?: string;
     triggers: string[];
     additionaltriggers?: string[];
-	execute: any;
+	execute: (message: Message) => void;
+}
+
+export declare interface Modal {
+	name: string;
+    deferReply?: boolean;
+    ephemeral?: boolean;
+    execute: any;
 }

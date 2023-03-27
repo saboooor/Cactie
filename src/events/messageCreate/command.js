@@ -24,12 +24,6 @@ module.exports = async (client, message) => {
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
-	// Get the language for the user if specified or guild language
-	let lang = require('../../lang/English/msg.json');
-	if (message.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (message.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-
 	// Use mention as prefix instead of prefix too
 	if (message.content.replace('!', '').startsWith(`<@${client.user.id}>`)) {
 		srvconfig.txtprefix = srvconfig.prefix;
@@ -41,7 +35,7 @@ module.exports = async (client, message) => {
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
+			const prefix = await message.reply({ content: `**My prefix is ${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
 			setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
 		}
 
@@ -65,7 +59,7 @@ module.exports = async (client, message) => {
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
 		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: lang.prefix.replace('{pfx}', srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix).replace('{usr}', `${client.user}`) });
+			const prefix = await message.reply({ content: `**My prefix is ${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
 			setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
 		}
 		return;
@@ -90,7 +84,7 @@ module.exports = async (client, message) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(message.author.id)) {
 		// Get a random cooldown message
-		const messages = require(`../../lang/${lang.language.name}/cooldown.json`);
+		const messages = require(`../../misc/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -170,7 +164,7 @@ module.exports = async (client, message) => {
 
 	// execute the command
 	try {
-		command.execute(message, args, client, lang);
+		command.execute(message, args, client);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

@@ -1,5 +1,5 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
-import { refresh } from '../../lang/int/emoji.json';
+import { refresh } from '../../misc/emoji.json';
 import getDiff from '../../functions/getDiff';
 
 export default async (client: Client, oldMessage: Message, newMessage: Message) => {

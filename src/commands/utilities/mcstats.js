@@ -1,7 +1,7 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createPaste } = require('hastebin');
-const protocols = require('../../lang/int/mcprotocol.json');
-const { refresh } = require('../../lang/int/emoji.json');
+const protocols = require('../../misc/mcprotocol.json');
+const { refresh } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'mcstats',
@@ -9,7 +9,7 @@ module.exports = {
 	aliases: ['mcstatus'],
 	usage: '<Server IP>',
 	options: require('../../options/stats.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			const StatsEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)
@@ -43,7 +43,7 @@ module.exports = {
 			const row = new ActionRowBuilder().addComponents([
 				new ButtonBuilder()
 					.setCustomId('stats_refresh')
-					.setLabel(lang.refresh)
+					.setLabel('Refresh')
 					.setEmoji({ id: refresh })
 					.setStyle(ButtonStyle.Secondary),
 			]);

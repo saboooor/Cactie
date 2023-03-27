@@ -1,6 +1,6 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms').default;
-const { left, right } = require('../../lang/int/emoji.json');
+const { left, right } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'reactionroles',
@@ -10,7 +10,7 @@ module.exports = {
 	usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
 	permissions: ['Administrator'],
 	options: require('../../options/reactionroles.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			// Create Embed with title and color
 			const RREmbed = new EmbedBuilder()
@@ -100,7 +100,7 @@ module.exports = {
 				// If there's more than 12 reaction roles, paginate
 				if (RREmbed.toJSON().fields.length > 12) {
 					RREmbed.toJSON().fields.splice(12, RREmbed.toJSON().fields.length);
-					RREmbed.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', Math.ceil(RREmbed.toJSON().fields.length / 12)), iconURL: message.member.user.avatarURL() });
+					RREmbed.setFooter({ text: `Page 1 of ${Math.ceil(RREmbed.toJSON().fields.length / 12)}`, iconURL: message.member.user.avatarURL() });
 
 					// Add buttons for page changing
 					const btns = new ActionRowBuilder()

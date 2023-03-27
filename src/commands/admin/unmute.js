@@ -10,7 +10,7 @@ module.exports = {
 	botPerms: ['ManageRoles', 'ModerateMembers'],
 	cooldown: 5,
 	options: require('../../options/user.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			// Get settings and check if mutecmd is enabled
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
@@ -20,7 +20,7 @@ module.exports = {
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return error(lang.invalidmember, message, true);
+			if (!member) return error("Invalid member! Are they in this server?", message, true);
 
 			// Check if user is unmuted
 			if (role && !member.roles.cache.has(role.id)) return error('This user is not muted!', message, true);

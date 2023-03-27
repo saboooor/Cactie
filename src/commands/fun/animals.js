@@ -6,8 +6,8 @@ module.exports = {
 	args: true,
 	usage: '<Animal name (in /help animals)>',
 	options: require('../../options/animals.js'),
-	execute(message, args, client, lang) {
-		try { commands.get(args[0]).execute(message, args, client, lang); }
+	execute(message, args, client) {
+		try { commands.get(args[0]).execute(message, args, client); }
 		catch (err) { error(err, message); }
 	},
 };

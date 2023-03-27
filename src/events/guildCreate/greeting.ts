@@ -1,5 +1,4 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Guild } from 'discord.js';
-import { dashboard } from '../../lang/English/msg.json';
 
 export default async (client: Client, guild: Guild) => {
 	const srvconfig = await sql.getData('settings', { guildId: guild.id });
@@ -7,7 +6,7 @@ export default async (client: Client, guild: Guild) => {
 		.addComponents([
 			new ButtonBuilder()
 				.setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
-				.setLabel(dashboard.name)
+				.setLabel('Dashboard')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
 				.setURL('https://luminescent.dev/discord')

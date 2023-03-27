@@ -9,9 +9,9 @@ module.exports = {
 	usage: '[Type]',
 	cooldown: 10,
 	options: require('../../options/help.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
-			const helpdesc = require(`../../lang/${lang.language.name}/helpdesc.json`);
+			const helpdesc = require(`../../misc/helpdesc.json`);
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 			let HelpEmbed = new EmbedBuilder()
 				.setColor('Random')

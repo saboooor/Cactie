@@ -7,7 +7,6 @@ const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())
 
 export default (client: Client) => {
 	// Set the global vars
-	global.sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 	global.logDate = logDate;
 	global.sql = require('../functions/mysql');
 

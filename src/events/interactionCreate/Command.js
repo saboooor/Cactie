@@ -15,14 +15,6 @@ module.exports = async (client, interaction) => {
 	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 	if (srvconfig.disabledcmds.includes(command.name)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
-	// Get the language for the user if specified or guild language
-	let lang = require('../../lang/English/msg.json');
-	if (interaction.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (interaction.locale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-
 	// Make args variable from interaction options for compatibility with dash command code
 	const args = interaction.options._hoistedOptions;
 
@@ -45,7 +37,7 @@ module.exports = async (client, interaction) => {
 	// Check if user is in the last used timestamp
 	if (timestamps.has(interaction.user.id)) {
 		// Get a random cooldown message
-		const messages = require(`../../lang/${lang.language.name}/cooldown.json`);
+		const messages = require(`../../misc/cooldown.json`);
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
@@ -120,7 +112,7 @@ module.exports = async (client, interaction) => {
 			await interaction.deferReply({ ephemeral: command.ephemeral });
 			interaction.reply = interaction.editReply;
 		}
-		command.execute(interaction, args, client, lang);
+		command.execute(interaction, args, client);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

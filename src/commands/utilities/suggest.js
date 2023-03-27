@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { upvote, downvote } = require('../../lang/int/emoji.json');
+const { upvote, downvote } = require('../../misc/emoji.json');
 const checkPerms = require('../../functions/checkPerms').default;
 
 module.exports = {

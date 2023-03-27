@@ -14,7 +14,6 @@ export declare interface ticketData {
 export declare interface settings {
     guildId: Snowflake;
     prefix: string;
-    language: string;
     reactions: 'true' | 'false';
     leavemessage: string | 'false';
     joinmessage: string | 'false';

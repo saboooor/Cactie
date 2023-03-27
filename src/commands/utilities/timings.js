@@ -1,6 +1,6 @@
 const analyzeTimings = require('../../functions/timings/analyzeTimings').default;
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { left, right } = require('../../lang/int/emoji.json');
+const { left, right } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'timings',

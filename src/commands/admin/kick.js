@@ -10,12 +10,12 @@ module.exports = {
 	botPerms: ['KickMembers'],
 	cooldown: 5,
 	options: require('../../options/kick.js'),
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));
 			if (!member) member = await message.guild.members.fetch(args[0].replace(/\D/g, ''));
-			if (!member) return error(lang.invalidmember, message, true);
+			if (!member) return error("Invalid member! Are they in this server?", message, true);
 
 			// Get member and author and check if role is lower than member's role
 			const author = message.member;

@@ -1,8 +1,9 @@
 import { EmbedBuilder, GuildMember, Message } from 'discord.js';
-import gifs from '../lang/int/actiongifs.json';
+import actions from '../misc/actions.json';
+
 let current: number;
 
-export default async function action(message: Message, author: GuildMember, args: string[], type: keyof typeof gifs, lang: any) {
+export default async function action(message: Message, author: GuildMember, args: string[], type: keyof typeof actions) {
 	// Check if arg is a user and set it
 	let user;
 	if (args.length) {
@@ -11,20 +12,20 @@ export default async function action(message: Message, author: GuildMember, args
 	}
 
 	// Get random index of gif list
-	let i = Math.floor(Math.random() * gifs[type].length);
+	let i = Math.floor(Math.random() * actions[type].gifs.length);
 
 	// If index is the same as the last one, get a new one
 	if (i === current) {
-		do i = Math.floor(Math.random() * gifs[type].length);
+		do i = Math.floor(Math.random() * actions[type].gifs.length);
 		while (i === current);
 		current = i;
 	}
 
 	// Create embed with bonk gif and author / footer
 	const BonkEmbed = new EmbedBuilder()
-		.setAuthor({ name: `${author.displayName} ${lang.actions[type].plural} ${args[0] ? args.join(' ') : ''}`, iconURL: author.user.displayAvatarURL() })
-		.setImage(gifs[type][i])
-		.setFooter({ text: lang.actions[type].footer });
+		.setAuthor({ name: `${author.displayName} ${actions[type].plural} ${args[0] ? args.join(' ') : ''}`, iconURL: author.user.displayAvatarURL() })
+		.setImage(actions[type].gifs[i])
+		.setFooter({ text: actions[type].footer });
 
 	// Reply with bonk message, if user is set then mention the user
 	if (message.member?.id == message.client.user.id) {

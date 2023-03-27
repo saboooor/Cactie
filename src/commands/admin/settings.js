@@ -1,16 +1,16 @@
 function capFirstLetter(string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const { left, right } = require('../../lang/int/emoji.json');
+const { left, right } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'settings',
 	description: 'Configure this server\' Cactie settings',
 	aliases: ['setting', 'dashboard'],
 	ephmeral: true,
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			// Get the settings descriptions
-			const desc = require(`../../lang/${lang.language.name}/settingsdesc.json`);
+			const desc = require(`../../misc/settingsdesc.json`);
 
 			// Create Embed with title and color
 			const SettingsEmbed = new EmbedBuilder()
@@ -25,7 +25,7 @@ module.exports = {
 			// Set embed description with page and stuff
 			SettingsEmbed.setDescription(configlist.join('\n'))
 				.addFields([{ name: 'How do I change these values?', value: 'Click the dashboard button below!' }])
-				.setFooter({ text: lang.page.replace('{1}', '1').replace('{2}', maxPages) });
+				.setFooter({ text: `Page 1 of ${maxPages}` });
 
 			// Add buttons for page changing
 			const pages = new ActionRowBuilder()
@@ -40,7 +40,7 @@ module.exports = {
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
 						.setURL(`${client.dashboardDomain}/dashboard/${message.guild.id}`)
-						.setLabel(lang.dashboard.name)
+						.setLabel('Dashboard')
 						.setStyle(ButtonStyle.Link),
 				]);
 

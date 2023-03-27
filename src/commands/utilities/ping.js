@@ -1,27 +1,27 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
-const { refresh } = require('../../lang/int/emoji.json');
+const { refresh } = require('../../misc/emoji.json');
 
 module.exports = {
 	name: 'ping',
 	description: 'Pong!',
 	aliases: ['pong'],
 	cooldown: 10,
-	async execute(message, args, client, lang) {
+	async execute(message, args, client) {
 		try {
 			// Get the array of pong responses
-			const pong = require(`../../lang/${lang.language.name}/pong.json`);
+			const pong = require(`../../misc/pong.json`);
 
 			// Create embed with ping information and add ping again button
 			const PingEmbed = new EmbedBuilder()
 				.setColor('Random')
 				.setTitle(pong[0])
-				.setDescription(`**${lang.ping.latency}** ${Date.now() - message.createdTimestamp}ms\n**${lang.ping.api}** ${client.ws.ping}ms`);
+				.setDescription(`**Message Latency** ${Date.now() - message.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`);
 			const row = new ActionRowBuilder()
 				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('ping_again')
 						.setEmoji({ id: refresh })
-						.setLabel(lang.refresh)
+						.setLabel('Refresh')
 						.setStyle(ButtonStyle.Secondary),
 				]);
 
@@ -36,7 +36,7 @@ module.exports = {
 				await interaction.deferUpdate();
 
 				// Set the embed description with new ping stuff
-				PingEmbed.setDescription(`**${lang.ping.latency}** ${Date.now() - interaction.createdTimestamp}ms\n**${lang.ping.api}** ${client.ws.ping}ms`);
+				PingEmbed.setDescription(`**Message Latency** ${Date.now() - interaction.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`);
 
 				// Get next string (if last index, go to index 0)
 				const newIndex = pong.indexOf(PingEmbed.toJSON().title) == pong.length - 1 ? 0 : pong.indexOf(PingEmbed.toJSON().title) + 1;

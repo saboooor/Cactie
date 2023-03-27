@@ -111,21 +111,6 @@ roles.reverse();
               <label for="reactions" class="title">Enabled</label>
             </article>
           </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box">
-              <p class="title">Language</p>
-              <p class="menu-label">The language <%= bot.user.username %> will use<br>(overrides the server language)</p>
-              <div class="select" style="width: 100%;">
-                <select onchange="settings(this)" name="language" value="<%= settings.language %>" placeholder="The value" style="width: 100%;">
-                  <option value="false" <% if (settings.language === 'false') { %> selected <% } %>>Use the server default</option>
-                  <option value="English" <% if (settings.language === 'English') { %> selected <% } %>>English</option>
-                  <option value="Portuguese" <% if (settings.language === 'Portuguese') { %> selected <% } %>>Portuguese</option>
-                  <option value="Lispuwu" <% if (settings.language === 'Lispuwu') { %> selected <% } %>>Lisp UwU</option>
-                  <option value="Uwu" <% if (settings.language === 'Uwu') { %> selected <% } %>>UwU</option>
-                </select>
-              </div>
-            </article>
-          </div>
         </div>
 
         <span class="anchor" id="suggestions"></span>

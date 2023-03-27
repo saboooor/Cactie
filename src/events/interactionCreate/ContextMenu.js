@@ -10,17 +10,6 @@ module.exports = async (client, interaction) => {
 	const command = slashcommands.get(interaction.commandName);
 	if (!command) return;
 
-	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
-
-	// Get the language for the user if specified or guild language
-	let lang = require('../../lang/English/msg.json');
-	if (interaction.guild.preferredLocale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.guild.preferredLocale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-	if (srvconfig.language != 'false') lang = require(`../../lang/${srvconfig.language}/msg.json`);
-	if (interaction.locale.split('-')[0] == 'en') lang = require('../../lang/English/msg.json');
-	else if (interaction.locale.split('-')[0] == 'pt') lang = require('../../lang/Portuguese/msg.json');
-
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
 		const permCheck = checkPerms(command.permissions, interaction.member);
@@ -45,7 +34,7 @@ module.exports = async (client, interaction) => {
 			interaction.reply = interaction.editReply;
 		}
 		logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item.id}, in ${interaction.guild.name}`.replace(' ,', ','));
-		command.execute(interaction, client, item, lang);
+		command.execute(interaction, client, item);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()
