@@ -2,7 +2,7 @@ import { EmbedBuilder, Client, Message } from 'discord.js';
 import { createPaste } from 'hastebin';
 const checkPerms = require('../../functions/checkPerms').default;
 
-module.exports = async (client: Client, message: Message) => {
+export default async (client: Client, message: Message) => {
 	// Check if author is a bot or message is in dm
 	if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 

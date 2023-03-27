@@ -1,12 +1,12 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
 import { no } from '../../lang/int/emoji.json';
 
-module.exports = async (client: Client, message: Message) => {
+export default async (client: Client, message: Message) => {
 	// Check if the message was sent by a bot
 	if (message.author && message.author.bot) return;
 
 	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+	const srvconfig = await sql.getData('settings', { guildId: message.guild?.id });
 
 	// Check if log is enabled and channel is valid
 	if (!['messagedelete', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;

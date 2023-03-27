@@ -1,7 +1,7 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, TextChannel } from 'discord.js';
 import { yes } from '../../lang/int/emoji.json';
 
-module.exports = async (client: Client, channel: TextChannel) => {
+export default async (client: Client, channel: TextChannel) => {
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
 
