@@ -57,15 +57,15 @@ export async function delData(table: Table, where: any) {
 };
 
 
-export async function getData(table: Table, where: any, options = { nocreate: false, all: false }) {
+export async function getData(table: Table, where: any, options?: { nocreate?: boolean, all?: boolean }) {
 	const wherekeys = where ? Object.keys(where) : null;
 	const WHERE = wherekeys ? wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ') : null;
 	let data = await query(`SELECT * FROM ${table}${WHERE ? ` WHERE ${WHERE}` : ''}`);
-	if (where && !options.nocreate && !data[0]) {
+	if (where && !options?.nocreate && !data[0]) {
 		await createData(table, where);
 		data = await getData(table, where, { nocreate: true, all: true });
 	}
-	return options.all ? data : data[0];
+	return options?.all ? data : data[0];
 };
 
 export async function setData(table: Table, where: any, body: any) {

@@ -1,4 +1,4 @@
-const reopenTicket = require('../../functions/tickets/reopenTicket.js');
+const reopenTicket = require('../../functions/tickets/reopenTicket').default;
 
 module.exports = {
 	name: 'open',
@@ -6,13 +6,13 @@ module.exports = {
 	ephemeral: true,
 	aliases: ['reopen'],
 	botPerms: ['ManageChannels'],
-	async execute(message, args, client) {
+	async execute(message) {
 		try {
 			// Get the server config
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 			// Create a ticket
-			const msg = await reopenTicket(client, srvconfig, message.member, message.channel);
+			const msg = await reopenTicket(srvconfig, message.member, message.channel);
 
 			// Send the message
 			await message.reply(msg);

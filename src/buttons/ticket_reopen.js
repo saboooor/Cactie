@@ -1,16 +1,16 @@
-const reopenTicket = require('../functions/tickets/reopenTicket.js');
+const reopenTicket = require('../functions/tickets/reopenTicket').default;
 
 module.exports = {
 	name: 'reopen_ticket',
 	botPerms: ['ManageChannels'],
 	deferReply: true,
-	async execute(interaction, client) {
+	async execute(interaction) {
 		try {
 			// Get the server config
 			const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
 
 			// Create a ticket
-			const msg = await reopenTicket(client, srvconfig, interaction.member, interaction.channel);
+			const msg = await reopenTicket(srvconfig, interaction.member, interaction.channel);
 
 			// Send the message
 			interaction.reply(msg);

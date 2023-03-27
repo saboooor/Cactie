@@ -1,32 +1,32 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const msg = require('../../lang/English/msg.json');
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Guild } from 'discord.js';
+import { dashboard } from '../../lang/English/msg.json';
 
-module.exports = async (client, guild) => {
+export default async (client: Client, guild: Guild) => {
 	const srvconfig = await sql.getData('settings', { guildId: guild.id });
-	const row = new ActionRowBuilder()
+	const row = new ActionRowBuilder<ButtonBuilder>()
 		.addComponents([
 			new ButtonBuilder()
-				.setURL(client.dashboardDomain)
-				.setLabel(msg.dashboard.name)
+				.setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
+				.setLabel(dashboard.name)
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
 				.setURL('https://luminescent.dev/discord')
 				.setLabel('Support Server')
 				.setStyle(ButtonStyle.Link),
 			new ButtonBuilder()
-				.setURL(`https://top.gg/bot/${client.user.id}/vote`)
+				.setURL(`https://top.gg/bot/${client.user?.id}/vote`)
 				.setLabel('Vote on top.gg')
 				.setStyle(ButtonStyle.Link),
 		]);
 	const greetingEmbed = new EmbedBuilder()
 		.setColor('Random')
-		.setTitle(`Thanks for adding ${client.user.username} to ${guild.name}!`)
+		.setTitle(`Thanks for adding ${client.user?.username} to ${guild.name}!`)
 		.setDescription(`
 My text command prefix is \`${srvconfig.prefix}\`, you may change this through the settings with \`/settings\`
 Type \`/help\` for help, and \`/invite\` to invite me to other servers!
-Please take some time going through the settings so that ${client.user.username} works well! \`/settings\`
+Please take some time going through the settings so that ${client.user?.username} works well! \`/settings\`
 		`)
-		.setThumbnail(`${client.dashboardDomain}/assets/images/Cactie.png`);
+		.setThumbnail(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/assets/images/Cactie.png`);
 	const message = { embeds: [greetingEmbed], components: [row] };
 	const owner = await guild.fetchOwner();
 	if (!guild.systemChannel) owner.send(message).catch(err => logger.warn(err));

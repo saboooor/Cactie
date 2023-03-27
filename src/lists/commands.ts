@@ -1,8 +1,9 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
+import { Command } from 'types/Objects';
 
 // Set the commands collection
-const commands = new Collection();
+const commands = new Collection<string, Command>();
 const cooldowns = new Collection();
 
 // Register all commands

@@ -3,7 +3,7 @@ import type { TextChannel, Client, Message } from 'discord.js';
 
 export default (client: Client) => {
 	// Create a function for error messaging
-	global.error = function error(err: any, message: Message, userError: boolean = false) {
+	global.error = async function error(err: any, message: Message, userError: boolean = false) {
 		if (`${err}`.includes('Received one or more errors')) console.log(err);
 		logger.error(err);
 		const errEmbed = new EmbedBuilder()
@@ -26,10 +26,12 @@ export default (client: Client) => {
 			const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
 			channel.send({ embeds: [errEmbed] });
 		}
-		message.reply({ embeds: [errEmbed], components }).catch(err => {
-			logger.warn(err);
-			message.channel.send({ embeds: [errEmbed], components }).catch(err => logger.warn(err));
-		});
+		try {
+			return await message.reply({ embeds: [errEmbed], components });
+		} catch (err_1) {
+			logger.warn(err_1);
+			message.channel.send({ embeds: [errEmbed], components }).catch(err_2 => logger.warn(err_2));
+		}
 	};
 	client.rest.on('rateLimited', (info) => logger.warn(`Encountered ${info.method} rate limit!`));
 	process.on('unhandledRejection', (reason: any) => {

@@ -1,6 +1,7 @@
 import { readdirSync } from "fs";
-import { Client, Partials, GatewayIntentBits } from "discord.js";
+import { Client, Partials, GatewayIntentBits, Message } from "discord.js";
 import { Logger } from "winston";
+import { query, createData, delData, getData, setData } from './functions/mysql';
 
 // Create Discord client
 const client = new Client({
@@ -32,8 +33,14 @@ declare global {
 	var sleep: { (ms: number): Promise<undefined> };
 	var logDate: string;
 	var logger: Logger;
-	var sql: any;
-	var error: any;
+	var sql: {
+		query: typeof query;
+		createData: typeof createData;
+		delData: typeof delData;
+		getData: typeof getData;
+		setData: typeof setData;
+	};
+	var error: { (err: any, message: Message, userError?: boolean): Promise<Message | undefined> };
 }
 
 // Load the universal and discord-specific handlers

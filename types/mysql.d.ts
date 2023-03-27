@@ -1,6 +1,6 @@
 import { Snowflake } from "discord.js";
 
-export type Table = 'tickets' | 'settings' | 'reactionroles' | 'memberdata' | 'lastvoted';
+export type Table = 'ticketdata' | 'settings' | 'reactionroles' | 'memberdata' | 'lastvoted';
 
 export declare interface ticketData {
     guildId: Snowflake;

@@ -1,4 +1,4 @@
-const deleteTicket = require('../../functions/tickets/deleteTicket.js');
+const deleteTicket = require('../../functions/tickets/deleteTicket').default;
 
 module.exports = {
 	name: 'forcedelete',
@@ -6,14 +6,9 @@ module.exports = {
 	ephemeral: true,
 	permissions: ['Administrator'],
 	botPerms: ['ManageChannels'],
-	async execute(message, user, client) {
-		try {
-			// Get the server config
-			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
-
-			// Create a ticket
-			await deleteTicket(client, srvconfig, message.member, message.channel, true);
-		}
+	async execute(message) {
+		// Create a ticket
+		try { await deleteTicket(message.channel, true); }
 		catch (err) { error(err, message, true); }
 	},
 };

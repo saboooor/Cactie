@@ -1,13 +1,16 @@
+import { Client, GuildMember, TextChannel, ThreadChannel } from "discord.js";
+import { settings, ticketData } from "types/mysql";
+
 const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
 
-module.exports = async function createVoice(client, srvconfig, member, channel) {
+export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | ThreadChannel) {
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent;
+	if (channel.isThread()) channel = channel.parent as TextChannel;
 
 	// Check if channel is a ticket
-	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true }) as ticketData;
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	if (ticketData.users) ticketData.users = ticketData.users.split(',');
+	const ticketDataUsers = ticketData.users?.split(',');
 
 	// Check if ticket is closed
 	if (channel.name.startsWith('closed')) throw new Error('This ticket is closed!');
@@ -19,7 +22,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	const parent = await member.guild.channels.fetch(srvconfig.ticketcategory).catch(() => { return null; });
 
 	// Branch for ticket-dev or ticket-testing etc
-	const branch = client.user.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
+	const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
 	// Create voice channel for voiceticket
 	const author = await member.guild.members.fetch(ticketData.opener).catch(() => { return null; });
@@ -35,7 +38,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 				deny: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
-				id: client.user.id,
+				id: client.user!.id,
 				allow: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
@@ -46,7 +49,7 @@ module.exports = async function createVoice(client, srvconfig, member, channel) 
 	});
 
 	// Add permissions for each user in the voiceticket
-	await ticketData.users.forEach(userid => voiceticket.permissionOverwrites.edit(userid, { ViewChannel: true }));
+	ticketDataUsers.forEach(userid => voiceticket.permissionOverwrites.edit(userid, { ViewChannel: true }));
 
 	// Find role and add their permissions to the channel
 	const role = await member.guild.roles.fetch(srvconfig.supportrole).catch(() => { return null; });

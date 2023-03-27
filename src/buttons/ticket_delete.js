@@ -1,17 +1,12 @@
-const deleteTicket = require('../functions/tickets/deleteTicket.js');
+const deleteTicket = require('../functions/tickets/deleteTicket').default;
 
 module.exports = {
 	name: 'delete_ticket',
 	botPerms: ['ManageChannels'],
 	deferReply: true,
-	async execute(interaction, client) {
-		try {
-			// Get the server config
-			const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
-
-			// Create a ticket
-			await deleteTicket(client, srvconfig, interaction.member, interaction.channel);
-		}
+	async execute(interaction) {
+		// Delete the ticket
+		try { await deleteTicket(interaction.channel); }
 		catch (err) { error(err, interaction, true); }
 	},
 };

@@ -1,18 +1,19 @@
-const { EmbedBuilder } = require('discord.js');
+import { Client, EmbedBuilder, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
+import { ticketData } from 'types/mysql';
 
-module.exports = async (client, channel) => {
+export default async (client: Client, channel: TextChannel) => {
 	// Check if ticket is an actual ticket;
-	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true }) as ticketData;
 	if (!ticketData) return;
-	if (ticketData.users) ticketData.users = ticketData.users.split(',');
+	const ticketDataUsers = ticketData.users?.split(',');
 
 	// Check if ticket log channel is set in settings
 	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
-	const logchannel = await channel.guild.channels.cache.get(srvconfig.ticketlogchannel);
+	const logchannel = channel.guild.channels.cache.get(srvconfig.ticketlogchannel) as TextChannel;
 	if (logchannel) {
 		// Get list of users for embed
-		const users = [];
-		await ticketData.users.forEach(userid => {
+		const users: GuildMember[] = [];
+		await ticketDataUsers.forEach(userid => {
 			const ticketmember = channel.guild.members.cache.get(userid);
 			if (ticketmember) users.push(ticketmember);
 		});
@@ -31,7 +32,7 @@ module.exports = async (client, channel) => {
 	}
 
 	if (ticketData.voiceticket !== 'false') {
-		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket);
+		const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket) as VoiceChannel;
 		voiceticket.delete().catch(err => logger.warn(err));
 	}
 	sql.delData('ticketdata', { channelId: channel.id });

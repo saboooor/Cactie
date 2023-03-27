@@ -47,6 +47,7 @@
 	"globals": {
 		"sleep": "readonly",
 		"logDate": "readonly",
-		"logger": "readonly"
+		"logger": "readonly",
+		"error": "readonly"
 	}
 }

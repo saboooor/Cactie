@@ -1,6 +1,8 @@
-module.exports = async function deleteTicket(client, srvconfig, member, channel, force) {
+import { TextChannel, ThreadChannel } from "discord.js";
+
+export default async function deleteTicket(channel: TextChannel | ThreadChannel, force?: boolean) {
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent;
+	if (channel.isThread()) channel = channel.parent as TextChannel;
 
 	// Check if channel is a ticket
 	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });

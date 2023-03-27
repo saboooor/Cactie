@@ -1,6 +1,7 @@
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField } = require('discord.js');
+import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField, Client, GuildMember, TextChannel, CategoryChannel } from 'discord.js';
+import { settings } from 'types/mysql';
 
-module.exports = async function createTicket(client, srvconfig, member, description) {
+export default async function createTicket(client: Client, srvconfig: settings, member: GuildMember, description?: string) {
 	// Check if tickets are disabled
 	if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
 
@@ -8,9 +9,9 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	const ticketData = await sql.getData('ticketdata', { opener: member.id, guildId: member.guild.id }, { nocreate: true });
 	if (ticketData) {
 		try {
-			const channel = await member.guild.channels.fetch(ticketData.channelId);
-			if (channel.name.startsWith('ticket')) {
-				await channel.send({ content: `❗ **${member} Ticket already exists!**` });
+			const channel = await member.guild.channels.fetch(ticketData.channelId) as TextChannel;
+			if (channel!.name.startsWith('ticket')) {
+				await channel!.send({ content: `❗ **${member} Ticket already exists!**` });
 				return `**You've already created a ticket at ${channel}!**`;
 			}
 		}
@@ -21,10 +22,10 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 	}
 
 	// Find category and if no category then set it to null
-	const parent = await member.guild.channels.fetch(srvconfig.ticketcategory).catch(() => { return null; });
+	const parent = await member.guild.channels.fetch(srvconfig.ticketcategory).catch(() => { return null; }) as CategoryChannel | null;
 
 	// Branch for ticket-dev or ticket-testing etc
-	const branch = client.user.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
+	const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
 	// Create ticket and set database
 	const ticket = await member.guild.channels.create({
@@ -37,7 +38,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 				deny: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
-				id: client.user.id,
+				id: client.user!.id,
 				allow: [PermissionsBitField.Flags.ViewChannel],
 			},
 			{
@@ -77,7 +78,7 @@ module.exports = async function createTicket(client, srvconfig, member, descript
 		CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 
 		// Create button row and send to ticket
-		const row = new ActionRowBuilder()
+		const row = new ActionRowBuilder<ButtonBuilder>()
 			.addComponents([
 				new ButtonBuilder()
 					.setCustomId('close_ticket')

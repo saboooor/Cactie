@@ -1,19 +1,19 @@
-const { EmbedBuilder } = require('discord.js');
-const { createPaste } = require('hastebin');
+import { EmbedBuilder, Client, Message } from 'discord.js';
+import { createPaste } from 'hastebin';
 const checkPerms = require('../../functions/checkPerms').default;
 
-module.exports = async (client, message) => {
+module.exports = async (client: Client, message: Message) => {
 	// Check if author is a bot or message is in dm
 	if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 
 	// Get current settings for the guild
-	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
+	const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
 
 	// Check if message shortener is set and is smaller than the amount of lines in the message
 	if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member)) return;
 
 	// Check if the bot has permission to manage messages
-	const permCheck = checkPerms(['ManageMessages'], message.guild.members.me, message.channel);
+	const permCheck = checkPerms(['ManageMessages'], message.guild!.members.me, message.channel);
 	if (permCheck) return logger.warn(permCheck);
 
 	// Delete the message and move the message into bin.birdflop.com
@@ -22,9 +22,9 @@ module.exports = async (client, message) => {
 	const shortEmbed = new EmbedBuilder()
 		.setColor('Random')
 		.setTitle('Shortened long message')
-		.setAuthor({ name: message.member.displayName, iconURL: message.member.user.avatarURL() })
+		.setAuthor({ name: message.member?.displayName ?? '???', iconURL: message.member?.user.avatarURL() ?? undefined })
 		.setDescription(link)
 		.setFooter({ text: 'Next time please use a paste service for long messages' });
 	message.channel.send({ embeds: [shortEmbed] });
-	logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild.name}`);
+	logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild!.name}`);
 };

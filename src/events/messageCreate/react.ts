@@ -1,6 +1,7 @@
-const reactions = require('../../lists/reactions').default;
+import { Client, Message } from 'discord.js';
+import reactions from '../../lists/reactions';
 
-module.exports = async (client, message) => {
+export default async (client: Client, message: Message) => {
 	// Check if author is a bot or message is in dm
 	if (!message.guild || message.webhookId || message.author.bot) return;
 
@@ -13,7 +14,7 @@ module.exports = async (client, message) => {
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
 		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
 			reaction.execute(message);
-			logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild.name}`);
+			logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild!.name}`);
 		}
 	});
 };

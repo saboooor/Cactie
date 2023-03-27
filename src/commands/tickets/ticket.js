@@ -1,4 +1,4 @@
-const createTicket = require('../../functions/tickets/createTicket.js');
+const createTicket = require('../../functions/tickets/createTicket').default;
 
 module.exports = {
 	name: 'ticket',

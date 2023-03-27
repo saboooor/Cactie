@@ -1,4 +1,4 @@
-const createVoice = require('../functions/tickets/createVoice.js');
+const createVoice = require('../functions/tickets/createVoice').default;
 
 module.exports = {
 	name: 'voiceticket_create',

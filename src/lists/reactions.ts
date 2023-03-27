@@ -1,8 +1,9 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
+import { Reaction } from 'types/Objects';
 
 // Set the reactions collection
-const reactions = new Collection();
+const reactions = new Collection<string, Reaction>();
 
 // Register all reactions
 const reactionFiles = readdirSync('./src/reactions').filter(file => file.endsWith('.ts'));
