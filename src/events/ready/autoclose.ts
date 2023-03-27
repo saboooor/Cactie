@@ -6,7 +6,7 @@ import closeTicket from '../../functions/tickets/closeTicket';
 
 export default (client: Client) => schedule('0 0 * * *', async () => {
 	// Get all tickets
-	const allTicketData = await sql.getData('reactionroles', null, { all: true });
+	const allTicketData = await sql.getData('ticketdata', null, { all: true });
 
 	// Loop through all tickets
 	allTicketData.forEach(async (ticketData: ticketData) => {

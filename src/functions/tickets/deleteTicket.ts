@@ -2,12 +2,11 @@ import { TextChannel, ThreadChannel } from "discord.js";
 
 export default async function deleteTicket(channel: TextChannel | ThreadChannel, force?: boolean) {
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent as TextChannel;
+	if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
 
 	// Check if channel is a ticket
 	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	if (ticketData.users) ticketData.users = ticketData.users.split(',');
 
 	// Check if ticket is open
 	if (!force && channel.name.startsWith('ticket')) throw new Error('This ticket needs to be closed first!');

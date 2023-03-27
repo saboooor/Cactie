@@ -1,16 +1,16 @@
 import { Client, GuildMember, TextChannel, ThreadChannel } from "discord.js";
-import { settings, ticketData } from "types/mysql";
+import { settings } from "types/mysql";
 
 const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
 
 export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | ThreadChannel) {
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent as TextChannel;
+	if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
 
 	// Check if channel is a ticket
-	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true }) as ticketData;
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	const ticketDataUsers = ticketData.users?.split(',');
+	const ticketDataUsers = ticketData.users.split(',');
 
 	// Check if ticket is closed
 	if (channel.name.startsWith('closed')) throw new Error('This ticket is closed!');

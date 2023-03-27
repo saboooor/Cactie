@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 import YAML from 'yaml';
 const { mysql } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 
-import { Table } from 'types/mysql';
+import { Table, ticketData, settings, reactionRoles, memberData, lastVoted } from 'types/mysql';
 
 // Create connection
 let con: mariadb.Connection | null = null; 
@@ -36,8 +36,8 @@ export async function createData(table: Table, body: any) {
 	const bodyvalues = Object.values(body);
 	const VALUES = bodyvalues.map(v => { return v === null ? 'NULL' : `'${v}'`; }).join(', ');
 	try {
-		await query(`INSERT INTO ${table} (${bodykeys.join(', ')}) VALUES (${VALUES})`);
 		logger.info(`Created ${table}: ${JSON.stringify(body)}`);
+		return await query(`INSERT INTO ${table} (${bodykeys.join(', ')}) VALUES (${VALUES})`);
 	}
 	catch (err) {
 		logger.error(`Error creating ${table}: ${err}`);
@@ -56,17 +56,29 @@ export async function delData(table: Table, where: any) {
 	}
 };
 
-
-export async function getData(table: Table, where: any, options?: { nocreate?: boolean, all?: boolean }) {
+async function getData(table: 'ticketdata', where: any, options: { nocreate?: boolean, all: true }): Promise<ticketData[]>;
+async function getData(table: 'ticketdata', where: any, options?: { nocreate?: boolean, all?: false }): Promise<ticketData>;
+async function getData(table: 'settings', where: any, options: { nocreate?: boolean, all: true }): Promise<settings[]>;
+async function getData(table: 'settings', where: any, options?: { nocreate?: boolean, all?: false }): Promise<settings>;
+async function getData(table: 'reactionroles', where: any, options: { nocreate?: boolean, all: true }): Promise<reactionRoles[]>;
+async function getData(table: 'reactionroles', where: any, options?: { nocreate?: boolean, all?: false }): Promise<reactionRoles>;
+async function getData(table: 'memberdata', where: any, options: { nocreate?: boolean, all: true }): Promise<memberData[]>;
+async function getData(table: 'memberdata', where: any, options?: { nocreate?: boolean, all?: false }): Promise<memberData>;
+async function getData(table: 'lastvoted', where: any, options: { nocreate?: boolean, all: true }): Promise<lastVoted[]>;
+async function getData(table: 'lastvoted', where: any, options?: { nocreate?: boolean, all?: false }): Promise<lastVoted>;
+async function getData(table: Table, where: any, options?: { nocreate?: boolean, all?: boolean }) {
 	const wherekeys = where ? Object.keys(where) : null;
 	const WHERE = wherekeys ? wherekeys.map(k => { return `${k} = ${where[k] === null ? 'NULL' : `'${where[k]}'`}`; }).join(' AND ') : null;
 	let data = await query(`SELECT * FROM ${table}${WHERE ? ` WHERE ${WHERE}` : ''}`);
-	if (where && !options?.nocreate && !data[0]) {
-		await createData(table, where);
-		data = await getData(table, where, { nocreate: true, all: true });
-	}
-	return options?.all ? data : data[0];
+
+	if (where && !options?.nocreate && !data[0]) data = await createData(table, where);
+
+	return options?.all
+		? data
+		: data[0];
 };
+
+export { getData };
 
 export async function setData(table: Table, where: any, body: any) {
 	const wherekeys = Object.keys(where);

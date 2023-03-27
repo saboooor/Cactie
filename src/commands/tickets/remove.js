@@ -1,4 +1,4 @@
-const manageUsers = require('../../functions/tickets/manageUsers.js');
+const manageUsers = require('../../functions/tickets/manageUsers').default;
 
 module.exports = {
 	name: 'remove',
@@ -15,7 +15,7 @@ module.exports = {
 			if (!targetMember) return error(lang.invalidmember, message, true);
 
 			// Add user to ticket
-			const msg = await manageUsers(client, message.member, message.channel, targetMember, false);
+			const msg = await manageUsers(message.member, message.channel, targetMember, false);
 
 			// Send message
 			await message.reply(msg);

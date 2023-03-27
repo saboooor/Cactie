@@ -1,26 +1,26 @@
-const { EmbedBuilder } = require('discord.js');
+import { EmbedBuilder, GuildMember, TextChannel, ThreadChannel, VoiceChannel } from 'discord.js';
 
-module.exports = async function manageUsers(client, member, channel, targetMember, add = false) {
+export default async function manageUsers(member: GuildMember, channel: TextChannel | ThreadChannel, targetMember: GuildMember, add?: boolean) {
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent;
+	if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
 
 	// Check if channel is a ticket
 	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	if (ticketData.users) ticketData.users = ticketData.users.split(',');
+	const ticketDataUsers = ticketData.users.split(',');
 
 	// Check if ticket is closed
 	if (channel.name.startsWith('closed')) throw new Error('This ticket is closed!');
 
 	// Check if user is already in the ticket, if not, add them to the ticket data
-	if (add && ticketData.users.includes(targetMember.id)) throw new Error('This user has already been added!');
-	else if (!add && !ticketData.users.includes(targetMember.id)) throw new Error('This user isn\'t added!');
-	add ? ticketData.users.push(targetMember.id) : ticketData.users.splice(ticketData.users.indexOf(targetMember.id), 1);
-	sql.setData('ticketdata', { channelId: channel.id }, { users: ticketData.users.join(',') });
+	if (add && ticketDataUsers.includes(targetMember.id)) throw new Error('This user has already been added!');
+	else if (!add && !ticketDataUsers.includes(targetMember.id)) throw new Error('This user isn\'t added!');
+	add ? ticketDataUsers.push(targetMember.id) : ticketDataUsers.splice(ticketDataUsers.indexOf(targetMember.id), 1);
+	sql.setData('ticketdata', { channelId: channel.id }, { users: ticketDataUsers.join(',') });
 
 	// If the ticket has a voiceticket, give permissions to the user there
 	if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {
-		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
+		const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; }) as VoiceChannel | null;
 		if (voiceticket) voiceticket.permissionOverwrites.edit(targetMember.id, { ViewChannel: add });
 	}
 

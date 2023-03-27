@@ -7,5 +7,5 @@ export default async (client: Client, member: GuildMember) => {
 
 	// Mute user again if user has been muted before leaving
 	const muterole = member.guild.roles.cache.get(srvconfig.mutecmd);
-	if (memberdata && memberdata.mutedUntil != 0 && muterole) member.roles.add(muterole);
+	if (memberdata && memberdata.mutedUntil != '0' && muterole) member.roles.add(muterole);
 };

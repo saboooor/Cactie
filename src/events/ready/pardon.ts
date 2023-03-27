@@ -21,7 +21,7 @@ const memberdata = await sql.getData('memberdata', null, { all: true });
 		const member = await guild.members.fetch(data.memberId).catch(() => { return null; });
 		const user = await client.users.fetch(data.memberId).catch(() => { return null; });
 
-		if (data.mutedUntil && data.mutedUntil < Date.now()) {
+		if (data.mutedUntil && parseInt(data.mutedUntil) < Date.now()) {
 			// Get the role and if it exists get rid of it from the member
 			const role = await guild.roles.cache.get(srvconfig.mutecmd);
 			if (role && member) await member.roles.remove(role);
@@ -40,7 +40,7 @@ const memberdata = await sql.getData('memberdata', null, { all: true });
 				logchannel.send({ embeds: [UnmuteEmbed] });
 			}
 		}
-		if (data.bannedUntil && data.bannedUntil < Date.now()) {
+		if (data.bannedUntil && parseInt(data.bannedUntil) < Date.now()) {
 			// Attempt to unban the member
 			await guild.members.unban(data.memberId).catch(err => logger.error(err));
 

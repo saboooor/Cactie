@@ -6,12 +6,12 @@ export default async function reopenTicket(srvconfig: settings, member: GuildMem
 	if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
 
 	// Check if channel is thread and set the channel to the parent channel
-	if (channel.isThread()) channel = channel.parent as TextChannel;
+	if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
 
 	// Check if ticket is an actual ticket
 	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	if (ticketData.users) ticketData.users = ticketData.users.split(',');
+	const ticketDataUsers = ticketData.users.split(',');
 
 	// Check if ticket is already opened
 	if (channel.name.startsWith('ticket')) throw new Error('This ticket is already open!');
@@ -23,7 +23,7 @@ export default async function reopenTicket(srvconfig: settings, member: GuildMem
 	if (channel.name.startsWith('closed')) throw new Error('Failed to open ticket, please try again in 10 minutes');
 
 	// Add permissions for each user in the ticket
-	await ticketData.users.forEach((userid: string) => (channel as TextChannel).permissionOverwrites.edit(userid, { ViewChannel: true }));
+	ticketDataUsers.forEach((userid: string) => (channel as TextChannel).permissionOverwrites.edit(userid, { ViewChannel: true }));
 
 	// Reply with ticket open message
 	const OpenEmbed = new EmbedBuilder()

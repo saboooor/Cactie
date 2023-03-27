@@ -18,7 +18,7 @@ export declare interface settings {
     reactions: 'true' | 'false';
     leavemessage: string | 'false';
     joinmessage: string | 'false';
-    maxppsize: number;
+    maxppsize: string;
     tickets: 'buttons' | 'reactions' | 'false';
     disabledcmds: string | 'false';
     auditlogs: string | 'false';
@@ -31,7 +31,7 @@ export declare interface settings {
     supportrole: Snowflake | 'false';
     ticketmention: 'here' | 'everyone' | Snowflake | 'false';
     mutecmd: 'timeout' | Snowflake | 'false';
-    msgshortener: number;
+    msgshortener: string;
     djrole: Snowflake | 'false';
 }
 

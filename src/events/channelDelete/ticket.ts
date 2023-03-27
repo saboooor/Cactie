@@ -1,11 +1,10 @@
 import { Client, EmbedBuilder, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
-import { ticketData } from 'types/mysql';
 
 export default async (client: Client, channel: TextChannel) => {
 	// Check if ticket is an actual ticket;
-	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true }) as ticketData;
+	const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) return;
-	const ticketDataUsers = ticketData.users?.split(',');
+	const ticketDataUsers = ticketData.users.split(',');
 
 	// Check if ticket log channel is set in settings
 	const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });

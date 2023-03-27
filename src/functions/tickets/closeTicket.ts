@@ -10,7 +10,7 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
 	// Check if channel is a ticket
 	const ticketData: ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
 	if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-	const ticketDataUsers = ticketData.users?.split(',');
+	const ticketDataUsers = ticketData.users.split(',');
 
 	// Check if ticket is already closed
 	if (channel.name.startsWith('closed')) throw new Error('This ticket is already closed!');
