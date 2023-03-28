@@ -35,7 +35,7 @@ export default async function getTranscript(messages: Collection<Snowflake, Mess
 		logs.logs.push(json);
 	});
 	logs.logs.reverse();
-	const balls = await fetch('https://smhsmh.club/transcript', { method: 'POST', body: JSON.stringify(logs), headers: { 'Content-Type': 'application/json' } });
+	const balls = await fetch('https://transcript.luminescent.dev', { method: 'POST', body: JSON.stringify(logs), headers: { 'Content-Type': 'application/json' } });
 	return (await balls.text()).replace(/"/g, '');
 };
 
