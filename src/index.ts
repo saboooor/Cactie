@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import { Client, Partials, GatewayIntentBits, Message, CommandInteraction, ModalSubmitInteraction, InteractionResponse } from "discord.js";
+import { Client, Partials, GatewayIntentBits, Message, CommandInteraction, ModalSubmitInteraction, InteractionResponse, ButtonInteraction } from "discord.js";
 import { Logger } from "winston";
 import { query, createData, delData, getData, setData } from './functions/mysql';
 
@@ -40,7 +40,7 @@ declare global {
 		getData: typeof getData;
 		setData: typeof setData;
 	};
-	var error: { (err: any, message: Message | CommandInteraction | ModalSubmitInteraction, userError?: boolean): Promise<Message | InteractionResponse | undefined> };
+	var error: { (err: any, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction, userError?: boolean): Promise<Message | InteractionResponse | undefined> };
 }
 function sleepfunc(ms: number) { return new Promise(resolve => { return setTimeout(resolve, ms) }) }
 global.sleep = sleepfunc;

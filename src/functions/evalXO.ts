@@ -1,6 +1,6 @@
 const { ButtonStyle } = require('discord.js');
 
-export default function evalXO(reslist: (2 | 4 | 1)[]) {
+export default function evalXO(reslist: (keyof typeof ButtonStyle)[]) {
 	const result: {
 		rows?: number[],
 		winner?: 'x' | 'o'

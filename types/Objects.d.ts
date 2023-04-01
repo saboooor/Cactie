@@ -4,6 +4,7 @@ export declare interface Command {
 	name: string;
     description: string;
     ephemeral?: boolean;
+    noDefer?: boolean;
     aliases?: string[];
     usage: string;
     args?: boolean;
@@ -28,6 +29,15 @@ export declare interface Reaction {
 export declare interface Modal {
 	name: string;
     deferReply?: boolean;
+    ephemeral?: boolean;
+    execute: any;
+}
+
+export declare interface Button {
+	name: string;
+    botPerms?: (keyof typeof PermissionsBitField.Flags)[];
+    deferReply?: boolean;
+    noDefer?: boolean;
     ephemeral?: boolean;
     execute: any;
 }
