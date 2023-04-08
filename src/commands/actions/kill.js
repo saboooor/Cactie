@@ -5,8 +5,8 @@ module.exports = {
 	description: 'Kill someone!',
 	usage: '<Someone>',
 	args: true,
-	options: require('../../options/someonereq.js'),
-	async execute(message, args, client) {
+	options: require('../../options/someonereq').default,
+	async execute(message, args) {
 		try { action(message, message.member, args, 'kill'); }
 		catch (err) { error(err, message); }
 	},

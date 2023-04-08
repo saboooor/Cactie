@@ -2,8 +2,8 @@ module.exports = {
 	name: 'rate',
 	description: 'Rate someone or something! Or yourself.',
 	usage: '[Something or someone]',
-	options: require('../../options/someone.js'),
-	async execute(message, args, client) {
+	options: require('../../options/someone').default,
+	async execute(message, args) {
 		try {
 			// Get the rating messages
 			const ratings = require(`../../misc/rate.json`);

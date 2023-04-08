@@ -8,7 +8,7 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Timings Link>',
-	options: require('../../options/url.js'),
+	options: require('../../options/url').default,
 	async execute(message, args) {
 		try {
 			let id;

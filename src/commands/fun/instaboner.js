@@ -5,8 +5,8 @@ module.exports = {
 	description: 'See your boner expand INSTANTLY!',
 	usage: '[Someone]',
 	aliases: ['instapp'],
-	options: require('../../options/someone.js'),
-	async execute(message, args, client) {
+	options: require('../../options/someone').default,
+	async execute(message, args) {
 		try {
 			// Get settings
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });

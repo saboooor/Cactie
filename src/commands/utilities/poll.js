@@ -9,7 +9,7 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: 'create <Question> OR end <Message Id>',
-	options: require('../../options/poll.js'),
+	options: require('../../options/poll').default,
 	async execute(message, args, client) {
 		try {
 			// Get server config

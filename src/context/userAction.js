@@ -1,6 +1,6 @@
 const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const action = require('../../functions/action').default;
-const { x } = require('../../misc/emoji.json');
+const action = require('../functions/action').default;
+const { x } = require('../misc/emoji.json');
 
 module.exports = {
 	name: 'Do action on user',

@@ -6,8 +6,8 @@ module.exports = {
 	description: 'Get info on any Purpur, Paper, Waterfall, or Velocity build',
 	args: true,
 	usage: '<Purpur/Paper/Waterfall/Velocity> [Version] [Build]',
-	options: require('../../options/minecraft.js'),
-	async execute(message, args, client) {
+	options: require('../../options/minecraft').default,
+	async execute(message, args) {
 		try {
 			const JarEmbed = new EmbedBuilder().setColor(0x2f3136);
 			args[0] = args[0].toLowerCase();

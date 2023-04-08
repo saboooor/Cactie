@@ -1,6 +1,6 @@
-const { SlashCommandSubcommandBuilder, SlashCommandStringOption, SlashCommandRoleOption, SlashCommandNumberOption } = require('discord.js');
+import { SlashCommandSubcommandBuilder, SlashCommandStringOption, SlashCommandRoleOption, SlashCommandNumberOption, SlashCommandBuilder } from 'discord.js';
 
-module.exports = async function options(cmd) {
+export default async function options(cmd: SlashCommandBuilder) {
 	cmd.addSubcommand(
 		new SlashCommandSubcommandBuilder()
 			.setName('get')

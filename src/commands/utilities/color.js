@@ -8,8 +8,8 @@ module.exports = {
 	usage: '<URL of Image (gif, jpg, png, svg)> [Amount of colors]',
 	aliases: ['colors', 'c', 'pick'],
 	args: true,
-	options: require('../../options/color.js'),
-	async execute(message, args, client) {
+	options: require('../../options/color').default,
+	async execute(message, args) {
 		try {
 			if (args[0] < 1 || args[0] > 5) return error('The amount of colors can only be between 1 and 5!', message, true);
 			const matches = [...args[0].matchAll(regex)];

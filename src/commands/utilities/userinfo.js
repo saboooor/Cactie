@@ -7,8 +7,8 @@ module.exports = {
 	description: 'Discord member information',
 	aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
 	usage: '[User]',
-	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	options: require('../../options/user').default,
+	async execute(message, args) {
 		try {
 			let member = message.member;
 			if (args.length) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));

@@ -9,8 +9,8 @@ module.exports = {
 	permissions: ['ModerateMembers'],
 	botPerms: ['ManageRoles', 'ModerateMembers'],
 	cooldown: 5,
-	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	options: require('../../options/user').default,
+	async execute(message, args) {
 		try {
 			// Get settings and check if mutecmd is enabled
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });

@@ -6,8 +6,8 @@ module.exports = {
 	description: 'Get the avatar of a user',
 	aliases: ['pfp', 'av'],
 	usage: '[User]',
-	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	options: require('../../options/user').default,
+	async execute(message, args) {
 		try {
 			let member = message.member;
 			if (args.length) member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));

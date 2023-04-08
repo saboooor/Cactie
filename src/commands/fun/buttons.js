@@ -8,8 +8,8 @@ module.exports = {
 	args: true,
 	usage: '<Rows and Columns (ex: 5x5)>',
 	cooldown: 10,
-	options: require('../../options/text.js'),
-	async execute(message, args, client) {
+	options: require('../../options/text').default,
+	async execute(message, args) {
 		const btns = {};
 		const rows = [];
 		const [ro, co] = args[0].split('x');

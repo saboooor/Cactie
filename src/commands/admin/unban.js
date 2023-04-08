@@ -9,7 +9,7 @@ module.exports = {
 	permissions: ['BanMembers'],
 	botPerms: ['BanMembers'],
 	cooldown: 5,
-	options: require('../../options/user.js'),
+	options: require('../../options/user').default,
 	async execute(message, args, client) {
 		try {
 			// Fetch bans from guild and check if user in arg is banned

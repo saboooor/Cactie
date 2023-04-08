@@ -8,8 +8,8 @@ module.exports = {
 	description: 'Get the status of a Minecraft server',
 	aliases: ['mcstatus'],
 	usage: '<Server IP>',
-	options: require('../../options/stats.js'),
-	async execute(message, args, client) {
+	options: require('../../options/stats').default,
+	async execute(message, args) {
 		try {
 			const StatsEmbed = new EmbedBuilder()
 				.setColor(0x2f3136)

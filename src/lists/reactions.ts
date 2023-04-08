@@ -7,10 +7,13 @@ const reactions = new Collection<string, Reaction>();
 
 // Register all reactions
 const reactionFiles = readdirSync('./src/reactions').filter(file => file.endsWith('.ts'));
-for (const file of reactionFiles) {
-	const reaction = require(`../reactions/${file}`);
+reactionFiles.forEach(async file => {
+	let reaction = require(`../reactions/${file}`);
+	const name = Object.keys(reaction)[0] as keyof typeof reaction;
+	reaction = { name, ...reaction[name] };
+
 	reactions.set(reaction.name, reaction);
 	if (reactionFiles.indexOf(file) == reactionFiles.length - 1) logger.info(`${reactionFiles.length} reactions loaded`);
-}
+});
 
 export default reactions;

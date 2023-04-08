@@ -1,7 +1,7 @@
-const { SlashCommandSubcommandBuilder } = require('discord.js');
-const { readdirSync } = require('fs');
+import { SlashCommandSubcommandBuilder, SlashCommandBuilder } from 'discord.js';
+import { readdirSync } from 'fs';
 
-module.exports = async function options(cmd) {
+export default async function options(cmd: SlashCommandBuilder) {
 	const commands = readdirSync('./src/commands/animals');
 	commands.forEach(commandName => {
 		cmd.addSubcommand(

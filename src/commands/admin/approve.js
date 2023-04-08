@@ -12,7 +12,7 @@ module.exports = {
 	args: true,
 	permissions: ['Administrator'],
 	usage: '<Message Id> [Response]',
-	options: require('../../options/suggestresponse.js'),
+	options: require('../../options/suggestresponse').default,
 	async execute(message, args, client) {
 		try {
 			// Get the messageId

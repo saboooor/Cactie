@@ -8,8 +8,8 @@ module.exports = {
 	aliases: ['pp'],
 	cooldown: 2,
 	botPerms: ['ViewChannel'],
-	options: require('../../options/someone.js'),
-	async execute(message, args, client) {
+	options: require('../../options/someone').default,
+	async execute(message, args) {
 		try {
 			// Get settings
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });

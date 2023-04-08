@@ -1,6 +1,6 @@
-const { SlashCommandUserOption } = require('discord.js');
+import { SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 
-module.exports = async function options(cmd) {
+export default async function options(cmd: SlashCommandBuilder) {
 	cmd.addUserOption(
 		new SlashCommandUserOption()
 			.setName('user')

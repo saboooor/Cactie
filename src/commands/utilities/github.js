@@ -6,8 +6,8 @@ module.exports = {
 	description: 'Get info on any GitHub repository',
 	args: true,
 	usage: '<Repository (Not URL)>',
-	options: require('../../options/github.js'),
-	async execute(message, args, client) {
+	options: require('../../options/github').default,
+	async execute(message, args) {
 		try {
 			// fetch the github repo
 			const repoFetch = await fetch(`https://api.github.com/repos/${args[0]}`, { headers: { 'Accept': 'application/json' } });

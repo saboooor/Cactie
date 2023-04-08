@@ -10,8 +10,8 @@ module.exports = {
 	permissions: ['ModerateMembers'],
 	botPerms: ['ManageRoles', 'ModerateMembers'],
 	cooldown: 5,
-	options: require('../../options/punish.js'),
-	async execute(message, args, client) {
+	options: require('../../options/punish').default,
+	async execute(message, args) {
 		try {
 			// Get mute role and check if role is valid
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });

@@ -1,8 +1,10 @@
 import { Message } from "discord.js";
+import { Reaction } from "types/Objects";
 
-export const name = 'mad';
-export const triggers = ['mad', 'angry', 'kill ', 'punch', 'evil'];
-
-export function execute(message: Message) {
-	message.react('899340907432792105').catch(err => logger.error(err));
-};
+export const mad: Reaction = {
+	triggers: ['mad', 'angry', 'kill ', 'punch', 'evil'],
+	additionaltriggers: ['cactie'],
+	execute: (message: Message) => {
+		message.react('899340907432792105').catch(err => logger.error(err));
+	}
+}

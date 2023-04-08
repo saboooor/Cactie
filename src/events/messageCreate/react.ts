@@ -14,7 +14,7 @@ export default async (client: Client, message: Message) => {
 		&& reaction.triggers.some(word => message.content.toLowerCase().includes(word))
 		&& (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
 			reaction.execute(message);
-			logger.info(`${message.author.tag} triggered reaction: ${reaction.name}, in ${message.guild!.name}`);
+			logger.info(`${message.author.tag} triggered reaction: ${reaction}, in ${message.guild!.name}`);
 		}
 	});
 };

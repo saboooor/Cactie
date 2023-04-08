@@ -1,9 +1,9 @@
-import { EmbedBuilder, GuildMember, Message } from 'discord.js';
+import { CommandInteraction, EmbedBuilder, GuildMember, Message } from 'discord.js';
 import actions from '../misc/actions.json';
 
 let current: number;
 
-export default async function action(message: Message, author: GuildMember, args: string[], type: keyof typeof actions) {
+export default async function action(message: Message | CommandInteraction, author: GuildMember, args: string[], type: keyof typeof actions) {
 	// Check if arg is a user and set it
 	let user;
 	if (args.length) {
@@ -28,7 +28,7 @@ export default async function action(message: Message, author: GuildMember, args
 		.setFooter({ text: actions[type].footer });
 
 	// Reply with bonk message, if user is set then mention the user
-	if (message.member?.id == message.client.user.id) {
+	if (message.member?.user.id == message.client.user.id && message instanceof Message) {
 		message.delete();
 		message.channel.send({ content: user ? `${user}` : undefined, embeds: [BonkEmbed], components: [] });
 		return;

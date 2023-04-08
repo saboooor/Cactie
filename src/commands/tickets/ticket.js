@@ -7,7 +7,7 @@ module.exports = {
 	aliases: ['new'],
 	usage: '[Description]',
 	botPerms: ['ManageChannels'],
-	options: require('../../options/ticket.js'),
+	options: require('../../options/ticket').default,
 	async execute(message, args, client) {
 		try {
 			// Check if tickets are disabled

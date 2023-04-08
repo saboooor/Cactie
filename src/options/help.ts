@@ -1,8 +1,8 @@
-const { SlashCommandSubcommandBuilder, SlashCommandChannelOption } = require('discord.js');
-const helpdesc = require('../misc/helpdesc.json');
+import { SlashCommandSubcommandBuilder, SlashCommandChannelOption, SlashCommandBuilder } from 'discord.js';
+import helpdesc from '../misc/helpdesc.json';
 
-module.exports = async function options(cmd) {
-	const categories = Object.keys(helpdesc);
+export default async function options(cmd: SlashCommandBuilder) {
+	const categories = Object.keys(helpdesc) as (keyof typeof helpdesc)[];
 	categories.forEach(category => {
 		const subcmd = new SlashCommandSubcommandBuilder()
 			.setName(category)

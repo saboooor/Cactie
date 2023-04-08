@@ -1,6 +1,6 @@
-const { SlashCommandNumberOption, SlashCommandStringOption } = require('discord.js');
+import { SlashCommandNumberOption, SlashCommandStringOption, SlashCommandBuilder } from 'discord.js';
 
-module.exports = async function options(cmd) {
+export default async function options(cmd: SlashCommandBuilder) {
 	cmd.addStringOption(
 		new SlashCommandStringOption()
 			.setName('url')

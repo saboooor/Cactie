@@ -12,8 +12,8 @@ module.exports = {
 	usage: '<Message Amount> [Message Author] [Message Content Has]',
 	channelPermissions: ['ManageMessages'],
 	botChannelPerms: ['ManageMessages'],
-	options: require('../../options/clear.js'),
-	async execute(message, args, client) {
+	options: require('../../options/clear').default,
+	async execute(message, args) {
 		try {
 			// Check if arg is a number and is more than 100
 			if (isNaN(args[0])) return error('That is not a number!', message, true);

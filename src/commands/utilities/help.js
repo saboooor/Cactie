@@ -1,4 +1,4 @@
-const commands = require('../../lists/commands').default;
+const commands = require('../../lists/commands');
 const { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle } = require('discord.js');
 const checkPerms = require('../../functions/checkPerms').default;
 
@@ -8,8 +8,8 @@ module.exports = {
 	aliases: ['commands'],
 	usage: '[Type]',
 	cooldown: 10,
-	options: require('../../options/help.js'),
-	async execute(message, args, client) {
+	options: require('../../options/help').default,
+	async execute(message, args) {
 		try {
 			const helpdesc = require(`../../misc/helpdesc.json`);
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
@@ -21,7 +21,7 @@ module.exports = {
 
 			if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
 				const category = helpdesc[arg.toLowerCase()];
-				const commandList = commands.filter(c => c.category == arg.toLowerCase());
+				const commandList = commands.default.filter(c => c.category == arg.toLowerCase());
 				const array = [];
 				commandList.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
@@ -106,7 +106,7 @@ module.exports = {
 					.setColor('Random')
 					.setTitle('**HELP**');
 				const category = helpdesc[interaction.values[0].split('_')[1]];
-				const commandList = commands.filter(c => c.category == interaction.values[0].split('_')[1]);
+				const commandList = commands.default.filter(c => c.category == interaction.values[0].split('_')[1]);
 				const array = [];
 				commandList.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permission ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
 				HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);

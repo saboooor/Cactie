@@ -7,8 +7,8 @@ module.exports = {
 	botPerms: ['ManageChannels'],
 	args: true,
 	usage: '<User>',
-	options: require('../../options/user.js'),
-	async execute(message, args, client) {
+	options: require('../../options/user').default,
+	async execute(message, args) {
 		try {
 			// Check if user is valid
 			const targetMember = message.guild.members.cache.get(args[0].replace(/\D/g, ''));

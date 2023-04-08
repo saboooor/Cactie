@@ -9,8 +9,8 @@ module.exports = {
 	cooldown: 10,
 	args: true,
 	usage: '<Suggestion>',
-	options: require('../../options/suggest.js'),
-	async execute(message, args, client) {
+	options: require('../../options/suggest').default,
+	async execute(message, args) {
 		try {
 			// Get server config
 			const srvconfig = await sql.getData('settings', { guildId: message.guild.id });

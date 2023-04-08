@@ -1,6 +1,6 @@
-const { SlashCommandNumberOption, SlashCommandUserOption, SlashCommandStringOption } = require('discord.js');
+import { SlashCommandNumberOption, SlashCommandUserOption, SlashCommandStringOption, SlashCommandBuilder } from 'discord.js';
 
-module.exports = async function options(cmd) {
+export default async function options(cmd: SlashCommandBuilder) {
 	cmd.addNumberOption(
 		new SlashCommandNumberOption()
 			.setName('scope')

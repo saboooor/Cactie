@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
-const convertTime = require('../../functions/music/convert').default;
-const progressbar = require('../../functions/music/progressbar').default;
+const convertTime = require('../functions/music/convert').default;
+const progressbar = require('../functions/music/progressbar').default;
 
 module.exports = {
 	name: 'User Info',

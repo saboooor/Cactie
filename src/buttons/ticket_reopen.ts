@@ -1,24 +1,25 @@
 import { ButtonInteraction, GuildMember, TextChannel } from 'discord.js';
 import reopenTicket from '../functions/tickets/reopenTicket';
+import { Button } from 'types/Objects';
 
-export const name = 'reopen_ticket';
-export const botPerms = ['ManageChannels'];
-export const deferReply = true;
+export const reopen_ticket: Button = {
+	botPerms: ['ManageChannels'],
+	deferReply: true,
+	execute: async (interaction: ButtonInteraction) => {
+		try {
+			// Get the server config
+			const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
 
-export async function execute(interaction: ButtonInteraction) {
-	try {
-		// Get the server config
-		const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
+			if (!(interaction.member instanceof GuildMember)) {
+				interaction.member = await interaction.guild!.members.fetch(interaction.member!.user.id);
+			}
 
-		if (!(interaction.member instanceof GuildMember)) {
-			interaction.member = await interaction.guild!.members.fetch(interaction.member!.user.id);
+			// Create a ticket
+			const msg = await reopenTicket(srvconfig, interaction.member, interaction.channel as TextChannel);
+
+			// Send the message
+			interaction.reply(msg);
 		}
-
-		// Create a ticket
-		const msg = await reopenTicket(srvconfig, interaction.member, interaction.channel as TextChannel);
-
-		// Send the message
-		interaction.reply(msg);
+		catch (err) { error(err, interaction, true); }
 	}
-	catch (err) { error(err, interaction, true); }
-}
+};

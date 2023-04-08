@@ -1,7 +1,7 @@
-const { EmbedBuilder, InteractionType } = require('discord.js');
-const modals = require('../../lists/modals').default;
+import { Client, EmbedBuilder, InteractionType, ModalSubmitInteraction, TextChannel } from 'discord.js';
+import modals from '../../lists/modals';
 
-module.exports = async (client, interaction) => {
+export default async (client: Client, interaction: ModalSubmitInteraction) => {
 	// Check if interaction is modal
 	if (interaction.type != InteractionType.ModalSubmit) return;
 
@@ -15,23 +15,24 @@ module.exports = async (client, interaction) => {
 
 	// Defer and execute the modal
 	try {
-		logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
+		logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild!.name}`);
 		await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
-		interaction.reply = interaction.editReply;
+		interaction.reply = interaction.editReply as typeof interaction.reply;
 		modal.execute(interaction, client, modalInfo);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()
 			.setColor('Random')
 			.setTitle('INTERACTION FAILED')
-			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() })
+			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
 			.addFields([
 				{ name: '**Type:**', value: 'Modal' },
 				{ name: '**Interaction:**', value: modal.name },
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 			]);
-		if (interaction.guild) interactionFailed.addFields([{ name: '**Guild:**', value: interaction.guild.name }, { name: '**Channel:**', value: interaction.channel.name }]);
-		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
+		if (interaction.guild) interactionFailed.addFields([{ name: '**Guild:**', value: interaction.guild.name }, { name: '**Channel:**', value: `${interaction.channel}` }]);
+		const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
+		errorchannel.send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		interaction.user.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
 		logger.error(err);
 	}

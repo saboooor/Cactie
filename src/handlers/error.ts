@@ -1,9 +1,8 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteraction } from 'discord.js';
-import type { TextChannel, Client, Message } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteraction, TextChannel, Client, Message, StringSelectMenuInteraction } from 'discord.js';
 
 export default (client: Client) => {
 	// Create a function for error messaging
-	global.error = async function error(err: any, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction, userError?: boolean) {
+	global.error = async function error(err: any, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
 		if (`${err}`.includes('Received one or more errors')) console.log(err);
 		logger.error(err);
 		const errEmbed = new EmbedBuilder()
@@ -27,7 +26,7 @@ export default (client: Client) => {
 			channel.send({ embeds: [errEmbed] });
 		}
 		try {
-			if (message instanceof CommandInteraction || message instanceof ButtonInteraction || message instanceof ModalSubmitInteraction) return await message.reply({ embeds: [errEmbed], components });
+			if (message instanceof Message) return await message.reply({ embeds: [errEmbed], components });
 			else return await message.reply({ embeds: [errEmbed], components })
 		} catch (err_1) {
 			logger.warn(err_1);

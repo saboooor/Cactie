@@ -4,7 +4,7 @@ import { Command } from 'types/Objects';
 
 // Set the commands collection
 const commands = new Collection<string, Command>();
-const cooldowns = new Collection();
+const cooldowns = new Collection<string, Collection<string, number>>();
 
 // Register all commands
 const commandFolders = readdirSync('./src/commands');

@@ -1,32 +1,38 @@
-const { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const checkPerms = require('../../functions/checkPerms').default;
-const commands = require('../../lists/commands').default;
-const cooldowns = require('../../lists/commands').cooldowns;
+import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, GuildChannelResolvable, TextChannel } from 'discord.js';
+import checkPerms from '../../functions/checkPerms';
+import commands from '../../lists/commands';
+import { cooldowns } from '../../lists/commands';
 
-module.exports = async (client, message) => {
+export default async (client: Client, message: Message) => {
 	// If the bot can't read message history or send messages, don't execute a command
 	if (message.webhookId || message.author.bot) return;
-	const initialPermCheck = message.guild ? checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me, message.channel) : null;
+	if (!message.guild) return;
+	const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me!, message.channel as GuildChannelResolvable);
 	if (initialPermCheck) return;
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
-	message.msgreply = message.reply;
-	message.reply = function reply(object) {
-		return message.msgreply(object).catch(err => {
+	const msgreply = message.reply;
+	message.reply = async function reply(object) {
+		try {
+			return await msgreply(object);
+		} catch (err) {
 			logger.warn(err);
-			return message.channel.send(object).catch(err => {
-				throw Error(err);
-			});
-		});
+			try {
+				return await message.channel.send(object);
+			} catch (err_1) {
+				throw err_1;
+			}
+		}
 	};
 
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
 
 	// Use mention as prefix instead of prefix too
-	if (message.content.replace('!', '').startsWith(`<@${client.user.id}>`)) {
-		srvconfig.txtprefix = srvconfig.prefix;
+	let txtprefix
+	if (message.content.replace('!', '').startsWith(`<@${client.user!.id}>`)) {
+		txtprefix = srvconfig.prefix;
 		srvconfig.prefix = message.content.split('>')[0] + '>';
 	}
 
@@ -34,8 +40,8 @@ module.exports = async (client, message) => {
 	// Also unresolve the ticket if channel is a resolved ticket
 	if (!message.content.startsWith(srvconfig.prefix)) {
 		// If message has the bot's Id, reply with prefix
-		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: `**My prefix is ${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
+		if (message.content.includes(client.user!.id)) {
+			const prefix = await message.reply({ content: `**My prefix is ${txtprefix ? txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
 			setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
 		}
 
@@ -43,23 +49,24 @@ module.exports = async (client, message) => {
 		const ticketData = await sql.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
 		if (ticketData && ticketData.resolved == 'true') {
 			await sql.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
-			logger.info(`Unresolved #${message.channel.name}`);
+			logger.info(`Unresolved #${(message.channel as TextChannel).name}`);
 		}
 		return;
 	}
 
 	// Get args by splitting the message by the spaces and getting rid of the prefix
 	const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
+	if (!args[0]) return;
 
 	// Get the command name from the first arg and get rid of the first arg
-	const commandName = args.shift().toLowerCase();
+	const commandName = (args.shift() as string).toLowerCase();
 
 	// Get the command from the commandName, if it doesn't exist, return
 	const command = commands.get(commandName) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command || !command.name) {
 		// If message has the bot's Id, reply with prefix
-		if (message.content.includes(client.user.id)) {
-			const prefix = await message.reply({ content: `**My prefix is ${srvconfig.txtprefix ? srvconfig.txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
+		if (message.content.includes(client.user!.id)) {
+			const prefix = await message.reply({ content: `**My prefix is ${txtprefix ? txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
 			setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
 		}
 		return;
@@ -76,7 +83,7 @@ module.exports = async (client, message) => {
 
 	// Get current timestamp and the command's last used timestamps
 	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
+	const timestamps = cooldowns.get(command.name) as Collection<string, number>;
 
 	// Calculate the cooldown in milliseconds (default is 3600 miliseconds, idk why)
 	const cooldownAmount = (command.cooldown || 3) * 1200;
@@ -88,7 +95,7 @@ module.exports = async (client, message) => {
 		const random = Math.floor(Math.random() * messages.length);
 
 		// Get cooldown expiration timestamp
-		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+		const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
 
 		// If cooldown expiration hasn't passed, send cooldown message and if the cooldown is less than 1200ms, react instead
 		if (now < expirationTime && message.author.id != '249638347306303499') {
@@ -121,13 +128,13 @@ module.exports = async (client, message) => {
 		const vote = await sql.getData('lastvoted', { userId: message.author.id });
 
 		// If user has not voted since the past 24 hours, send error message with vote buttons
-		if (!vote || Date.now() > vote.timestamp + 86400000) {
+		if (!vote || Date.now() > Number(vote.timestamp) + 86400000) {
 			const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
 				.setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
-			const row = new ActionRowBuilder()
+			const row = new ActionRowBuilder<ButtonBuilder>()
 				.addComponents([
 					new ButtonBuilder()
-						.setURL(`https://top.gg/bot/${client.user.id}/vote`)
+						.setURL(`https://top.gg/bot/${client.user!.id}/vote`)
 						.setLabel('top.gg')
 						.setStyle(ButtonStyle.Link),
 				]);
@@ -140,25 +147,25 @@ module.exports = async (client, message) => {
 
 	// Check if user has the permissions necessary in the channel to use the command
 	if (command.channelPermissions) {
-		const permCheck = checkPerms(command.channelPermissions, message.member, message.channel);
+		const permCheck = checkPerms(command.channelPermissions, message.member!, message.channel as GuildChannelResolvable);
 		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if user has the permissions necessary in the guild to use the command
 	if (command.permissions) {
-		const permCheck = checkPerms(command.permissions, message.member);
+		const permCheck = checkPerms(command.permissions, message.member!);
 		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if bot has the permissions necessary in the channel to run the command
 	if (command.botChannelPerms) {
-		const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me, message.channel);
+		const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me!, message.channel as GuildChannelResolvable);
 		if (permCheck) return error(permCheck, message, true);
 	}
 
 	// Check if bot has the permissions necessary in the guild to run the command
 	if (command.botPerms) {
-		const permCheck = checkPerms(command.botPerms, message.guild.members.me);
+		const permCheck = checkPerms(command.botPerms, message.guild.members.me!);
 		if (permCheck) return error(permCheck, message, true);
 	}
 
@@ -170,15 +177,16 @@ module.exports = async (client, message) => {
 		const interactionFailed = new EmbedBuilder()
 			.setColor('Random')
 			.setTitle('INTERACTION FAILED')
-			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() })
+			.setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() ?? undefined })
 			.addFields([
 				{ name: '**Type:**', value: 'Message' },
 				{ name: '**Guild:**', value: message.guild.name },
-				{ name: '**Channel:**', value: message.channel.name },
+				{ name: '**Channel:**', value: `${message.channel}` },
 				{ name: '**INTERACTION:**', value: srvconfig.prefix + command.name },
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 			]);
-		client.guilds.cache.get('811354612547190794').channels.cache.get('830013224753561630').send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
+		const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
+		errorchannel.send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
 		message.author.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
 		logger.error(err);
 	}

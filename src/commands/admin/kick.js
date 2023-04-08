@@ -9,8 +9,8 @@ module.exports = {
 	permissions: ['KickMembers'],
 	botPerms: ['KickMembers'],
 	cooldown: 5,
-	options: require('../../options/kick.js'),
-	async execute(message, args, client) {
+	options: require('../../options/kick').default,
+	async execute(message, args) {
 		try {
 			// Get user and check if user is valid
 			let member = message.guild.members.cache.get(args[0].replace(/\D/g, ''));

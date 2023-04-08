@@ -1,10 +1,11 @@
 import { Message } from "discord.js";
+import { Reaction } from "types/Objects";
 
-export const name = 'cactiebad';
-export const triggers = ['bad', 'gross', 'shit', 'dum'];
-export const additionaltriggers = ['cactie'];
-
-export function execute(message: Message) {
-	message.react('🇳').catch(err => logger.error(err));
-	message.react('🇴').catch(err => logger.error(err));
-};
+export const cactiebad: Reaction = {
+	triggers: ['bad', 'gross', 'shit', 'dum'],
+	additionaltriggers: ['cactie'],
+	execute: (message: Message) => {
+		message.react('🇳').catch(err => logger.error(err));
+		message.react('🇴').catch(err => logger.error(err));	
+	}
+}
