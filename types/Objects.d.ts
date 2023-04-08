@@ -35,7 +35,7 @@ export declare interface Reaction {
 }
 
 export declare interface Modal {
-	name: string;
+	name?: string;
     deferReply?: boolean;
     ephemeral?: boolean;
     execute: any;

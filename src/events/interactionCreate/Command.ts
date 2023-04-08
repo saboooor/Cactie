@@ -126,7 +126,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
 			.addFields([
 				{ name: '**Type:**', value: 'Slash' },
-				{ name: '**Interaction:**', value: command.name },
+				{ name: '**Interaction:**', value: `${command.name}` },
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 				{ name: '**Guild:**', value: interaction.guild.name },
 				{ name: '**Channel:**', value: `${interaction.channel}` },

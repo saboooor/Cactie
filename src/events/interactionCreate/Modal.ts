@@ -27,7 +27,7 @@ export default async (client: Client, interaction: ModalSubmitInteraction) => {
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
 			.addFields([
 				{ name: '**Type:**', value: 'Modal' },
-				{ name: '**Interaction:**', value: modal.name },
+				{ name: '**Interaction:**', value: `${modal.name}` },
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 			]);
 		if (interaction.guild) interactionFailed.addFields([{ name: '**Guild:**', value: interaction.guild.name }, { name: '**Channel:**', value: `${interaction.channel}` }]);

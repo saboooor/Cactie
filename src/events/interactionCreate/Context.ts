@@ -44,7 +44,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
 			.setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
 			.addFields([
 				{ name: '**Type:**', value: 'Context Menu' },
-				{ name: '**Interaction:**', value: command.name },
+				{ name: '**Interaction:**', value: `${command.name}` },
 				{ name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
 			]);
 		const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;

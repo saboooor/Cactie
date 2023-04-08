@@ -6,11 +6,14 @@ import { Modal } from 'types/Objects';
 const modals = new Collection<string, Modal>();
 
 // Register all modals
-const modalFiles = readdirSync('./src/modals').filter((file: string) => file.endsWith('.ts'));
-for (const file of modalFiles) {
-	const modal = require(`../modals/${file}`);
+const modalFiles = readdirSync('./src/modals').filter(file => file.endsWith('.ts'));
+modalFiles.forEach(async file => {
+	let modal = require(`../modals/${file}`);
+	const name = Object.keys(modal)[0] as keyof typeof modal;
+	modal = { name, ...modal[name] };
+
 	modals.set(modal.name, modal);
-}
+});
 logger.info(`${modalFiles.length} modals loaded`);
 
 export default modals;
