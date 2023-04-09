@@ -1,19 +1,20 @@
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Client, ContextMenuCommandInteraction, GuildMember } from 'discord.js';
+import { ContextMenuCommand } from "types/Objects";
 
-module.exports = {
+export const context: ContextMenuCommand = {
 	name: 'Ban Member',
 	noDefer: true,
 	permissions: ['BanMembers'],
 	botPerms: ['BanMembers'],
 	type: 'User',
-	async execute(interaction, client, member) {
+	async execute(interaction: ContextMenuCommandInteraction, client: Client, member: GuildMember) {
 		try {
 			// Create and show a modal for the user to fill out the ticket's description
 			const modal = new ModalBuilder()
 				.setTitle(`Ban ${member.user.tag}`)
 				.setCustomId(`ban_${member.id}`)
 				.addComponents([
-					new ActionRowBuilder().addComponents([
+					new ActionRowBuilder<TextInputBuilder>().addComponents([
 						new TextInputBuilder()
 							.setCustomId('reason')
 							.setLabel('Reason')
@@ -21,7 +22,7 @@ module.exports = {
 							.setStyle(TextInputStyle.Paragraph)
 							.setRequired(false),
 					]),
-					new ActionRowBuilder().addComponents([
+					new ActionRowBuilder<TextInputBuilder>().addComponents([
 						new TextInputBuilder()
 							.setCustomId('time')
 							.setLabel('Time')

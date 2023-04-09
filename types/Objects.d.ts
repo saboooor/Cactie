@@ -21,10 +21,14 @@ export declare interface SlashCommand extends Command {
     options?: (cmd: SlashCommandBuilder) => void;
 }
 
-export declare interface ContextMenuCommand extends Command {
+export declare interface ContextMenuCommand {
+    name: string;
+    permissions?: (keyof typeof PermissionsBitField.Flags)[];
+    botPerms?: (keyof typeof PermissionsBitField.Flags)[];
     ephemeral?: boolean;
     noDefer?: boolean;
     type: 'User' | 'Message';
+    execute: any;
 }
 
 export declare interface Reaction {

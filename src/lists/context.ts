@@ -6,11 +6,14 @@ import { ContextMenuCommand } from 'types/Objects';
 const contextcommands = new Collection<string, ContextMenuCommand>();
 
 // Register all context menu commands
-const commandFiles = readdirSync('./src/context');
-for (const file of commandFiles) {
-	const command = require(`../context/${file}`);
-	contextcommands.set(command.name, command);
-}
-logger.info(`${contextcommands.size} context commands loaded`);
+const contextFiles = readdirSync('./src/context');
+contextFiles.forEach(async file => {
+	let context = require(`../context/${file}`);
+	const name = Object.keys(context)[0] as keyof typeof context;
+	context = { name, ...context[name] };
+
+	contextcommands.set(context.name, context);
+});
+logger.info(`${contextFiles.length} context menu commands loaded`);
 
 export default contextcommands;

@@ -1,14 +1,16 @@
-const { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const action = require('../functions/action').default;
-const { x } = require('../misc/emoji.json');
+import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, ContextMenuCommandInteraction, Client, GuildMember, ComponentType, ButtonInteraction, SelectMenuInteraction } from 'discord.js';
+import action from '../functions/action';
+import actions from '../misc/actions.json';
+import { x } from '../misc/emoji.json';
+import { ContextMenuCommand } from "types/Objects";
 
-module.exports = {
+export const context: ContextMenuCommand = {
 	name: 'Do action on user',
 	noDefer: true,
 	type: 'User',
-	async execute(interaction, client, member) {
+	async execute(interaction: ContextMenuCommandInteraction, client: Client, member: GuildMember) {
 		try {
-			const row = new ActionRowBuilder()
+			const row = new ActionRowBuilder<StringSelectMenuBuilder>()
 				.addComponents([
 					new StringSelectMenuBuilder()
 						.setCustomId('action')
@@ -60,7 +62,7 @@ module.exports = {
 								.setValue('action_stare'),
 						]),
 				]);
-			const nvm = new ActionRowBuilder()
+			const nvm = new ActionRowBuilder<ButtonBuilder>()
 				.addComponents([
 					new ButtonBuilder()
 						.setCustomId('cancel')
@@ -71,13 +73,22 @@ module.exports = {
 
 			const selectmsg = await interaction.reply({ content: `**Please select an action to do on ${member.displayName}**`, components: [row, nvm] });
 
-			const filter = i => i.customId == 'action' || i.customId == 'cancel';
-			const collector = selectmsg.createMessageComponentCollector({ filter, time: 120000 });
-			collector.on('collect', async btnint => {
-				if (btnint.customId == 'cancel') return btnint.message.delete();
-				const actionName = btnint.values[0].split('_')[1];
-				action(btnint.message, btnint.member, [member.id], actionName);
-				collector.stop();
+			const filter = (i: ButtonInteraction | SelectMenuInteraction) => i.customId == 'action' || i.customId == 'cancel';
+			const collectorButton = selectmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 120000 });
+			const collectorSelect = selectmsg.createMessageComponentCollector<ComponentType.StringSelect>({ filter, time: 120000 });
+			collectorButton.on('collect', async btnint => {
+				if (btnint.customId == 'cancel') {
+					btnint.message.delete();
+					collectorSelect.stop();
+					collectorButton.stop();
+					return;
+				}
+			});
+			collectorSelect.on('collect', async selint => {
+				const actionName = selint.values[0].split('_')[1];
+				action(selint.message, selint.member as GuildMember, [member.id], actionName as keyof typeof actions);
+				collectorSelect.stop();
+				collectorButton.stop();
 			});
 		}
 		catch (err) { error(err, interaction); }

@@ -1,10 +1,12 @@
-const { createPaste } = require('hastebin');
+import { Client, ContextMenuCommandInteraction, Message } from 'discord.js';
+import { createPaste } from 'hastebin';
+import { ContextMenuCommand } from "types/Objects";
 
-module.exports = {
+export const context: ContextMenuCommand = {
 	name: 'Get Raw Embed JSON',
 	ephemeral: true,
 	type: 'Message',
-	async execute(interaction, client, message) {
+	async execute(interaction: ContextMenuCommandInteraction, client: Client, message: Message) {
 		try {
 			// Check if message has embeds
 			if (!message.embeds.length) return interaction.reply({ content: 'There is no embed in this message!', ephemeral: true });
