@@ -1,6 +1,6 @@
-import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInteraction, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember } from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInteraction, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction } from "discord.js";
 
-export declare interface Command {
+export class Command {
 	name?: string;
     description: string;
     category?: string;
@@ -16,14 +16,14 @@ export declare interface Command {
 	execute: (message: Message, args: string[], client: Client) => void;
 }
 
-export declare interface SlashCommand extends Command {
+export class SlashCommand extends Command {
     ephemeral?: boolean;
     noDefer?: boolean;
     options?: (cmd: SlashCommandBuilder) => void;
 	execute: (message: CommandInteraction | Message, args: string[], client: Client) => void;
 }
 
-export declare interface ContextMenuCommand<T extends 'User' | 'Message'> {
+export class ContextMenuCommand<T extends 'User' | 'Message'> {
     name: string;
     permissions?: (keyof typeof PermissionsBitField.Flags)[];
     botPerms?: (keyof typeof PermissionsBitField.Flags)[];
@@ -33,25 +33,25 @@ export declare interface ContextMenuCommand<T extends 'User' | 'Message'> {
     execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message) => void
 }
   
-export declare interface Reaction {
+export class Reaction {
     name?: string;
     triggers: string[];
     additionaltriggers?: string[];
 	execute: (message: Message) => void;
 }
 
-export declare interface Modal {
+export class Modal {
 	name?: string;
     deferReply?: boolean;
     ephemeral?: boolean;
     execute: (interaction: ModalSubmitInteraction, client: Client, modalInfo: string) => void
 }
 
-export declare interface Button {
+export class Button {
 	name?: string;
     botPerms?: (keyof typeof PermissionsBitField.Flags)[];
     deferReply?: boolean;
     noDefer?: boolean;
     ephemeral?: boolean;
-    execute: (interaction: ButtonInteraction, client: Client) => void
+    execute: (interaction: ButtonInteraction | StringSelectMenuInteraction, client: Client) => void
 }

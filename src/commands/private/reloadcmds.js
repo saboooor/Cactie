@@ -27,7 +27,6 @@ module.exports = {
 				console.log(command);
 				command = command[1];
 				await msg.edit({ content: `Overwriting ${command.name}` });
-				if (command.type) continue;
 
 				const cmd = new SlashCommandBuilder()
 					.setName(command.name)

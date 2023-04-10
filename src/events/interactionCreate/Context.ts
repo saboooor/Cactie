@@ -1,4 +1,4 @@
-import { Client, ContextMenuCommandInteraction, EmbedBuilder, GuildMember, TextChannel } from 'discord.js';
+import { Client, ContextMenuCommandInteraction, EmbedBuilder, GuildMember, Message, TextChannel } from 'discord.js';
 import checkPerms from '../../functions/checkPerms';
 import contextcommands from '../../lists/context';
 
@@ -24,9 +24,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
 	}
 
 	// Set item to the command type
-	let item;
-	if (command.type == 'Message') item = await interaction.channel!.messages.fetch(interaction.targetId);
-	if (command.type == 'User') item = await interaction.guild.members.fetch(interaction.targetId);
+	const item = command.type == 'User' ? await interaction.guild.members.fetch(interaction.targetId) : await interaction.channel!.messages.fetch(interaction.targetId);
 
 	// Defer and execute the command
 	try {
@@ -35,7 +33,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
 			interaction.reply = interaction.editReply as typeof interaction.reply;
 		}
 		logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item?.id}, in ${interaction.guild.name}`.replace(' ,', ','));
-		command.execute(interaction, client, item);
+		command.execute(interaction, client, item as Message & GuildMember);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()
