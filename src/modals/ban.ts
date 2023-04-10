@@ -2,7 +2,7 @@ import { Client, EmbedBuilder, Snowflake, GuildMemberRoleManager, ModalSubmitInt
 import ms from 'ms';
 import { Modal } from 'types/Objects';
 
-const ban: Modal = {
+export const ban: Modal = {
 	deferReply: true,
 	ephemeral: true,
 	execute: async (interaction: ModalSubmitInteraction, client: Client, memberId: Snowflake) => {
