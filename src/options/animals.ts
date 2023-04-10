@@ -1,13 +1,14 @@
 import { SlashCommandSubcommandBuilder, SlashCommandBuilder } from 'discord.js';
-import { readdirSync } from 'fs';
+import commands from '../lists/commands';
 
 export default async function options(cmd: SlashCommandBuilder) {
-	const commands = readdirSync('./src/commands/animals');
-	commands.forEach(commandName => {
+	const animalcommands = commands.filter(command => command.category == 'animal');
+	animalcommands.forEach(command => {
+		console.log(command);
 		cmd.addSubcommand(
 			new SlashCommandSubcommandBuilder()
-				.setName(commandName.replace('.js', ''))
-				.setDescription(require(`../commands/animals/${commandName}`).description),
+				.setName(command.name!)
+				.setDescription(command.description),
 		);
 	});
-};
+}; 

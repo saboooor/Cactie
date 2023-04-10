@@ -24,6 +24,7 @@ module.exports = {
 				await sleep(4000);
 			}
 			for (let command of slashcommands) {
+				console.log(command);
 				command = command[1];
 				await msg.edit({ content: `Overwriting ${command.name}` });
 				if (command.type) continue;

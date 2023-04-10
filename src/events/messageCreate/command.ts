@@ -12,10 +12,10 @@ export default async (client: Client, message: Message) => {
 
 	// make a custom function to replace message.reply
 	// this is to send the message to the channel without a reply if reply fails
-	const msgreply = message.reply;
+	(message as any).msgreply = message.reply;
 	message.reply = async function reply(object) {
 		try {
-			return await msgreply(object);
+			return await (message as any).msgreply(object);
 		} catch (err) {
 			logger.warn(err);
 			try {

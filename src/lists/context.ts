@@ -8,7 +8,7 @@ const contextcommands = new Collection<string, ContextMenuCommand>();
 // Register all context menu commands
 const contextFiles = readdirSync('./src/context');
 contextFiles.forEach(async file => {
-	let context = require(`../context/${file}`);
+	const context = require(`../context/${file}`);
 	contextcommands.set(context.name, context);
 });
 logger.info(`${contextFiles.length} context menu commands loaded`);

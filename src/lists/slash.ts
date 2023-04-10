@@ -8,9 +8,12 @@ const slashcommands = new Collection<string, SlashCommand>();
 // Register all slash commands
 const slashcommandFolders = readdirSync('./src/commands');
 for (const folder of slashcommandFolders) {
-	const slashcommandFiles = readdirSync(`./src/commands/${folder}`).filter(file => file.endsWith('.js') && folder != 'animals' && folder != 'private');
+	const slashcommandFiles = readdirSync(`./src/commands/${folder}`).filter(file => (file.endsWith('.js') || file.endsWith('ts')) && folder != 'animals' && folder != 'private');
 	for (const file of slashcommandFiles) {
-		const slashcommand = require(`../commands/${folder}/${file}`);
+		let slashcommand = require(`../commands/${folder}/${file}`);
+		const name = Object.keys(slashcommand)[0] as keyof typeof slashcommand;
+
+		if (!slashcommand.name) slashcommand = { name, category: folder, ...slashcommand[name] };
 		slashcommands.set(slashcommand.name, slashcommand);
 	}
 }

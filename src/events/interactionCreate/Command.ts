@@ -14,7 +14,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
 	// Get current settings for the guild
 	const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
-	if (srvconfig.disabledcmds.includes(command.name)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
+	if (srvconfig.disabledcmds.includes(command.name!)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
 	// Make args variable from interaction options for compatibility with dash command code
 	const args: string[] = [];
@@ -30,11 +30,11 @@ export default async (client: Client, interaction: CommandInteraction) => {
 	});
 
 	// Get cooldowns and check if cooldown exists, if not, create it
-	if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
+	if (!cooldowns.has(command.name!)) cooldowns.set(command.name!, new Collection());
 
 	// Get current timestamp and the command's last used timestamps
 	const now = Date.now();
-	const timestamps = cooldowns.get(command.name) as Collection<string, number>;
+	const timestamps = cooldowns.get(command.name!) as Collection<string, number>;
 
 	// Calculate the cooldown in milliseconds (default is 3600 miliseconds, idk why)
 	const cooldownAmount = (command.cooldown || 3) * 1200;

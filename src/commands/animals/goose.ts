@@ -1,7 +1,7 @@
-const redditFetch = require('../../functions/redditFetch').default;
+import { Command } from 'types/Objects';
+import redditFetch from '../../functions/redditFetch';
 
-module.exports = {
-	name: 'goose',
+export const goose: Command = {
 	description: 'goos honk honk',
 	aliases: ['goos', 'geese'],
 	async execute(message, args, client) {
