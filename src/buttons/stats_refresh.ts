@@ -1,10 +1,10 @@
 import { createPaste } from 'hastebin';
-import { ButtonInteraction, EmbedBuilder } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { Button } from 'types/Objects';
 import protocols from '../misc/mcprotocol.json';
 
 export const stats_refresh: Button = {
-	execute: async (interaction: ButtonInteraction) => {
+	execute: async (interaction) => {
 		try {
 			const StatsEmbed = new EmbedBuilder(interaction.message.embeds[0].toJSON());
 			StatsEmbed.setFields([]);

@@ -18,7 +18,7 @@ export default async (client: Client, interaction: ModalSubmitInteraction) => {
 		logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild!.name}`);
 		await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
 		interaction.reply = interaction.editReply as typeof interaction.reply;
-		modal.execute(interaction, client, modalInfo);
+		modal.execute(interaction, client, modalInfo!);
 	}
 	catch (err) {
 		const interactionFailed = new EmbedBuilder()

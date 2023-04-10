@@ -1,11 +1,11 @@
-import { Client, GuildMember, ModalSubmitInteraction } from 'discord.js';
+import { GuildMember } from 'discord.js';
 import createTicket from '../functions/tickets/createTicket';
 import { Modal } from 'types/Objects';
 
 export const ticket_create: Modal = {
 	deferReply: true,
 	ephemeral: true,
-	execute: async (interaction: ModalSubmitInteraction, client: Client) => {
+	execute: async (interaction, client) => {
 		try {
 			// Check if tickets are disabled
 			const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });

@@ -1,9 +1,9 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ModalSubmitInteraction, ButtonInteraction, ComponentType } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
 import { srch } from '../misc/emoji.json';
 import { Modal } from 'types/Objects';
 
 export const choose_answer: Modal = {
-	execute: async (interaction: ModalSubmitInteraction) => {
+	execute: async (interaction) => {
 		try {
 			// Get the answer from the field and send it back to the user ephemerally
 			const answer = interaction.fields.getTextInputValue('answer');

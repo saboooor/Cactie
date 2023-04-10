@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInteraction } from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInteraction, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember } from "discord.js";
 
 export declare interface Command {
 	name?: string;
@@ -23,16 +23,16 @@ export declare interface SlashCommand extends Command {
 	execute: (message: CommandInteraction | Message, args: string[], client: Client) => void;
 }
 
-export declare interface ContextMenuCommand {
+export declare interface ContextMenuCommand<T extends 'User' | 'Message'> {
     name: string;
     permissions?: (keyof typeof PermissionsBitField.Flags)[];
     botPerms?: (keyof typeof PermissionsBitField.Flags)[];
     ephemeral?: boolean;
     noDefer?: boolean;
-    type: 'User' | 'Message';
-    execute: any;
+    type: T;
+    execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message) => void
 }
-
+  
 export declare interface Reaction {
     name?: string;
     triggers: string[];
@@ -44,7 +44,7 @@ export declare interface Modal {
 	name?: string;
     deferReply?: boolean;
     ephemeral?: boolean;
-    execute: any;
+    execute: (interaction: ModalSubmitInteraction, client: Client, modalInfo: string) => void
 }
 
 export declare interface Button {
@@ -53,5 +53,5 @@ export declare interface Button {
     deferReply?: boolean;
     noDefer?: boolean;
     ephemeral?: boolean;
-    execute: any;
+    execute: (interaction: ButtonInteraction, client: Client) => void
 }

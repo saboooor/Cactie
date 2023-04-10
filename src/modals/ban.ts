@@ -1,11 +1,11 @@
-import { Client, EmbedBuilder, Snowflake, GuildMemberRoleManager, ModalSubmitInteraction, User, TextChannel } from 'discord.js';
+import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { Modal } from 'types/Objects';
 
 export const ban: Modal = {
 	deferReply: true,
 	ephemeral: true,
-	execute: async (interaction: ModalSubmitInteraction, client: Client, memberId: Snowflake) => {
+	execute: async (interaction, client, memberId) => {
 		try {
 			// Check if guild
 			if (!interaction.guild) return;

@@ -1,10 +1,10 @@
-import { Client, EmbedBuilder, ModalSubmitInteraction, Snowflake, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
+import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import { Modal } from 'types/Objects';
 
 export const kick: Modal = {
 	deferReply: true,
 	ephemeral: true,
-	execute: async (interaction: ModalSubmitInteraction, client: Client, memberId: Snowflake) => {
+	execute: async (interaction, client, memberId) => {
 		try {
 			// Get user and check if user is valid
 			let member = interaction.guild!.members.cache.get(memberId);

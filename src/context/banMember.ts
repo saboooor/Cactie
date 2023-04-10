@@ -1,13 +1,13 @@
-import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Client, ContextMenuCommandInteraction, GuildMember } from 'discord.js';
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { ContextMenuCommand } from "types/Objects";
 
-export const context: ContextMenuCommand = {
+export const context: ContextMenuCommand<'User'> = {
 	name: 'Ban Member',
 	noDefer: true,
 	permissions: ['BanMembers'],
 	botPerms: ['BanMembers'],
 	type: 'User',
-	async execute(interaction: ContextMenuCommandInteraction, client: Client, member: GuildMember) {
+	async execute(interaction, client, member) {
 		try {
 			// Create and show a modal for the user to fill out the ticket's description
 			const modal = new ModalBuilder()

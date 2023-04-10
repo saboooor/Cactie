@@ -1,14 +1,14 @@
-import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, ContextMenuCommandInteraction, Client, GuildMember, ComponentType, ButtonInteraction, SelectMenuInteraction } from 'discord.js';
+import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, GuildMember, ComponentType, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
 import action from '../functions/action';
 import actions from '../misc/actions.json';
 import { x } from '../misc/emoji.json';
 import { ContextMenuCommand } from "types/Objects";
 
-export const context: ContextMenuCommand = {
+export const context: ContextMenuCommand<'User'> = {
 	name: 'Do action on user',
 	noDefer: true,
 	type: 'User',
-	async execute(interaction: ContextMenuCommandInteraction, client: Client, member: GuildMember) {
+	async execute(interaction, client, member) {
 		try {
 			const row = new ActionRowBuilder<StringSelectMenuBuilder>()
 				.addComponents([
@@ -73,7 +73,7 @@ export const context: ContextMenuCommand = {
 
 			const selectmsg = await interaction.reply({ content: `**Please select an action to do on ${member.displayName}**`, components: [row, nvm] });
 
-			const filter = (i: ButtonInteraction | SelectMenuInteraction) => i.customId == 'action' || i.customId == 'cancel';
+			const filter = (i: ButtonInteraction | StringSelectMenuInteraction) => i.customId == 'action' || i.customId == 'cancel';
 			const collectorButton = selectmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 120000 });
 			const collectorSelect = selectmsg.createMessageComponentCollector<ComponentType.StringSelect>({ filter, time: 120000 });
 			collectorButton.on('collect', async btnint => {

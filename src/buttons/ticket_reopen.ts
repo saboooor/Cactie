@@ -1,11 +1,11 @@
-import { ButtonInteraction, GuildMember, TextChannel } from 'discord.js';
+import { GuildMember, TextChannel } from 'discord.js';
 import reopenTicket from '../functions/tickets/reopenTicket';
 import { Button } from 'types/Objects';
 
 export const reopen_ticket: Button = {
 	botPerms: ['ManageChannels'],
 	deferReply: true,
-	execute: async (interaction: ButtonInteraction) => {
+	execute: async (interaction) => {
 		try {
 			// Get the server config
 			const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });

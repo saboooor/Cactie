@@ -1,11 +1,11 @@
-import { ButtonInteraction, Client, GuildMember, TextChannel } from 'discord.js';
+import { GuildMember, TextChannel } from 'discord.js';
 import createVoice from '../functions/tickets/createVoice';
 import { Button } from 'types/Objects';
 
 export const voiceticket_create: Button = {
 	botPerms: ['ManageChannels'],
 	deferReply: true,
-	execute: async (interaction: ButtonInteraction, client: Client) => {
+	execute: async (interaction, client) => {
 		try {
 			// Check if tickets are disabled
 			const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });

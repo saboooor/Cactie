@@ -12,7 +12,7 @@ const again = new ActionRowBuilder<ButtonBuilder>()
 
 export const xo_again: Button = {
 	ephemeral: true,
-	execute: async (interaction: ButtonInteraction) => {
+	execute: async (interaction) => {
 		const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON())!;
 		const lines = TicTacToe.toJSON().description!.split('\n');
 		const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');

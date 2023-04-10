@@ -3,7 +3,7 @@ import { Collection } from 'discord.js';
 import { ContextMenuCommand } from 'types/Objects';
 
 // Set the contextcommands collection
-const contextcommands = new Collection<string, ContextMenuCommand>();
+const contextcommands = new Collection<string, ContextMenuCommand<'Message'> | ContextMenuCommand<'User'>>();
 
 // Register all context menu commands
 const contextFiles = readdirSync('./src/context');
