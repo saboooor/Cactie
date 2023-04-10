@@ -9,14 +9,14 @@ const cooldowns = new Collection<string, Collection<string, number>>();
 // Register all commands
 const commandFolders = readdirSync('./src/commands');
 for (const folder of commandFolders) {
-	const commandFiles = readdirSync(`./src/commands/${folder}`).filter(file => (file.endsWith('.js') || file.endsWith('ts')) && folder != 'options' && folder != 'message');
-	for (const file of commandFiles) {
-		let command = require(`../commands/${folder}/${file}`);
-		const name = Object.keys(command)[0] as keyof typeof command;
+  const commandFiles = readdirSync(`./src/commands/${folder}`).filter(file => (file.endsWith('.js') || file.endsWith('ts')) && folder != 'options' && folder != 'message');
+  for (const file of commandFiles) {
+    let command = require(`../commands/${folder}/${file}`);
+    const name = Object.keys(command)[0] as keyof typeof command;
 
-		if (!command.name) command = { name, category: folder, ...command[name] };
-		commands.set(command.name, command);
-	}
+    if (!command.name) command = { name, category: folder, ...command[name] };
+    commands.set(command.name, command);
+  }
 }
 logger.info(`${commands.size} text commands loaded`);
 

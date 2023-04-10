@@ -3,23 +3,23 @@ import reopenTicket from '../functions/tickets/reopenTicket';
 import { Button } from 'types/Objects';
 
 export const reopen_ticket: Button = {
-	botPerms: ['ManageChannels'],
-	deferReply: true,
-	execute: async (interaction) => {
-		try {
-			// Get the server config
-			const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
+  botPerms: ['ManageChannels'],
+  deferReply: true,
+  execute: async (interaction) => {
+    try {
+      // Get the server config
+      const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
 
-			if (!(interaction.member instanceof GuildMember)) {
-				interaction.member = await interaction.guild!.members.fetch(interaction.member!.user.id);
-			}
+      if (!(interaction.member instanceof GuildMember)) {
+        interaction.member = await interaction.guild!.members.fetch(interaction.member!.user.id);
+      }
 
-			// Create a ticket
-			const msg = await reopenTicket(srvconfig, interaction.member, interaction.channel as TextChannel);
+      // Create a ticket
+      const msg = await reopenTicket(srvconfig, interaction.member, interaction.channel as TextChannel);
 
-			// Send the message
-			interaction.reply(msg);
-		}
-		catch (err) { error(err, interaction, true); }
-	}
+      // Send the message
+      interaction.reply(msg);
+    }
+    catch (err) { error(err, interaction, true); }
+  },
 };

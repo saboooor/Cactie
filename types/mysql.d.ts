@@ -1,4 +1,4 @@
-import { Snowflake } from "discord.js";
+import { Snowflake } from 'discord.js';
 
 export type Table = 'ticketdata' | 'settings' | 'reactionroles' | 'memberdata' | 'lastvoted';
 

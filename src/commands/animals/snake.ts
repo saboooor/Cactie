@@ -2,10 +2,10 @@ import { Command } from 'types/Objects';
 import redditFetch from '../../functions/redditFetch';
 
 export const snake: Command = {
-	description: 'sssnake',
-	aliases: ['snakes'],
-	async execute(message, args, client) {
-		try { redditFetch(['snake', 'Sneks'], message, client); }
-		catch (err) { error(err, message); }
-	},
+  description: 'sssnake',
+  aliases: ['snakes'],
+  async execute(message, args, client) {
+    try { redditFetch(['snake', 'Sneks'], message, client); }
+    catch (err) { error(err, message); }
+  },
 };
