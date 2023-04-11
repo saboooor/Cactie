@@ -1,6 +1,8 @@
-import { PermissionsBitField, GuildMember, TextChannel, GuildChannelResolvable, GuildChannel } from 'discord.js';
+import { PermissionsBitField, GuildMember, TextChannel, GuildChannel, Channel, DMChannel, ThreadChannel, ForumChannel, PartialDMChannel, PartialGroupDMChannel, GuildChannelResolvable } from 'discord.js';
 
-export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.Flags)[], member: GuildMember, channel?: GuildChannelResolvable) {
+export type PermissionChannel = Exclude<Channel, DMChannel | PartialDMChannel | PartialGroupDMChannel | ThreadChannel | ForumChannel>;
+
+export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.Flags)[], member: GuildMember, channel?: PermissionChannel | GuildChannelResolvable) {
   // If member is owner, override
   if (member.id == '249638347306303499') return;
 
@@ -8,7 +10,7 @@ export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.F
   const rejectedPerms: typeof reqPerms = [];
 
   // Get the channel from the snowflake if a full channel isn't given
-  if (channel && typeof channel == 'string') channel = member.guild.channels.cache.get(channel) as TextChannel;
+  if (channel && typeof channel == 'string') channel = member.guild.channels.cache.get(channel) as PermissionChannel;
 
   // Attempt to get perms
   let perms: null | PermissionsBitField = member.permissions;

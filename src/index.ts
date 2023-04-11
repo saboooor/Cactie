@@ -1,3 +1,5 @@
+/* eslint-disable no-var */
+
 import { readdirSync } from 'fs';
 import { Client, Partials, GatewayIntentBits, Message, CommandInteraction, ModalSubmitInteraction, InteractionResponse, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
 import { Logger } from 'winston';
@@ -42,7 +44,11 @@ declare global {
 	};
 	var error: { (err: any, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean): Promise<Message | InteractionResponse | undefined> };
 }
-function sleepfunc(ms: number) { return new Promise(resolve => { return setTimeout(resolve, ms); }); }
+function sleepfunc(ms: number) {
+  return new Promise(resolve => {
+    return setTimeout(resolve, ms);
+  });
+}
 global.sleep = sleepfunc;
 
 // Load the universal and discord-specific handlers

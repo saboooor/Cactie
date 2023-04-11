@@ -13,7 +13,10 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   if (permCheck) return;
 
   // Fetch the reaction's message
-  const message = await reaction.message.fetch().catch(err => { logger.error(err); return null; });
+  const message = await reaction.message.fetch().catch(err => {
+    logger.error(err);
+    return null;
+  });
   if (!message) return;
 
   // Get the reaction's emoji

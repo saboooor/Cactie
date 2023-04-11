@@ -9,17 +9,17 @@ export default (client: Client) => schedule('0 0 * * *', async () => {
   const allTicketData = await sql.getData('ticketdata', null, { all: true });
 
   // Loop through all tickets
-  allTicketData.forEach(async (ticketData: ticketData) => {
+  allTicketData.forEach(async (ticketdata: ticketData) => {
     // Check if the ticket is resolved
-    if (ticketData.resolved == 'false') return;
+    if (ticketdata.resolved == 'false') return;
 
     // Fetch the guild
-    const guild = client.guilds.cache.get(ticketData.guildId);
-    if (!guild) return sql.delData('ticketdata', { guildId: ticketData.guildId });
+    const guild = client.guilds.cache.get(ticketdata.guildId);
+    if (!guild) return sql.delData('ticketdata', { guildId: ticketdata.guildId });
 
     // Fetch the channel
-    const channel = guild.channels.cache.get(ticketData.channelId) as TextChannel;
-    if (!channel) return sql.delData('ticketdata', { channelId: ticketData.channelId });
+    const channel = guild.channels.cache.get(ticketdata.channelId) as TextChannel;
+    if (!channel) return sql.delData('ticketdata', { channelId: ticketdata.channelId });
 
     // Get the server config
     const srvconfig = await sql.getData('settings', { guildId: guild.id });

@@ -1,4 +1,4 @@
-import { ButtonInteraction, GuildMember, TextChannel } from 'discord.js';
+import { GuildMember, TextChannel } from 'discord.js';
 import closeTicket from '../functions/tickets/closeTicket';
 import { Button } from 'types/Objects';
 

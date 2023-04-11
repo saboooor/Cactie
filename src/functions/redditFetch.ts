@@ -1,6 +1,6 @@
-import { Client, EmbedBuilder, Message } from 'discord.js';
+import { Client, CommandInteraction, EmbedBuilder, Message } from 'discord.js';
 
-export default async function redditFetch(subreddits: string[], message: Message, client: Client, attempts: number = 1): Promise<any> {
+export default async function redditFetch(subreddits: string[], message: CommandInteraction | Message, client: Client, attempts: number = 1): Promise<any> {
   // Get a random subreddit from the array of subreddits
   const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 

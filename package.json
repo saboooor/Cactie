@@ -1,6 +1,6 @@
 {
   "name": "cactie",
-  "version": "5.4.0",
+  "version": "6.0.0",
   "description": "A bot that does stuff ig",
   "repository": {
     "type": "git",
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "ts-node src/index.ts",
+    "test": "nodemon src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -57,9 +58,10 @@
     "@types/node": "^18.15.11",
     "@types/node-cron": "^3.0.7",
     "@types/passport-discord": "^0.1.6",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
     "eslint": "^8.38.0",
+    "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
