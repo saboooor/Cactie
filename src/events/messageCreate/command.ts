@@ -19,12 +19,7 @@ export default async (client: Client, message: Message) => {
     }
     catch (err) {
       logger.warn(err);
-      try {
-        return await message.channel.send(object);
-      }
-      catch (err_1) {
-        throw err_1;
-      }
+      return await message.channel.send(object);
     }
   };
 

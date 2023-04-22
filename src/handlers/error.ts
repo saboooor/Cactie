@@ -1,4 +1,5 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteraction, TextChannel, Client, Message, StringSelectMenuInteraction } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteraction, TextChannel, Client, Message, StringSelectMenuInteraction, AttachmentBuilder } from 'discord.js';
+import { readFileSync } from 'fs';
 function minTwoDigits(n: number) { return (n < 10 ? '0' : '') + n; }
 const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
 
@@ -10,7 +11,6 @@ export default (client: Client) => {
     const errEmbed = new EmbedBuilder()
       .setColor(0xE74C3C)
       .setTitle('An error has occured!')
-      .setURL(`https://panel.netherdepths.com/server/${message.client.user.username == 'Cactie' ? '41769d86' : '3f2661e1'}/files/edit#/logs/${logDate}.log`)
       .setDescription(`\`\`\`\n${err}\n\`\`\``);
     const components: ActionRowBuilder<ButtonBuilder>[] = [];
     if (!userError) {
@@ -25,7 +25,8 @@ export default (client: Client) => {
           ]),
       );
       const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
-      channel.send({ embeds: [errEmbed] });
+      const logFile = new AttachmentBuilder(readFileSync(`./logs/${logDate}.log`), { name: `${logDate}.log` });
+      channel.send({ embeds: [errEmbed], files: [logFile] });
     }
     try {
       if (message instanceof Message) return await message.reply({ embeds: [errEmbed], components });

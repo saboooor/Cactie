@@ -25,7 +25,7 @@ export const dm: Command = {
       }
 
       // Send DM to user
-      user.send({ content: args.slice(1).join(' '), files: files })
+      user.send({ content: args.slice(1).join(' '), files })
         .catch(err => logger.warn(err));
 
       // Create response embed and respond
