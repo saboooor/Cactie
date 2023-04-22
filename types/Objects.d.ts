@@ -13,14 +13,14 @@ export class Command {
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
   cooldown?: number;
-  execute: (message: Message, args: string[], client: Client) => void;
+  execute: (message: Message<true>, args: string[], client: Client) => void;
 }
 
 export class SlashCommand extends Command {
   ephemeral?: boolean;
   noDefer?: boolean;
   options?: (cmd: SlashCommandBuilder) => void;
-  execute: (message: CommandInteraction | Message, args: string[], client: Client) => void;
+  execute: (message: CommandInteraction | Message<true>, args: string[], client: Client) => void;
 }
 
 export class ContextMenuCommand<T extends 'User' | 'Message'> {
@@ -30,14 +30,14 @@ export class ContextMenuCommand<T extends 'User' | 'Message'> {
   ephemeral?: boolean;
   noDefer?: boolean;
   type: T;
-  execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message) => void;
+  execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message<true>) => void;
 }
 
 export class Reaction {
   name?: string;
   triggers: string[];
   additionaltriggers?: string[];
-  execute: (message: Message) => void;
+  execute: (message: Message<true>) => void;
 }
 
 export class Modal {

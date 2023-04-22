@@ -1,6 +1,6 @@
 import { EmbedBuilder, Client, Message } from 'discord.js';
 import { createPaste } from 'hastebin';
-const checkPerms = require('../../functions/checkPerms').default;
+import checkPerms from '../../functions/checkPerms';
 
 export default async (client: Client, message: Message) => {
   // Check if author is a bot or message is in dm
@@ -10,10 +10,10 @@ export default async (client: Client, message: Message) => {
   const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
 
   // Check if message shortener is set and is smaller than the amount of lines in the message
-  if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < parseInt(srvconfig.msgshortener) || !checkPerms(['Administrator'], message.member)) return;
+  if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < parseInt(srvconfig.msgshortener) || !checkPerms(['Administrator'], message.member!)) return;
 
   // Check if the bot has permission to manage messages
-  const permCheck = checkPerms(['ManageMessages'], message.guild!.members.me, message.channel);
+  const permCheck = checkPerms(['ManageMessages'], message.guild!.members.me!, message.channel);
   if (permCheck) return logger.warn(permCheck);
 
   // Delete the message and move the message into bin.birdflop.com

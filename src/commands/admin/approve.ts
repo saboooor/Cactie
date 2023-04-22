@@ -86,9 +86,9 @@ export const approve: SlashCommand = {
         if (permCheck3) return error(permCheck3, message, true);
         const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
         if (messagechunks) {
-          const messageChunk = new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg);
+          const messageChunk = new Collection<string, Message>().set(`${suggestMsg.id}`, suggestMsg);
           messagechunks.unshift(messageChunk);
-          const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
+          const allmessages = new Collection<string, Message>().concat(...messagechunks);
           if (allmessages.size > 2) {
             const link = await getTranscript(allmessages);
             ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
