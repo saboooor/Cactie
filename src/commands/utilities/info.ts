@@ -9,6 +9,10 @@ export const info: SlashCommand = {
   async execute(message, args, client) {
     try {
       const packageJSON = require('../../../package.json');
+	  const dependencies = {
+		...packageJSON.dependencies,
+		...packageJSON.devDependencies,
+	  }
       const InfEmbed = new EmbedBuilder()
         .setColor('Random')
         .setTitle(client.user!.username)
@@ -18,6 +22,7 @@ export const info: SlashCommand = {
           { name: 'NodeJS Version', value: `\`\`\`${process.version}\`\`\``, inline: true },
           { name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499')!.tag}\`\`\`` },
           { name: 'Last restart', value: `<t:${Math.ceil(Number(rn) / 1000)}:R>` },
+		  { name: 'Dependencies', value: `\`\`\`${Object.keys(dependencies).map(depName => `${depName}: ${dependencies[depName]}`).join('\n')}\`\`\`` },
         ]);
       const row1 = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
