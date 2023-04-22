@@ -2,6 +2,7 @@ import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder,
 import checkPerms from '../../functions/checkPerms';
 import commands from '../../lists/commands';
 import { cooldowns } from '../../lists/commands';
+import cooldownMessages from '../../misc/cooldown.json';
 
 export default async (client: Client, message: Message) => {
   // If the bot can't read message history or send messages, don't execute a command
@@ -88,8 +89,7 @@ export default async (client: Client, message: Message) => {
   // Check if user is in the last used timestamp
   if (timestamps.has(message.author.id)) {
     // Get a random cooldown message
-    const messages = require('../../misc/cooldown.json');
-    const random = Math.floor(Math.random() * messages.length);
+    const random = Math.floor(Math.random() * cooldownMessages.length);
 
     // Get cooldown expiration timestamp
     const expirationTime = timestamps.get(message.author.id)! + cooldownAmount;
@@ -100,7 +100,7 @@ export default async (client: Client, message: Message) => {
       if ((expirationTime - now) < 1200) return message.react('⏱️').catch(err => logger.error(err));
       const cooldownEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(messages[random])
+        .setTitle(cooldownMessages[random])
         .setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
       return message.reply({ embeds: [cooldownEmbed] });
     }

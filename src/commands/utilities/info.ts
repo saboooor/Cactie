@@ -4,7 +4,6 @@ import { SlashCommand } from 'types/Objects';
 import packageJSON from '../../../package.json';
 
 export const info: SlashCommand = {
-  name: 'info',
   description: 'Get various information about Cactie',
   aliases: ['information'],
   cooldown: 10,

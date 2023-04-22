@@ -1,6 +1,6 @@
-import { FetchMessagesOptions, TextChannel } from 'discord.js';
+import { Collection, FetchMessagesOptions, Message, TextBasedChannel } from 'discord.js';
 
-export default async function getMessages(channel: TextChannel, limit: number | 'infinite' = 100) {
+export default async function getMessages(channel: TextBasedChannel, limit: number | 'infinite' = 100) {
   const messagechunks = [];
   let remaining = limit;
   let last_id;
@@ -27,5 +27,5 @@ export default async function getMessages(channel: TextChannel, limit: number | 
     }
   }
 
-  return messagechunks;
+  return messagechunks as Collection<string, Message>[];
 }

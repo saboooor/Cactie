@@ -8,15 +8,15 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
-  const ticketData: ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
-  if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-  const ticketDataUsers = ticketData.users.split(',');
+  const ticketdata: ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+  if (!ticketdata) throw new Error('This isn\'t a ticket that I know of!');
+  const ticketDataUsers = ticketdata.users.split(',');
 
   // Check if ticket is already closed
   if (channel.name.startsWith('closed')) throw new Error('This ticket is already closed!');
 
   // Check if user is a user that has been added with -add
-  if (ticketDataUsers.includes(member.id) && member.id != ticketData.opener) throw new Error('You can\'t close this ticket!');
+  if (ticketDataUsers.includes(member.id) && member.id != ticketdata.opener) throw new Error('You can\'t close this ticket!');
 
   // Set the name to closed
   await channel.setName(channel.name.replace('ticket', 'closed'));
@@ -25,17 +25,20 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   if (channel.name.startsWith('ticket')) throw new Error('This ticket couldn\'t be closed as the bot has been rate limited.\nWait 10 minutes to try again or delete the channel.');
 
   // If voiceticket is set, delete the voiceticket
-  if (ticketData.voiceticket != 'false') {
-    const voiceticket = await member.guild.channels.fetch(ticketData.voiceticket).catch(() => { return null; });
+  if (ticketdata.voiceticket != 'false') {
+    const voiceticket = await member.guild.channels.fetch(ticketdata.voiceticket).catch(() => { return null; });
     if (voiceticket) voiceticket.delete();
     await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
   }
 
   // Unresolve ticket
-  if (ticketData.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
+  if (ticketdata.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
 
   // Create a transcript of the ticket
-  const messagechunks = await getMessages(channel, 'infinite').catch((err: Error) => { logger.error(err); return undefined; });
+  const messagechunks = await getMessages(channel, 'infinite').catch((err: Error) => {
+    logger.error(err);
+    return undefined;
+  });
   let link = 'No messages retrieved.';
   if (messagechunks) {
     const allmessages = new Collection<Snowflake, Message>().concat(...messagechunks);
