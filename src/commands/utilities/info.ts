@@ -22,7 +22,7 @@ export const info: SlashCommand = {
       const row1 = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
           new ButtonBuilder()
-            .setURL(`${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/invite`)
+            .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/invite`)
             .setLabel('Invite Cactie!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
@@ -30,7 +30,7 @@ export const info: SlashCommand = {
             .setLabel('Join the Cactie Server!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL(`${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
+            .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
             .setLabel('Open the Dashboard!')
             .setStyle(ButtonStyle.Link),
         ]);

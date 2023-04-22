@@ -39,7 +39,7 @@ module.exports = {
 						.setEmoji({ id: right })
 						.setStyle(ButtonStyle.Secondary),
 					new ButtonBuilder()
-						.setURL(`${client.user.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/dashboard/${message.guild.id}`)
+						.setURL(`https://${client.user.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/dashboard/${message.guild.id}`)
 						.setLabel('Dashboard')
 						.setStyle(ButtonStyle.Link),
 				]);
