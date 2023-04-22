@@ -33,7 +33,7 @@ const client = new Client({
 
 declare global {
 	var sleep: typeof sleepfunc;
-	var logDate: string;
+	var rn: Date;
 	var logger: Logger;
 	var sql: {
 		query: typeof query;

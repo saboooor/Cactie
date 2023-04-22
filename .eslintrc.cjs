@@ -72,7 +72,7 @@ module.exports = {
 	},
 	globals: {
 		"sleep": "readonly",
-		"logDate": "readonly",
+		"rn": "readonly",
 		"logger": "readonly",
 		"error": "readonly"
 	}

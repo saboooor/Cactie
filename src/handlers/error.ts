@@ -1,4 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteraction, TextChannel, Client, Message, StringSelectMenuInteraction } from 'discord.js';
+function minTwoDigits(n: number) { return (n < 10 ? '0' : '') + n; }
+const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
 
 export default (client: Client) => {
   // Create a function for error messaging
