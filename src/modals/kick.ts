@@ -44,7 +44,7 @@ export const kick: Modal = {
 
       // Check if log channel exists and send message
       const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
-      const logchannel = interaction.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logchannel = interaction.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         KickEmbed.setTitle(`${authorTag} ${KickEmbed.toJSON().title}`);
         logchannel.send({ embeds: [KickEmbed] });

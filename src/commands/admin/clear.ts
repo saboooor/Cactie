@@ -21,7 +21,7 @@ export const clear: SlashCommand = {
       if (Number(args[0]) > 1000) return error('You can only clear 1000 messages at once!', message, true);
 
       // Fetch the messages and bulk delete them 100 by 100
-      const messagechunks = await getMessages(message.channel!, Number(args[0])).catch(err => {
+      const messagechunks = await getMessages<true>(message.channel!, Number(args[0])).catch(err => {
         logger.error(err);
         return undefined;
       });
@@ -45,7 +45,7 @@ export const clear: SlashCommand = {
 
       // Check if log channel exists and send message
       const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
-      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (!logchannel) return;
 
       // Create log embed

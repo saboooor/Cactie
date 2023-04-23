@@ -1,18 +1,16 @@
-import { Snowflake } from 'discord.js';
-
 export type Table = 'ticketdata' | 'settings' | 'reactionroles' | 'memberdata' | 'lastvoted';
 
 export declare interface ticketData {
-    guildId: Snowflake;
-    channelId: Snowflake;
-    opener: Snowflake;
+    guildId: string;
+    channelId: string;
+    opener: string;
     resolved: 'true' | 'false';
     users: string;
-    voiceticket: Snowflake | 'false';
+    voiceticket: string | 'false';
 }
 
 export declare interface settings {
-    guildId: Snowflake;
+    guildId: string;
     prefix: string;
     reactions: 'true' | 'false';
     leavemessage: string | 'false';
@@ -21,38 +19,38 @@ export declare interface settings {
     tickets: 'buttons' | 'reactions' | 'false';
     disabledcmds: string | 'false';
     auditlogs: string | 'false';
-    suggestionchannel: Snowflake | 'false';
+    suggestionchannel: string | 'false';
     suggestthreads: 'true' | 'false';
-    pollchannel: Snowflake | 'false';
-    logchannel: Snowflake | 'false';
-    ticketlogchannel: Snowflake | 'false';
-    ticketcategory: Snowflake | 'false';
-    supportrole: Snowflake | 'false';
-    ticketmention: 'here' | 'everyone' | Snowflake | 'false';
-    mutecmd: 'timeout' | Snowflake | 'false';
+    pollchannel: string | 'false';
+    logchannel: string | 'false';
+    ticketlogchannel: string | 'false';
+    ticketcategory: string | 'false';
+    supportrole: string | 'false';
+    ticketmention: 'here' | 'everyone' | string | 'false';
+    mutecmd: 'timeout' | string | 'false';
     msgshortener: string;
-    djrole: Snowflake | 'false';
+    djrole: string | 'false';
 }
 
 export declare interface reactionRoles {
-    guildId: Snowflake;
-    channelId: Snowflake;
-    messageId: Snowflake;
-    emojiId: Snowflake;
-    roleId: Snowflake;
+    guildId: string;
+    channelId: string;
+    messageId: string;
+    emojiId: string;
+    roleId: string;
     type: 'toggle' | 'single';
     silent: 'true' | 'false';
 }
 
 export declare interface memberData {
-    memberId: Snowflake;
-    guildId: Snowflake;
+    memberId: string;
+    guildId: string;
     mutedUntil: string;
     bannedUntil: string;
     warns: string;
 }
 
 export declare interface lastVoted {
-    userId: Snowflake;
+    userId: string;
     timestamp: string;
 }

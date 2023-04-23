@@ -1,6 +1,6 @@
-import { Collection, Snowflake, Message, TextChannel } from 'discord.js';
+import { Collection, Message, TextChannel } from 'discord.js';
 
-export default async function getTranscript(messages: Collection<Snowflake, Message>) {
+export default async function getTranscript(messages: Collection<string, Message>) {
   const channel = messages.first()!.channel;
   const logs: Transcript = {
     channel: (channel as TextChannel).name ?? 'No Name',

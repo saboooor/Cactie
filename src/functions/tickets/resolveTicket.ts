@@ -1,8 +1,8 @@
-import { GuildMember, Snowflake, TextChannel, ThreadChannel } from 'discord.js';
+import { GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
 
-export default async function resolveTicket(member: GuildMember, channel: TextChannel | ThreadChannel) {
+export default async function resolveTicket(member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
+  if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if ticket is an actual ticket
   const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
@@ -19,7 +19,7 @@ export default async function resolveTicket(member: GuildMember, channel: TextCh
   await sql.setData('ticketdata', { channelId: channel.id }, { resolved: true });
 
   // Send message to ticket and log
-  await channel.send({ content: `${ticketDataUsers.map((u: Snowflake) => { return `<@${u}>`; }).join(', ')}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });
+  await channel.send({ content: `${ticketDataUsers.map((u: string) => { return `<@${u}>`; }).join(', ')}, this ticket has been resolved and will auto-close at 8PM Eastern Time if you do not respond.\nIf you still have an issue, please explain it here. Otherwise, you may close this ticket now.` });
   logger.info(`Marked ticket #${channel.name} as resolved`);
   return '**Ticket marked as resolved successfully!**';
 }

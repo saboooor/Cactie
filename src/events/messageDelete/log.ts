@@ -1,7 +1,7 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
 import { no } from '../../misc/emoji.json';
 
-export default async (client: Client, message: Message) => {
+export default async (client: Client, message: Message<true>) => {
   // Check if the message was sent by a bot
   if (message.author && message.author.bot) return;
 
@@ -10,7 +10,7 @@ export default async (client: Client, message: Message) => {
 
   // Check if log is enabled and channel is valid
   if (!['messagedelete', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

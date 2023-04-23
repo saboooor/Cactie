@@ -18,14 +18,20 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   if (permCheck) return;
 
   // Fetch the reaction's message
-  const message = await reaction.message.fetch().catch(err => { logger.error(err); return null; });
+  const message = await reaction.message.fetch().catch(err => {
+    logger.error(err);
+    return null;
+  });
   if (!message) return;
 
   // Get the reaction's emoji
   const emojiId = reaction.emoji.id ?? reaction.emoji.name;
 
   // Get the member
-  const member = await guild.members.fetch(user.id).catch(err => { logger.error(err); return null; });
+  const member = await guild.members.fetch(user.id).catch(err => {
+    logger.error(err);
+    return null;
+  });
   if (!member) return;
 
   // Get current settings for the guild and check if tickets are enabled

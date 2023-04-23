@@ -1,11 +1,11 @@
-import { Client, Snowflake } from 'discord.js';
+import { Client } from 'discord.js';
 
 export default async (client: Client) => {
   const cactieguild = client.guilds.cache.get('811354612547190794');
   if (!cactieguild) return;
   const role = cactieguild.roles.cache.find(r => r.name == `${client.user!.username} User`);
   if (!role) return;
-  const owners: Snowflake[] = [];
+  const owners: string[] = [];
   client.guilds.cache.forEach(async guild => {
     if (!owners.includes(guild.ownerId)) owners.push(guild.ownerId);
     const member = cactieguild.members.cache.get(guild.ownerId);

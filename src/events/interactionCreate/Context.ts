@@ -33,7 +33,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
       interaction.reply = interaction.editReply as typeof interaction.reply;
     }
     logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item?.id}, in ${interaction.guild.name}`.replace(' ,', ','));
-    command.execute(interaction, client, item as Message & GuildMember);
+    command.execute(interaction, client, item as Message<true> & GuildMember);
   }
   catch (err) {
     const interactionFailed = new EmbedBuilder()

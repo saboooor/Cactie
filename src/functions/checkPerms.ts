@@ -1,6 +1,6 @@
-import { PermissionsBitField, GuildMember, TextChannel, GuildChannel, Channel, DMChannel, ThreadChannel, ForumChannel, PartialDMChannel, PartialGroupDMChannel, GuildChannelResolvable } from 'discord.js';
+import { PermissionsBitField, GuildMember, TextChannel, GuildChannel, Channel, DMChannel, AnyThreadChannel, ForumChannel, PartialDMChannel, PartialGroupDMChannel, GuildChannelResolvable } from 'discord.js';
 
-export type PermissionChannel = Exclude<Channel, DMChannel | PartialDMChannel | PartialGroupDMChannel | ThreadChannel | ForumChannel>;
+export type PermissionChannel = Exclude<Channel, DMChannel | PartialDMChannel | PartialGroupDMChannel | AnyThreadChannel | ForumChannel>;
 
 export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.Flags)[], member: GuildMember, channel?: PermissionChannel | GuildChannelResolvable) {
   // If member is owner, override

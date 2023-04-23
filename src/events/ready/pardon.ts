@@ -34,7 +34,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       await sql.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { mutedUntil: null });
 
       // Check if log channel exists and send message
-      const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         const UnmuteEmbed = new EmbedBuilder().setTitle(`${user ? user.tag : data.memberId} has been unmuted`);
         logchannel.send({ embeds: [UnmuteEmbed] });
@@ -52,7 +52,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       await sql.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { bannedUntil: null });
 
       // Check if log channel exists and send message
-      const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         const UnbanEmbed = new EmbedBuilder().setTitle(`${user ? user.tag : data.memberId} has been unbanned`);
         logchannel.send({ embeds: [UnbanEmbed] });

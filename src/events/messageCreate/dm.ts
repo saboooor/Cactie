@@ -1,6 +1,6 @@
 import { AttachmentBuilder, Client, Message, TextChannel } from 'discord.js';
 
-export default async (client: Client, message: Message) => {
+export default async (client: Client, message: Message<false>) => {
   // If channel is DM,send the dm to the dms channel
   if (!message.channel.isDMBased()) return;
   const files = [];

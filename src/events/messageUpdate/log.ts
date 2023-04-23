@@ -2,7 +2,7 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Mes
 import { refresh } from '../../misc/emoji.json';
 import getDiff from '../../functions/getDiff';
 
-export default async (client: Client, oldMessage: Message, newMessage: Message) => {
+export default async (client: Client, oldMessage: Message<true>, newMessage: Message<true>) => {
   // Check if the message was sent by a bot or the content wasn't updated
   if ((newMessage.author && newMessage.author.bot) || oldMessage.content == newMessage.content) return;
 
@@ -11,7 +11,7 @@ export default async (client: Client, oldMessage: Message, newMessage: Message) 
 
   // Check if log is enabled and channel is valid
   if (!['messageupdate', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = newMessage.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = newMessage.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

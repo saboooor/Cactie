@@ -7,7 +7,7 @@ export default async (client: Client, channel: TextChannel) => {
 
   // Check if log is enabled and send log
   if (!['channeldelete', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

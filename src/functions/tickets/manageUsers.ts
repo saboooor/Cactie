@@ -1,8 +1,8 @@
-import { EmbedBuilder, GuildMember, TextChannel, ThreadChannel, VoiceChannel } from 'discord.js';
+import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel, VoiceChannel } from 'discord.js';
 
-export default async function manageUsers(member: GuildMember, channel: TextChannel | ThreadChannel, targetMember: GuildMember, add?: boolean) {
+export default async function manageUsers(member: GuildMember, channel: TextChannel | PublicThreadChannel<false>, targetMember: GuildMember, add?: boolean) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
+  if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
   const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });

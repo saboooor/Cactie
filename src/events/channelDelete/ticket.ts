@@ -8,7 +8,7 @@ export default async (client: Client, channel: TextChannel) => {
 
   // Check if ticket log channel is set in settings
   const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
-  const logchannel = channel.guild.channels.cache.get(srvconfig.ticketlogchannel) as TextChannel;
+  const logchannel = channel.guild.channels.cache.get(srvconfig.ticketlogchannel) as TextChannel | undefined;
   if (logchannel) {
     // Get list of users for embed
     const users: GuildMember[] = [];

@@ -1,8 +1,8 @@
-import { TextChannel, ThreadChannel } from 'discord.js';
+import { TextChannel, PublicThreadChannel } from 'discord.js';
 
-export default async function deleteTicket(channel: TextChannel | ThreadChannel, force?: boolean) {
+export default async function deleteTicket(channel: TextChannel | PublicThreadChannel<false>, force?: boolean) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
+  if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
   const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });

@@ -1,12 +1,12 @@
-import { EmbedBuilder, GuildMember, TextChannel, ThreadChannel } from 'discord.js';
+import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
 import { settings } from 'types/mysql';
 
-export default async function reopenTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | ThreadChannel) {
+export default async function reopenTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if tickets are disabled
   if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
 
   // Check if channel is thread and set the channel to the parent channel
-  if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
+  if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if ticket is an actual ticket
   const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });

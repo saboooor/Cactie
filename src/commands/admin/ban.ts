@@ -58,7 +58,7 @@ export const ban: SlashCommand = {
 
       // Check if log channel exists and send message
       const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
-      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         BanEmbed.setTitle(`${(author!.user as User).tag} ${BanEmbed.toJSON().title}`);
         logchannel.send({ embeds: [BanEmbed] });

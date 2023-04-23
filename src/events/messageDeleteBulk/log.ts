@@ -1,13 +1,13 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Collection, Snowflake, Message, TextChannel } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Collection, Message, TextChannel } from 'discord.js';
 import { no } from '../../misc/emoji.json';
 
-export default async (client: Client, messages: Collection<Snowflake, Message>, channel: TextChannel) => {
+export default async (client: Client, messages: Collection<string, Message<true>>, channel: TextChannel) => {
   // Get current settings for the guild
   const srvconfig = await sql.getData('settings', { guildId: channel.guild.id });
 
   // Check if log is enabled and channel is valid
   if (!['messagedeletebulk', 'message', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Create log embed

@@ -9,7 +9,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   const srvconfig = await sql.getData('settings', { guildId: newState.guild.id });
 
   // Check if log channel is set
-  const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   const logEmbed = new EmbedBuilder()

@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, ThreadChannel, CommandInteraction, User, GuildEmoji, Message } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, CommandInteraction, User, GuildEmoji, Message } from 'discord.js';
 import { yes } from '../../misc/emoji.json';
 import getTranscript from '../../functions/getTranscript';
 import getMessages from '../../functions/getMessages';
@@ -39,7 +39,7 @@ export const approve: SlashCommand = {
       }
 
       // If the suggestmsg is still null, try checking for the message in the thread's channel
-      if (!suggestMsg && message.channel! instanceof ThreadChannel) {
+      if (!suggestMsg && message.channel!.isThread()) {
         suggestChannel = message.channel.parent as TextChannel;
         const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild!.members.me!, suggestChannel);
         if (permCheck2) return error(permCheck2, message, true);
@@ -84,11 +84,11 @@ export const approve: SlashCommand = {
       if (thread) {
         const permCheck3 = checkPerms(['ManageThreads'], message.guild!.members.me!, suggestChannel);
         if (permCheck3) return error(permCheck3, message, true);
-        const messagechunks = await getMessages(thread, 'infinite').catch(err => { logger.error(err); });
+        const messagechunks = await getMessages<true>(thread, 'infinite').catch(err => { logger.error(err); });
         if (messagechunks) {
-          const messageChunk = new Collection<string, Message>().set(`${suggestMsg.id}`, suggestMsg);
+          const messageChunk = new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg);
           messagechunks.unshift(messageChunk);
-          const allmessages = new Collection<string, Message>().concat(...messagechunks);
+          const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
           if (allmessages.size > 2) {
             const link = await getTranscript(allmessages);
             ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
@@ -125,7 +125,7 @@ export const approve: SlashCommand = {
       if (message instanceof CommandInteraction) message.reply({ content: `<:yes:${yes}> **Suggestion Approved!**` }).catch(() => { return null; });
 
       // Check if log channel exists and send message
-      const logChannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logChannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logChannel) {
         ApproveEmbed.setTitle(`${(message.member!.user as User).tag} approved a suggestion`).setFields([]);
         if (args.join(' ')) ApproveEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);

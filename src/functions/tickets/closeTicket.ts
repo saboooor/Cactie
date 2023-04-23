@@ -1,11 +1,11 @@
-import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, ThreadChannel, Message, Snowflake } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, PublicThreadChannel, Message } from 'discord.js';
 import getTranscript from '../getTranscript';
 import getMessages from '../getMessages';
 import { settings, ticketData } from 'types/mysql';
 
-export default async function closeTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | ThreadChannel) {
+export default async function closeTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
+  if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
   const ticketdata: ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
@@ -35,13 +35,13 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   if (ticketdata.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
 
   // Create a transcript of the ticket
-  const messagechunks = await getMessages(channel, 'infinite').catch((err: Error) => {
+  const messagechunks = await getMessages<true>(channel, 'infinite').catch((err: Error) => {
     logger.error(err);
     return undefined;
   });
   let link = 'No messages retrieved.';
   if (messagechunks) {
-    const allmessages = new Collection<Snowflake, Message>().concat(...messagechunks);
+    const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
     link = await getTranscript(allmessages);
   }
   logger.info(`Created transcript of ${channel.name}: ${link}`);

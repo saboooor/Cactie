@@ -1,11 +1,9 @@
-import { Client, GuildMember, TextChannel, ThreadChannel } from 'discord.js';
+import { Client, GuildMember, TextChannel, PublicThreadChannel, EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
 import { settings } from 'types/mysql';
 
-const { EmbedBuilder, ChannelType, PermissionsBitField } = require('discord.js');
-
-export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | ThreadChannel) {
+export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel instanceof ThreadChannel) channel = channel.parent as TextChannel;
+  if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
   const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });

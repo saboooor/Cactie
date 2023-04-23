@@ -4,7 +4,7 @@ import commands from '../../lists/commands';
 import { cooldowns } from '../../lists/commands';
 import cooldownMessages from '../../misc/cooldown.json';
 
-export default async (client: Client, message: Message) => {
+export default async (client: Client, message: Message<true>) => {
   // If the bot can't read message history or send messages, don't execute a command
   if (message.webhookId || message.author.bot) return;
   if (!message.guild) return;

@@ -1,7 +1,7 @@
 import { Client, Message } from 'discord.js';
 import reactions from '../../lists/reactions';
 
-export default async (client: Client, message: Message) => {
+export default async (client: Client, message: Message<true>) => {
   // Check if author is a bot or message is in dm
   if (!message.guild || message.webhookId || message.author.bot) return;
 

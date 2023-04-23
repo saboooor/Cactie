@@ -7,7 +7,7 @@ export default async (client: Client, member: GuildMember) => {
 
   // Check if log is enabled and send log
   if (!['memberjoin', 'member', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = member.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = member.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

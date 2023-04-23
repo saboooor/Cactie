@@ -1,13 +1,13 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, TextChannel, VoiceChannel, ThreadChannel } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, TextChannel, VoiceChannel, AnyThreadChannel, ThreadChannel } from 'discord.js';
 import { refresh, right } from '../../misc/emoji.json';
 
-export default async (client: Client, oldChannel: TextChannel | VoiceChannel | ThreadChannel, newChannel: TextChannel | VoiceChannel | ThreadChannel) => {
+export default async (client: Client, oldChannel: TextChannel | VoiceChannel | AnyThreadChannel, newChannel: TextChannel | VoiceChannel | AnyThreadChannel) => {
   // Get current settings for the guild
   const srvconfig = await sql.getData('settings', { guildId: newChannel.guild.id });
 
   // Check if log is enabled and send log
   if (!['channelupdate', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = newChannel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = newChannel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Create log embed
@@ -39,7 +39,7 @@ export default async (client: Client, oldChannel: TextChannel | VoiceChannel | T
   }
 
   // Thread Channel Properties
-  if (oldChannel instanceof ThreadChannel && newChannel instanceof ThreadChannel) {
+  if (oldChannel.isThread() && newChannel.isThread()) {
     if (oldChannel.archived != newChannel.archived) logEmbed.addFields([{ name: 'Archived', value: `${oldChannel.archived} <:right:${right}> ${newChannel.archived}`, inline: true }]);
     if (oldChannel.autoArchiveDuration != newChannel.autoArchiveDuration) logEmbed.addFields([{ name: 'Auto-Archive Duration', value: `${oldChannel.autoArchiveDuration ?? 0 / 60} Hours <:right:${right}> ${newChannel.autoArchiveDuration ?? 0 / 60} Hours`, inline: true }]);
   }

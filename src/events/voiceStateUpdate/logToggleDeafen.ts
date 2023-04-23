@@ -10,7 +10,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
 
   // Check if log is enabled
   if (!['voicedeafen', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
-  const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel;
+  const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Create log embed
