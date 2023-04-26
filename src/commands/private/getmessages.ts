@@ -5,7 +5,7 @@ export const getmessages: Command = {
   description: 'getMessages',
   async execute(message) {
     // Check if user is sab lolololol
-    if (message.author.id !== '249638347306303499') return error('You can\'t do that!', message, true);
+    if (message.author.id !== '249638347306303499') return;
     const messagechunks = await getMessages(message.channel, 'infinite');
     let messagesize = 0;
     for (const i in messagechunks) messagesize += messagechunks[i].size;

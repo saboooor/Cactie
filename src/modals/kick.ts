@@ -8,16 +8,27 @@ export const kick: Modal = {
     try {
       // Get user and check if user is valid
       let member = interaction.guild!.members.cache.get(memberId);
-      if (!member) { member = await interaction.guild!.members.fetch(memberId); }
-      if (!member) { return error('Invalid member! Are they in this server?', interaction, true); }
+      if (!member) member = await interaction.guild!.members.fetch(memberId);
+      if (!member) {
+        error('Invalid member! Are they in this server?', interaction, true);
+        return;
+      }
 
       // Get member and author and check if role is lower than member's role
       const author = interaction.member!;
       if (!author || !(author.roles instanceof GuildMemberRoleManager)) return;
       const authorTag = author.user instanceof User ? author.user.tag : `${author.user.username}#${author.user.discriminator}`;
 
-      if (member.roles.highest.rawPosition > author.roles.highest.rawPosition) { return error(`You can't do that! Your role is ${member.roles.highest.rawPosition - author.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true); }
-      if (member.roles.highest.rawPosition > member.guild.members.me!.roles.highest.rawPosition) { return error(`I can't do that! My role is ${member.roles.highest.rawPosition - member.guild.members.me!.roles.highest.rawPosition} positions lower than the user's role!`, interaction, true); }
+      const authorRoles = author!.roles as GuildMemberRoleManager;
+      const botRoles = interaction.guild!.members.me!.roles as GuildMemberRoleManager;
+      if (member.roles.highest.rawPosition > authorRoles.highest.rawPosition) {
+        error(`You can't do that! Your role is ${member.roles.highest.rawPosition - authorRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+        return;
+      }
+      if (member.roles.highest.rawPosition > botRoles.highest.rawPosition) {
+        error(`I can't do that! My role is ${member.roles.highest.rawPosition - botRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
+        return;
+      }
 
       // Create embed
       const KickEmbed = new EmbedBuilder()

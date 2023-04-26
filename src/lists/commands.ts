@@ -14,7 +14,7 @@ for (const folder of commandFolders) {
     let command = require(`../commands/${folder}/${file}`);
     const name = Object.keys(command)[0] as keyof typeof command;
 
-    if (!command.name) command = { name, category: folder, ...command[name] };
+    command = { name: command.name ?? name, category: folder, ...command[name] };
     commands.set(command.name, command);
   }
 }

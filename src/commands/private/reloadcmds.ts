@@ -11,7 +11,7 @@ export const reloadcmds: Command = {
   async execute(message, args, client) {
     try {
       // Check if user is sab lolololol
-      if (message.author.id !== '249638347306303499') return error('You can\'t do that!', message, true);
+      if (message.author.id !== '249638347306303499') return;
       if (!client.application?.owner) await client.application?.fetch();
       const commands = await client.application?.commands.fetch();
       if (!commands) return;

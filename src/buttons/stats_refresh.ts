@@ -14,7 +14,8 @@ export const stats_refresh: Button = {
       if (!pong.online) {
         StatsEmbed.setColor(0xFF0000)
           .setDescription(`**${ip}** is offline.`);
-        return interaction.reply({ embeds: [StatsEmbed], files: [] });
+        interaction.reply({ embeds: [StatsEmbed], files: [] });
+        return;
       }
       if (!StatsEmbed.toJSON().title && pong.hostname) { StatsEmbed.setTitle(pong.hostname); }
       else if (!StatsEmbed.toJSON().title && pong.port == 25565) { StatsEmbed.setTitle(pong.ip); }

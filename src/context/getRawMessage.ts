@@ -8,7 +8,10 @@ export const context: ContextMenuCommand<'Message'> = {
   async execute(interaction, client, message) {
     try {
       // Get content and check if it exists
-      if (!message.content) return interaction.reply({ content: 'There is no text in this message!' });
+      if (!message.content) {
+        interaction.reply({ content: 'There is no text in this message!' });
+        return;
+      }
 
       // Set the content
       let content = `\`\`\`md\n${message.content}\n\`\`\``;

@@ -19,10 +19,19 @@ export const react: SlashCommand = {
       if (!messagelink[4]) messagelink[4] = message.guild!.id;
       if (!messagelink[5]) messagelink[5] = message.channel!.id;
       if (!messagelink[6]) messagelink[6] = args[0];
-      if (messagelink[4] != message.guild!.id) return error('That message is not in this server!', message, true);
-      const channel = message.guild!.channels.cache.get(messagelink[5]) as TextBasedChannel;
-      if (!channel) return error('That channel doesn\'t exist!', message, true);
-      await channel.messages.react(messagelink[6], args[1]).catch(err => { return error(`Reaction failed!\n\`${err}\`\nUse an emote from a server that ${client.user!.username} is in or an emoji.`, message, true); });
+      if (messagelink[4] != message.guild!.id) {
+        error('That message is not in this server!', message, true);
+        return;
+      }
+      const channel = await message.guild!.channels.fetch(messagelink[5]) as TextBasedChannel;
+      if (!channel) {
+        error('That channel doesn\'t exist!', message, true);
+        return;
+      }
+      await channel.messages.react(messagelink[6], args[1]).catch(err => {
+        error(`Reaction failed!\n\`${err}\`\nUse an emote from a server that ${client.user!.username} is in or an emoji.`, message, true);
+        return;
+      });
       message.reply({ embeds: [ReactEmbed] });
     }
     catch (err) { error(err, message); }

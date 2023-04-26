@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInteraction, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction } from 'discord.js';
+import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInteraction, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction } from 'discord.js';
 
 export class Command {
   name?: string;
@@ -13,14 +13,15 @@ export class Command {
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
   cooldown?: number;
-  execute: (message: Message<true>, args: string[], client: Client) => void;
+  execute: (message: Message<true>, args: string[], client: Client) => void | Promise<void>;
 }
 
 export class SlashCommand extends Command {
   ephemeral?: boolean;
   noDefer?: boolean;
-  options?: (cmd: SlashCommandBuilder) => void;
-  execute: (message: CommandInteraction | Message<true>, args: string[], client: Client) => void;
+  options?: (cmd: SlashCommandBuilder) => void | Promise<void>;
+  autoComplete?: (client: Client, interaction: AutocompleteInteraction) => void | Promise<void>;
+  execute: (message: CommandInteraction | Message<true>, args: string[], client: Client) => void | Promise<void>;
 }
 
 export class ContextMenuCommand<T extends 'User' | 'Message'> {
@@ -30,21 +31,21 @@ export class ContextMenuCommand<T extends 'User' | 'Message'> {
   ephemeral?: boolean;
   noDefer?: boolean;
   type: T;
-  execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message<true>) => void;
+  execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
 }
 
 export class Reaction {
   name?: string;
   triggers: string[];
   additionaltriggers?: string[];
-  execute: (message: Message<true>) => void;
+  execute: (message: Message<true>) => void | Promise<void>;
 }
 
 export class Modal {
   name?: string;
   deferReply?: boolean;
   ephemeral?: boolean;
-  execute: (interaction: ModalSubmitInteraction, client: Client, modalInfo: string) => void;
+  execute: (interaction: ModalSubmitInteraction, client: Client, modalInfo: string) => void | Promise<void>;
 }
 
 export class Button {
@@ -53,5 +54,5 @@ export class Button {
   deferReply?: boolean;
   noDefer?: boolean;
   ephemeral?: boolean;
-  execute: (interaction: ButtonInteraction | StringSelectMenuInteraction, client: Client) => void;
+  execute: (interaction: ButtonInteraction | StringSelectMenuInteraction, client: Client) => void | Promise<void>;
 }

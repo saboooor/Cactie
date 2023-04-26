@@ -13,7 +13,10 @@ export const dm: Command = {
 
       // Get user and check if they exist
       const user = client.users.cache.get(args[0].replace(/\D/g, ''));
-      if (!user) return error('Invalid User!', message, true);
+      if (!user) {
+        error('Invalid User!', message, true);
+        return;
+      }
 
       // Check if message has any attachments and add it to the dm (idek if it works now tbh)
       const files = [];

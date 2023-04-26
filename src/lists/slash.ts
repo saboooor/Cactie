@@ -13,7 +13,7 @@ for (const folder of slashcommandFolders) {
     let slashcommand = require(`../commands/${folder}/${file}`);
     const name = Object.keys(slashcommand)[0] as keyof typeof slashcommand;
 
-    if (!slashcommand.name) slashcommand = { name, category: folder, ...slashcommand[name] };
+    slashcommand = { name: slashcommand.name ?? name, category: folder, ...slashcommand[name] };
     slashcommands.set(slashcommand.name, slashcommand);
   }
 }

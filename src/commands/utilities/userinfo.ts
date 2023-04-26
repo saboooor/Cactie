@@ -14,7 +14,10 @@ export const userinfo: SlashCommand = {
       let member = message.member as GuildMember | null;
       if (args.length) member = message.guild!.members.cache.get(args[0].replace(/\D/g, '')) ?? null;
       if (!member && args.length) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
-      if (!member) return error('Invalid member! Are they in this server?', message, true);
+      if (!member) {
+        error('Invalid member! Are they in this server?', message, true);
+        return;
+      }
 
       const roles = Array.from(member.roles.cache).sort(function(a, b) {
         if (b[1].rawPosition < a[1].rawPosition) return -1;

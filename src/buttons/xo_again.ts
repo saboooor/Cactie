@@ -17,10 +17,16 @@ export const xo_again: Button = {
     const lines = TicTacToe.toJSON().description!.split('\n');
     const xuserId = lines[0].split('**X:** ')[1].replace(/\D/g, '');
     const ouserId = lines[1].split('**O:** ')[1].replace(/\D/g, '');
-    if (xuserId != interaction.user.id && ouserId != interaction.user.id) { return interaction.reply({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' }); }
+    if (xuserId != interaction.user.id && ouserId != interaction.user.id) {
+      interaction.reply({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
+      return;
+    }
     const xuser = interaction.guild!.members.cache.get(xuserId);
     const ouser = interaction.guild!.members.cache.get(ouserId);
-    if (!xuser || !ouser) { return interaction.reply({ content: 'Invalid member! Are they in this server?' }); }
+    if (!xuser || !ouser) {
+      interaction.reply({ content: 'Invalid member! Are they in this server?' });
+      return;
+    }
     const playAgainEmbed = new EmbedBuilder()
       .setAuthor({ name: `${interaction.user.tag}`, iconURL: interaction.user.avatarURL() ?? undefined })
       .setDescription(`${interaction.user} wants to play again!`)

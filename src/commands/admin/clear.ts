@@ -17,15 +17,24 @@ export const clear: SlashCommand = {
   async execute(message, args) {
     try {
       // Check if arg is a number and is more than 100
-      if (isNaN(Number(args[0]))) return error('That is not a number!', message, true);
-      if (Number(args[0]) > 1000) return error('You can only clear 1000 messages at once!', message, true);
+      if (isNaN(Number(args[0]))) {
+        error('That is not a number!', message, true);
+        return;
+      }
+      if (Number(args[0]) > 1000) {
+        error('You can only clear 1000 messages at once!', message, true);
+        return;
+      }
 
       // Fetch the messages and bulk delete them 100 by 100
       const messagechunks = await getMessages<true>(message.channel!, Number(args[0])).catch(err => {
         logger.error(err);
-        return undefined;
+        return;
       });
-      if (!messagechunks) return error('An error occured while fetching messages!', message, true);
+      if (!messagechunks) {
+        error('An error occured while fetching messages!', message, true);
+        return;
+      }
 
       for (const i in messagechunks) {
         messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
@@ -37,7 +46,10 @@ export const clear: SlashCommand = {
 
       // Combine all message chunks and see if any messages are in there
       const allmessages = new Collection<string, Message>().concat(...messagechunks);
-      if (!allmessages.size) return error('There are no messages in that scope, try a higher number?', message, true);
+      if (!allmessages.size) {
+        error('There are no messages in that scope, try a higher number?', message, true);
+        return;
+      }
 
       // Reply with response
       if (message instanceof CommandInteraction) message.reply({ content: `<:yes:${yes}> **Cleared ${allmessages.size} messages!**` });

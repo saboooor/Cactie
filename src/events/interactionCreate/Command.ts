@@ -2,6 +2,7 @@ import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder,
 import checkPerms from '../../functions/checkPerms';
 import { cooldowns } from '../../lists/commands';
 import slashcommands from '../../lists/slash';
+import cooldownMessages from '../../misc/cooldown.json';
 
 export default async (client: Client, interaction: CommandInteraction) => {
   // Check if interaction is command
@@ -42,8 +43,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
   // Check if user is in the last used timestamp
   if (timestamps.has(interaction.user.id)) {
     // Get a random cooldown message
-    const messages = require('../../misc/cooldown.json');
-    const random = Math.floor(Math.random() * messages.length);
+    const random = Math.floor(Math.random() * cooldownMessages.length);
 
     // Get cooldown expiration timestamp
     const expirationTime = timestamps.get(interaction.user.id)! + cooldownAmount;
@@ -53,7 +53,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
       const timeLeft = (expirationTime - now) / 1000;
       const cooldownEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(messages[random])
+        .setTitle(cooldownMessages[random])
         .setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
       return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });
     }

@@ -11,7 +11,7 @@ export const ec: Command = {
   cooldown: 0.1,
   async execute(message, args, client) {
     // Check if user is sab lolololol
-    if (message.author.id !== '249638347306303499') return error('You can\'t do that!', message, true);
+    if (message.author.id !== '249638347306303499') return;
     try {
       const code = args.join(' ');
       let evaled = eval(code);

@@ -22,7 +22,10 @@ export const approve: SlashCommand = {
       // Fetch the message with the messageId
       let suggestChannel: TextChannel | undefined = message.channel! as TextChannel;
       const permCheck = checkPerms(['ReadMessageHistory'], message.guild!.members.me!, suggestChannel);
-      if (permCheck) return error(permCheck, message, true);
+      if (permCheck) {
+        error(permCheck, message, true);
+        return;
+      }
       let suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 
       // Get server config
@@ -33,7 +36,10 @@ export const approve: SlashCommand = {
         suggestChannel = message.guild!.channels.cache.get(srvconfig.suggestionchannel) as TextChannel | undefined;
         if (suggestChannel) {
           const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild!.members.me!, suggestChannel);
-          if (permCheck2) return error(permCheck2, message, true);
+          if (permCheck2) {
+            error(permCheck2, message, true);
+            return;
+          }
           suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
         }
       }
@@ -42,12 +48,18 @@ export const approve: SlashCommand = {
       if (!suggestMsg && message.channel!.isThread()) {
         suggestChannel = message.channel.parent as TextChannel;
         const permCheck2 = checkPerms(['ReadMessageHistory'], message.guild!.members.me!, suggestChannel);
-        if (permCheck2) return error(permCheck2, message, true);
+        if (permCheck2) {
+          error(permCheck2, message, true);
+          return;
+        }
         suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
       }
 
       // If the suggestmsg is still null, throw an error
-      if (!suggestMsg) return error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
+      if (!suggestMsg) {
+        error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
+        return;
+      }
 
       // Check if message was sent by the bot
       if (suggestMsg.author.id != client.user!.id) return;
@@ -61,7 +73,10 @@ export const approve: SlashCommand = {
 
       // Remove all reactions and set color to green and approved title
       const permCheck2 = checkPerms(['ManageMessages'], message.guild!.members.me!, suggestChannel);
-      if (permCheck2) return error(permCheck2, message, true);
+      if (permCheck2) {
+        error(permCheck2, message, true);
+        return;
+      }
       suggestMsg.reactions.removeAll();
       ApproveEmbed.setColor(0x2ECC71)
         .setTitle('Suggestion (Approved)')
@@ -83,7 +98,10 @@ export const approve: SlashCommand = {
       // Delete thread if exists with transcript
       if (thread) {
         const permCheck3 = checkPerms(['ManageThreads'], message.guild!.members.me!, suggestChannel);
-        if (permCheck3) return error(permCheck3, message, true);
+        if (permCheck3) {
+          error(permCheck3, message, true);
+          return;
+        }
         const messagechunks = await getMessages<true>(thread, 'infinite').catch(err => { logger.error(err); });
         if (messagechunks) {
           const messageChunk = new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg);
