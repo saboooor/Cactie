@@ -11,18 +11,18 @@ export default async (client: Client, message: Message<true>) => {
   const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me!, message.channel as GuildChannelResolvable);
   if (initialPermCheck) return;
 
-  //// make a custom function to replace message.reply
-  //// this is to send the message to the channel without a reply if reply fails
-  //(message as any).msgreply = message.reply;
-  //message.reply = async function reply(object) {
-  //  try {
-  //    return await (message as any).msgreply(object);
-  //  }
-  //  catch (err) {
-  //    logger.warn(err);
-  //    return await message.channel.send(object);
-  //  }
-  //};
+  // // make a custom function to replace message.reply
+  // // this is to send the message to the channel without a reply if reply fails
+  // (message as any).msgreply = message.reply;
+  // message.reply = async function reply(object) {
+  //   try {
+  //     return await (message as any).msgreply(object);
+  //   }
+  //   catch (err) {
+  //     logger.warn(err);
+  //     return await message.channel.send(object);
+  //   }
+  // };
 
   // Get current settings for the guild
   const srvconfig = await sql.getData('settings', { guildId: message.guild.id });

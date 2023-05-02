@@ -18,7 +18,8 @@
         "forceConsistentCasingInFileNames": true,
         "removeComments": true,
         "typeRoots": [
-            "node_modules/@types"
+            "node_modules/@types",
+            "src/types"
         ],
         "sourceMap": false,
         "baseUrl": "./",
