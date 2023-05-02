@@ -1,10 +1,19 @@
-export default function getConfig() {
+export default function getConfig(): {
+  [key: string]: {
+    expressions: {
+      bool: (dict_of_vars: any) => boolean;
+      vars: string[];
+    }[];
+    prefix: string;
+    value: string;
+  }[]
+  } {
   return {
     'projectile.max-loads-per-projectile': [
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return parseInt(dict_of_vars.pufferfish['projectile']['max-load-per-projectile']) >= 9;
             },
             vars: ['pufferfish'],
@@ -18,7 +27,7 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.pufferfish['dab']['enabled'] == 'false';
             },
             vars: ['pufferfish'],

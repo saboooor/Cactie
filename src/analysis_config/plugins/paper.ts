@@ -1,4 +1,17 @@
-export default function getConfig() {
+export default function getConfig(): {
+  [key: string]: {
+    expressions?: {
+      bool: (dict_of_vars: any) => boolean;
+      vars: string[];
+    }[];
+    prefix: string;
+    value: string;
+    buttons?: {
+      text: string;
+      url: string;
+    }[];
+  }
+  } {
   return {
     'ClearLag': {
       prefix: '❌',
@@ -104,32 +117,18 @@ export default function getConfig() {
         },
       ],
     },
-    'PhantomSMP': [
-      {
-        expressions: [
-          {
-            bool: (dict_of_vars: any) => {
-              return dict_of_vars.paper['world-settings']['default']['phantoms-only-attack-insomniacs'] == 'false';
-            },
-            vars: ['paper'],
+    'PhantomSMP': {
+      expressions: [
+        {
+          bool: (dict_of_vars: any) => {
+            return dict_of_vars.paper['world-settings']['default']['phantoms-only-attack-insomniacs'] == 'true';
           },
-        ],
-        prefix: '❌',
-        value: 'You probably don\'t need PhantomSMP as Paper already has its features.',
-      },
-      {
-        expressions: [
-          {
-            bool: (dict_of_vars: any) => {
-              return dict_of_vars.paper['world-settings']['default']['phantoms-only-attack-insomniacs'] == 'true';
-            },
-            vars: ['paper'],
-          },
-        ],
-        prefix: '❌',
-        value: 'You probably don\'t need PhantomSMP as Paper already has its features.\nEnable phantoms-only-attack-insomniacs in paper.yml.',
-      },
-    ],
+          vars: ['paper'],
+        },
+      ],
+      prefix: '❌',
+      value: 'You probably don\'t need PhantomSMP as Paper already has its features.\nEnable phantoms-only-attack-insomniacs in paper.yml.',
+    },
     'PacketLimiter': {
       prefix: '❌',
       value: 'You don\'t need PacketLimiter as Paper already has its features.',

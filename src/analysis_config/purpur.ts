@@ -1,18 +1,27 @@
 import { Field } from '~/types/Field';
 
-export default function getConfig() {
+export default function getConfig(): {
+  [key: string]: {
+    expressions: {
+      bool: (dict_of_vars: any) => boolean;
+      vars: string[];
+    }[];
+    prefix: string;
+    value: string;
+  }[]
+  } {
   return {
     'settings.use-alternate-keepalive': [
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.purpur['settings']['use-alternate-keepalive'] == 'false';
             },
             vars: ['purpur'],
           },
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.plugins.find((plugin: Field) => plugin.name == 'TCPShield') === undefined;
             },
             vars: ['plugins'],
@@ -24,13 +33,13 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.purpur['settings']['use-alternate-keepalive'] == 'true';
             },
             vars: ['purpur'],
           },
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.plugins.find((plugin: Field) => plugin.name == 'TCPShield') !== undefined;
             },
             vars: ['plugins'],
@@ -44,7 +53,7 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.purpur['settings']['dont-send-useless-entity-packets'] == 'false';
             },
             vars: ['purpur'],
@@ -58,7 +67,7 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return parseInt(dict_of_vars.purpur['world-settings']['default']['mobs']['villager']['brain-ticks']) == 1;
             },
             vars: ['purpur'],
@@ -72,7 +81,7 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return parseInt(dict_of_vars.purpur['world-settings']['default']['mobs']['villager']['spawn-iron-golem']['radius']) == 0;
             },
             vars: ['purpur'],
@@ -86,7 +95,7 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.purpur['world-settings']['default']['mobs']['zombie']['aggressive-towards-villager-when-lagging'] == 'true';
             },
             vars: ['purpur'],
@@ -100,7 +109,7 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.purpur['world-settings']['default']['gameplay-mechanics']['player']['teleport-if-outside-border'] == 'false';
             },
             vars: ['purpur'],

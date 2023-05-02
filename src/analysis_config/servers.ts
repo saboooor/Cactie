@@ -1,4 +1,14 @@
-export default function getConfig() {
+export default function getConfig(): {
+  servers: {
+    name: string;
+    prefix: string;
+    value: string;
+    buttons: {
+      text: string;
+      url: string;
+    }[];
+  }[];
+  } {
   return {
     servers: [
       {

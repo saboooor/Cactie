@@ -1,4 +1,17 @@
-export default function getConfig() {
+export default function getConfig(): {
+  [key: string]: {
+    expressions?: {
+      bool: (dict_of_vars: any) => boolean;
+      vars: string[];
+    }[];
+    prefix: string;
+    value: string;
+    buttons?: {
+      text: string;
+      url: string;
+    }[];
+  }
+  } {
   return {
     'SilkSpawners': {
       prefix: '❌',

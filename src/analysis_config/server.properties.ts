@@ -1,22 +1,31 @@
-export default function getConfig() {
+export default function getConfig(): {
+  [key: string]: {
+    expressions: {
+      bool: (dict_of_vars: any) => boolean;
+      vars: string[];
+    }[];
+    prefix: string;
+    value: string;
+  }[]
+  } {
   return {
     'online-mode': [
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return !dict_of_vars.server_properties['online-mode'];
             },
             vars: ['server_properties'],
           },
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.spigot.settings.bungeecord == 'false';
             },
             vars: ['spigot'],
           },
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.paper.settings['velocity-support']['online-mode'] == 'false' || dict_of_vars.paper.settings['velocity-support'].enabled == 'false';
             },
             vars: ['paper'],
@@ -30,13 +39,13 @@ export default function getConfig() {
       {
         expressions: [
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return parseInt(dict_of_vars.server_properties['network-compression-threshold']) <= 256;
             },
             vars: ['server_properties'],
           },
           {
-            bool: (dict_of_vars: any) => {
+            bool: dict_of_vars => {
               return dict_of_vars.spigot['settings']['bungeecord'] == 'false';
             },
             vars: ['spigot'],
