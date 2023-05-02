@@ -63,7 +63,7 @@ export const userinfo: SlashCommand = {
       if (activitieslist.join('\n')) UsrEmbed.addFields([{ name: 'Activities', value: activitieslist.join('\n') }]);
       if (member.user.bannerURL()) UsrEmbed.setImage(member.user.bannerURL() ?? null);
       UsrEmbed.addFields([
-        { name: 'Joined Server At', value: `<t:${Math.round(member.joinedTimestamp ?? 0 / 1000)}>\n<t:${Math.round(member.joinedTimestamp ?? 0 / 1000)}:R>` },
+        { name: 'Joined Server At', value: `<t:${Math.round((member.joinedTimestamp ?? 0) / 1000)}>\n<t:${Math.round((member.joinedTimestamp ?? 0) / 1000)}:R>` },
         { name: 'Created Account At', value: `<t:${Math.round(member.user.createdTimestamp / 1000)}>\n<t:${Math.round(member.user.createdTimestamp / 1000)}:R>` },
         { name: 'Roles', value: roleslist.join(', ') },
       ]);
