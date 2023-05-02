@@ -78,7 +78,7 @@ export const xo_again: Button = {
         .setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` }])
         .setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
       // 2 = empty / 4 = X / 1 = O
-      const reslist = Object.keys(btns).map(i => { return `${btns[i].toJSON().style}`; }) as (keyof typeof ButtonStyle)[];
+      const reslist = Object.keys(btns).map(i => btns[i].toJSON().style);
 
       // Evaluate the board
       const win = evalXO(reslist);
