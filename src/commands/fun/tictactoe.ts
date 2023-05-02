@@ -57,8 +57,11 @@ export const tictactoe: SlashCommand = {
     const filter = (i: ButtonInteraction) => i.customId != 'xo_again';
     const collector = xomsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
 
-    collector.on('collect', async interaction => {
-      if (interaction.user.id != (turn ? message.member!.user.id : member.id)) return interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+    collector.on('collect', async (interaction: ButtonInteraction) => {
+      if (interaction.user.id != (turn ? message.member!.user.id : member.id)) {
+        interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+        return;
+      }
       await interaction.deferUpdate().catch((err: Error) => logger.error(err));
       const btn = btns[interaction.customId];
       if (btn.toJSON().style == ButtonStyle.Secondary) {
@@ -71,7 +74,7 @@ export const tictactoe: SlashCommand = {
         .setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` }])
         .setThumbnail(turn ? (message.member!.user as User).avatarURL() : member.user.avatarURL());
       // 2 = empty / 4 = X / 1 = O
-      const reslist = Object.keys(btns).map(i => { return `${btns[i].toJSON().style}`; });
+      const reslist = Object.keys(btns).map(i => { return Number(`${btns[i].toJSON().style}`); });
 
       // Evaluate the board
       const win = evalXO(reslist);
@@ -103,7 +106,7 @@ export const tictactoe: SlashCommand = {
 
       // Ping the user
       try {
-        const pingmsg = await interaction.channel.send({ content: `${turn ? message.member : member}` });
+        const pingmsg = await interaction.channel!.send({ content: `${turn ? message.member : member}` });
         await pingmsg.delete();
       }
       catch (err) {
