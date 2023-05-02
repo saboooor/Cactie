@@ -107,7 +107,7 @@ export const approve: SlashCommand = {
           const messageChunk = new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg);
           messagechunks.unshift(messageChunk);
           const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
-          if (allmessages.size > 2) {
+          if (allmessages.size > 3) {
             const link = await getTranscript(allmessages);
             ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
           }
