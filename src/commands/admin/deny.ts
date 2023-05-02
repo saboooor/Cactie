@@ -102,7 +102,7 @@ export const deny: SlashCommand = {
         if (messagechunks) {
           messagechunks.unshift(new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg));
           const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
-          if (allmessages.size > 2) {
+          if (allmessages.size > 3) {
             const link = await getTranscript(allmessages);
             DenyEmbed.addFields([{ name: 'View Discussion', value: link }]);
           }
