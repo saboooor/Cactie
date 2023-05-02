@@ -1,8 +1,8 @@
 import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, GuildMember, ComponentType, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
-import action from '../functions/action';
-import actions from '../misc/actions.json';
-import { x } from '../misc/emoji.json';
-import { ContextMenuCommand } from 'types/Objects';
+import action from '~/functions/action';
+import actions from '~/misc/actions.json';
+import { x } from '~/misc/emoji.json';
+import { ContextMenuCommand } from '~/types/Objects';
 
 export const context: ContextMenuCommand<'User'> = {
   name: 'Do action on user',

@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
-import { join, leave, right } from '../../misc/emoji.json';
+import { join, leave, right } from '~/misc/emoji.json';
 
 export default async (client: Client, oldState: VoiceState, newState: VoiceState) => {
   // Check if the mute state actually changed

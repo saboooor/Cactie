@@ -1,6 +1,6 @@
 import { EmbedBuilder } from 'discord.js';
-import reactionsList from '../../lists/reactions';
-import { SlashCommand } from 'types/Objects';
+import reactionsList from '~/lists/reactions';
+import { SlashCommand } from '~/types/Objects';
 
 export const reactions: SlashCommand = {
   description: 'See what words Cactie reacts to',

@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
-import { refresh } from '../../misc/emoji.json';
-import getDiff from '../../functions/getDiff';
+import { refresh } from '~/misc/emoji.json';
+import getDiff from '~/functions/getDiff';
 
 export default async (client: Client, oldMessage: Message<true>, newMessage: Message<true>) => {
   // Check if the message was sent by a bot or the content wasn't updated

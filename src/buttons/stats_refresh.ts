@@ -1,7 +1,7 @@
 import { createPaste } from 'hastebin';
 import { EmbedBuilder } from 'discord.js';
-import { Button } from 'types/Objects';
-import protocols from '../misc/mcprotocol.json';
+import { Button } from '~/types/Objects';
+import protocols from '~/misc/mcprotocol.json';
 
 export const stats_refresh: Button = {
   execute: async (interaction) => {

@@ -1,5 +1,5 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
+import { SlashCommand } from '~/types/Objects';
 // @ts-ignore
 import packageJSON from '../../../package.json';
 

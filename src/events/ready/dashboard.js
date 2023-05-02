@@ -18,7 +18,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const Djs = require('discord.js');
 const Strategy = require('passport-discord').Strategy;
-const checkPerms = require('../../functions/checkPerms').default;
+const checkPerms = require('~/functions/checkPerms').default;
 
 // Load the config
 const { readFileSync } = require('fs');

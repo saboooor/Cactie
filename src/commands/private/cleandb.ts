@@ -1,4 +1,4 @@
-import { Command } from 'types/Objects';
+import { Command } from '~/types/Objects';
 
 export const cleandb: Command = {
   description: 'cleans the db of guilds that no longer exist',

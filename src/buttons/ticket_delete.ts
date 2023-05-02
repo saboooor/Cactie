@@ -1,6 +1,6 @@
 import { TextChannel } from 'discord.js';
-import deleteTicket from '../functions/tickets/deleteTicket';
-import { Button } from 'types/Objects';
+import deleteTicket from '~/functions/tickets/deleteTicket';
+import { Button } from '~/types/Objects';
 
 export const delete_ticket: Button = {
   botPerms: ['ManageChannels'],

@@ -1,10 +1,10 @@
 import * as mariadb from 'mariadb';
 
 import { readFileSync } from 'fs';
-import YAML from 'yaml';
+import * as YAML from 'yaml';
 const { mysql } = YAML.parse(readFileSync('./config.yml', 'utf8'));
 
-import { Table, ticketData, settings, reactionRoles, memberData, lastVoted } from 'types/mysql';
+import { Table, ticketData, settings, reactionRoles, memberData, lastVoted } from '~/types/mysql';
 
 // Create connection
 let con: mariadb.Connection | null = null;

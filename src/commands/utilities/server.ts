@@ -1,5 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
+import { SlashCommand } from '~/types/Objects';
 
 export const server: SlashCommand = {
   description: 'Discord server info',

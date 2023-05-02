@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import closeTicket from '../../functions/tickets/closeTicket';
-import { SlashCommand } from 'types/Objects';
+import closeTicket from '~/functions/tickets/closeTicket';
+import { SlashCommand } from '~/types/Objects';
 
 export const close: SlashCommand = {
   description: 'Close a ticket',

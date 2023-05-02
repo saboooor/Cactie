@@ -1,6 +1,6 @@
 import { ButtonInteraction, Client, EmbedBuilder, StringSelectMenuInteraction, TextChannel } from 'discord.js';
-import checkPerms from '../../functions/checkPerms';
-import buttons from '../../lists/buttons';
+import checkPerms from '~/functions/checkPerms';
+import buttons from '~/lists/buttons';
 
 export default async (client: Client, interaction: ButtonInteraction | StringSelectMenuInteraction) => {
   // Check if interaction is button

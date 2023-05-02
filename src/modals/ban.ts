@@ -1,6 +1,6 @@
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import ms from 'ms';
-import { Modal } from 'types/Objects';
+import { Modal } from '~/types/Objects';
 
 export const ban: Modal = {
   deferReply: true,

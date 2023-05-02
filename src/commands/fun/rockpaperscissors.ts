@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType, User, CommandInteraction } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import user from '../../options/user';
+import { SlashCommand } from '~/types/Objects';
+import user from '~/options/user';
 
 export const rockpaperscissors: SlashCommand = {
   description: 'Play Rock Paper Scissors with an opponent',

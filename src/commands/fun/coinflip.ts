@@ -1,4 +1,4 @@
-import { SlashCommand } from 'types/Objects';
+import { SlashCommand } from '~/types/Objects';
 
 export const coinflip: SlashCommand = {
   description: 'Heads or Tails?',

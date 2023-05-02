@@ -1,7 +1,7 @@
 import { EmbedBuilder, GuildMember } from 'discord.js';
-import convertTime from '../functions/music/convert';
-import progressbar from '../functions/music/progressbar';
-import { ContextMenuCommand } from 'types/Objects';
+import convertTime from '~/functions/music/convert';
+import progressbar from '~/functions/music/progressbar';
+import { ContextMenuCommand } from '~/types/Objects';
 
 export const context: ContextMenuCommand<'User'> = {
   name: 'User Info',

@@ -1,8 +1,8 @@
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, GuildMember, GuildChannelResolvable, TextChannel, ApplicationCommandOptionType } from 'discord.js';
-import checkPerms from '../../functions/checkPerms';
-import { cooldowns } from '../../lists/commands';
-import slashcommands from '../../lists/slash';
-import cooldownMessages from '../../misc/cooldown.json';
+import checkPerms from '~/functions/checkPerms';
+import { cooldowns } from '~/lists/commands';
+import slashcommands from '~/lists/slash';
+import cooldownMessages from '~/misc/cooldown.json';
 
 export default async (client: Client, interaction: CommandInteraction) => {
   // Check if interaction is command

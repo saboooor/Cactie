@@ -1,8 +1,8 @@
-import analyzeTimings from '../../functions/timings/analyzeTimings';
+import analyzeTimings from '~/functions/timings/analyzeTimings';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, User, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import { left, right } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import url from '../../options/url';
+import { left, right } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import url from '~/options/url';
 const buttons = new ActionRowBuilder<ButtonBuilder>()
   .addComponents([
     new ButtonBuilder()

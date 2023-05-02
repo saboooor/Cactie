@@ -1,8 +1,8 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, User, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import { x, o, empty, refresh } from '../../misc/emoji.json';
-import evalXO from '../../functions/evalXO';
-import user from '../../options/user';
-import { SlashCommand } from 'types/Objects';
+import { x, o, empty, refresh } from '~/misc/emoji.json';
+import evalXO from '~/functions/evalXO';
+import user from '~/options/user';
+import { SlashCommand } from '~/types/Objects';
 const again = new ActionRowBuilder<ButtonBuilder>()
   .addComponents([new ButtonBuilder()
     .setCustomId('xo_again')

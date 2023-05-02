@@ -1,7 +1,7 @@
 import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord.js';
 import ms from 'ms';
-import { SlashCommand } from 'types/Objects';
-import punish from '../../options/punish';
+import { SlashCommand } from '~/types/Objects';
+import punish from '~/options/punish';
 
 export const mute: SlashCommand = {
   description: 'Mute someone in the server',

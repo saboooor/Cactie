@@ -1,8 +1,8 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextChannel, User } from 'discord.js';
-import checkPerms from '../../functions/checkPerms';
-import { left, right } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import reactionrolesOptions from '../../options/reactionroles';
+import checkPerms from '~/functions/checkPerms';
+import { left, right } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import reactionrolesOptions from '~/options/reactionroles';
 
 export const reactionroles: SlashCommand = {
   description: 'Configure Cactie\'s reaction roles in the server',

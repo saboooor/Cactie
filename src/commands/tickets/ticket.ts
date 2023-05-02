@@ -1,7 +1,7 @@
 import { GuildMember } from 'discord.js';
-import createTicket from '../../functions/tickets/createTicket';
-import { SlashCommand } from 'types/Objects';
-import ticketOptions from '../../options/ticket';
+import createTicket from '~/functions/tickets/createTicket';
+import { SlashCommand } from '~/types/Objects';
+import ticketOptions from '~/options/ticket';
 
 export const ticket: SlashCommand = {
   description: 'Create a ticket',

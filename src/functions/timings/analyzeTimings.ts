@@ -1,18 +1,18 @@
 import createField from './createField';
 import evalField from './evalField';
 
-import servers from '../../analysis_config/servers';
-import plugins_paper from '../../analysis_config/plugins/paper';
-import plugins_purpur from '../../analysis_config/plugins/purpur';
-import config_server_properties from '../../analysis_config/server.properties';
-import config_bukkit from '../../analysis_config/bukkit';
-import config_spigot from '../../analysis_config/spigot';
-import config_paper_27 from '../../analysis_config/timings/paper-27';
-import config_paper_28 from '../../analysis_config/timings/paper-28';
-import config_pufferfish from '../../analysis_config/timings/pufferfish';
-import config_purpur from '../../analysis_config/purpur';
+import servers from '~/analysis_config/servers';
+import plugins_paper from '~/analysis_config/plugins/paper';
+import plugins_purpur from '~/analysis_config/plugins/purpur';
+import config_server_properties from '~/analysis_config/server.properties';
+import config_bukkit from '~/analysis_config/bukkit';
+import config_spigot from '~/analysis_config/spigot';
+import config_paper_27 from '~/analysis_config/timings/paper-27';
+import config_paper_28 from '~/analysis_config/timings/paper-28';
+import config_pufferfish from '~/analysis_config/timings/pufferfish';
+import config_purpur from '~/analysis_config/purpur';
 
-import { Field, FieldOption } from 'types/Field';
+import { Field, FieldOption } from '~/types/Field';
 
 export default async function analyzeTimings(id: string) {
   const timings_json = `https://timings.aikar.co/data.php?id=${id}`;

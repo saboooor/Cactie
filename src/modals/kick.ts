@@ -1,5 +1,5 @@
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
-import { Modal } from 'types/Objects';
+import { Modal } from '~/types/Objects';
 
 export const kick: Modal = {
   deferReply: true,

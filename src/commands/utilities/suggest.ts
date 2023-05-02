@@ -1,8 +1,8 @@
 import { CommandInteraction, EmbedBuilder, GuildMember, TextChannel, User } from 'discord.js';
-import { upvote, downvote } from '../../misc/emoji.json';
-import checkPerms from '../../functions/checkPerms';
-import { SlashCommand } from 'types/Objects';
-import suggestOptions from '../../options/suggest';
+import { upvote, downvote } from '~/misc/emoji.json';
+import checkPerms from '~/functions/checkPerms';
+import { SlashCommand } from '~/types/Objects';
+import suggestOptions from '~/options/suggest';
 
 export const suggest: SlashCommand = {
   description: 'Suggest something!',

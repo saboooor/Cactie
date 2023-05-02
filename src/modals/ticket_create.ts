@@ -1,6 +1,6 @@
 import { GuildMember } from 'discord.js';
-import createTicket from '../functions/tickets/createTicket';
-import { Modal } from 'types/Objects';
+import createTicket from '~/functions/tickets/createTicket';
+import { Modal } from '~/types/Objects';
 
 export const ticket_create: Modal = {
   deferReply: true,

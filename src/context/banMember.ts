@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
-import { ContextMenuCommand } from 'types/Objects';
+import { ContextMenuCommand } from '~/types/Objects';
 
 export const context: ContextMenuCommand<'User'> = {
   name: 'Ban Member',

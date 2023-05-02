@@ -1,6 +1,6 @@
 import { Client } from 'discord.js';
 import { createLogger, format, transports } from 'winston';
-import * as sql from '../functions/mysql';
+import * as sql from '~/functions/mysql';
 
 const rn = new Date();
 const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;

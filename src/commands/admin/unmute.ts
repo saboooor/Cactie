@@ -1,6 +1,6 @@
 import { EmbedBuilder, TextChannel, User } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import user from '../../options/user';
+import { SlashCommand } from '~/types/Objects';
+import user from '~/options/user';
 
 export const unmute: SlashCommand = {
   description: 'Unmute someone that was muted in the server',

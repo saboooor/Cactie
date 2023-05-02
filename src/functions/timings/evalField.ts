@@ -1,5 +1,5 @@
 import createField from './createField';
-import { Field } from 'types/Field';
+import { Field } from '~/types/Field';
 
 export default function evalField(fields: Field[], option: any[], option_name: string, plugins: any[], server_properties: any, bukkit: any, spigot: any, paper: any, pufferfish: any, purpur: any) {
   const dict_of_vars: any = { plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur };

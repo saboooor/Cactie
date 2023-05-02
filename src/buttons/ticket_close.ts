@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import closeTicket from '../functions/tickets/closeTicket';
-import { Button } from 'types/Objects';
+import closeTicket from '~/functions/tickets/closeTicket';
+import { Button } from '~/types/Objects';
 
 export const close_ticket: Button = {
   botPerms: ['ManageChannels'],

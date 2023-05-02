@@ -1,5 +1,5 @@
-import { SlashCommand } from 'types/Objects';
-import redditFetch from '../../functions/redditFetch';
+import { SlashCommand } from '~/types/Objects';
+import redditFetch from '~/functions/redditFetch';
 
 export const wallpaper: SlashCommand = {
   description: 'Get a fresh new wallpaper!',

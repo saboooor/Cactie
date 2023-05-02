@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
-import { Modal } from 'types/Objects';
+import { Modal } from '~/types/Objects';
 
 // Set the modals collection
 const modals = new Collection<string, Modal>();

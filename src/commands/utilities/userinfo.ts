@@ -1,8 +1,8 @@
-import { SlashCommand } from 'types/Objects';
+import { SlashCommand } from '~/types/Objects';
 import { EmbedBuilder, GuildMember } from 'discord.js';
-import convertTime from '../../functions/music/convert';
-import progressbar from '../../functions/music/progressbar';
-import user from '../../options/user';
+import convertTime from '~/functions/music/convert';
+import progressbar from '~/functions/music/progressbar';
+import user from '~/options/user';
 
 export const userinfo: SlashCommand = {
   description: 'Discord member information',

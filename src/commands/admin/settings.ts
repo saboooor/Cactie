@@ -1,8 +1,8 @@
 function capFirstLetter(string: string) { return string.charAt(0).toUpperCase() + string.slice(1); }
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import { left, right } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import desc from '../../misc/settingsdesc.json';
+import { left, right } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import desc from '~/misc/settingsdesc.json';
 
 export const settings: SlashCommand = {
   description: 'Configure this server\' Cactie settings',

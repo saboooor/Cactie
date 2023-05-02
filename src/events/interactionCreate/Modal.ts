@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, InteractionType, ModalSubmitInteraction, TextChannel } from 'discord.js';
-import modals from '../../lists/modals';
+import modals from '~/lists/modals';
 
 export default async (client: Client, interaction: ModalSubmitInteraction) => {
   // Check if interaction is modal

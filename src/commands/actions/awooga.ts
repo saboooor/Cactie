@@ -1,6 +1,6 @@
-import { SlashCommand } from 'types/Objects';
-import action from '../../functions/action';
-import someone from '../../options/someone';
+import { SlashCommand } from '~/types/Objects';
+import action from '~/functions/action';
+import someone from '~/options/someone';
 import { GuildMember } from 'discord.js';
 
 export const awooga: SlashCommand = {

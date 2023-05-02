@@ -6,7 +6,7 @@ const app = express();
 import { readFileSync } from 'fs';
 import YAML from 'yaml';
 const { con } = YAML.parse(readFileSync('./config.yml', 'utf8'));
-import addVote from '../functions/addVote';
+import addVote from '~/functions/addVote';
 
 export default (client: Client) => {
   if (!con.vote) return logger.info('Skipped webhook server loading!');

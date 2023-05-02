@@ -1,6 +1,6 @@
 import { Client, GuildMember, TextChannel } from 'discord.js';
-import { ticketData } from 'types/mysql';
-import closeTicket from '../../functions/tickets/closeTicket';
+import { ticketData } from '~/types/mysql';
+import closeTicket from '~/functions/tickets/closeTicket';
 
 export default async (client: Client, member: GuildMember) => {
   try {

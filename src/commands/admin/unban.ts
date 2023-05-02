@@ -1,6 +1,6 @@
 import { EmbedBuilder, TextChannel, User } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import unbanOptions from '../../options/unban';
+import { SlashCommand } from '~/types/Objects';
+import unbanOptions from '~/options/unban';
 
 export const unban: SlashCommand = {
   description: 'Unban someone that was banned from the server',

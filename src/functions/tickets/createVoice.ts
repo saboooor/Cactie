@@ -1,5 +1,5 @@
 import { Client, GuildMember, TextChannel, PublicThreadChannel, EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
-import { settings } from 'types/mysql';
+import { settings } from '~/types/mysql';
 
 export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel

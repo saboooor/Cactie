@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import minecraft from '../../options/minecraft';
+import { SlashCommand } from '~/types/Objects';
+import minecraft from '~/options/minecraft';
 
 export const serverjar: SlashCommand = {
   aliases: ['mcjar', 'jar', 'srvjar'],

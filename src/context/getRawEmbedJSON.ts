@@ -1,5 +1,5 @@
 import { createPaste } from 'hastebin';
-import { ContextMenuCommand } from 'types/Objects';
+import { ContextMenuCommand } from '~/types/Objects';
 
 export const context: ContextMenuCommand<'Message'> = {
   name: 'Get Raw Embed JSON',

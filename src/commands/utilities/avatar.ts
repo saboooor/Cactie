@@ -1,7 +1,7 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import { refresh } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import user from '../../options/user';
+import { refresh } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import user from '~/options/user';
 
 export const avatar: SlashCommand = {
   description: 'Get the avatar of a user',

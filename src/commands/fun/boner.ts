@@ -1,6 +1,6 @@
 import { EmbedBuilder, GuildMember } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import someone from '../../options/someone';
+import { SlashCommand } from '~/types/Objects';
+import someone from '~/options/someone';
 
 export const boner: SlashCommand = {
   description: 'See your boner expand!',

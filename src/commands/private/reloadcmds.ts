@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
-import slashcommands from '../../lists/slash';
-import { Command } from 'types/Objects';
+import slashcommands from '~/lists/slash';
+import { Command } from '~/types/Objects';
 const truncateString = (string: string, maxLength: number) =>
   string.length > maxLength
     ? `${string.substring(0, maxLength)}…`

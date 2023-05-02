@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
-import { Button } from 'types/Objects';
+import { Button } from '~/types/Objects';
 
 // Set the buttons collection
 const buttons = new Collection<string, Button>();

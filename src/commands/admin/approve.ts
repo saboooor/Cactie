@@ -1,10 +1,10 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, CommandInteraction, User, GuildEmoji, Message } from 'discord.js';
-import { yes } from '../../misc/emoji.json';
-import getTranscript from '../../functions/getTranscript';
-import getMessages from '../../functions/getMessages';
-import checkPerms from '../../functions/checkPerms';
-import suggestresponse from '../../options/suggestresponse';
-import { SlashCommand } from 'types/Objects';
+import { yes } from '~/misc/emoji.json';
+import getTranscript from '~/functions/getTranscript';
+import getMessages from '~/functions/getMessages';
+import checkPerms from '~/functions/checkPerms';
+import suggestresponse from '~/options/suggestresponse';
+import { SlashCommand } from '~/types/Objects';
 
 export const approve: SlashCommand = {
   description: 'Approve a suggestion.',

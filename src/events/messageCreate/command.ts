@@ -1,8 +1,8 @@
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, GuildChannelResolvable, TextChannel } from 'discord.js';
-import checkPerms from '../../functions/checkPerms';
-import commands from '../../lists/commands';
-import { cooldowns } from '../../lists/commands';
-import cooldownMessages from '../../misc/cooldown.json';
+import checkPerms from '~/functions/checkPerms';
+import commands from '~/lists/commands';
+import { cooldowns } from '~/lists/commands';
+import cooldownMessages from '~/misc/cooldown.json';
 
 export default async (client: Client, message: Message<true>) => {
   // If the bot can't read message history or send messages, don't execute a command

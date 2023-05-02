@@ -1,6 +1,6 @@
-import commands from '../../lists/commands';
-import { SlashCommand } from 'types/Objects';
-import animals from '../../options/animals';
+import commands from '~/lists/commands';
+import { SlashCommand } from '~/types/Objects';
+import animals from '~/options/animals';
 
 export const animal: SlashCommand = {
   description: 'Show a picture of an animal!',

@@ -1,4 +1,4 @@
-import { Command } from 'types/Objects';
+import { Command } from '~/types/Objects';
 
 export const crash: Command = {
   description: 'crashes the bot',

@@ -1,5 +1,5 @@
 import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
-import { settings } from 'types/mysql';
+import { settings } from '~/types/mysql';
 
 export default async function reopenTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if tickets are disabled

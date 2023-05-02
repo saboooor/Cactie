@@ -1,5 +1,5 @@
 import { schedule } from 'node-cron';
-import { lastVoted } from 'types/mysql';
+import { lastVoted } from '~/types/mysql';
 
 export default async () => schedule('* * * * *', async () => {
   // Get all users who have voted recently

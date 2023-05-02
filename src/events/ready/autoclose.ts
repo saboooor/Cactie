@@ -1,8 +1,8 @@
 import { Client, TextChannel } from 'discord.js';
 import { schedule } from 'node-cron';
-import { ticketData } from 'types/mysql';
+import { ticketData } from '~/types/mysql';
 
-import closeTicket from '../../functions/tickets/closeTicket';
+import closeTicket from '~/functions/tickets/closeTicket';
 
 export default (client: Client) => schedule('0 0 * * *', async () => {
   // Get all tickets

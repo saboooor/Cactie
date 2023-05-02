@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import resolveTicket from '../../functions/tickets/resolveTicket';
-import { SlashCommand } from 'types/Objects';
+import resolveTicket from '~/functions/tickets/resolveTicket';
+import { SlashCommand } from '~/types/Objects';
 
 export const resolve: SlashCommand = {
   description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',

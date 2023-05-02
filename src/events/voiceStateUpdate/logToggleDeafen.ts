@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
-import { deafen, srvdeafen, undeafen } from '../../misc/emoji.json';
+import { deafen, srvdeafen, undeafen } from '~/misc/emoji.json';
 
 export default async (client: Client, oldState: VoiceState, newState: VoiceState) => {
   // Check if the deaf state actually changed

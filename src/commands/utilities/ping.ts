@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ComponentType, ButtonInteraction, CommandInteraction } from 'discord.js';
-import { refresh } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import pong from '../../misc/pong.json';
+import { refresh } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import pong from '~/misc/pong.json';
 
 export const ping: SlashCommand = {
   description: 'Pong!',

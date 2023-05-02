@@ -1,6 +1,6 @@
-import { SlashCommand } from 'types/Objects';
-import action from '../../functions/action';
-import someonereq from '../../options/someonereq';
+import { SlashCommand } from '~/types/Objects';
+import action from '~/functions/action';
+import someonereq from '~/options/someonereq';
 import { GuildMember } from 'discord.js';
 
 export const stare: SlashCommand = {

@@ -1,6 +1,6 @@
 import { ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
-import contextcommands from '../../lists/context';
-import { Command } from 'types/Objects';
+import contextcommands from '~/lists/context';
+import { Command } from '~/types/Objects';
 
 export const reloadcontext: Command = {
   description: 'Reloads all context commands',

@@ -1,6 +1,6 @@
 import { EmbedBuilder, Client, Message } from 'discord.js';
 import { createPaste } from 'hastebin';
-import checkPerms from '../../functions/checkPerms';
+import checkPerms from '~/functions/checkPerms';
 
 export default async (client: Client, message: Message<true>) => {
   // Check if author is a bot or message is in dm

@@ -1,5 +1,5 @@
 import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import { Command } from 'types/Objects';
+import { Command } from '~/types/Objects';
 
 export const dm: Command = {
   description: 'DM someone through Cactie bot.',

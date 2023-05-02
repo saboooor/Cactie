@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { Command } from 'types/Objects';
+import { Command } from '~/types/Objects';
 import util from 'util';
 
 export const ec: Command = {

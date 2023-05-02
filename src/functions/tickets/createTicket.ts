@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField, Client, GuildMember, TextChannel, CategoryChannel } from 'discord.js';
-import { settings } from 'types/mysql';
+import { settings } from '~/types/mysql';
 
 export default async function createTicket(client: Client, srvconfig: settings, member: GuildMember, description?: string) {
   // Check if tickets are disabled

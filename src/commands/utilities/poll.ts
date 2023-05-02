@@ -1,8 +1,8 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, GuildEmoji, TextChannel, User, CommandInteraction } from 'discord.js';
-import { yes, no } from '../../misc/emoji.json';
-import checkPerms from '../../functions/checkPerms';
-import { SlashCommand } from 'types/Objects';
-import pollOptions from '../../options/poll';
+import { yes, no } from '~/misc/emoji.json';
+import checkPerms from '~/functions/checkPerms';
+import { SlashCommand } from '~/types/Objects';
+import pollOptions from '~/options/poll';
 
 export const poll: SlashCommand = {
   description: 'Create a poll!',

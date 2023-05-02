@@ -1,4 +1,4 @@
-import { Field } from 'types/Field';
+import { Field } from '~/types/Field';
 
 export default function getConfig() {
   return {

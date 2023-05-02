@@ -1,5 +1,5 @@
 import { CommandInteraction, EmbedBuilder, GuildMember, Message } from 'discord.js';
-import actions from '../misc/actions.json';
+import actions from '~/misc/actions.json';
 
 let current: number;
 

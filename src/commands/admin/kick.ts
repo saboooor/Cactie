@@ -1,6 +1,6 @@
 import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import kickOptions from '../../options/kick';
+import { SlashCommand } from '~/types/Objects';
+import kickOptions from '~/options/kick';
 
 export const kick: SlashCommand = {
   description: 'Kick someone from the server',

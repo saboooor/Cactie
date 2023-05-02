@@ -1,7 +1,7 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import manageUsers from '../../functions/tickets/manageUsers';
-import { SlashCommand } from 'types/Objects';
-import user from '../../options/user';
+import manageUsers from '~/functions/tickets/manageUsers';
+import { SlashCommand } from '~/types/Objects';
+import user from '~/options/user';
 
 export const add: SlashCommand = {
   description: 'Add someone to a ticket',

@@ -1,5 +1,5 @@
-import { Command } from 'types/Objects';
-import redditFetch from '../../functions/redditFetch';
+import { Command } from '~/types/Objects';
+import redditFetch from '~/functions/redditFetch';
 
 export const goose: Command = {
   description: 'goos honk honk',

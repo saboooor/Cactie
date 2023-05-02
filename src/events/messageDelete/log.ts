@@ -1,5 +1,5 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
-import { no } from '../../misc/emoji.json';
+import { no } from '~/misc/emoji.json';
 
 export default async (client: Client, message: Message<true>) => {
   // Check if the message was sent by a bot

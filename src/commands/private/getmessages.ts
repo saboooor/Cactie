@@ -1,5 +1,5 @@
-import { Command } from 'types/Objects';
-import getMessages from '../../functions/getMessages';
+import { Command } from '~/types/Objects';
+import getMessages from '~/functions/getMessages';
 
 export const getmessages: Command = {
   description: 'getMessages',

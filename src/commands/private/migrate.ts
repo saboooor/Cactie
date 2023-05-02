@@ -1,4 +1,4 @@
-import { Command } from 'types/Objects';
+import { Command } from '~/types/Objects';
 
 export const migrate: Command = {
   description: 'migrates the db to new versions',

@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import githubOptions from '../../options/github';
+import { SlashCommand } from '~/types/Objects';
+import githubOptions from '~/options/github';
 
 export const github: SlashCommand = {
   aliases: ['git'],

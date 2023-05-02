@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import reopenTicket from '../functions/tickets/reopenTicket';
-import { Button } from 'types/Objects';
+import reopenTicket from '~/functions/tickets/reopenTicket';
+import { Button } from '~/types/Objects';
 
 export const reopen_ticket: Button = {
   botPerms: ['ManageChannels'],

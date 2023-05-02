@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import createVoice from '../functions/tickets/createVoice';
-import { Button } from 'types/Objects';
+import createVoice from '~/functions/tickets/createVoice';
+import { Button } from '~/types/Objects';
 
 export const voiceticket_create: Button = {
   botPerms: ['ManageChannels'],

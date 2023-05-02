@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import createVoice from '../../functions/tickets/createVoice';
-import { SlashCommand } from 'types/Objects';
+import createVoice from '~/functions/tickets/createVoice';
+import { SlashCommand } from '~/types/Objects';
 
 export const vcticket: SlashCommand = {
   description: 'Create a voiceticket',

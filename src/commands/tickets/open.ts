@@ -1,6 +1,6 @@
 import { GuildMember, TextChannel } from 'discord.js';
-import reopenTicket from '../../functions/tickets/reopenTicket';
-import { SlashCommand } from 'types/Objects';
+import reopenTicket from '~/functions/tickets/reopenTicket';
+import { SlashCommand } from '~/types/Objects';
 
 export const forcedelete: SlashCommand = {
   description: 'Repen a ticket',

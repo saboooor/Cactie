@@ -1,5 +1,5 @@
 import { Client, MessageReaction, User } from 'discord.js';
-import checkPerms from '../../functions/checkPerms';
+import checkPerms from '~/functions/checkPerms';
 
 export default async (client: Client, reaction: MessageReaction, user: User) => {
   // Check if author is a bot or guild is undefined

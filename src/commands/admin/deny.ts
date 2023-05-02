@@ -1,10 +1,10 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, TextBasedChannel, PublicThreadChannel, CommandInteraction, User, Message } from 'discord.js';
-import { no } from '../../misc/emoji.json';
-import getTranscript from '../../functions/getTranscript';
-import getMessages from '../../functions/getMessages';
-import checkPerms from '../../functions/checkPerms';
-import { SlashCommand } from 'types/Objects';
-import suggestresponse from '../../options/suggestresponse';
+import { no } from '~/misc/emoji.json';
+import getTranscript from '~/functions/getTranscript';
+import getMessages from '~/functions/getMessages';
+import checkPerms from '~/functions/checkPerms';
+import { SlashCommand } from '~/types/Objects';
+import suggestresponse from '~/options/suggestresponse';
 
 export const deny: SlashCommand = {
   description: 'Deny a suggestion.',

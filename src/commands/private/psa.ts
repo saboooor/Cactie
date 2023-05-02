@@ -1,4 +1,4 @@
-import { Command } from 'types/Objects';
+import { Command } from '~/types/Objects';
 
 export const psa: Command = {
   description: 'Broadcasts a message to all server owners with the bot in them.',

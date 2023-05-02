@@ -1,5 +1,5 @@
-import commands from '../../lists/commands';
-import { SlashCommand } from 'types/Objects';
+import commands from '~/lists/commands';
+import { SlashCommand } from '~/types/Objects';
 
 export const invite: SlashCommand = {
   description: 'Get Cactie\'s invite links',

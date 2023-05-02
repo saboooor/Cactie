@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextInputComponent, ButtonInteraction, ComponentType } from 'discord.js';
-import { yes, no, srch } from '../misc/emoji.json';
-import { Modal } from 'types/Objects';
+import { yes, no, srch } from '~/misc/emoji.json';
+import { Modal } from '~/types/Objects';
 
 export const guess_answer: Modal = {
   execute: async (interaction) => {

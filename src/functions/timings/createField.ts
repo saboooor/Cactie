@@ -1,5 +1,5 @@
 
-import { FieldOption } from 'types/Field';
+import { FieldOption } from '~/types/Field';
 
 export default function createField(option: FieldOption) {
   const field: FieldOption = { name: option.name, value: option.value };

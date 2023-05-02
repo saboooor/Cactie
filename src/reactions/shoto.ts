@@ -1,4 +1,4 @@
-import { Reaction } from 'types/Objects';
+import { Reaction } from '~/types/Objects';
 
 export const shoto: Reaction = {
   triggers: ['shoto'],

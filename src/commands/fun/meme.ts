@@ -1,5 +1,5 @@
-import redditFetch from '../../functions/redditFetch';
-import { SlashCommand } from 'types/Objects';
+import redditFetch from '~/functions/redditFetch';
+import { SlashCommand } from '~/types/Objects';
 
 export const meme: SlashCommand = {
   description: 'memes haha funny',

@@ -1,9 +1,9 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { createPaste } from 'hastebin';
-import protocols from '../../misc/mcprotocol.json';
-import { refresh } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import stats from '../../options/stats';
+import protocols from '~/misc/mcprotocol.json';
+import { refresh } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import stats from '~/options/stats';
 
 export const mcstats: SlashCommand = {
   description: 'Get the status of a Minecraft server',

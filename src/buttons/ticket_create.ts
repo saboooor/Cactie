@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
-import { Button } from 'types/Objects';
+import { Button } from '~/types/Objects';
 
 export const create_ticket: Button = {
   botPerms: ['ManageChannels'],

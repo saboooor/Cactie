@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
-import { ContextMenuCommand } from 'types/Objects';
+import { ContextMenuCommand } from '~/types/Objects';
 
 // Set the contextcommands collection
 const contextcommands = new Collection<string, ContextMenuCommand<'Message'> | ContextMenuCommand<'User'>>();

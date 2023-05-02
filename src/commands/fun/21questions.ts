@@ -1,6 +1,6 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, User, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import questionsOptions from '../../options/21q';
+import { SlashCommand } from '~/types/Objects';
+import questionsOptions from '~/options/21q';
 
 export const questions: SlashCommand = {
   name: '21questions',

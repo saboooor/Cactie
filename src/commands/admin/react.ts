@@ -1,6 +1,6 @@
 import { EmbedBuilder, TextBasedChannel } from 'discord.js';
-import { SlashCommand } from 'types/Objects';
-import reactOptions from '../../options/react';
+import { SlashCommand } from '~/types/Objects';
+import reactOptions from '~/options/react';
 
 export const react: SlashCommand = {
   description: 'Adds a reaction to a message',

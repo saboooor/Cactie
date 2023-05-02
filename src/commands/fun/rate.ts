@@ -1,6 +1,6 @@
-import { SlashCommand } from 'types/Objects';
-import someone from '../../options/someone';
-import ratings from '../../misc/rate.json';
+import { SlashCommand } from '~/types/Objects';
+import someone from '~/options/someone';
+import ratings from '~/misc/rate.json';
 import { GuildMember } from 'discord.js';
 
 export const rate: SlashCommand = {

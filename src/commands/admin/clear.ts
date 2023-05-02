@@ -1,9 +1,9 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, CommandInteraction, User, Message } from 'discord.js';
-import getTranscript from '../../functions/getTranscript';
-import getMessages from '../../functions/getMessages';
-import { yes, no } from '../../misc/emoji.json';
-import { SlashCommand } from 'types/Objects';
-import clearOptions from '../../options/clear';
+import getTranscript from '~/functions/getTranscript';
+import getMessages from '~/functions/getMessages';
+import { yes, no } from '~/misc/emoji.json';
+import { SlashCommand } from '~/types/Objects';
+import clearOptions from '~/options/clear';
 
 export const clear: SlashCommand = {
   description: 'Delete multiple messages at once',

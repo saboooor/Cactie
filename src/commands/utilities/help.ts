@@ -1,9 +1,9 @@
 import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, GuildMember, CategoryChannel, StringSelectMenuInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import checkPerms, { PermissionChannel } from '../../functions/checkPerms';
-import { SlashCommand } from 'types/Objects';
-import commands from '../../lists/commands';
-import helpOptions from '../../options/help';
-import * as helpdesc from '../../misc/helpdesc';
+import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
+import { SlashCommand } from '~/types/Objects';
+import commands from '~/lists/commands';
+import helpOptions from '~/options/help';
+import * as helpdesc from '~/misc/helpdesc';
 
 export const help: SlashCommand = {
   description: 'Get help with Cactie',

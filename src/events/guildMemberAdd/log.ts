@@ -1,5 +1,5 @@
 import { Client, EmbedBuilder, GuildMember, TextChannel } from 'discord.js';
-import { join } from '../../misc/emoji.json';
+import { join } from '~/misc/emoji.json';
 
 export default async (client: Client, member: GuildMember) => {
   // Get current settings for the guild

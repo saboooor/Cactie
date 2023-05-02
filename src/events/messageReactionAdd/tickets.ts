@@ -1,9 +1,9 @@
-import checkPerms from '../../functions/checkPerms';
-import createTicket from '../../functions/tickets/createTicket';
-import closeTicket from '../../functions/tickets/closeTicket';
-import deleteTicket from '../../functions/tickets/deleteTicket';
-import reopenTicket from '../../functions/tickets/reopenTicket';
-import createVoice from '../../functions/tickets/createVoice';
+import checkPerms from '~/functions/checkPerms';
+import createTicket from '~/functions/tickets/createTicket';
+import closeTicket from '~/functions/tickets/closeTicket';
+import deleteTicket from '~/functions/tickets/deleteTicket';
+import reopenTicket from '~/functions/tickets/reopenTicket';
+import createVoice from '~/functions/tickets/createVoice';
 import { Client, MessageReaction, TextChannel, User } from 'discord.js';
 
 export default async (client: Client, reaction: MessageReaction, user: User) => {
