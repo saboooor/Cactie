@@ -1,7 +1,7 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, TextBasedChannel, PublicThreadChannel, CommandInteraction, User, Message } from 'discord.js';
 import { no } from '~/misc/emoji.json';
-import getTranscript from '~/functions/getTranscript';
-import getMessages from '~/functions/getMessages';
+import getTranscript from '~/functions/messages/getTranscript';
+import getMessages from '~/functions/messages/getMessages';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import suggestresponse from '~/options/suggestresponse';

@@ -1,6 +1,6 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, PublicThreadChannel, Message } from 'discord.js';
-import getTranscript from '../getTranscript';
-import getMessages from '../getMessages';
+import getTranscript from '../messages/getTranscript';
+import getMessages from '../messages/getMessages';
 import { settings, ticketData } from '~/types/mysql';
 
 export default async function closeTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
