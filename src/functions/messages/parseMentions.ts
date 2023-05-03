@@ -1,6 +1,6 @@
 import { Guild, MessageMentions, TextChannel } from 'discord.js';
 
-const EmojisPattern = /(<a?)?(:\w+:)(\d{17,19})>/g;
+// const EmojisPattern = /(<a?)?(:\w+:)(\d{17,19})>/g;
 const longTimePattern = /<t:(\d{1,13})(:t)?(:R)?>/g;
 const longTimeWeekdayPattern = /<t:(\d{1,13}):F>/g;
 const numericDateOnlyTimePattern = /<t:(\d{1,13}):d>/g;
@@ -52,9 +52,9 @@ export default async function parseMentions(text: string, guild: Guild) {
     parsed = parsed.replace(match[0], `**@${user.tag}**`);
   }
 
-  // Parse all emoji mentions
-  const emojiMatches = [...text.matchAll(EmojisPattern)];
-  emojiMatches.forEach(match => parsed = parsed.replace(match[0], match[2]));
+  // // Parse all emoji mentions
+  // const emojiMatches = [...text.matchAll(EmojisPattern)];
+  // emojiMatches.forEach(match => parsed = parsed.replace(match[0], match[2]));
 
   // Parse all timestamps
   const longTimeMatches = [...text.matchAll(longTimePattern)];

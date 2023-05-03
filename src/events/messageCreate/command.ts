@@ -1,14 +1,13 @@
-import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, GuildChannelResolvable, TextChannel } from 'discord.js';
-import checkPerms from '~/functions/checkPerms';
-import commands from '~/lists/commands';
-import { cooldowns } from '~/lists/commands';
+import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, TextChannel } from 'discord.js';
+import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
+import commands, { cooldowns } from '~/lists/commands';
 import cooldownMessages from '~/misc/cooldown.json';
 
 export default async (client: Client, message: Message<true>) => {
   // If the bot can't read message history or send messages, don't execute a command
   if (message.webhookId || message.author.bot) return;
   if (!message.guild) return;
-  const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me!, message.channel as GuildChannelResolvable);
+  const initialPermCheck = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild.members.me!, message.channel as PermissionChannel);
   if (initialPermCheck) return;
 
   // // make a custom function to replace message.reply
@@ -144,7 +143,7 @@ export default async (client: Client, message: Message<true>) => {
 
   // Check if user has the permissions necessary in the channel to use the command
   if (command.channelPermissions) {
-    const permCheck = checkPerms(command.channelPermissions, message.member!, message.channel as GuildChannelResolvable);
+    const permCheck = checkPerms(command.channelPermissions, message.member!, message.channel as PermissionChannel);
     if (permCheck) return error(permCheck, message, true);
   }
 
@@ -156,7 +155,7 @@ export default async (client: Client, message: Message<true>) => {
 
   // Check if bot has the permissions necessary in the channel to run the command
   if (command.botChannelPerms) {
-    const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me!, message.channel as GuildChannelResolvable);
+    const permCheck = checkPerms(command.botChannelPerms, message.guild.members.me!, message.channel as PermissionChannel);
     if (permCheck) return error(permCheck, message, true);
   }
 
