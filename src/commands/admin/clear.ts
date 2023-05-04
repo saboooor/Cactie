@@ -45,7 +45,7 @@ export const clear: SlashCommand = {
       }
 
       // Combine all message chunks and see if any messages are in there
-      const allmessages = new Collection<string, Message>().concat(...messagechunks);
+      const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
       if (!allmessages.size) {
         error('There are no messages in that scope, try a higher number?', message, true);
         return;
