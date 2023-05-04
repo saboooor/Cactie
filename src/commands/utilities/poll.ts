@@ -28,7 +28,7 @@ export const poll: SlashCommand = {
       }
 
       const cmd = args.shift();
-      const msg = args.join();
+      const msg = args.join(' ');
       if (cmd == 'create') {
         // Create poll embed
         const pollEmbed = new EmbedBuilder()

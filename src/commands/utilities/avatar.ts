@@ -21,7 +21,7 @@ export const avatar: SlashCommand = {
       const userpfp = member.user.avatarURL({ size: 1024 });
       const UsrEmbed = new EmbedBuilder()
         .setColor(member.user.accentColor ?? null)
-        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp ?? userpfp ?? undefined })
+        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp ? userpfp ?? undefined : undefined })
         .setImage(memberpfp ? memberpfp : userpfp);
       const row = [];
       if (memberpfp) {

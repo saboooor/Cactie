@@ -114,7 +114,7 @@ export default async (client: Client, message: Message<true>) => {
     const Usage = new EmbedBuilder()
       .setColor(0x2f3136)
       .setTitle('Usage')
-      .setDescription(`\`${srvconfig.prefix + command.name + ' ' + command.usage}\``);
+      .setDescription(`\`\`\`\n${srvconfig.prefix + command.name + ' ' + command.usage}\n\`\`\``);
     return message.reply({ embeds: [Usage] });
   }
 

@@ -35,7 +35,7 @@ export const info: SlashCommand = {
             .setLabel('Join the LuminescentDev Server!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL(`${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
+            .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
             .setLabel('Open the Dashboard!')
             .setStyle(ButtonStyle.Link),
         ]);
