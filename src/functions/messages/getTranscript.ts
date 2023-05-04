@@ -1,24 +1,33 @@
 import { Collection, Message, TextChannel } from 'discord.js';
 import parseMentions from './parseMentions';
 
-export default async function getTranscript(messages: Collection<string, Message>) {
+export default async function getTranscript(messages: Collection<string, Message<true>>) {
   const channel = messages.first()!.channel;
   const logs: Transcript = {
-    channel: (channel as TextChannel).name ?? 'No Name',
+    guild: {
+      name: channel.guild.name,
+      icon: channel.guild.iconURL() ?? undefined,
+    },
+    channel: (channel as TextChannel).name,
     time: Date.now(),
     logs: [],
   };
   for (const msg of messages.values()) {
+    await channel.guild.members.fetch(msg.author.id).catch(() => { return null; });
     const json: MessageJSON = {
-      time: new Date(msg.createdTimestamp).toLocaleString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true }),
+      id: msg.id,
+      time: Number(msg.createdAt),
       author: {
-        color: msg.member && msg.member.roles ? (msg.member.roles.highest ? msg.member.roles.highest.color.toString(16) : 'ffffff') : 'ffffff',
+        avatar: msg.member?.avatarURL() ?? msg.author.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
         name: msg.member && msg.member.displayName ? msg.member.displayName : msg.author.tag ?? 'Unknown User',
-        avatar: msg.member && msg.member.avatarURL() ? msg.member.avatarURL() : msg.author.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
+        color: msg.member?.displayHexColor ?? undefined,
       },
+      content: msg.content ? await parseMentions(msg.content, msg.guild!) : undefined,
+      reactions: msg.reactions.cache.size > 0 ? msg.reactions.cache.map(r => ({ name: `${r.emoji}`, count: r.count })) : undefined,
+      attachments: msg.attachments.size > 0 ? msg.attachments.map(a => ({ name: a.name, url: a.url })) : undefined,
+      embeds: msg.embeds && msg.embeds.length ? [] : undefined,
     };
     if (msg.embeds && msg.embeds.length) {
-      json.embeds = [];
       for (const MsgEmbed of msg.embeds) {
         const embedjson: EmbedJSON = {};
         if (MsgEmbed.color) embedjson.color = MsgEmbed.color.toString(16);
@@ -38,7 +47,6 @@ export default async function getTranscript(messages: Collection<string, Message
 				json.embeds!.push(embedjson);
       }
     }
-    if (msg.content) json.content = await parseMentions(msg.content, msg.guild!);
     logs.logs.push(json);
   }
   logs.logs.reverse();
@@ -47,19 +55,32 @@ export default async function getTranscript(messages: Collection<string, Message
 }
 
 declare type Transcript = {
+  guild: {
+    name: string;
+    icon?: string;
+  };
 	channel: string;
 	time: number;
 	logs: MessageJSON[];
 }
 
 declare type MessageJSON = {
-	time: string;
+  id: string;
+	time: number;
 	author: {
-		color: string;
-		name: string;
 		avatar: string | null;
+		name: string;
+		color?: string;
 	};
 	content?: string;
+  reactions?: {
+    name: string;
+    count: number;
+  }[];
+  attachments?: {
+    name: string;
+    url: string;
+  }[];
 	embeds?: EmbedJSON[];
 }
 
