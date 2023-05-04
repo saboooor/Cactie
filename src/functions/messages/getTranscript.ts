@@ -5,10 +5,14 @@ export default async function getTranscript(messages: Collection<string, Message
   const channel = messages.first()!.channel;
   const logs: Transcript = {
     guild: {
+      id: channel.guild.id,
       name: channel.guild.name,
       icon: channel.guild.iconURL() ?? undefined,
     },
-    channel: (channel as TextChannel).name,
+    channel: {
+      id: channel.id,
+      name: (channel as TextChannel).name,
+    },
     time: Date.now(),
     logs: [],
   };
@@ -34,7 +38,7 @@ export default async function getTranscript(messages: Collection<string, Message
         if (MsgEmbed.author) embedjson.author = MsgEmbed.author;
         if (MsgEmbed.title) embedjson.title = MsgEmbed.title;
         if (MsgEmbed.description) embedjson.description = await parseMentions(MsgEmbed.description, msg.guild!);
-        if (MsgEmbed.fields) {
+        if (MsgEmbed.fields && MsgEmbed.fields[0]) {
           embedjson.fields = [];
           for (const field of MsgEmbed.fields) {
             const value = await parseMentions(field.value, msg.guild!);
@@ -55,11 +59,15 @@ export default async function getTranscript(messages: Collection<string, Message
 }
 
 declare type Transcript = {
-  guild: {
+  guild?: {
+    id: string;
     name: string;
     icon?: string;
   };
-	channel: string;
+	channel: {
+    id: string;
+    name: string;
+  }
 	time: number;
 	logs: MessageJSON[];
 }
