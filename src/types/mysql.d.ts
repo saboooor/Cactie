@@ -34,10 +34,10 @@ export class settings {
 
 export class reactionRoles {
   guildId: string;
-  channelId: string;
-  messageId: string;
-  emojiId: string;
-  roleId: string;
+  channelId: string | null;
+  messageId: string | null;
+  emojiId: string | null;
+  roleId: string | null;
   type: 'toggle' | 'switch';
   silent: 'true' | 'false';
 }

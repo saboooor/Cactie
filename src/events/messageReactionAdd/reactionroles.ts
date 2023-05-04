@@ -20,14 +20,14 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   if (!message) return;
 
   // Get the reaction's emoji
-  const emojiId = reaction.emoji.id ?? reaction.emoji.name;
+  const emojiId = reaction.emoji.id ?? reaction.emoji.name ?? undefined;
 
   // Get the reaction role from the database and check if it exists
   const reactionrole = await sql.getData('reactionroles', { messageId: message.id, emojiId }, { nocreate: true });
   if (!reactionrole) return;
 
   // Get the reaction role's role
-  const role = message.guild!.roles.cache.get(reactionrole.roleId);
+  const role = reactionrole.roleId ? message.guild!.roles.cache.get(reactionrole.roleId) : null;
   if (!role) return error('The role can\'t be found!', message, true);
 
   // Get the reaction role's author as a member

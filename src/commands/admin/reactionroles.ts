@@ -103,7 +103,7 @@ export const reactionroles: SlashCommand = {
         await sql.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId });
 
         // Get the reaction role's emoji
-        const emoji = client.emojis.cache.get(rr.emojiId) ?? rr.emojiId;
+        const emoji = rr.emojiId ? client.emojis.cache.get(rr.emojiId) : rr.emojiId ?? rr.emojiId;
 
         // Set the description and add a field of the reaction role that's been removed
         RREmbed.setDescription('Reaction Role removed!\nThe ID of other possible reactions have also changed.\nView current reaction roles with `/reactionroles get`')
@@ -113,7 +113,8 @@ export const reactionroles: SlashCommand = {
         // Add reaction roles to embed
         for (const i in reactionrolesData) {
           // fetch emoji
-          const emoji = client.emojis.cache.get(reactionrolesData[i].emojiId) ?? reactionrolesData[i].emojiId;
+          const emojiId = reactionrolesData[i].emojiId;
+          const emoji = emojiId ? client.emojis.cache.get(emojiId) : emojiId ?? emojiId;
 
           // add reaction role to embed
           RREmbed.addFields([{ name: `${i}.`, value: `${emoji} **<@&${reactionrolesData[i].roleId}>**\n[Go to message](https://discord.com/channels/${reactionrolesData[i].guildId}/${reactionrolesData[i].channelId}/${reactionrolesData[i].messageId})\n\u200b`, inline: true }]);
