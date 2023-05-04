@@ -1,6 +1,6 @@
 import { Client, CommandInteraction, EmbedBuilder, Message } from 'discord.js';
 
-export default async function redditFetch(subreddits: string[], message: CommandInteraction | Message, client: Client, attempts: number = 1): Promise<any> {
+export default async function redditFetch(subreddits: string[], message: CommandInteraction | Message, client: Client, attempts: number = 1): Promise<void> {
   // Get a random subreddit from the array of subreddits
   const subreddit = subreddits[Math.floor(Math.random() * subreddits.length)];
 
@@ -12,16 +12,25 @@ export default async function redditFetch(subreddits: string[], message: Command
   const json = await fetch(`https://www.reddit.com/r/${subreddit}/random.json`).catch(e => err = e);
 
   // If there is nothing or an error, return with an error
-  if (!json || err) return error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
+  if (!json || err) {
+    error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
+    return;
+  }
 
   // Parse into json
   let pong = await json.json().catch((e: Error) => err = e);
 
   // If there is nothing or an error, return ith an error
-  if (!pong) return error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
+  if (!pong) {
+    error(`Ran into a problem, please try again later\nhttps://www.reddit.com/r/${subreddit}/random.json${err ? `${err}\n` : ''}`, message);
+    return;
+  }
 
   // If subreddit isn't found, return with error
-  if (pong.message == 'Not Found') return error(`r/${subreddit} doesn't exist!`, message);
+  if (pong.message == 'Not Found') {
+    error(`r/${subreddit} doesn't exist!`, message);
+    return;
+  }
 
   // If data is an array, set it to the first element in the array
   if (pong[0]) pong = pong[0];
@@ -29,7 +38,8 @@ export default async function redditFetch(subreddits: string[], message: Command
   // Something really rare
   if (!pong) {
     logger.error(JSON.stringify(pong));
-    return error('Invalid data! Try again later.', message);
+    error('Invalid data! Try again later.', message);
+    return;
   }
 
   // Get the specific post's data

@@ -28,11 +28,11 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   if (ticketdata.voiceticket != 'false') {
     const voiceticket = await member.guild.channels.fetch(ticketdata.voiceticket).catch(() => { return null; });
     if (voiceticket) voiceticket.delete();
-    await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: false });
+    await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: 'false' });
   }
 
   // Unresolve ticket
-  if (ticketdata.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: false });
+  if (ticketdata.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: 'false' });
 
   // Create a transcript of the ticket
   const messagechunks = await getMessages<true>(channel, 'infinite').catch((err: Error) => {

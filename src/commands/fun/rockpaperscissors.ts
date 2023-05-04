@@ -49,7 +49,9 @@ export const rockpaperscissors: SlashCommand = {
     const filter = (i: ButtonInteraction) => i.user.id == message.member!.user.id || i.user.id == member.id;
     const collector = rpsmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
 
-    const choices: any = {};
+    const choices: {
+      [id: string]: string;
+    } = {};
     collector.on('collect', async interaction => {
       if (interaction.customId != 'rock' && interaction.customId != 'paper' && interaction.customId != 'scissors') return;
       await interaction.deferReply({ ephemeral: true }).catch((err: Error) => logger.error(err));

@@ -5,7 +5,7 @@ const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())
 
 export default (client: Client) => {
   // Create a function for error messaging
-  global.error = async function error(err: any, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
+  global.error = async function error(err: unknown, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
     if (`${err}`.includes('Received one or more errors')) console.log(err);
     logger.error(err);
     const errEmbed = new EmbedBuilder()
@@ -38,10 +38,13 @@ export default (client: Client) => {
     }
   };
   client.rest.on('rateLimited', (info) => logger.warn(`Encountered ${info.method} rate limit!`));
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   process.on('unhandledRejection', (reason: any) => {
     if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction' || reason.rawError.message == 'Missing Access' || reason.rawError.message == 'Missing Permissions')) {
       logger.error(JSON.stringify(reason.requestBody));
     }
   });
+
   logger.info('Error Handler Loaded');
 };

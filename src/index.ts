@@ -42,7 +42,7 @@ declare global {
 		getData: typeof getData;
 		setData: typeof setData;
 	};
-	var error: { (err: any, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean): Promise<Message | InteractionResponse | undefined> };
+	var error: { (err: unknown, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean): Promise<Message | InteractionResponse | undefined> };
 }
 function sleepfunc(ms: number) {
   return new Promise(resolve => {

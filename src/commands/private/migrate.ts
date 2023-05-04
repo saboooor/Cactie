@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Command } from '~/types/Objects';
 
 export const migrate: Command = {
   description: 'migrates the db to new versions',
   async execute(message) {
-    const settings = await sql.getData('settings', null, { all: true });
+    const settings = await sql.getData('settings', undefined, { all: true });
     for (const srvconfig of settings) {
       if (!srvconfig.auditlogs.startsWith('{')) {
         const newJSON: any = { channel: srvconfig.logchannel, logs: {} };

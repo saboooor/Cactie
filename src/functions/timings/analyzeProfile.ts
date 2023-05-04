@@ -30,9 +30,13 @@ export default async function analyzeProfile(id: string) {
 
   if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let server_properties: any, bukkit: any, spigot: any, paper: any, purpur: any;
 
-  const plugins: any[] = Object.values(sampler.metadata.sources);
+  const plugins: {
+    name: string;
+    authors: string;
+  }[] = Object.values(sampler.metadata.sources);
   const configs = sampler.metadata.serverConfigurations;
   if (configs) {
     if (configs['server.properties']) server_properties = JSON.parse(configs['server.properties']);
@@ -155,9 +159,8 @@ export default async function analyzeProfile(id: string) {
           const server_plugins = PROFILE_CHECK.plugins[server_name as keyof typeof PROFILE_CHECK.plugins];
           Object.keys(server_plugins).forEach(plugin_name => {
             if (plugin.name == plugin_name) {
-              const stored_plugin: any = server_plugins[plugin_name as keyof typeof server_plugins];
-              stored_plugin.name = plugin_name;
-              fields.push(createField(stored_plugin));
+              const stored_plugin = server_plugins[plugin_name as keyof typeof server_plugins];
+              fields.push(createField({ name: plugin_name, ...stored_plugin }));
             }
           });
         });

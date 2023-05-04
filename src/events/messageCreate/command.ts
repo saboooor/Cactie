@@ -45,7 +45,7 @@ export default async (client: Client, message: Message<true>) => {
     // Check if channel is a ticket
     const ticketData = await sql.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
     if (ticketData && ticketData.resolved == 'true') {
-      await sql.setData('ticketdata', { channelId: message.channel.id }, { resolved: false });
+      await sql.setData('ticketdata', { channelId: message.channel.id }, { resolved: 'false' });
       logger.info(`Unresolved #${(message.channel as TextChannel).name}`);
     }
     return;

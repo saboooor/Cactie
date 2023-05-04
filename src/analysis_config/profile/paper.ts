@@ -1,15 +1,7 @@
 import { Field } from '~/types/Field';
+import { config } from '../types';
 
-export default function getConfig(): {
-  [key: string]: {
-    expressions: {
-      bool: (dict_of_vars: any) => boolean;
-      vars: string[];
-    }[];
-    prefix: string;
-    value: string;
-  }[]
-  } {
+export default function getConfig(): config {
   return {
     'chunks.max-auto-save-chunks-per-tick': [
       {

@@ -33,16 +33,26 @@ export const tictactoe: SlashCommand = {
       return;
     }
     let turn = Boolean(Math.round(Math.random()));
-    const btns: any = {};
+    const btns: {
+      '11'?: ButtonBuilder;
+      '12'?: ButtonBuilder;
+      '13'?: ButtonBuilder;
+      '21'?: ButtonBuilder;
+      '22'?: ButtonBuilder;
+      '23'?: ButtonBuilder;
+      '31'?: ButtonBuilder;
+      '32'?: ButtonBuilder;
+      '33'?: ButtonBuilder;
+    } = {};
     const rows: ActionRowBuilder<ButtonBuilder>[] = [];
     for (let row = 1; row <= 3; row++) {
-      rows.push(new ActionRowBuilder());
+      rows.push(new ActionRowBuilder<ButtonBuilder>());
       for (let column = 1; column <= 3; column++) {
-        btns[`${column}${row}`] = new ButtonBuilder()
+        btns[`${column}${row}` as keyof typeof btns] = new ButtonBuilder()
           .setCustomId(`${column}${row}`)
           .setEmoji({ id: empty })
           .setStyle(ButtonStyle.Secondary);
-        rows[row - 1].addComponents([btns[`${column}${row}`]]);
+        rows[row - 1].addComponents([btns[`${column}${row}` as keyof typeof btns]!]);
       }
     }
     const TicTacToe = new EmbedBuilder()
@@ -57,13 +67,13 @@ export const tictactoe: SlashCommand = {
     const filter = (i: ButtonInteraction) => i.customId != 'xo_again';
     const collector = xomsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
 
-    collector.on('collect', async (interaction: ButtonInteraction) => {
-      if (interaction.user.id != (turn ? message.member!.user.id : member.id)) {
-        interaction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+    collector.on('collect', async (btninteraction: ButtonInteraction) => {
+      if (btninteraction.user.id != (turn ? message.member!.user.id : member.id)) {
+        btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
         return;
       }
-      await interaction.deferUpdate().catch((err: Error) => logger.error(err));
-      const btn = btns[interaction.customId];
+      await btninteraction.deferUpdate().catch((err: Error) => logger.error(err));
+      const btn = btns[btninteraction.customId as keyof typeof btns]!;
       if (btn.toJSON().style == ButtonStyle.Secondary) {
         btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
           .setEmoji({ id: turn ? x : o })
@@ -74,39 +84,41 @@ export const tictactoe: SlashCommand = {
         .setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? message.member : member}` }])
         .setThumbnail(turn ? (message.member!.user as User).avatarURL() : member.user.avatarURL());
       // 2 = empty / 4 = X / 1 = O
-      const reslist = Object.keys(btns).map(i => btns[i].toJSON().style);
+      const reslist = Object.keys(btns).map(i => btns[i as keyof typeof btns]!.toJSON().style);
 
       // Evaluate the board
       const win = evalXO(reslist);
-      if (win.rows) win.rows.forEach(i => btns[i].setStyle(ButtonStyle.Success));
+      if (win.rows) { win.rows.forEach(i => btns[i.toString() as keyof typeof btns]!.setStyle(ButtonStyle.Success)); }
       if (win.winner) {
         const xwin = win.winner == 'x';
-        Object.keys(btns).map(i => { btns[i].setDisabled(true); });
+        Object.keys(btns).map(i => { btns[i as keyof typeof btns]!.setDisabled(true); });
         TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
           .setFields([{ name: 'Result:', value: `${xwin ? message.member : member} wins!` }])
           .setThumbnail(xwin ? (message.member!.user as User).avatarURL() : member.user.avatarURL());
         rows.push(again);
-        await interaction.editReply({ content: `${xwin ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
+        await btninteraction.editReply({ content: `${xwin ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: xwin } });
         return collector.stop();
       }
 
       // check for draw
       let draw = true;
-      Object.keys(btns).map(i => { if (!btns[i].toJSON().disabled) draw = false; });
+      Object.keys(btns).map(i => {
+        if (!btns[i as keyof typeof btns]!.toJSON().disabled) { draw = false; }
+      });
       if (draw) {
         TicTacToe.setColor(0x2f3136)
           .setFields([{ name: 'Result:', value: 'Draw!' }])
           .setThumbnail(null);
         rows.push(again);
-        return await interaction.editReply({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
+        return await btninteraction.editReply({ content: null, embeds: [TicTacToe], components: rows }) && collector.stop();
       }
 
       // Go on to next turn if no matches
-      await interaction.editReply({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
+      await btninteraction.editReply({ content: `${turn ? message.member : member}`, embeds: [TicTacToe], components: rows, allowedMentions: { repliedUser: turn } });
 
       // Ping the user
       try {
-        const pingmsg = await interaction.channel!.send({ content: `${turn ? message.member : member}` });
+        const pingmsg = await btninteraction.channel!.send({ content: `${turn ? message.member : member}` });
         await pingmsg.delete();
       }
       catch (err) {

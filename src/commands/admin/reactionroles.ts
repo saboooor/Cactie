@@ -73,7 +73,7 @@ export const reactionroles: SlashCommand = {
         if (!reaction) return;
 
         // Push to database
-        await sql.createData('reactionroles', { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: reaction.emoji[reaction.emoji.id ? 'id' : 'name'], roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() });
+        await sql.createData('reactionroles', { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: `${reaction.emoji[reaction.emoji.id ? 'id' : 'name']}`, roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() as 'toggle' | 'switch' });
 
         // Add the reaction role into the database and edit the description of the embed
         RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');

@@ -1,14 +1,6 @@
-export default function getConfig(): {
-  servers: {
-    name: string;
-    prefix: string;
-    value: string;
-    buttons: {
-      text: string;
-      url: string;
-    }[];
-  }[];
-  } {
+import { servers } from './types';
+
+export default function getConfig(): servers {
   return {
     servers: [
       {

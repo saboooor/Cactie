@@ -14,7 +14,7 @@ export const context: ContextMenuCommand<'User'> = {
         if (b[1].rawPosition > a[1].rawPosition) return 1;
         return 0;
       });
-      let roleslist = roles.map(i => `${i[1]}`);
+      let roleslist = roles.map(role => { return `${role[1]}`; });
 
       if (roles.length > 50) roleslist = ['Too many roles to list'];
       const activities = member.presence ? member.presence.activities : null;

@@ -60,7 +60,7 @@ export const ban: SlashCommand = {
       logger.info(`Banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
-      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: message.guild!.id }, { bannedUntil: Date.now() + time });
+      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: message.guild!.id }, { bannedUntil: `${Date.now() + time}` });
 
       // Actually ban the dude
       await member.ban({ reason: `${(author!.user as User).tag} banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });

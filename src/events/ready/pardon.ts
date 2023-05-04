@@ -3,7 +3,7 @@ import { EmbedBuilder, Client, TextChannel } from 'discord.js';
 
 export default async (client: Client) => schedule('* * * * *', async () => {
 // Get all member data
-  const memberdata = await sql.getData('memberdata', null, { all: true });
+  const memberdata = await sql.getData('memberdata', undefined, { all: true });
 
   // Iterate through every row in the data
   for (const data of memberdata) {

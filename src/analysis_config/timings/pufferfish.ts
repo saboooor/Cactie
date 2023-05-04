@@ -1,13 +1,6 @@
-export default function getConfig(): {
-  [key: string]: {
-    expressions: {
-      bool: (dict_of_vars: any) => boolean;
-      vars: string[];
-    }[];
-    prefix: string;
-    value: string;
-  }[]
-  } {
+import { config } from '../types';
+
+export default function getConfig(): config {
   return {
     'projectile.max-loads-per-projectile': [
       {

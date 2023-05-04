@@ -32,7 +32,7 @@ export default async (client: Client, member: GuildMember) => {
     if (b[1].rawPosition > a[1].rawPosition) return 1;
     return 0;
   });
-  let roleslist = Object.keys(roles).map(i => { return `${roles[i as any][1]}`; });
+  let roleslist = roles.map(role => { return `${role[1]}`; });
   if (roles.length > 50) roleslist = ['Too many roles to list'];
   if (roles.length) logEmbed.addFields([{ name: 'Roles', value: roleslist.join(', ') }]);
 

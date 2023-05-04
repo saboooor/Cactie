@@ -18,8 +18,10 @@ export default async function analyzeTimings(id: string) {
   const timings_json = `https://timings.aikar.co/data.php?id=${id}`;
   const url_raw = `https://timings.aikar.co/?id=${id}&raw=1`;
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   let request_raw: any;
   let request: any;
+
   try {
     const response_raw = await fetch(url_raw, {
       headers: { 'Accept': 'application/json' },
@@ -39,6 +41,7 @@ export default async function analyzeTimings(id: string) {
   if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 
   let server_properties: any, bukkit: any, spigot: any, paper: any, pufferfish: any, purpur: any;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const plugins = Object.keys(request.timingsMaster.plugins).map(i => { return request.timingsMaster.plugins[i]; });
   const configs = request.timingsMaster.config;
@@ -177,15 +180,15 @@ export default async function analyzeTimings(id: string) {
           const server_plugins = TIMINGS_CHECK.plugins[server_name as keyof typeof TIMINGS_CHECK.plugins];
           Object.keys(server_plugins).forEach(plugin_name => {
             if (plugin.name == plugin_name) {
-              const stored_plugin: any = server_plugins[plugin_name as keyof typeof server_plugins];
-              stored_plugin.name = plugin_name;
-              fields.push(createField(stored_plugin));
+              const stored_plugin = server_plugins[plugin_name as keyof typeof server_plugins];
+              fields.push(createField({ name: plugin_name, ...stored_plugin }));
             }
           });
         });
       }
     });
   }
+
   if (TIMINGS_CHECK.config) {
     Object.keys(TIMINGS_CHECK.config).map(i => { return TIMINGS_CHECK.config[i as keyof typeof TIMINGS_CHECK.config]; }).forEach(config => {
       Object.keys(config).forEach(option_name => {

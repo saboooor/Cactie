@@ -60,7 +60,7 @@ export const ban: Modal = {
       logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
-      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: interaction.guild.id }, { bannedUntil: Date.now() + time });
+      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: interaction.guild.id }, { bannedUntil: `${Date.now() + time}` });
 
       // Actually ban the dude
       await member.ban({ reason: `${authorTag} banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });

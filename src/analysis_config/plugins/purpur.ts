@@ -1,17 +1,6 @@
-export default function getConfig(): {
-  [key: string]: {
-    expressions?: {
-      bool: (dict_of_vars: any) => boolean;
-      vars: string[];
-    }[];
-    prefix: string;
-    value: string;
-    buttons?: {
-      text: string;
-      url: string;
-    }[];
-  }
-  } {
+import { plugins } from '../types';
+
+export default function getConfig(): plugins {
   return {
     'SilkSpawners': {
       prefix: '❌',

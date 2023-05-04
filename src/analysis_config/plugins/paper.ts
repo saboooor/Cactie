@@ -1,17 +1,6 @@
-export default function getConfig(): {
-  [key: string]: {
-    expressions?: {
-      bool: (dict_of_vars: any) => boolean;
-      vars: string[];
-    }[];
-    prefix: string;
-    value: string;
-    buttons?: {
-      text: string;
-      url: string;
-    }[];
-  }
-  } {
+import { plugins } from '../types';
+
+export default function getConfig(): plugins {
   return {
     'ClearLag': {
       prefix: '❌',
@@ -118,14 +107,6 @@ export default function getConfig(): {
       ],
     },
     'PhantomSMP': {
-      expressions: [
-        {
-          bool: (dict_of_vars: any) => {
-            return dict_of_vars.paper['world-settings']['default']['phantoms-only-attack-insomniacs'] == 'true';
-          },
-          vars: ['paper'],
-        },
-      ],
       prefix: '❌',
       value: 'You probably don\'t need PhantomSMP as Paper already has its features.\nEnable phantoms-only-attack-insomniacs in paper.yml.',
     },

@@ -41,16 +41,26 @@ export const xo_again: Button = {
     const dmuser = xuserId == interaction.user.id ? ouser : xuser;
     dmuser.send({ embeds: [playAgainEmbed], components: [againlink] });
     let turn = Math.round(Math.random());
-    const btns: any = {};
+    const btns: {
+      '11'?: ButtonBuilder;
+      '12'?: ButtonBuilder;
+      '13'?: ButtonBuilder;
+      '21'?: ButtonBuilder;
+      '22'?: ButtonBuilder;
+      '23'?: ButtonBuilder;
+      '31'?: ButtonBuilder;
+      '32'?: ButtonBuilder;
+      '33'?: ButtonBuilder;
+    } = {};
     const rows: ActionRowBuilder<ButtonBuilder>[] = [];
     for (let row = 1; row <= 3; row++) {
       rows.push(new ActionRowBuilder<ButtonBuilder>());
       for (let column = 1; column <= 3; column++) {
-        btns[`${column}${row}`] = new ButtonBuilder()
+        btns[`${column}${row}` as keyof typeof btns] = new ButtonBuilder()
           .setCustomId(`${column}${row}`)
           .setEmoji({ id: empty })
           .setStyle(ButtonStyle.Secondary);
-        rows[row - 1].addComponents([btns[`${column}${row}`]]);
+        rows[row - 1].addComponents([btns[`${column}${row}` as keyof typeof btns]!]);
       }
     }
     TicTacToe.setColor(turn ? 0xff0000 : 0x0000ff)
@@ -67,7 +77,7 @@ export const xo_again: Button = {
         return;
       }
       await btninteraction.deferUpdate().catch(err => logger.error(err));
-      const btn = btns[btninteraction.customId];
+      const btn = btns[btninteraction.customId as keyof typeof btns]!;
       if (btn.toJSON().style == ButtonStyle.Secondary) {
         btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
           .setEmoji({ id: turn ? x : o })
@@ -78,14 +88,14 @@ export const xo_again: Button = {
         .setFields([{ name: `${turn ? 'X' : 'O'}'s turn`, value: `${turn ? xuser : ouser}` }])
         .setThumbnail(turn ? xuser.user.avatarURL() : ouser.user.avatarURL());
       // 2 = empty / 4 = X / 1 = O
-      const reslist = Object.keys(btns).map(i => btns[i].toJSON().style);
+      const reslist = Object.keys(btns).map(i => btns[i as keyof typeof btns]!.toJSON().style);
 
       // Evaluate the board
       const win = evalXO(reslist);
-      if (win.rows) { win.rows.forEach(i => btns[i].setStyle(ButtonStyle.Success)); }
+      if (win.rows) { win.rows.forEach(i => btns[i.toString() as keyof typeof btns]!.setStyle(ButtonStyle.Success)); }
       if (win.winner) {
         const xwin = win.winner == 'x';
-        Object.keys(btns).map(i => { btns[i].setDisabled(true); });
+        Object.keys(btns).map(i => { btns[i as keyof typeof btns]!.setDisabled(true); });
         TicTacToe.setColor(xwin ? 0xff0000 : 0x0000ff)
           .setFields([{ name: 'Result:', value: `${xwin ? xuser : ouser} wins!` }])
           .setThumbnail(xwin ? xuser.user.avatarURL() : ouser.user.avatarURL());
@@ -97,7 +107,7 @@ export const xo_again: Button = {
       // check for draw
       let draw = true;
       Object.keys(btns).map(i => {
-        if (!btns[i].toJSON().disabled) { draw = false; }
+        if (!btns[i as keyof typeof btns]!.toJSON().disabled) { draw = false; }
       });
       if (draw) {
         TicTacToe.setColor(0x2f3136)
