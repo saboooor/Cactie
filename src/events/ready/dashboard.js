@@ -1,3 +1,13 @@
+
+/*
+
+This file has been deprecated and will be removed once the new dashboard is ready.
+
+*/
+
+
+
+
 // import modules.
 const url = require('url');
 const ejs = require('ejs');
@@ -8,7 +18,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const Djs = require('discord.js');
 const Strategy = require('passport-discord').Strategy;
-const checkPerms = require('../../functions/checkPerms');
+const checkPerms = require('~/functions/checkPerms').default;
 
 // Load the config
 const { readFileSync } = require('fs');
@@ -189,10 +199,10 @@ module.exports = async client => {
 		if (!member || !member.permissions.has(Djs.PermissionsBitField.Flags.ManageGuild)) return res.redirect('/dashboard');
 
 		// retrive the settings stored for this guild and load the page
-		const settings = await client.getData('settings', { guildId: guild.id });
-		const memberdata = await client.getData('memberdata', { guildId: guild.id }, { all: true, nocreate: true });
+		const settings = await sql.getData('settings', { guildId: guild.id });
+		const memberdata = await sql.getData('memberdata', { guildId: guild.id }, { all: true, nocreate: true });
 		const reactionroles = {
-			raw: await client.getData('reactionroles', { guildId: guild.id }, { all: true, nocreate: true }),
+			raw: await sql.getData('reactionroles', { guildId: guild.id }, { all: true, nocreate: true }),
 			channels: [],
 		};
 		for (const i in reactionroles.raw) {
@@ -223,7 +233,7 @@ module.exports = async client => {
 
 		if (req.body.reactionrole) {
 			if (req.body.reactionrole == 'delete') {
-				await client.delData('reactionroles', req.body.json);
+				await sql.delData('reactionroles', req.body.json);
 				res.json({ success: true, msg: 'Reaction role deleted successfully!' });
 			}
 			else if (req.body.reactionrole == 'create') {
@@ -247,7 +257,7 @@ module.exports = async client => {
 				if (!reaction) return;
 
 				logger.info(`Created Reaction role: ${JSON.stringify(req.body)}`);
-				await client.createData('reactionroles', { guildId: guild.id, ...req.body.values });
+				await sql.createData('reactionroles', { guildId: guild.id, ...req.body.values });
 				res.json({ success: true, msg: 'Reaction role added successfully!' });
 			}
 			else if (req.body.reactionrole == 'edit') {
@@ -264,7 +274,7 @@ module.exports = async client => {
 				if (!fetchedMsg) return res.json({ success: false, msg: 'The Message Id is invalid!' });
 
 				logger.info(`Edited Reaction role: ${JSON.stringify(req.body)}`);
-				await client.setData('reactionroles', { guildId: guild.id, ...req.body.where }, req.body.set);
+				await sql.setData('reactionroles', { guildId: guild.id, ...req.body.where }, req.body.set);
 				res.json({ success: true, msg: 'Reaction role edited successfully!' });
 			}
 		}
@@ -277,7 +287,7 @@ module.exports = async client => {
 			});
 
 			// Set all given data
-			await client.setData('settings', { guildId: guild.id }, req.body);
+			await sql.setData('settings', { guildId: guild.id }, req.body);
 
 			// Respond with success message
 			res.json({ success: true, msg: `${keys.join(', ')} ha${keys.length > 1 ? 've' : 's'} been updated successfully!` });
@@ -285,7 +295,6 @@ module.exports = async client => {
 	});
 
 	app.listen(dashboard.port, null, null, () => {
-		const timer = (Date.now() - client.startTimestamp) / 1000;
-		logger.info(`Dashboard running on port ${dashboard.port}. (${client.dashboardDomain}) (${timer}s)`);
+		logger.info(`Dashboard running on port ${dashboard.port}. (${client.dashboardDomain})`);
 	});
 };
