@@ -14,6 +14,7 @@ export const reloadcontext: Command = {
       const msg = await message.channel.send({ content: 'Updating context menu commands...' });
       for (const obj of commands) {
         const command = obj[1];
+        if (command.type == ApplicationCommandType.ChatInput) continue;
         if (contextcommands.find(c => c.name == command.name)) continue;
         await msg.edit({ content: `Deleting ${command.name}` });
         await command.delete();
@@ -24,6 +25,7 @@ export const reloadcontext: Command = {
         const command = obj[1];
 
         await msg.edit({ content: `Overwriting ${command.name}` });
+        console.log(command);
         const cmd = new ContextMenuCommandBuilder()
           .setName(command.name)
           .setType(ApplicationCommandType[command.type]);

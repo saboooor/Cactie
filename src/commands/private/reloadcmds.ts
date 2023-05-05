@@ -1,3 +1,4 @@
+import { ApplicationCommandType } from 'discord.js';
 import { SlashCommandBuilder } from 'discord.js';
 import slashcommands from '~/lists/slash';
 import { Command } from '~/types/Objects';
@@ -18,6 +19,7 @@ export const reloadcmds: Command = {
       const msg = await message.channel.send({ content: 'Updating slash commands...' });
       for (const obj of commands) {
         const command = obj[1];
+        if (command.type != ApplicationCommandType.ChatInput) continue;
         if (slashcommands.find(c => c.name == command.name)) continue;
         await msg.edit({ content: `Deleting ${command.name}` });
         await command.delete();
