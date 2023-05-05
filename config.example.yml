@@ -9,11 +9,3 @@ mysql: # MySQL database credentials
   user: ''
   password: ''
   database: ''
-
-dashboard:
-  port: 6969
-  usingCustomDomain: false
-  domain: '' # Dashboard domain
-  clientSecret: '' # Client Secret from dev panel
-  secret: '' # Idfk it's a secret put it as a secret
-  colors: ['#ffffff', '#000000'] # colors for dashboard background
