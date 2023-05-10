@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { Modal } from '~/types/Objects';
@@ -60,7 +61,14 @@ export const ban: Modal = {
       logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
-      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: interaction.guild.id }, { bannedUntil: `${Date.now() + time}` });
+      const prisma = new PrismaClient();
+      if (!isNaN(time)) {
+        await prisma.memberdata.upsert({
+          where: { memberId_guildId: { memberId: member.id, guildId: interaction.guild.id } },
+          create: { memberId: member.id, guildId: interaction.guild.id, bannedUntil: `${Date.now() + time}` },
+          update: { bannedUntil: `${Date.now() + time}` },
+        });
+      }
 
       // Actually ban the dude
       await member.ban({ reason: `${authorTag} banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
@@ -69,7 +77,8 @@ export const ban: Modal = {
       await interaction.reply({ embeds: [BanEmbed] });
 
       // Check if log channel exists and send message
-      const srvconfig = await sql.getData('settings', { guildId: interaction.guild.id });
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild.id } });
+      if (!srvconfig) return;
       const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         BanEmbed.setTitle(`${authorTag} ${BanEmbed.toJSON().title}`);

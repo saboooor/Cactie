@@ -1,12 +1,13 @@
+import { PrismaClient, settings } from '@prisma/client';
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField, Client, GuildMember, TextChannel, CategoryChannel } from 'discord.js';
-import { settings } from '~/types/mysql';
 
 export default async function createTicket(client: Client, srvconfig: settings, member: GuildMember, description?: string) {
   // Check if tickets are disabled
   if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
 
   // Check if ticket already exists
-  const ticketData = await sql.getData('ticketdata', { opener: member.id, guildId: member.guild.id }, { nocreate: true });
+  const prisma = new PrismaClient();
+  const ticketData = await prisma.ticketdata.findUnique({ where: { opener_guildId: { opener: member.id, guildId: member.guild.id } } });
   if (ticketData) {
     try {
       const channel = await member.guild.channels.fetch(ticketData.channelId) as TextChannel;
@@ -17,7 +18,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
     }
     catch (err) {
       logger.error(`Ticket data found but can't be fetched: ${err}`);
-      sql.delData('ticketdata', { channelId: ticketData.channelId });
+      await prisma.ticketdata.delete({ where: { channelId: ticketData.channelId } });
     }
   }
 
@@ -55,7 +56,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   else await ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings` and set the Support Role value' });
 
   // Set the database
-  await sql.createData('ticketdata', { guildId: member.guild.id, channelId: ticket.id, opener: member.id, users: member.id });
+  await prisma.ticketdata.create({ data: { guildId: member.guild.id, channelId: ticket.id, opener: member.id, users: member.id } });
 
   // Create embed
   const CreateEmbed = new EmbedBuilder()

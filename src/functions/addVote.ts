@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { Client, EmbedBuilder, TextChannel } from 'discord.js';
 
 export default async function addVote(body: {
@@ -14,5 +15,11 @@ export default async function addVote(body: {
   const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('931848198773948427')! as TextChannel;
   channel?.send({ embeds: [VoteEmbed] });
 
-  await sql.setData('lastvoted', { userId: `${body.id || body.user}` }, { timestamp: `${Date.now()}` });
+  // Get server config
+  const prisma = new PrismaClient();
+  await prisma.lastvoted.upsert({
+    where: { userId: `${body.id || body.user}` },
+    create: { userId: `${body.id || body.user}`, timestamp: `${Date.now()}` },
+    update: { timestamp: `${Date.now()}` },
+  });
 }

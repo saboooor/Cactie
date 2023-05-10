@@ -1,6 +1,7 @@
 import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import kickOptions from '~/options/kick';
+import { PrismaClient } from '@prisma/client';
 
 export const kick: SlashCommand = {
   description: 'Kick someone from the server',
@@ -57,7 +58,12 @@ export const kick: SlashCommand = {
       logger.info(`Kicked user: ${member.user.tag} from ${message.guild!.name}`);
 
       // Check if log channel exists and send message
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         KickEmbed.setTitle(`${(message.member!.user as User).tag} ${KickEmbed.toJSON().title}`);

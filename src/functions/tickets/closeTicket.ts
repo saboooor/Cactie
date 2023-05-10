@@ -1,14 +1,15 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, PublicThreadChannel, Message } from 'discord.js';
 import getTranscript from '../messages/getTranscript';
 import getMessages from '../messages/getMessages';
-import { settings, ticketData } from '~/types/mysql';
+import { PrismaClient, settings } from '@prisma/client';
 
 export default async function closeTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
-  const ticketdata: ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+  const prisma = new PrismaClient();
+  const ticketdata = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
   if (!ticketdata) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketdata.users.split(',');
 
@@ -28,11 +29,11 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   if (ticketdata.voiceticket != 'false') {
     const voiceticket = await member.guild.channels.fetch(ticketdata.voiceticket).catch(() => { return null; });
     if (voiceticket) voiceticket.delete();
-    await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: 'false' });
+    await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { voiceticket: 'false' } });
   }
 
   // Unresolve ticket
-  if (ticketdata.resolved != 'false') await sql.setData('ticketdata', { channelId: channel.id }, { resolved: 'false' });
+  if (ticketdata.resolved != 'false') await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { resolved: 'false' } });
 
   // Create a transcript of the ticket
   const messagechunks = await getMessages<true>(channel, 'infinite').catch((err: Error) => {

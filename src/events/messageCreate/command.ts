@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, TextChannel } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
 import commands, { cooldowns } from '~/lists/commands';
@@ -23,8 +24,10 @@ export default async (client: Client, message: Message<true>) => {
   //   }
   // };
 
-  // Get current settings for the guild
-  const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
+  // Get server config
+  const prisma = new PrismaClient();
+  const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+  if (!srvconfig) return;
 
   // Use mention as prefix instead of prefix too
   let txtprefix;
@@ -43,9 +46,9 @@ export default async (client: Client, message: Message<true>) => {
     }
 
     // Check if channel is a ticket
-    const ticketData = await sql.getData('ticketdata', { channelId: message.channel.id }, { nocreate: true });
+    const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: message.channel.id } });
     if (ticketData && ticketData.resolved == 'true') {
-      await sql.setData('ticketdata', { channelId: message.channel.id }, { resolved: 'false' });
+      prisma.ticketdata.update({ where: { channelId: message.channel.id }, data: { resolved: 'false' } });
       logger.info(`Unresolved #${(message.channel as TextChannel).name}`);
     }
     return;
@@ -121,7 +124,7 @@ export default async (client: Client, message: Message<true>) => {
   // Check if command can be ran only if the user voted since the past 24 hours
   if (command.voteOnly) {
     // Get vote data for user
-    const vote = await sql.getData('lastvoted', { userId: message.author.id });
+    const vote = await prisma.lastvoted.findUnique({ where: { userId: message.author.id } });
 
     // If user has not voted since the past 24 hours, send error message with vote buttons
     if (!vote || Date.now() > Number(vote.timestamp) + 86400000) {

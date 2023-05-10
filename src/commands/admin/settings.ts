@@ -3,6 +3,7 @@ import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ButtonInter
 import { left, right } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
 import desc from '~/misc/settingsdesc.json';
+import { PrismaClient } from '@prisma/client';
 
 export const settings: SlashCommand = {
   description: 'Configure this server\' Cactie settings',
@@ -16,7 +17,13 @@ export const settings: SlashCommand = {
         .setTitle('Bot Settings');
 
       // Get settings and make an array out of it to split and make pages
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
       let configlist = Object.keys(srvconfig).slice(0, 5).map(prop => { return `**${capFirstLetter(prop)}**\n${desc[prop as keyof typeof desc]}\n\`${srvconfig[prop as keyof typeof desc]}\``; });
       const maxPages = Math.ceil(Object.keys(srvconfig).length / 5);
 

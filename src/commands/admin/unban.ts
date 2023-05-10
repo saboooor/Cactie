@@ -1,6 +1,7 @@
 import { EmbedBuilder, TextChannel, User } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import unbanOptions from '~/options/unban';
+import { PrismaClient } from '@prisma/client';
 
 export const unban: SlashCommand = {
   description: 'Unban someone that was banned from the server',
@@ -64,7 +65,13 @@ export const unban: SlashCommand = {
       logger.info(`Unbanned user: ${ban.user.tag} in ${message.guild!.name}`);
 
       // Check if log channel exists and send message
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
       if (logchannel) {
         UnbanEmbed.setTitle(`${(message.member!.user as User).tag} ${UnbanEmbed.toJSON().title}`);

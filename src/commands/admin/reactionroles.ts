@@ -3,6 +3,7 @@ import checkPerms from '~/functions/checkPerms';
 import { left, right } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
 import reactionrolesOptions from '~/options/reactionroles';
+import { PrismaClient } from '@prisma/client';
 
 export const reactionroles: SlashCommand = {
   description: 'Configure Cactie\'s reaction roles in the server',
@@ -20,7 +21,8 @@ export const reactionroles: SlashCommand = {
       const components = [];
 
       // Get reaction roles and pages
-      const reactionrolesData = await sql.getData('reactionroles', { guildId: message.guild!.id }, { nocreate: true, all: true });
+      const prisma = new PrismaClient();
+      const reactionrolesData = await prisma.reactionroles.findMany({ where: { guildId: message.guild!.id } });
 
       if (args[0] == 'add') {
         // Check if all arguments are met
@@ -73,7 +75,7 @@ export const reactionroles: SlashCommand = {
         if (!reaction) return;
 
         // Push to database
-        await sql.createData('reactionroles', { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: `${reaction.emoji[reaction.emoji.id ? 'id' : 'name']}`, roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() as 'toggle' | 'switch' });
+        await prisma.reactionroles.create({ data: { guildId: messagelink[4], channelId: messagelink[5], messageId: messagelink[6], emojiId: `${reaction.emoji[reaction.emoji.id ? 'id' : 'name']}`, roleId: args[3].replace(/\D/g, ''), type: args[4].toLowerCase() as 'toggle' | 'switch', silent: 'false' } });
 
         // Add the reaction role into the database and edit the description of the embed
         RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
@@ -99,8 +101,8 @@ export const reactionroles: SlashCommand = {
           return;
         }
 
-        // Remove the reaction role form the database
-        await sql.delData('reactionroles', { messageId: rr.messageId, emojiId: rr.emojiId });
+        // Remove the reaction role from the database
+        await prisma.reactionroles.delete({ where: { messageId_emojiId: rr } });
 
         // Get the reaction role's emoji
         const emoji = rr.emojiId ? client.emojis.cache.get(rr.emojiId) : rr.emojiId ?? rr.emojiId;

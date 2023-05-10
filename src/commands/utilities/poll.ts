@@ -3,6 +3,7 @@ import { yes, no } from '~/misc/emoji.json';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import pollOptions from '~/options/poll';
+import { PrismaClient } from '@prisma/client';
 
 export const poll: SlashCommand = {
   description: 'Create a poll!',
@@ -14,7 +15,12 @@ export const poll: SlashCommand = {
   async execute(message, args, client) {
     try {
       // Get server config
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
 
       // Get channel to send poll in
       let channel = message.guild!.channels.cache.get(srvconfig.suggestionchannel) as TextChannel;

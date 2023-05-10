@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ticketdata {
+  guildId     String
+  channelId   String @id
+  opener      String
+  resolved    String @default("false")
+  users       String
+  voiceticket String @default("false")
+
+  @@unique([opener, guildId])
+}
+
+model settings {
+  guildId         String @id
+  prefix          String
+  reactions       String @default("false")
+  leavemessage    String @default("{\"message\":\"\",\"channel\":\"false\"}")
+  joinmessage     String @default("{\"message\":\"\",\"channel\":\"false\"}")
+  maxppsize       Int @default(35)
+  tickets         String @default("buttons")
+  disabledcmds    String @default("false")
+  auditlogs       String @default("false")
+  suggestionchannel String @default("false")
+  suggestthreads  String @default("true")
+  pollchannel     String @default("false")
+  logchannel      String @default("false")
+  ticketlogchannel String @default("false")
+  ticketcategory  String @default("false")
+  supportrole     String @default("false")
+  ticketmention   String @default("here")
+  mutecmd         String @default("timeout")
+  msgshortener    Int @default(30)
+}
+
+model reactionroles {
+  guildId   String
+  channelId String
+  messageId String
+  emojiId   String
+  roleId    String
+  type      String @default("toggle")
+  silent    String @default("false")
+
+  @@unique([messageId, emojiId])
+}
+
+model memberdata {
+  memberId    String @id
+  guildId     String
+  mutedUntil  String?
+  bannedUntil String?
+  warns       String?
+
+  @@unique([memberId, guildId])
+}
+
+model lastvoted {
+  userId    String @id
+  timestamp String
+}
+
+model sessions {
+  sessionId    String @id
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  scope        String?
+  pfp          String?
+  accent       String?
+}

@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { Client, EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
 import { join, leave, right } from '~/misc/emoji.json';
 
@@ -5,8 +6,10 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   // Check if the mute state actually changed
   if (oldState.channelId == newState.channelId) return;
 
-  // Get current settings for the guild
-  const srvconfig = await sql.getData('settings', { guildId: newState.guild.id });
+  // Get server config
+  const prisma = new PrismaClient();
+  const srvconfig = await prisma.settings.findUnique({ where: { guildId: newState.guild!.id } });
+  if (!srvconfig) return;
 
   // Check if log channel is set
   const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;

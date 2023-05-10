@@ -1,6 +1,7 @@
 import { EmbedBuilder, GuildMember } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import someone from '~/options/someone';
+import { PrismaClient } from '@prisma/client';
 
 export const boner: SlashCommand = {
   description: 'See your boner expand!',
@@ -10,7 +11,13 @@ export const boner: SlashCommand = {
   async execute(message, args) {
     try {
       // Get settings
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
 
       // Check if arg is a user and set it
       let user;

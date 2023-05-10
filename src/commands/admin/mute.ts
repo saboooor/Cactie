@@ -2,6 +2,7 @@ import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
+import { PrismaClient } from '@prisma/client';
 
 export const mute: SlashCommand = {
   description: 'Mute someone in the server',
@@ -15,7 +16,13 @@ export const mute: SlashCommand = {
   async execute(message, args) {
     try {
       // Get mute role and check if role is valid
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
       const role = message.guild!.roles.cache.get(srvconfig.mutecmd);
       if (!role && srvconfig.mutecmd != 'timeout') {
         error('This command is disabled!', message, true);
@@ -80,7 +87,7 @@ export const mute: SlashCommand = {
       else await member.timeout(time, `Muted by ${(author!.user as User).tag} for ${args.slice(1).join(' ')}`);
 
       // Set member data for unmute time if set
-      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: message.guild!.id }, { mutedUntil: `${Date.now() + time}` });
+      if (!isNaN(time)) prisma.memberdata.update({ where: { memberId_guildId: { guildId: message.guild!.id, memberId: member.id } }, data: { mutedUntil: `${Date.now() + time}` } });
 
       // Send mute message to target
       await member.send({ content: `**You've been muted in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })

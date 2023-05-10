@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { Client, Message } from 'discord.js';
 import reactions from '~/lists/reactions';
 
@@ -5,8 +6,10 @@ export default async (client: Client, message: Message<true>) => {
   // Check if author is a bot or message is in dm
   if (!message.guild || message.webhookId || message.author.bot) return;
 
-  // Get current settings for the guild
-  const srvconfig = await sql.getData('settings', { guildId: message.guild.id });
+  // Get server config
+  const prisma = new PrismaClient();
+  const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+  if (!srvconfig) return;
 
   // Check if reaction keywords are in message, if so, react
   reactions.forEach(reaction => {

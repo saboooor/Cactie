@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { EmbedBuilder, Client, Message } from 'discord.js';
 import { createPaste } from 'hastebin';
 import checkPerms from '~/functions/checkPerms';
@@ -6,11 +7,13 @@ export default async (client: Client, message: Message<true>) => {
   // Check if author is a bot or message is in dm
   if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 
-  // Get current settings for the guild
-  const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+  // Get server config
+  const prisma = new PrismaClient();
+  const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+  if (!srvconfig) return;
 
   // Check if message shortener is set and is smaller than the amount of lines in the message
-  if (!parseInt(srvconfig.msgshortener) || message.content.split('\n').length < parseInt(srvconfig.msgshortener) || !checkPerms(['Administrator'], message.member!)) return;
+  if (!srvconfig.msgshortener || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member!)) return;
 
   // Check if the bot has permission to manage messages
   const permCheck = checkPerms(['ManageMessages'], message.guild!.members.me!, message.channel);

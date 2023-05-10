@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import { Modal } from '~/types/Objects';
 
@@ -53,8 +54,12 @@ export const kick: Modal = {
       await member.kick(`Kicked by ${authorTag} for ${reason}`);
       logger.info(`Kicked user: ${member.user.tag} from ${interaction.guild!.name}`);
 
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
+      if (!srvconfig) return;
+
       // Check if log channel exists and send message
-      const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
       const logchannel = interaction.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         KickEmbed.setTitle(`${authorTag} ${KickEmbed.toJSON().title}`);

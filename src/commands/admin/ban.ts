@@ -2,6 +2,7 @@ import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
+import { PrismaClient } from '@prisma/client';
 
 export const ban: SlashCommand = {
   description: 'Ban someone from the server',
@@ -59,8 +60,10 @@ export const ban: SlashCommand = {
         });
       logger.info(`Banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
+      const prisma = new PrismaClient();
+
       // Set unban timestamp to member data for auto-unban
-      if (!isNaN(time)) sql.setData('memberdata', { memberId: member.id, guildId: message.guild!.id }, { bannedUntil: `${Date.now() + time}` });
+      if (!isNaN(time)) prisma.memberdata.update({ where: { memberId_guildId: { guildId: message.guild!.id, memberId: member.id } }, data: { bannedUntil: `${Date.now() + time}` } });
 
       // Actually ban the dude
       await member.ban({ reason: `${(author!.user as User).tag} banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
@@ -69,7 +72,12 @@ export const ban: SlashCommand = {
       await message.reply({ embeds: [BanEmbed] });
 
       // Check if log channel exists and send message
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      // Get server config
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         BanEmbed.setTitle(`${(author!.user as User).tag} ${BanEmbed.toJSON().title}`);

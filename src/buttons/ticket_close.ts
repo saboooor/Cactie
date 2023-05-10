@@ -1,6 +1,7 @@
 import { GuildMember, TextChannel } from 'discord.js';
 import closeTicket from '~/functions/tickets/closeTicket';
 import { Button } from '~/types/Objects';
+import { PrismaClient } from '@prisma/client';
 
 export const close_ticket: Button = {
   botPerms: ['ManageChannels'],
@@ -8,8 +9,13 @@ export const close_ticket: Button = {
   ephemeral: true,
   execute: async (interaction) => {
     try {
-      // Check if tickets are disabled
-      const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', interaction);
+        return;
+      }
 
       if (!(interaction.member instanceof GuildMember)) {
         interaction.member = await interaction.guild!.members.fetch(interaction.member!.user.id);

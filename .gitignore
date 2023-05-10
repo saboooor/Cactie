@@ -117,8 +117,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-
-# Cactie specific files
-data/
-config.yml

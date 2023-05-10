@@ -1,12 +1,13 @@
+import { PrismaClient, settings } from '@prisma/client';
 import { Client, GuildMember, TextChannel, PublicThreadChannel, EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
-import { settings } from '~/types/mysql';
 
 export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
-  const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+  const prisma = new PrismaClient();
+  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
   if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');
 
@@ -54,7 +55,7 @@ export default async function createVoice(client: Client, srvconfig: settings, m
   if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
   // Add voiceticket to ticket database
-  await sql.setData('ticketdata', { channelId: channel.id }, { voiceticket: voiceticket.id });
+  await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { voiceticket: voiceticket.id } });
 
   // Create embed for log
   const VCEmbed = new EmbedBuilder()

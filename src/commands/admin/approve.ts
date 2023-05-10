@@ -5,6 +5,7 @@ import getMessages from '~/functions/messages/getMessages';
 import checkPerms from '~/functions/checkPerms';
 import suggestresponse from '~/options/suggestresponse';
 import { SlashCommand } from '~/types/Objects';
+import { PrismaClient } from '@prisma/client';
 
 export const approve: SlashCommand = {
   description: 'Approve a suggestion.',
@@ -29,7 +30,12 @@ export const approve: SlashCommand = {
       let suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 
       // Get server config
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
 
       // If the suggestmsg is null, try checking for the message in the suggestionchannel if set
       if (!suggestMsg) {

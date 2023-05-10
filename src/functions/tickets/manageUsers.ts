@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel, VoiceChannel } from 'discord.js';
 
 export default async function manageUsers(member: GuildMember, channel: TextChannel | PublicThreadChannel<false>, targetMember: GuildMember, add?: boolean) {
@@ -5,7 +6,8 @@ export default async function manageUsers(member: GuildMember, channel: TextChan
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
-  const ticketData = await sql.getData('ticketdata', { channelId: channel.id }, { nocreate: true });
+  const prisma = new PrismaClient();
+  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
   if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');
 
@@ -16,7 +18,7 @@ export default async function manageUsers(member: GuildMember, channel: TextChan
   if (add && ticketDataUsers.includes(targetMember.id)) throw new Error('This user has already been added!');
   else if (!add && !ticketDataUsers.includes(targetMember.id)) throw new Error('This user isn\'t added!');
   add ? ticketDataUsers.push(targetMember.id) : ticketDataUsers.splice(ticketDataUsers.indexOf(targetMember.id), 1);
-  sql.setData('ticketdata', { channelId: channel.id }, { users: ticketDataUsers.join(',') });
+  await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { users: ticketDataUsers.join(',') } });
 
   // If the ticket has a voiceticket, give permissions to the user there
   if (ticketData.voiceticket && ticketData.voiceticket !== 'false') {

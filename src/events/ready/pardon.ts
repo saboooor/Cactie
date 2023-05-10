@@ -1,9 +1,11 @@
 import { schedule } from 'node-cron';
 import { EmbedBuilder, Client, TextChannel } from 'discord.js';
+import { PrismaClient } from '@prisma/client';
 
 export default async (client: Client) => schedule('* * * * *', async () => {
-// Get all member data
-  const memberdata = await sql.getData('memberdata', undefined, { all: true });
+  // Get all member data
+  const prisma = new PrismaClient();
+  const memberdata = await prisma.memberdata.findMany();
 
   // Iterate through every row in the data
   for (const data of memberdata) {
@@ -15,7 +17,8 @@ export default async (client: Client) => schedule('* * * * *', async () => {
     if (!guild) continue;
 
     // Get the guild config
-    const srvconfig = await sql.getData('settings', { guildId: guild.id });
+    const srvconfig = await prisma.settings.findUnique({ where: { guildId: guild.id } });
+    if (!srvconfig) continue;
 
     // Get the member from the memberId, and user just in case member is invalid
     const member = await guild.members.fetch(data.memberId).catch(() => { return null; });
@@ -31,7 +34,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       logger.info(`Unmuted ${user ? user.tag : data.memberId} in ${guild.name}`);
 
       // Set the data
-      await sql.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { mutedUntil: null });
+      await prisma.memberdata.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { mutedUntil: null } });
 
       // Check if log channel exists and send message
       const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
@@ -49,7 +52,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       logger.info(`Unbanned ${user ? user.tag : data.memberId} in ${guild.name}`);
 
       // Set the data
-      await sql.setData('memberdata', { memberId: data.memberId, guildId: guild.id }, { bannedUntil: null });
+      await prisma.memberdata.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { bannedUntil: null } });
 
       // Check if log channel exists and send message
       const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;

@@ -1,18 +1,20 @@
+import { PrismaClient } from '@prisma/client';
 import { Client, GuildMember, TextChannel } from 'discord.js';
-import { ticketData } from '~/types/mysql';
 import closeTicket from '~/functions/tickets/closeTicket';
 
 export default async (client: Client, member: GuildMember) => {
   try {
-    // Get the server config
-    const srvconfig = await sql.getData('settings', { guildId: member.guild.id });
+    // Get server config
+    const prisma = new PrismaClient();
+    const srvconfig = await prisma.settings.findUnique({ where: { guildId: member.guild!.id } });
+    if (!srvconfig) return;
 
     // Get the ticket data
-    const ticketdata = await sql.getData('ticketdata', { opener: member.id }, { nocreate: true, all: true });
+    const ticketdata = await prisma.ticketdata.findMany({ where: { opener: member.id, guildId: member.guild!.id } });
     if (!ticketdata.length) return;
 
     // Close all tickets under member
-    ticketdata.forEach(async (data: ticketData) => {
+    ticketdata.forEach(async data => {
       // Fetch the channel
       const channel = member.guild.channels.cache.get(data.channelId) as TextChannel;
 

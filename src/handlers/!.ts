@@ -1,6 +1,5 @@
 import { Client } from 'discord.js';
 import { createLogger, format, transports } from 'winston';
-import * as sql from '~/functions/mysql';
 
 const rn = new Date();
 const logDate = `${minTwoDigits(rn.getMonth() + 1)}-${minTwoDigits(rn.getDate())}-${rn.getFullYear()}`;
@@ -9,7 +8,6 @@ function minTwoDigits(n: number) { return (n < 10 ? '0' : '') + n; }
 export default (client: Client) => {
   // Set the global vars
   global.rn = rn;
-  global.sql = sql;
 
   // Create a logger
   global.logger = createLogger({

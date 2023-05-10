@@ -1,6 +1,7 @@
 import { EmbedBuilder, TextChannel, User } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
+import { PrismaClient } from '@prisma/client';
 
 export const unmute: SlashCommand = {
   description: 'Unmute someone that was muted in the server',
@@ -14,7 +15,13 @@ export const unmute: SlashCommand = {
   async execute(message, args) {
     try {
       // Get settings and check if mutecmd is enabled
-      const srvconfig = await sql.getData('settings', { guildId: message.guild!.id });
+      // Get server config
+      const prisma = new PrismaClient();
+      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
+      if (!srvconfig) {
+        error('Server config not found.', message);
+        return;
+      }
       const role = await message.guild!.roles.cache.get(srvconfig.mutecmd);
       if (!role && srvconfig.mutecmd != 'timeout') {
         error('This command is disabled!', message, true);
@@ -40,8 +47,9 @@ export const unmute: SlashCommand = {
       else await member.timeout(null);
 
       // Reset the mute timer
-      const data = await sql.getData('memberdata', { memberId: member.id, guildId: message.guild!.id }, { nocreate: true });
-      if (data) await sql.setData('memberdata', { memberId: member.id, guildId: message.guild!.id }, { mutedUntil: null });
+      // Get server config
+      const data = await prisma.memberdata.findUnique({ where: { memberId_guildId: { memberId: member.id, guildId: message.guild!.id } } });
+      if (data) await prisma.memberdata.update({ where: { memberId_guildId: { memberId: member.id, guildId: message.guild!.id } }, data: { mutedUntil: null } });
 
       // Send unmute message to user
       await member.send({ content: '**You\'ve been unmuted**' })

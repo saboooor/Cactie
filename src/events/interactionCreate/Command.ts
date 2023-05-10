@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, GuildMember, GuildChannelResolvable, TextChannel, ApplicationCommandOptionType } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
 import { cooldowns } from '~/lists/commands';
@@ -13,9 +14,10 @@ export default async (client: Client, interaction: CommandInteraction) => {
   const command = slashcommands.get(interaction.commandName);
   if (!command) return;
 
-  // Get current settings for the guild
-  const srvconfig = await sql.getData('settings', { guildId: interaction.guild!.id });
-  if (srvconfig.disabledcmds.includes(command.name!)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
+  // Get server config
+  const prisma = new PrismaClient();
+  const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
+  if (srvconfig && srvconfig.disabledcmds.includes(command.name!)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 
   // Make args variable from interaction options for compatibility with dash command code
   const args: string[] = [];
@@ -66,7 +68,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
   // Check if command can be ran only if the user voted since the past 24 hours
   if (command.voteOnly) {
     // Get vote data for user
-    const vote = await sql.getData('lastvoted', { userId: interaction.user.id });
+    const vote = await prisma.lastvoted.findUnique({ where: { userId: interaction.user.id } });
 
     // If user has not voted since the past 24 hours, send error message with vote buttons
     if (!vote || Date.now() > Number(vote.timestamp) + 86400000) {
