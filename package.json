@@ -10,7 +10,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "git pull && prisma generate --data-proxy && pnpm i && ts-node --transpileOnly src/index.ts",
+    "start": "git pull && pnpm i && prisma generate --data-proxy && ts-node --transpileOnly src/index.ts",
     "test": "nodemon src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
