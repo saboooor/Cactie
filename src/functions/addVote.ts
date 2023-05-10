@@ -17,9 +17,9 @@ export default async function addVote(body: {
 
   // Get server config
   const prisma = new PrismaClient();
-  await prisma.lastvoted.upsert({
+  await prisma.userdata.upsert({
     where: { userId: `${body.id || body.user}` },
-    create: { userId: `${body.id || body.user}`, timestamp: `${Date.now()}` },
-    update: { timestamp: `${Date.now()}` },
+    create: { userId: `${body.id || body.user}`, lastvoted: new Date() },
+    update: { lastvoted: new Date() },
   });
 }

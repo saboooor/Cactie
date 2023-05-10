@@ -22,25 +22,25 @@ model ticketdata {
 }
 
 model settings {
-  guildId         String @id
-  prefix          String
-  reactions       String @default("false")
-  leavemessage    String @default("{\"message\":\"\",\"channel\":\"false\"}")
-  joinmessage     String @default("{\"message\":\"\",\"channel\":\"false\"}")
-  maxppsize       Int @default(35)
-  tickets         String @default("buttons")
-  disabledcmds    String @default("false")
-  auditlogs       String @default("false")
+  guildId           String @id
+  prefix            String
+  reactions         String @default("false")
+  leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}")
+  joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}")
+  maxppsize         Int    @default(35)
+  tickets           String @default("buttons")
+  disabledcmds      String @default("false")
+  auditlogs         String @default("false")
   suggestionchannel String @default("false")
-  suggestthreads  String @default("true")
-  pollchannel     String @default("false")
-  logchannel      String @default("false")
-  ticketlogchannel String @default("false")
-  ticketcategory  String @default("false")
-  supportrole     String @default("false")
-  ticketmention   String @default("here")
-  mutecmd         String @default("timeout")
-  msgshortener    Int @default(30)
+  suggestthreads    String @default("true")
+  pollchannel       String @default("false")
+  logchannel        String @default("false")
+  ticketlogchannel  String @default("false")
+  ticketcategory    String @default("false")
+  supportrole       String @default("false")
+  ticketmention     String @default("here")
+  mutecmd           String @default("timeout")
+  msgshortener      Int    @default(30)
 }
 
 model reactionroles {
@@ -56,7 +56,7 @@ model reactionroles {
 }
 
 model memberdata {
-  memberId    String @id
+  memberId    String  @id
   guildId     String
   mutedUntil  String?
   bannedUntil String?
@@ -65,13 +65,13 @@ model memberdata {
   @@unique([memberId, guildId])
 }
 
-model lastvoted {
-  userId    String @id
-  timestamp String
+model userdata {
+  userId    String    @id
+  lastvoted DateTime?
 }
 
 model sessions {
-  sessionId    String @id
+  sessionId    String    @id
   accessToken  String?
   refreshToken String?
   expiresAt    DateTime?

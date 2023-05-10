@@ -123,11 +123,11 @@ export default async (client: Client, message: Message<true>) => {
 
   // Check if command can be ran only if the user voted since the past 24 hours
   if (command.voteOnly) {
-    // Get vote data for user
-    const vote = await prisma.lastvoted.findUnique({ where: { userId: message.author.id } });
+    // Get data for user
+    const userdata = await prisma.userdata.findUnique({ where: { userId: message.author.id } });
 
     // If user has not voted since the past 24 hours, send error message with vote buttons
-    if (!vote || Date.now() > Number(vote.timestamp) + 86400000) {
+    if (!userdata || Date.now() > Number(userdata.lastvoted) + 86400000) {
       const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
         .setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
       const row = new ActionRowBuilder<ButtonBuilder>()
