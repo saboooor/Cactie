@@ -17,7 +17,7 @@ export const cleandb: Command = {
         }
         continue;
       }
-      await prisma.settings.delete({ where: { guildId: srvconfig.guildId } });
+      await prisma.settings.deleteMany({ where: { guildId: srvconfig.guildId } });
       message.reply(`settings have been removed from ${srvconfig.guildId}`);
     }
     const reactionroles = await prisma.reactionroles.findMany();
