@@ -1,81 +1,79 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "mysql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_DIRECT")
 }
 
 model ticketdata {
   guildId     String
-  channelId   String @id
+  channelId   String @unique(map: "channelId")
   opener      String
   resolved    String @default("false")
-  users       String
+  users       String @db.Text
   voiceticket String @default("false")
 
-  @@unique([opener, guildId])
+  @@unique([opener, guildId], map: "noChannelId")
 }
 
 model settings {
-  guildId           String @id
-  prefix            String
-  reactions         String @default("false")
-  leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}")
-  joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}")
+  guildId           String @unique(map: "guildId")
+  prefix            String @default("-") @db.Text
+  reactions         String @default("false") @db.Text
+  leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
+  joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
   maxppsize         Int    @default(35)
-  tickets           String @default("buttons")
-  disabledcmds      String @default("false")
-  auditlogs         String @default("false")
-  suggestionchannel String @default("false")
-  suggestthreads    String @default("true")
-  pollchannel       String @default("false")
-  logchannel        String @default("false")
-  ticketlogchannel  String @default("false")
-  ticketcategory    String @default("false")
-  supportrole       String @default("false")
-  ticketmention     String @default("here")
-  mutecmd           String @default("timeout")
+  tickets           String @default("buttons") @db.Text
+  disabledcmds      String @default("false") @db.Text
+  auditlogs         String @default("false") @db.Text
+  suggestionchannel String @default("false") @db.Text
+  suggestthreads    String @default("true") @db.Text
+  pollchannel       String @default("false") @db.Text
+  logchannel        String @default("false") @db.Text
+  ticketlogchannel  String @default("false") @db.Text
+  ticketcategory    String @default("false") @db.Text
+  supportrole       String @default("false") @db.Text
+  ticketmention     String @default("here") @db.Text
+  mutecmd           String @default("timeout") @db.Text
   msgshortener      Int    @default(30)
 }
 
 model reactionroles {
-  guildId   String
-  channelId String
+  guildId   String @db.Text
+  channelId String @db.Text
   messageId String
   emojiId   String
-  roleId    String
-  type      String @default("toggle")
-  silent    String @default("false")
+  roleId    String @db.Text
+  type      String @default("toggle") @db.Text
+  silent    String @default("false") @db.Text
 
-  @@unique([messageId, emojiId])
+  @@unique([messageId, emojiId], map: "Identifier")
 }
 
 model memberdata {
-  memberId    String  @id
+  memberId    String
   guildId     String
-  mutedUntil  String?
-  bannedUntil String?
-  warns       String?
+  mutedUntil  String? @db.Text
+  bannedUntil String? @db.Text
+  warns       String? @db.Text
 
-  @@unique([memberId, guildId])
+  @@unique([memberId, guildId], map: "Identifier")
 }
 
 model userdata {
-  userId    String    @id
-  lastvoted DateTime?
+  userId    String    @unique(map: "userId")
+  lastvoted DateTime? @db.DateTime(0)
 }
 
 model sessions {
-  sessionId    String    @id
-  accessToken  String?
-  refreshToken String?
-  expiresAt    DateTime?
-  scope        String?
-  pfp          String?
-  accent       String?
+  sessionId    String    @unique(map: "sessionId")
+  accessToken  String?   @db.Text
+  refreshToken String?   @db.Text
+  expiresAt    DateTime? @db.DateTime(0)
+  scope        String?   @db.Text
+  pfp          String?   @default("https://cdn.discordapp.com/embed/avatars/0.png") @db.Text
+  accent       String?   @db.Text
 }
