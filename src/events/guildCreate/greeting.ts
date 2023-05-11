@@ -10,7 +10,7 @@ export default async (client: Client, guild: Guild) => {
   const row = new ActionRowBuilder<ButtonBuilder>()
     .addComponents([
       new ButtonBuilder()
-        .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
+        .setURL('https://cactie.luminescent.dev')
         .setLabel('Dashboard')
         .setStyle(ButtonStyle.Link),
       new ButtonBuilder()
@@ -30,7 +30,7 @@ My text command prefix is \`${srvconfig.prefix}\`, you may change this through t
 Type \`/help\` for help, and \`/invite\` to invite me to other servers!
 Please take some time going through the settings so that ${client.user?.username} works well! \`/settings\`
 		`)
-    .setThumbnail(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/assets/images/Cactie.png`);
+    .setURL('https://cactie.luminescent.dev');
   const message = { embeds: [greetingEmbed], components: [row] };
   const owner = await guild.fetchOwner();
   if (!guild.systemChannel) owner.send(message).catch(err => logger.warn(err));

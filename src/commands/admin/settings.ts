@@ -44,7 +44,7 @@ export const settings: SlashCommand = {
             .setEmoji({ id: right })
             .setStyle(ButtonStyle.Secondary),
           new ButtonBuilder()
-            .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/dashboard/${message.guild!.id}`)
+            .setURL(`https://cactie.luminescent.dev/dashboard/${client.user!.username.split(' ')[1] == 'Dev' ? 'dev' : 'master'}/${message.guild!.id}`)
             .setLabel('Dashboard')
             .setStyle(ButtonStyle.Link),
         ]);

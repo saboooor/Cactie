@@ -27,7 +27,7 @@ export const info: SlashCommand = {
       const row1 = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
           new ButtonBuilder()
-            .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev/invite`)
+            .setURL('https://cactie.luminescent.dev/invite')
             .setLabel('Invite Cactie!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
@@ -35,7 +35,7 @@ export const info: SlashCommand = {
             .setLabel('Join the LuminescentDev Server!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL(`https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`)
+            .setURL('https://cactie.luminescent.dev')
             .setLabel('Open the Dashboard!')
             .setStyle(ButtonStyle.Link),
         ]);

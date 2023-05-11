@@ -5,13 +5,12 @@ export default async (client: Client) => schedule('*/10 * * * * *', async () => 
   const activities = [
     ['Playing', 'with you ;)'],
     ['Playing', '/help'],
+    ['Playing', 'netherdepths.com'],
+    ['Watching', 'myself grow'],
     ['Watching', 'luminescent.dev'],
-    ['Watching', `${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev`],
+    ['Watching', 'cactie.luminescent.dev'],
     ['Competing', `Getting more than ${client.guilds.cache.size} servers!`],
     ['Competing', `${client.guilds.cache.size} servers!`],
-    ['Listening', '3 Big Balls'],
-    ['Listening', 'Never Gonna Give You Up'],
-    ['Listening', 'Fortnite Battle Pass'],
   ];
   const i = Math.floor(Math.random() * activities.length);
   const activity = activities[i];

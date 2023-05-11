@@ -17,7 +17,7 @@ export default async (client: Client, member: GuildMember) => {
   if (joinMessageJSON.channel == 'false' && !member.guild.systemChannel) {
     const owner = await member.guild.fetchOwner();
     logger.warn(`${member.guild.name} (${owner.user.tag}) doesn't have a system channel set!`);
-    return owner.send({ content: `Join messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system messages channel or turn off join messages at https://${client.user!.username.toLowerCase().replace(/ /g, '')}.luminescent.dev` })
+    return owner.send({ content: `Join messages are enabled but a system message channel isn't set! Please either go into your server settings (${member.guild.name}) and set the system messages channel or turn off join messages at https://cactie.luminescent.dev/dashboard/${client.user!.username.split(' ')[1] == 'Dev' ? 'dev' : 'master'}/${member.guild!.id}` })
       .catch(err => logger.warn(err));
   }
 

@@ -12,7 +12,7 @@ This is source code for my public Discord bot, Cactie.
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
 
 #### Type /help for help
-I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://cactiedev.luminescent.dev/invite/discord) and we'll fix it ASAP
+I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://luminescent.dev/discord) and we'll fix it ASAP
 
 ## Suggestions
 - uses threads to organize discussions
@@ -34,7 +34,7 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - More than 100 messages support
 
 ## Ticket System
-- uses the new modals feature!
+- uses the modals feature for user-friendly ticket opening!
 - voice chat creation with the same permissions as the ticket
 
 ## Fun and Games
@@ -67,7 +67,6 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - avatar
 - poll
 - serverinfo
-- Average color from image URL
 - Right click a message for raw embed or message content
 - GitHub repository viewer
 - Minecraft Server status
