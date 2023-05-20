@@ -12,7 +12,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log channel is set
-  const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
+  const logchannel = newState.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
   if (!logchannel) return;
 
   const logEmbed = new EmbedBuilder()

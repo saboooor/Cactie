@@ -11,9 +11,10 @@ export default async (client: Client, message: Message<true>) => {
   if (!srvconfig) return;
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
+  console.log(auditlogs);
   // Check if log is enabled and send log
   if (!auditlogs.messagedelete && !auditlogs.message && !auditlogs.all) return;
-  const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
+  const logchannel = message.guild!.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

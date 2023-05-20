@@ -10,7 +10,7 @@ export default async (client: Client, oldChannel: TextChannel | VoiceChannel | A
 
   // Check if log is enabled and send log
   if (!auditlogs.channelupdate && !auditlogs.channel && !auditlogs.all) return;
-  const logchannel = newChannel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
+  const logchannel = newChannel.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Create log embed
