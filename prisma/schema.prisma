@@ -28,7 +28,7 @@ model settings {
   maxppsize         Int    @default(35)
   tickets           String @default("buttons") @db.Text
   disabledcmds      String @default("false") @db.Text
-  auditlogs         String @default("{"channel":"false","logs":{}}") @db.Text
+  auditlogs         String @default("{\"channel\":\"false\",\"logs\":{}}\") @db.Text
   suggestionchannel String @default("false") @db.Text
   suggestthreads    String @default("true") @db.Text
   pollchannel       String @default("false") @db.Text
