@@ -1,6 +1,6 @@
-import { ApplicationCommandType } from 'discord.js';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
 import slashcommands from '~/lists/slash';
+import contextcommands from '~/lists/context';
 import { Command } from '~/types/Objects';
 const truncateString = (string: string, maxLength: number) =>
   string.length > maxLength
@@ -11,35 +11,33 @@ export const reloadcmds: Command = {
   description: 'Reloads all slash commands',
   async execute(message, args, client) {
     try {
-      // Check if user is sab lolololol
-      if (message.author.id !== '249638347306303499') return;
-      if (!client.application?.owner) await client.application?.fetch();
-      const commands = await client.application?.commands.fetch();
-      if (!commands) return;
-      const msg = await message.channel.send({ content: 'Updating slash commands...' });
-      for (const obj of commands) {
-        const command = obj[1];
-        if (command.type != ApplicationCommandType.ChatInput) continue;
-        if (slashcommands.find(c => c.name == command.name)) continue;
-        await msg.edit({ content: `Deleting ${command.name}` });
-        await command.delete();
-        await msg.edit({ content: `Deleted ${command.name}` });
-        await sleep(4000);
-      }
+      // Check if user has dev in Luminescent Discord Server
+      const luminescent = client.guilds.cache.get('811354612547190794')!;
+      const luminescentMember = luminescent.members.cache.get(message.member!.id);
+      if (luminescentMember ? !luminescentMember.roles.cache.has('839158574138523689') : true) return;
+
+      if (!client.application) return;
+      if (!client.application.owner) await client.application.fetch();
+
+      const cmds = [];
       for (const obj of slashcommands) {
         const command = obj[1];
-        await msg.edit({ content: `Overwriting ${command.name}` });
-
         const cmd = new SlashCommandBuilder()
           .setName(command.name!)
           .setDescription(truncateString(command.description, 99));
-        if (command.options) command.options(cmd);
-        await client.application?.commands.create(cmd.toJSON());
-        await msg.edit({ content: `Overwritten ${command.name}` });
-        await sleep(4000);
+        if (command.options) await command.options(cmd);
+        cmds.push(cmd);
       }
-      await msg.edit({ content: 'Done!' });
-      await message.reply({ content: 'All slash commands have been updated!' });
+      for (const obj of contextcommands) {
+        const command = obj[1];
+        const cmd = new ContextMenuCommandBuilder()
+          .setName(command.name!)
+          .setType(ApplicationCommandType[command.type]);
+        cmds.push(cmd);
+      }
+      await client.application.commands.set(cmds);
+
+      await message.reply({ content: 'All slash/context commands have been updated!' });
     }
     catch (err) { error(err, message); }
   },
