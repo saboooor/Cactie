@@ -10,7 +10,12 @@ export default async (client: Client, messages: Collection<string, Message<true>
 
   // Check if log is enabled and send log
   if (!auditlogs.logs.messagedeletebulk && !auditlogs.logs.message && !auditlogs.logs.all) return;
-  const logchannel = channel.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
+  let logchannelId;
+  if (auditlogs.logs.messagedeletebulk?.channel != 'false') logchannelId = auditlogs.logs.messagedeletebulk.channel;
+  else if (auditlogs.logs.message?.channel != 'false') logchannelId = auditlogs.logs.message.channel;
+  else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+  else logchannelId = auditlogs.channel;
+  const logchannel = channel.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Create log embed

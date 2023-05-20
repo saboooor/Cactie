@@ -10,7 +10,12 @@ export default async (client: Client, channel: TextChannel) => {
 
   // Check if log is enabled and send log
   if (!auditlogs.logs.channeldelete && !auditlogs.logs.channel && !auditlogs.logs.all) return;
-  const logchannel = channel.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
+  let logchannelId;
+  if (auditlogs.logs.channeldelete?.channel != 'false') logchannelId = auditlogs.logs.channeldelete.channel;
+  else if (auditlogs.logs.channel?.channel != 'false') logchannelId = auditlogs.logs.channel.channel;
+  else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+  else logchannelId = auditlogs.channel;
+  const logchannel = channel.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

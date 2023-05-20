@@ -14,7 +14,12 @@ export default async (client: Client, oldMessage: Message<true>, newMessage: Mes
 
   // Check if log is enabled and send log
   if (!auditlogs.logs.messageupdate && !auditlogs.logs.message && !auditlogs.logs.all) return;
-  const logchannel = newMessage.guild!.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
+  let logchannelId;
+  if (auditlogs.logs.messageupdate?.channel != 'false') logchannelId = auditlogs.logs.messageupdate.channel;
+  else if (auditlogs.logs.message?.channel != 'false') logchannelId = auditlogs.logs.message.channel;
+  else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+  else logchannelId = auditlogs.channel;
+  const logchannel = newMessage.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds

@@ -10,7 +10,12 @@ export default async (client: Client, member: GuildMember) => {
 
   // Check if log is enabled and send log
   if (!auditlogs.logs.memberjoin && !auditlogs.logs.member && !auditlogs.logs.all) return;
-  const logchannel = member.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
+  let logchannelId;
+  if (auditlogs.logs.memberjoin?.channel != 'false') logchannelId = auditlogs.logs.memberjoin.channel;
+  else if (auditlogs.logs.member?.channel != 'false') logchannelId = auditlogs.logs.member.channel;
+  else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+  else logchannelId = auditlogs.channel;
+  const logchannel = member.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 
   // Convert createdTimestamp into seconds
