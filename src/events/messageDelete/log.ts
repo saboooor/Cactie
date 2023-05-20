@@ -13,7 +13,7 @@ export default async (client: Client, message: Message<true>) => {
 
   console.log(auditlogs);
   // Check if log is enabled and send log
-  if (!auditlogs.messagedelete && !auditlogs.message && !auditlogs.all) return;
+  if (!auditlogs.logs.messagedelete && !auditlogs.logs.message && !auditlogs.logs.all) return;
   const logchannel = message.guild!.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
   if (!logchannel) return;
 

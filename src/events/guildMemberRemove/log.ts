@@ -9,7 +9,7 @@ export default async (client: Client, member: GuildMember) => {
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!auditlogs.memberleave && !auditlogs.member && !auditlogs.all) return;
+  if (!auditlogs.logs.memberleave && !auditlogs.logs.member && !auditlogs.logs.all) return;
   const logchannel = member.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
   if (!logchannel) return;
 

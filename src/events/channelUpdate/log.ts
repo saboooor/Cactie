@@ -9,7 +9,7 @@ export default async (client: Client, oldChannel: TextChannel | VoiceChannel | A
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!auditlogs.channelupdate && !auditlogs.channel && !auditlogs.all) return;
+  if (!auditlogs.logs.channelupdate && !auditlogs.logs.channel && !auditlogs.logs.all) return;
   const logchannel = newChannel.guild.channels.cache.get(auditlogs.channel) as TextChannel | undefined;
   if (!logchannel) return;
 

@@ -12,7 +12,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!auditlogs.voicemute && !auditlogs.voice && !auditlogs.all) return;
+  if (!auditlogs.logs.voicemute && !auditlogs.logs.voice && !auditlogs.logs.all) return;
   const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 
