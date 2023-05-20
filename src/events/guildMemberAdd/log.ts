@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, EmbedBuilder, GuildMember, TextChannel } from 'discord.js';
 import { join } from '~/misc/emoji.json';
 
 export default async (client: Client, member: GuildMember) => {
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: member.guild!.id } });
   if (!srvconfig) return;
 

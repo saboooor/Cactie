@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Guild } from 'discord.js';
 
 export default async (client: Client, guild: Guild) => {
   // Get server config
-  const prisma = new PrismaClient();
   let srvconfig = await prisma.settings.findUnique({ where: { guildId: guild.id } });
   if (!srvconfig) srvconfig = await prisma.settings.create({ data: { guildId: guild.id, prefix: process.env.PREFIX ?? '-' } });
 

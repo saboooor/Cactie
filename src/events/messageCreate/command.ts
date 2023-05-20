@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, TextChannel } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
 import commands, { cooldowns } from '~/lists/commands';
@@ -25,7 +25,6 @@ export default async (client: Client, message: Message<true>) => {
   // };
 
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
   if (!srvconfig) return;
 

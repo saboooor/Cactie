@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, TextChannel } from 'discord.js';
 import { schedule } from 'node-cron';
 
@@ -6,7 +6,6 @@ import closeTicket from '~/functions/tickets/closeTicket';
 
 export default (client: Client) => schedule('0 0 * * *', async () => {
   // Get all tickets
-  const prisma = new PrismaClient();
   const allTicketData = await prisma.ticketdata.findMany();
 
   // Loop through all tickets

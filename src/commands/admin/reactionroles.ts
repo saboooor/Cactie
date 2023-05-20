@@ -3,7 +3,7 @@ import checkPerms from '~/functions/checkPerms';
 import { left, right } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
 import reactionrolesOptions from '~/options/reactionroles';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const reactionroles: SlashCommand = {
   description: 'Configure Cactie\'s reaction roles in the server',
@@ -21,7 +21,6 @@ export const reactionroles: SlashCommand = {
       const components = [];
 
       // Get reaction roles and pages
-      const prisma = new PrismaClient();
       const reactionrolesData = await prisma.reactionroles.findMany({ where: { guildId: message.guild!.id } });
 
       if (args[0] == 'add') {

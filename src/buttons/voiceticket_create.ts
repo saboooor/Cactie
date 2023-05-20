@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { GuildMember, TextChannel } from 'discord.js';
 import createVoice from '~/functions/tickets/createVoice';
 import { Button } from '~/types/Objects';
@@ -9,7 +9,6 @@ export const voiceticket_create: Button = {
   execute: async (interaction, client) => {
     try {
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', interaction);

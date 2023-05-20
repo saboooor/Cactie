@@ -1,11 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, GuildMember, TextChannel } from 'discord.js';
 import closeTicket from '~/functions/tickets/closeTicket';
 
 export default async (client: Client, member: GuildMember) => {
   try {
     // Get server config
-    const prisma = new PrismaClient();
     const srvconfig = await prisma.settings.findUnique({ where: { guildId: member.guild!.id } });
     if (!srvconfig) return;
 

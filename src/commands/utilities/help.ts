@@ -4,7 +4,7 @@ import { SlashCommand } from '~/types/Objects';
 import commands from '~/lists/commands';
 import helpOptions from '~/options/help';
 import * as helpdesc from '~/misc/helpdesc';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const help: SlashCommand = {
   description: 'Get help with Cactie',
@@ -15,7 +15,6 @@ export const help: SlashCommand = {
   async execute(message, args) {
     try {
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

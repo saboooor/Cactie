@@ -5,7 +5,7 @@ import getMessages from '~/functions/messages/getMessages';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import suggestresponse from '~/options/suggestresponse';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const deny: SlashCommand = {
   description: 'Deny a suggestion.',
@@ -21,7 +21,6 @@ export const deny: SlashCommand = {
       const messageId = args.shift()!;
 
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

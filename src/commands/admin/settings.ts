@@ -3,7 +3,7 @@ import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ButtonInter
 import { left, right } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
 import desc from '~/misc/settingsdesc.json';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const settings: SlashCommand = {
   description: 'Configure this server\' Cactie settings',
@@ -18,7 +18,6 @@ export const settings: SlashCommand = {
 
       // Get settings and make an array out of it to split and make pages
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

@@ -1,7 +1,7 @@
 import { EmbedBuilder, TextChannel, User } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const unmute: SlashCommand = {
   description: 'Unmute someone that was muted in the server',
@@ -16,7 +16,6 @@ export const unmute: SlashCommand = {
     try {
       // Get settings and check if mutecmd is enabled
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

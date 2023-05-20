@@ -1,10 +1,9 @@
 import { schedule } from 'node-cron';
 import { EmbedBuilder, Client, TextChannel } from 'discord.js';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export default async (client: Client) => schedule('* * * * *', async () => {
   // Get all member data
-  const prisma = new PrismaClient();
   const memberdata = await prisma.memberdata.findMany();
 
   // Iterate through every row in the data

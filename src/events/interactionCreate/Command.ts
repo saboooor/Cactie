@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, GuildMember, GuildChannelResolvable, TextChannel, ApplicationCommandOptionType } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
 import { cooldowns } from '~/lists/commands';
@@ -15,7 +15,6 @@ export default async (client: Client, interaction: CommandInteraction) => {
   if (!command) return;
 
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
   if (srvconfig && srvconfig.disabledcmds.includes(command.name!)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
 

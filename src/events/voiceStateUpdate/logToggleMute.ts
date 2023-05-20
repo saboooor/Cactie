@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
 import { mute, srvmute, unmute } from '~/misc/emoji.json';
 
@@ -7,7 +7,6 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   if (oldState.selfMute == newState.selfMute && oldState.serverMute == newState.serverMute) return;
 
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: newState.guild!.id } });
   if (!srvconfig) return;
 

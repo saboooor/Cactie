@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { GuildMember, TextChannel } from 'discord.js';
 import reopenTicket from '~/functions/tickets/reopenTicket';
 import { SlashCommand } from '~/types/Objects';
@@ -11,7 +11,6 @@ export const forcedelete: SlashCommand = {
   async execute(message) {
     try {
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

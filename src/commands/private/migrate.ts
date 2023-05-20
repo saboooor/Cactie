@@ -1,17 +1,20 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Command } from '~/types/Objects';
 
 export const migrate: Command = {
   description: 'migrates the db to new versions',
   async execute(message) {
-    const prisma = new PrismaClient();
     const settings = await prisma.settings.findMany();
     for (const srvconfig of settings) {
       if (!srvconfig.auditlogs.startsWith('{')) {
-        const newJSON = {
-          channel: srvconfig.logchannel, logs: {} as any,
-        };
         const logs = srvconfig.auditlogs.split(',');
+        const newJSON = {
+          channel: srvconfig.logchannel, logs: {} as {
+            [key: string]: {
+              channel: string;
+            };
+          },
+        };
         logs.forEach(log => {
           if (log == 'false') return;
           newJSON.logs[log] = { channel: 'false' };

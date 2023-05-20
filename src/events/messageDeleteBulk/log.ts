@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Collection, Message, TextChannel } from 'discord.js';
 import { no } from '~/misc/emoji.json';
 
 export default async (client: Client, messages: Collection<string, Message<true>>, channel: TextChannel) => {
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: channel.guild!.id } });
   if (!srvconfig) return;
 

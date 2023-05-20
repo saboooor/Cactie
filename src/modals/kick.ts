@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import { Modal } from '~/types/Objects';
 
@@ -55,7 +55,6 @@ export const kick: Modal = {
       logger.info(`Kicked user: ${member.user.tag} from ${interaction.guild!.name}`);
 
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
       if (!srvconfig) return;
 

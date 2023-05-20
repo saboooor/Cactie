@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, EmbedBuilder, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
 
 export default async (client: Client, channel: TextChannel) => {
   // Check if ticket is an actual ticket
   // Get server config
-  const prisma = new PrismaClient();
   const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
   if (!ticketData) return;
   const ticketDataUsers = ticketData.users.split(',');

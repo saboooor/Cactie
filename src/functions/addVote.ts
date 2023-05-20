@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, EmbedBuilder, TextChannel } from 'discord.js';
 
 export default async function addVote(body: {
@@ -16,7 +16,6 @@ export default async function addVote(body: {
   channel?.send({ embeds: [VoteEmbed] });
 
   // Get server config
-  const prisma = new PrismaClient();
   await prisma.userdata.upsert({
     where: { userId: `${body.id || body.user}` },
     create: { userId: `${body.id || body.user}`, lastvoted: new Date() },

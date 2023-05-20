@@ -2,7 +2,7 @@ import { GuildMember } from 'discord.js';
 import createTicket from '~/functions/tickets/createTicket';
 import { SlashCommand } from '~/types/Objects';
 import ticketOptions from '~/options/ticket';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const ticket: SlashCommand = {
   description: 'Create a ticket',
@@ -14,7 +14,6 @@ export const ticket: SlashCommand = {
   async execute(message, args, client) {
     try {
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

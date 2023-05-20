@@ -4,7 +4,7 @@ import getMessages from '~/functions/messages/getMessages';
 import { yes, no } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
 import clearOptions from '~/options/clear';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const clear: SlashCommand = {
   description: 'Delete multiple messages at once',
@@ -57,7 +57,6 @@ export const clear: SlashCommand = {
       logger.info(`Cleared ${allmessages.size} messages from #${(message.channel! as TextChannel).name} in ${message.guild!.name}`);
 
       // Check if log channel exists and send message
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

@@ -1,9 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { schedule } from 'node-cron';
 
 export default async () => schedule('* * * * *', async () => {
   // Get all user data
-  const prisma = new PrismaClient();
   const userdata = await prisma.userdata.findMany();
 
   // If any user has not voted in 24 hours, remove them from the vote database

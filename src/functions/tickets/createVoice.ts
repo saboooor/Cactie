@@ -1,4 +1,5 @@
-import { PrismaClient, settings } from '@prisma/client';
+import { settings } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, GuildMember, TextChannel, PublicThreadChannel, EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
 
 export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
@@ -6,7 +7,6 @@ export default async function createVoice(client: Client, srvconfig: settings, m
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
-  const prisma = new PrismaClient();
   const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
   if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');

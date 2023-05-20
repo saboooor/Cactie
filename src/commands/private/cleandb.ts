@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Command } from '~/types/Objects';
 
 export const cleandb: Command = {
   description: 'cleans the db of guilds that no longer exist',
   async execute(message, args, client) {
-    const prisma = new PrismaClient();
     const settings = await prisma.settings.findMany();
     for (const srvconfig of settings) {
       const guild = await client.guilds.fetch(srvconfig.guildId).catch(() => { return null; });

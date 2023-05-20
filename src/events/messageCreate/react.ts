@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Client, Message } from 'discord.js';
 import reactions from '~/lists/reactions';
 
@@ -7,7 +7,6 @@ export default async (client: Client, message: Message<true>) => {
   if (!message.guild || message.webhookId || message.author.bot) return;
 
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
   if (!srvconfig) return;
 

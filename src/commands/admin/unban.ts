@@ -1,7 +1,7 @@
 import { EmbedBuilder, TextChannel, User } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import unbanOptions from '~/options/unban';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const unban: SlashCommand = {
   description: 'Unban someone that was banned from the server',
@@ -66,7 +66,6 @@ export const unban: SlashCommand = {
 
       // Check if log channel exists and send message
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

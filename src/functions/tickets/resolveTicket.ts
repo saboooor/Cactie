@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
 
 export default async function resolveTicket(member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
@@ -6,7 +6,6 @@ export default async function resolveTicket(member: GuildMember, channel: TextCh
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
   // Check if channel is a ticket
-  const prisma = new PrismaClient();
   const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
   if (!ticketData) throw new Error('Could not find this ticket in the database, please manually delete this channel.');
   const ticketDataUsers = ticketData.users.split(',');

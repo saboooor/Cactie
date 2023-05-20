@@ -2,7 +2,7 @@ import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const ban: SlashCommand = {
   description: 'Ban someone from the server',
@@ -59,8 +59,6 @@ export const ban: SlashCommand = {
           message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
         });
       logger.info(`Banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
-
-      const prisma = new PrismaClient();
 
       // Set unban timestamp to member data for auto-unban
       if (!isNaN(time)) prisma.memberdata.update({ where: { memberId_guildId: { guildId: message.guild!.id, memberId: member.id } }, data: { bannedUntil: `${Date.now() + time}` } });

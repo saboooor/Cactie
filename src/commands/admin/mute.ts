@@ -2,7 +2,7 @@ import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const mute: SlashCommand = {
   description: 'Mute someone in the server',
@@ -17,7 +17,6 @@ export const mute: SlashCommand = {
     try {
       // Get mute role and check if role is valid
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);

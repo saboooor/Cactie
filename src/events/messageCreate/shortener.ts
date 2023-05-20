@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, Client, Message } from 'discord.js';
 import { createPaste } from 'hastebin';
 import checkPerms from '~/functions/checkPerms';
@@ -8,7 +8,6 @@ export default async (client: Client, message: Message<true>) => {
   if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 
   // Get server config
-  const prisma = new PrismaClient();
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
   if (!srvconfig) return;
 

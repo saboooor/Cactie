@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { Modal } from '~/types/Objects';
@@ -61,7 +61,6 @@ export const ban: Modal = {
       logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
-      const prisma = new PrismaClient();
       if (!isNaN(time)) {
         await prisma.memberdata.upsert({
           where: { memberId_guildId: { memberId: member.id, guildId: interaction.guild.id } },

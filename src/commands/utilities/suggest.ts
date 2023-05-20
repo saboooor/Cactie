@@ -3,7 +3,7 @@ import { upvote, downvote } from '~/misc/emoji.json';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import suggestOptions from '~/options/suggest';
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 
 export const suggest: SlashCommand = {
   description: 'Suggest something!',
@@ -15,7 +15,6 @@ export const suggest: SlashCommand = {
   async execute(message, args) {
     try {
       // Get server config
-      const prisma = new PrismaClient();
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);
