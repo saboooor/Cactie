@@ -28,7 +28,7 @@ model settings {
   maxppsize         Int    @default(35)
   tickets           String @default("buttons") @db.Text
   disabledcmds      String @default("false") @db.Text
-  auditlogs         String @default("false") @db.Text
+  auditlogs         String @default("{"channel":"false","logs":{}}") @db.Text
   suggestionchannel String @default("false") @db.Text
   suggestthreads    String @default("true") @db.Text
   pollchannel       String @default("false") @db.Text
@@ -66,14 +66,4 @@ model memberdata {
 model userdata {
   userId    String    @unique(map: "userId")
   lastvoted DateTime? @db.DateTime(0)
-}
-
-model sessions {
-  sessionId    String    @unique(map: "sessionId")
-  accessToken  String?   @db.Text
-  refreshToken String?   @db.Text
-  expiresAt    DateTime? @db.DateTime(0)
-  scope        String?   @db.Text
-  pfp          String?   @default("https://cdn.discordapp.com/embed/avatars/0.png") @db.Text
-  accent       String?   @db.Text
 }

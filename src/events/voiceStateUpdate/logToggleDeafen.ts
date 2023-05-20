@@ -9,9 +9,10 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   // Get server config
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: newState.guild!.id } });
   if (!srvconfig) return;
+  const auditlogs = JSON.parse(srvconfig.auditlogs);
 
-  // Check if log is enabled
-  if (!['voicedeafen', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+  // Check if log is enabled and send log
+  if (!auditlogs.voicedeafen && !auditlogs.voice && !auditlogs.all) return;
   const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 

@@ -6,9 +6,10 @@ export default async (client: Client, oldChannel: TextChannel | VoiceChannel | A
   // Get server config
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: oldChannel.guild!.id } });
   if (!srvconfig) return;
+  const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!['channelupdate', 'channel', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+  if (!auditlogs.channelupdate && !auditlogs.channel && !auditlogs.all) return;
   const logchannel = newChannel.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
   if (!logchannel) return;
 

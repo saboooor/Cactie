@@ -9,6 +9,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   // Get server config
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: newState.guild!.id } });
   if (!srvconfig) return;
+  const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log channel is set
   const logchannel = newState.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
@@ -21,22 +22,22 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
 
   // Check if the user joined
   if (!oldState.channelId && newState.channelId) {
-    // Check if log is enabled and set title accordingly
-    if (!['voicejoin', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+    // Check if log is enabled and send log
+    if (!auditlogs.voicejoin && !auditlogs.voice && !auditlogs.all) return;
     logEmbed.setTitle(`<:in:${join}> Member joined voice channel`)
       .addFields([{ name: 'Channel', value: `${newState.channel}`, inline: true }]);
   }
   // Check if the user left
   else if (oldState.channelId && !newState.channelId) {
-    // Check if log is enabled and set title accordingly
-    if (!['voiceleave', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+    // Check if log is enabled and send log
+    if (!auditlogs.voiceleave && !auditlogs.voice && !auditlogs.all) return;
     logEmbed.setTitle(`<:out:${leave}> Member left voice channel`)
       .addFields([{ name: 'Channel', value: `${oldState.channel}`, inline: true }]);
   }
   // Check if user moved
   else if (oldState.channelId != newState.channelId) {
-    // Check if log is enabled and set title accordingly
-    if (!['voicemove', 'voice', 'all'].some(logtype => srvconfig.auditlogs.split(',').includes(logtype))) return;
+    // Check if log is enabled and send log
+    if (!auditlogs.voicemove && !auditlogs.voice && !auditlogs.all) return;
     logEmbed.setTitle(`<:right:${right}> Member moved voice channels`)
       .addFields([{ name: 'Channels', value: `${oldState.channel} <:right:${right}> ${newState.channel}`, inline: true }]);
   }
