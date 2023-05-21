@@ -14,9 +14,9 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   // Check if log is enabled and send log
   if (!auditlogs.logs.voicedeafen && !auditlogs.logs.voice && !auditlogs.logs.all) return;
   let logchannelId;
-  if (auditlogs.logs.voicedeafen?.channel != 'false') logchannelId = auditlogs.logs.voicedeafen.channel;
-  else if (auditlogs.logs.voice?.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
-  else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+  if (auditlogs.logs.voicedeafen && auditlogs.logs.voicedeafen.channel != 'false') logchannelId = auditlogs.logs.voicedeafen.channel;
+  else if (auditlogs.logs.voice && auditlogs.logs.voice.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
+  else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
   else logchannelId = auditlogs.channel;
   const logchannel = newState.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;

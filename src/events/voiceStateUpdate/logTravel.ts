@@ -24,9 +24,9 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
     if (!auditlogs.logs.voicejoin && !auditlogs.logs.voice && !auditlogs.logs.all) return;
 
     // Check if log channel is set
-    if (auditlogs.logs.voicejoin?.channel != 'false') logchannelId = auditlogs.logs.voicejoin.channel;
-    else if (auditlogs.logs.voice?.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
-    else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+    if (auditlogs.logs.voicejoin && auditlogs.logs.voicejoin.channel != 'false') logchannelId = auditlogs.logs.voicejoin.channel;
+    else if (auditlogs.logs.voice && auditlogs.logs.voice.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
+    else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
     else logchannelId = auditlogs.channel;
 
     logEmbed.setTitle(`<:in:${join}> Member joined voice channel`)
@@ -38,9 +38,9 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
     if (!auditlogs.logs.voiceleave && !auditlogs.logs.voice && !auditlogs.logs.all) return;
 
     // Check if log channel is set
-    if (auditlogs.logs.voiceleave?.channel != 'false') logchannelId = auditlogs.logs.voiceleave.channel;
-    else if (auditlogs.logs.voice?.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
-    else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+    if (auditlogs.logs.voiceleave && auditlogs.logs.voiceleave.channel != 'false') logchannelId = auditlogs.logs.voiceleave.channel;
+    else if (auditlogs.logs.voice && auditlogs.logs.voice.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
+    else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
     else logchannelId = auditlogs.channel;
 
     logEmbed.setTitle(`<:out:${leave}> Member left voice channel`)
@@ -52,9 +52,9 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
     if (!auditlogs.logs.voicemove && !auditlogs.logs.voice && !auditlogs.logs.all) return;
 
     // Check if log channel is set
-    if (auditlogs.logs.voicemove?.channel != 'false') logchannelId = auditlogs.logs.voicemove.channel;
-    else if (auditlogs.logs.voice?.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
-    else if (auditlogs.logs.all?.channel != 'false') logchannelId = auditlogs.logs.all.channel;
+    if (auditlogs.logs.voicemove && auditlogs.logs.voicemove.channel != 'false') logchannelId = auditlogs.logs.voicemove.channel;
+    else if (auditlogs.logs.voice && auditlogs.logs.voice.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
+    else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
 
     logEmbed.setTitle(`<:right:${right}> Member moved voice channels`)
       .addFields([{ name: 'Channels', value: `${oldState.channel} <:right:${right}> ${newState.channel}`, inline: true }]);
