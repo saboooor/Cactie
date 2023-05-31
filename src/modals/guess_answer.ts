@@ -106,7 +106,7 @@ export const guess_answer: Modal = {
           ]);
 
         // Edit the message with the updated embed and button
-        TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${guesser ?? 'Anyone'} Ask a question or guess the answer.`);
+        TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**Guesser:**\n${guesser ?? 'Anyone'}\nAsk a question or guess the answer.`);
         await btnint.editReply({ content: guesser ? `${guesser}` : null, embeds: [TwentyOneQuestions], components: [guessrow] });
 
         // Ping the user
