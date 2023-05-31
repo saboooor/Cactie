@@ -1,7 +1,6 @@
 import { EmbedBuilder, GuildMember } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import someone from '~/options/someone';
-import prisma from '~/functions/prisma';
 
 export const boner: SlashCommand = {
   description: 'See your boner expand!',
@@ -10,14 +9,6 @@ export const boner: SlashCommand = {
   options: someone,
   async execute(message, args) {
     try {
-      // Get settings
-      // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('Server config not found.', message);
-        return;
-      }
-
       // Check if arg is a user and set it
       let user;
       if (args.length) {
@@ -41,7 +32,7 @@ export const boner: SlashCommand = {
       }
 
       // Get random number out of the maxppsize for the amount of inches and set the description and footer to size then reply
-      const random = Math.round(Math.random() * Number(srvconfig.maxppsize));
+      const random = Math.round(Math.random() * 32);
       ppEmbed.setDescription('8' + '='.repeat(random - 1 == -1 ? 0 : random - 1) + 'D').setFooter({ text: `${hard == 1 ? 'soft' : 'hard'} pp size = ${random}"` });
       message.reply({ embeds: [ppEmbed] });
     }
