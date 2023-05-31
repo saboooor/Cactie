@@ -14,7 +14,7 @@ export const questions: SlashCommand = {
       error('The amount of questions must be between 1 and 25!', message, true);
       return;
     }
-    const member = await message.guild!.members.fetch(args[0].replace(/\D/g, '')).catch(() => null);
+    const member = args[0] ? await message.guild!.members.fetch(args[0].replace(/\D/g, '')).catch(() => null) : null;
     if (member && member.id == message.member!.user.id) {
       error('You played yourself, oh wait, you can\'t.', message, true);
       return;
