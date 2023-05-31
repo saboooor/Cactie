@@ -2,9 +2,8 @@ import prisma from '~/functions/prisma';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Guild } from 'discord.js';
 
 export default async (client: Client, guild: Guild) => {
-  // Get server config
-  let srvconfig = await prisma.settings.findUnique({ where: { guildId: guild.id } });
-  if (!srvconfig) srvconfig = await prisma.settings.create({ data: { guildId: guild.id, prefix: process.env.PREFIX ?? '-' } });
+  // Set server config
+  await prisma.settings.create({ data: { guildId: guild.id } });
 
   const row = new ActionRowBuilder<ButtonBuilder>()
     .addComponents([
@@ -25,7 +24,6 @@ export default async (client: Client, guild: Guild) => {
     .setColor('Random')
     .setTitle(`Thanks for adding ${client.user?.username} to ${guild.name}!`)
     .setDescription(`
-My text command prefix is \`${srvconfig.prefix}\`, you may change this through the settings with \`/settings\`
 Type \`/help\` for help, and \`/invite\` to invite me to other servers!
 Please take some time going through the settings so that ${client.user?.username} works well! \`/settings\`
 		`)

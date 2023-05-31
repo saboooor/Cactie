@@ -21,7 +21,7 @@ model ticketdata {
 
 model settings {
   guildId           String @unique(map: "guildId")
-  prefix            String @default("-") @db.Text
+  prefix            String @default("DEPRECATED") @db.Text
   reactions         String @default("false") @db.Text
   leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
   joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text

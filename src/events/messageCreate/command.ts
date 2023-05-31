@@ -1,5 +1,5 @@
 import prisma from '~/functions/prisma';
-import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, Message, TextChannel } from 'discord.js';
+import { EmbedBuilder, Collection, Client, Message, TextChannel } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
 import commands, { cooldowns } from '~/lists/commands';
 import cooldownMessages from '~/misc/cooldown.json';
@@ -33,22 +33,9 @@ export default async (client: Client, message: Message<true>) => {
     return;
   }
 
-  // Use mention as prefix instead of prefix too
-  let txtprefix;
-  if (message.content.replace('!', '').startsWith(`<@${client.user!.id}>`)) {
-    txtprefix = srvconfig.prefix;
-    srvconfig.prefix = message.content.split('>')[0] + '>';
-  }
-
   // If message doesn't start with the prefix, return
   // Also unresolve the ticket if channel is a resolved ticket
-  if (!message.content.startsWith(srvconfig.prefix)) {
-    // If message has the bot's Id, reply with prefix
-    if (message.content.includes(client.user!.id)) {
-      const prefix = await message.reply({ content: `**My prefix is ${txtprefix ? txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
-      setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
-    }
-
+  if (!message.content.replace('!', '').startsWith(`<@${client.user!.id}>`)) {
     // Check if channel is a ticket
     const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: message.channel.id } });
     if (ticketData && ticketData.resolved == 'true') {
@@ -58,8 +45,10 @@ export default async (client: Client, message: Message<true>) => {
     return;
   }
 
+  const prefix = message.content.split('>')[0] + '>';
+
   // Get args by splitting the message by the spaces and getting rid of the prefix
-  const args = message.content.slice(srvconfig.prefix.length).trim().split(/ +/);
+  const args = message.content.slice(prefix.length).trim().split(/ +/);
   if (!args[0]) return;
 
   // Get the command name from the first arg and get rid of the first arg
@@ -70,17 +59,20 @@ export default async (client: Client, message: Message<true>) => {
   if (!command || !command.name) {
     // If message has the bot's Id, reply with prefix
     if (message.content.includes(client.user!.id)) {
-      const prefix = await message.reply({ content: `**My prefix is ${txtprefix ? txtprefix : srvconfig.prefix}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
-      setTimeout(() => { prefix.delete().catch(err => logger.error(err)); }, 10000);
+      const himsg = await message.reply({ content: `**Hi! I'm ${client.user?.username}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
+      setTimeout(() => { himsg.delete().catch(err => logger.error(err)); }, 10000);
+    }
+    // Check if channel is a ticket
+    const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: message.channel.id } });
+    if (ticketData && ticketData.resolved == 'true') {
+      prisma.ticketdata.update({ where: { channelId: message.channel.id }, data: { resolved: 'false' } });
+      logger.info(`Unresolved #${(message.channel as TextChannel).name}`);
     }
     return;
   }
 
   // Check if command is disabled
   if (srvconfig.disabledcmds.includes(command.name)) return message.reply({ content: `${commandName} is disabled on this server.` });
-
-  // Start typing (basically to mimic the defer of interactions)
-  await message.channel.sendTyping();
 
   // Get cooldowns and check if cooldown exists, if not, create it
   if (!cooldowns.has(command.name)) cooldowns.set(command.name, new Collection());
@@ -117,48 +109,10 @@ export default async (client: Client, message: Message<true>) => {
   setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
   // Check if args are required and see if args are there, if not, send error
-  if (command.args && args.length < 1) {
-    const Usage = new EmbedBuilder()
-      .setColor(0x2f3136)
-      .setTitle('Usage')
-      .setDescription(`\`\`\`\n${srvconfig.prefix + command.name + ' ' + command.usage}\n\`\`\``);
-    return message.reply({ embeds: [Usage] });
-  }
-
-  // Check if command can be ran only if the user voted since the past 24 hours
-  if (command.voteOnly) {
-    // Get data for user
-    const userdata = await prisma.userdata.findUnique({ where: { userId: message.author.id } });
-
-    // If user has not voted since the past 24 hours, send error message with vote buttons
-    if (!userdata || Date.now() > Number(userdata.lastvoted) + 86400000) {
-      const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
-        .setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
-      const row = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents([
-          new ButtonBuilder()
-            .setURL(`https://top.gg/bot/${client.user!.id}/vote`)
-            .setLabel('top.gg')
-            .setStyle(ButtonStyle.Link),
-        ]);
-      return message.reply({ embeds: [errEmbed], components: [row] });
-    }
-  }
+  if ((command.args && args.length < 1) || command.voteOnly || command.channelPermissions || command.permissions) return message.reply('**This text command is no longer available** Please use the slash (/) command.');
 
   // Log
   logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
-
-  // Check if user has the permissions necessary in the channel to use the command
-  if (command.channelPermissions) {
-    const permCheck = checkPerms(command.channelPermissions, message.member!, message.channel as PermissionChannel);
-    if (permCheck) return error(permCheck, message, true);
-  }
-
-  // Check if user has the permissions necessary in the guild to use the command
-  if (command.permissions) {
-    const permCheck = checkPerms(command.permissions, message.member!);
-    if (permCheck) return error(permCheck, message, true);
-  }
 
   // Check if bot has the permissions necessary in the channel to run the command
   if (command.botChannelPerms) {
@@ -173,24 +127,6 @@ export default async (client: Client, message: Message<true>) => {
   }
 
   // execute the command
-  try {
-    command.execute(message, args, client);
-  }
-  catch (err) {
-    const interactionFailed = new EmbedBuilder()
-      .setColor('Random')
-      .setTitle('INTERACTION FAILED')
-      .setAuthor({ name: message.author.tag, iconURL: message.author.avatarURL() ?? undefined })
-      .addFields([
-        { name: '**Type:**', value: 'Message' },
-        { name: '**Guild:**', value: message.guild.name },
-        { name: '**Channel:**', value: `${message.channel}` },
-        { name: '**INTERACTION:**', value: srvconfig.prefix + command.name },
-        { name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
-      ]);
-    const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
-    errorchannel.send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
-    message.author.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
-    logger.error(err);
-  }
+  try { command.execute(message, args, client); }
+  catch (err) { message.reply('This text command has ran into an error and no longer is supported. Please use the slash (/) command instead.'); }
 };
