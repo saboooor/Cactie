@@ -22,10 +22,9 @@ model ticketdata {
 model settings {
   guildId           String @unique(map: "guildId")
   prefix            String @default("DEPRECATED") @db.Text
-  reactions         String @default("false") @db.Text
+  reactions         String @default("[{\"triggers\":[\"bad\",\"gross\",\"shit\",\"dum\"],\"additionaltriggers\":[\"cactie\"],\"emojis\":[\"🇳\",\"🇴\"]},{\"triggers\":[\"mad\",\"angry\",\"kill \",\"punch\",\"evil\"],\"emojis\":[\"899340907432792105\"]},{\"triggers\":[\"shoto\"],\"emojis\":[\"867259182642102303\",\"😩\"]},{\"triggers\":[\"lov\",\"simp\",\" ily \",\" ily\",\"kiss\",\"cute\"],\"emojis\":[\"896483408753082379\"]}]") @db.Text
   leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
   joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
-  maxppsize         Int    @default(35)
   tickets           String @default("buttons") @db.Text
   disabledcmds      String @default("false") @db.Text
   auditlogs         String @default("{\"channel\":\"false\",\"logs\":{}}") @db.Text
