@@ -11,7 +11,6 @@ export const choose_answer: Modal = {
       // Get the opponent from the embed description
       const embedJSON = interaction.message!.embeds[0].toJSON();
       const guesser = interaction.guild!.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
-      if (!guesser) return;
 
       // Create button and embed for the guesser
       const row = new ActionRowBuilder<ButtonBuilder>()
@@ -24,9 +23,10 @@ export const choose_answer: Modal = {
         ]);
       const TwentyOneQuestions = new EmbedBuilder(embedJSON)
         .setColor(0x5b62fa)
-        .setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser}\nAsk a question or guess the answer by clicking the button below.`)
-        .setThumbnail(guesser.user.avatarURL())
+        .setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser ?? 'Anyone'}\nAsk a question or guess the answer by clicking the button below.`)
         .setFooter({ text: `${embedJSON.title} left` });
+
+      if (guesser) TwentyOneQuestions.setThumbnail(guesser.user.avatarURL());
 
       // Edit the message with the new embed and button
       await interaction.editReply({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
@@ -42,7 +42,7 @@ export const choose_answer: Modal = {
       }
 
       // Create a collector for the button
-      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && i.member!.user.id == guesser.id;
+      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && (guesser ? i.member!.user.id == guesser.id : true);
       const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
       collector.on('collect', async (btnint) => {
         // Create and show a modal for the user to fill out the question

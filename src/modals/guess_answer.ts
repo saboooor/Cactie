@@ -13,6 +13,7 @@ export const guess_answer: Modal = {
       const embedJSON = interaction.message!.embeds[0].toJSON();
       const host = interaction.guild!.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
       if (!host) return;
+      const guesser = interaction.guild!.members.cache.get(embedJSON.description!.split('\n')[3].replace(/\D/g, ''));
 
       // Create buttons and embed for the host to answer the question
       const row = new ActionRowBuilder<ButtonBuilder>()
@@ -40,7 +41,7 @@ export const guess_answer: Modal = {
         ]);
       const TwentyOneQuestions = new EmbedBuilder(embedJSON)
         .setColor(0xde4b37)
-        .setDescription(`**Playing with:**\n${interaction.member}`)
+        .setDescription(`**Playing with:**\n${guesser ?? 'Everyone'}`)
         .addFields([{ name: field.value, value: `${host}\nPlease answer this question by clicking the buttons below` }])
         .setThumbnail(host.user.avatarURL())
         .setFooter({ text: `${parseInt(embedJSON.footer!.text.split(' ')[0]) - 1} Questions left` });
@@ -89,7 +90,7 @@ export const guess_answer: Modal = {
 					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `${TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value}\n\n**You ran out of questions!\nThe answer was**\n\`${answer}\``;
 
 					// End the game with a negative response
-					TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**${interaction.member} ran out of questions!**`);
+					TwentyOneQuestions.setDescription(`**Host:**\n${host}\n**${guesser ?? 'The opponents'} ran out of questions!**`);
 					btnint.editReply({ content: `${interaction.member}`, embeds: [TwentyOneQuestions], components: [] });
 					return;
         }
@@ -105,12 +106,12 @@ export const guess_answer: Modal = {
           ]);
 
         // Edit the message with the updated embed and button
-        TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${interaction.member} Ask a question or guess the answer.`);
-        await btnint.editReply({ content: `${interaction.member}`, embeds: [TwentyOneQuestions], components: [guessrow] });
+        TwentyOneQuestions.setDescription(`**Host:**\n${host}\n${guesser ?? 'Anyone'} Ask a question or guess the answer.`);
+        await btnint.editReply({ content: guesser ? `${guesser}` : null, embeds: [TwentyOneQuestions], components: [guessrow] });
 
         // Ping the user
         try {
-          const pingmsg = await interaction.channel!.send({ content: `${interaction.member}` });
+          const pingmsg = await interaction.channel!.send({ content: `${guesser}` });
           await pingmsg.delete();
         }
         catch (err) {
@@ -123,7 +124,7 @@ export const guess_answer: Modal = {
 
       // When the collector stops, edit the message with a timeout message if the game hasn't ended already
       collector.on('end', () => {
-        if (collector.collected.size) { return; }
+        if (collector.collected.size) return;
         interaction.editReply({ content: `A game of ${embedJSON.title} should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
       });
     }

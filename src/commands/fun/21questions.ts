@@ -7,7 +7,7 @@ export const questions: SlashCommand = {
   aliases: ['questions', '21q'],
   description: 'Play 21 Questions with an opponent',
   args: true,
-  usage: '<Opponent User> [Amount of questions (default 21)]',
+  usage: '[Opponent User] [Amount of questions (default 21)]',
   cooldown: 10,
   options: questionsOptions,
   async execute(message, args) {
@@ -15,16 +15,12 @@ export const questions: SlashCommand = {
       error('The amount of questions must be between 1 and 25!', message, true);
       return;
     }
-    const member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
-    if (!member) {
-      error('Invalid member! Are they in this server?', message, true);
-      return;
-    }
-    if (member.id == message.member!.user.id) {
+    const member = await message.guild!.members.fetch(args[0].replace(/\D/g, '')).catch(() => null);
+    if (member && member.id == message.member!.user.id) {
       error('You played yourself, oh wait, you can\'t.', message, true);
       return;
     }
-    if (member.user.bot) {
+    if (member && member.user.bot) {
       error('Bots aren\'t fun to play with, yet. ;)', message, true);
       return;
     }
@@ -38,7 +34,7 @@ export const questions: SlashCommand = {
     const TwentyOneQuestions = new EmbedBuilder()
       .setColor(0x2f3136)
       .setTitle(`${args[1] ? args[1] : 21} Questions`)
-      .setDescription(`**Playing with:**\n${member}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`)
+      .setDescription(`**Playing with:**\n${member ?? 'Everyone'}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`)
       .setThumbnail((message.member!.user as User).avatarURL());
 
     const questionmsg = await message.reply({ content: `${message.member}`, embeds: [TwentyOneQuestions], components: [row] });

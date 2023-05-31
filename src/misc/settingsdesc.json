@@ -1,10 +1,10 @@
 {
     "guildId": "*This guild's Id (Read only)*",
-    "prefix": "*The bot's prefix*",
+    "prefix": "*DEPRECATED*",
     "reactions": "*Reacts with various reactions on some words (true/false)*\nDo /reactions to see a list of them",
     "leavemessage": "*The message when someone leaves the server.",
     "joinmessage": "*The message when someone joins the server.",
-    "maxppsize": "*Maximum pp size in boner and instaboner commands (<75)*",
+    "maxppsize": "*DEPRECATED*",
     "tickets": "*Toggles the ticket system (buttons/reactions/false)*",
     "disabledcmds": "*Disable certain commands from the bot (commands separated by commas)*",
     "auditlogs": "*Logs certain events in the guild*",

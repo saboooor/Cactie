@@ -4,8 +4,7 @@ export default async function options(cmd: SlashCommandBuilder) {
   cmd.addUserOption(
     new SlashCommandUserOption()
       .setName('user')
-      .setDescription('The user to play 21 Questions with')
-      .setRequired(true),
+      .setDescription('Optional specific user to play 21 Questions with'),
   ).addNumberOption(
     new SlashCommandNumberOption()
       .setName('amount')
