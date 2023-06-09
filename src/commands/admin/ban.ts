@@ -7,8 +7,7 @@ import prisma from '~/functions/prisma';
 export const ban: SlashCommand = {
   description: 'Ban someone from the server',
   ephemeral: true,
-  args: true,
-  usage: '<User @ or Id> [Time] [Reason]',
+  usage: '',
   permissions: ['BanMembers'],
   botPerms: ['BanMembers'],
   cooldown: 5,
@@ -52,12 +51,14 @@ export const ban: SlashCommand = {
       const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
       if (reason) BanEmbed.addFields([{ name: 'Reason', value: reason }]);
 
-      // Send ban message to target
-      await member.send({ content: `**You've been banned from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
-        .catch(err => {
-          logger.warn(err);
-          message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
-        });
+      // Send ban message to target if silent is false
+      if (!args[3]) {
+        await member.send({ content: `**You've been banned from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+          .catch(err => {
+            logger.warn(err);
+            message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+          });
+      }
       logger.info(`Banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban

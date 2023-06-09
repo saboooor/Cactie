@@ -7,8 +7,7 @@ import prisma from '~/functions/prisma';
 export const mute: SlashCommand = {
   description: 'Mute someone in the server',
   ephemeral: true,
-  args: true,
-  usage: '<User @ or Id> [Time] [Reason]',
+  usage: '',
   permissions: ['ModerateMembers'],
   botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
@@ -88,12 +87,14 @@ export const mute: SlashCommand = {
       // Set member data for unmute time if set
       if (!isNaN(time)) prisma.memberdata.update({ where: { memberId_guildId: { guildId: message.guild!.id, memberId: member.id } }, data: { mutedUntil: `${Date.now() + time}` } });
 
-      // Send mute message to target
-      await member.send({ content: `**You've been muted in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
-        .catch(err => {
-          logger.warn(err);
-          message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
-        });
+      // Send mute message to target if silent is false
+      if (!args[3]) {
+        await member.send({ content: `**You've been muted in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+          .catch(err => {
+            logger.warn(err);
+            message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+          });
+      }
       logger.info(`Muted user: ${member.user.tag} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command

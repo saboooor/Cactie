@@ -43,12 +43,14 @@ export const kick: SlashCommand = {
       // Add reason if specified
       if (args[1]) KickEmbed.addFields([{ name: 'Reason', value: args.slice(1).join(' ') }]);
 
-      // Send kick message to target
-      await member.send({ content: `**You've been kicked from ${message.guild!.name}.${args[1] ? ` Reason: ${args.slice(1).join(' ')}` : ''}**` })
-        .catch(err => {
-          logger.warn(err);
-          message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
-        });
+      // Send kick message to target if silent is false
+      if (!args[2]) {
+        await member.send({ content: `**You've been kicked from ${message.guild!.name}.${args[1] ? ` Reason: ${args.slice(1).join(' ')}` : ''}**` })
+          .catch(err => {
+            logger.warn(err);
+            message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
+          });
+      }
 
       // Reply with response
       await message.reply({ embeds: [KickEmbed] });
