@@ -34,13 +34,6 @@ export class ContextMenuCommand<T extends 'User' | 'Message'> {
   execute: (interaction: ContextMenuCommandInteraction, client: Client, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
 }
 
-export class Reaction {
-  name?: string;
-  triggers: string[];
-  additionaltriggers?: string[];
-  execute: (message: Message<true>) => void | Promise<void>;
-}
-
 export class Modal {
   name?: string;
   deferReply?: boolean;

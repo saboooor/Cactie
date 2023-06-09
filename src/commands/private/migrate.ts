@@ -1,16 +1,33 @@
 import { PrismaClient } from '@prisma/client';
 import { Command } from '~/types/Objects';
 
+const reactions = [
+  {
+    regex: /(?=.*\b(bad|gross|shit|dum)\b)(?=.*\bcactie\b).*/i.toString(),
+    emojis: ['🇳', '🇴'],
+  },
+  {
+    regex: /\b(mad|madd|angry|angri|kill|punch|evil)(er|ing|s)?\b/i.toString(),
+    emojis: ['899340907432792105'],
+  },
+  {
+    regex: /shoto/i.toString(),
+    emojis: ['867259182642102303', '😩'],
+  },
+  {
+    regex: /\b(love|lov|ily|simp|kiss|cute)(t|r|er|ing|s)?\b/i.toString(),
+    emojis: ['896483408753082379'],
+  },
+];
+
 export const migrate: Command = {
   description: 'migrates the db to new versions',
   async execute(message) {
     const prisma = new PrismaClient();
     const settings = await prisma.settings.findMany();
     for (const srvconfig of settings) {
-      if (!srvconfig.reactions.startsWith('[')) {
-        await prisma.settings.update({ where: { guildId: srvconfig.guildId }, data: { reactions: srvconfig.reactions != 'false' ? '[{"triggers":["bad","gross","shit","dum"],"additionaltriggers":["cactie"],"emojis":["🇳","🇴"]},{"triggers":["mad","angry","kill ","punch","evil"],"emojis":["899340907432792105"]},{"triggers":["shoto"],"emojis":["867259182642102303","😩"]},{"triggers":["lov","simp"," ily "," ily","kiss","cute"],"emojis":["896483408753082379"]}]' : '[]' } });
-        await message.reply(`Migrated reactions for ${srvconfig.guildId}`);
-      }
+      await prisma.settings.update({ where: { guildId: srvconfig.guildId }, data: { reactions: JSON.stringify(reactions) } });
+      await message.reply(`Migrated reactions for ${srvconfig.guildId}`);
     }
     message.reply('Migrated all data!');
   },

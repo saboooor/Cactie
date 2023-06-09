@@ -10,16 +10,13 @@ export default async (client: Client, message: Message<true>) => {
   if (!srvconfig) return;
 
   const reactions: {
-    triggers: string[];
-    additionaltriggers?: string[];
+    regex: string;
     emojis: string[];
   }[] = srvconfig.reactions ? JSON.parse(srvconfig.reactions) : [];
 
   for (const reaction of reactions) {
-    if (reaction.triggers.some(word => message.content.toLowerCase().includes(word))
-    && (reaction.additionaltriggers ? reaction.additionaltriggers.some(word => message.content.toLowerCase().includes(word)) : true)) {
-      logger.info(`${message.author.tag} triggered reaction: ${reaction.triggers}, in ${message.guild!.name}`);
-      for (const emoji of reaction.emojis) { await message.react(emoji); }
-    }
+    const regex = new RegExp(reaction.regex.slice(1, reaction.regex.lastIndexOf('/')), reaction.regex.slice(reaction.regex.lastIndexOf('/') + 1));
+    if (!regex.test(message.content)) continue;
+    for (const emoji of reaction.emojis) { await message.react(emoji); }
   }
 };
