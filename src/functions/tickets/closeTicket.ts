@@ -66,7 +66,8 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   }
 
   // Get the ticket log channel
-  const logchannel = await member.guild.channels.fetch(srvconfig.ticketlogchannel).catch(() => { return null; }) as TextChannel | null;
+  const tickets = JSON.parse(srvconfig.tickets);
+  const logchannel = await member.guild.channels.fetch(tickets.logchannel).catch(() => { return null; }) as TextChannel | null;
 
   // Check if ticket log channel is set in settings and send embed to ticket log channel
   if (logchannel) await logchannel.send({ embeds: [CloseEmbed] });
@@ -75,7 +76,7 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
 
   // If the ticket mode is set to buttons, add the buttons
   // Add reaction panel if ticket mode is set to reactions
-  if (srvconfig.tickets == 'buttons') {
+  if (tickets.type == 'buttons') {
     const row = new ActionRowBuilder<ButtonBuilder>()
       .addComponents([
         new ButtonBuilder()
@@ -91,7 +92,7 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
       ]);
     await channel.send({ embeds: [CloseEmbed], components: [row] });
   }
-  else {
+  else if (tickets.type == 'reactions') {
     CloseEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
     const Panel = await channel.send({ embeds: [CloseEmbed] });
     await Panel.react('🔓');

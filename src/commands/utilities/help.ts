@@ -54,7 +54,14 @@ export const help: SlashCommand = {
           return;
         }
 
-        if (srvconfig.tickets == 'buttons') {
+        const tickets = JSON.parse(srvconfig.tickets);
+
+        if (!tickets.enabled) {
+          error('Tickets are disabled!', message, true);
+          return;
+        }
+
+        if (tickets.type == 'buttons') {
           Panel.setDescription('Click the button below to open a ticket!');
           const row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents([
@@ -68,14 +75,10 @@ export const help: SlashCommand = {
           message.reply({ content: 'Support panel created! You may now delete this message' });
           return;
         }
-        else if (srvconfig.tickets == 'reactions') {
+        else if (tickets.type == 'reactions') {
           Panel.setDescription('React with 🎫 to open a ticket!');
           const panelMsg = await channel.send({ embeds: [Panel] });
           await panelMsg.react('🎫');
-        }
-        else if (srvconfig.tickets == 'false') {
-          error('Tickets are disabled!', message, true);
-          return;
         }
       }
       else {

@@ -4,7 +4,8 @@ import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel } from 'dis
 
 export default async function reopenTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if tickets are disabled
-  if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
+  const tickets = JSON.parse(srvconfig.tickets);
+  if (!tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread()) channel = channel.parent as TextChannel;

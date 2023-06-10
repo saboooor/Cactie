@@ -4,7 +4,8 @@ import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Permissions
 
 export default async function createTicket(client: Client, srvconfig: settings, member: GuildMember, description?: string) {
   // Check if tickets are disabled
-  if (srvconfig.tickets == 'false') throw new Error('Tickets are disabled on this server.');
+  const tickets = JSON.parse(srvconfig.tickets);
+  if (!tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if ticket already exists
   const ticketData = await prisma.ticketdata.findUnique({ where: { opener_guildId: { opener: member.id, guildId: member.guild.id } } });
@@ -23,7 +24,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   }
 
   // Find category and if no category then set it to null
-  const parent = await member.guild.channels.fetch(srvconfig.ticketcategory).catch(() => { return null; }) as CategoryChannel | null;
+  const parent = await member.guild.channels.fetch(tickets.category).catch(() => { return null; }) as CategoryChannel | null;
 
   // Branch for ticket-dev or ticket-testing etc
   const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
@@ -51,7 +52,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   });
 
   // Find role and set perms and if no role then send error
-  const role = await member.guild.roles.fetch(srvconfig.supportrole).catch(() => { return null; });
+  const role = await member.guild.roles.fetch(tickets.role).catch(() => { return null; });
   if (role) await ticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
   else await ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings` and set the Support Role value' });
 
@@ -70,11 +71,11 @@ export default async function createTicket(client: Client, srvconfig: settings, 
 
   // Ping the staff if enabled
   let ping;
-  if (srvconfig.ticketmention == 'here' || srvconfig.ticketmention == 'everyone') ping = `@${srvconfig.ticketmention}`;
-  else if (srvconfig.ticketmention != 'false') ping = `<@${srvconfig.ticketmention}>`;
+  if (tickets.mention == 'here' || tickets.mention == 'everyone') ping = `@${tickets.mention}`;
+  else if (tickets.mention != 'false') ping = `<@${tickets.mention}>`;
 
   // If tickets is set to buttons, add buttons, if not, add reactions
-  if (srvconfig.tickets == 'buttons') {
+  if (tickets.type == 'buttons') {
     // Set the footer with the close reminder with button
     CreateEmbed.setFooter({ text: 'To close this ticket do /close, or click the button below' });
 
@@ -94,7 +95,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
       ]);
     await ticket.send({ content: `${member}${ping ?? ''}`, embeds: [CreateEmbed], components: [row] });
   }
-  else if (srvconfig.tickets == 'reactions') {
+  else if (tickets.type == 'reactions') {
     // Set the footer with the close reminder with reaction
     CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
 

@@ -38,7 +38,9 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   // Get current settings for the guild and check if tickets are enabled
   // Get server config
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: guild.id } });
-  if (!srvconfig || srvconfig.tickets == 'false') return;
+  if (!srvconfig) return;
+  const tickets = JSON.parse(srvconfig.tickets);
+  if (!tickets.enabled) return;
 
   try {
     if (emojiId == '🎫') {

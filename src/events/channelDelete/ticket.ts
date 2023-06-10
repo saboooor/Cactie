@@ -11,7 +11,8 @@ export default async (client: Client, channel: TextChannel) => {
   // Check if ticket log channel is set in settings
   const srvconfig = await prisma.settings.findUnique({ where: { guildId: channel.guild.id } });
   if (!srvconfig) return;
-  const logchannel = channel.guild.channels.cache.get(srvconfig.ticketlogchannel) as TextChannel | undefined;
+  const tickets = JSON.parse(srvconfig.tickets);
+  const logchannel = channel.guild.channels.cache.get(tickets.logchannel) as TextChannel | undefined;
   if (logchannel) {
     // Get list of users for embed
     const users: GuildMember[] = [];
