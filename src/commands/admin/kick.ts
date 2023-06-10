@@ -1,17 +1,15 @@
 import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
-import kickOptions from '~/options/kick';
+import punish from '~/options/punish-notime';
 import prisma from '~/functions/prisma';
 
 export const kick: SlashCommand = {
   description: 'Kick someone from the server',
   ephemeral: true,
-  args: true,
-  usage: '<User @ or Id> [Reason]',
   permissions: ['KickMembers'],
   botPerms: ['KickMembers'],
   cooldown: 5,
-  options: kickOptions,
+  options: punish,
   async execute(message, args) {
     try {
       // Get user and check if user is valid

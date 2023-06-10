@@ -7,7 +7,6 @@ import prisma from '~/functions/prisma';
 export const ban: SlashCommand = {
   description: 'Ban someone from the server',
   ephemeral: true,
-  usage: '',
   permissions: ['BanMembers'],
   botPerms: ['BanMembers'],
   cooldown: 5,
@@ -62,7 +61,24 @@ export const ban: SlashCommand = {
       logger.info(`Banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
-      if (!isNaN(time)) prisma.memberdata.update({ where: { memberId_guildId: { guildId: message.guild!.id, memberId: member.id } }, data: { bannedUntil: `${Date.now() + time}` } });
+      if (!isNaN(time)) {
+        await prisma.memberdata.upsert({
+          where: {
+            memberId_guildId: {
+              guildId: message.guild!.id,
+              memberId: member.id,
+            },
+          },
+          update: {
+            bannedUntil: `${Date.now() + time}`,
+          },
+          create: {
+            memberId: member.id,
+            guildId: message.guild!.id,
+            bannedUntil: `${Date.now() + time}`,
+          },
+        });
+      }
 
       // Actually ban the dude
       await member.ban({ reason: `${(author!.user as User).tag} banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });

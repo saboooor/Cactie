@@ -4,25 +4,18 @@ import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
 import prisma from '~/functions/prisma';
 
-export const mute: SlashCommand = {
-  description: 'Mute someone in the server',
+export const warn: SlashCommand = {
+  description: 'Warn someone in the server',
   ephemeral: true,
   permissions: ['ModerateMembers'],
-  botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
   options: punish,
   async execute(message, args) {
     try {
-      // Get mute role and check if role is valid
       // Get server config
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
         error('Server config not found.', message);
-        return;
-      }
-      const role = message.guild!.roles.cache.get(srvconfig.mutecmd);
-      if (!role && srvconfig.mutecmd != 'timeout') {
-        error('This command is disabled!', message, true);
         return;
       }
 
@@ -47,80 +40,86 @@ export const mute: SlashCommand = {
         return;
       }
 
-      // Check if user is muted
-      if (role && member.roles.cache.has(role.id)) {
-        error('This user is already muted! Try unmuting instead.', message, true);
-        return;
-      }
-
       // Check if duration is set and if it's more than a year
       const time = ms(args[1] ? args[1] : 'perm');
-      if (role && time > 31536000000) {
-        error('You cannot mute someone for more than 1 year!', message, true);
-        return;
-      }
-
-      // Timeout feature can't mute someone for more than 30 days
-      else if (time > 2592000000) {
-        error('You cannot mute someone for more than 30 days with the timeout feature turned on!', message, true);
-        return;
-      }
-      if (isNaN(time) && srvconfig.mutecmd == 'timeout') {
-        error('You cannot mute someone forever with the timeout feature turned on!', message, true);
+      if (time > 31536000000) {
+        error('You cannot warn someone for more than 1 year!', message, true);
         return;
       }
 
       // Create embed and check if duration / reason are set and do stuff
-      const MuteEmbed = new EmbedBuilder()
+      const WarnEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Muted ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Warned ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
       // Add reason if specified
       const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
-      if (reason) MuteEmbed.addFields([{ name: 'Reason', value: reason }]);
+      if (reason) WarnEmbed.addFields([{ name: 'Reason', value: reason }]);
 
-      // Actually mute the dude (add role)
-      if (role) await member.roles.add(role);
-      else await member.timeout(time, `Muted by ${(author!.user as User).tag} for ${args.slice(1).join(' ')}`);
+      // Make warns array
+      const warns: {
+        reason: string;
+        created: number;
+        until?: number;
+      }[] = [];
 
-      // Set member data for unmute time if set
-      if (!isNaN(time)) {
-        await prisma.memberdata.upsert({
-          where: {
-            memberId_guildId: {
-              guildId: message.guild!.id,
-              memberId: member.id,
-            },
-          },
-          update: {
-            mutedUntil: `${Date.now() + time}`,
-          },
-          create: {
-            memberId: member.id,
+      // Get current member data
+      const memberdata = await prisma.memberdata.findUnique({
+        where: {
+          memberId_guildId: {
             guildId: message.guild!.id,
-            mutedUntil: `${Date.now() + time}`,
+            memberId: member.id,
           },
-        });
+        },
+      });
+      if (memberdata && memberdata.warns) {
+        const currentWarns = JSON.parse(memberdata.warns);
+        warns.push(...currentWarns);
       }
 
-      // Send mute message to target if silent is false
+      // Add warn to warns array
+      warns.push({
+        reason: reason ? reason : 'No reason specified.',
+        created: Date.now(),
+        until: !isNaN(time) ? Date.now() + time : undefined,
+      });
+
+      // Set member data for warn
+      await prisma.memberdata.upsert({
+        where: {
+          memberId_guildId: {
+            guildId: message.guild!.id,
+            memberId: member.id,
+          },
+        },
+        update: {
+          warns: JSON.stringify(warns),
+        },
+        create: {
+          memberId: member.id,
+          guildId: message.guild!.id,
+          warns: JSON.stringify(warns),
+        },
+      });
+
+      // Send warn message to target if silent is false
       if (!args[3]) {
-        await member.send({ content: `**You've been muted in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+        await member.send({ content: `**You've been warned in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
             message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Muted user: ${member.user.tag} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Warned user: ${member.user.tag} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
-      await message.reply({ embeds: [MuteEmbed] });
+      await message.reply({ embeds: [WarnEmbed] });
 
       // Check if log channel exists and send message
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        MuteEmbed.setTitle(`${(author!.user as User).tag} ${MuteEmbed.toJSON().title}`);
-        logchannel.send({ embeds: [MuteEmbed] });
+        WarnEmbed.setTitle(`${(author!.user as User).tag} ${WarnEmbed.toJSON().title}`);
+        logchannel.send({ embeds: [WarnEmbed] });
       }
     }
     catch (err) { error(err, message); }
