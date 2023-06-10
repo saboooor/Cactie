@@ -31,7 +31,7 @@ export const timings: SlashCommand = {
 
       let AnalysisEmbed = new EmbedBuilder()
         .setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
-        .setFooter({ text: `Requested by ${(message.member!.user as User).tag}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined });
+        .setFooter({ text: `Requested by ${message.member!.user.username}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined });
 
       for (const arg of args) {
         if (arg.startsWith('https://spark.lucko.me')) {
@@ -55,7 +55,7 @@ export const timings: SlashCommand = {
       let components = [];
       if (suggestions.length >= 13) {
         fields.splice(12, suggestions.length, { name: `Plus ${suggestions.length - 12} more recommendations`, value: 'Click the buttons below to see more', inline: false });
-        AnalysisEmbed.setFooter({ text: `Requested by ${(message.member!.user as User).tag} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined });
+        AnalysisEmbed.setFooter({ text: `Requested by ${message.member!.user.username} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined });
         components.push(buttons);
       }
 

@@ -37,7 +37,7 @@ export const suggest: SlashCommand = {
       const SuggestEmbed = new EmbedBuilder()
         .setColor(0x2f3136)
         .setURL(`https://a${message.member!.user.id}a.cactie`)
-        .setAuthor({ name: `${(message.member as GuildMember).displayName} (${(message.member!.user as User).tag})`, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
+        .setAuthor({ name: `${(message.member as GuildMember).displayName} (${message.member!.user.username})`, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
         .setTitle('Suggestion')
         .setDescription(suggestion);
 

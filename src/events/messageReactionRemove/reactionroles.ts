@@ -40,7 +40,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
   // Send message and log
   const msg = reactionrole.silent != 'true' ? await message.channel.send({ content: `❌ **Removed ${role.name} Role from ${user}**` }) : null;
-  logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild!.name}`);
+  logger.info(`Removed ${role.name} Role from ${user.username} in ${message.guild!.name}`);
 
   // Check if message was sent
   if (!msg) return;

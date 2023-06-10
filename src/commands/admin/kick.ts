@@ -36,7 +36,7 @@ export const kick: SlashCommand = {
       // Create embed
       const KickEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Kicked ${member.user.tag}.`);
+        .setTitle(`Kicked ${member.user.username}.`);
 
       // Add reason if specified
       if (args[1]) KickEmbed.addFields([{ name: 'Reason', value: args.slice(1).join(' ') }]);
@@ -54,8 +54,8 @@ export const kick: SlashCommand = {
       await message.reply({ embeds: [KickEmbed] });
 
       // Actually kick the dude
-      await member.kick(`${(message.member!.user as User).tag} kicked: ${member.user.tag} from ${message.guild!.name} for ${args.slice(1).join(' ')}`);
-      logger.info(`Kicked user: ${member.user.tag} from ${message.guild!.name}`);
+      await member.kick(`${message.member!.user.username} kicked: ${member.user.username} from ${message.guild!.name} for ${args.slice(1).join(' ')}`);
+      logger.info(`Kicked user: ${member.user.username} from ${message.guild!.name}`);
 
       // Check if log channel exists and send message
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
@@ -65,7 +65,7 @@ export const kick: SlashCommand = {
       }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        KickEmbed.setTitle(`${(message.member!.user as User).tag} ${KickEmbed.toJSON().title}`);
+        KickEmbed.setTitle(`${message.member!.user.username} ${KickEmbed.toJSON().title}`);
         logchannel.send({ embeds: [KickEmbed] });
       }
     }

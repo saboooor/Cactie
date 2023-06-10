@@ -28,5 +28,5 @@ export default async (client: Client, message: Message<true>) => {
     .setDescription(link)
     .setFooter({ text: 'Next time please use a paste service for long messages' });
   message.channel.send({ embeds: [shortEmbed] });
-  logger.info(`Shortened message from ${message.author.tag} in #${message.channel.name} at ${message.guild!.name}`);
+  logger.info(`Shortened message from ${message.author.username} in #${message.channel.name} at ${message.guild!.name}`);
 };

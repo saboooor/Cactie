@@ -56,7 +56,7 @@ export const userinfo: SlashCommand = {
       member.user = await member.user.fetch();
       const UsrEmbed = new EmbedBuilder()
         .setColor(member.user.accentColor ?? null)
-        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: member.avatarURL() ? member.user.avatarURL() ?? undefined : undefined })
+        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: member.avatarURL() ? member.user.avatarURL() ?? undefined : undefined })
         .setThumbnail(member.avatarURL() ? member.avatarURL() : member.user.avatarURL())
         .setDescription(`${member.user}`)
         .addFields([{ name: 'Status', value: member.presence ? member.presence.status : 'offline' }]);

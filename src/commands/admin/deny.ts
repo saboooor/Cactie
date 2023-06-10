@@ -79,7 +79,7 @@ export const deny: SlashCommand = {
       suggestMsg.reactions.removeAll();
       DenyEmbed.setColor(0xE74C3C)
         .setTitle('Suggestion (Denied)')
-        .setFooter({ text: `Denied by ${(message.member!.user as User).tag}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
+        .setFooter({ text: `Denied by ${message.member!.user.username}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
         .setTimestamp();
 
       // Fetch result / reaction emojis and add field if not already added
@@ -145,7 +145,7 @@ export const deny: SlashCommand = {
       // Check if log channel exists and send message
       const logChannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logChannel) {
-        DenyEmbed.setTitle(`${(message.member!.user as User).tag} denied a suggestion`).setFields([]);
+        DenyEmbed.setTitle(`${message.member!.user.username} denied a suggestion`).setFields([]);
         if (args.join(' ')) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
         const msglink = new ActionRowBuilder<ButtonBuilder>()
           .addComponents([new ButtonBuilder()

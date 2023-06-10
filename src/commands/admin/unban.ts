@@ -15,7 +15,7 @@ export const unban: SlashCommand = {
   async autoComplete(client, interaction) {
     // Fetch bans from guild and check if user in arg is banned
     const bans = await interaction.guild!.bans.fetch();
-    const list = bans.map(ban => ({ name: ban.user.tag, value: ban.user.id }));
+    const list = bans.map(ban => ({ name: ban.user.username, value: ban.user.id }));
 
     // Get the focused option
     const focusedValue = interaction.options.getFocused();
@@ -58,11 +58,11 @@ export const unban: SlashCommand = {
       // Create embed with color and title
       const UnbanEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Unbanned ${ban.user.tag}`);
+        .setTitle(`Unbanned ${ban.user.username}`);
 
       // Reply with unban log
       message.reply({ embeds: [UnbanEmbed] });
-      logger.info(`Unbanned user: ${ban.user.tag} in ${message.guild!.name}`);
+      logger.info(`Unbanned user: ${ban.user.username} in ${message.guild!.name}`);
 
       // Check if log channel exists and send message
       // Get server config
@@ -73,7 +73,7 @@ export const unban: SlashCommand = {
       }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
       if (logchannel) {
-        UnbanEmbed.setTitle(`${(message.member!.user as User).tag} ${UnbanEmbed.toJSON().title}`);
+        UnbanEmbed.setTitle(`${message.member!.user.username} ${UnbanEmbed.toJSON().title}`);
         logchannel.send({ embeds: [UnbanEmbed] });
       }
     }

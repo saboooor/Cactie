@@ -50,7 +50,7 @@ export const warns: SlashCommand = {
 
       // Create embed
       const WarnEmbed = new EmbedBuilder()
-        .setTitle(`Warns for ${member.user.tag}`)
+        .setTitle(`Warns for ${member.user.username}`)
         .setColor('Random')
         .setDescription(`Total warns: ${warnList.length}`)
         .setFields(warnList.map((warn, i) => ({

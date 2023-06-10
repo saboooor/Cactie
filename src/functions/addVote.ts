@@ -7,7 +7,7 @@ export default async function addVote(body: {
 }, client: Client) {
   const user = body.id ? client.users.cache.get(body.id) : body.user ? client.users.cache.get(body.user) : undefined;
   if (!user) logger.info(`Got vote from ${body.id || body.user}!`);
-  else logger.info(`Got vote from ${user.tag}!`);
+  else logger.info(`Got vote from ${user.username}!`);
   const VoteEmbed = new EmbedBuilder()
     .setColor('Random')
     .setTitle('Vote Received!')

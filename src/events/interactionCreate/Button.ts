@@ -10,7 +10,7 @@ export default async (client: Client, interaction: ButtonInteraction | StringSel
   const id = interaction instanceof StringSelectMenuInteraction ? interaction.values[0] : interaction.customId;
 
   // Log every button interaction
-  logger.info(`${interaction.user.tag} clicked button with id: ${id}, in ${interaction.guild.name}`);
+  logger.info(`${interaction.user.username} clicked button with id: ${id}, in ${interaction.guild.name}`);
 
   // Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
   const button = buttons.get(id);
@@ -23,7 +23,7 @@ export default async (client: Client, interaction: ButtonInteraction | StringSel
   }
 
   // Log
-  logger.info(`${interaction.user.tag} clicked long-term button: ${button.name}, in ${interaction.guild.name}`);
+  logger.info(`${interaction.user.username} clicked long-term button: ${button.name}, in ${interaction.guild.name}`);
 
   // Defer and execute the button
   try {
@@ -37,7 +37,7 @@ export default async (client: Client, interaction: ButtonInteraction | StringSel
     const interactionFailed = new EmbedBuilder()
       .setColor('Random')
       .setTitle('INTERACTION FAILED')
-      .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
+      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() ?? undefined })
       .addFields([
         { name: '**Type:**', value: 'Button' },
         { name: '**Interaction:**', value: `${button.name}` },

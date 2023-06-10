@@ -44,7 +44,7 @@ export const ban: SlashCommand = {
       // Create embed and check if bqn has a reason / time period
       const BanEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Banned ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Banned ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
       // Add reason if specified
       const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
@@ -58,7 +58,7 @@ export const ban: SlashCommand = {
             message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Banned user: ${member.user.username} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
       if (!isNaN(time)) {
@@ -81,7 +81,7 @@ export const ban: SlashCommand = {
       }
 
       // Actually ban the dude
-      await member.ban({ reason: `${(author!.user as User).tag} banned user: ${member.user.tag} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
+      await member.ban({ reason: `${author!.user.username} banned user: ${member.user.username} from ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
 
       // Reply with response
       await message.reply({ embeds: [BanEmbed] });
@@ -95,7 +95,7 @@ export const ban: SlashCommand = {
       }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        BanEmbed.setTitle(`${(author!.user as User).tag} ${BanEmbed.toJSON().title}`);
+        BanEmbed.setTitle(`${author!.user.username} ${BanEmbed.toJSON().title}`);
         logchannel.send({ embeds: [BanEmbed] });
       }
     }

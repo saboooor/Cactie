@@ -49,7 +49,7 @@ export default async function parseMentions(text: string, guild: Guild) {
       parsed = parsed.replace(match[0], '**@Unknown User**');
       continue;
     }
-    parsed = parsed.replace(match[0], `**@${user.tag}**`);
+    parsed = parsed.replace(match[0], `**@${user.username}**`);
   }
 
   // // Parse all emoji mentions

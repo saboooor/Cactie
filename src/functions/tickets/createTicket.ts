@@ -32,7 +32,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   const ticket = await member.guild.channels.create({
     name: `ticket${branch}-${member.displayName.toLowerCase().replace(' ', '-')}`,
     parent: parent ? parent.id : null,
-    topic: `Ticket Opened by ${member.user.tag}`,
+    topic: `Ticket Opened by ${member.user.username}`,
     permissionOverwrites: [
       {
         id: member.guild.id,

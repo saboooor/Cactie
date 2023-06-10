@@ -31,7 +31,7 @@ export default async function manageUsers(member: GuildMember, channel: TextChan
     .setColor(0x2f3136)
     .setDescription(add ? `${member} added ${targetMember} to the ticket` : `${member} removed ${targetMember} from the ticket`);
   await channel.send({ embeds: [AddEmbed] });
-  logger.info(add ? `Added ${targetMember.user.tag} to #${channel.name}` : `Removed ${targetMember.user.tag} from #${channel.name}`);
+  logger.info(add ? `Added ${targetMember.user.username} to #${channel.name}` : `Removed ${targetMember.user.username} from #${channel.name}`);
 
   // Return message
   return `**${add ? 'Added' : 'Removed'} ${targetMember} ${add ? 'to' : 'from' } the ticket**`;

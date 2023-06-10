@@ -28,7 +28,7 @@ export default async (client: Client, oldMessage: Message<true>, newMessage: Mes
   // Create log embed
   const logEmbed = new EmbedBuilder()
     .setColor(0x2f3136)
-    .setAuthor({ name: newMessage.author?.tag ?? 'Unknown User', iconURL: newMessage.author?.avatarURL() ?? undefined })
+    .setAuthor({ name: newMessage.author?.username ?? 'Unknown User', iconURL: newMessage.author?.avatarURL() ?? undefined })
     .setTitle(`<:refresh:${refresh}> Message edited`)
     .setFields([
       { name: 'Channel', value: `${newMessage.channel}`, inline: true },

@@ -73,7 +73,7 @@ export const mute: SlashCommand = {
       // Create embed and check if duration / reason are set and do stuff
       const MuteEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Muted ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Muted ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
       // Add reason if specified
       const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
@@ -81,7 +81,7 @@ export const mute: SlashCommand = {
 
       // Actually mute the dude (add role)
       if (role) await member.roles.add(role);
-      else await member.timeout(time, `Muted by ${(author!.user as User).tag} for ${args.slice(1).join(' ')}`);
+      else await member.timeout(time, `Muted by ${author!.user.username} for ${args.slice(1).join(' ')}`);
 
       // Set member data for unmute time if set
       if (!isNaN(time)) {
@@ -111,7 +111,7 @@ export const mute: SlashCommand = {
             message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Muted user: ${member.user.tag} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Muted user: ${member.user.username} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
       await message.reply({ embeds: [MuteEmbed] });
@@ -119,7 +119,7 @@ export const mute: SlashCommand = {
       // Check if log channel exists and send message
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        MuteEmbed.setTitle(`${(author!.user as User).tag} ${MuteEmbed.toJSON().title}`);
+        MuteEmbed.setTitle(`${author!.user.username} ${MuteEmbed.toJSON().title}`);
         logchannel.send({ embeds: [MuteEmbed] });
       }
     }

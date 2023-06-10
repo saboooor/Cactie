@@ -30,7 +30,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
 
       // Send the unmute message to the member if it was fetched properly
       if (user) user.send({ content: `**You have been unmuted in ${guild.name}**` }).catch(err => logger.warn(err));
-      logger.info(`Unmuted ${user ? user.tag : data.memberId} in ${guild.name}`);
+      logger.info(`Unmuted ${user ? user.username : data.memberId} in ${guild.name}`);
 
       // Set the data
       await prisma.memberdata.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { mutedUntil: null } });
@@ -38,7 +38,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       // Check if log channel exists and send message
       const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        const UnmuteEmbed = new EmbedBuilder().setTitle(`${user ? user.tag : data.memberId} has been unmuted`);
+        const UnmuteEmbed = new EmbedBuilder().setTitle(`${user ? user.username : data.memberId} has been unmuted`);
         logchannel.send({ embeds: [UnmuteEmbed] });
       }
     }
@@ -48,7 +48,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
 
       // Send the unban message to the member if it was fetched properly
       if (user) user.send({ content: `**You've been unbanned in ${guild.name}**` }).catch(err => logger.warn(err));
-      logger.info(`Unbanned ${user ? user.tag : data.memberId} in ${guild.name}`);
+      logger.info(`Unbanned ${user ? user.username : data.memberId} in ${guild.name}`);
 
       // Set the data
       await prisma.memberdata.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { bannedUntil: null } });
@@ -56,7 +56,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       // Check if log channel exists and send message
       const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        const UnbanEmbed = new EmbedBuilder().setTitle(`${user ? user.tag : data.memberId} has been unbanned`);
+        const UnbanEmbed = new EmbedBuilder().setTitle(`${user ? user.username : data.memberId} has been unbanned`);
         logchannel.send({ embeds: [UnbanEmbed] });
       }
     }

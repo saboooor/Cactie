@@ -12,12 +12,12 @@ export default async (client: Client) => {
     if (!member) return;
     if (member.roles.cache.has(role.id)) return;
     member.roles.add(role.id);
-    logger.info(`Added cactie user role to ${member.user.tag}`);
+    logger.info(`Added cactie user role to ${member.user.username}`);
   });
   role.members.forEach(async member => {
     if (owners.includes(member.id)) return;
     member.roles.remove(role.id);
-    logger.info(`Removed cactie user role from ${member.user.tag}`);
+    logger.info(`Removed cactie user role from ${member.user.username}`);
   });
 
   const commrole = cactieguild.roles.cache.get('971827078775328858');

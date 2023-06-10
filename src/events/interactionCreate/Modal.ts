@@ -15,7 +15,7 @@ export default async (client: Client, interaction: ModalSubmitInteraction) => {
 
   // Defer and execute the modal
   try {
-    logger.info(`${interaction.user.tag} submitted modal: ${modal.name}, in ${interaction.guild!.name}`);
+    logger.info(`${interaction.user.username} submitted modal: ${modal.name}, in ${interaction.guild!.name}`);
     await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
     interaction.reply = interaction.editReply as typeof interaction.reply;
     modal.execute(interaction, client, modalInfo!);
@@ -24,7 +24,7 @@ export default async (client: Client, interaction: ModalSubmitInteraction) => {
     const interactionFailed = new EmbedBuilder()
       .setColor('Random')
       .setTitle('INTERACTION FAILED')
-      .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
+      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() ?? undefined })
       .addFields([
         { name: '**Type:**', value: 'Modal' },
         { name: '**Interaction:**', value: `${modal.name}` },

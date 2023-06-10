@@ -24,7 +24,7 @@ export default async (client: Client, member: GuildMember) => {
   // Create log embed
   const logEmbed = new EmbedBuilder()
     .setColor(0x2f3136)
-    .setAuthor({ name: member.user?.tag ?? 'Unknown User', iconURL: member.user?.avatarURL() ?? undefined })
+    .setAuthor({ name: member.user?.username ?? 'Unknown User', iconURL: member.user?.avatarURL() ?? undefined })
     .setTitle(`<:out:${leave}> Member left`)
     .setFields([
       { name: 'User', value: `${member}`, inline: true },

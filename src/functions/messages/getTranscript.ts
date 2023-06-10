@@ -23,7 +23,7 @@ export default async function getTranscript(messages: Collection<string, Message
       time: Number(msg.createdAt),
       author: {
         avatar: msg.member?.avatarURL() ?? msg.author.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
-        name: msg.member && msg.member.displayName ? msg.member.displayName : msg.author.tag ?? 'Unknown User',
+        name: msg.member && msg.member.displayName ? msg.member.displayName : msg.author.username ?? 'Unknown User',
         color: msg.member?.displayHexColor ?? undefined,
       },
       content: msg.content ? await parseMentions(msg.content, msg.guild!) : undefined,

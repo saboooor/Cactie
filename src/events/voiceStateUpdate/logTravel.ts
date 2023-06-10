@@ -13,7 +13,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
 
   const logEmbed = new EmbedBuilder()
     .setColor(0x2f3136)
-    .setAuthor({ name: newState.member?.user.tag ?? 'Unknown User', iconURL: newState.member?.user.avatarURL() ?? undefined })
+    .setAuthor({ name: newState.member?.user.username ?? 'Unknown User', iconURL: newState.member?.user.avatarURL() ?? undefined })
     .setFields([{ name: 'Member', value: `${newState.member}`, inline: true }]);
 
   let logchannelId;

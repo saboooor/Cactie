@@ -11,7 +11,7 @@ export const context: ContextMenuCommand<'User'> = {
     try {
       // Create and show a modal for the user to fill out the ticket's description
       const modal = new ModalBuilder()
-        .setTitle(`Ban ${member.user.tag}`)
+        .setTitle(`Ban ${member.user.username}`)
         .setCustomId(`ban_${member.id}`)
         .addComponents([
           new ActionRowBuilder<TextInputBuilder>().addComponents([

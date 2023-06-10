@@ -68,7 +68,7 @@ export const clear: SlashCommand = {
       // Create log embed
       const logEmbed = new EmbedBuilder()
         .setColor(0x2f3136)
-        .setAuthor({ name: (message.member!.user as User).tag, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
+        .setAuthor({ name: message.member!.user.username, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
         .setTitle(`<:no:${no}> ${allmessages.size} Messages bulk-deleted`)
         .setFields([
           { name: 'Channel', value: `${message.channel}`, inline: true },

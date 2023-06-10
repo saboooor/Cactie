@@ -20,7 +20,7 @@ export const info: SlashCommand = {
         .setFields([
           { name: 'Bot Version', value: `\`\`\`${packageJSON.version}\`\`\``, inline: true },
           { name: 'NodeJS Version', value: `\`\`\`${process.version}\`\`\``, inline: true },
-          { name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499')!.tag}\`\`\`` },
+          { name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499')!.username}\`\`\`` },
           { name: 'Last restart', value: `<t:${Math.ceil(Number(rn) / 1000)}:R>` },
           { name: 'Dependencies', value: `\`\`\`${Object.keys(dependencies).map(depName => `${depName}: ${dependencies[depName as keyof typeof dependencies]}`).join('\n')}\`\`\`` },
         ]);

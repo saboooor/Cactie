@@ -39,7 +39,7 @@ export const poll: SlashCommand = {
         const pollEmbed = new EmbedBuilder()
           .setColor(0x2f3136)
           .setTitle('Poll')
-          .setAuthor({ name: `${(message.member as GuildMember).displayName} (${(message.member!.user as User).tag})`, iconURL: (message.member!.user as User).avatarURL() ?? undefined, url: `https://a${message.member!.user.id}a.cactie` })
+          .setAuthor({ name: `${(message.member as GuildMember).displayName} (${message.member!.user.username})`, iconURL: (message.member!.user as User).avatarURL() ?? undefined, url: `https://a${message.member!.user.id}a.cactie` })
           .setDescription(msg);
 
         // Send poll message and react
@@ -103,7 +103,7 @@ export const poll: SlashCommand = {
         // Check if log channel exists and send message
         const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
         if (logchannel) {
-          pollEmbed.setTitle(`${(message.member!.user as User).tag} ended their poll`).setFields([]);
+          pollEmbed.setTitle(`${message.member!.user.username} ended their poll`).setFields([]);
           const msglink = new ActionRowBuilder<ButtonBuilder>()
             .addComponents([new ButtonBuilder()
               .setURL(pollMsg.url)

@@ -28,7 +28,7 @@ export const xo_again: Button = {
       return;
     }
     const playAgainEmbed = new EmbedBuilder()
-      .setAuthor({ name: `${interaction.user.tag}`, iconURL: interaction.user.avatarURL() ?? undefined })
+      .setAuthor({ name: `${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined })
       .setDescription(`${interaction.user} wants to play again!`)
       .setFooter({ text: 'Click the button below to respond!' });
     const againlink = new ActionRowBuilder<ButtonBuilder>()

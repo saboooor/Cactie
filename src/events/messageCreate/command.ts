@@ -112,7 +112,7 @@ export default async (client: Client, message: Message<true>) => {
   if ((command.args && args.length < 1) || command.voteOnly || command.channelPermissions || command.permissions) return message.reply('**This text command is no longer available** Please use the slash (/) command.');
 
   // Log
-  logger.info(`${message.author.tag} issued message command: ${message.content}, in ${message.guild.name}`);
+  logger.info(`${message.author.username} issued message command: ${message.content}, in ${message.guild.name}`);
 
   // Check if bot has the permissions necessary in the channel to run the command
   if (command.botChannelPerms) {

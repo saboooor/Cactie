@@ -32,14 +32,14 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
       await interaction.deferReply({ ephemeral: command.ephemeral });
       interaction.reply = interaction.editReply as typeof interaction.reply;
     }
-    logger.info(`${interaction.user.tag} issued context menu command: '${command.name}' with target: ${item?.id}, in ${interaction.guild.name}`.replace(' ,', ','));
+    logger.info(`${interaction.user.username} issued context menu command: '${command.name}' with target: ${item?.id}, in ${interaction.guild.name}`.replace(' ,', ','));
     command.execute(interaction, client, item as Message<true> & GuildMember);
   }
   catch (err) {
     const interactionFailed = new EmbedBuilder()
       .setColor('Random')
       .setTitle('INTERACTION FAILED')
-      .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
+      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() ?? undefined })
       .addFields([
         { name: '**Type:**', value: 'Context Menu' },
         { name: '**Interaction:**', value: `${command.name}` },

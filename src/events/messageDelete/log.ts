@@ -28,7 +28,7 @@ export default async (client: Client, message: Message<true>) => {
   // Create log embed
   const logEmbed = new EmbedBuilder()
     .setColor(0x2f3136)
-    .setAuthor({ name: message.author?.tag ?? 'Unknown User', iconURL: message.author?.avatarURL() ?? undefined })
+    .setAuthor({ name: message.author?.username ?? 'Unknown User', iconURL: message.author?.avatarURL() ?? undefined })
     .setTitle(`<:no:${no}> Message deleted`)
     .setFields([
       { name: 'Channel', value: `${message.channel}`, inline: true },

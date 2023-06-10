@@ -86,7 +86,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
   // Log
   const cmdlog = args.join ? `${command.name} ${args.join(' ')}` : command.name;
-  logger.info(`${interaction.user.tag} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
+  logger.info(`${interaction.user.username} issued slash command: /${cmdlog}, in ${interaction.guild.name}`.replace(' ,', ','));
 
   // Check if user has the permissions necessary in the channel to use the command
   if (command.channelPermissions) {
@@ -124,7 +124,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
     const interactionFailed = new EmbedBuilder()
       .setColor('Random')
       .setTitle('INTERACTION FAILED')
-      .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.avatarURL() ?? undefined })
+      .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() ?? undefined })
       .addFields([
         { name: '**Type:**', value: 'Slash' },
         { name: '**Interaction:**', value: `${command.name}` },

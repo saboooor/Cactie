@@ -85,7 +85,7 @@ export const approve: SlashCommand = {
       suggestMsg.reactions.removeAll();
       ApproveEmbed.setColor(0x2ECC71)
         .setTitle('Suggestion (Approved)')
-        .setFooter({ text: `Approved by ${(message.member?.user as User).tag}`, iconURL: (message.member?.user as User).avatarURL() ?? undefined })
+        .setFooter({ text: `Approved by ${message.member?.user.username}`, iconURL: (message.member?.user as User).avatarURL() ?? undefined })
         .setTimestamp();
 
       // Fetch result / reaction emojis and add field if not already added
@@ -150,7 +150,7 @@ export const approve: SlashCommand = {
       // Check if log channel exists and send message
       const logChannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logChannel) {
-        ApproveEmbed.setTitle(`${(message.member!.user as User).tag} approved a suggestion`).setFields([]);
+        ApproveEmbed.setTitle(`${message.member!.user.username} approved a suggestion`).setFields([]);
         if (args.join(' ')) ApproveEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
         const msglink = new ActionRowBuilder<ButtonBuilder>()
           .addComponents([new ButtonBuilder()

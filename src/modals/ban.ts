@@ -22,7 +22,7 @@ export const ban: Modal = {
       // Get member and author and check if role is lower than member's role
       const author = interaction.member;
       if (!author || !(author.roles instanceof GuildMemberRoleManager)) return;
-      const authorTag = author.user instanceof User ? author.user.tag : `${author.user.username}#${author.user.discriminator}`;
+      const authorTag = author.user instanceof User ? author.user.username : `${author.user.username}#${author.user.discriminator}`;
 
       const authorRoles = author!.roles as GuildMemberRoleManager;
       const botRoles = interaction.guild!.members.me!.roles as GuildMemberRoleManager;
@@ -46,7 +46,7 @@ export const ban: Modal = {
       // Create embed and check if bqn has a reason / time period
       const BanEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Banned ${member.user.tag} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.`);
+        .setTitle(`Banned ${member.user.username} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.`);
 
       // Add reason if specified
       const reason = interaction.fields.getTextInputValue('reason');
@@ -58,7 +58,7 @@ export const ban: Modal = {
           logger.warn(err);
           interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
         });
-      logger.info(`Banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Banned user: ${member.user.username} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
       if (!isNaN(time)) {
@@ -70,7 +70,7 @@ export const ban: Modal = {
       }
 
       // Actually ban the dude
-      await member.ban({ reason: `${authorTag} banned user: ${member.user.tag} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
+      await member.ban({ reason: `${authorTag} banned user: ${member.user.username} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeField}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
 
       // Reply with response
       await interaction.reply({ embeds: [BanEmbed] });

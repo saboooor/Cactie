@@ -21,7 +21,7 @@ export const avatar: SlashCommand = {
       const userpfp = member.user.avatarURL({ size: 1024 });
       const UsrEmbed = new EmbedBuilder()
         .setColor(member.user.accentColor ?? null)
-        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp ? userpfp ?? undefined : undefined })
+        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: memberpfp ? userpfp ?? undefined : undefined })
         .setImage(memberpfp ? memberpfp : userpfp);
       const row = [];
       if (memberpfp) {
@@ -46,8 +46,8 @@ export const avatar: SlashCommand = {
           await interaction.deferUpdate();
 
           // Toggle profile pic
-          if (UsrEmbed.toJSON().image?.url == memberpfp) interaction.editReply({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: memberpfp })] });
-          else if (UsrEmbed.toJSON().image?.url == userpfp) interaction.editReply({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.tag})` : member.user.tag}`, iconURL: userpfp })] });
+          if (UsrEmbed.toJSON().image?.url == memberpfp) interaction.editReply({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: memberpfp })] });
+          else if (UsrEmbed.toJSON().image?.url == userpfp) interaction.editReply({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: userpfp })] });
         });
 
         // When the collector stops, remove all buttons from it

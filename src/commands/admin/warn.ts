@@ -50,7 +50,7 @@ export const warn: SlashCommand = {
       // Create embed and check if duration / reason are set and do stuff
       const WarnEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Warned ${member.user.tag} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Warned ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
 
       // Add reason if specified
       const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
@@ -110,7 +110,7 @@ export const warn: SlashCommand = {
             message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Warned user: ${member.user.tag} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Warned user: ${member.user.username} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
       await message.reply({ embeds: [WarnEmbed] });
@@ -118,7 +118,7 @@ export const warn: SlashCommand = {
       // Check if log channel exists and send message
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        WarnEmbed.setTitle(`${(author!.user as User).tag} ${WarnEmbed.toJSON().title}`);
+        WarnEmbed.setTitle(`${author!.user.username} ${WarnEmbed.toJSON().title}`);
         logchannel.send({ embeds: [WarnEmbed] });
       }
     }

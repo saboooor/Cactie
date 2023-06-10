@@ -60,16 +60,16 @@ export const unmute: SlashCommand = {
       // Create embed with color and title
       const UnmuteEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Unmuted ${member.user.tag}`);
+        .setTitle(`Unmuted ${member.user.username}`);
 
       // Reply with unban log
       message.reply({ embeds: [UnmuteEmbed] });
-      logger.info(`Unmuted ${member.user.tag} in ${message.guild!.name}`);
+      logger.info(`Unmuted ${member.user.username} in ${message.guild!.name}`);
 
       // Check if log channel exists and send message
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
       if (logchannel) {
-        UnmuteEmbed.setTitle(`${(message.member!.user as User).tag} ${UnmuteEmbed.toJSON().title}`);
+        UnmuteEmbed.setTitle(`${message.member!.user.username} ${UnmuteEmbed.toJSON().title}`);
         logchannel.send({ embeds: [UnmuteEmbed] });
       }
     }

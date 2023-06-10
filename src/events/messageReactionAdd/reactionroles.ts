@@ -48,7 +48,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
       // Send message and log
       if (reactionrole.silent != 'true') msg = await message.channel.send({ content: `✅ **Added ${role.name} role to ${user}**` });
-      logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild!.name}`);
+      logger.info(`Added ${role.name} Role to ${user.username} in ${message.guild!.name}`);
     }
     else {
       // Remove the role from the member
@@ -56,7 +56,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
       // Send message and log
       if (reactionrole.silent != 'true') msg = await message.channel.send({ content: `❌ **Removed ${role.name} role from ${user}**` });
-      logger.info(`Removed ${role.name} Role from ${user.tag} in ${message.guild!.name}`);
+      logger.info(`Removed ${role.name} Role from ${user.username} in ${message.guild!.name}`);
     }
   }
   else {
@@ -65,7 +65,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
     // Send message and log
     if (reactionrole.silent != 'true') msg = await message.channel.send({ content: `✅ **Added ${role.name} role to ${user}**` });
-    logger.info(`Added ${role.name} Role to ${user.tag} in ${message.guild!.name}`);
+    logger.info(`Added ${role.name} Role to ${user.username} in ${message.guild!.name}`);
   }
 
   // Check if message was sent

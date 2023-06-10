@@ -18,7 +18,7 @@ export const kick: Modal = {
       // Get member and author and check if role is lower than member's role
       const author = interaction.member!;
       if (!author || !(author.roles instanceof GuildMemberRoleManager)) return;
-      const authorTag = author.user instanceof User ? author.user.tag : `${author.user.username}#${author.user.discriminator}`;
+      const authorTag = author.user instanceof User ? author.user.username : `${author.user.username}#${author.user.discriminator}`;
 
       const authorRoles = author!.roles as GuildMemberRoleManager;
       const botRoles = interaction.guild!.members.me!.roles as GuildMemberRoleManager;
@@ -34,7 +34,7 @@ export const kick: Modal = {
       // Create embed
       const KickEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Kicked ${member.user.tag}.`);
+        .setTitle(`Kicked ${member.user.username}.`);
 
       // Add reason if specified
       const reason = interaction.fields.getTextInputValue('reason');
@@ -52,7 +52,7 @@ export const kick: Modal = {
 
       // Actually kick the dude
       await member.kick(`Kicked by ${authorTag} for ${reason}`);
-      logger.info(`Kicked user: ${member.user.tag} from ${interaction.guild!.name}`);
+      logger.info(`Kicked user: ${member.user.username} from ${interaction.guild!.name}`);
 
       // Get server config
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
