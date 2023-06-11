@@ -8,15 +8,14 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
 
   // Get server config
   const srvconfig = await getGuildConfig(oldState.guild.id);
-  const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!auditlogs.logs.voicedeafen && !auditlogs.logs.voice && !auditlogs.logs.all) return;
+  if (!srvconfig.auditlogs.logs.voicedeafen && !srvconfig.auditlogs.logs.voice && !srvconfig.auditlogs.logs.all) return;
   let logchannelId;
-  if (auditlogs.logs.voicedeafen && auditlogs.logs.voicedeafen.channel != 'false') logchannelId = auditlogs.logs.voicedeafen.channel;
-  else if (auditlogs.logs.voice && auditlogs.logs.voice.channel != 'false') logchannelId = auditlogs.logs.voice.channel;
-  else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
-  else logchannelId = auditlogs.channel;
+  if (srvconfig.auditlogs.logs.voicedeafen && srvconfig.auditlogs.logs.voicedeafen.channel != 'false') logchannelId = srvconfig.auditlogs.logs.voicedeafen.channel;
+  else if (srvconfig.auditlogs.logs.voice && srvconfig.auditlogs.logs.voice.channel != 'false') logchannelId = srvconfig.auditlogs.logs.voice.channel;
+  else if (srvconfig.auditlogs.logs.all && srvconfig.auditlogs.logs.all.channel != 'false') logchannelId = srvconfig.auditlogs.logs.all.channel;
+  else logchannelId = srvconfig.auditlogs.channel;
   const logchannel = newState.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 

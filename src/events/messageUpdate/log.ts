@@ -9,15 +9,14 @@ export default async (client: Client, oldMessage: Message<true>, newMessage: Mes
 
   // Get server config
   const srvconfig = await getGuildConfig(oldMessage.guild!.id);
-  const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!auditlogs.logs.messageupdate && !auditlogs.logs.message && !auditlogs.logs.all) return;
+  if (!srvconfig.auditlogs.logs.messageupdate && !srvconfig.auditlogs.logs.message && !srvconfig.auditlogs.logs.all) return;
   let logchannelId;
-  if (auditlogs.logs.messageupdate && auditlogs.logs.messageupdate.channel != 'false') logchannelId = auditlogs.logs.messageupdate.channel;
-  else if (auditlogs.logs.message && auditlogs.logs.message.channel != 'false') logchannelId = auditlogs.logs.message.channel;
-  else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
-  else logchannelId = auditlogs.channel;
+  if (srvconfig.auditlogs.logs.messageupdate && srvconfig.auditlogs.logs.messageupdate.channel != 'false') logchannelId = srvconfig.auditlogs.logs.messageupdate.channel;
+  else if (srvconfig.auditlogs.logs.message && srvconfig.auditlogs.logs.message.channel != 'false') logchannelId = srvconfig.auditlogs.logs.message.channel;
+  else if (srvconfig.auditlogs.logs.all && srvconfig.auditlogs.logs.all.channel != 'false') logchannelId = srvconfig.auditlogs.logs.all.channel;
+  else logchannelId = srvconfig.auditlogs.channel;
   const logchannel = newMessage.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 

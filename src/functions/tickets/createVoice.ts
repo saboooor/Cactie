@@ -1,8 +1,7 @@
-import { settings } from '@prisma/client';
-import prisma from '~/functions/prisma';
+import prisma, { guildConfig } from '~/functions/prisma';
 import { Client, GuildMember, TextChannel, PublicThreadChannel, EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
 
-export default async function createVoice(client: Client, srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function createVoice(client: Client, srvconfig: guildConfig, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
@@ -18,8 +17,7 @@ export default async function createVoice(client: Client, srvconfig: settings, m
   if (ticketData.voiceticket != 'false') throw new Error('This ticket already has a voiceticket!');
 
   // Find category and if no category then set it to null
-  const tickets = JSON.parse(srvconfig.tickets);
-  const parent = await member.guild.channels.fetch(tickets.category).catch(() => { return null; });
+  const parent = await member.guild.channels.fetch(srvconfig.tickets.category).catch(() => { return null; });
 
   // Branch for ticket-dev or ticket-testing etc
   const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
@@ -55,7 +53,7 @@ export default async function createVoice(client: Client, srvconfig: settings, m
   ticketDataUsers.forEach(userid => voiceticket.permissionOverwrites.edit(userid, { ViewChannel: true }));
 
   // Find role and add their permissions to the channel
-  const role = await member.guild.roles.fetch(tickets.role).catch(() => { return null; });
+  const role = await member.guild.roles.fetch(srvconfig.tickets.role).catch(() => { return null; });
   if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
   // Add voiceticket to ticket database

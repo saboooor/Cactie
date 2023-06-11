@@ -8,12 +8,7 @@ export default async (client: Client, message: Message<true>) => {
   // Get server config
   const srvconfig = await getGuildConfig(message.guild!.id);
 
-  const reactions: {
-    regex: string;
-    emojis: string[];
-  }[] = srvconfig.reactions ? JSON.parse(srvconfig.reactions) : [];
-
-  for (const reaction of reactions) {
+  for (const reaction of srvconfig.reactions) {
     const regex = new RegExp(reaction.regex.slice(1, reaction.regex.lastIndexOf('/')), reaction.regex.slice(reaction.regex.lastIndexOf('/') + 1));
     if (!regex.test(message.content)) continue;
     for (const emoji of reaction.emojis) { await message.react(emoji); }

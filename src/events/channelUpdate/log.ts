@@ -5,15 +5,14 @@ import { refresh, right } from '~/misc/emoji.json';
 export default async (client: Client, oldChannel: TextChannel | VoiceChannel | AnyThreadChannel, newChannel: TextChannel | VoiceChannel | AnyThreadChannel) => {
   // Get server config
   const srvconfig = await getGuildConfig(oldChannel.guild!.id);
-  const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log
-  if (!auditlogs.logs.channelupdate && !auditlogs.logs.channel && !auditlogs.logs.all) return;
+  if (!srvconfig.auditlogs.logs.channelupdate && !srvconfig.auditlogs.logs.channel && !srvconfig.auditlogs.logs.all) return;
   let logchannelId;
-  if (auditlogs.logs.channelupdate && auditlogs.logs.channelupdate.channel != 'false') logchannelId = auditlogs.logs.channelupdate.channel;
-  else if (auditlogs.logs.channel && auditlogs.logs.channel.channel != 'false') logchannelId = auditlogs.logs.channel.channel;
-  else if (auditlogs.logs.all && auditlogs.logs.all.channel != 'false') logchannelId = auditlogs.logs.all.channel;
-  else logchannelId = auditlogs.channel;
+  if (srvconfig.auditlogs.logs.channelupdate && srvconfig.auditlogs.logs.channelupdate.channel != 'false') logchannelId = srvconfig.auditlogs.logs.channelupdate.channel;
+  else if (srvconfig.auditlogs.logs.channel && srvconfig.auditlogs.logs.channel.channel != 'false') logchannelId = srvconfig.auditlogs.logs.channel.channel;
+  else if (srvconfig.auditlogs.logs.all && srvconfig.auditlogs.logs.all.channel != 'false') logchannelId = srvconfig.auditlogs.logs.all.channel;
+  else logchannelId = srvconfig.auditlogs.channel;
   const logchannel = newChannel.guild.channels.cache.get(logchannelId) as TextChannel | undefined;
   if (!logchannel) return;
 

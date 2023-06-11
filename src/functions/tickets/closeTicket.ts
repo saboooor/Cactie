@@ -1,10 +1,9 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, PublicThreadChannel, Message } from 'discord.js';
 import getTranscript from '../messages/getTranscript';
 import getMessages from '../messages/getMessages';
-import { settings } from '@prisma/client';
-import prisma from '~/functions/prisma';
+import prisma, { guildConfig } from '~/functions/prisma';
 
-export default async function closeTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function closeTicket(srvconfig: guildConfig, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread()) channel = channel.parent as TextChannel;
 
@@ -66,8 +65,7 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
   }
 
   // Get the ticket log channel
-  const tickets = JSON.parse(srvconfig.tickets);
-  const logchannel = await member.guild.channels.fetch(tickets.logchannel).catch(() => { return null; }) as TextChannel | null;
+  const logchannel = await member.guild.channels.fetch(srvconfig.tickets.logchannel).catch(() => { return null; }) as TextChannel | null;
 
   // Check if ticket log channel is set in settings and send embed to ticket log channel
   if (logchannel) await logchannel.send({ embeds: [CloseEmbed] });
@@ -76,7 +74,7 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
 
   // If the ticket mode is set to buttons, add the buttons
   // Add reaction panel if ticket mode is set to reactions
-  if (tickets.type == 'buttons') {
+  if (srvconfig.tickets.type == 'buttons') {
     const row = new ActionRowBuilder<ButtonBuilder>()
       .addComponents([
         new ButtonBuilder()
@@ -92,7 +90,7 @@ export default async function closeTicket(srvconfig: settings, member: GuildMemb
       ]);
     await channel.send({ embeds: [CloseEmbed], components: [row] });
   }
-  else if (tickets.type == 'reactions') {
+  else if (srvconfig.tickets.type == 'reactions') {
     CloseEmbed.setDescription('🔓 Reopen Ticket `/open`\n⛔ Delete Ticket `/delete`');
     const Panel = await channel.send({ embeds: [CloseEmbed] });
     await Panel.react('🔓');

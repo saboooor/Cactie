@@ -38,8 +38,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   // Get current settings for the guild and check if tickets are enabled
   // Get server config
   const srvconfig = await getGuildConfig(message.guild!.id);
-  const tickets = JSON.parse(srvconfig.tickets);
-  if (!tickets.enabled) return;
+  if (!srvconfig.tickets.enabled) return;
 
   try {
     if (emojiId == '🎫') {

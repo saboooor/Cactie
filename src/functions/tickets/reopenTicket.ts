@@ -1,11 +1,9 @@
-import { settings } from '@prisma/client';
-import prisma from '~/functions/prisma';
+import prisma, { guildConfig } from '~/functions/prisma';
 import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
 
-export default async function reopenTicket(srvconfig: settings, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function reopenTicket(srvconfig: guildConfig, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
   // Check if tickets are disabled
-  const tickets = JSON.parse(srvconfig.tickets);
-  if (!tickets.enabled) throw new Error('Tickets are disabled on this server.');
+  if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread()) channel = channel.parent as TextChannel;
