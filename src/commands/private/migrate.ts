@@ -7,25 +7,12 @@ export const migrate: Command = {
     const prisma = new PrismaClient();
     const settings = await prisma.settings.findMany();
     for (const srvconfig of settings) {
-      const tickets = {
-        enabled: srvconfig.tickets != 'false',
-        type: srvconfig.tickets == 'false' ? 'buttons' : srvconfig.tickets,
-        logchannel: srvconfig.ticketlogchannel,
-        category: srvconfig.ticketcategory,
-        role: srvconfig.supportrole,
-        mention: srvconfig.ticketmention,
-      };
-
       await prisma.settings.update({
         where: {
           guildId: srvconfig.guildId,
         },
         data: {
-          tickets: JSON.stringify(tickets),
-          ticketlogchannel: 'DEPRECATED',
-          ticketcategory: 'DEPRECATED',
-          supportrole: 'DEPRECATED',
-          ticketmention: 'DEPRECATED',
+          tickets: JSON.stringify({ ...JSON.parse(srvconfig.tickets), count: 1 }),
         },
       });
       await message.reply(`Migrated tickets for ${srvconfig.guildId}`);
