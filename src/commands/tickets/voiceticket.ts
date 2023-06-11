@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { GuildMember, TextChannel } from 'discord.js';
 import createVoice from '~/functions/tickets/createVoice';
 import { SlashCommand } from '~/types/Objects';
@@ -11,11 +11,7 @@ export const vcticket: SlashCommand = {
   async execute(message, args, client) {
     try {
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
 
       // Create a ticket
       const msg = await createVoice(client, srvconfig, message.member as GuildMember, message.channel as TextChannel);

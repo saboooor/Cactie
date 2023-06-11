@@ -4,7 +4,7 @@ import { SlashCommand } from '~/types/Objects';
 import commands from '~/lists/commands';
 import helpOptions from '~/options/help';
 import * as helpdesc from '~/misc/helpdesc';
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 
 export const help: SlashCommand = {
   description: 'Get help with Cactie',
@@ -15,11 +15,7 @@ export const help: SlashCommand = {
   async execute(message, args) {
     try {
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
       let HelpEmbed = new EmbedBuilder()
         .setColor('Random')
         .setTitle('**HELP**');

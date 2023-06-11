@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
 import { no } from '~/misc/emoji.json';
 
@@ -7,8 +7,7 @@ export default async (client: Client, message: Message<true>) => {
   if (message.author && message.author.bot) return;
 
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(message.guild!.id);
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   console.log(auditlogs);

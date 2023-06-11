@@ -1,7 +1,7 @@
-import { EmbedBuilder, TextChannel, User } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export const unmute: SlashCommand = {
   description: 'Unmute someone that was muted in the server',
@@ -16,11 +16,7 @@ export const unmute: SlashCommand = {
     try {
       // Get settings and check if mutecmd is enabled
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
       const role = await message.guild!.roles.cache.get(srvconfig.mutecmd);
       if (!role && srvconfig.mutecmd != 'timeout') {
         error('This command is disabled!', message, true);

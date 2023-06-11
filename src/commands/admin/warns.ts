@@ -11,13 +11,6 @@ export const warns: SlashCommand = {
   options: user,
   async execute(message, args) {
     try {
-      // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
-
       // Get user and check if user is valid
       let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));
       if (!member) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));

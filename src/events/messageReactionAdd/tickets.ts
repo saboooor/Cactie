@@ -5,7 +5,7 @@ import deleteTicket from '~/functions/tickets/deleteTicket';
 import reopenTicket from '~/functions/tickets/reopenTicket';
 import createVoice from '~/functions/tickets/createVoice';
 import { Client, MessageReaction, TextChannel, User } from 'discord.js';
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 
 export default async (client: Client, reaction: MessageReaction, user: User) => {
   // Check if author is a bot or guild is undefined
@@ -37,8 +37,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
   // Get current settings for the guild and check if tickets are enabled
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: guild.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(message.guild!.id);
   const tickets = JSON.parse(srvconfig.tickets);
   if (!tickets.enabled) return;
 

@@ -3,7 +3,7 @@ import { upvote, downvote } from '~/misc/emoji.json';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import suggestOptions from '~/options/suggest';
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 
 export const suggest: SlashCommand = {
   description: 'Suggest something!',
@@ -15,11 +15,7 @@ export const suggest: SlashCommand = {
   async execute(message, args) {
     try {
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
 
       // Get channel to send poll in
       let channel = message.guild!.channels.cache.get(srvconfig.suggestionchannel) as TextChannel;

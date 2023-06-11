@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { GuildMember } from 'discord.js';
 import createTicket from '~/functions/tickets/createTicket';
 import { Modal } from '~/types/Objects';
@@ -9,8 +9,7 @@ export const ticket_create: Modal = {
   execute: async (interaction, client) => {
     try {
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
-      if (!srvconfig) return;
+      const srvconfig = await getGuildConfig(interaction.guild!.id);
 
       if (!(interaction.member instanceof GuildMember)) {
         interaction.member = await interaction.guild!.members.fetch(interaction.member!.user.id);

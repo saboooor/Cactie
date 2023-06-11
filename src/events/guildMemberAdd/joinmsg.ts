@@ -1,10 +1,9 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { Client, GuildMember, TextChannel } from 'discord.js';
 
 export default async (client: Client, member: GuildMember) => {
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: member.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(member.guild!.id);
 
   // Parse the JSON
   const joinMessageJSON = JSON.parse(srvconfig.joinmessage);

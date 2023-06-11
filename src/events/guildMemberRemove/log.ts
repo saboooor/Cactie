@@ -1,11 +1,10 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, Client, GuildMember, TextChannel } from 'discord.js';
 import { leave } from '~/misc/emoji.json';
 
 export default async (client: Client, member: GuildMember) => {
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: member.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(member.guild!.id);
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log

@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 import { Client, TextChannel } from 'discord.js';
 import { schedule } from 'node-cron';
 
@@ -22,8 +22,7 @@ export default (client: Client) => schedule('0 0 * * *', async () => {
     if (!channel) return prisma.ticketdata.deleteMany({ where: { channelId: ticketdata.channelId } });
 
     // Get server config
-    const srvconfig = await prisma.settings.findUnique({ where: { guildId: guild!.id } });
-    if (!srvconfig) return;
+    const srvconfig = await getGuildConfig(ticketdata.guildId);
 
     // Close the ticket
     await closeTicket(srvconfig, guild.members.me!, channel);

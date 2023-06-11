@@ -1,8 +1,8 @@
-import { EmbedBuilder, GuildMemberRoleManager, TextChannel, User } from 'discord.js';
+import { EmbedBuilder, GuildMemberRoleManager, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export const warn: SlashCommand = {
   description: 'Warn someone in the server',
@@ -13,11 +13,7 @@ export const warn: SlashCommand = {
   async execute(message, args) {
     try {
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
 
       // Get user and check if user is valid
       let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));

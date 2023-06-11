@@ -1,15 +1,14 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, TextChannel } from 'discord.js';
 import { refresh } from '~/misc/emoji.json';
 import getDiff from '~/functions/messages/getDiff';
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 
 export default async (client: Client, oldMessage: Message<true>, newMessage: Message<true>) => {
   // Check if the message was sent by a bot or the content wasn't updated
   if ((newMessage.author && newMessage.author.bot) || oldMessage.content == newMessage.content) return;
 
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: oldMessage.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(oldMessage.guild!.id);
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log

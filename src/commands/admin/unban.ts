@@ -1,7 +1,7 @@
 import { EmbedBuilder, TextChannel } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import unbanOptions from '~/options/unban';
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 
 export const unban: SlashCommand = {
   description: 'Unban someone that was banned from the server',
@@ -66,11 +66,7 @@ export const unban: SlashCommand = {
 
       // Check if log channel exists and send message
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
       if (logchannel) {
         UnbanEmbed.setTitle(`${message.member!.user.username} ${UnbanEmbed.toJSON().title}`);

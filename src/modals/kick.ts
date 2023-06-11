@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import { Modal } from '~/types/Objects';
 
@@ -55,8 +55,7 @@ export const kick: Modal = {
       logger.info(`Kicked user: ${member.user.username} from ${interaction.guild!.name}`);
 
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
-      if (!srvconfig) return;
+      const srvconfig = await getGuildConfig(interaction.guild!.id);
 
       // Check if log channel exists and send message
       const logchannel = interaction.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;

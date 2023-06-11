@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, Collection, Client, Message, TextChannel } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
 import commands, { cooldowns } from '~/lists/commands';
@@ -25,8 +25,7 @@ export default async (client: Client, message: Message<true>) => {
   // };
 
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(message.guild!.id);
 
   if (message.content.startsWith(srvconfig.prefix)) {
     message.reply({ content: `**Text commands have been deprecated.**\nIn order to use this command, please use Slash (/) commands instead of text.\nTo override this message, use ${client.user} as a prefix, keep in mind that this override will also be removed when text commands are fully removed.` });

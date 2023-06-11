@@ -5,7 +5,7 @@ import getMessages from '~/functions/messages/getMessages';
 import checkPerms from '~/functions/checkPerms';
 import suggestresponse from '~/options/suggestresponse';
 import { SlashCommand } from '~/types/Objects';
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 
 export const approve: SlashCommand = {
   description: 'Approve a suggestion.',
@@ -30,11 +30,7 @@ export const approve: SlashCommand = {
       let suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
 
       // Get server config
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-      if (!srvconfig) {
-        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
-        return;
-      }
+      const srvconfig = await getGuildConfig(message.guild!.id);
 
       // If the suggestmsg is null, try checking for the message in the suggestionchannel if set
       if (!suggestMsg) {

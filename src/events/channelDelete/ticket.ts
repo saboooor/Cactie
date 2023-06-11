@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 import { Client, EmbedBuilder, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
 
 export default async (client: Client, channel: TextChannel) => {
@@ -9,8 +9,7 @@ export default async (client: Client, channel: TextChannel) => {
   const ticketDataUsers = ticketData.users.split(',');
 
   // Check if ticket log channel is set in settings
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: channel.guild.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(channel.guild!.id);
   const tickets = JSON.parse(srvconfig.tickets);
   const logchannel = channel.guild.channels.cache.get(tickets.logchannel) as TextChannel | undefined;
   if (logchannel) {

@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, Client, Message } from 'discord.js';
 import { createPaste } from 'hastebin';
 import checkPerms from '~/functions/checkPerms';
@@ -8,8 +8,7 @@ export default async (client: Client, message: Message<true>) => {
   if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(message.guild!.id);
 
   // Check if message shortener is set and is smaller than the amount of lines in the message
   if (!srvconfig.msgshortener || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member!)) return;

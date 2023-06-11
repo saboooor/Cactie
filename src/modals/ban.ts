@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { Modal } from '~/types/Objects';
@@ -76,8 +76,7 @@ export const ban: Modal = {
       await interaction.reply({ embeds: [BanEmbed] });
 
       // Check if log channel exists and send message
-      const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild.id } });
-      if (!srvconfig) return;
+      const srvconfig = await getGuildConfig(interaction.guild.id);
       const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
         BanEmbed.setTitle(`${authorTag} ${BanEmbed.toJSON().title}`);

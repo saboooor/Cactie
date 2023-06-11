@@ -1,4 +1,4 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { Client, EmbedBuilder, TextChannel, VoiceState } from 'discord.js';
 import { join, leave, right } from '~/misc/emoji.json';
 
@@ -7,8 +7,7 @@ export default async (client: Client, oldState: VoiceState, newState: VoiceState
   if (oldState.channelId == newState.channelId) return;
 
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: newState.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(oldState.guild.id);
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   const logEmbed = new EmbedBuilder()

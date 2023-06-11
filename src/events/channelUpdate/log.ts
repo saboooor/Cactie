@@ -1,11 +1,10 @@
-import prisma from '~/functions/prisma';
+import { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, TextChannel, VoiceChannel, AnyThreadChannel, ThreadChannel } from 'discord.js';
 import { refresh, right } from '~/misc/emoji.json';
 
 export default async (client: Client, oldChannel: TextChannel | VoiceChannel | AnyThreadChannel, newChannel: TextChannel | VoiceChannel | AnyThreadChannel) => {
   // Get server config
-  const srvconfig = await prisma.settings.findUnique({ where: { guildId: oldChannel.guild!.id } });
-  if (!srvconfig) return;
+  const srvconfig = await getGuildConfig(oldChannel.guild!.id);
   const auditlogs = JSON.parse(srvconfig.auditlogs);
 
   // Check if log is enabled and send log

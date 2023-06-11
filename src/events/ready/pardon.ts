@@ -1,6 +1,6 @@
 import { schedule } from 'node-cron';
 import { EmbedBuilder, Client, TextChannel } from 'discord.js';
-import prisma from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export default async (client: Client) => schedule('* * * * *', async () => {
   // Get all member data
@@ -16,8 +16,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
     if (!guild) continue;
 
     // Get the guild config
-    const srvconfig = await prisma.settings.findUnique({ where: { guildId: guild.id } });
-    if (!srvconfig) continue;
+    const srvconfig = await getGuildConfig(data.guildId);
 
     // Get the member from the memberId, and user just in case member is invalid
     const member = await guild.members.fetch(data.memberId).catch(() => { return null; });
