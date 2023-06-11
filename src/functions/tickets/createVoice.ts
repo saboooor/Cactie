@@ -30,6 +30,7 @@ export default async function createVoice(client: Client, srvconfig: settings, m
 
   const user = channel.name.split('-');
   user.shift();
+  user.shift();
   const voiceticket = await member.guild.channels.create({
     name: `Voiceticket${branch} ${user.join('-')}`,
     type: ChannelType.GuildVoice,
