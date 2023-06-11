@@ -28,7 +28,7 @@ export const tickets: HelpDesc = {
   description: 'These commands are related to the bot\'s tickets system',
   field: {
     name: '**How to create support tickets:**',
-    value: '**1.** Set the support team / staff role in the dashboard by doing /settings and setting the Support Role\n**2.** Set the ticket\'s category channel by doing /settings and setting the Ticket Category\n**3.** Set a log channel by doing /settings and setting the Ticket Log Channel (Optional)\n**4.** Execute /help supportpanel if you want to use a reaction or button to create a ticket\n**5.** Create a ticket to test it out',
+    value: '**1.** Set ticket related settings in the dashboard by going to https://cactie.luminescent.dev\n**2.** Execute /help supportpanel if you want to create an embed for users to easily create tickets\n**3.** Create a ticket to test it out',
   },
 };
 

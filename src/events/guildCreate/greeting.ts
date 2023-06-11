@@ -25,7 +25,7 @@ export default async (client: Client, guild: Guild) => {
     .setTitle(`Thanks for adding ${client.user?.username} to ${guild.name}!`)
     .setDescription(`
 Type \`/help\` for help, and \`/invite\` to invite me to other servers!
-Please take some time going through the settings so that ${client.user?.username} works well! \`/settings\`
+Please take some time going through the dashboard so that ${client.user?.username} works well!
 		`)
     .setURL('https://cactie.luminescent.dev');
   const message = { embeds: [greetingEmbed], components: [row] };

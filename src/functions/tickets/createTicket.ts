@@ -55,7 +55,7 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   // Find role and set perms and if no role then send error
   const role = await member.guild.roles.fetch(tickets.role).catch(() => { return null; });
   if (role) await ticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
-  else await ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings` and set the Support Role value' });
+  else await ticket.send({ content: '❗ **No access role set!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
 
   // Set the database
   await prisma.ticketdata.create({

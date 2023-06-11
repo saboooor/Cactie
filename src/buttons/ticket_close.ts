@@ -12,7 +12,7 @@ export const close_ticket: Button = {
       // Get server config
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: interaction.guild!.id } });
       if (!srvconfig) {
-        error('Server config not found.', interaction);
+        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', interaction);
         return;
       }
 

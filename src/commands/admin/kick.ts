@@ -60,7 +60,7 @@ export const kick: SlashCommand = {
       // Check if log channel exists and send message
       const srvconfig = await prisma.settings.findUnique({ where: { guildId: message.guild!.id } });
       if (!srvconfig) {
-        error('Server config not found.', message);
+        error('This server\'s settings could not be found! It must have been corrupted. Fix this by going into the dashboard at https://cactie.luminescent.dev and selecting your server and it will automatically re-create for you.', message);
         return;
       }
       const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
