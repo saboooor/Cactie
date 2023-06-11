@@ -30,8 +30,9 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
   // Create ticket and set database
+  const id = tickets.count == 'false' ? member.user.username.toLowerCase().replace(' ', '-') : tickets.count;
   const ticket = await member.guild.channels.create({
-    name: `ticket${branch}-${member.displayName.toLowerCase().replace(' ', '-')}`,
+    name: `ticket${branch}-${id}`,
     parent: parent ? parent.id : null,
     topic: `Ticket Opened by ${member.user.username}`,
     permissionOverwrites: [
@@ -57,7 +58,26 @@ export default async function createTicket(client: Client, srvconfig: settings, 
   else await ticket.send({ content: '❗ **No support role set!**\nOnly Administrators can see this ticket.\nTo set a support role, do `/settings` and set the Support Role value' });
 
   // Set the database
-  await prisma.ticketdata.create({ data: { guildId: member.guild.id, channelId: ticket.id, opener: member.id, users: member.id } });
+  await prisma.ticketdata.create({
+    data: {
+      guildId: member.guild.id,
+      channelId: ticket.id,
+      opener: member.id,
+      users: member.id,
+    },
+  });
+
+  if (tickets.count != 'false') {
+    tickets.count++;
+    await prisma.settings.update({
+      where: {
+        guildId: member.guild.id,
+      },
+      data: {
+        tickets: JSON.stringify(tickets),
+      },
+    });
+  }
 
   // Create embed
   const CreateEmbed = new EmbedBuilder()

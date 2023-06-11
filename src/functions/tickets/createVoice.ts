@@ -28,8 +28,10 @@ export default async function createVoice(client: Client, srvconfig: settings, m
   const author = await member.guild.members.fetch(ticketData.opener).catch(() => { return null; });
   if (!author) throw new Error('Couldn\'t find the author of the ticket! Close this ticket.');
 
+  const user = channel.name.split('-');
+  user.shift();
   const voiceticket = await member.guild.channels.create({
-    name: `Voiceticket${branch} ${author.displayName}`,
+    name: `Voiceticket${branch} ${user.join('-')}`,
     type: ChannelType.GuildVoice,
     parent: parent ? parent.id : null,
     permissionOverwrites: [
