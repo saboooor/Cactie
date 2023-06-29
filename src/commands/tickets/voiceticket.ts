@@ -6,7 +6,6 @@ import { SlashCommand } from '~/types/Objects';
 export const vcticket: SlashCommand = {
   description: 'Create a voiceticket',
   ephemeral: true,
-  aliases: ['voiceticket', 'voicenew', 'voice'],
   botPerms: ['ManageChannels'],
   async execute(message, args, client) {
     try {

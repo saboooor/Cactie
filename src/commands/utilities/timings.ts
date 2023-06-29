@@ -22,8 +22,6 @@ const buttons = new ActionRowBuilder<ButtonBuilder>()
 export const timings: SlashCommand = {
   description: 'Analyze Paper timings to help optimize your server.',
   cooldown: 10,
-  args: true,
-  usage: '<Timings Link>',
   options: url,
   async execute(message, args) {
     try {

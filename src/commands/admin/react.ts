@@ -5,8 +5,6 @@ import reactOptions from '~/options/react';
 export const react: SlashCommand = {
   description: 'Adds a reaction to a message',
   ephemeral: true,
-  args: true,
-  usage: '<Message Link / Id (only in channel)> <Emoji>',
   permissions: ['Administrator'],
   botChannelPerms: ['AddReactions'],
   options: reactOptions,

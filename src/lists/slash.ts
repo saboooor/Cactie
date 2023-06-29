@@ -4,6 +4,7 @@ import { SlashCommand } from '~/types/Objects';
 
 // Set the slash commands collection
 const slashcommands = new Collection<string, SlashCommand>();
+const cooldowns = new Collection<string, Collection<string, number>>();
 
 // Register all slash commands
 const slashcommandFolders = readdirSync('./src/commands');
@@ -20,3 +21,4 @@ for (const folder of slashcommandFolders) {
 logger.info(`${slashcommands.size} slash commands loaded`);
 
 export default slashcommands;
+export { cooldowns };

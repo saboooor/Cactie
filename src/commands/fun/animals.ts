@@ -1,11 +1,9 @@
-import commands from '~/lists/commands';
+import commands from '~/lists/private';
 import { SlashCommand } from '~/types/Objects';
 import animals from '~/options/animals';
 
 export const animal: SlashCommand = {
   description: 'Show a picture of an animal!',
-  args: true,
-  usage: '<Animal name (in /help animals)>',
   options: animals,
   execute(message, args, client) {
     try {

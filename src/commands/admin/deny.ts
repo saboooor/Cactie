@@ -10,10 +10,7 @@ import { getGuildConfig } from '~/functions/prisma';
 export const deny: SlashCommand = {
   description: 'Deny a suggestion.',
   ephemeral: true,
-  aliases: ['reject', 'decline'],
-  args: true,
   permissions: ['Administrator'],
-  usage: '<Message Id> [Response]',
   options: suggestresponse,
   async execute(message, args, client) {
     try {

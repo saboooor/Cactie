@@ -10,10 +10,7 @@ import { getGuildConfig } from '~/functions/prisma';
 export const approve: SlashCommand = {
   description: 'Approve a suggestion.',
   ephemeral: true,
-  aliases: ['accept'],
-  args: true,
   permissions: ['Administrator'],
-  usage: '<Message Id> [Response]',
   options: suggestresponse,
   async execute(message, args, client) {
     try {

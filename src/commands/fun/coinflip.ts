@@ -2,7 +2,6 @@ import { SlashCommand } from '~/types/Objects';
 
 export const coinflip: SlashCommand = {
   description: 'Heads or Tails?',
-  aliases: ['cf'],
   async execute(message) {
     try {
       // Randomly pick between heads or tails

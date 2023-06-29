@@ -8,8 +8,6 @@ import prisma from '~/functions/prisma';
 export const reactionroles: SlashCommand = {
   description: 'Configure Cactie\'s reaction roles in the server',
   ephemeral: true,
-  aliases: ['rr'],
-  usage: '[add/remove] <Emoji> <Message Link> [RoleId]',
   permissions: ['Administrator'],
   options: reactionrolesOptions,
   async execute(message, args, client) {
@@ -24,11 +22,6 @@ export const reactionroles: SlashCommand = {
       const reactionrolesData = await prisma.reactionroles.findMany({ where: { guildId: message.guild!.id } });
 
       if (args[0] == 'add') {
-        // Check if all arguments are met
-        if (!args[3]) {
-          error('Usage: /reactionroles add <Emoji> <Message Link> <Role Id> [toggle/switch]', message, true);
-        }
-
         // Get message url and split by slashes
         const messagelink = args[2].split('/');
 
@@ -80,12 +73,6 @@ export const reactionroles: SlashCommand = {
         RREmbed.setDescription('Reaction Role added! View current reaction roles with `/reactionroles get`');
       }
       else if (args[0] == 'remove') {
-        // Check if all arguments are met
-        if (!args[1] || isNaN(Number(args[1]))) {
-          error('Usage: /reactionroles remove <Reaction Role Number>', message, true);
-          return;
-        }
-
         // Check if there are any reaction roles
         if (!reactionrolesData.length) {
           RREmbed.addFields([{ name: 'No reaction roles set!', value: 'Add one with\n`/reactionroles add <Emoji> <Message Link> <Role Id> <toggle/switch>`' }]);

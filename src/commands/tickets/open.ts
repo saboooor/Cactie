@@ -6,7 +6,6 @@ import { SlashCommand } from '~/types/Objects';
 export const forcedelete: SlashCommand = {
   description: 'Repen a ticket',
   ephemeral: true,
-  aliases: ['reopen'],
   botPerms: ['ManageChannels'],
   async execute(message) {
     try {

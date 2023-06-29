@@ -22,8 +22,6 @@ const buttons = new ActionRowBuilder<ButtonBuilder>()
 export const spark: SlashCommand = {
   description: 'Analyze Spark profiles to help optimize your server.',
   cooldown: 10,
-  args: true,
-  usage: '<Spark Profile Link>',
   options: url,
   async execute(message, args) {
     try {

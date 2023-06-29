@@ -3,22 +3,19 @@ import { SlashCommandBuilder, PermissionsBitField, Message, Client, CommandInter
 export class Command {
   name?: string;
   description: string;
-  category?: string;
-  aliases?: string[];
-  usage?: string;
-  args?: boolean;
-  voteOnly?: boolean;
-  permissions?: (keyof typeof PermissionsBitField.Flags)[];
-  channelPermissions?: (keyof typeof PermissionsBitField.Flags)[];
-  botPerms?: (keyof typeof PermissionsBitField.Flags)[];
-  botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
-  cooldown?: number;
   execute: (message: Message<true>, args: string[], client: Client) => void | Promise<void>;
 }
 
 export class SlashCommand extends Command {
   ephemeral?: boolean;
   noDefer?: boolean;
+  category?: string;
+  voteOnly?: boolean;
+  cooldown?: number;
+  permissions?: (keyof typeof PermissionsBitField.Flags)[];
+  channelPermissions?: (keyof typeof PermissionsBitField.Flags)[];
+  botPerms?: (keyof typeof PermissionsBitField.Flags)[];
+  botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
   options?: (cmd: SlashCommandBuilder) => void | Promise<void>;
   autoComplete?: (client: Client, interaction: AutocompleteInteraction) => void | Promise<void>;
   execute: (message: CommandInteraction | Message<true>, args: string[], client: Client) => void | Promise<void>;

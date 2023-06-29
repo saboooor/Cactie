@@ -4,8 +4,6 @@ import someone from '~/options/someone';
 
 export const boner: SlashCommand = {
   description: 'See your boner expand!',
-  usage: '[Someone]',
-  aliases: ['pp'],
   options: someone,
   async execute(message, args) {
     try {

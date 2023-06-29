@@ -4,9 +4,7 @@ import questionsOptions from '~/options/21q';
 
 export const questions: SlashCommand = {
   name: '21questions',
-  aliases: ['questions', '21q'],
   description: 'Play 21 Questions with an opponent',
-  usage: '[Opponent User] [Amount of questions (default 21)]',
   cooldown: 10,
   options: questionsOptions,
   async execute(message, args) {

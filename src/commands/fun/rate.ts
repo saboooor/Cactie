@@ -5,7 +5,6 @@ import { GuildMember } from 'discord.js';
 
 export const rate: SlashCommand = {
   description: 'Rate someone or something! Or yourself.',
-  usage: '[Something or someone]',
   options: someone,
   async execute(message, args) {
     try {

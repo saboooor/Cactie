@@ -5,8 +5,6 @@ import { GuildMember } from 'discord.js';
 
 export const bite: SlashCommand = {
   description: 'Bite someone!',
-  usage: '<Someone>',
-  args: true,
   options: someonereq,
   async execute(message, args) {
     try { action(message, message.member as GuildMember, args, 'bite'); }

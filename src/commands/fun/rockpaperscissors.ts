@@ -4,9 +4,6 @@ import user from '~/options/user';
 
 export const rockpaperscissors: SlashCommand = {
   description: 'Play Rock Paper Scissors with an opponent',
-  aliases: ['rps'],
-  args: true,
-  usage: '<Opponent User>',
   cooldown: 10,
   options: user,
   async execute(message, args) {
@@ -55,7 +52,10 @@ export const rockpaperscissors: SlashCommand = {
     collector.on('collect', async interaction => {
       if (interaction.customId != 'rock' && interaction.customId != 'paper' && interaction.customId != 'scissors') return;
       await interaction.deferReply({ ephemeral: true }).catch((err: Error) => logger.error(err));
-      if (choices[interaction.user.id]) return interaction.editReply({ content: `You've already selected ${emoji[choices[interaction.user.id] as keyof typeof emoji][2]}!` });
+      if (choices[interaction.user.id]) {
+        interaction.editReply({ content: `You've already selected ${emoji[choices[interaction.user.id] as keyof typeof emoji][2]}!` });
+        return;
+      }
       choices[interaction.user.id] = interaction.customId;
       await interaction.editReply({ content: `**Selected ${emoji[interaction.customId as keyof typeof emoji][2]}!**` });
 

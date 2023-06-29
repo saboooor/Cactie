@@ -5,7 +5,6 @@ import { SlashCommand } from '~/types/Objects';
 export const resolve: SlashCommand = {
   description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',
   ephemeral: true,
-  aliases: ['resolved'],
   async execute(message) {
     try {
       // Add user to ticket

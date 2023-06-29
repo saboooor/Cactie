@@ -3,10 +3,7 @@ import { SlashCommand } from '~/types/Objects';
 import githubOptions from '~/options/github';
 
 export const github: SlashCommand = {
-  aliases: ['git'],
   description: 'Get info on any GitHub repository',
-  args: true,
-  usage: '<Repository (Not URL)>',
   options: githubOptions,
   async autoComplete(client, interaction) {
     const value = interaction.options.getFocused();

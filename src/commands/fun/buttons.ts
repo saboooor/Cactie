@@ -6,8 +6,6 @@ import text from '~/options/text';
 export const buttons: SlashCommand = {
   description: 'ya just buttons idk',
   voteOnly: true,
-  args: true,
-  usage: '<Rows and Columns (ex: 5x5)>',
   cooldown: 10,
   options: text,
   async execute(message, args) {

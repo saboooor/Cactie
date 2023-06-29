@@ -7,8 +7,6 @@ import { getGuildConfig } from '~/functions/prisma';
 export const ticket: SlashCommand = {
   description: 'Create a ticket',
   ephemeral: true,
-  aliases: ['new'],
-  usage: '[Description]',
   botPerms: ['ManageChannels'],
   options: ticketOptions,
   async execute(message, args, client) {

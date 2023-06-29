@@ -5,8 +5,6 @@ import { GuildMember } from 'discord.js';
 
 export const mad: SlashCommand = {
   description: 'Stay mad',
-  usage: '<Someone>',
-  args: true,
   options: someonereq,
   async execute(message, args) {
     try { action(message, message.member as GuildMember, args, 'mad'); }

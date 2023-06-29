@@ -5,8 +5,6 @@ import user from '~/options/user';
 
 export const avatar: SlashCommand = {
   description: 'Get the avatar of a user',
-  aliases: ['pfp', 'av'],
-  usage: '[User]',
   options: user,
   async execute(message, args) {
     try {

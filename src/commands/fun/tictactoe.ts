@@ -13,9 +13,6 @@ const again = new ActionRowBuilder<ButtonBuilder>()
 
 export const tictactoe: SlashCommand = {
   description: 'Play Tic Tac Toe with an opponent',
-  aliases: ['xo'],
-  args: true,
-  usage: '<Opponent User>',
   cooldown: 10,
   options: user,
   async execute(message, args) {

@@ -9,9 +9,6 @@ import { getGuildConfig } from '~/functions/prisma';
 export const clear: SlashCommand = {
   description: 'Delete multiple messages at once',
   ephemeral: true,
-  args: true,
-  aliases: ['purge'],
-  usage: '<Message Amount> [Message Author] [Message Content Has]',
   channelPermissions: ['ManageMessages'],
   botChannelPerms: ['ManageMessages'],
   options: clearOptions,

@@ -7,8 +7,6 @@ export const remove: SlashCommand = {
   description: 'Remove someone from a ticket',
   ephemeral: true,
   botPerms: ['ManageChannels'],
-  args: true,
-  usage: '<User>',
   options: user,
   async execute(message, args) {
     try {

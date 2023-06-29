@@ -5,7 +5,6 @@ import { GuildMember } from 'discord.js';
 
 export const giggle: SlashCommand = {
   description: 'hehehehehehehe',
-  usage: '[Someone]',
   options: someone,
   async execute(message, args) {
     try { action(message, message.member as GuildMember, args, 'giggle'); }

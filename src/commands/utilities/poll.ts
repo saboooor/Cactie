@@ -9,8 +9,6 @@ export const poll: SlashCommand = {
   description: 'Create a poll!',
   ephemeral: true,
   cooldown: 10,
-  args: true,
-  usage: 'create <Question> OR end <Message Id>',
   options: pollOptions,
   async execute(message, args, client) {
     try {

@@ -3,7 +3,6 @@ import { SlashCommand } from '~/types/Objects';
 
 export const server: SlashCommand = {
   description: 'Discord server info',
-  aliases: ['s', 'srv', 'guild'],
   cooldown: 10,
   async execute(message) {
     try {

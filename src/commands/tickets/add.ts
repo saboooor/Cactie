@@ -7,8 +7,6 @@ export const add: SlashCommand = {
   description: 'Add someone to a ticket',
   ephemeral: true,
   botPerms: ['ManageChannels'],
-  args: true,
-  usage: '<User>',
   options: user,
   async execute(message, args) {
     try {

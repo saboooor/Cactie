@@ -9,8 +9,6 @@ export const suggest: SlashCommand = {
   description: 'Suggest something!',
   ephemeral: true,
   cooldown: 10,
-  args: true,
-  usage: '<Suggestion>',
   options: suggestOptions,
   async execute(message, args) {
     try {

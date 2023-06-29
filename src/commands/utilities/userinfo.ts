@@ -6,8 +6,6 @@ import user from '~/options/user';
 
 export const userinfo: SlashCommand = {
   description: 'Discord member information',
-  aliases: ['user', 'u', 'profile', 'memberinfo', 'member'],
-  usage: '[User]',
   options: user,
   async execute(message, args) {
     try {

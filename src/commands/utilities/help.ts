@@ -1,15 +1,13 @@
 import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, GuildMember, CategoryChannel, StringSelectMenuInteraction, ComponentType, CommandInteraction } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
-import commands from '~/lists/commands';
+import commands from '~/lists/slash';
 import helpOptions from '~/options/help';
 import * as helpdesc from '~/misc/helpdesc';
 import { getGuildConfig } from '~/functions/prisma';
 
 export const help: SlashCommand = {
   description: 'Get help with Cactie',
-  aliases: ['commands'],
-  usage: '[Type]',
   cooldown: 10,
   options: helpOptions,
   async execute(message, args) {
@@ -26,7 +24,7 @@ export const help: SlashCommand = {
         const category = helpdesc[arg.toLowerCase() as keyof typeof helpdesc];
         const commandList = commands.filter(c => c.category == arg.toLowerCase());
         const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permissions ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
+        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);
@@ -120,7 +118,7 @@ export const help: SlashCommand = {
         const category = helpdesc[interaction.values[0].split('_')[1] as keyof typeof helpdesc];
         const commandList = commands.filter(c => c.category == interaction.values[0].split('_')[1]);
         const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}${c.usage ? ` ${c.usage}` : ''}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.aliases ? `\n*Aliases: ${c.aliases.join(', ')}*` : ''}${c.permissions ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
+        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);

@@ -7,8 +7,6 @@ import stats from '~/options/stats';
 
 export const mcstats: SlashCommand = {
   description: 'Get the status of a Minecraft server',
-  aliases: ['mcstatus'],
-  usage: '<Server IP>',
   options: stats,
   async execute(message, args) {
     try {

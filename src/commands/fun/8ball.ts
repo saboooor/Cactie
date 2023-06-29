@@ -5,10 +5,7 @@ import ball from '~/misc/8ball.json';
 
 export const eightball: SlashCommand = {
   name: '8ball',
-  aliases: ['eightball'],
   description: 'Let the 8 ball decide your fate!',
-  args: true,
-  usage: '<Question>',
   options: question,
   async execute(message, args) {
     try {

@@ -3,10 +3,7 @@ import { SlashCommand } from '~/types/Objects';
 import minecraft from '~/options/minecraft';
 
 export const serverjar: SlashCommand = {
-  aliases: ['mcjar', 'jar', 'srvjar'],
   description: 'Get info on any Purpur, Paper, Waterfall, or Velocity build',
-  args: true,
-  usage: '<Purpur/Paper/Waterfall/Velocity> [Version] [Build]',
   options: minecraft,
   async execute(message, args) {
     try {

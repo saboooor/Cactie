@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '~/functions/prisma';
 import { Command } from '~/types/Objects';
 
 export const migrate: Command = {
   description: 'migrates the db to new versions',
   async execute(message) {
-    const prisma = new PrismaClient();
     const settings = await prisma.settings.findMany();
     for (const srvconfig of settings) {
       await prisma.settings.update({

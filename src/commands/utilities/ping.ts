@@ -5,7 +5,6 @@ import pong from '~/misc/pong.json';
 
 export const ping: SlashCommand = {
   description: 'Pong!',
-  aliases: ['pong'],
   cooldown: 10,
   async execute(message, args, client) {
     try {

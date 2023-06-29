@@ -3,14 +3,8 @@ import { Command } from '~/types/Objects';
 
 export const dm: Command = {
   description: 'DM someone through Cactie bot.',
-  cooldown: 0.1,
   async execute(message, args, client) {
     try {
-      // Check if user has dev in Luminescent Discord Server
-      const luminescent = client.guilds.cache.get('811354612547190794')!;
-      const luminescentMember = luminescent.members.cache.get(message.member!.id);
-      if (luminescentMember ? !luminescentMember.roles.cache.has('839158574138523689') : true) return;
-
       // Get user and check if they exist
       const user = client.users.cache.get(args[0].replace(/\D/g, ''));
       if (!user) {
