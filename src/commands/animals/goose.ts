@@ -1,7 +1,7 @@
-import { Command } from '~/types/Objects';
+import { SlashCommand } from '~/types/Objects';
 import redditFetch from '~/functions/redditFetch';
 
-export const goose: Command = {
+export const goose: SlashCommand = {
   description: 'goos honk honk',
   async execute(message, args, client) {
     try { redditFetch(['goose', 'geese'], message, client); }
