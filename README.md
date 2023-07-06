@@ -22,7 +22,7 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - ban
 - mute
 - kick
-- warn coming soon!
+- warn
 - Has support for user right click menus!
 
 ## Reaction roles
