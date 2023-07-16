@@ -33,12 +33,14 @@ export const suggest: SlashCommand = {
         .setURL(`https://a${message.member!.user.id}a.cactie`)
         .setAuthor({ name: `${(message.member as GuildMember).displayName} (${message.member!.user.username})`, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
         .setTitle('Suggestion')
-        .setDescription(suggestion);
+        .setDescription(suggestion)
+        .setFooter({ text: 'React with 🔔 to get notified when this suggestion concludes.' });
 
       // Send suggestion message and react
       const suggestMsg = await channel.send({ embeds: [SuggestEmbed] });
       await suggestMsg.react(upvote);
       await suggestMsg.react(downvote);
+      await suggestMsg.react('🔔');
 
       // Create thread if suggestion threads are enabled
       if (srvconfig.suggestthreads) {

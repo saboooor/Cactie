@@ -37,8 +37,8 @@ export const help: SlashCommand = {
         }
         const Panel = new EmbedBuilder()
           .setColor(0x2f3136)
-          .setTitle('Need help? No problem!')
-          .setFooter({ text: `${message.guild!.name} Support`, iconURL: message.guild!.iconURL() ?? undefined });
+          .setTitle(args[2] ?? 'Need help? No problem!')
+          .setFooter({ text: args[4] ?? `${message.guild!.name} Support`, iconURL: message.guild!.iconURL() ?? undefined });
         let channel;
         if (args[1]) channel = message.guild!.channels.cache.get(args[1]) as Exclude<PermissionChannel, CategoryChannel>;
         if (!channel) channel = message.channel as Exclude<PermissionChannel, CategoryChannel>;
@@ -54,7 +54,7 @@ export const help: SlashCommand = {
         }
 
         if (srvconfig.tickets.type == 'buttons') {
-          Panel.setDescription('Click the button below to open a ticket!');
+          Panel.setDescription(args[3] ?? 'Click the button below to open a ticket!');
           const row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents([
               new ButtonBuilder()
@@ -68,7 +68,7 @@ export const help: SlashCommand = {
           return;
         }
         else if (srvconfig.tickets.type == 'reactions') {
-          Panel.setDescription('React with 🎫 to open a ticket!');
+          Panel.setDescription(args[3] ?? 'React with 🎫 to open a ticket!');
           const panelMsg = await channel.send({ embeds: [Panel] });
           await panelMsg.react('🎫');
         }

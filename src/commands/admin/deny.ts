@@ -79,6 +79,7 @@ export const deny: SlashCommand = {
       const emojis: string[] = [];
       suggestMsg.reactions.cache.forEach(reaction => {
         const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji!.name;
+        if (emoji == '🔔') return;
         emojis.push(`${emoji} **${reaction.count}**`);
       });
       if (!DenyEmbed.toJSON().fields && emojis.length) DenyEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
@@ -125,10 +126,18 @@ export const deny: SlashCommand = {
             .setLabel('Go to suggestion')
             .setStyle(ButtonStyle.Link),
         ]);
-        if (member) {
-          member.send({ content: `**Your suggestion at ${message.guild!.name} has been denied.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}`, components: [row] })
+
+        const msgContent = { content: `## The suggestion at ${message.guild!.name} has been denied.`, embeds: [DenyEmbed], components: [row] };
+
+        const followingUsers = await suggestMsg.reactions.cache.get('🔔')?.users.fetch();
+        followingUsers?.forEach(user => {
+          if (user.id == client.user!.id) return;
+          user.send(msgContent)
             .catch(err => logger.warn(err));
-        }
+        });
+
+        member?.send(msgContent)
+          .catch(err => logger.warn(err));
       }
 
       // Update message and reply with denied

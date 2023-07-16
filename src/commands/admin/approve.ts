@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, CommandInteraction, User, GuildEmoji, Message } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, CommandInteraction, User, Message } from 'discord.js';
 import { yes } from '~/misc/emoji.json';
 import getTranscript from '~/functions/messages/getTranscript';
 import getMessages from '~/functions/messages/getMessages';
@@ -75,7 +75,6 @@ export const approve: SlashCommand = {
         error(permCheck2, message, true);
         return;
       }
-      suggestMsg.reactions.removeAll();
       ApproveEmbed.setColor(0x2ECC71)
         .setTitle('Suggestion (Approved)')
         .setFooter({ text: `Approved by ${message.member?.user.username}`, iconURL: (message.member?.user as User).avatarURL() ?? undefined })
@@ -84,8 +83,8 @@ export const approve: SlashCommand = {
       // Fetch result / reaction emojis and add field if not already added
       const emojis: string[] = [];
       suggestMsg.reactions.cache.forEach(reaction => {
-        let emoji: GuildEmoji | string | undefined = client.emojis.cache.get(reaction.emoji.id!);
-        if (!emoji) emoji = reaction.emoji.name!;
+        const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji!.name;
+        if (emoji == '🔔') return;
         emojis.push(`${emoji} **${reaction.count}**`);
       });
       if (!ApproveEmbed.toJSON().fields && emojis.length) ApproveEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
@@ -105,7 +104,7 @@ export const approve: SlashCommand = {
           const messageChunk = new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg);
           messagechunks.unshift(messageChunk);
           const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
-          if (allmessages.size > 3) {
+          if (allmessages.size > 4) {
             const link = await getTranscript(allmessages);
             ApproveEmbed.addFields([{ name: 'View Discussion', value: link }]);
           }
@@ -130,11 +129,22 @@ export const approve: SlashCommand = {
             .setLabel('Go to suggestion')
             .setStyle(ButtonStyle.Link),
         ]);
-        if (member) {
-          member.send({ content: `**Your suggestion at ${message.guild!.name} has been approved.**${args.join(' ') ? `\nResponse: ${args.join(' ')}` : ''}`, components: [row] })
+
+        const msgContent = { content: `## The suggestion at ${message.guild!.name} has been approved.`, embeds: [ApproveEmbed], components: [row] };
+
+        const followingUsers = await suggestMsg.reactions.cache.get('🔔')?.users.fetch();
+        followingUsers?.forEach(user => {
+          if (user.id == client.user!.id) return;
+          user.send(msgContent)
             .catch(err => logger.warn(err));
-        }
+        });
+
+        member?.send(msgContent)
+          .catch(err => logger.warn(err));
       }
+
+      // Remove all reactions
+      suggestMsg.reactions.removeAll();
 
       // Update message and reply with approved
       await suggestMsg.edit({ embeds: [ApproveEmbed] });
