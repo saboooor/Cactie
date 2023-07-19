@@ -32,13 +32,15 @@ export default async (client: Client, member: GuildMember) => {
   // Add joined server at if exists
   if (member.joinedTimestamp) logEmbed.addFields([{ name: 'Joined Server at', value: `<t:${Math.round(member.joinedTimestamp / 1000)}>\n<t:${Math.round(member.joinedTimestamp / 1000)}:R>`, inline: true }]);
 
-  // Create list of roles and add to log if there are any
+  // Sort roles by position
   const roles = Array.from(member.roles.cache).sort(function(a, b) {
     if (b[1].rawPosition < a[1].rawPosition) return -1;
     if (b[1].rawPosition > a[1].rawPosition) return 1;
     return 0;
   });
   let roleslist = roles.map(role => { return `${role[1]}`; });
+
+  // Add roles if exists
   if (roles.length > 50) roleslist = ['Too many roles to list'];
   if (roles.length) logEmbed.addFields([{ name: 'Roles', value: roleslist.join(', ') }]);
 

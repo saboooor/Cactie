@@ -25,13 +25,27 @@ export default async (client: Client, oldMember: GuildMember, newMember: GuildMe
     .setAuthor({ name: newMember.user?.username ?? 'Unknown User', iconURL: newMember.user?.avatarURL() ?? undefined })
     .setTitle(oldMember.roles.cache.size < newMember.roles.cache.size ? `<:in:${join}> Role(s) added to member` : `<:out:${leave}> Role(s) removed from member`);
 
+  // Sort roles by position
+  const oldRoles = Array.from(oldMember.roles.cache).sort(function(a, b) {
+    if (b[1].rawPosition < a[1].rawPosition) return -1;
+    if (b[1].rawPosition > a[1].rawPosition) return 1;
+    return 0;
+  });
+
+  // Sort roles by position
+  const newRoles = Array.from(oldMember.roles.cache).sort(function(a, b) {
+    if (b[1].rawPosition < a[1].rawPosition) return -1;
+    if (b[1].rawPosition > a[1].rawPosition) return 1;
+    return 0;
+  });
+
   // Get added roles
-  const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
-  if (addedRoles.size > 0) logEmbed.addFields([{ name: 'Added Roles', value: addedRoles.map(role => role.toString()).join('\n') }]);
+  const addedRoles = newRoles.filter(role => !oldMember.roles.cache.has(role[0]));
+  if (addedRoles.length > 0) logEmbed.addFields([{ name: 'Added Roles', value: addedRoles.map(role => `${role[1]}`).join(', ') }]);
 
   // Get removed roles
-  const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
-  if (removedRoles.size > 0) logEmbed.addFields([{ name: 'Removed Roles', value: removedRoles.map(role => role.toString()).join('\n') }]);
+  const removedRoles = oldRoles.filter(role => !newMember.roles.cache.has(role[0]));
+  if (removedRoles.length > 0) logEmbed.addFields([{ name: 'Removed Roles', value: removedRoles.map(role => `${role[1]}`).join(', ') }]);
 
   // Send log
   logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
