@@ -23,11 +23,15 @@ export default async (client: Client, oldMember: GuildMember, newMember: GuildMe
   const logEmbed = new EmbedBuilder()
     .setColor(0x2f3136)
     .setAuthor({ name: newMember.user?.username ?? 'Unknown User', iconURL: newMember.user?.avatarURL() ?? undefined })
-    .setTitle(oldMember.roles.cache.size < newMember.roles.cache.size ? `<:in:${join}> Role(s) added to member` : `<:out:${leave}> Role(s) removed from member`)
-    .setFields([
-      { name: 'Before', value: oldMember.roles.cache.map(r => r.toString()).join(' ') },
-      { name: 'After', value: newMember.roles.cache.map(r => r.toString()).join(' ') },
-    ]);
+    .setTitle(oldMember.roles.cache.size < newMember.roles.cache.size ? `<:in:${join}> Role(s) added to member` : `<:out:${leave}> Role(s) removed from member`);
+
+  // Get added roles
+  const addedRoles = newMember.roles.cache.filter(role => !oldMember.roles.cache.has(role.id));
+  if (addedRoles.size > 0) logEmbed.addFields([{ name: 'Added Roles', value: addedRoles.map(role => role.toString()).join('\n') }]);
+
+  // Get removed roles
+  const removedRoles = oldMember.roles.cache.filter(role => !newMember.roles.cache.has(role.id));
+  if (removedRoles.size > 0) logEmbed.addFields([{ name: 'Removed Roles', value: removedRoles.map(role => role.toString()).join('\n') }]);
 
   // Send log
   logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));
