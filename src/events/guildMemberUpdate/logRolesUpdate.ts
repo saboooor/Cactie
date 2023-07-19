@@ -33,7 +33,7 @@ export default async (client: Client, oldMember: GuildMember, newMember: GuildMe
   });
 
   // Sort roles by position
-  const newRoles = Array.from(oldMember.roles.cache).sort(function(a, b) {
+  const newRoles = Array.from(newMember.roles.cache).sort(function(a, b) {
     if (b[1].rawPosition < a[1].rawPosition) return -1;
     if (b[1].rawPosition > a[1].rawPosition) return 1;
     return 0;
