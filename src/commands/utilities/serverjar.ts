@@ -5,7 +5,7 @@ import minecraft from '~/options/minecraft';
 export const serverjar: SlashCommand = {
   description: 'Get info on any Purpur, Paper, Waterfall, or Velocity build',
   options: minecraft,
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
       const JarEmbed = new EmbedBuilder().setColor(0x2f3136);
       args[0] = args[0].toLowerCase();
@@ -21,7 +21,7 @@ export const serverjar: SlashCommand = {
         const e = await d.json();
         // check if error
         if (e.error) {
-          error(e.error, message, true);
+          error(e.error, interaction, true);
           return;
         }
         const build = e.builds[e.builds.length - 1];
@@ -31,7 +31,7 @@ export const serverjar: SlashCommand = {
         const h = await g.json();
         // check if error
         if (h.error) {
-          error(h.error, message, true);
+          error(h.error, interaction, true);
           return;
         }
         // initial embed creation
@@ -63,7 +63,7 @@ export const serverjar: SlashCommand = {
         const e = await d.json();
         // check if error
         if (e.error) {
-          error(e.error, message, true);
+          error(e.error, interaction, true);
           return;
         }
         // fetch the latest build for mc / build versions specified or latest
@@ -72,7 +72,7 @@ export const serverjar: SlashCommand = {
         const h = await g.json();
         // check if error
         if (h.error) {
-          error(h.error, message, true);
+          error(h.error, interaction, true);
           return;
         }
         // initial embed creation
@@ -123,12 +123,12 @@ export const serverjar: SlashCommand = {
         ]);
       }
       else {
-        error('Invalid Minecraft server fork.', message, true);
+        error('Invalid Minecraft server fork.', interaction, true);
         return;
       }
       // send embed
-      message.reply({ embeds: [JarEmbed], components: [row] });
+      interaction.reply({ embeds: [JarEmbed], components: [row] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

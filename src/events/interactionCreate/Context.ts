@@ -45,7 +45,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
         { name: '**Interaction:**', value: `${command.name}` },
         { name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
       ]);
-    const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
+    const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630') as TextChannel;
     errorchannel.send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
     interaction.user.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
     logger.error(err);

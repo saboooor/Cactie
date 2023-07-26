@@ -7,15 +7,15 @@ export const eightball: SlashCommand = {
   name: '8ball',
   description: 'Let the 8 ball decide your fate!',
   options: question,
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
       // Get random index and reply with the string in the array of the index
       const i = Math.floor(Math.random() * ball.length);
       const MagicEmbed = new EmbedBuilder()
         .setTitle(`🎱 ${args.join(' ')}?`)
         .setDescription(`${ball[i]}`);
-      message.reply({ embeds: [MagicEmbed] });
+      interaction.reply({ embeds: [MagicEmbed] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

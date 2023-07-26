@@ -4,12 +4,12 @@ import closeTicket from '~/functions/tickets/closeTicket';
 import deleteTicket from '~/functions/tickets/deleteTicket';
 import reopenTicket from '~/functions/tickets/reopenTicket';
 import createVoice from '~/functions/tickets/createVoice';
-import { Client, MessageReaction, TextChannel, User } from 'discord.js';
+import { Client, MessageReaction, User } from 'discord.js';
 import { getGuildConfig } from '~/functions/prisma';
 
 export default async (client: Client, reaction: MessageReaction, user: User) => {
   // Check if author is a bot or guild is undefined
-  if (user.bot || !reaction.message.guildId) return;
+  if (user.bot || !reaction.message.inGuild()) return;
 
   // Get the guild of the reaction
   const guild = await client.guilds.fetch(reaction.message.guildId);
@@ -37,7 +37,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
   // Get current settings for the guild and check if tickets are enabled
   // Get server config
-  const srvconfig = await getGuildConfig(message.guild!.id);
+  const srvconfig = await getGuildConfig(message.guild.id);
   if (!srvconfig.tickets.enabled) return;
 
   try {
@@ -47,20 +47,20 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
       await reaction.users.remove(member.id);
     }
     else if (emojiId == '⛔') {
-      await deleteTicket(message.channel as TextChannel);
+      await deleteTicket(message.channel);
     }
     else if (emojiId == '🔓') {
-      await reopenTicket(srvconfig, member, message.channel as TextChannel);
+      await reopenTicket(srvconfig, member, message.channel);
       await reaction.users.remove(member.id);
     }
     else if (emojiId == '🔒') {
       if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-      await closeTicket(srvconfig, member, message.channel as TextChannel);
+      await closeTicket(srvconfig, member, message.channel);
       await reaction.users.remove(member.id);
     }
     else if (emojiId == '🔊') {
       if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-      await createVoice(client, srvconfig, member, message.channel as TextChannel);
+      await createVoice(client, srvconfig, member, message.channel);
       await reaction.users.remove(member.id);
     }
   }

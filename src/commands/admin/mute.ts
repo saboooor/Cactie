@@ -1,68 +1,68 @@
-import { EmbedBuilder, GuildMemberRoleManager, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish';
 import prisma, { getGuildConfig } from '~/functions/prisma';
 
-export const mute: SlashCommand = {
+export const mute: SlashCommand<'cached'> = {
   description: 'Mute someone in the server',
   ephemeral: true,
   permissions: ['ModerateMembers'],
   botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
   options: punish,
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
       // Get mute role and check if role is valid
       // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
-      const role = message.guild!.roles.cache.get(srvconfig.mutecmd);
+      const srvconfig = await getGuildConfig(interaction.guild.id);
+      const role = interaction.guild.roles.cache.get(srvconfig.mutecmd);
       if (!role && srvconfig.mutecmd != 'timeout') {
-        error('This command is disabled!', message, true);
+        error('This command is disabled!', interaction, true);
         return;
       }
 
       // Get user and check if user is valid
-      let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
+      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
+      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
       if (!member) {
-        error('Invalid member! Are they in this server?', message, true);
+        error('Invalid member! Are they in this server?', interaction, true);
         return;
       }
 
       // Get member and author and check if role is lower than member's role
-      const author = message.member;
-      const authorRoles = author!.roles as GuildMemberRoleManager;
-      const botRoles = message.guild!.members.me!.roles as GuildMemberRoleManager;
+      const author = interaction.member;
+      const authorRoles = author.roles;
+      const botRoles = interaction.guild.members.me!.roles;
       if (member.roles.highest.rawPosition > authorRoles.highest.rawPosition) {
-        error(`You can't do that! Your role is ${member.roles.highest.rawPosition - authorRoles.highest.rawPosition} positions lower than the user's role!`, message, true);
+        error(`You can't do that! Your role is ${member.roles.highest.rawPosition - authorRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
         return;
       }
       if (member.roles.highest.rawPosition > botRoles.highest.rawPosition) {
-        error(`I can't do that! My role is ${member.roles.highest.rawPosition - botRoles.highest.rawPosition} positions lower than the user's role!`, message, true);
+        error(`I can't do that! My role is ${member.roles.highest.rawPosition - botRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
         return;
       }
 
       // Check if user is muted
       if (role && member.roles.cache.has(role.id)) {
-        error('This user is already muted! Try unmuting instead.', message, true);
+        error('This user is already muted! Try unmuting instead.', interaction, true);
         return;
       }
 
       // Check if duration is set and if it's more than a year
       const time = ms(args[1] ? args[1] : 'perm');
       if (role && time > 31536000000) {
-        error('You cannot mute someone for more than 1 year!', message, true);
+        error('You cannot mute someone for more than 1 year!', interaction, true);
         return;
       }
 
       // Timeout feature can't mute someone for more than 30 days
       else if (time > 2592000000) {
-        error('You cannot mute someone for more than 30 days with the timeout feature turned on!', message, true);
+        error('You cannot mute someone for more than 30 days with the timeout feature turned on!', interaction, true);
         return;
       }
       if (isNaN(time) && srvconfig.mutecmd == 'timeout') {
-        error('You cannot mute someone forever with the timeout feature turned on!', message, true);
+        error('You cannot mute someone forever with the timeout feature turned on!', interaction, true);
         return;
       }
 
@@ -77,14 +77,14 @@ export const mute: SlashCommand = {
 
       // Actually mute the dude (add role)
       if (role) await member.roles.add(role);
-      else await member.timeout(time, `Muted by ${author!.user.username} for ${args.slice(1).join(' ')}`);
+      else await member.timeout(time, `Muted by ${author.user.username} for ${args.slice(1).join(' ')}`);
 
       // Set member data for unmute time if set
       if (!isNaN(time)) {
         await prisma.memberdata.upsert({
           where: {
             memberId_guildId: {
-              guildId: message.guild!.id,
+              guildId: interaction.guild.id,
               memberId: member.id,
             },
           },
@@ -93,7 +93,7 @@ export const mute: SlashCommand = {
           },
           create: {
             memberId: member.id,
-            guildId: message.guild!.id,
+            guildId: interaction.guild.id,
             mutedUntil: `${Date.now() + time}`,
           },
         });
@@ -101,24 +101,24 @@ export const mute: SlashCommand = {
 
       // Send mute message to target if silent is false
       if (!args[3]) {
-        await member.send({ content: `**You've been muted in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+        await member.send({ content: `**You've been muted in ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
-            message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Muted user: ${member.user.username} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Muted user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
-      await message.reply({ embeds: [MuteEmbed] });
+      await interaction.reply({ embeds: [MuteEmbed] });
 
       // Check if log channel exists and send message
-      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
+      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        MuteEmbed.setTitle(`${author!.user.username} ${MuteEmbed.toJSON().title}`);
+        MuteEmbed.setTitle(`${author.user.username} ${MuteEmbed.toJSON().title}`);
         logchannel.send({ embeds: [MuteEmbed] });
       }
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

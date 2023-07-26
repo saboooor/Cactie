@@ -1,9 +1,9 @@
 import { Client } from 'discord.js';
 
-export default async (client: Client) => {
+export default async (client: Client<true>) => {
   const cactieguild = client.guilds.cache.get('811354612547190794');
   if (!cactieguild) return;
-  const role = cactieguild.roles.cache.find(r => r.name == `${client.user!.username} User`);
+  const role = cactieguild.roles.cache.find(r => r.name == `${client.user.username} User`);
   if (!role) return;
   const owners: string[] = [];
   client.guilds.cache.forEach(async guild => {

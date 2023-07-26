@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, TextChannel, TextBasedChannel, PublicThreadChannel, CommandInteraction, User, Message } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, Message, AnyThreadChannel, TextChannel } from 'discord.js';
 import { no } from '~/misc/emoji.json';
 import getTranscript from '~/functions/messages/getTranscript';
 import getMessages from '~/functions/messages/getMessages';
@@ -7,91 +7,96 @@ import { SlashCommand } from '~/types/Objects';
 import suggestresponse from '~/options/suggestresponse';
 import { getGuildConfig } from '~/functions/prisma';
 
-export const deny: SlashCommand = {
+export const deny: SlashCommand<'cached'> = {
   description: 'Deny a suggestion.',
   ephemeral: true,
   permissions: ['Administrator'],
   options: suggestresponse,
-  async execute(message, args, client) {
+  async execute(interaction, args, client) {
     try {
       // Get the messageId
       const messageId = args.shift()!;
 
-      // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
-
       // Fetch the message with the messageId
-      let suggestChannel: TextBasedChannel = message.channel!;
       let suggestMsg;
-      if (suggestChannel instanceof TextChannel) {
-        const permCheck = checkPerms(['ReadMessageHistory', 'ManageMessages'], message.guild!.members.me!, suggestChannel);
+      let suggestChannel = interaction.channel;
+      if (suggestChannel) {
+        const permCheck = checkPerms(['ReadMessageHistory'], interaction.guild.members.me!, suggestChannel);
         if (permCheck) {
-          error(permCheck, message, true);
+          error(permCheck, interaction, true);
           return;
         }
         suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
       }
-      else if (suggestChannel.isThread() && suggestChannel.parent instanceof TextChannel) {
-        suggestChannel = suggestChannel.parent;
-        const permCheck = checkPerms(['ReadMessageHistory', 'ManageMessages'], message.guild!.members.me!, suggestChannel);
-        if (permCheck) {
-          error(permCheck, message, true);
-          return;
-        }
-        suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
-      }
+
+      // Get server config
+      const srvconfig = await getGuildConfig(interaction.guild.id);
 
       // If the suggestmsg is null, try checking for the message in the suggestionchannel if set
       if (!suggestMsg) {
-        suggestChannel = message.guild!.channels.cache.get(srvconfig.suggestionchannel) as TextChannel ?? suggestChannel;
-        const permCheck = checkPerms(['ReadMessageHistory', 'ManageMessages'], message.guild!.members.me!, suggestChannel);
+        suggestChannel = interaction.guild.channels.cache.get(srvconfig.suggestionchannel) as TextChannel | null;
+        if (suggestChannel) {
+          const permCheck = checkPerms(['ReadMessageHistory'], interaction.guild.members.me!, suggestChannel);
+          if (permCheck) {
+            error(permCheck, interaction, true);
+            return;
+          }
+          suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
+        }
+      }
+
+      // If the suggestmsg is still null, try checking for the message in the thread's channel
+      if (!suggestMsg && interaction.channel?.isThread() && interaction.channel.parent && interaction.channel.parent.isTextBased()) {
+        suggestChannel = interaction.channel.parent;
+        const permCheck = checkPerms(['ReadMessageHistory'], interaction.guild.members.me!, interaction.channel.parent);
         if (permCheck) {
-          error(permCheck, message, true);
+          error(permCheck, interaction, true);
           return;
         }
-        suggestMsg = await suggestChannel.messages.fetch(messageId).catch(() => { return null; });
+        suggestMsg = await interaction.channel.parent.messages.fetch(messageId).catch(() => { return null; });
       }
 
       // If the suggestmsg is still null, throw an error
-      if (!suggestMsg) {
-        error('Could not find the message.\nTry doing the command in the same channel as the suggestion.', message, true);
+      if (!suggestChannel || !suggestMsg) {
+        error(`Could not find the ${suggestChannel ? 'message' : 'channel'}.\nTry doing the command in the same channel as the suggestion.`, interaction, true);
         return;
       }
 
       // Check if message was sent by the bot
-      if (suggestMsg.author.id != client.user!.id) return;
+      if (suggestMsg.author.id != client.user.id) return;
 
       // Get embed and check if embed is a suggestion
-      const DenyEmbed = new EmbedBuilder(suggestMsg.embeds[0].toJSON());
-      if (!DenyEmbed || !DenyEmbed.toJSON().author || !DenyEmbed.toJSON().title?.startsWith('Suggestion')) return;
+      const ResponseEmbed = new EmbedBuilder(suggestMsg.embeds[0].toJSON());
+      if (!ResponseEmbed || !ResponseEmbed.toJSON().author || !ResponseEmbed.toJSON().title?.startsWith('Suggestion')) return;
 
-      // Delete command message
-      if (!(message instanceof CommandInteraction)) await message.delete().catch(err => logger.error(err));
-
-      // Remove all reactions and set color to red and denied title
-      suggestMsg.reactions.removeAll();
-      DenyEmbed.setColor(0xE74C3C)
+      // Set color to red and denied title
+      const permCheck = checkPerms(['ManageMessages'], interaction.guild.members.me!, suggestChannel);
+      if (permCheck) {
+        error(permCheck, interaction, true);
+        return;
+      }
+      ResponseEmbed.setColor(0xE74C3C)
         .setTitle('Suggestion (Denied)')
-        .setFooter({ text: `Denied by ${message.member!.user.username}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined })
+        .setFooter({ text: `Denied by ${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined })
         .setTimestamp();
 
       // Fetch result / reaction emojis and add field if not already added
       const emojis: string[] = [];
       suggestMsg.reactions.cache.forEach(reaction => {
-        const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji!.name;
+        const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
         if (emoji == '🔔') return;
         emojis.push(`${emoji} **${reaction.count}**`);
       });
-      if (!DenyEmbed.toJSON().fields && emojis.length) DenyEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
+      if (!ResponseEmbed.toJSON().fields && emojis.length) ResponseEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
 
       // Get suggestion thread
-      const thread = message.guild!.channels.cache.get(DenyEmbed.toJSON().url!.split('a')[2]) as PublicThreadChannel<false>;
+      const thread = interaction.guild.channels.cache.get(suggestMsg.id) as AnyThreadChannel | undefined;
 
       // Delete thread if exists with transcript
       if (thread) {
-        const permCheck3 = checkPerms(['ManageThreads'], message.guild!.members.me!, suggestChannel as TextChannel);
-        if (permCheck3) {
-          error(permCheck3, message, true);
+        const permCheck2 = checkPerms(['ManageThreads'], interaction.guild.members.me!, suggestChannel);
+        if (permCheck2) {
+          error(permCheck2, interaction, true);
           return;
         }
         const messagechunks = await getMessages<true>(thread, 'infinite').catch(err => {
@@ -99,11 +104,12 @@ export const deny: SlashCommand = {
           return null;
         });
         if (messagechunks) {
-          messagechunks.unshift(new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg));
+          const messageChunk = new Collection<string, Message<true>>().set(`${suggestMsg.id}`, suggestMsg);
+          messagechunks.unshift(messageChunk);
           const allmessages = new Collection<string, Message<true>>().concat(...messagechunks);
-          if (allmessages.size > 3) {
+          if (allmessages.size > 4) {
             const link = await getTranscript(allmessages);
-            DenyEmbed.addFields([{ name: 'View Discussion', value: link }]);
+            ResponseEmbed.addFields([{ name: 'View Discussion', value: link }]);
           }
         }
         thread.delete();
@@ -112,14 +118,14 @@ export const deny: SlashCommand = {
       // Check if there's a message and put in new field
       if (args.join(' ')) {
         // check if there's a response already, if so, edit the field and don't add a new field
-        const field = DenyEmbed.toJSON().fields?.find(f => f.name == 'Response') ?? null;
+        const field = ResponseEmbed.toJSON().fields?.find(f => f.name == 'Response') ?? null;
         if (field) field.value = args.join(' ');
-        else DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
+        else ResponseEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
       }
 
-      // Send deny dm to op
-      if (DenyEmbed.toJSON().url) {
-        const member = message.guild!.members.cache.get(DenyEmbed.toJSON().url!.split('a')[1]);
+      // Send response dm to op
+      if (ResponseEmbed.toJSON().url) {
+        const member = interaction.guild.members.cache.get(ResponseEmbed.toJSON().url!.split('a')[1]);
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents([
           new ButtonBuilder()
             .setURL(suggestMsg.url)
@@ -127,11 +133,11 @@ export const deny: SlashCommand = {
             .setStyle(ButtonStyle.Link),
         ]);
 
-        const msgContent = { content: `## The suggestion at ${message.guild!.name} has been denied.`, embeds: [DenyEmbed], components: [row] };
+        const msgContent = { content: `## The suggestion at ${interaction.guild.name} has been responded to.`, embeds: [ResponseEmbed], components: [row] };
 
         const followingUsers = await suggestMsg.reactions.cache.get('🔔')?.users.fetch();
         followingUsers?.forEach(user => {
-          if (user.id == client.user!.id) return;
+          if (user.id == client.user.id) return;
           user.send(msgContent)
             .catch(err => logger.warn(err));
         });
@@ -140,24 +146,27 @@ export const deny: SlashCommand = {
           .catch(err => logger.warn(err));
       }
 
+      // Remove all reactions
+      suggestMsg.reactions.removeAll();
+
       // Update message and reply with denied
-      await suggestMsg.edit({ embeds: [DenyEmbed] });
-      if (message instanceof CommandInteraction) message.reply({ content: `<:no:${no}> **Suggestion Denied!**` }).catch(() => { return null; });
+      await suggestMsg.edit({ embeds: [ResponseEmbed] });
+      interaction.reply({ content: `<:no:${no}> **Suggestion Denied!**` }).catch(() => { return null; });
 
       // Check if log channel exists and send message
-      const logChannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
+      const logChannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logChannel) {
-        DenyEmbed.setTitle(`${message.member!.user.username} denied a suggestion`).setFields([]);
-        if (args.join(' ')) DenyEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
+        ResponseEmbed.setTitle(`${interaction.user.username} responded to a suggestion`).setFields([]);
+        if (args.join(' ')) ResponseEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
         const msglink = new ActionRowBuilder<ButtonBuilder>()
           .addComponents([new ButtonBuilder()
             .setURL(suggestMsg.url)
             .setLabel('Go to Message')
             .setStyle(ButtonStyle.Link),
           ]);
-        logChannel.send({ embeds: [DenyEmbed], components: [msglink] });
+        logChannel.send({ embeds: [ResponseEmbed], components: [msglink] });
       }
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

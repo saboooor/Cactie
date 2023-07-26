@@ -8,7 +8,7 @@ import stats from '~/options/stats';
 export const mcstats: SlashCommand = {
   description: 'Get the status of a Minecraft server',
   options: stats,
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
       const StatsEmbed = new EmbedBuilder()
         .setColor(0x2f3136)
@@ -16,7 +16,7 @@ export const mcstats: SlashCommand = {
       const json = await fetch(`https://api.mcsrvstat.us/2/${args[0]}`);
       const pong = await json.json();
       if (!pong.online) {
-        error('Invalid Server IP / Server is offline', message, true);
+        error('Invalid Server IP / Server is offline', interaction, true);
         return;
       }
       if (pong.hostname) StatsEmbed.setTitle(pong.hostname);
@@ -48,8 +48,8 @@ export const mcstats: SlashCommand = {
           .setEmoji({ id: refresh })
           .setStyle(ButtonStyle.Secondary),
       ]);
-      message.reply({ embeds: [StatsEmbed], components: [row] });
+      interaction.reply({ embeds: [StatsEmbed], components: [row] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

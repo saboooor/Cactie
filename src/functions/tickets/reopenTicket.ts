@@ -1,12 +1,13 @@
 import prisma, { guildConfig } from '~/functions/prisma';
-import { EmbedBuilder, GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
+import { EmbedBuilder, GuildMember, GuildTextBasedChannel } from 'discord.js';
 
-export default async function reopenTicket(srvconfig: guildConfig, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function reopenTicket(srvconfig: guildConfig, member: GuildMember, channel: GuildTextBasedChannel) {
   // Check if tickets are disabled
   if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if channel is thread and set the channel to the parent channel
-  if (channel.isThread()) channel = channel.parent as TextChannel;
+  if (channel.isThread() && channel.parent?.isTextBased()) channel = channel.parent;
+  if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
   const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
@@ -23,7 +24,9 @@ export default async function reopenTicket(srvconfig: guildConfig, member: Guild
   if (channel.name.startsWith('closed')) throw new Error('Failed to open ticket, please try again in 10 minutes');
 
   // Add permissions for each user in the ticket
-  ticketDataUsers.forEach((userid: string) => (channel as TextChannel).permissionOverwrites.edit(userid, { ViewChannel: true }));
+  for (const userid of ticketDataUsers) {
+    channel.permissionOverwrites.edit(userid, { ViewChannel: true });
+  }
 
   // Reply with ticket open message
   const OpenEmbed = new EmbedBuilder()

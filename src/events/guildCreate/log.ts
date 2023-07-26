@@ -1,4 +1,4 @@
-import { Client, EmbedBuilder, Guild, TextChannel } from 'discord.js';
+import { BaseGuildTextChannel, Client, EmbedBuilder, Guild } from 'discord.js';
 
 export default async (client: Client, guild: Guild) => {
   logger.info(`${client.user?.username} has been added to ${guild.name}`);
@@ -16,6 +16,6 @@ export default async (client: Client, guild: Guild) => {
     ]);
   if (guild.vanityURLCode) AddEmbed.addFields([{ name: 'Vanity URL', value: `https://discord.gg/${guild.vanityURLCode}\n(${guild.vanityURLUses} uses)`, inline: true }]);
   if (guild.splash) AddEmbed.setImage(guild.discoverySplashURL());
-  const logchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('865682839616618506')! as TextChannel;
+  const logchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('865682839616618506') as BaseGuildTextChannel;
   logchannel.send({ embeds: [AddEmbed] });
 };

@@ -1,16 +1,15 @@
-import { TextChannel } from 'discord.js';
 import deleteTicket from '~/functions/tickets/deleteTicket';
 import { SlashCommand } from '~/types/Objects';
 
-export const deleteticket: SlashCommand = {
+export const deleteticket: SlashCommand<'cached'> = {
   name: 'delete',
   description: 'Delete a ticket',
   ephemeral: true,
   permissions: ['Administrator'],
   botPerms: ['ManageChannels'],
-  async execute(message) {
+  async execute(interaction) {
     // Delete the ticket
-    try { await deleteTicket(message.channel as TextChannel); }
-    catch (err) { error(err, message, true); }
+    try { await deleteTicket(interaction.channel!); }
+    catch (err) { error(err, interaction, true); }
   },
 };

@@ -1,10 +1,10 @@
 import { getGuildConfig } from '~/functions/prisma';
-import { Client, EmbedBuilder, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, GuildChannel, TextChannel } from 'discord.js';
 import { no } from '~/misc/emoji.json';
 
-export default async (client: Client, channel: TextChannel) => {
+export default async (client: Client, channel: GuildChannel) => {
   // Get server config
-  const srvconfig = await getGuildConfig(channel.guild!.id);
+  const srvconfig = await getGuildConfig(channel.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.channeldelete && !srvconfig.auditlogs.logs.channel && !srvconfig.auditlogs.logs.all) return;
@@ -28,7 +28,7 @@ export default async (client: Client, channel: TextChannel) => {
 
   // Add category and topic if applicable
   if (channel.parent) logEmbed.addFields([{ name: 'Category', value: `${channel.parent}`, inline: true }]);
-  if (channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
+  if (channel instanceof TextChannel && channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
 
   // Send log
   logchannel.send({ embeds: [logEmbed] }).catch(err => logger.error(err));

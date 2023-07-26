@@ -1,7 +1,7 @@
 import prisma, { guildConfig } from '~/functions/prisma';
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField, Client, GuildMember, TextChannel, CategoryChannel } from 'discord.js';
 
-export default async function createTicket(client: Client, srvconfig: guildConfig, member: GuildMember, description?: string) {
+export default async function createTicket(client: Client<true>, srvconfig: guildConfig, member: GuildMember, description?: string) {
   // Check if tickets are disabled
   if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
@@ -10,8 +10,8 @@ export default async function createTicket(client: Client, srvconfig: guildConfi
   if (ticketData) {
     try {
       const channel = await member.guild.channels.fetch(ticketData.channelId) as TextChannel;
-      if (channel!.name.startsWith('ticket')) {
-        await channel!.send({ content: `❗ **${member} Ticket already exists!**` });
+      if (channel.name.startsWith('ticket')) {
+        await channel.send({ content: `❗ **${member} Ticket already exists!**` });
         return `**You've already created a ticket at ${channel}!**`;
       }
     }
@@ -39,7 +39,7 @@ export default async function createTicket(client: Client, srvconfig: guildConfi
         deny: [PermissionsBitField.Flags.ViewChannel],
       },
       {
-        id: client.user!.id,
+        id: client.user.id,
         allow: [PermissionsBitField.Flags.ViewChannel],
       },
       {

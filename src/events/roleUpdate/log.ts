@@ -4,7 +4,7 @@ import { refresh } from '~/misc/emoji.json';
 
 export default async (client: Client, oldRole: Role, newRole: Role) => {
   // Get server config
-  const srvconfig = await getGuildConfig(oldRole.guild!.id);
+  const srvconfig = await getGuildConfig(oldRole.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.roleupdate && !srvconfig.auditlogs.logs.role && !srvconfig.auditlogs.logs.all) return;

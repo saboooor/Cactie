@@ -13,6 +13,6 @@ export default async (client: Client, message: Message<false>) => {
   }
   let author = `${message.author}`;
   if (message.author.id == client.user?.id) author = `${client.user} > <@${message.channel.recipientId}>`;
-  const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('849453797809455125')! as TextChannel;
+  const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('849453797809455125') as TextChannel;
   channel.send({ content: `**${author}** > ${message.content}`, files, embeds: message.embeds, components: message.components });
 };

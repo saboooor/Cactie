@@ -10,7 +10,7 @@ const again = new ActionRowBuilder<ButtonBuilder>()
     .setStyle(ButtonStyle.Secondary),
   ]);
 
-export const xo_again: Button = {
+export const xo_again: Button<'cached'> = {
   ephemeral: true,
   execute: async (interaction) => {
     const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON())!;
@@ -21,8 +21,8 @@ export const xo_again: Button = {
       interaction.reply({ content: 'You\'re not in this game!\nCreate a new one with the /tictactoe command' });
       return;
     }
-    const xuser = interaction.guild!.members.cache.get(xuserId);
-    const ouser = interaction.guild!.members.cache.get(ouserId);
+    const xuser = interaction.guild.members.cache.get(xuserId);
+    const ouser = interaction.guild.members.cache.get(ouserId);
     if (!xuser || !ouser) {
       interaction.reply({ content: 'Invalid member! Are they in this server?' });
       return;

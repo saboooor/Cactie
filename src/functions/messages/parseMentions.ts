@@ -1,4 +1,4 @@
-import { Guild, MessageMentions, TextChannel } from 'discord.js';
+import { Guild, GuildChannel, MessageMentions } from 'discord.js';
 
 // const EmojisPattern = /(<a?)?(:\w+:)(\d{17,19})>/g;
 const longTimePattern = /<t:(\d{1,13})(:t)?(:R)?>/g;
@@ -19,13 +19,13 @@ export default async function parseMentions(text: string, guild: Guild) {
   // Parse all channel mentions
   const channelMatches = [...text.matchAll(new RegExp(MessageMentions.ChannelsPattern, 'g'))];
   for (const match of channelMatches) {
-    const channel = await guild.client.channels.fetch(match[1]).catch(() => { return null; });
+    const channel = await guild.client.channels.fetch(match[1]).catch(() => { return null; }) as GuildChannel | null;
     if (!channel) {
       logger.warn(`Channel Id ${match[1]} wasn't found!`);
       parsed = parsed.replace(match[0], '**#Unknown Channel**');
       continue;
     }
-    parsed = parsed.replace(match[0], `**#${(channel as TextChannel).name}**`);
+    parsed = parsed.replace(match[0], `**#${channel.name}**`);
   }
 
   // Parse all role mentions

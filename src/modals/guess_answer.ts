@@ -2,7 +2,7 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextInputCo
 import { yes, no, srch } from '~/misc/emoji.json';
 import { Modal } from '~/types/Objects';
 
-export const guess_answer: Modal = {
+export const guess_answer: Modal<'cached'> = {
   execute: async (interaction) => {
     try {
       // Get the field and answer from the modal
@@ -11,9 +11,9 @@ export const guess_answer: Modal = {
 
       // Get the opponent from the embed description
       const embedJSON = interaction.message!.embeds[0].toJSON();
-      const host = interaction.guild!.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
+      const host = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
       if (!host) return;
-      const guesser = interaction.guild!.members.cache.get(embedJSON.description!.split('\n')[3].replace(/\D/g, ''));
+      const guesser = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[3].replace(/\D/g, ''));
 
       // Create buttons and embed for the host to answer the question
       const row = new ActionRowBuilder<ButtonBuilder>()

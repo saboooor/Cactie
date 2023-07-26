@@ -1,13 +1,12 @@
 import { SlashCommand } from '~/types/Objects';
 import action from '~/functions/action';
 import someonereq from '~/options/someonereq';
-import { GuildMember } from 'discord.js';
 
-export const lick: SlashCommand = {
+export const lick: SlashCommand<'cached'> = {
   description: 'Lick someone!',
   options: someonereq,
-  async execute(message, args) {
-    try { action(message, message.member as GuildMember, args, 'lick'); }
-    catch (err) { error(err, message); }
+  async execute(interaction, args) {
+    try { action(interaction, interaction.member, args, 'lick'); }
+    catch (err) { error(err, interaction); }
   },
 };

@@ -8,7 +8,7 @@ export default async (client: Client, oldMessage: Message<true>, newMessage: Mes
   if ((newMessage.author && newMessage.author.bot) || oldMessage.content == newMessage.content) return;
 
   // Get server config
-  const srvconfig = await getGuildConfig(oldMessage.guild!.id);
+  const srvconfig = await getGuildConfig(oldMessage.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.messageupdate && !srvconfig.auditlogs.logs.message && !srvconfig.auditlogs.logs.all) return;

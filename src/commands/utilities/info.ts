@@ -6,7 +6,7 @@ import packageJSON from '../../../package.json';
 export const info: SlashCommand = {
   description: 'Get various information about Cactie',
   cooldown: 10,
-  async execute(message, args, client) {
+  async execute(interaction, args, client) {
     try {
       const dependencies = {
         ...packageJSON.dependencies,
@@ -14,7 +14,7 @@ export const info: SlashCommand = {
       };
       const InfEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(client.user!.username)
+        .setTitle(client.user.username)
         .setDescription(`\`\`\`${packageJSON.description}\`\`\``)
         .setFields([
           { name: 'Bot Version', value: `\`\`\`${packageJSON.version}\`\`\``, inline: true },
@@ -45,8 +45,8 @@ export const info: SlashCommand = {
             .setLabel('Also check out Nether Depths!')
             .setStyle(ButtonStyle.Link),
         ]);
-      await message.reply({ embeds: [InfEmbed], components: [row1, row2] });
+      await interaction.reply({ embeds: [InfEmbed], components: [row1, row2] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

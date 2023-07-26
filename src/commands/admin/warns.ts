@@ -4,18 +4,18 @@ import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
 import prisma from '~/functions/prisma';
 
-export const warns: SlashCommand = {
+export const warns: SlashCommand<'cached'> = {
   description: 'View warns of a user in the server',
   permissions: ['ModerateMembers'],
   cooldown: 5,
   options: user,
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
       // Get user and check if user is valid
-      let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
+      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
+      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
       if (!member) {
-        error('Invalid member! Are they in this server?', message, true);
+        error('Invalid member! Are they in this server?', interaction, true);
         return;
       }
 
@@ -23,7 +23,7 @@ export const warns: SlashCommand = {
       const memberdata = await prisma.memberdata.findUnique({
         where: {
           memberId_guildId: {
-            guildId: message.guild!.id,
+            guildId: interaction.guild.id,
             memberId: member.id,
           },
         },
@@ -31,7 +31,7 @@ export const warns: SlashCommand = {
 
       // Check if member has any warns
       if (!memberdata || !memberdata.warns) {
-        error('This user has no warns!', message, true);
+        error('This user has no warns!', interaction, true);
         return;
       }
 
@@ -52,8 +52,8 @@ export const warns: SlashCommand = {
         })));
 
       // Reply to command
-      await message.reply({ embeds: [WarnEmbed] });
+      await interaction.reply({ embeds: [WarnEmbed] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

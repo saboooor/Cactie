@@ -1,25 +1,27 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType, GuildMember } from 'discord.js';
 import { refresh } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
-import user from '~/options/user';
+import userOption from '~/options/user';
 
 export const avatar: SlashCommand = {
   description: 'Get the avatar of a user',
-  options: user,
-  async execute(message, args) {
+  options: userOption,
+  async execute(interaction, args) {
     try {
-      let member: GuildMember = message.member as GuildMember;
-      if (args.length) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
-      if (!member) {
-        error('Invalid member! Are they in this server?', message, true);
-        return;
+      let member = interaction.member;
+      if (!(member instanceof GuildMember)) member = null;
+      let user = interaction.user;
+      if (args.length && interaction.guild) {
+        member = await interaction.guild.members.fetch(args[0].replace(/\D/g, '')) ?? member;
+        user = member.user ?? user;
       }
-      member.user = await member.user.fetch();
-      const memberpfp = member.avatarURL({ size: 1024 });
-      const userpfp = member.user.avatarURL({ size: 1024 });
+      user = await user.fetch();
+
+      const memberpfp = member?.avatarURL({ size: 1024 });
+      const userpfp = user.avatarURL({ size: 1024 });
       const UsrEmbed = new EmbedBuilder()
-        .setColor(member.user.accentColor ?? null)
-        .setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: memberpfp ? userpfp ?? undefined : undefined })
+        .setColor(user.accentColor ?? null)
+        .setAuthor({ name: `${member?.displayName && member.displayName != user.username ? `${member.displayName} (${member.user.username})` : user.username}`, iconURL: memberpfp ? userpfp ?? undefined : undefined })
         .setImage(memberpfp ? memberpfp : userpfp);
       const row = [];
       if (memberpfp) {
@@ -33,28 +35,27 @@ export const avatar: SlashCommand = {
           ]),
         );
       }
-      const avatarmsg = await message.reply({ embeds: [UsrEmbed], components: row });
+      const avatarmsg = await interaction.reply({ embeds: [UsrEmbed], components: row });
 
       if (memberpfp) {
         const filter = (i: ButtonInteraction) => i.customId == 'avatar_user';
         const collector = avatarmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 60000 });
 
-        collector.on('collect', async interaction => {
+        collector.on('collect', async btnint => {
           // Check if the button is the avatar button
-          await interaction.deferUpdate();
+          await btnint.deferUpdate();
 
           // Toggle profile pic
-          if (UsrEmbed.toJSON().image?.url == memberpfp) interaction.editReply({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: memberpfp })] });
-          else if (UsrEmbed.toJSON().image?.url == userpfp) interaction.editReply({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: `${member.displayName != member.user.username ? `${member.displayName} (${member.user.username})` : member.user.username}`, iconURL: userpfp })] });
+          if (UsrEmbed.toJSON().image?.url == memberpfp) btnint.editReply({ embeds: [UsrEmbed.setImage(userpfp).setAuthor({ name: UsrEmbed.toJSON().author!.name, iconURL: memberpfp })] });
+          else if (UsrEmbed.toJSON().image?.url == userpfp) btnint.editReply({ embeds: [UsrEmbed.setImage(memberpfp).setAuthor({ name: UsrEmbed.toJSON().author!.name, iconURL: userpfp })] });
         });
 
         // When the collector stops, remove all buttons from it
         collector.on('end', () => {
-          if (message instanceof CommandInteraction) message.editReply({ components: [] }).catch(err => logger.warn(err));
-          else avatarmsg.edit({ components: [] }).catch(err => logger.warn(err));
+          interaction.editReply({ components: [] }).catch(err => logger.warn(err));
         });
       }
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

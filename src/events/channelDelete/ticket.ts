@@ -1,7 +1,7 @@
 import prisma, { getGuildConfig } from '~/functions/prisma';
-import { Client, EmbedBuilder, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
+import { Client, EmbedBuilder, GuildChannel, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
 
-export default async (client: Client, channel: TextChannel) => {
+export default async (client: Client, channel: GuildChannel) => {
   // Check if ticket is an actual ticket
   // Get server config
   const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
@@ -9,7 +9,7 @@ export default async (client: Client, channel: TextChannel) => {
   const ticketDataUsers = ticketData.users.split(',');
 
   // Check if ticket log channel is set in settings
-  const srvconfig = await getGuildConfig(channel.guild!.id);
+  const srvconfig = await getGuildConfig(channel.guild.id);
   const logchannel = channel.guild.channels.cache.get(srvconfig.tickets.logchannel) as TextChannel | undefined;
   if (logchannel) {
     // Get list of users for embed

@@ -8,13 +8,13 @@ export default async (client: Client, message: Message<true>) => {
   if (message.webhookId || message.author.bot || message.channel.isDMBased()) return;
 
   // Get server config
-  const srvconfig = await getGuildConfig(message.guild!.id);
+  const srvconfig = await getGuildConfig(message.guild.id);
 
   // Check if message shortener is set and is smaller than the amount of lines in the message
   if (!srvconfig.msgshortener || message.content.split('\n').length < srvconfig.msgshortener || !checkPerms(['Administrator'], message.member!)) return;
 
   // Check if the bot has permission to manage messages
-  const permCheck = checkPerms(['ManageMessages'], message.guild!.members.me!, message.channel);
+  const permCheck = checkPerms(['ManageMessages'], message.guild.members.me!, message.channel);
   if (permCheck) return logger.warn(permCheck);
 
   // Delete the message and move the message into bin.birdflop.com
@@ -27,5 +27,5 @@ export default async (client: Client, message: Message<true>) => {
     .setDescription(link)
     .setFooter({ text: 'Next time please use a paste service for long messages' });
   message.channel.send({ embeds: [shortEmbed] });
-  logger.info(`Shortened message from ${message.author.username} in #${message.channel.name} at ${message.guild!.name}`);
+  logger.info(`Shortened message from ${message.author.username} in #${message.channel.name} at ${message.guild.name}`);
 };

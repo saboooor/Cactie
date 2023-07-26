@@ -1,13 +1,12 @@
 import { SlashCommand } from '~/types/Objects';
 import action from '~/functions/action';
 import someone from '~/options/someone';
-import { GuildMember } from 'discord.js';
 
-export const giggle: SlashCommand = {
+export const giggle: SlashCommand<'cached'> = {
   description: 'hehehehehehehe',
   options: someone,
-  async execute(message, args) {
-    try { action(message, message.member as GuildMember, args, 'giggle'); }
-    catch (err) { error(err, message); }
+  async execute(interaction, args) {
+    try { action(interaction, interaction.member, args, 'giggle'); }
+    catch (err) { error(err, interaction); }
   },
 };

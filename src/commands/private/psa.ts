@@ -11,7 +11,7 @@ export const psa: Command = {
     // Dm all server owners
     client.guilds.cache.forEach(async guild => {
       const owner = await guild.fetchOwner();
-      owner.send({ content: `${owner}\n\n${args.join(' ')}\n\n*You've been sent this message because ${client.user!.username} is in ${guild.name} and you're the owner of the server*` }).catch(err => logger.error(err));
+      owner.send({ content: `${owner}\n\n${args.join(' ')}\n\n*You've been sent this message because ${client.user.username} is in ${guild.name} and you're the owner of the server*` }).catch(err => logger.error(err));
     });
 
     // Send confirmation

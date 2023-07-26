@@ -1,9 +1,9 @@
 import prisma, { getGuildConfig } from '~/functions/prisma';
-import { EmbedBuilder, GuildMemberRoleManager, User, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { Modal } from '~/types/Objects';
 
-export const ban: Modal = {
+export const ban: Modal<'cached'> = {
   deferReply: true,
   ephemeral: true,
   execute: async (interaction, client, memberId) => {
@@ -21,11 +21,11 @@ export const ban: Modal = {
 
       // Get member and author and check if role is lower than member's role
       const author = interaction.member;
-      if (!author || !(author.roles instanceof GuildMemberRoleManager)) return;
-      const authorTag = author.user instanceof User ? author.user.username : `${author.user.username}#${author.user.discriminator}`;
+      if (!author || !author.roles) return;
+      const authorTag = author.user.username;
 
-      const authorRoles = author!.roles as GuildMemberRoleManager;
-      const botRoles = interaction.guild!.members.me!.roles as GuildMemberRoleManager;
+      const authorRoles = author.roles;
+      const botRoles = interaction.guild.members.me!.roles;
       if (member.roles.highest.rawPosition > authorRoles.highest.rawPosition) {
         error(`You can't do that! Your role is ${member.roles.highest.rawPosition - authorRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
         return;

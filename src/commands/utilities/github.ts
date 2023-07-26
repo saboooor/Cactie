@@ -15,7 +15,7 @@ export const github: SlashCommand = {
     const results = searchResult.items.map((item: { full_name: string }) => { return { name: item.full_name, value: item.full_name }; });
     interaction.respond(results);
   },
-  async execute(message, args) {
+  async execute(interaction, args) {
     try {
       // fetch the github repo
       const repoFetch = await fetch(`https://api.github.com/repos/${args[0]}`, { headers: { 'Accept': 'application/json' } });
@@ -60,8 +60,8 @@ export const github: SlashCommand = {
         ]);
 
       // send the embed
-      await message.reply({ embeds: [repoEmbed], components: [row] });
+      await interaction.reply({ embeds: [repoEmbed], components: [row] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

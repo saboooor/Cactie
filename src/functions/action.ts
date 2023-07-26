@@ -1,9 +1,9 @@
-import { CommandInteraction, EmbedBuilder, GuildMember, Message } from 'discord.js';
+import { EmbedBuilder, Message, GuildMember, ChatInputCommandInteraction } from 'discord.js';
 import actions from '~/misc/actions.json';
 
 let current: number;
 
-export default async function action(message: Message | CommandInteraction, author: GuildMember, args: string[], type: keyof typeof actions) {
+export default async function action(message: Message | ChatInputCommandInteraction<'cached'>, author: GuildMember, args: string[], type: keyof typeof actions) {
   // Check if arg is a user and set it
   let user;
   if (args.length) {
