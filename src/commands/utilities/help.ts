@@ -1,7 +1,7 @@
 import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType, BaseGuildTextChannel } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
-import commands from '~/lists/slash';
+import commands from '~/lists/cmds';
 import helpOptions from '~/options/help';
 import * as helpdesc from '~/misc/helpdesc';
 import { getGuildConfig } from '~/functions/prisma';

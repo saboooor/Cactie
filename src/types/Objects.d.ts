@@ -7,6 +7,7 @@ export class Command {
 }
 
 export class SlashCommand<Cached extends CacheType = CacheType> extends Command {
+  name?: string | string[];
   ephemeral?: boolean;
   noDefer?: boolean;
   category?: string;

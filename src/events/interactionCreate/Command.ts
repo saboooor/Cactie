@@ -1,7 +1,7 @@
 import prisma, { getGuildConfig } from '~/functions/prisma';
 import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, TextChannel } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
-import slashcommands, { cooldowns } from '~/lists/slash';
+import slashcommands, { cooldowns } from '~/lists/cmds';
 import cooldownMessages from '~/misc/cooldown.json';
 
 export default async (client: Client, interaction: CommandInteraction) => {

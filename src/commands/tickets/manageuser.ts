@@ -2,8 +2,9 @@ import manageUsers from '~/functions/tickets/manageUsers';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
 
-export const remove: SlashCommand<'cached'> = {
-  description: 'Remove someone from a ticket',
+export const manageuser: SlashCommand<'cached'> = {
+  name: ['add', 'remove'],
+  description: '{NAME} someone in a ticket',
   ephemeral: true,
   botPerms: ['ManageChannels'],
   options: user,
@@ -16,8 +17,8 @@ export const remove: SlashCommand<'cached'> = {
         return;
       }
 
-      // Remove user from ticket
-      const msg = await manageUsers(interaction.member, interaction.channel!, member, false);
+      // Add user to ticket
+      const msg = await manageUsers(interaction.member, interaction.channel!, member, interaction.commandName == 'add');
 
       // Send message
       await interaction.reply(msg);

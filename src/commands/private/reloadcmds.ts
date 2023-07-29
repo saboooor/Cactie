@@ -1,5 +1,5 @@
 import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionsBitField } from 'discord.js';
-import slashcommands from '~/lists/slash';
+import slashcommands from '~/lists/cmds';
 import contextcommands from '~/lists/context';
 import { Command } from '~/types/Objects';
 
@@ -14,7 +14,7 @@ export const reloadcmds: Command = {
       for (const obj of slashcommands) {
         const command = obj[1];
         const cmd = new SlashCommandBuilder()
-          .setName(command.name!)
+          .setName(command.name as string)
           .setDescription(command.description)
           .setDMPermission(command.category != 'admin' && command.category != 'tickets');
         if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);

@@ -1,6 +1,6 @@
 import { Client, Message } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
-import commands from '~/lists/private';
+import commands from '~/lists/cmdsprivate';
 
 export default async (client: Client, message: Message<true>) => {
   // If the bot can't read message history or send messages, don't execute a command

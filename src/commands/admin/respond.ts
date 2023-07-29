@@ -1,5 +1,4 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, Message, AnyThreadChannel, TextChannel } from 'discord.js';
-import { yes } from '~/misc/emoji.json';
 import getTranscript from '~/functions/messages/getTranscript';
 import getMessages from '~/functions/messages/getMessages';
 import checkPerms from '~/functions/checkPerms';
@@ -7,8 +6,9 @@ import suggestresponse from '~/options/suggestresponse';
 import { SlashCommand } from '~/types/Objects';
 import { getGuildConfig } from '~/functions/prisma';
 
-export const approve: SlashCommand<'cached'> = {
-  description: 'Approve a suggestion.',
+export const respond: SlashCommand<'cached'> = {
+  name: ['approve', 'deny'],
+  description: '{NAME} a suggestion.',
   ephemeral: true,
   permission: 'Administrator',
   options: suggestresponse,
@@ -69,15 +69,17 @@ export const approve: SlashCommand<'cached'> = {
       const ResponseEmbed = new EmbedBuilder(suggestMsg.embeds[0].toJSON());
       if (!ResponseEmbed || !ResponseEmbed.toJSON().author || !ResponseEmbed.toJSON().title?.startsWith('Suggestion')) return;
 
-      // Set color to green and approved title
+      // Set color and title
       const permCheck = checkPerms(['ManageMessages'], interaction.guild.members.me!, suggestChannel);
       if (permCheck) {
         error(permCheck, interaction, true);
         return;
       }
-      ResponseEmbed.setColor(0x2ECC71)
-        .setTitle('Suggestion (Approved)')
-        .setFooter({ text: `Approved by ${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined })
+
+      const approvedORdenied = interaction.commandName == 'approve' ? 'Approved' : 'Denied';
+      ResponseEmbed.setColor(interaction.commandName == 'approve' ? 0x2ECC71 : 0xE74C3C)
+        .setTitle(`Suggestion (${approvedORdenied})`)
+        .setFooter({ text: `${approvedORdenied} by ${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined })
         .setTimestamp();
 
       // Fetch result / reaction emojis and add field if not already added
@@ -150,9 +152,9 @@ export const approve: SlashCommand<'cached'> = {
       // Remove all reactions
       suggestMsg.reactions.removeAll();
 
-      // Update message and reply with approved
+      // Update message and reply
       await suggestMsg.edit({ embeds: [ResponseEmbed] });
-      interaction.reply({ content: `<:yes:${yes}> **Suggestion Approved!**` }).catch(() => { return null; });
+      interaction.reply({ content: `**Suggestion ${approvedORdenied}!**` }).catch(() => { return null; });
 
       // Check if log channel exists and send message
       const logChannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
