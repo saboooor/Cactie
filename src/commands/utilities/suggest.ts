@@ -10,7 +10,7 @@ export const suggest: SlashCommand<'cached'> = {
   ephemeral: true,
   cooldown: 10,
   options: suggestOptions,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Get server config
       const srvconfig = await getGuildConfig(interaction.guild.id);
@@ -27,7 +27,7 @@ export const suggest: SlashCommand<'cached'> = {
       }
 
       // Create suggestion embed
-      const suggestion = args.join(' ');
+      const suggestion = interaction.options.getString('suggestion', true);
       const SuggestEmbed = new EmbedBuilder()
         .setColor(0x2f3136)
         .setURL(`https://a${interaction.user.id}a.cactie`)

@@ -23,7 +23,7 @@ export const spark: SlashCommand = {
   description: 'Analyze Spark profiles to help optimize your server.',
   cooldown: 10,
   options: url,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       let id;
 
@@ -31,12 +31,11 @@ export const spark: SlashCommand = {
         .setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
         .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined });
 
-      for (const arg of args) {
-        if ((arg.startsWith('https://timin') || arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url='))) {
-          AnalysisEmbed.addFields([{ name: '⚠️ Timings Report', value: 'This is a Timings report. Use /timings instead for this type of report.' }]);
-        }
-        if (arg.startsWith('https://spark.lucko.me/')) id = arg.replace('https://spark.lucko.me/', '');
+      const urlArg = interaction.options.getString('url', true);
+      if ((urlArg.startsWith('https://timin') || urlArg.startsWith('https://www.spigotmc.org/go/timings?url=') || urlArg.startsWith('https://spigotmc.org/go/timings?url='))) {
+        AnalysisEmbed.addFields([{ name: '⚠️ Timings Report', value: 'This is a Timings report. Use /timings instead for this type of report.' }]);
       }
+      if (urlArg.startsWith('https://spark.lucko.me/')) id = urlArg.replace('https://spark.lucko.me/', '');
 
       if (!id) {
         AnalysisEmbed.addFields([{ name: '❌ Invalid Spark Profile URL', value: 'Please provide a valid Spark Profile link.' }]);

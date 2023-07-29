@@ -12,10 +12,10 @@ export const deny: SlashCommand<'cached'> = {
   ephemeral: true,
   permissions: ['Administrator'],
   options: suggestresponse,
-  async execute(interaction, args, client) {
+  async execute(interaction, client) {
     try {
       // Get the messageId
-      const messageId = args.shift()!;
+      const messageId = interaction.options.getString('messageid', true);
 
       // Fetch the message with the messageId
       let suggestMsg;
@@ -116,11 +116,12 @@ export const deny: SlashCommand<'cached'> = {
       }
 
       // Check if there's a message and put in new field
-      if (args.join(' ')) {
+      const response = interaction.options.getString('response');
+      if (response) {
         // check if there's a response already, if so, edit the field and don't add a new field
         const field = ResponseEmbed.toJSON().fields?.find(f => f.name == 'Response') ?? null;
-        if (field) field.value = args.join(' ');
-        else ResponseEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
+        if (field) field.value = response;
+        else ResponseEmbed.addFields([{ name: 'Response', value: response }]);
       }
 
       // Send response dm to op
@@ -157,7 +158,7 @@ export const deny: SlashCommand<'cached'> = {
       const logChannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logChannel) {
         ResponseEmbed.setTitle(`${interaction.user.username} responded to a suggestion`).setFields([]);
-        if (args.join(' ')) ResponseEmbed.addFields([{ name: 'Response', value: args.join(' ') }]);
+        if (response) ResponseEmbed.addFields([{ name: 'Response', value: response }]);
         const msglink = new ActionRowBuilder<ButtonBuilder>()
           .addComponents([new ButtonBuilder()
             .setURL(suggestMsg.url)

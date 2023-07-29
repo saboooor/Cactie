@@ -3,7 +3,7 @@ import redditFetch from '~/functions/redditFetch';
 
 export const monkey: SlashCommand = {
   description: '*monke noises*',
-  async execute(message, args, client) {
+  async execute(message, client) {
     try { redditFetch(['monkeys'], message, client); }
     catch (err) { error(err, message); }
   },

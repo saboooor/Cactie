@@ -6,15 +6,11 @@ import userOption from '~/options/user';
 export const avatar: SlashCommand = {
   description: 'Get the avatar of a user',
   options: userOption,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
-      let member = interaction.member;
+      let member = interaction.options.getMember('user') ?? interaction.member;
       if (!(member instanceof GuildMember)) member = null;
-      let user = interaction.user;
-      if (args.length && interaction.guild) {
-        member = await interaction.guild.members.fetch(args[0].replace(/\D/g, '')) ?? member;
-        user = member.user ?? user;
-      }
+      let user = interaction.options.getUser('user') ?? interaction.user;
       user = await user.fetch();
 
       const memberpfp = member?.avatarURL({ size: 1024 });

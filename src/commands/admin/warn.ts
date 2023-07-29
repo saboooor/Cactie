@@ -10,16 +10,15 @@ export const warn: SlashCommand<'cached'> = {
   permissions: ['ModerateMembers'],
   cooldown: 5,
   options: punish,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Get server config
       const srvconfig = await getGuildConfig(interaction.guild.id);
 
       // Get user and check if user is valid
-      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', interaction, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
@@ -37,7 +36,8 @@ export const warn: SlashCommand<'cached'> = {
       }
 
       // Check if duration is set and if it's more than a year
-      const time = ms(args[1] ? args[1] : 'perm');
+      const timeArg = interaction.options.getString('time');
+      const time = ms(timeArg ?? 'perm');
       if (time > 31536000000) {
         error('You cannot warn someone for more than 1 year!', interaction, true);
         return;
@@ -46,10 +46,10 @@ export const warn: SlashCommand<'cached'> = {
       // Create embed and check if duration / reason are set and do stuff
       const WarnEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Warned ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Warned ${member.user.username} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.`);
 
       // Add reason if specified
-      const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
+      const reason = interaction.options.getString('reason');
       if (reason) WarnEmbed.addFields([{ name: 'Reason', value: reason }]);
 
       // Make warns array
@@ -99,14 +99,14 @@ export const warn: SlashCommand<'cached'> = {
       });
 
       // Send warn message to target if silent is false
-      if (!args[3]) {
-        await member.send({ content: `**You've been warned in ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+      if (!interaction.options.getBoolean('silent')) {
+        await member.send({ content: `**You've been warned in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Warned user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Warned user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
       await interaction.reply({ embeds: [WarnEmbed] });

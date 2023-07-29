@@ -9,13 +9,11 @@ export const warns: SlashCommand<'cached'> = {
   permissions: ['ModerateMembers'],
   cooldown: 5,
   options: user,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
-      // Get user and check if user is valid
-      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', interaction, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 

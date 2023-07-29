@@ -11,13 +11,11 @@ export const ban: SlashCommand<'cached'> = {
   botPerms: ['BanMembers'],
   cooldown: 5,
   options: punish,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
-      // Get user and check if user is valid
-      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', interaction, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
@@ -35,7 +33,8 @@ export const ban: SlashCommand<'cached'> = {
       }
 
       // Get amount of time to ban, if not specified, then permanent
-      const time = ms(args[1] ? args[1] : 'perm');
+      const timeArg = interaction.options.getString('time');
+      const time = ms(timeArg ?? 'perm');
       if (time > 31536000000) {
         error('You cannot ban someone for more than 1 year!', interaction, true);
         return;
@@ -44,21 +43,21 @@ export const ban: SlashCommand<'cached'> = {
       // Create embed and check if bqn has a reason / time period
       const BanEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Banned ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Banned ${member.user.username} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.`);
 
       // Add reason if specified
-      const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
+      const reason = interaction.options.getString('reason');
       if (reason) BanEmbed.addFields([{ name: 'Reason', value: reason }]);
 
       // Send ban interaction to target if silent is false
-      if (!args[3]) {
-        await member.send({ content: `**You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+      if (!interaction.options.getBoolean('silent')) {
+        await member.send({ content: `**You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Banned user: ${member.user.username} from ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Banned user: ${member.user.username} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Set unban timestamp to member data for auto-unban
       if (!isNaN(time)) {
@@ -81,7 +80,7 @@ export const ban: SlashCommand<'cached'> = {
       }
 
       // Actually ban the dude
-      await member.ban({ reason: `${author.user.username} banned user: ${member.user.username} from ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
+      await member.ban({ reason: `${author.user.username} banned user: ${member.user.username} from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}` });
 
       // Reply with response
       await interaction.reply({ embeds: [BanEmbed] });

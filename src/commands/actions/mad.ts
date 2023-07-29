@@ -5,8 +5,8 @@ import someonereq from '~/options/someonereq';
 export const mad: SlashCommand<'cached'> = {
   description: 'Stay mad',
   options: someonereq,
-  async execute(interaction, args) {
-    try { action(interaction, interaction.member, args, 'mad'); }
+  async execute(interaction) {
+    try { action(interaction, interaction.options.getString('someone'), 'mad'); }
     catch (err) { error(err, interaction); }
   },
 };

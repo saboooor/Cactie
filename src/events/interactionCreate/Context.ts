@@ -5,7 +5,7 @@ import contextcommands from '~/lists/context';
 export default async (client: Client, interaction: ContextMenuCommandInteraction) => {
   // Check if interaction is context menu
   if (!interaction.isContextMenuCommand()) return;
-  if (!interaction.guild) return;
+  if (!interaction.inCachedGuild()) return;
 
   // Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
   const command = contextcommands.get(interaction.commandName);

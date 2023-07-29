@@ -11,7 +11,7 @@ export const mute: SlashCommand<'cached'> = {
   botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
   options: punish,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Get mute role and check if role is valid
       // Get server config
@@ -23,10 +23,9 @@ export const mute: SlashCommand<'cached'> = {
       }
 
       // Get user and check if user is valid
-      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', interaction, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
@@ -50,7 +49,8 @@ export const mute: SlashCommand<'cached'> = {
       }
 
       // Check if duration is set and if it's more than a year
-      const time = ms(args[1] ? args[1] : 'perm');
+      const timeArg = interaction.options.getString('time');
+      const time = ms(timeArg ?? 'perm');
       if (role && time > 31536000000) {
         error('You cannot mute someone for more than 1 year!', interaction, true);
         return;
@@ -69,15 +69,15 @@ export const mute: SlashCommand<'cached'> = {
       // Create embed and check if duration / reason are set and do stuff
       const MuteEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Muted ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Muted ${member.user.username} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.`);
 
       // Add reason if specified
-      const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
+      const reason = interaction.options.getString('reason');
       if (reason) MuteEmbed.addFields([{ name: 'Reason', value: reason }]);
 
       // Actually mute the dude (add role)
       if (role) await member.roles.add(role);
-      else await member.timeout(time, `Muted by ${author.user.username} for ${args.slice(1).join(' ')}`);
+      else await member.timeout(time, `Muted by ${author.user.username} for ${reason}`);
 
       // Set member data for unmute time if set
       if (!isNaN(time)) {
@@ -100,14 +100,14 @@ export const mute: SlashCommand<'cached'> = {
       }
 
       // Send mute message to target if silent is false
-      if (!args[3]) {
-        await member.send({ content: `**You've been muted in ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+      if (!interaction.options.getBoolean('silent')) {
+        await member.send({ content: `**You've been muted in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
           });
       }
-      logger.info(`Muted user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Muted user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
       await interaction.reply({ embeds: [MuteEmbed] });

@@ -10,7 +10,7 @@ export const unmute: SlashCommand<'cached'> = {
   botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
   options: user,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Get server config and check if mutecmd is enabled
       const srvconfig = await getGuildConfig(interaction.guild.id);
@@ -21,10 +21,9 @@ export const unmute: SlashCommand<'cached'> = {
       }
 
       // Get user and check if user is valid
-      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', interaction, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 

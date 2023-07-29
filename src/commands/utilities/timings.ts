@@ -23,7 +23,7 @@ export const timings: SlashCommand = {
   description: 'Analyze Paper timings to help optimize your server.',
   cooldown: 10,
   options: url,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       let id;
 
@@ -31,15 +31,14 @@ export const timings: SlashCommand = {
         .setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
         .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined });
 
-      for (const arg of args) {
-        if (arg.startsWith('https://spark.lucko.me')) {
-          AnalysisEmbed.addFields([{ name: '⚠️ Spark Profile', value: 'This is a Spark Profile. Use /profile instead for this type of report.' }]);
-        }
-        if (arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url=')) {
-          AnalysisEmbed.addFields([{ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' }]);
-        }
-        if (arg.startsWith('https://timin') && arg.includes('?id=')) id = arg.replace('/d=', '/?id=').split('#')[0].split('\n')[0].split('?id=')[1];
+      const urlArg = interaction.options.getString('url', true);
+      if (urlArg.startsWith('https://spark.lucko.me')) {
+        AnalysisEmbed.addFields([{ name: '⚠️ Spark Profile', value: 'This is a Spark Profile. Use /profile instead for this type of report.' }]);
       }
+      if (urlArg.startsWith('https://www.spigotmc.org/go/timings?url=') || urlArg.startsWith('https://spigotmc.org/go/timings?url=')) {
+        AnalysisEmbed.addFields([{ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' }]);
+      }
+      if (urlArg.startsWith('https://timin') && urlArg.includes('?id=')) id = urlArg.replace('/d=', '/?id=').split('#')[0].split('\n')[0].split('?id=')[1];
 
       if (!id) {
         AnalysisEmbed.addFields([{ name: '❌ Invalid Timings URL', value: 'Please provide a valid timings link.' }]);

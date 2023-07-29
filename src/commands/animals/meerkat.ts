@@ -3,7 +3,7 @@ import redditFetch from '~/functions/redditFetch';
 
 export const meerkat: SlashCommand = {
   description: 'yes meerkat',
-  async execute(message, args, client) {
+  async execute(message, client) {
     try { redditFetch(['meerkats'], message, client); }
     catch (err) { error(err, message); }
   },

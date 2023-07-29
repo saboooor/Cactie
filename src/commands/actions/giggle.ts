@@ -5,8 +5,8 @@ import someone from '~/options/someone';
 export const giggle: SlashCommand<'cached'> = {
   description: 'hehehehehehehe',
   options: someone,
-  async execute(interaction, args) {
-    try { action(interaction, interaction.member, args, 'giggle'); }
+  async execute(interaction) {
+    try { action(interaction, interaction.options.getString('someone'), 'giggle'); }
     catch (err) { error(err, interaction); }
   },
 };

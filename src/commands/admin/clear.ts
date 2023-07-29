@@ -12,20 +12,17 @@ export const clear: SlashCommand<'cached'> = {
   channelPermissions: ['ManageMessages'],
   botChannelPerms: ['ManageMessages'],
   options: clearOptions,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Check if arg is a number and is more than 100
-      if (isNaN(Number(args[0]))) {
-        error('That is not a number!', interaction, true);
-        return;
-      }
-      if (Number(args[0]) > 1000) {
+      const scope = interaction.options.getNumber('scope', true);
+      if (scope > 1000) {
         error('You can only clear 1000 messages at once!', interaction, true);
         return;
       }
 
       // Fetch the messages and bulk delete them 100 by 100
-      const messagechunks = await getMessages<true>(interaction.channel!, Number(args[0])).catch(err => {
+      const messagechunks = await getMessages<true>(interaction.channel!, scope).catch(err => {
         logger.error(err);
         return;
       });
@@ -34,10 +31,12 @@ export const clear: SlashCommand<'cached'> = {
         return;
       }
 
+      const user = interaction.options.getUser('user');
+      const text = interaction.options.getString('text');
       for (const i in messagechunks) {
         messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
-        if (args[1]) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == args[1]);
-        if (args[2]) messagechunks[i] = messagechunks[i].filter(msg => msg.content.includes(args[2]));
+        if (user) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == user.id);
+        if (text) messagechunks[i] = messagechunks[i].filter(msg => msg.content.includes(text));
         if (!messagechunks[i].size) return;
         await interaction.channel?.bulkDelete(messagechunks[i]).catch((err: Error) => error(err, interaction, true));
       }

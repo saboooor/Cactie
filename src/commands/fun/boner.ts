@@ -5,26 +5,27 @@ import someone from '~/options/someone';
 export const boner: SlashCommand = {
   description: 'See your boner expand!',
   options: someone,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Check if arg is a user and set it
       let user;
-      if (args.length) {
-        user = interaction.guild?.members.cache.get(args[0].replace(/\D/g, ''));
-        if (user) args[0] = user.user.username;
+      let target = interaction.options.getString('someone');
+      if (target) {
+        user = interaction.guild?.members.cache.get(target.replace(/\D/g, ''));
+        if (user) target = user.displayName;
       }
 
       // Create initial embed
       const ppEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`${args[0] ? args.join(' ') : interaction.user.username}'s pp size`);
+        .setTitle(`${target ?? interaction.user.username}'s pp size`);
 
       // Randomly pick between hard or soft
       const hard = Math.round(Math.random());
 
       // Chance of getting a SIKE u have no pp
       if (Math.round(Math.random() * 10) == 5) {
-        ppEmbed.setDescription('SIKE').setFooter({ text: `${args[0] ? args.join(' ') : interaction.user.username} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}` });
+        ppEmbed.setDescription('SIKE').setFooter({ text: `${target ?? interaction.user.username} has ${hard == 1 ? 'no pp' : 'erectile dysfunction'}` });
         interaction.reply({ embeds: [ppEmbed] });
         return;
       }

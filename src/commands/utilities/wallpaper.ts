@@ -3,7 +3,7 @@ import redditFetch from '~/functions/redditFetch';
 
 export const wallpaper: SlashCommand = {
   description: 'Get a fresh new wallpaper!',
-  async execute(interaction, args, client) {
+  async execute(interaction, client) {
     try { redditFetch(['wallpaper', 'wallpapers', 'wallpaperdump'], interaction, client); }
     catch (err) { error(err, interaction); }
   },

@@ -10,13 +10,12 @@ export const kick: SlashCommand<'cached'> = {
   botPerms: ['KickMembers'],
   cooldown: 5,
   options: punish,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Get user and check if user is valid
-      let member = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await interaction.guild.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', interaction, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
@@ -39,11 +38,12 @@ export const kick: SlashCommand<'cached'> = {
         .setTitle(`Kicked ${member.user.username}.`);
 
       // Add reason if specified
-      if (args[1]) KickEmbed.addFields([{ name: 'Reason', value: args.slice(1).join(' ') }]);
+      const reason = interaction.options.getString('reason');
+      if (reason) KickEmbed.addFields([{ name: 'Reason', value: reason }]);
 
       // Send kick message to target if silent is false
-      if (!args[2]) {
-        await member.send({ content: `**You've been kicked from ${interaction.guild.name}.${args[1] ? ` Reason: ${args.slice(1).join(' ')}` : ''}**` })
+      if (!interaction.options.getBoolean('silent')) {
+        await member.send({ content: `**You've been kicked from ${interaction.guild.name}.${reason ? ` Reason: ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });
@@ -54,7 +54,7 @@ export const kick: SlashCommand<'cached'> = {
       await interaction.reply({ embeds: [KickEmbed] });
 
       // Actually kick the dude
-      await member.kick(`${author.user.username} kicked: ${member.user.username} from ${interaction.guild.name} for ${args.slice(1).join(' ')}`);
+      await member.kick(`${author.user.username} kicked: ${member.user.username} from ${interaction.guild.name} for ${reason}`);
       logger.info(`Kicked user: ${member.user.username} from ${interaction.guild.name}`);
 
       // Check if log channel exists and send message

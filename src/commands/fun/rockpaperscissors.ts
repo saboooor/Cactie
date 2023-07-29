@@ -6,8 +6,8 @@ export const rockpaperscissors: SlashCommand<'cached'> = {
   description: 'Play Rock Paper Scissors with an opponent',
   cooldown: 10,
   options: userOption,
-  async execute(interaction, args) {
-    const user = (await interaction.guild.members.fetch(args[0].replace(/\D/g, ''))).user;
+  async execute(interaction) {
+    const user = interaction.options.getMember('user')?.user;
     if (!user) {
       error('Invalid member! Are they in this server?', interaction, true);
       return;

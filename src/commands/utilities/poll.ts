@@ -10,7 +10,7 @@ export const poll: SlashCommand<'cached'> = {
   ephemeral: true,
   cooldown: 10,
   options: pollOptions,
-  async execute(interaction, args, client) {
+  async execute(interaction, client) {
     try {
       // Get server config
       const srvconfig = await getGuildConfig(interaction.guild.id);
@@ -27,15 +27,18 @@ export const poll: SlashCommand<'cached'> = {
         return;
       }
 
-      const cmd = args.shift();
-      const msg = args.join(' ');
+      const cmd = interaction.options.getSubcommand(true);
+
       if (cmd == 'create') {
+        // Get question
+        const question = interaction.options.getString('question', true);
+
         // Create poll embed
         const pollEmbed = new EmbedBuilder()
           .setColor(0x2f3136)
           .setTitle('Poll')
           .setAuthor({ name: `${interaction.member.displayName} (${interaction.user.username})`, iconURL: interaction.user.avatarURL() ?? undefined, url: `https://a${interaction.user.id}a.cactie` })
-          .setDescription(msg);
+          .setDescription(question);
 
         // Send poll message and react
         const pollMsg = await channel.send({ embeds: [pollEmbed] });
@@ -46,6 +49,9 @@ export const poll: SlashCommand<'cached'> = {
         interaction.reply({ content: `**Poll Created at ${channel}!**` });
       }
       else if (cmd == 'end') {
+        // Get message id
+        const msg = interaction.options.getString('messageid', true);
+
         // Check permissions in that channel
         const permCheck2 = checkPerms(['ReadMessageHistory', 'ManageMessages'], interaction.guild.members.me!, channel);
         if (permCheck2) {

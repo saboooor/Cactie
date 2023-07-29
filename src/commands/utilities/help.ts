@@ -1,4 +1,4 @@
-import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType, GuildTextBasedChannel } from 'discord.js';
+import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType, BaseGuildTextChannel } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import commands from '~/lists/slash';
@@ -10,24 +10,23 @@ export const help: SlashCommand = {
   description: 'Get help with Cactie',
   cooldown: 10,
   options: helpOptions,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       let HelpEmbed = new EmbedBuilder()
         .setColor('Random')
         .setTitle('**HELP**');
-      let arg = args[0];
-      if (arg) arg = arg.toLowerCase();
+      const subcmd = interaction.options.getSubcommand();
 
-      if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
-        const category = helpdesc[arg.toLowerCase() as keyof typeof helpdesc];
-        const commandList = commands.filter(c => c.category == arg.toLowerCase());
+      if (subcmd == 'admin' || subcmd == 'fun' || subcmd == 'animals' || subcmd == 'tickets' || subcmd == 'utilities' || subcmd == 'actions') {
+        const category = helpdesc[subcmd as keyof typeof helpdesc];
+        const commandList = commands.filter(c => c.category == subcmd);
         const array: string[] = [];
         commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);
       }
-      else if (arg == 'supportpanel') {
+      else if (subcmd == 'supportpanel') {
         if (!interaction.inCachedGuild()) {
           error('This command can only be used in servers!', interaction, true);
           return;
@@ -39,13 +38,16 @@ export const help: SlashCommand = {
           error(permCheck, interaction, true);
           return;
         }
+        let channel = interaction.options.getChannel('channel');
+        if (!channel || !(channel instanceof BaseGuildTextChannel)) channel = interaction.channel!;
+        const title = interaction.options.getString('title');
+        const description = interaction.options.getString('description');
+        const footer = interaction.options.getString('footer');
+
         const Panel = new EmbedBuilder()
           .setColor(0x2f3136)
-          .setTitle(args[2] ?? 'Need help? No problem!')
-          .setFooter({ text: args[4] ?? `${interaction.guild.name} Support`, iconURL: interaction.guild.iconURL() ?? undefined });
-        let channel;
-        if (args[1]) channel = interaction.guild.channels.cache.get(args[1]) as GuildTextBasedChannel;
-        if (!channel) channel = interaction.channel as GuildTextBasedChannel;
+          .setTitle(title ?? 'Need help? No problem!')
+          .setFooter({ text: footer ?? `${interaction.guild.name} Support`, iconURL: interaction.guild.iconURL() ?? undefined });
         const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], interaction.guild.members.me!, channel);
         if (permCheck2) {
           error(permCheck2, interaction, true);
@@ -58,7 +60,7 @@ export const help: SlashCommand = {
         }
 
         if (srvconfig.tickets.type == 'buttons') {
-          Panel.setDescription(args[3] ?? 'Click the button below to open a ticket!');
+          Panel.setDescription(description ?? 'Click the button below to open a ticket!');
           const row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents([
               new ButtonBuilder()
@@ -72,7 +74,7 @@ export const help: SlashCommand = {
           return;
         }
         else if (srvconfig.tickets.type == 'reactions') {
-          Panel.setDescription(args[3] ?? 'React with 🎫 to open a ticket!');
+          Panel.setDescription(description ?? 'React with 🎫 to open a ticket!');
           const panelMsg = await channel.send({ embeds: [Panel] });
           await panelMsg.react('🎫');
         }
@@ -89,7 +91,7 @@ export const help: SlashCommand = {
             .setLabel(helpdesc[category as keyof typeof helpdesc].name)
             .setDescription(helpdesc[category as keyof typeof helpdesc].description)
             .setValue(`help_${category}`)
-            .setDefault(arg == category),
+            .setDefault(subcmd == category),
         );
       });
       const row = new ActionRowBuilder<StringSelectMenuBuilder>()

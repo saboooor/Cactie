@@ -7,17 +7,17 @@ export const add: SlashCommand<'cached'> = {
   ephemeral: true,
   botPerms: ['ManageChannels'],
   options: user,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
       // Check if user is valid
-      const targetMember = interaction.guild.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!targetMember) {
+      const member = interaction.options.getMember('user');
+      if (!member) {
         error('Invalid member! Are they in this server?', interaction, true);
         return;
       }
 
       // Add user to ticket
-      const msg = await manageUsers(interaction.member, interaction.channel!, targetMember, true);
+      const msg = await manageUsers(interaction.member, interaction.channel!, member, true);
 
       // Send message
       await interaction.reply(msg);

@@ -6,7 +6,7 @@ import pong from '~/misc/pong.json';
 export const ping: SlashCommand = {
   description: 'Pong!',
   cooldown: 10,
-  async execute(interaction, args, client) {
+  async execute(interaction, client) {
     try {
       // Create embed with ping information and add ping again button
       const PingEmbed = new EmbedBuilder()

@@ -1,5 +1,5 @@
 import prisma, { getGuildConfig } from '~/functions/prisma';
-import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, TextChannel, ApplicationCommandOptionType } from 'discord.js';
+import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, TextChannel } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
 import slashcommands, { cooldowns } from '~/lists/slash';
 import cooldownMessages from '~/misc/cooldown.json';
@@ -16,19 +16,6 @@ export default async (client: Client, interaction: CommandInteraction) => {
   // Get server config
   const srvconfig = interaction.inCachedGuild() ? await getGuildConfig(interaction.guild.id) : null;
   if (srvconfig?.disabledcmds.includes(command.name!)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
-
-  // Make args variable from interaction options for compatibility with dash command code
-  const args: string[] = [];
-
-  interaction.options.data.map(option => {
-    if (option.type == ApplicationCommandOptionType.Subcommand) {
-      args.push(option.name);
-      option.options?.forEach(suboption => {
-        args.push(`${suboption.value}`);
-      });
-    }
-    else { args.push(`${option.value}`); }
-  });
 
   // Get cooldowns and check if cooldown exists, if not, create it
   if (!cooldowns.has(command.name!)) cooldowns.set(command.name!, new Collection());
@@ -84,8 +71,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
   }
 
   // Log
-  const cmdlog = args.join ? `${command.name} ${args.join(' ')}` : command.name;
-  logger.info(`${interaction.user.username} issued slash command: /${cmdlog}, in ${interaction.guild?.name ?? 'DMs'}`.replace(' ,', ','));
+  logger.info(`${interaction.user.username} issued slash command: /${interaction.commandName} ${interaction.options.getSubcommand(false) ?? ''} in ${interaction.guild?.name ?? 'DMs'}`.replace(' ,', ','));
 
   // Check if user has the permissions necessary in the channel to use the command
   if (command.channelPermissions) {
@@ -121,7 +107,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
       await interaction.deferReply({ ephemeral: command.ephemeral });
       interaction.reply = interaction.editReply as typeof interaction.reply;
     }
-    command.execute(interaction, args, client);
+    command.execute(interaction, client);
   }
   catch (err) {
     const interactionFailed = new EmbedBuilder()

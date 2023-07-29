@@ -5,8 +5,8 @@ import someonereq from '~/options/someonereq';
 export const lick: SlashCommand<'cached'> = {
   description: 'Lick someone!',
   options: someonereq,
-  async execute(interaction, args) {
-    try { action(interaction, interaction.member, args, 'lick'); }
+  async execute(interaction) {
+    try { action(interaction, interaction.options.getString('someone'), 'lick'); }
     catch (err) { error(err, interaction); }
   },
 };

@@ -7,15 +7,11 @@ import userOption from '~/options/user';
 export const userinfo: SlashCommand = {
   description: 'Get a user\'s information',
   options: userOption,
-  async execute(interaction, args) {
+  async execute(interaction) {
     try {
-      let member = interaction.member;
+      let member = interaction.options.getMember('user') ?? interaction.member;
       if (!(member instanceof GuildMember)) member = null;
-      let user = interaction.user;
-      if (args.length && interaction.guild) {
-        member = await interaction.guild.members.fetch(args[0].replace(/\D/g, '')) ?? member;
-        user = member.user ?? user;
-      }
+      let user = interaction.options.getUser('user') ?? interaction.user;
       user = await user.fetch();
 
       const roles = member ? Array.from(member.roles.cache).sort(function(a, b) {

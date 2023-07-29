@@ -8,7 +8,7 @@ export const buttons: SlashCommand = {
   voteOnly: true,
   cooldown: 10,
   options: text,
-  async execute(interaction, args) {
+  async execute(interaction) {
     const btns: {
       '11'?: ButtonBuilder;
       '12'?: ButtonBuilder;
@@ -37,7 +37,7 @@ export const buttons: SlashCommand = {
       '55'?: ButtonBuilder;
     } = {};
     const rows: ActionRowBuilder<ButtonBuilder>[] = [];
-    const [ro, co] = args[0].split('x');
+    const [ro, co] = interaction.options.getString('text', true).split('x');
     if (isNaN(Number(ro)) || isNaN(Number(co)) || ro == '0' || co == '0') {
       error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', interaction, true);
       return;

@@ -5,8 +5,8 @@ import someonereq from '~/options/someonereq';
 export const bite: SlashCommand<'cached'> = {
   description: 'Bite someone!',
   options: someonereq,
-  async execute(interaction, args) {
-    try { action(interaction, interaction.member, args, 'bite'); }
+  async execute(interaction) {
+    try { action(interaction, interaction.options.getString('someone'), 'bite'); }
     catch (err) { error(err, interaction); }
   },
 };

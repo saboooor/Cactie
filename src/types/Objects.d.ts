@@ -18,7 +18,7 @@ export class SlashCommand<Cached extends CacheType = CacheType> extends Command 
   botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
   options?: (cmd: SlashCommandBuilder) => void | Promise<void>;
   autoComplete?: (client: Client<true>, interaction: AutocompleteInteraction<Cached>) => void | Promise<void>;
-  execute: (interaction: ChatInputCommandInteraction<Cached>, args: string[], client: Client<true>) => void | Promise<void>;
+  execute: (interaction: ChatInputCommandInteraction<Cached>, client: Client<true>) => void | Promise<void>;
 }
 
 export class ContextMenuCommand<T extends 'User' | 'Message'> {
@@ -28,7 +28,7 @@ export class ContextMenuCommand<T extends 'User' | 'Message'> {
   ephemeral?: boolean;
   noDefer?: boolean;
   type: T;
-  execute: (interaction: ContextMenuCommandInteraction, client: Client<true>, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
+  execute: (interaction: ContextMenuCommandInteraction<'cached'>, client: Client<true>, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
 }
 
 export class Modal<Cached extends CacheType = CacheType> {

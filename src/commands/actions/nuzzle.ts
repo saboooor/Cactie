@@ -5,8 +5,8 @@ import someonereq from '~/options/someonereq';
 export const nuzzle: SlashCommand<'cached'> = {
   description: 'Nuzzle someone!',
   options: someonereq,
-  async execute(interaction, args) {
-    try { action(interaction, interaction.member, args, 'nuzzle'); }
+  async execute(interaction) {
+    try { action(interaction, interaction.options.getString('someone'), 'nuzzle'); }
     catch (err) { error(err, interaction); }
   },
 };

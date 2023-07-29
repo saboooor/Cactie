@@ -30,11 +30,11 @@ export const unban: SlashCommand<'cached'> = {
 
     interaction.respond(filtered);
   },
-  async execute(interaction, args, client) {
+  async execute(interaction, client) {
     try {
       // Fetch bans from guild and check if user in arg is banned
       const bans = await interaction.guild.bans.fetch();
-      const ban = bans.get(args[0].replace(/\D/g, ''));
+      const ban = bans.get(interaction.options.getString('user', true).replace(/\D/g, ''));
       if (!ban) {
         error('Invalid User! / This user hasn\'t been banned!', interaction, true);
         return;

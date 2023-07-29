@@ -6,7 +6,7 @@ import packageJSON from '../../../package.json';
 export const info: SlashCommand = {
   description: 'Get various information about Cactie',
   cooldown: 10,
-  async execute(interaction, args, client) {
+  async execute(interaction, client) {
     try {
       const dependencies = {
         ...packageJSON.dependencies,

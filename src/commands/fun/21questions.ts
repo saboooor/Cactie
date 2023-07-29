@@ -7,17 +7,18 @@ export const questions: SlashCommand<'cached'> = {
   description: 'Play 21 Questions with an opponent',
   cooldown: 10,
   options: questionsOptions,
-  async execute(interaction, args) {
-    if (args[1] && !isNaN(Number(args[1])) && (Number(args[1]) < 1 || Number(args[1]) > 25)) {
-      error('The amount of questions must be between 1 and 25!', interaction, true);
-      return;
-    }
-    const member = args[0] ? await interaction.guild.members.fetch(args[0].replace(/\D/g, '')).catch(() => null) : null;
-    if (member && member.id == interaction.user.id) {
+  async execute(interaction) {
+    const member = interaction.options.getMember('user');
+    if (member?.id == interaction.user.id) {
       error('You played yourself, oh wait, you can\'t.', interaction, true);
       return;
     }
-    if (member && member.user.bot) {
+    const questionAmt = interaction.options.getNumber('amount');
+    if (questionAmt && (questionAmt < 1 || questionAmt > 25)) {
+      error('The amount of questions must be between 1 and 25!', interaction, true);
+      return;
+    }
+    if (member?.user.bot) {
       error('Bots aren\'t fun to play with, yet. ;)', interaction, true);
       return;
     }
@@ -30,7 +31,7 @@ export const questions: SlashCommand<'cached'> = {
       ]);
     const TwentyOneQuestions = new EmbedBuilder()
       .setColor(0x2f3136)
-      .setTitle(`${args[1] ? args[1] : 21} Questions`)
+      .setTitle(`${questionAmt ?? 21} Questions`)
       .setDescription(`**Playing with:**\n${member ?? 'Everyone'}\n**Host:**\n${interaction.user}\nPlease choose an answer by clicking the button below.`)
       .setThumbnail(interaction.user.avatarURL());
 
@@ -60,7 +61,7 @@ export const questions: SlashCommand<'cached'> = {
     // When the collector stops, edit the message with a timeout message if the game hasn't ended already
     collector.on('end', () => {
       if (collector.collected.size) return;
-      interaction.editReply({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
+      interaction.editReply({ content: `A game of ${questionAmt ?? 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
     });
   },
 };
