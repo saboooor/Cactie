@@ -7,7 +7,7 @@ import prisma, { getGuildConfig } from '~/functions/prisma';
 export const warn: SlashCommand<'cached'> = {
   description: 'Warn someone in the server',
   ephemeral: true,
-  permissions: ['ModerateMembers'],
+  permission: 'ModerateMembers',
   cooldown: 5,
   options: punish,
   async execute(interaction) {

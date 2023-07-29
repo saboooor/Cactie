@@ -6,7 +6,7 @@ import prisma from '~/functions/prisma';
 
 export const warns: SlashCommand<'cached'> = {
   description: 'View warns of a user in the server',
-  permissions: ['ModerateMembers'],
+  permission: 'ModerateMembers',
   cooldown: 5,
   options: user,
   async execute(interaction) {

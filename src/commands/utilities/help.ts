@@ -21,7 +21,7 @@ export const help: SlashCommand = {
         const category = helpdesc[subcmd as keyof typeof helpdesc];
         const commandList = commands.filter(c => c.category == subcmd);
         const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
+        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);
@@ -124,7 +124,7 @@ export const help: SlashCommand = {
         const category = helpdesc[selint.values[0].split('_')[1] as keyof typeof helpdesc];
         const commandList = commands.filter(c => c.category == selint.values[0].split('_')[1]);
         const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
+        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permission ? `\nPermission: ${c.permission}` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);

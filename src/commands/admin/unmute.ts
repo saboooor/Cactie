@@ -6,7 +6,7 @@ import prisma, { getGuildConfig } from '~/functions/prisma';
 export const unmute: SlashCommand<'cached'> = {
   description: 'Unmute someone that was muted in the server',
   ephemeral: true,
-  permissions: ['ModerateMembers'],
+  permission: 'ModerateMembers',
   botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
   options: user,

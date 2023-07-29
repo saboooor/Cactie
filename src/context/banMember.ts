@@ -4,7 +4,7 @@ import { ContextMenuCommand } from '~/types/Objects';
 export const context: ContextMenuCommand<'User'> = {
   name: 'Ban Member',
   noDefer: true,
-  permissions: ['BanMembers'],
+  permission: 'BanMembers',
   botPerms: ['BanMembers'],
   type: 'User',
   async execute(interaction, client, member) {

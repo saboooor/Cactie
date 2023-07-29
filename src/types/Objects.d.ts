@@ -12,10 +12,11 @@ export class SlashCommand<Cached extends CacheType = CacheType> extends Command 
   category?: string;
   voteOnly?: boolean;
   cooldown?: number;
-  permissions?: (keyof typeof PermissionsBitField.Flags)[];
+  permission?: keyof typeof PermissionsBitField.Flags;
   channelPermissions?: (keyof typeof PermissionsBitField.Flags)[];
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
+  dms?: boolean;
   options?: (cmd: SlashCommandBuilder) => void | Promise<void>;
   autoComplete?: (client: Client<true>, interaction: AutocompleteInteraction<Cached>) => void | Promise<void>;
   execute: (interaction: ChatInputCommandInteraction<Cached>, client: Client<true>) => void | Promise<void>;
@@ -23,7 +24,7 @@ export class SlashCommand<Cached extends CacheType = CacheType> extends Command 
 
 export class ContextMenuCommand<T extends 'User' | 'Message'> {
   name: string;
-  permissions?: (keyof typeof PermissionsBitField.Flags)[];
+  permission?: keyof typeof PermissionsBitField.Flags;
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   ephemeral?: boolean;
   noDefer?: boolean;

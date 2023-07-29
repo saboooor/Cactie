@@ -12,7 +12,7 @@ const again = new ActionRowBuilder<ButtonBuilder>()
   ]);
 
 export const tictactoe: SlashCommand<'cached'> = {
-  description: 'Play Tic Tac Toe with an opponent',
+  description: 'Play Tic Tac Toe',
   cooldown: 10,
   options: userOption,
   async execute(interaction) {

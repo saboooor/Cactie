@@ -2,7 +2,7 @@ import { SlashCommand } from '~/types/Objects';
 import action from '~/functions/action';
 import someone from '~/options/someone';
 
-export const awooga: SlashCommand<'cached'> = {
+export const awooga: SlashCommand = {
   description: 'AWOOGAA!',
   options: someone,
   async execute(interaction) {

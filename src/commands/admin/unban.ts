@@ -6,7 +6,7 @@ import { getGuildConfig } from '~/functions/prisma';
 export const unban: SlashCommand<'cached'> = {
   description: 'Unban someone that was banned from the server',
   ephemeral: true,
-  permissions: ['BanMembers'],
+  permission: 'BanMembers',
   botPerms: ['BanMembers'],
   cooldown: 5,
   options: unbanOptions,

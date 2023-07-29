@@ -10,7 +10,7 @@ import { getGuildConfig } from '~/functions/prisma';
 export const approve: SlashCommand<'cached'> = {
   description: 'Approve a suggestion.',
   ephemeral: true,
-  permissions: ['Administrator'],
+  permission: 'Administrator',
   options: suggestresponse,
   async execute(interaction, client) {
     try {

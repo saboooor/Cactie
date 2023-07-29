@@ -2,7 +2,7 @@ import { SlashCommand } from '~/types/Objects';
 import action from '~/functions/action';
 import someonereq from '~/options/someonereq';
 
-export const bite: SlashCommand<'cached'> = {
+export const bite: SlashCommand = {
   description: 'Bite someone!',
   options: someonereq,
   async execute(interaction) {

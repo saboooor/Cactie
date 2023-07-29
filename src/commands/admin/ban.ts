@@ -7,7 +7,7 @@ import prisma, { getGuildConfig } from '~/functions/prisma';
 export const ban: SlashCommand<'cached'> = {
   description: 'Ban someone from the server',
   ephemeral: true,
-  permissions: ['BanMembers'],
+  permission: 'BanMembers',
   botPerms: ['BanMembers'],
   cooldown: 5,
   options: punish,

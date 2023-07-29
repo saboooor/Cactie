@@ -4,7 +4,7 @@ import { SlashCommand } from '~/types/Objects';
 export const forcedelete: SlashCommand<'cached'> = {
   description: 'Force delete a ticket',
   ephemeral: true,
-  permissions: ['Administrator'],
+  permission: 'Administrator',
   botPerms: ['ManageChannels'],
   async execute(interaction) {
     // Create a ticket

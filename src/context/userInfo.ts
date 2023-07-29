@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMember } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import convertTime from '~/functions/music/convert';
 import progressbar from '~/functions/music/progressbar';
 import { ContextMenuCommand } from '~/types/Objects';
@@ -7,7 +7,7 @@ export const context: ContextMenuCommand<'User'> = {
   name: 'User Info',
   ephemeral: true,
   type: 'User',
-  async execute(interaction, client, member: GuildMember) {
+  async execute(interaction, client, member) {
     try {
       const roles = Array.from(member.roles.cache).sort((a, b) => {
         if (b[1].rawPosition < a[1].rawPosition) return -1;

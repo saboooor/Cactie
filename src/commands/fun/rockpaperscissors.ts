@@ -3,7 +3,7 @@ import { SlashCommand } from '~/types/Objects';
 import userOption from '~/options/user';
 
 export const rockpaperscissors: SlashCommand<'cached'> = {
-  description: 'Play Rock Paper Scissors with an opponent',
+  description: 'Play Rock Paper Scissors',
   cooldown: 10,
   options: userOption,
   async execute(interaction) {

@@ -81,10 +81,8 @@ export default async (client: Client, interaction: CommandInteraction) => {
   }
 
   // Check if user has the permissions necessary in the guild to use the command
-  if (command.permissions) {
+  if (command.permission) {
     if (!interaction.inCachedGuild()) return error('This command can not be used in DMs!', interaction, true);
-    const permCheck = checkPerms(command.permissions, interaction.member);
-    if (permCheck) return error(permCheck, interaction, true);
   }
 
   // Check if bot has the permissions necessary in the channel to run the command

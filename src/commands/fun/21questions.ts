@@ -4,7 +4,7 @@ import questionsOptions from '~/options/21q';
 
 export const questions: SlashCommand<'cached'> = {
   name: '21questions',
-  description: 'Play 21 Questions with an opponent',
+  description: 'Play 21 Questions',
   cooldown: 10,
   options: questionsOptions,
   async execute(interaction) {

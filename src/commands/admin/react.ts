@@ -5,7 +5,7 @@ import reactOptions from '~/options/react';
 export const react: SlashCommand<'cached'> = {
   description: 'Adds a reaction to a message',
   ephemeral: true,
-  permissions: ['Administrator'],
+  permission: 'Administrator',
   botChannelPerms: ['AddReactions'],
   options: reactOptions,
   async execute(interaction, client) {

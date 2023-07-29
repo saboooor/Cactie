@@ -11,12 +11,6 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
   const command = contextcommands.get(interaction.commandName);
   if (!command) return;
 
-  // Check if user has the permissions necessary in the guild to use the command
-  if (command.permissions) {
-    const permCheck = checkPerms(command.permissions, interaction.member as GuildMember);
-    if (permCheck) return error(permCheck, interaction, true);
-  }
-
   // Check if bot has the permissions necessary in the guild to run the command
   if (command.botPerms) {
     const permCheck = checkPerms(command.botPerms, interaction.guild.members.me!);

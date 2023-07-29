@@ -5,7 +5,7 @@ export const deleteticket: SlashCommand<'cached'> = {
   name: 'delete',
   description: 'Delete a ticket',
   ephemeral: true,
-  permissions: ['Administrator'],
+  permission: 'Administrator',
   botPerms: ['ManageChannels'],
   async execute(interaction) {
     // Delete the ticket

@@ -2,7 +2,7 @@ import { SlashCommand } from '~/types/Objects';
 import action from '~/functions/action';
 import someonereq from '~/options/someonereq';
 
-export const hug: SlashCommand<'cached'> = {
+export const hug: SlashCommand = {
   description: 'Hug someone!',
   options: someonereq,
   async execute(interaction) {

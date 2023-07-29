@@ -6,7 +6,7 @@ import { getGuildConfig } from '~/functions/prisma';
 export const kick: SlashCommand<'cached'> = {
   description: 'Kick someone from the server',
   ephemeral: true,
-  permissions: ['KickMembers'],
+  permission: 'KickMembers',
   botPerms: ['KickMembers'],
   cooldown: 5,
   options: punish,
