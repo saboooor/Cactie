@@ -4,7 +4,9 @@ import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export default async (client: Client) => schedule('* * * * *', async () => {
   // Get all member data
-  const memberdata = await prisma.memberdata.findMany();
+  const memberdata = await prisma.memberdata.findMany({
+    cacheStrategy: { ttl: 60 },
+  });
 
   // Iterate through every row in the data
   for (const data of memberdata) {

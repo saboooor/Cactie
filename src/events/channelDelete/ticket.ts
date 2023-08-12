@@ -4,7 +4,12 @@ import { Client, EmbedBuilder, GuildChannel, GuildMember, TextChannel, VoiceChan
 export default async (client: Client, channel: GuildChannel) => {
   // Check if ticket is an actual ticket
   // Get server config
-  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!ticketData) return;
   const ticketDataUsers = ticketData.users.split(',');
 

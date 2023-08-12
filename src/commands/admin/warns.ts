@@ -25,6 +25,7 @@ export const warns: SlashCommand<'cached'> = {
             memberId: member.id,
           },
         },
+        cacheStrategy: { ttl: 60 },
       });
 
       // Check if member has any warns

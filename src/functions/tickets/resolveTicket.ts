@@ -7,7 +7,12 @@ export default async function resolveTicket(member: GuildMember, channel: GuildT
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!ticketData) throw new Error('Could not find this ticket in the database, please manually delete this channel.');
   const ticketDataUsers = ticketData.users.split(',');
 

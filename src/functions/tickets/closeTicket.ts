@@ -9,7 +9,12 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketdata = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
+  const ticketdata = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!ticketdata) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketdata.users.split(',');
 
