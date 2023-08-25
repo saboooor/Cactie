@@ -6,7 +6,15 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
   if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if ticket already exists
-  const ticketData = await prisma.ticketdata.findUnique({ where: { opener_guildId: { opener: member.id, guildId: member.guild.id } } });
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      opener_guildId: {
+        opener: member.id,
+        guildId: member.guild.id,
+      },
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (ticketData) {
     try {
       const channel = await member.guild.channels.fetch(ticketData.channelId) as TextChannel;

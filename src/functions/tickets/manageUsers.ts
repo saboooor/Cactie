@@ -7,7 +7,12 @@ export default async function manageUsers(member: GuildMember, channel: GuildTex
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');
 

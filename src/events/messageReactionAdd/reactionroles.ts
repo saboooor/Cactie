@@ -22,7 +22,15 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   if (!emojiId) return;
 
   // Get the reaction role from the database and check if it exists
-  const reactionrole = await prisma.reactionroles.findUnique({ where: { messageId_emojiId: { messageId: message.id, emojiId } } });
+  const reactionrole = await prisma.reactionroles.findUnique({
+    where: {
+      messageId_emojiId: {
+        messageId: message.id,
+        emojiId,
+      },
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!reactionrole) return;
 
   // Get the reaction role's role

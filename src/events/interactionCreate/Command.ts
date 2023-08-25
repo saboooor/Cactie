@@ -53,7 +53,12 @@ export default async (client: Client, interaction: CommandInteraction) => {
   // Check if command can be ran only if the user voted since the past 24 hours
   if (command.voteOnly) {
     // Get data for user
-    const userdata = await prisma.userdata.findUnique({ where: { userId: interaction.user.id } });
+    const userdata = await prisma.userdata.findUnique({
+      where: {
+        userId: interaction.user.id,
+      },
+      cacheStrategy: { ttl: 60 },
+    });
 
     // If user has not voted since the past 24 hours, send error message with vote buttons
     if (!userdata || Date.now() > Number(userdata.lastvoted) + 86400000) {
