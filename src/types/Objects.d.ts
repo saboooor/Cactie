@@ -11,7 +11,6 @@ export class SlashCommand<Cached extends CacheType = CacheType> extends Command 
   ephemeral?: boolean;
   noDefer?: boolean;
   category?: string;
-  voteOnly?: boolean;
   cooldown?: number;
   permission?: keyof typeof PermissionsBitField.Flags;
   channelPermissions?: (keyof typeof PermissionsBitField.Flags)[];

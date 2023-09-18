@@ -13,7 +13,6 @@ export default async (client: Client, member: GuildMember) => {
         opener: member.id,
         guildId: member.guild.id,
       },
-      cacheStrategy: { ttl: 60 },
     });
     if (!ticketdata.length) return;
 

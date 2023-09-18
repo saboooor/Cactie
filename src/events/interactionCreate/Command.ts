@@ -50,31 +50,6 @@ export default async (client: Client, interaction: CommandInteraction) => {
   timestamps.set(interaction.user.id, now);
   setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
-  // Check if command can be ran only if the user voted since the past 24 hours
-  if (command.voteOnly) {
-    // Get data for user
-    const userdata = await prisma.userdata.findUnique({
-      where: {
-        userId: interaction.user.id,
-      },
-      cacheStrategy: { ttl: 60 },
-    });
-
-    // If user has not voted since the past 24 hours, send error message with vote buttons
-    if (!userdata || Date.now() > Number(userdata.lastvoted) + 86400000) {
-      const errEmbed = new EmbedBuilder().setTitle(`You need to vote to use ${command.name}! Vote below!`)
-        .setDescription('Voting helps us get Cactie in more servers!\nIt\'ll only take a few seconds!');
-      const row = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents([
-          new ButtonBuilder()
-            .setURL(`https://top.gg/bot/${client.user?.id}/vote`)
-            .setLabel('top.gg')
-            .setStyle(ButtonStyle.Link),
-        ]);
-      return interaction.reply({ embeds: [errEmbed], components: [row] });
-    }
-  }
-
   // Log
   logger.info(`${interaction.user.username} issued slash command: /${interaction.commandName} ${interaction.options.getSubcommand(false) ?? ''} in ${interaction.guild?.name ?? 'DMs'}`.replace(' ,', ','));
 

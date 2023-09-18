@@ -4,9 +4,7 @@ import { Command } from '~/types/Objects';
 export const migrate: Command = {
   description: 'migrates the db to new versions',
   async execute(message) {
-    const settings = await prisma.settings.findMany({
-      cacheStrategy: { ttl: 60 },
-    });
+    const settings = await prisma.settings.findMany();
     for (const srvconfig of settings) {
       await prisma.settings.update({
         where: {

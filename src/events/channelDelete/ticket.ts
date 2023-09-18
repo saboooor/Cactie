@@ -8,7 +8,6 @@ export default async (client: Client, channel: GuildChannel) => {
     where: {
       channelId: channel.id,
     },
-    cacheStrategy: { ttl: 60 },
   });
   if (!ticketData) return;
   const ticketDataUsers = ticketData.users.split(',');

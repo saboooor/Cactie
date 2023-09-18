@@ -13,7 +13,7 @@ export default async function resolveTicket(member: GuildMember, channel: GuildT
     },
     cacheStrategy: { ttl: 60 },
   });
-  if (!ticketData) throw new Error('Could not find this ticket in the database, please manually delete this channel.');
+  if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');
 
   // Only the support team can resolve tickets

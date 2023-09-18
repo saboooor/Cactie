@@ -13,7 +13,6 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
         guildId: member.guild.id,
       },
     },
-    cacheStrategy: { ttl: 60 },
   });
   if (ticketData) {
     try {

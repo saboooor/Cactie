@@ -7,7 +7,7 @@ export default async (client: Client, message: Message<true>) => {
     where: {
       channelId: message.channel.id,
     },
-    cacheStrategy: { ttl: 60 },
+    cacheStrategy: { ttl: 30 },
   });
   if (ticketData && ticketData.resolved == 'true') {
     prisma.ticketdata.update({ where: { channelId: message.channel.id }, data: { resolved: 'false' } });

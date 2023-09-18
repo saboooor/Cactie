@@ -11,7 +11,6 @@ export default async (client: Client, member: GuildMember) => {
         memberId: member.id,
       },
     },
-    cacheStrategy: { ttl: 60 },
   });
   if (!memberdata) return;
 

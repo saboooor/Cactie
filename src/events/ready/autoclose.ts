@@ -6,9 +6,7 @@ import closeTicket from '~/functions/tickets/closeTicket';
 
 export default (client: Client) => schedule('0 0 * * *', async () => {
   // Get all tickets
-  const allTicketData = await prisma.ticketdata.findMany({
-    cacheStrategy: { ttl: 60 },
-  });
+  const allTicketData = await prisma.ticketdata.findMany();
 
   // Loop through all tickets
   allTicketData.forEach(async ticketdata => {

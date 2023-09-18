@@ -39,16 +39,21 @@ export const unmute: SlashCommand<'cached'> = {
 
       // Reset the mute timer
       // Get server config
-      const data = await prisma.memberdata.findUnique({
+      await prisma.memberdata.upsert({
         where: {
           memberId_guildId: {
             memberId: member.id,
             guildId: interaction.guild.id,
           },
         },
-        cacheStrategy: { ttl: 60 },
+        update: {
+          mutedUntil: null,
+        },
+        create: {
+          memberId: member.id,
+          guildId: interaction.guild.id,
+        },
       });
-      if (data) await prisma.memberdata.update({ where: { memberId_guildId: { memberId: member.id, guildId: interaction.guild.id } }, data: { mutedUntil: null } });
 
       // Send unmute message to user
       await member.send({ content: '**You\'ve been unmuted**' })

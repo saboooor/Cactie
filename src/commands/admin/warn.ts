@@ -67,12 +67,8 @@ export const warn: SlashCommand<'cached'> = {
             memberId: member.id,
           },
         },
-        cacheStrategy: { ttl: 60 },
       });
-      if (memberdata && memberdata.warns) {
-        const currentWarns = JSON.parse(memberdata.warns);
-        warns.push(...currentWarns);
-      }
+      if (memberdata && memberdata.warns) warns.push(...JSON.parse(memberdata.warns));
 
       // Add warn to warns array
       warns.push({
