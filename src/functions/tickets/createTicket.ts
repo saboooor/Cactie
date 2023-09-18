@@ -35,6 +35,15 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
   // Branch for ticket-dev or ticket-testing etc
   const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
+  // Find role
+  const role = await member.guild.roles.fetch(srvconfig.tickets.role).catch(() => { return null; });
+  const rolePerms = role ? [
+    {
+      id: role.id,
+      allow: [PermissionsBitField.Flags.ViewChannel],
+    },
+  ] : [];
+
   // Create ticket and set database
   const id = srvconfig.tickets.count == 'false' ? member.user.username.toLowerCase().replace(' ', '-') : srvconfig.tickets.count;
   const ticket = await member.guild.channels.create({
@@ -54,14 +63,13 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
         id: member.id,
         allow: [PermissionsBitField.Flags.ViewChannel],
       },
+      ...rolePerms,
     ],
     reason: description,
   });
 
-  // Find role and set perms and if no role then send error
-  const role = await member.guild.roles.fetch(srvconfig.tickets.role).catch(() => { return null; });
-  if (role) await ticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
-  else await ticket.send({ content: '❗ **No access role set!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
+  // If no role, send message to ticket
+  if (!role) await ticket.send({ content: '❗ **Can\'t find access role!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
 
   // Set the database
   await prisma.ticketdata.create({
