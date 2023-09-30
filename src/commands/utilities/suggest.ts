@@ -15,7 +15,7 @@ export const suggest: SlashCommand = {
       // Get server config
       const srvconfig = await getGuildConfig(message.guild!.id);
 
-      // Get channel to send poll in
+      // Get channel to send suggestion in
       let channel = message.guild!.channels.cache.get(srvconfig.suggestionchannel) as TextChannel;
       if (!channel) channel = message.channel as TextChannel;
 
