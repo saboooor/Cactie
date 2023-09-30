@@ -59,7 +59,7 @@ export const poll: SlashCommand<'cached'> = {
           return;
         }
 
-        // Check if the message exists, if not, check in suggestionchannel, if not, return
+        // Check if the message exists, if not, check in pollchannel, if not, return
         const pollMsg = !isNaN(Number(msg)) ? await channel.messages.fetch(msg).catch(() => { return null; }) : null;
         if (!pollMsg) {
           error('Could not find the message.\nTry doing the command in the same channel as the poll.', interaction, true);
@@ -69,7 +69,7 @@ export const poll: SlashCommand<'cached'> = {
         // Check if message was sent by the bot
         if (pollMsg.author.id != client.user.id) return;
 
-        // Get embed and check if embed is a suggestion
+        // Get embed and check if embed is a poll
         const pollEmbed = new EmbedBuilder(pollMsg.embeds[0].toJSON());
         if (!pollEmbed || !pollEmbed.toJSON().author || !pollEmbed.toJSON().title!.startsWith('Poll')) return;
 

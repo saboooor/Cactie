@@ -4,7 +4,7 @@ import user from '~/options/user';
 import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export const unmute: SlashCommand<'cached'> = {
-  description: 'Unmute someone that was muted in the server',
+  description: 'Unmute someone in this server',
   ephemeral: true,
   permission: 'ModerateMembers',
   botPerms: ['ManageRoles', 'ModerateMembers'],
@@ -56,7 +56,7 @@ export const unmute: SlashCommand<'cached'> = {
       });
 
       // Send unmute message to user
-      await member.send({ content: '**You\'ve been unmuted**' })
+      await member.send({ content: `## You've been unmuted in ${interaction.guild.name}` })
         .catch(err => {
           logger.warn(err);
           interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });

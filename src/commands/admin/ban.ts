@@ -5,7 +5,7 @@ import punish from '~/options/punish';
 import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export const ban: SlashCommand<'cached'> = {
-  description: 'Ban someone from the server',
+  description: 'Ban someone from this server',
   ephemeral: true,
   permission: 'BanMembers',
   botPerms: ['BanMembers'],
@@ -51,7 +51,7 @@ export const ban: SlashCommand<'cached'> = {
 
       // Send ban interaction to target if silent is false
       if (!interaction.options.getBoolean('silent')) {
-        await member.send({ content: `**You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+        await member.send({ content: `## You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? `\n**Reason:** ${reason}` : ''}**` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });

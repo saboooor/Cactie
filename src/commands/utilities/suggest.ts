@@ -15,7 +15,7 @@ export const suggest: SlashCommand<'cached'> = {
       // Get server config
       const srvconfig = await getGuildConfig(interaction.guild.id);
 
-      // Get channel to send poll in
+      // Get channel to send suggestion in
       let channel = interaction.guild.channels.cache.get(srvconfig.suggestionchannel) as GuildTextBasedChannel | null;
       if (!channel) channel = interaction.channel!;
 

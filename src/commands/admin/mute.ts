@@ -5,7 +5,7 @@ import punish from '~/options/punish';
 import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export const mute: SlashCommand<'cached'> = {
-  description: 'Mute someone in the server',
+  description: 'Mute someone in this server',
   ephemeral: true,
   permission: 'ModerateMembers',
   botPerms: ['ManageRoles', 'ModerateMembers'],
@@ -101,10 +101,10 @@ export const mute: SlashCommand<'cached'> = {
 
       // Send mute message to target if silent is false
       if (!interaction.options.getBoolean('silent')) {
-        await member.send({ content: `**You've been muted in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+        await member.send({ content: `## You've been muted in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? `\n**Reason:** ${reason}` : ''}` })
           .catch(err => {
             logger.warn(err);
-            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been muted.' });
           });
       }
       logger.info(`Muted user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);

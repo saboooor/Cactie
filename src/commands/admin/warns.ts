@@ -2,10 +2,10 @@ import { EmbedBuilder } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
-import prisma from '~/functions/prisma';
+import { getMemberData } from '~/functions/prisma';
 
 export const warns: SlashCommand<'cached'> = {
-  description: 'View warns of a user in the server',
+  description: 'View someone\'s warnings',
   permission: 'ModerateMembers',
   cooldown: 5,
   options: user,
@@ -18,19 +18,11 @@ export const warns: SlashCommand<'cached'> = {
       }
 
       // Get current member data
-      const memberdata = await prisma.memberdata.findUnique({
-        where: {
-          memberId_guildId: {
-            guildId: interaction.guild.id,
-            memberId: member.id,
-          },
-        },
-        cacheStrategy: { ttl: 30 },
-      });
+      const memberdata = await getMemberData(member.id, interaction.guild.id);
 
       // Check if member has any warns
-      if (!memberdata || !memberdata.warns) {
-        error('This user has no warns!', interaction, true);
+      if (!memberdata || !memberdata.warns[0]) {
+        error('This user does not have any warnings.', interaction, true);
         return;
       }
 

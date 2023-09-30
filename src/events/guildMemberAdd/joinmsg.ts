@@ -18,6 +18,9 @@ export default async (client: Client, member: GuildMember) => {
 
   // Send the join message to the system channel
   const channel = srvconfig.joinmessage.channel == 'false' ? member.guild.systemChannel! : member.guild.channels.cache.get(srvconfig.joinmessage.channel) as TextChannel;
-  channel.send({ content: srvconfig.joinmessage.message.replace(/{USER MENTION}/g, `${member}`).replace(/{USER TAG}/g, member.user.username) }).catch(err => logger.error(err));
+  channel.send({
+    content: srvconfig.joinmessage.message.replace(/{USER MENTION}/g, `${member}`).replace(/{USER TAG}/g, member.user.username),
+    flags: srvconfig.joinmessage.silent ? ['4096'] : [],
+  }).catch(err => logger.error(err));
   logger.info(`Sent join message to ${member.guild.name} for ${member.user.username}`);
 };

@@ -25,6 +25,21 @@ export async function getGuildConfig(guildId: string) {
   return srvconfig;
 }
 
+export async function getMemberData(memberId: string, guildId: string, ttl: number = 30) {
+  const memberdataUnparsed = await prisma.memberdata.findUnique({
+    where: { memberId_guildId: { memberId, guildId } },
+    cacheStrategy: { ttl },
+  });
+  if (!memberdataUnparsed) return null;
+
+  const memberdata = {
+    ...memberdataUnparsed,
+    warns: memberdataUnparsed.warns ? JSON.parse(memberdataUnparsed.warns) : [],
+  };
+
+  return memberdata;
+}
+
 export type guildConfig = settings & {
   joinmessage: {
     message: string;

@@ -4,7 +4,7 @@ import unbanOptions from '~/options/unban';
 import { getGuildConfig } from '~/functions/prisma';
 
 export const unban: SlashCommand<'cached'> = {
-  description: 'Unban someone that was banned from the server',
+  description: 'Unban someone that was banned from this server',
   ephemeral: true,
   permission: 'BanMembers',
   botPerms: ['BanMembers'],
@@ -43,7 +43,7 @@ export const unban: SlashCommand<'cached'> = {
       // Send unban message to user if they can be fetched by the client
       const bannedUser = client.users.cache.get(ban.user.id);
       if (bannedUser) {
-        await bannedUser.send({ content: `**You've been unbanned in ${interaction.guild.name}**` })
+        await bannedUser.send({ content: `## You've been unbanned in ${interaction.guild.name}` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });

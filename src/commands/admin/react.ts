@@ -3,7 +3,7 @@ import { SlashCommand } from '~/types/Objects';
 import reactOptions from '~/options/react';
 
 export const react: SlashCommand<'cached'> = {
-  description: 'Adds a reaction to a message',
+  description: 'Add a reaction to a message',
   ephemeral: true,
   permission: 'Administrator',
   botChannelPerms: ['AddReactions'],

@@ -1,5 +1,5 @@
-import prisma, { getGuildConfig } from '~/functions/prisma';
-import { EmbedBuilder, Collection, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, TextChannel } from 'discord.js';
+import { getGuildConfig } from '~/functions/prisma';
+import { EmbedBuilder, Collection, Client, CommandInteraction, TextChannel } from 'discord.js';
 import checkPerms from '~/functions/checkPerms';
 import slashcommands, { cooldowns } from '~/lists/cmds';
 import cooldownMessages from '~/misc/cooldown.json';
@@ -16,6 +16,9 @@ export default async (client: Client, interaction: CommandInteraction) => {
   // Get server config
   const srvconfig = interaction.inCachedGuild() ? await getGuildConfig(interaction.guild.id) : null;
   if (srvconfig?.disabledcmds.includes(command.name!)) return interaction.reply({ content: `${command.name} is disabled on this server.`, ephemeral: true });
+
+  // Typescript is stupid
+  if (typeof command.name != 'string') return;
 
   // Get cooldowns and check if cooldown exists, if not, create it
   if (!cooldowns.has(command.name!)) cooldowns.set(command.name!, new Collection());

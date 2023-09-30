@@ -18,6 +18,9 @@ export default async (client: Client, member: GuildMember) => {
 
   // Send the leave message to the system channel
   const channel = srvconfig.leavemessage.channel == 'false' ? member.guild.systemChannel! : member.guild.channels.cache.get(srvconfig.leavemessage.channel) as TextChannel;
-  channel.send({ content: srvconfig.leavemessage.message.replace(/{USER MENTION}/g, `${member}`).replace(/{USER TAG}/g, member.user.username) }).catch(err => logger.error(err));
+  channel.send({
+    content: srvconfig.leavemessage.message.replace(/{USER MENTION}/g, `${member}`).replace(/{USER TAG}/g, member.user.username),
+    flags: srvconfig.leavemessage.silent ? ['4096'] : [],
+  }).catch(err => logger.error(err));
   logger.info(`Sent leave message to ${member.guild.name} for ${member.user.username}`);
 };

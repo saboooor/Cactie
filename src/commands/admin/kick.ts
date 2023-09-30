@@ -4,7 +4,7 @@ import punish from '~/options/punish-notime';
 import { getGuildConfig } from '~/functions/prisma';
 
 export const kick: SlashCommand<'cached'> = {
-  description: 'Kick someone from the server',
+  description: 'Kick someone from this server',
   ephemeral: true,
   permission: 'KickMembers',
   botPerms: ['KickMembers'],
@@ -43,7 +43,7 @@ export const kick: SlashCommand<'cached'> = {
 
       // Send kick message to target if silent is false
       if (!interaction.options.getBoolean('silent')) {
-        await member.send({ content: `**You've been kicked from ${interaction.guild.name}.${reason ? ` Reason: ${reason}` : ''}**` })
+        await member.send({ content: `## You've been kicked from ${interaction.guild.name}.${reason ? `\n**Reason:** ${reason}` : ''}` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been kicked.' });

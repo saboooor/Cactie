@@ -1,11 +1,11 @@
 import { EmbedBuilder, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
-import punish from '~/options/punish';
-import prisma, { getGuildConfig } from '~/functions/prisma';
+import punish from '~/options/punish-reason';
+import prisma, { getGuildConfig, getMemberData } from '~/functions/prisma';
 
 export const warn: SlashCommand<'cached'> = {
-  description: 'Warn someone in the server',
+  description: 'Warn someone in this server',
   ephemeral: true,
   permission: 'ModerateMembers',
   cooldown: 5,
@@ -52,26 +52,11 @@ export const warn: SlashCommand<'cached'> = {
       const reason = interaction.options.getString('reason');
       if (reason) WarnEmbed.addFields([{ name: 'Reason', value: reason }]);
 
-      // Make warns array
-      const warns: {
-        reason: string;
-        created: number;
-        until?: number;
-      }[] = [];
-
-      // Get current member data
-      const memberdata = await prisma.memberdata.findUnique({
-        where: {
-          memberId_guildId: {
-            guildId: interaction.guild.id,
-            memberId: member.id,
-          },
-        },
-      });
-      if (memberdata && memberdata.warns) warns.push(...JSON.parse(memberdata.warns));
+      // Get Member Data
+      const memberdata = await getMemberData(member.id, interaction.guild.id, 0);
 
       // Add warn to warns array
-      warns.push({
+      memberdata.warns.push({
         reason: reason ? reason : 'No reason specified.',
         created: Date.now(),
         until: !isNaN(time) ? Date.now() + time : undefined,
@@ -86,21 +71,21 @@ export const warn: SlashCommand<'cached'> = {
           },
         },
         update: {
-          warns: JSON.stringify(warns),
+          warns: JSON.stringify(memberdata.warns),
         },
         create: {
           memberId: member.id,
           guildId: interaction.guild.id,
-          warns: JSON.stringify(warns),
+          warns: JSON.stringify(memberdata.warns),
         },
       });
 
       // Send warn message to target if silent is false
       if (!interaction.options.getBoolean('silent')) {
-        await member.send({ content: `**You've been warned in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+        await member.send({ content: `## You've been warned in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? `\n**Reason:** ${reason}` : ''}` })
           .catch(err => {
             logger.warn(err);
-            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been warned.' });
           });
       }
       logger.info(`Warned user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
