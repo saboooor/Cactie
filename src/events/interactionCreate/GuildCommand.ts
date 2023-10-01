@@ -27,11 +27,11 @@ export default async (client: Client, interaction: CommandInteraction) => {
         ephemeral: json.ephemeral,
       };
 
-      if (json.embed) {
+      if (json.embeds[0]) {
         const embed = new EmbedBuilder(json.embeds[0]);
         payload.embeds = [embed];
       }
-      if (json.content) payload.content = json.content;
+      if (json.content != '') payload.content = json.content;
 
       await interaction.reply(payload).catch(err => logger.warn(err));
     }
