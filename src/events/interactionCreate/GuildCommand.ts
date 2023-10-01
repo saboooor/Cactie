@@ -19,22 +19,22 @@ export default async (client: Client, interaction: CommandInteraction) => {
       },
     });
     if (!command) return;
-  
+
     const json = JSON.parse(command.json);
-  
+
     if (command.type == 1) {
       const payload: InteractionReplyOptions = {
         ephemeral: json.ephemeral,
-      }
-  
+      };
+
       if (json.embed) {
         const embed = new EmbedBuilder(json.embed);
         payload.embeds = [embed];
       }
       if (json.content) payload.content = json.content;
-  
+
       interaction.reply({ content: json.content });
-    }  
+    }
   }
   catch (err) {
     error(err, interaction, true);
