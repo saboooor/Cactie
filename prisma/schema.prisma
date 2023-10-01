@@ -47,6 +47,17 @@ model reactionroles {
   @@unique([messageId, emojiId], map: "Identifier")
 }
 
+model customcmds {
+  guildId     String
+  name        String
+  description String
+  ephemeral   Boolean
+  type        Int
+  json        String
+
+  @@unique([guildId, name], map: "Identifier")
+}
+
 model memberdata {
   memberId    String
   guildId     String

@@ -8,7 +8,11 @@ export const cleandb: Command = {
     for (const srvconfig of settings) {
       const guild = await client.guilds.fetch(srvconfig.guildId).catch(() => { return null; });
       if (guild) {
-        const srvconfigs = await prisma.settings.findMany({ where: { guildId: srvconfig.guildId } });
+        const srvconfigs = await prisma.settings.findMany({
+          where: {
+            guildId: srvconfig.guildId,
+          },
+        });
         if (srvconfigs.length > 1) {
           await prisma.settings.deleteMany({ where: { guildId: srvconfig.guildId } });
           await prisma.settings.create({ data: { ...srvconfigs[0] } });

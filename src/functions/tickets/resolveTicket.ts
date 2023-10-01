@@ -1,13 +1,19 @@
 import prisma from '~/functions/prisma';
-import { GuildMember, TextChannel, PublicThreadChannel } from 'discord.js';
+import { GuildMember, GuildTextBasedChannel } from 'discord.js';
 
-export default async function resolveTicket(member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function resolveTicket(member: GuildMember, channel: GuildTextBasedChannel) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel.isThread()) channel = channel.parent as TextChannel;
+  if (channel.isThread() && channel.parent?.isTextBased()) channel = channel.parent;
+  if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
-  if (!ticketData) throw new Error('Could not find this ticket in the database, please manually delete this channel.');
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
+  if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');
 
   // Only the support team can resolve tickets

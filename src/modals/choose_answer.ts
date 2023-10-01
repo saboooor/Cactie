@@ -2,7 +2,7 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilde
 import { srch } from '~/misc/emoji.json';
 import { Modal } from '~/types/Objects';
 
-export const choose_answer: Modal = {
+export const choose_answer: Modal<'cached'> = {
   execute: async (interaction) => {
     try {
       // Get the answer from the field and send it back to the user ephemerally
@@ -10,7 +10,7 @@ export const choose_answer: Modal = {
 
       // Get the opponent from the embed description
       const embedJSON = interaction.message!.embeds[0].toJSON();
-      const guesser = interaction.guild!.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
+      const guesser = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
 
       // Create button and embed for the guesser
       const row = new ActionRowBuilder<ButtonBuilder>()
@@ -42,7 +42,7 @@ export const choose_answer: Modal = {
       }
 
       // Create a collector for the button
-      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && (guesser ? i.member!.user.id == guesser.id : true);
+      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && (guesser ? i.user.id == guesser.id : true);
       const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
       collector.on('collect', async (btnint) => {
         // Create and show a modal for the user to fill out the question

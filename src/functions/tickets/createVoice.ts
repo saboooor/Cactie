@@ -1,12 +1,18 @@
 import prisma, { guildConfig } from '~/functions/prisma';
-import { Client, GuildMember, TextChannel, PublicThreadChannel, EmbedBuilder, ChannelType, PermissionsBitField } from 'discord.js';
+import { Client, GuildMember, EmbedBuilder, ChannelType, PermissionsBitField, GuildTextBasedChannel } from 'discord.js';
 
-export default async function createVoice(client: Client, srvconfig: guildConfig, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function createVoice(client: Client<true>, srvconfig: guildConfig, member: GuildMember, channel: GuildTextBasedChannel) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel.isThread()) channel = channel.parent as TextChannel;
+  if (channel.isThread() && channel.parent?.isTextBased()) channel = channel.parent;
+  if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketData.users.split(',');
 
@@ -39,7 +45,7 @@ export default async function createVoice(client: Client, srvconfig: guildConfig
         deny: [PermissionsBitField.Flags.ViewChannel],
       },
       {
-        id: client.user!.id,
+        id: client.user.id,
         allow: [PermissionsBitField.Flags.ViewChannel],
       },
       {

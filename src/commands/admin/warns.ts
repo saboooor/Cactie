@@ -2,36 +2,27 @@ import { EmbedBuilder } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
-import prisma from '~/functions/prisma';
+import { getMemberData } from '~/functions/prisma';
 
-export const warns: SlashCommand = {
-  description: 'View warns of a user in the server',
-  permissions: ['ModerateMembers'],
+export const warns: SlashCommand<'cached'> = {
+  description: 'View someone\'s warnings',
+  permission: 'ModerateMembers',
   cooldown: 5,
   options: user,
-  async execute(message, args) {
+  async execute(interaction) {
     try {
-      // Get user and check if user is valid
-      let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', message, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
       // Get current member data
-      const memberdata = await prisma.memberdata.findUnique({
-        where: {
-          memberId_guildId: {
-            guildId: message.guild!.id,
-            memberId: member.id,
-          },
-        },
-      });
+      const memberdata = await getMemberData(member.id, interaction.guild.id);
 
       // Check if member has any warns
-      if (!memberdata || !memberdata.warns) {
-        error('This user has no warns!', message, true);
+      if (!memberdata || !memberdata.warns[0]) {
+        error('This user does not have any warnings.', interaction, true);
         return;
       }
 
@@ -52,8 +43,8 @@ export const warns: SlashCommand = {
         })));
 
       // Reply to command
-      await message.reply({ embeds: [WarnEmbed] });
+      await interaction.reply({ embeds: [WarnEmbed] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

@@ -1,10 +1,10 @@
 import { getGuildConfig } from '~/functions/prisma';
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, TextChannel, VoiceChannel, AnyThreadChannel, ThreadChannel } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, TextChannel, VoiceChannel, GuildChannel } from 'discord.js';
 import { refresh, right } from '~/misc/emoji.json';
 
-export default async (client: Client, oldChannel: TextChannel | VoiceChannel | AnyThreadChannel, newChannel: TextChannel | VoiceChannel | AnyThreadChannel) => {
+export default async (client: Client, oldChannel: GuildChannel, newChannel: GuildChannel) => {
   // Get server config
-  const srvconfig = await getGuildConfig(oldChannel.guild!.id);
+  const srvconfig = await getGuildConfig(oldChannel.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.channelupdate && !srvconfig.auditlogs.logs.channel && !srvconfig.auditlogs.logs.all) return;
@@ -24,7 +24,7 @@ export default async (client: Client, oldChannel: TextChannel | VoiceChannel | A
 
   // Generic Channel Properties
   if (oldChannel.name != newChannel.name) logEmbed.addFields([{ name: 'Name', value: `**Old:**\n${oldChannel.name}\n**New:**\n${newChannel.name}`, inline: true }]);
-  if (oldChannel.parent?.id != newChannel.parent?.id) logEmbed.addFields([{ name: 'Category', value: `**Old:**\n${oldChannel.parent?.name ?? 'None'}\n**New:**\n${newChannel.parent?.name ?? 'None'}`, inline: true }]);
+  if (oldChannel.parent?.id != newChannel.parent?.id) logEmbed.addFields([{ name: 'Parent', value: `**Old:**\n${oldChannel.parent?.name ?? 'None'}\n**New:**\n${newChannel.parent?.name ?? 'None'}`, inline: true }]);
   if (oldChannel.type != newChannel.type) logEmbed.addFields([{ name: 'Type', value: `${ChannelType[oldChannel.type]} <:right:${right}> ${ChannelType[newChannel.type]}`, inline: true }]);
 
   // Text Channel Properties
@@ -40,7 +40,7 @@ export default async (client: Client, oldChannel: TextChannel | VoiceChannel | A
   }
 
   // Not Thread Channel Properties
-  if (!(oldChannel instanceof ThreadChannel || newChannel instanceof ThreadChannel)) {
+  if ((oldChannel.isTextBased() && newChannel.isTextBased())) {
     if (oldChannel.nsfw != newChannel.nsfw) logEmbed.addFields([{ name: 'NSFW', value: `${newChannel.nsfw}`, inline: true }]);
   }
 

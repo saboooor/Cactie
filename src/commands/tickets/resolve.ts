@@ -1,18 +1,17 @@
-import { GuildMember, TextChannel } from 'discord.js';
 import resolveTicket from '~/functions/tickets/resolveTicket';
 import { SlashCommand } from '~/types/Objects';
 
-export const resolve: SlashCommand = {
+export const resolve: SlashCommand<'cached'> = {
   description: 'Mark a ticket as resolved (Closes ticket at 12AM ET)',
   ephemeral: true,
-  async execute(message) {
+  async execute(interaction) {
     try {
       // Add user to ticket
-      const msg = await resolveTicket(message.member as GuildMember, message.channel as TextChannel);
+      const msg = await resolveTicket(interaction.member, interaction.channel!);
 
       // Send message
-      await message.reply(msg);
+      await interaction.reply(msg);
     }
-    catch (err) { error(err, message, true); }
+    catch (err) { error(err, interaction, true); }
   },
 };

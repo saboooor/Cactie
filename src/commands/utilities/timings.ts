@@ -1,5 +1,5 @@
 import analyzeTimings from '~/functions/timings/analyzeTimings';
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, User, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType } from 'discord.js';
 import { left, right } from '~/misc/emoji.json';
 import { SlashCommand } from '~/types/Objects';
 import url from '~/options/url';
@@ -23,27 +23,26 @@ export const timings: SlashCommand = {
   description: 'Analyze Paper timings to help optimize your server.',
   cooldown: 10,
   options: url,
-  async execute(message, args) {
+  async execute(interaction) {
     try {
       let id;
 
       let AnalysisEmbed = new EmbedBuilder()
         .setDescription('These are not magic values. Many of these settings have real consequences on your server\'s mechanics. See [this guide](https://eternity.community/index.php/paper-optimization/) for detailed information on the functionality of each setting.')
-        .setFooter({ text: `Requested by ${message.member!.user.username}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined });
+        .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.avatarURL() ?? undefined });
 
-      for (const arg of args) {
-        if (arg.startsWith('https://spark.lucko.me')) {
-          AnalysisEmbed.addFields([{ name: '⚠️ Spark Profile', value: 'This is a Spark Profile. Use /profile instead for this type of report.' }]);
-        }
-        if (arg.startsWith('https://www.spigotmc.org/go/timings?url=') || arg.startsWith('https://spigotmc.org/go/timings?url=')) {
-          AnalysisEmbed.addFields([{ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' }]);
-        }
-        if (arg.startsWith('https://timin') && arg.includes('?id=')) id = arg.replace('/d=', '/?id=').split('#')[0].split('\n')[0].split('?id=')[1];
+      const urlArg = interaction.options.getString('url', true);
+      if (urlArg.startsWith('https://spark.lucko.me')) {
+        AnalysisEmbed.addFields([{ name: '⚠️ Spark Profile', value: 'This is a Spark Profile. Use /profile instead for this type of report.' }]);
       }
+      if (urlArg.startsWith('https://www.spigotmc.org/go/timings?url=') || urlArg.startsWith('https://spigotmc.org/go/timings?url=')) {
+        AnalysisEmbed.addFields([{ name: '❌ Spigot', value: 'Spigot timings have limited information. Switch to [Purpur](https://purpurmc.org) for better timings analysis. All your plugins will be compatible, and if you don\'t like it, you can easily switch back.' }]);
+      }
+      if (urlArg.startsWith('https://timin') && urlArg.includes('?id=')) id = urlArg.replace('/d=', '/?id=').split('#')[0].split('\n')[0].split('?id=')[1];
 
       if (!id) {
         AnalysisEmbed.addFields([{ name: '❌ Invalid Timings URL', value: 'Please provide a valid timings link.' }]);
-        message.reply({ embeds: [AnalysisEmbed] });
+        interaction.reply({ embeds: [AnalysisEmbed] });
         return;
       }
 
@@ -53,17 +52,17 @@ export const timings: SlashCommand = {
       let components = [];
       if (suggestions.length >= 13) {
         fields.splice(12, suggestions.length, { name: `Plus ${suggestions.length - 12} more recommendations`, value: 'Click the buttons below to see more', inline: false });
-        AnalysisEmbed.setFooter({ text: `Requested by ${message.member!.user.username} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: (message.member!.user as User).avatarURL() ?? undefined });
+        AnalysisEmbed.setFooter({ text: `Requested by ${interaction.user.username} • Page 1 of ${Math.ceil(suggestions.length / 12)}`, iconURL: interaction.user.avatarURL() ?? undefined });
         components.push(buttons);
       }
 
       AnalysisEmbed.setAuthor({ name: 'Timings Analysis', url: `https://timings.aikar.co/?id=${id}` })
         .setFields(fields);
 
-      const timingsmsg = await message.reply({ embeds: [AnalysisEmbed], components });
+      const timingsmsg = await interaction.reply({ embeds: [AnalysisEmbed], components });
 
       if (suggestions.length < 13) return;
-      const filter = (i: ButtonInteraction) => i.user.id == message.member!.user.id && i.customId.startsWith('analysis_');
+      const filter = (i: ButtonInteraction) => i.user.id == interaction.user.id && i.customId.startsWith('analysis_');
       const collector = timingsmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 300000 });
       collector.on('collect', async (i: ButtonInteraction) => {
         // Defer button
@@ -111,10 +110,9 @@ export const timings: SlashCommand = {
 
       // When the collector stops, remove all buttons from it
       collector.on('end', () => {
-        if (message instanceof CommandInteraction) message.editReply({ components: [] }).catch(err => logger.warn(err));
-        else timingsmsg.edit({ components: [] }).catch(err => logger.warn(err));
+        interaction.editReply({ components: [] }).catch(err => logger.warn(err));
       });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

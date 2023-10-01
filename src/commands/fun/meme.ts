@@ -3,11 +3,11 @@ import { SlashCommand } from '~/types/Objects';
 
 export const meme: SlashCommand = {
   description: 'memes haha funny',
-  async execute(message, args, client) {
+  async execute(interaction, client) {
     try {
       // Get from r/memes with the redditFetch function
-      redditFetch(['memes', 'meme', 'dankmemes', 'funny'], message, client);
+      redditFetch(['memes', 'meme', 'dankmemes', 'funny'], interaction, client);
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

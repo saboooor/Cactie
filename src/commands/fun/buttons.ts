@@ -5,10 +5,9 @@ import text from '~/options/text';
 
 export const buttons: SlashCommand = {
   description: 'ya just buttons idk',
-  voteOnly: true,
   cooldown: 10,
   options: text,
-  async execute(message, args) {
+  async execute(interaction) {
     const btns: {
       '11'?: ButtonBuilder;
       '12'?: ButtonBuilder;
@@ -37,13 +36,13 @@ export const buttons: SlashCommand = {
       '55'?: ButtonBuilder;
     } = {};
     const rows: ActionRowBuilder<ButtonBuilder>[] = [];
-    const [ro, co] = args[0].split('x');
+    const [ro, co] = interaction.options.getString('text', true).split('x');
     if (isNaN(Number(ro)) || isNaN(Number(co)) || ro == '0' || co == '0') {
-      error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', message, true);
+      error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', interaction, true);
       return;
     }
     if (Number(ro) > 5 || Number(co) > 5) {
-      error('The maximum size of the board is 5x5 due to Discord limitations', message, true);
+      error('The maximum size of the board is 5x5 due to Discord limitations', interaction, true);
       return;
     }
     for (let row = 0; row < parseInt(ro); row++) {
@@ -56,8 +55,8 @@ export const buttons: SlashCommand = {
         rows[row - 1].addComponents([btns[`${column}${row}` as keyof typeof btns]!]);
       }
     }
-    const btnMsg = await message.reply({ content: '\u200b', components: rows });
-    const filter = (i: ButtonInteraction) => i.user.id == message.member!.user.id;
+    const btnMsg = await interaction.reply({ content: '\u200b', components: rows });
+    const filter = (i: ButtonInteraction) => i.user.id == interaction.user.id;
     const collector = btnMsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 300000 });
     collector.on('collect', async i => {
       await i.deferUpdate();

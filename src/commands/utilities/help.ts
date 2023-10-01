@@ -1,7 +1,7 @@
-import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, GuildMember, CategoryChannel, StringSelectMenuInteraction, ComponentType, CommandInteraction } from 'discord.js';
-import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
+import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType, BaseGuildTextChannel } from 'discord.js';
+import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
-import commands from '~/lists/slash';
+import commands from '~/lists/cmds';
 import helpOptions from '~/options/help';
 import * as helpdesc from '~/misc/helpdesc';
 import { getGuildConfig } from '~/functions/prisma';
@@ -10,51 +10,57 @@ export const help: SlashCommand = {
   description: 'Get help with Cactie',
   cooldown: 10,
   options: helpOptions,
-  async execute(message, args) {
+  async execute(interaction) {
     try {
-      // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
       let HelpEmbed = new EmbedBuilder()
         .setColor('Random')
         .setTitle('**HELP**');
-      let arg = args[0];
-      if (arg) arg = arg.toLowerCase();
+      const subcmd = interaction.options.getSubcommand();
 
-      if (arg == 'admin' || arg == 'fun' || arg == 'animals' || arg == 'tickets' || arg == 'utilities' || arg == 'actions') {
-        const category = helpdesc[arg.toLowerCase() as keyof typeof helpdesc];
-        const commandList = commands.filter(c => c.category == arg.toLowerCase());
+      if (subcmd == 'admin' || subcmd == 'fun' || subcmd == 'animals' || subcmd == 'tickets' || subcmd == 'utilities' || subcmd == 'actions') {
+        const category = helpdesc[subcmd as keyof typeof helpdesc];
+        const commandList = commands.filter(c => c.category == subcmd);
         const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\n*Permissions: ${c.permissions.join(', ')}*` : ''}`); });
+        commandList.forEach(c => { array.push(`**${c.name}**${c.description ? `\n${c.description}` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);
       }
-      else if (arg == 'supportpanel') {
-        const permCheck = checkPerms(['Administrator'], message.member as GuildMember);
-        if (permCheck) {
-          error(permCheck, message, true);
+      else if (subcmd == 'supportpanel') {
+        if (!interaction.inCachedGuild()) {
+          error('This command can only be used in servers!', interaction, true);
           return;
         }
+        // Get server config
+        const srvconfig = await getGuildConfig(interaction.guild.id);
+        const permCheck = checkPerms(['Administrator'], interaction.member);
+        if (permCheck) {
+          error(permCheck, interaction, true);
+          return;
+        }
+        let channel = interaction.options.getChannel('channel');
+        if (!channel || !(channel instanceof BaseGuildTextChannel)) channel = interaction.channel!;
+        const title = interaction.options.getString('title');
+        const description = interaction.options.getString('description');
+        const footer = interaction.options.getString('footer');
+
         const Panel = new EmbedBuilder()
           .setColor(0x2f3136)
-          .setTitle(args[2] ?? 'Need help? No problem!')
-          .setFooter({ text: args[4] ?? `${message.guild!.name} Support`, iconURL: message.guild!.iconURL() ?? undefined });
-        let channel;
-        if (args[1]) channel = message.guild!.channels.cache.get(args[1]) as Exclude<PermissionChannel, CategoryChannel>;
-        if (!channel) channel = message.channel as Exclude<PermissionChannel, CategoryChannel>;
-        const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], message.guild!.members.me!, channel);
+          .setTitle(title ?? 'Need help? No problem!')
+          .setFooter({ text: footer ?? `${interaction.guild.name} Support`, iconURL: interaction.guild.iconURL() ?? undefined });
+        const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], interaction.guild.members.me!, channel);
         if (permCheck2) {
-          error(permCheck2, message, true);
+          error(permCheck2, interaction, true);
           return;
         }
 
         if (!srvconfig.tickets.enabled) {
-          error('Tickets are disabled!', message, true);
+          error('Tickets are disabled!', interaction, true);
           return;
         }
 
         if (srvconfig.tickets.type == 'buttons') {
-          Panel.setDescription(args[3] ?? 'Click the button below to open a ticket!');
+          Panel.setDescription(description ?? 'Click the button below to open a ticket!');
           const row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents([
               new ButtonBuilder()
@@ -64,11 +70,11 @@ export const help: SlashCommand = {
                 .setStyle(ButtonStyle.Primary),
             ]);
           await channel.send({ embeds: [Panel], components: [row] });
-          message.reply({ content: 'Support panel created! You may now delete this message' });
+          interaction.reply({ content: 'Support panel created! You may now delete this message' });
           return;
         }
         else if (srvconfig.tickets.type == 'reactions') {
-          Panel.setDescription(args[3] ?? 'React with 🎫 to open a ticket!');
+          Panel.setDescription(description ?? 'React with 🎫 to open a ticket!');
           const panelMsg = await channel.send({ embeds: [Panel] });
           await panelMsg.react('🎫');
         }
@@ -85,7 +91,7 @@ export const help: SlashCommand = {
             .setLabel(helpdesc[category as keyof typeof helpdesc].name)
             .setDescription(helpdesc[category as keyof typeof helpdesc].description)
             .setValue(`help_${category}`)
-            .setDefault(arg == category),
+            .setDefault(subcmd == category),
         );
       });
       const row = new ActionRowBuilder<StringSelectMenuBuilder>()
@@ -106,33 +112,32 @@ export const help: SlashCommand = {
             .setLabel('Donate')
             .setStyle(ButtonStyle.Link),
         ]);
-      const helpMsg = await message.reply({ embeds: [HelpEmbed], components: [row, row2] });
+      const helpMsg = await interaction.reply({ embeds: [HelpEmbed], components: [row, row2] });
 
       const filter = (i: StringSelectMenuInteraction) => i.customId == 'help_menu';
       const collector = helpMsg.createMessageComponentCollector<ComponentType.StringSelect>({ filter, time: 3600000 });
-      collector.on('collect', async (interaction: StringSelectMenuInteraction) => {
-        await interaction.deferUpdate();
+      collector.on('collect', async (selint: StringSelectMenuInteraction) => {
+        await selint.deferUpdate();
         HelpEmbed = new EmbedBuilder()
           .setColor('Random')
           .setTitle('**HELP**');
-        const category = helpdesc[interaction.values[0].split('_')[1] as keyof typeof helpdesc];
-        const commandList = commands.filter(c => c.category == interaction.values[0].split('_')[1]);
+        const category = helpdesc[selint.values[0].split('_')[1] as keyof typeof helpdesc];
+        const commandList = commands.filter(c => c.category == selint.values[0].split('_')[1]);
         const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}**${c.voteOnly ? ' <:vote:973735241619484723>' : ''}${c.description ? `\n${c.description}` : ''}${c.permissions ? `\nPermissions: ${c.permissions.join(', ')}` : ''}`); });
+        commandList.forEach(c => { array.push(`**${c.name}**${c.description ? `\n${c.description}` : ''}${c.permission ? `\nPermission: ${c.permission}` : ''}`); });
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);
-        row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == interaction.values[0]));
-        interaction.editReply({ embeds: [HelpEmbed], components: [row, row2] });
+        row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == selint.values[0]));
+        selint.editReply({ embeds: [HelpEmbed], components: [row, row2] });
       });
 
       collector.on('end', () => {
         HelpEmbed.setDescription('Help command timed out.')
           .setFooter({ text: 'please do the help command again if you still need a list of commands.' });
-        if (message instanceof CommandInteraction) message.editReply({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
-        else helpMsg.edit({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
+        interaction.editReply({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
       });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

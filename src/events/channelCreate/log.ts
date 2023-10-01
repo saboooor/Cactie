@@ -1,10 +1,10 @@
 import { getGuildConfig } from '~/functions/prisma';
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, TextChannel } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, GuildChannel, TextChannel } from 'discord.js';
 import { yes } from '~/misc/emoji.json';
 
-export default async (client: Client, channel: TextChannel) => {
+export default async (client: Client, channel: GuildChannel) => {
   // Get server config
-  const srvconfig = await getGuildConfig(channel.guild!.id);
+  const srvconfig = await getGuildConfig(channel.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.channelcreate && !srvconfig.auditlogs.logs.channel && !srvconfig.auditlogs.logs.all) return;
@@ -23,8 +23,8 @@ export default async (client: Client, channel: TextChannel) => {
     .setTitle(`<:yes:${yes}> Channel created`);
 
   // Add category and topic if applicable
-  if (channel.parent) logEmbed.addFields([{ name: 'Category', value: `${channel.parent}`, inline: true }]);
-  if (channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
+  if (channel.parent) logEmbed.addFields([{ name: 'Parent', value: `${channel.parent}`, inline: true }]);
+  if (channel instanceof TextChannel && channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
 
   // Create button to go to channel
   const row = new ActionRowBuilder<ButtonBuilder>()

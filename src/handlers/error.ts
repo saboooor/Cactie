@@ -24,7 +24,7 @@ export default (client: Client) => {
               .setStyle(ButtonStyle.Link),
           ]),
       );
-      const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
+      const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630') as TextChannel;
       const logFile = new AttachmentBuilder(readFileSync(`./logs/${logDate}.log`), { name: `${logDate}.log` });
       channel.send({ embeds: [errEmbed], files: [logFile] });
     }

@@ -3,16 +3,16 @@ import { SlashCommand } from '~/types/Objects';
 import unbanOptions from '~/options/unban';
 import { getGuildConfig } from '~/functions/prisma';
 
-export const unban: SlashCommand = {
-  description: 'Unban someone that was banned from the server',
+export const unban: SlashCommand<'cached'> = {
+  description: 'Unban someone that was banned from this server',
   ephemeral: true,
-  permissions: ['BanMembers'],
+  permission: 'BanMembers',
   botPerms: ['BanMembers'],
   cooldown: 5,
   options: unbanOptions,
   async autoComplete(client, interaction) {
     // Fetch bans from guild and check if user in arg is banned
-    const bans = await interaction.guild!.bans.fetch();
+    const bans = await interaction.guild.bans.fetch();
     const list = bans.map(ban => ({ name: ban.user.username, value: ban.user.id }));
 
     // Get the focused option
@@ -30,28 +30,28 @@ export const unban: SlashCommand = {
 
     interaction.respond(filtered);
   },
-  async execute(message, args, client) {
+  async execute(interaction, client) {
     try {
       // Fetch bans from guild and check if user in arg is banned
-      const bans = await message.guild!.bans.fetch();
-      const ban = bans.get(args[0].replace(/\D/g, ''));
+      const bans = await interaction.guild.bans.fetch();
+      const ban = bans.get(interaction.options.getString('user', true).replace(/\D/g, ''));
       if (!ban) {
-        error('Invalid User! / This user hasn\'t been banned!', message, true);
+        error('Invalid User! / This user hasn\'t been banned!', interaction, true);
         return;
       }
 
       // Send unban message to user if they can be fetched by the client
       const bannedUser = client.users.cache.get(ban.user.id);
       if (bannedUser) {
-        await bannedUser.send({ content: `**You've been unbanned in ${message.guild!.name}**` })
+        await bannedUser.send({ content: `## You've been unbanned in ${interaction.guild.name}` })
           .catch(err => {
             logger.warn(err);
-            message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
+            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unbanned.' });
           });
       }
 
       // Actually unban the dude
-      message.guild!.members.unban(ban.user.id);
+      interaction.guild.members.unban(ban.user.id);
 
       // Create embed with color and title
       const UnbanEmbed = new EmbedBuilder()
@@ -59,18 +59,18 @@ export const unban: SlashCommand = {
         .setTitle(`Unbanned ${ban.user.username}`);
 
       // Reply with unban log
-      message.reply({ embeds: [UnbanEmbed] });
-      logger.info(`Unbanned user: ${ban.user.username} in ${message.guild!.name}`);
+      interaction.reply({ embeds: [UnbanEmbed] });
+      logger.info(`Unbanned user: ${ban.user.username} in ${interaction.guild.name}`);
 
       // Check if log channel exists and send message
       // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
-      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const srvconfig = await getGuildConfig(interaction.guild.id);
+      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        UnbanEmbed.setTitle(`${message.member!.user.username} ${UnbanEmbed.toJSON().title}`);
+        UnbanEmbed.setTitle(`${interaction.user.username} ${UnbanEmbed.toJSON().title}`);
         logchannel.send({ embeds: [UnbanEmbed] });
       }
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

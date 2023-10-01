@@ -1,24 +1,25 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, User, ButtonInteraction, ComponentType, CommandInteraction } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import questionsOptions from '~/options/21q';
 
-export const questions: SlashCommand = {
+export const questions: SlashCommand<'cached'> = {
   name: '21questions',
-  description: 'Play 21 Questions with an opponent',
+  description: 'Play 21 Questions',
   cooldown: 10,
   options: questionsOptions,
-  async execute(message, args) {
-    if (args[1] && !isNaN(Number(args[1])) && (Number(args[1]) < 1 || Number(args[1]) > 25)) {
-      error('The amount of questions must be between 1 and 25!', message, true);
+  async execute(interaction) {
+    const member = interaction.options.getMember('user');
+    if (member?.id == interaction.user.id) {
+      error('You played yourself, oh wait, you can\'t.', interaction, true);
       return;
     }
-    const member = args[0] ? await message.guild!.members.fetch(args[0].replace(/\D/g, '')).catch(() => null) : null;
-    if (member && member.id == message.member!.user.id) {
-      error('You played yourself, oh wait, you can\'t.', message, true);
+    const questionAmt = interaction.options.getNumber('amount');
+    if (questionAmt && (questionAmt < 1 || questionAmt > 25)) {
+      error('The amount of questions must be between 1 and 25!', interaction, true);
       return;
     }
-    if (member && member.user.bot) {
-      error('Bots aren\'t fun to play with, yet. ;)', message, true);
+    if (member?.user.bot) {
+      error('Bots aren\'t fun to play with, yet. ;)', interaction, true);
       return;
     }
     const row = new ActionRowBuilder<ButtonBuilder>()
@@ -30,16 +31,16 @@ export const questions: SlashCommand = {
       ]);
     const TwentyOneQuestions = new EmbedBuilder()
       .setColor(0x2f3136)
-      .setTitle(`${args[1] ? args[1] : 21} Questions`)
-      .setDescription(`**Playing with:**\n${member ?? 'Everyone'}\n**Host:**\n${message.member}\nPlease choose an answer by clicking the button below.`)
-      .setThumbnail((message.member!.user as User).avatarURL());
+      .setTitle(`${questionAmt ?? 21} Questions`)
+      .setDescription(`**Playing with:**\n${member ?? 'Everyone'}\n**Host:**\n${interaction.user}\nPlease choose an answer by clicking the button below.`)
+      .setThumbnail(interaction.user.avatarURL());
 
-    const questionmsg = await message.reply({ content: `${message.member}`, embeds: [TwentyOneQuestions], components: [row] });
+    const questionmsg = await interaction.reply({ content: `${interaction.user}`, embeds: [TwentyOneQuestions], components: [row] });
 
-    const filter = (i: ButtonInteraction) => i.customId == 'choose_answer' && i.member!.user.id == message.member!.user.id;
+    const filter = (i: ButtonInteraction) => i.customId == 'choose_answer' && i.user.id == interaction.user.id;
     const collector = questionmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 7200000 });
 
-    collector.on('collect', async interaction => {
+    collector.on('collect', async btnint => {
       // Create and show a modal for the user to fill out the answer
       const modal = new ModalBuilder()
         .setTitle('Choose an answer')
@@ -53,15 +54,14 @@ export const questions: SlashCommand = {
               .setMaxLength(1024),
           ]),
         ]);
-      interaction.showModal(modal);
+      btnint.showModal(modal);
       collector.stop();
     });
 
     // When the collector stops, edit the message with a timeout message if the game hasn't ended already
     collector.on('end', () => {
       if (collector.collected.size) return;
-      if (message instanceof CommandInteraction) message.editReply({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
-      else questionmsg.edit({ content: `A game of ${args[1] ? args[1] : 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
+      interaction.editReply({ content: `A game of ${questionAmt ?? 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
     });
   },
 };

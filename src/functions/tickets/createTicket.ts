@@ -1,17 +1,24 @@
 import prisma, { guildConfig } from '~/functions/prisma';
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField, Client, GuildMember, TextChannel, CategoryChannel } from 'discord.js';
 
-export default async function createTicket(client: Client, srvconfig: guildConfig, member: GuildMember, description?: string) {
+export default async function createTicket(client: Client<true>, srvconfig: guildConfig, member: GuildMember, description?: string) {
   // Check if tickets are disabled
   if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if ticket already exists
-  const ticketData = await prisma.ticketdata.findUnique({ where: { opener_guildId: { opener: member.id, guildId: member.guild.id } } });
+  const ticketData = await prisma.ticketdata.findUnique({
+    where: {
+      opener_guildId: {
+        opener: member.id,
+        guildId: member.guild.id,
+      },
+    },
+  });
   if (ticketData) {
     try {
       const channel = await member.guild.channels.fetch(ticketData.channelId) as TextChannel;
-      if (channel!.name.startsWith('ticket')) {
-        await channel!.send({ content: `❗ **${member} Ticket already exists!**` });
+      if (channel.name.startsWith('ticket')) {
+        await channel.send({ content: `❗ **${member} Ticket already exists!**` });
         return `**You've already created a ticket at ${channel}!**`;
       }
     }
@@ -27,6 +34,15 @@ export default async function createTicket(client: Client, srvconfig: guildConfi
   // Branch for ticket-dev or ticket-testing etc
   const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
+  // Find role
+  const role = await member.guild.roles.fetch(srvconfig.tickets.role).catch(() => { return null; });
+  const rolePerms = role ? [
+    {
+      id: role.id,
+      allow: [PermissionsBitField.Flags.ViewChannel],
+    },
+  ] : [];
+
   // Create ticket and set database
   const id = srvconfig.tickets.count == 'false' ? member.user.username.toLowerCase().replace(' ', '-') : srvconfig.tickets.count;
   const ticket = await member.guild.channels.create({
@@ -39,21 +55,20 @@ export default async function createTicket(client: Client, srvconfig: guildConfi
         deny: [PermissionsBitField.Flags.ViewChannel],
       },
       {
-        id: client.user!.id,
+        id: client.user.id,
         allow: [PermissionsBitField.Flags.ViewChannel],
       },
       {
         id: member.id,
         allow: [PermissionsBitField.Flags.ViewChannel],
       },
+      ...rolePerms,
     ],
     reason: description,
   });
 
-  // Find role and set perms and if no role then send error
-  const role = await member.guild.roles.fetch(srvconfig.tickets.role).catch(() => { return null; });
-  if (role) await ticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
-  else await ticket.send({ content: '❗ **No access role set!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
+  // If no role, send message to ticket
+  if (!role) await ticket.send({ content: '❗ **Can\'t find access role!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
 
   // Set the database
   await prisma.ticketdata.create({

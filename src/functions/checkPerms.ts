@@ -1,8 +1,8 @@
-import { PermissionsBitField, GuildMember, TextChannel, GuildChannel, Channel, DMChannel, AnyThreadChannel, ForumChannel, PartialDMChannel, PartialGroupDMChannel, GuildChannelResolvable } from 'discord.js';
+import { PermissionsBitField, GuildMember, GuildChannel, Channel, DMChannel, ForumChannel, PartialDMChannel, PartialGroupDMChannel } from 'discord.js';
 
-export type PermissionChannel = Exclude<Channel, DMChannel | PartialDMChannel | PartialGroupDMChannel | AnyThreadChannel | ForumChannel>;
+export type PermissionChannel = Exclude<Channel, DMChannel | PartialDMChannel | PartialGroupDMChannel | ForumChannel>;
 
-export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.Flags)[], member: GuildMember, channel?: PermissionChannel | GuildChannelResolvable) {
+export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.Flags)[], member: GuildMember, channel?: PermissionChannel | string) {
   // If member is owner, override
   if (member.id == '249638347306303499') return;
 
@@ -10,14 +10,14 @@ export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.F
   const rejectedPerms: typeof reqPerms = [];
 
   // Get the channel from the snowflake if a full channel isn't given
-  if (channel && typeof channel == 'string') channel = member.guild.channels.cache.get(channel) as PermissionChannel;
+  if (typeof channel == 'string') channel = member.guild.channels.cache.get(channel) as PermissionChannel;
 
   // Attempt to get perms
   let perms: null | PermissionsBitField = member.permissions;
   if (channel) {
     try { perms = member.permissionsIn(channel); }
     catch { perms = null; }
-    if (!perms && channel instanceof TextChannel) {
+    if (!perms && channel.parent) {
       try { perms = channel.parent ? member.permissionsIn(channel.parent.id) : null; }
       catch { perms = null; }
     }
@@ -26,7 +26,7 @@ export default function checkPerms(reqPerms: (keyof typeof PermissionsBitField.F
 
   // Check if perms are met
   reqPerms.forEach(perm => {
-    if (!perms!.has(PermissionsBitField.Flags[perm])) rejectedPerms.push(perm);
+    if (!perms?.has(PermissionsBitField.Flags[perm])) rejectedPerms.push(perm);
   });
 
   // Check if there are any rejected perms

@@ -5,38 +5,40 @@ import minecraft from '~/options/minecraft';
 export const serverjar: SlashCommand = {
   description: 'Get info on any Purpur, Paper, Waterfall, or Velocity build',
   options: minecraft,
-  async execute(message, args) {
+  async execute(interaction) {
     try {
       const JarEmbed = new EmbedBuilder().setColor(0x2f3136);
-      args[0] = args[0].toLowerCase();
+      const fork = interaction.options.getString('fork', true);
+      const version = interaction.options.getString('version');
+      const build = interaction.options.getNumber('build');
       const row = new ActionRowBuilder<ButtonBuilder>();
-      if (args[0] == 'paper' || args[0] == 'waterfall' || args[0] == 'velocity') {
+      if (fork == 'paper' || fork == 'waterfall' || fork == 'velocity') {
         // fetch the latest mc version
-        const a = await fetch(`https://papermc.io/api/v2/projects/${args[0]}`);
+        const a = await fetch(`https://papermc.io/api/v2/projects/${fork}`);
         const b = await a.json();
         // if specified args are valid then replace latest with that number
-        const c = args[1] ? args[1] : b.versions[b.versions.length - 1];
+        const c = version ?? b.versions[b.versions.length - 1];
         // fetch the latest build for mc version specified or latest
-        const d = await fetch(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}`);
+        const d = await fetch(`https://papermc.io/api/v2/projects/${fork}/versions/${c}`);
         const e = await d.json();
         // check if error
         if (e.error) {
-          error(e.error, message, true);
+          error(e.error, interaction, true);
           return;
         }
-        const build = e.builds[e.builds.length - 1];
+        const latestBuild = e.builds[e.builds.length - 1];
         // fetch the build specified
-        const f = args[2] ? args[2] : build;
-        const g = await fetch(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}`);
+        const f = build ?? latestBuild;
+        const g = await fetch(`https://papermc.io/api/v2/projects/${fork}/versions/${c}/builds/${f}`);
         const h = await g.json();
         // check if error
         if (h.error) {
-          error(h.error, message, true);
+          error(h.error, interaction, true);
           return;
         }
         // initial embed creation
-        JarEmbed.setURL(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}`)
-          .setTitle(`${args[0]} ${h.version} build ${h.build}`)
+        JarEmbed.setURL(`https://papermc.io/api/v2/projects/${fork}/versions/${c}/builds/${f}`)
+          .setTitle(`${fork} ${h.version} build ${h.build}`)
           .setDescription(`${h.changes.length} commit(s)`)
           .setTimestamp(Date.parse(h.time));
         // add fields for commits
@@ -49,30 +51,30 @@ export const serverjar: SlashCommand = {
         row.addComponents([
           new ButtonBuilder()
             .setLabel(`Download ${h.downloads.application.name}`)
-            .setURL(`https://papermc.io/api/v2/projects/${args[0]}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}`)
+            .setURL(`https://papermc.io/api/v2/projects/${fork}/versions/${c}/builds/${f}/downloads/${h.downloads.application.name}`)
             .setStyle(ButtonStyle.Link),
         ]);
       }
-      else if (args[0] == 'purpur') {
+      else if (fork == 'purpur') {
         // fetch the latest mc version
         const a = await fetch('https://api.purpurmc.org/v2/purpur');
         const b = await a.json();
         // if specified args are valid then replace latest with that number
-        const c = args[1] ? args[1] : b.versions[b.versions.length - 1];
+        const c = version ?? b.versions[b.versions.length - 1];
         const d = await fetch(`https://api.purpurmc.org/v2/purpur/${c}`);
         const e = await d.json();
         // check if error
         if (e.error) {
-          error(e.error, message, true);
+          error(e.error, interaction, true);
           return;
         }
         // fetch the latest build for mc / build versions specified or latest
-        const f = args[2] ? args[2] : 'latest';
+        const f = build ?? 'latest';
         const g = await fetch(`https://api.purpurmc.org/v2/purpur/${c}/${f}`);
         const h = await g.json();
         // check if error
         if (h.error) {
-          error(h.error, message, true);
+          error(h.error, interaction, true);
           return;
         }
         // initial embed creation
@@ -95,7 +97,7 @@ export const serverjar: SlashCommand = {
             .setStyle(ButtonStyle.Link),
         ]);
       }
-      else if (args[0] == 'petal') {
+      else if (fork == 'petal') {
         // fetch the latest mc version
         const a = await fetch('https://api.github.com/repos/Bloom-host/Petal/releases', { headers: { 'Accept': 'application/json' } });
         const b = await a.json();
@@ -123,12 +125,12 @@ export const serverjar: SlashCommand = {
         ]);
       }
       else {
-        error('Invalid Minecraft server fork.', message, true);
+        error('Invalid Minecraft server fork.', interaction, true);
         return;
       }
       // send embed
-      message.reply({ embeds: [JarEmbed], components: [row] });
+      interaction.reply({ embeds: [JarEmbed], components: [row] });
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

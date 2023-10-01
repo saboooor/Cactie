@@ -1,4 +1,4 @@
-import { Collection, Message, TextChannel } from 'discord.js';
+import { Collection, Message } from 'discord.js';
 import parseMentions from './parseMentions';
 
 export default async function getTranscript(messages: Collection<string, Message<true>>) {
@@ -11,7 +11,7 @@ export default async function getTranscript(messages: Collection<string, Message
     },
     channel: {
       id: channel.id,
-      name: (channel as TextChannel).name,
+      name: channel.name,
     },
     time: Date.now(),
     logs: [],

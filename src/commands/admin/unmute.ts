@@ -3,35 +3,33 @@ import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
 import prisma, { getGuildConfig } from '~/functions/prisma';
 
-export const unmute: SlashCommand = {
-  description: 'Unmute someone that was muted in the server',
+export const unmute: SlashCommand<'cached'> = {
+  description: 'Unmute someone in this server',
   ephemeral: true,
-  permissions: ['ModerateMembers'],
+  permission: 'ModerateMembers',
   botPerms: ['ManageRoles', 'ModerateMembers'],
   cooldown: 5,
   options: user,
-  async execute(message, args) {
+  async execute(interaction) {
     try {
-      // Get settings and check if mutecmd is enabled
-      // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
-      const role = await message.guild!.roles.cache.get(srvconfig.mutecmd);
+      // Get server config and check if mutecmd is enabled
+      const srvconfig = await getGuildConfig(interaction.guild.id);
+      const role = await interaction.guild.roles.cache.get(srvconfig.mutecmd);
       if (!role && srvconfig.mutecmd != 'timeout') {
-        error('This command is disabled!', message, true);
+        error('This command is disabled!', interaction, true);
         return;
       }
 
       // Get user and check if user is valid
-      let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', message, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
       // Check if user is unmuted
       if (role && !member.roles.cache.has(role.id)) {
-        error('This user is not muted!', message, true);
+        error('This user is not muted!', interaction, true);
         return;
       }
 
@@ -41,14 +39,27 @@ export const unmute: SlashCommand = {
 
       // Reset the mute timer
       // Get server config
-      const data = await prisma.memberdata.findUnique({ where: { memberId_guildId: { memberId: member.id, guildId: message.guild!.id } } });
-      if (data) await prisma.memberdata.update({ where: { memberId_guildId: { memberId: member.id, guildId: message.guild!.id } }, data: { mutedUntil: null } });
+      await prisma.memberdata.upsert({
+        where: {
+          memberId_guildId: {
+            memberId: member.id,
+            guildId: interaction.guild.id,
+          },
+        },
+        update: {
+          mutedUntil: null,
+        },
+        create: {
+          memberId: member.id,
+          guildId: interaction.guild.id,
+        },
+      });
 
       // Send unmute message to user
-      await member.send({ content: '**You\'ve been unmuted**' })
+      await member.send({ content: `## You've been unmuted in ${interaction.guild.name}` })
         .catch(err => {
           logger.warn(err);
-          message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
+          interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been unmuted.' });
         });
 
       // Create embed with color and title
@@ -57,16 +68,16 @@ export const unmute: SlashCommand = {
         .setTitle(`Unmuted ${member.user.username}`);
 
       // Reply with unban log
-      message.reply({ embeds: [UnmuteEmbed] });
-      logger.info(`Unmuted ${member.user.username} in ${message.guild!.name}`);
+      interaction.reply({ embeds: [UnmuteEmbed] });
+      logger.info(`Unmuted ${member.user.username} in ${interaction.guild.name}`);
 
       // Check if log channel exists and send message
-      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel;
+      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        UnmuteEmbed.setTitle(`${message.member!.user.username} ${UnmuteEmbed.toJSON().title}`);
+        UnmuteEmbed.setTitle(`${interaction.user.username} ${UnmuteEmbed.toJSON().title}`);
         logchannel.send({ embeds: [UnmuteEmbed] });
       }
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

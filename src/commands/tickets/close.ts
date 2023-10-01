@@ -1,23 +1,22 @@
 import { getGuildConfig } from '~/functions/prisma';
-import { GuildMember, TextChannel } from 'discord.js';
 import closeTicket from '~/functions/tickets/closeTicket';
 import { SlashCommand } from '~/types/Objects';
 
-export const close: SlashCommand = {
+export const close: SlashCommand<'cached'> = {
   description: 'Close a ticket',
   ephemeral: true,
   botPerms: ['ManageChannels'],
-  async execute(message) {
+  async execute(interaction) {
     try {
       // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
+      const srvconfig = await getGuildConfig(interaction.guild.id);
 
       // Create a ticket
-      const msg = await closeTicket(srvconfig, message.member as GuildMember, message.channel as TextChannel);
+      const msg = await closeTicket(srvconfig, interaction.member, interaction.channel!);
 
       // Send the message
-      await message.reply(msg);
+      await interaction.reply(msg);
     }
-    catch (err) { error(err, message, true); }
+    catch (err) { error(err, interaction, true); }
   },
 };

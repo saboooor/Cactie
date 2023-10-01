@@ -1,11 +1,7 @@
-import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
-import slashcommands from '~/lists/slash';
+import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionsBitField } from 'discord.js';
+import slashcommands from '~/lists/cmds';
 import contextcommands from '~/lists/context';
 import { Command } from '~/types/Objects';
-const truncateString = (string: string, maxLength: number) =>
-  string.length > maxLength
-    ? `${string.substring(0, maxLength)}…`
-    : string;
 
 export const reloadcmds: Command = {
   description: 'Reloads all slash commands',
@@ -18,8 +14,11 @@ export const reloadcmds: Command = {
       for (const obj of slashcommands) {
         const command = obj[1];
         const cmd = new SlashCommandBuilder()
-          .setName(command.name!)
-          .setDescription(truncateString(command.description, 99));
+          .setName(command.name as string)
+          .setDescription(command.description)
+          .setDMPermission(command.category != 'admin' && command.category != 'tickets');
+        if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
+
         if (command.options) await command.options(cmd);
         cmds.push(cmd);
       }
@@ -27,7 +26,9 @@ export const reloadcmds: Command = {
         const command = obj[1];
         const cmd = new ContextMenuCommandBuilder()
           .setName(command.name!)
-          .setType(ApplicationCommandType[command.type]);
+          .setType(ApplicationCommandType[command.type])
+          .setDMPermission(false);
+        if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
         cmds.push(cmd);
       }
       await client.application.commands.set(cmds);

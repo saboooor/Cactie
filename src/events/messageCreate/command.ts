@@ -1,6 +1,6 @@
 import { Client, Message } from 'discord.js';
 import checkPerms, { PermissionChannel } from '~/functions/checkPerms';
-import commands from '~/lists/private';
+import commands from '~/lists/cmdsprivate';
 
 export default async (client: Client, message: Message<true>) => {
   // If the bot can't read message history or send messages, don't execute a command
@@ -12,28 +12,26 @@ export default async (client: Client, message: Message<true>) => {
   // If message doesn't start with the prefix, return
   if (!message.content.startsWith(`${client.user}`)) return;
 
-  // Check if user has dev in Luminescent Discord Server
-  const luminescent = client.guilds.cache.get('811354612547190794')!;
-  const luminescentMember = luminescent.members.cache.get(message.member!.id);
-  if (luminescentMember ? !luminescentMember.roles.cache.has('839158574138523689') : true) {
-    // If message has the bot's Id, reply with prefix
-    if (message.content.includes(client.user!.id)) {
-      const himsg = await message.reply({ content: `**Hi! I'm ${client.user?.username}**\nIf my commands don't work:\n- try using slash commands (/)\n- Use my mention as a prefix (${client.user})` });
-      setTimeout(() => { himsg.delete().catch(err => logger.error(err)); }, 10000);
-    }
-  }
-
   // Get args by splitting the message by the spaces and getting rid of the prefix
   const args = message.content.split(' ');
   args.shift();
   if (!args[0]) return;
 
   // Get the command name from the first arg and get rid of the first arg
-  const commandName = args.shift()!.toLowerCase();
+  const commandName = args.shift()?.toLowerCase();
 
   // Get the command from the commandName, if it doesn't exist, return
-  const command = commands.get(commandName);
-  if (!command) return;
+  const command = commands.get(commandName ?? '');
+  if (!command) {
+    const himsg = await message.reply({ content: `## Hi! I'm ${client.user?.username}\nDo a /help command for help!` });
+    setTimeout(() => { himsg.delete().catch(err => logger.error(err)); }, 10000);
+    return;
+  }
+
+  // Check if user has dev in Luminescent Discord Server
+  const luminescent = client.guilds.cache.get('811354612547190794')!;
+  const luminescentMember = luminescent.members.cache.get(message.member!.id);
+  if (luminescentMember ? !luminescentMember.roles.cache.has('839158574138523689') : true) return;
 
   // Log
   logger.info(`${message.author.username} issued message command: ${message.content}, in ${message.guild.name}`);

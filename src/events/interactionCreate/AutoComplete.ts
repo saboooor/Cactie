@@ -1,5 +1,5 @@
 import { AutocompleteInteraction, Client } from 'discord.js';
-import slashcommands from '~/lists/slash';
+import slashcommands from '~/lists/cmds';
 
 export default async (client: Client, interaction: AutocompleteInteraction) => {
   // Check if the interaction is autocomplete

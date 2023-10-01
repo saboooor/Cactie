@@ -1,14 +1,20 @@
-import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, PublicThreadChannel, Message } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, Message, GuildTextBasedChannel } from 'discord.js';
 import getTranscript from '../messages/getTranscript';
 import getMessages from '../messages/getMessages';
 import prisma, { guildConfig } from '~/functions/prisma';
 
-export default async function closeTicket(srvconfig: guildConfig, member: GuildMember, channel: TextChannel | PublicThreadChannel<false>) {
+export default async function closeTicket(srvconfig: guildConfig, member: GuildMember, channel: GuildTextBasedChannel) {
   // Check if channel is thread and set the channel to the parent channel
-  if (channel.isThread()) channel = channel.parent as TextChannel;
+  if (channel.isThread() && channel.parent?.isTextBased()) channel = channel.parent;
+  if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketdata = await prisma.ticketdata.findUnique({ where: { channelId: channel.id } });
+  const ticketdata = await prisma.ticketdata.findUnique({
+    where: {
+      channelId: channel.id,
+    },
+    cacheStrategy: { ttl: 60 },
+  });
   if (!ticketdata) throw new Error('This isn\'t a ticket that I know of!');
   const ticketDataUsers = ticketdata.users.split(',');
 
@@ -65,7 +71,7 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
   }
 
   // Get the ticket log channel
-  const logchannel = await member.guild.channels.fetch(srvconfig.tickets.logchannel).catch(() => { return null; }) as TextChannel | null;
+  const logchannel = member.guild.channels.cache.get(srvconfig.tickets.logchannel) as TextChannel | null;
 
   // Check if ticket log channel is set in settings and send embed to ticket log channel
   if (logchannel) await logchannel.send({ embeds: [CloseEmbed] });

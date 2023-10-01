@@ -1,4 +1,4 @@
-import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, GuildMember, ComponentType, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
+import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, ComponentType, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
 import action from '~/functions/action';
 import actions from '~/misc/actions.json';
 import { x } from '~/misc/emoji.json';
@@ -86,7 +86,7 @@ export const context: ContextMenuCommand<'User'> = {
       });
       collectorSelect.on('collect', async selint => {
         const actionName = selint.values[0].split('_')[1];
-        action(selint.message, selint.member as GuildMember, [member.id], actionName as keyof typeof actions);
+        action(selint, member.id, actionName as keyof typeof actions);
         collectorSelect.stop();
         collectorButton.stop();
       });

@@ -7,7 +7,7 @@ export default async (client: Client, message: Message<true>) => {
   if (message.author && message.author.bot) return;
 
   // Get server config
-  const srvconfig = await getGuildConfig(message.guild!.id);
+  const srvconfig = await getGuildConfig(message.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.messagedelete && !srvconfig.auditlogs.logs.message && !srvconfig.auditlogs.logs.all) return;
@@ -44,7 +44,7 @@ export default async (client: Client, message: Message<true>) => {
     const files = message.attachments.filter(a => a.contentType?.split('/')[0] != 'image');
     if (images.size) {
       logEmbed.addFields([{ name: 'Images', value: `${images.size}` }]);
-      logEmbed.setImage(images.first()!.url);
+      logEmbed.setImage(images.first()?.url ?? null);
       images.delete(images.first()!.id);
       if (images.size) {
         images.forEach(img => {

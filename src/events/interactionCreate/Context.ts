@@ -5,17 +5,11 @@ import contextcommands from '~/lists/context';
 export default async (client: Client, interaction: ContextMenuCommandInteraction) => {
   // Check if interaction is context menu
   if (!interaction.isContextMenuCommand()) return;
-  if (!interaction.guild) return;
+  if (!interaction.inCachedGuild()) return;
 
   // Get the command from the available slash cmds in the bot, if there isn't one, just return because discord will throw an error itself
   const command = contextcommands.get(interaction.commandName);
   if (!command) return;
-
-  // Check if user has the permissions necessary in the guild to use the command
-  if (command.permissions) {
-    const permCheck = checkPerms(command.permissions, interaction.member as GuildMember);
-    if (permCheck) return error(permCheck, interaction, true);
-  }
 
   // Check if bot has the permissions necessary in the guild to run the command
   if (command.botPerms) {
@@ -45,7 +39,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
         { name: '**Interaction:**', value: `${command.name}` },
         { name: '**Error:**', value: `\`\`\`\n${err}\n\`\`\`` },
       ]);
-    const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630')! as TextChannel;
+    const errorchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('830013224753561630') as TextChannel;
     errorchannel.send({ content: '<@&839158574138523689>', embeds: [interactionFailed] });
     interaction.user.send({ embeds: [interactionFailed] }).catch(err => logger.warn(err));
     logger.error(err);

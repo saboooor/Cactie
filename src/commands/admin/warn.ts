@@ -1,80 +1,62 @@
-import { EmbedBuilder, GuildMemberRoleManager, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
-import punish from '~/options/punish';
-import prisma, { getGuildConfig } from '~/functions/prisma';
+import punish from '~/options/punish-reason';
+import prisma, { getGuildConfig, getMemberData } from '~/functions/prisma';
 
-export const warn: SlashCommand = {
-  description: 'Warn someone in the server',
+export const warn: SlashCommand<'cached'> = {
+  description: 'Warn someone in this server',
   ephemeral: true,
-  permissions: ['ModerateMembers'],
+  permission: 'ModerateMembers',
   cooldown: 5,
   options: punish,
-  async execute(message, args) {
+  async execute(interaction) {
     try {
       // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
+      const srvconfig = await getGuildConfig(interaction.guild.id);
 
       // Get user and check if user is valid
-      let member = message.guild!.members.cache.get(args[0].replace(/\D/g, ''));
-      if (!member) member = await message.guild!.members.fetch(args[0].replace(/\D/g, ''));
+      const member = interaction.options.getMember('user');
       if (!member) {
-        error('Invalid member! Are they in this server?', message, true);
+        error('Invalid Member! Did they leave the server?', interaction, true);
         return;
       }
 
       // Get member and author and check if role is lower than member's role
-      const author = message.member;
-      const authorRoles = author!.roles as GuildMemberRoleManager;
-      const botRoles = message.guild!.members.me!.roles as GuildMemberRoleManager;
+      const author = interaction.member;
+      const authorRoles = author.roles;
+      const botRoles = interaction.guild.members.me!.roles;
       if (member.roles.highest.rawPosition > authorRoles.highest.rawPosition) {
-        error(`You can't do that! Your role is ${member.roles.highest.rawPosition - authorRoles.highest.rawPosition} positions lower than the user's role!`, message, true);
+        error(`You can't do that! Your role is ${member.roles.highest.rawPosition - authorRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
         return;
       }
       if (member.roles.highest.rawPosition > botRoles.highest.rawPosition) {
-        error(`I can't do that! My role is ${member.roles.highest.rawPosition - botRoles.highest.rawPosition} positions lower than the user's role!`, message, true);
+        error(`I can't do that! My role is ${member.roles.highest.rawPosition - botRoles.highest.rawPosition} positions lower than the user's role!`, interaction, true);
         return;
       }
 
       // Check if duration is set and if it's more than a year
-      const time = ms(args[1] ? args[1] : 'perm');
+      const timeArg = interaction.options.getString('time');
+      const time = ms(timeArg ?? 'perm');
       if (time > 31536000000) {
-        error('You cannot warn someone for more than 1 year!', message, true);
+        error('You cannot warn someone for more than 1 year!', interaction, true);
         return;
       }
 
       // Create embed and check if duration / reason are set and do stuff
       const WarnEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(`Warned ${member.user.username} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.`);
+        .setTitle(`Warned ${member.user.username} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.`);
 
       // Add reason if specified
-      const reason = args.slice(!isNaN(time) ? 2 : 1).join(' ');
+      const reason = interaction.options.getString('reason');
       if (reason) WarnEmbed.addFields([{ name: 'Reason', value: reason }]);
 
-      // Make warns array
-      const warns: {
-        reason: string;
-        created: number;
-        until?: number;
-      }[] = [];
-
-      // Get current member data
-      const memberdata = await prisma.memberdata.findUnique({
-        where: {
-          memberId_guildId: {
-            guildId: message.guild!.id,
-            memberId: member.id,
-          },
-        },
-      });
-      if (memberdata && memberdata.warns) {
-        const currentWarns = JSON.parse(memberdata.warns);
-        warns.push(...currentWarns);
-      }
+      // Get Member Data
+      const memberdata = await getMemberData(member.id, interaction.guild.id, 0);
 
       // Add warn to warns array
-      warns.push({
+      memberdata.warns.push({
         reason: reason ? reason : 'No reason specified.',
         created: Date.now(),
         until: !isNaN(time) ? Date.now() + time : undefined,
@@ -84,40 +66,40 @@ export const warn: SlashCommand = {
       await prisma.memberdata.upsert({
         where: {
           memberId_guildId: {
-            guildId: message.guild!.id,
+            guildId: interaction.guild.id,
             memberId: member.id,
           },
         },
         update: {
-          warns: JSON.stringify(warns),
+          warns: JSON.stringify(memberdata.warns),
         },
         create: {
           memberId: member.id,
-          guildId: message.guild!.id,
-          warns: JSON.stringify(warns),
+          guildId: interaction.guild.id,
+          warns: JSON.stringify(memberdata.warns),
         },
       });
 
       // Send warn message to target if silent is false
-      if (!args[3]) {
-        await member.send({ content: `**You've been warned in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}**` })
+      if (!interaction.options.getBoolean('silent')) {
+        await member.send({ content: `## You've been warned in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? `\n**Reason:** ${reason}` : ''}` })
           .catch(err => {
             logger.warn(err);
-            message.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });
+            interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been warned.' });
           });
       }
-      logger.info(`Warned user: ${member.user.username} in ${message.guild!.name} ${!isNaN(time) ? `for ${args[1]}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
+      logger.info(`Warned user: ${member.user.username} in ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? ` Reason: ${reason}` : ''}`);
 
       // Reply to command
-      await message.reply({ embeds: [WarnEmbed] });
+      await interaction.reply({ embeds: [WarnEmbed] });
 
       // Check if log channel exists and send message
-      const logchannel = message.guild!.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
+      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
       if (logchannel) {
-        WarnEmbed.setTitle(`${author!.user.username} ${WarnEmbed.toJSON().title}`);
+        WarnEmbed.setTitle(`${author.user.username} ${WarnEmbed.toJSON().title}`);
         logchannel.send({ embeds: [WarnEmbed] });
       }
     }
-    catch (err) { error(err, message); }
+    catch (err) { error(err, interaction); }
   },
 };

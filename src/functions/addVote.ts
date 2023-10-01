@@ -12,7 +12,7 @@ export default async function addVote(body: {
     .setColor('Random')
     .setTitle('Vote Received!')
     .setDescription(`Thank you for voting, <@${user?.id || body.id || body.user}>!`);
-  const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('931848198773948427')! as TextChannel;
+  const channel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('931848198773948427') as TextChannel;
   channel?.send({ embeds: [VoteEmbed] });
 
   // Get server config

@@ -5,10 +5,15 @@ import closeTicket from '~/functions/tickets/closeTicket';
 export default async (client: Client, member: GuildMember) => {
   try {
     // Get server config
-    const srvconfig = await getGuildConfig(member.guild!.id);
+    const srvconfig = await getGuildConfig(member.guild.id);
 
     // Get the ticket data
-    const ticketdata = await prisma.ticketdata.findMany({ where: { opener: member.id, guildId: member.guild!.id } });
+    const ticketdata = await prisma.ticketdata.findMany({
+      where: {
+        opener: member.id,
+        guildId: member.guild.id,
+      },
+    });
     if (!ticketdata.length) return;
 
     // Close all tickets under member

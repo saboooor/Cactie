@@ -1,4 +1,4 @@
-import { Client, EmbedBuilder, Guild, TextChannel } from 'discord.js';
+import { Client, EmbedBuilder, Guild, BaseGuildTextChannel } from 'discord.js';
 
 export default async (client: Client, guild: Guild) => {
   if (!guild.available) return;
@@ -11,6 +11,6 @@ export default async (client: Client, guild: Guild) => {
     .setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user?.avatarURL() ?? undefined })
     .setDescription(`${client.user?.username} is now in ${client.guilds.cache.size} servers`)
     .addFields([{ name: 'Created at', value: `<t:${createdTimestamp}>\n<t:${createdTimestamp}:R>` }]);
-  const logchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('865682839616618506')! as TextChannel;
+  const logchannel = client.guilds.cache.get('811354612547190794')!.channels.cache.get('865682839616618506') as BaseGuildTextChannel;
   logchannel.send({ embeds: [RemEmbed] });
 };

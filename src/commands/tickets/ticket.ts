@@ -1,25 +1,28 @@
-import { GuildMember } from 'discord.js';
-import createTicket from '~/functions/tickets/createTicket';
 import { SlashCommand } from '~/types/Objects';
-import ticketOptions from '~/options/ticket';
-import { getGuildConfig } from '~/functions/prisma';
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 
-export const ticket: SlashCommand = {
+export const ticket: SlashCommand<'cached'> = {
   description: 'Create a ticket',
-  ephemeral: true,
+  noDefer: true,
   botPerms: ['ManageChannels'],
-  options: ticketOptions,
-  async execute(message, args, client) {
+  async execute(interaction) {
     try {
-      // Get server config
-      const srvconfig = await getGuildConfig(message.guild!.id);
-
-      // Create a ticket
-      const msg = await createTicket(client, srvconfig, message.member as GuildMember, args.join(' '));
-
-      // Send the message
-      await message.reply(msg);
+      // Create and show a modal for the user to fill out the ticket's description
+      const modal = new ModalBuilder()
+        .setTitle('Create Ticket')
+        .setCustomId('ticket_create')
+        .addComponents([
+          new ActionRowBuilder<TextInputBuilder>().addComponents([
+            new TextInputBuilder()
+              .setCustomId('description')
+              .setLabel('Please explain your issue before opening.')
+              .setStyle(TextInputStyle.Paragraph)
+              .setMinLength(10)
+              .setMaxLength(1024),
+          ]),
+        ]);
+      interaction.showModal(modal);
     }
-    catch (err) { error(err, message, true); }
+    catch (err) { error(err, interaction, true); }
   },
 };
