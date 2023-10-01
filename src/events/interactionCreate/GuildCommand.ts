@@ -33,7 +33,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
       }
       if (json.content) payload.content = json.content;
 
-      await interaction.reply({ content: json.content }).catch(err => logger.warn(err));
+      await interaction.reply(payload).catch(err => logger.warn(err));
     }
 
     logger.info(`${interaction.user.username} issued custom command: /${interaction.commandName} ${interaction.options.getSubcommand(false) ?? ''} in ${interaction.guild?.name}`.replace(' ,', ','));
