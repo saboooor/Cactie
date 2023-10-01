@@ -12,7 +12,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
         guildId_name: {
           guildId: interaction.commandGuildId,
           name: interaction.commandName,
-        }
+        },
       },
       cacheStrategy: {
         ttl: 15,
