@@ -5,6 +5,7 @@ export default async function options(cmd: SlashCommandBuilder) {
     new SlashCommandStringOption()
       .setName('question')
       .setDescription('The question to ask')
-      .setRequired(true),
+      .setRequired(true)
+      .setMaxLength(253),
   );
 }

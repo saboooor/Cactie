@@ -2,6 +2,10 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'disc
 import { SlashCommand } from '~/types/Objects';
 import githubOptions from '~/options/github';
 
+function truncateString(str: string, num: number) {
+  if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
+}
+
 export const github: SlashCommand = {
   description: 'Get info on any GitHub repository',
   options: githubOptions,
@@ -12,7 +16,7 @@ export const github: SlashCommand = {
     const searchResult = await query.json();
     if (!searchResult.items) return interaction.respond([{ name: value, value }]);
     if (!searchResult.items.length) return interaction.respond([{ name: 'No repos found', value }]);
-    const results = searchResult.items.map((item: { full_name: string }) => { return { name: item.full_name, value: item.full_name }; });
+    const results = searchResult.items.map((item: { full_name: string }) => { return { name: truncateString(item.full_name, 100), value: item.full_name }; });
     interaction.respond(results);
   },
   async execute(interaction) {

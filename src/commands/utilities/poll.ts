@@ -5,11 +5,37 @@ import { SlashCommand } from '~/types/Objects';
 import pollOptions from '~/options/poll';
 import { getGuildConfig } from '~/functions/prisma';
 
+function truncateString(str: string, num: number) {
+  if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
+}
+
 export const poll: SlashCommand<'cached'> = {
   description: 'Create a poll!',
   ephemeral: true,
   cooldown: 10,
   options: pollOptions,
+  async autoComplete(client, interaction) {
+    // Get server config
+    const srvconfig = await getGuildConfig(interaction.guild.id);
+
+    // Get the poll channel
+    let channel = interaction.guild.channels.cache.get(srvconfig.pollchannel) as GuildTextBasedChannel | null;
+    if (!channel) channel = interaction.channel!;
+    if (!channel) {
+      interaction.respond([]);
+      return;
+    }
+
+    const messages = await channel.messages.fetch({ limit: 100 });
+    const polls = messages.filter(msg => msg.author.id == client.user.id && msg.embeds[0]?.title?.startsWith('Poll'));
+
+    const pollsArray = polls.map(pollmsg => ({
+      name: truncateString(`${pollmsg.createdAt.toDateString()} - ${pollmsg.embeds[0]?.description}`, 100) ?? 'No description',
+      value: pollmsg.id,
+    }));
+
+    interaction.respond(pollsArray);
+  },
   async execute(interaction, client) {
     try {
       // Get server config
@@ -27,8 +53,7 @@ export const poll: SlashCommand<'cached'> = {
         return;
       }
 
-      const cmd = interaction.options.getSubcommand(true);
-
+      const cmd = interaction.options.getSubcommandGroup(true);
       if (cmd == 'create') {
         // Get question
         const question = interaction.options.getString('question', true);
@@ -47,70 +72,69 @@ export const poll: SlashCommand<'cached'> = {
 
         // Send response message if command is slash command or different channel
         interaction.reply({ content: `**Poll Created at ${channel}!**` });
-      }
-      else if (cmd == 'end') {
-        // Get message id
-        const msg = interaction.options.getString('messageid', true);
-
-        // Check permissions in that channel
-        const permCheck2 = checkPerms(['ReadMessageHistory', 'ManageMessages'], interaction.guild.members.me!, channel);
-        if (permCheck2) {
-          error(permCheck2, interaction, true);
-          return;
-        }
-
-        // Check if the message exists, if not, check in pollchannel, if not, return
-        const pollMsg = !isNaN(Number(msg)) ? await channel.messages.fetch(msg).catch(() => { return null; }) : null;
-        if (!pollMsg) {
-          error('Could not find the message.\nTry doing the command in the same channel as the poll.', interaction, true);
-          return;
-        }
-
-        // Check if message was sent by the bot
-        if (pollMsg.author.id != client.user.id) return;
-
-        // Get embed and check if embed is a poll
-        const pollEmbed = new EmbedBuilder(pollMsg.embeds[0].toJSON());
-        if (!pollEmbed || !pollEmbed.toJSON().author || !pollEmbed.toJSON().title!.startsWith('Poll')) return;
-
-        // Check if user is the one who posted the poll
-        if (interaction.user.id != pollEmbed.toJSON().author?.url?.split('a')[1]) {
-          error('You didn\'t create this poll!', interaction, true);
-          return;
-        }
-
-        // Remove all reactions and set color to green and approved title
-        pollMsg.reactions.removeAll();
-        pollEmbed.setTitle('Poll (Ended)')
-          .setTimestamp();
-
-        // Fetch result / reaction emojis and add field if not already added
-        const emojis: string[] = [];
-        pollMsg.reactions.cache.forEach(reaction => {
-          let emoji: GuildEmoji | string | undefined = client.emojis.cache.get(reaction.emoji.id!);
-          if (!emoji) emoji = reaction.emoji.name!;
-          emojis.push(`${emoji} **${reaction.count}**`);
-        });
-        if (!pollEmbed.toJSON().fields && emojis.length) pollEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
-
-        // Update message and reply with approved
-        await pollMsg.edit({ embeds: [pollEmbed] });
-        interaction.reply({ content: `<:yes:${yes}> **Poll Ended!**` }).catch(() => { return null; });
-
-        // Check if log channel exists and send message
-        const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as GuildTextBasedChannel | undefined;
-        if (logchannel) {
-          pollEmbed.setTitle(`${interaction.user.username} ended their poll`).setFields([]);
-          const msglink = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents([new ButtonBuilder()
-              .setURL(pollMsg.url)
-              .setLabel('Go to Message')
-              .setStyle(ButtonStyle.Link),
-            ]);
-          logchannel.send({ embeds: [pollEmbed], components: [msglink] });
-        }
+        return;
       }
 
+      // Get message id
+      const msg = interaction.options.getString('messageid', true);
+
+      // Check permissions in that channel
+      const permCheck2 = checkPerms(['ReadMessageHistory', 'ManageMessages'], interaction.guild.members.me!, channel);
+      if (permCheck2) {
+        error(permCheck2, interaction, true);
+        return;
+      }
+
+      // Check if the message exists, if not, check in pollchannel, if not, return
+      const pollMsg = !isNaN(Number(msg)) ? await channel.messages.fetch(msg).catch(() => { return null; }) : null;
+      if (!pollMsg) {
+        error('Could not find the message.\nTry doing the command in the same channel as the poll.', interaction, true);
+        return;
+      }
+
+      // Check if message was sent by the bot
+      if (pollMsg.author.id != client.user.id) return;
+
+      // Get embed and check if embed is a poll
+      const pollEmbed = new EmbedBuilder(pollMsg.embeds[0].toJSON());
+      if (!pollEmbed || !pollEmbed.toJSON().author || !pollEmbed.toJSON().title!.startsWith('Poll')) return;
+
+      // Check if user is the one who posted the poll
+      if (interaction.user.id != pollEmbed.toJSON().author?.url?.split('a')[1]) {
+        error('You didn\'t create this poll!', interaction, true);
+        return;
+      }
+
+      // Remove all reactions and set color to green and approved title
+      pollMsg.reactions.removeAll();
+      pollEmbed.setTitle('Poll (Ended)')
+        .setTimestamp();
+
+      // Fetch result / reaction emojis and add field if not already added
+      const emojis: string[] = [];
+      pollMsg.reactions.cache.forEach(reaction => {
+        let emoji: GuildEmoji | string | undefined = client.emojis.cache.get(reaction.emoji.id!);
+        if (!emoji) emoji = reaction.emoji.name!;
+        emojis.push(`${emoji} **${reaction.count}**`);
+      });
+      if (!pollEmbed.toJSON().fields && emojis.length) pollEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
+
+      // Update message and reply with approved
+      await pollMsg.edit({ embeds: [pollEmbed] });
+      interaction.reply({ content: `<:yes:${yes}> **Poll Ended!**` }).catch(() => { return null; });
+
+      // Check if log channel exists and send message
+      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as GuildTextBasedChannel | undefined;
+      if (logchannel) {
+        pollEmbed.setTitle(`${interaction.user.username} ended their poll`).setFields([]);
+        const msglink = new ActionRowBuilder<ButtonBuilder>()
+          .addComponents([new ButtonBuilder()
+            .setURL(pollMsg.url)
+            .setLabel('Go to Message')
+            .setStyle(ButtonStyle.Link),
+          ]);
+        logchannel.send({ embeds: [pollEmbed], components: [msglink] });
+      }
     }
     catch (err) { error(err, interaction); }
   },

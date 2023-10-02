@@ -4,6 +4,10 @@ import { SlashCommand } from '~/types/Objects';
 import unwarnOptions from '~/options/unwarn';
 import prisma, { getGuildConfig, getMemberData } from '~/functions/prisma';
 
+function truncateString(str: string, num: number) {
+  if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
+}
+
 export const unwarn: SlashCommand<'cached'> = {
   description: 'Unwarn someone in this server',
   ephemeral: true,
@@ -32,7 +36,10 @@ export const unwarn: SlashCommand<'cached'> = {
       until?: number;
     }[] = JSON.parse(memberdata.warns);
 
-    const list = warnList.map((warn, i) => ({ name: `${i + 1}. ${warn.reason} - ${warn.until ? `Expires in: ${ms(warn.until - Date.now(), { long: true })}` : 'Permanent'}`, value: `${warn.created}` }));
+    const list = warnList.map((warn, i) => ({
+      name: truncateString(`${i + 1}. ${warn.reason} - ${warn.until ? `Expires in: ${ms(warn.until - Date.now(), { long: true })}` : 'Permanent'}`, 100),
+      value: `${warn.created}`,
+    }));
 
     interaction.respond(list);
   },

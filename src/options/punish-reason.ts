@@ -10,6 +10,7 @@ export default async function options(cmd: SlashCommandBuilder) {
     new SlashCommandStringOption()
       .setName('reason')
       .setDescription('The reason for punishing the user')
+      .setMaxLength(1024)
       .setRequired(true),
   ).addStringOption(
     new SlashCommandStringOption()
