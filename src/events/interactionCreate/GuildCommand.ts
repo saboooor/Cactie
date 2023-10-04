@@ -20,20 +20,19 @@ export default async (client: Client, interaction: CommandInteraction) => {
     });
     if (!command) return;
 
-    const json = JSON.parse(command.json);
-
-    if (command.type == 1) {
-      const payload: InteractionReplyOptions = {
-        ephemeral: json.ephemeral,
-      };
-
-      if (json.embeds[0]) {
-        const embed = new EmbedBuilder(json.embeds[0]);
-        payload.embeds = [embed];
+    const actions = JSON.parse(command.actions);
+    for (const action of actions) {
+      // Message
+      if (action.type == 1) {
+        const payload = { } as InteractionReplyOptions;
+        if (action.embeds[0]) {
+          const embed = new EmbedBuilder(action.embeds[0]);
+          payload.embeds = [embed];
+        }
+        if (action.content != '') payload.content = action.content;
+        if (action.ephemeral) payload.ephemeral = action.ephemeral;
+        await interaction.reply(payload).catch(err => logger.warn(err));
       }
-      if (json.content != '') payload.content = json.content;
-
-      await interaction.reply(payload).catch(err => logger.warn(err));
     }
 
     logger.info(`${interaction.user.username} issued custom command: /${interaction.commandName} ${interaction.options.getSubcommand(false) ?? ''} in ${interaction.guild?.name}`.replace(' ,', ','));
