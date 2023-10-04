@@ -39,6 +39,17 @@ export default async (client: Client, interaction: CommandInteraction) => {
         if (interaction.replied) await interaction.followUp(payload).catch(err => logger.warn(err));
         else await interaction.reply(payload).catch(err => logger.warn(err));
       }
+
+      // Rename Channel
+      if (action.type == 2) {
+        const channel = interaction.guild?.channels.cache.get(action.channelId);
+        if (!channel) {
+          logger.warn(`Failed to find channel with id ${action.channelId} in ${interaction.guild?.name}`);
+          interaction.channel?.send(`Failed to find channel with id ${action.channelId} in ${interaction.guild?.name}`);
+          continue;
+        }
+        await channel.setName(action.name);
+      }
     }
 
     logger.info(`${interaction.user.username} issued custom command: /${interaction.commandName} ${interaction.options.getSubcommand(false) ?? ''} in ${interaction.guild?.name}`.replace(' ,', ','));
