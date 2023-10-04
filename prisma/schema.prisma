@@ -48,12 +48,11 @@ model reactionroles {
 }
 
 model customcmds {
+  id          String  @unique(map: "id")
   guildId     String
   name        String
-  description String
-  ephemeral   Boolean
-  type        Int
-  json        String
+  description String  @default("A custom command") @db.Text
+  actions     String  @default("[]") @db.Text
 
   @@unique([guildId, name], map: "Identifier")
 }
