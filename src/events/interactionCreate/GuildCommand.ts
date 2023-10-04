@@ -22,6 +22,11 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
     const actions = JSON.parse(command.actions);
     for (const action of actions) {
+      // Sleep
+      if (action.type == 0) {
+        sleep(action.ms);
+      }
+
       // Message
       if (action.type == 1) {
         const payload = { } as InteractionReplyOptions;
@@ -31,7 +36,8 @@ export default async (client: Client, interaction: CommandInteraction) => {
         }
         if (action.content != '') payload.content = action.content;
         if (action.ephemeral) payload.ephemeral = action.ephemeral;
-        await interaction.reply(payload).catch(err => logger.warn(err));
+        if (interaction.replied) await interaction.followUp(payload).catch(err => logger.warn(err));
+        else await interaction.reply(payload).catch(err => logger.warn(err));
       }
     }
 
