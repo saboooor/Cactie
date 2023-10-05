@@ -108,6 +108,13 @@ export const suggest: SlashCommand<'cached'> = {
         return;
       }
 
+      // Check if the user has permissions to approve/deny suggestions
+      const permCheck1 = checkPerms(['Administrator'], interaction.guild.members.me!, channel);
+      if (permCheck1) {
+        error(permCheck1, interaction, true);
+        return;
+      }
+
       // Get the message
       const messageId = interaction.options.getString('messageid', true);
       let suggestMsg = await channel.messages.fetch(messageId).catch(() => { return null; });
