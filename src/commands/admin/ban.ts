@@ -51,7 +51,7 @@ export const ban: SlashCommand<'cached'> = {
 
       // Send ban interaction to target if silent is false
       if (!interaction.options.getBoolean('silent')) {
-        await member.send({ content: `## You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? `\n**Reason:** ${reason}` : ''}**` })
+        await member.send({ content: `## You've been banned from ${interaction.guild.name} ${!isNaN(time) ? `for ${timeArg}` : 'forever'}.${reason ? `\n**Reason:** ${reason}` : ''}` })
           .catch(err => {
             logger.warn(err);
             interaction.reply({ content: 'Could not DM user! You may have to manually let them know that they have been banned.' });

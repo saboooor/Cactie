@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildEmoji, GuildTextBasedChannel } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel } from 'discord.js';
 import { yes, no } from '~/misc/emoji.json';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
@@ -30,7 +30,7 @@ export const poll: SlashCommand<'cached'> = {
     const polls = messages.filter(msg => msg.author.id == client.user.id && msg.embeds[0]?.title?.startsWith('Poll'));
 
     const pollsArray = polls.map(pollmsg => ({
-      name: truncateString(`${pollmsg.createdAt.toDateString()} - ${pollmsg.embeds[0]?.description}`, 100) ?? 'No description',
+      name: truncateString(`${pollmsg.embeds[0].title!.split(' ')[1] ?? ''} ${pollmsg.createdAt.toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })} - ${pollmsg.embeds[0]?.description}`, 100) ?? 'No description',
       value: pollmsg.id,
     }));
 
@@ -53,8 +53,10 @@ export const poll: SlashCommand<'cached'> = {
         return;
       }
 
-      const cmd = interaction.options.getSubcommandGroup(true);
-      if (cmd == 'create') {
+      const cmdgroup = interaction.options.getSubcommandGroup();
+      if (cmdgroup == 'create') {
+        const cmd = interaction.options.getSubcommand(true);
+
         // Get question
         const question = interaction.options.getString('question', true);
 
@@ -65,10 +67,37 @@ export const poll: SlashCommand<'cached'> = {
           .setAuthor({ name: `${interaction.member.displayName} (${interaction.user.username})`, iconURL: interaction.user.avatarURL() ?? undefined, url: `https://a${interaction.user.id}a.cactie` })
           .setDescription(question);
 
-        // Send poll message and react
-        const pollMsg = await channel.send({ embeds: [pollEmbed] });
-        await pollMsg.react(yes);
-        await pollMsg.react(no);
+        if (cmd == 'yesno') {
+          // Send poll message and react
+          const pollMsg = await channel.send({ embeds: [pollEmbed] });
+          await pollMsg.react(yes);
+          await pollMsg.react(no);
+        }
+        else if (cmd == 'multiple') {
+          // Get choices
+          const choices = [
+            interaction.options.getString('choice1', true),
+            interaction.options.getString('choice2', true),
+            interaction.options.getString('choice3'),
+            interaction.options.getString('choice4'),
+            interaction.options.getString('choice5'),
+            interaction.options.getString('choice6'),
+            interaction.options.getString('choice7'),
+            interaction.options.getString('choice8'),
+            interaction.options.getString('choice9'),
+          ];
+
+          // Add fields
+          const choicesString = choices.filter(choice => choice).map((choice, i) => `${i + 1}\uFE0F\u20E3 ${choice}`);
+          pollEmbed.addFields([{
+            name: 'Choices',
+            value: `${choicesString.join('\n')}`,
+          }]);
+
+          // Send poll message and react
+          const pollMsg = await channel.send({ embeds: [pollEmbed] });
+          for (let i = 0; i < choicesString.length; i++) await pollMsg.react(`${i + 1}\uFE0F\u20E3`);
+        }
 
         // Send response message if command is slash command or different channel
         interaction.reply({ content: `**Poll Created at ${channel}!**` });
@@ -110,14 +139,16 @@ export const poll: SlashCommand<'cached'> = {
       pollEmbed.setTitle('Poll (Ended)')
         .setTimestamp();
 
+      // Get total count of reactions (excluding bot's and the bell)
+      const botReactions = pollMsg.reactions.cache.filter(reaction => reaction.me);
+      const totalCount = botReactions.reduce((a, b) => a + b.count, 0) - botReactions.size;
+
       // Fetch result / reaction emojis and add field if not already added
-      const emojis: string[] = [];
-      pollMsg.reactions.cache.forEach(reaction => {
-        let emoji: GuildEmoji | string | undefined = client.emojis.cache.get(reaction.emoji.id!);
-        if (!emoji) emoji = reaction.emoji.name!;
-        emojis.push(`${emoji} **${reaction.count}**`);
+      const emojis = botReactions.map(reaction => {
+        const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
+        return `${emoji} **${reaction.count - 1}** ${Math.round((reaction.count - 1) / totalCount * 100)}%`;
       });
-      if (!pollEmbed.toJSON().fields && emojis.length) pollEmbed.addFields([{ name: 'Results', value: `${emojis.join(' ')}` }]);
+      if (emojis.length) pollEmbed.addFields([{ name: 'Results', value: `${emojis.join('\n')}` }]);
 
       // Update message and reply with approved
       await pollMsg.edit({ embeds: [pollEmbed] });

@@ -18,7 +18,7 @@ export default async function options(cmd: SlashCommandBuilder) {
       )
       .addSubcommand(
         new SlashCommandSubcommandBuilder()
-          .setName('multiplechoice')
+          .setName('multiple')
           .setDescription('Create a poll with multiple choice options')
           .addStringOption(
             new SlashCommandStringOption()
