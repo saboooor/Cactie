@@ -16,5 +16,9 @@ export default async function options(cmd: SlashCommandBuilder) {
     new SlashCommandStringOption()
       .setName('text')
       .setDescription('Filters the messages to only messages that contain this content'),
+  ).addStringOption(
+    new SlashCommandStringOption()
+      .setName('until')
+      .setDescription('Clears all messages sent after this message Id'),
   );
 }

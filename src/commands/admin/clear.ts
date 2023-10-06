@@ -21,16 +21,18 @@ export const clear: SlashCommand<'cached'> = {
         return;
       }
 
+      // Get until message
+      const until = interaction.options.getString('until');
+
       // Fetch the messages and bulk delete them 100 by 100
-      const messagechunks = await getMessages<true>(interaction.channel!, scope).catch(err => {
+      const messagechunks = await getMessages<true>(interaction.channel!, scope, until ?? undefined).catch(err => {
         logger.error(err);
+        error(`An error occured while fetching messages!\n${err}`, interaction, true);
         return;
       });
-      if (!messagechunks) {
-        error('An error occured while fetching messages!', interaction, true);
-        return;
-      }
+      if (!messagechunks) return;
 
+      // Filter messages by user and text
       const user = interaction.options.getUser('user');
       const text = interaction.options.getString('text');
       for (const i in messagechunks) {

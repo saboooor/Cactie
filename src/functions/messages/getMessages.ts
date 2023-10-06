@@ -1,6 +1,6 @@
 import { Collection, FetchMessagesOptions, GuildTextBasedChannel, Message } from 'discord.js';
 
-export default async function getMessages<InGuild extends boolean = boolean>(channel: GuildTextBasedChannel, limit: number | 'infinite' = 100) {
+export default async function getMessages<InGuild extends boolean = boolean>(channel: GuildTextBasedChannel, limit: number | 'infinite' = 100, after?: string) {
   const messagechunks = [];
   let remaining = limit;
   let last_id;
@@ -10,7 +10,10 @@ export default async function getMessages<InGuild extends boolean = boolean>(cha
   }
   else {
     while (remaining == 'infinite' || remaining > 0) {
-      const options: FetchMessagesOptions = { limit: 100 };
+      const options: FetchMessagesOptions = {
+        limit: 100,
+        after,
+      };
       if (remaining != 'infinite' && remaining < 100) {
         options.limit = remaining as number;
         remaining = 0;
