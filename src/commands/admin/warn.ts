@@ -53,7 +53,7 @@ export const warn: SlashCommand<'cached'> = {
       if (reason) WarnEmbed.addFields([{ name: 'Reason', value: reason }]);
 
       // Get Member Data
-      const memberdata = await getMemberData(member.id, interaction.guild.id, 0);
+      const memberdata = await getMemberData(member.id, interaction.guild.id, 0, true);
 
       // Add warn to warns array
       memberdata.warns.push({

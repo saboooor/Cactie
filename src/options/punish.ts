@@ -9,7 +9,7 @@ export default async function options(cmd: SlashCommandBuilder) {
   ).addStringOption(
     new SlashCommandStringOption()
       .setName('time')
-      .setDescription('Time to temporarily punish in s/m/h (Ex. 10s, 2m)'),
+      .setDescription('Time to temporarily punish until s/m/h/d/mo (Ex. 10s, 2m)'),
   ).addStringOption(
     new SlashCommandStringOption()
       .setName('reason')
