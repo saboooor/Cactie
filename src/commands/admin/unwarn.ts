@@ -22,7 +22,7 @@ export const unwarn: SlashCommand<'cached'> = {
     }
 
     // Get Member Data
-    const memberdata = await getMemberData(member, interaction.guild.id);
+    const memberdata = await getMemberData(member, interaction.guild.id, 0);
 
     // Check if member has any warns
     if (!memberdata || !memberdata.warns[0]) {
@@ -72,7 +72,7 @@ export const unwarn: SlashCommand<'cached'> = {
       const memberdata = await getMemberData(member.id, interaction.guild.id);
 
       // Check if member has any warns
-      if (!memberdata || !memberdata.warns) {
+      if (!memberdata || !memberdata.warns[0]) {
         error('This user does not have any warnings.', interaction, true);
         return;
       }

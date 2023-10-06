@@ -1,4 +1,4 @@
-import { PrismaClient, settings } from '@prisma/client';
+import { PrismaClient, memberdata, settings } from '@prisma/client';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
 const prisma = new PrismaClient().$extends(withAccelerate());
@@ -25,16 +25,33 @@ export async function getGuildConfig(guildId: string) {
   return srvconfig;
 }
 
-export async function getMemberData(memberId: string, guildId: string, ttl: number = 30) {
-  const memberdataUnparsed = await prisma.memberdata.findUnique({
-    where: { memberId_guildId: { memberId, guildId } },
-    cacheStrategy: { ttl },
-  });
-  if (!memberdataUnparsed) return null;
+type parsedMemberData = memberdata & {
+  warns: any[]
+}
+
+export async function getMemberData(memberId: string, guildId: string, ttl: number, upsert: true): Promise<parsedMemberData>
+export async function getMemberData(memberId: string, guildId: string, ttl?: number, upsert?: boolean): Promise<parsedMemberData | null>
+export async function getMemberData(memberId: string, guildId: string, ttl: number = 30, upsert?: boolean) {
+  let memberdataUnparsed;
+
+  if (!upsert) {
+    memberdataUnparsed = await prisma.memberdata.findUnique({
+      where: { memberId_guildId: { memberId, guildId } },
+      cacheStrategy: { ttl },
+    });
+    if (!memberdataUnparsed) return null;
+  }
+  else {
+    memberdataUnparsed = await prisma.memberdata.upsert({
+      where: { memberId_guildId: { memberId, guildId } },
+      create: { memberId, guildId },
+      update: {},
+    });
+  }
 
   const memberdata = {
     ...memberdataUnparsed,
-    warns: memberdataUnparsed.warns ? JSON.parse(memberdataUnparsed.warns) : [],
+    warns: JSON.parse(memberdataUnparsed.warns),
   };
 
   return memberdata;

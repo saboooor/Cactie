@@ -62,7 +62,7 @@ model memberdata {
   guildId     String
   mutedUntil  String? @db.Text
   bannedUntil String? @db.Text
-  warns       String? @db.Text
+  warns       String  @db.Text @default("[]")
 
   @@unique([memberId, guildId], map: "Identifier")
 }
