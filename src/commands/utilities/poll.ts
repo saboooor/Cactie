@@ -62,7 +62,7 @@ export const poll: SlashCommand<'cached'> = {
 
         // Create poll embed
         const pollEmbed = new EmbedBuilder()
-          .setColor(0x2f3136)
+          .setColor(0x2ECC71)
           .setTitle('Poll')
           .setAuthor({ name: `${interaction.member.displayName} (${interaction.user.username})`, iconURL: interaction.user.avatarURL() ?? undefined, url: `https://a${interaction.user.id}a.cactie` })
           .setDescription(question);
@@ -137,18 +137,24 @@ export const poll: SlashCommand<'cached'> = {
       // Remove all reactions and set color to green and approved title
       pollMsg.reactions.removeAll();
       pollEmbed.setTitle('Poll (Ended)')
-        .setTimestamp();
+        .setTimestamp()
+        .setColor(0xE74C3C);
 
       // Get total count of reactions (excluding bot's and the bell)
       const botReactions = pollMsg.reactions.cache.filter(reaction => reaction.me);
       const totalCount = botReactions.reduce((a, b) => a + b.count, 0) - botReactions.size;
 
-      // Fetch result / reaction emojis and add field if not already added
-      const emojis = botReactions.map(reaction => {
-        const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
-        return `${emoji} **${reaction.count - 1}** ${Math.round((reaction.count - 1) / totalCount * 100)}%`;
-      });
-      if (emojis.length) pollEmbed.addFields([{ name: 'Results', value: `${emojis.join('\n')}` }]);
+      if (totalCount != 0) {
+        // Fetch result / reaction emojis and add field if not already added
+        const emojis = botReactions.map(reaction => {
+          const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
+          return `${emoji} **${reaction.count - 1}** ${Math.round((reaction.count - 1) / totalCount * 100)}%`;
+        });
+        if (emojis.length) pollEmbed.addFields([{ name: 'Results', value: `${emojis.join('\n')}` }]);
+      }
+      else {
+        pollEmbed.addFields([{ name: 'Results', value: 'No votes.' }]);
+      }
 
       // Update message and reply with approved
       await pollMsg.edit({ embeds: [pollEmbed] });
