@@ -1,9 +1,7 @@
-# Cactie Discord Bot
-<p align="center">
-  <img src="https://cactie.luminescent.dev/assets/images/Cactie.webp" width="20%" alt="Cactie">
-</p>
+<img src="https://cactie.luminescent.dev/icon-512x512.png" width="20%" alt="Cactie">
 
-This is source code for my public Discord bot, Cactie.
+# Cactie Discord Bot
+This is the source code for my public Discord bot, Cactie.
 
 [![Discord](https://discord.com/api/guilds/811354612547190794/widget.png)](https://discord.gg/Bsefgbaedz)
 [![CodeFactor](https://www.codefactor.io/repository/github/saboooor/cactie/badge/master)](https://www.codefactor.io/repository/github/saboooor/cactie/overview/master)
@@ -15,27 +13,24 @@ This is source code for my public Discord bot, Cactie.
 I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://luminescent.dev/discord) and we'll fix it ASAP
 
 ## Suggestions
-- uses threads to organize discussions
-- approve/deny and mark as implemented when implemented
+- Uses threads to organize discussions
+- Bell reaction along with upvote/downvote to notify users who want to be updated
+- Easy approve/deny commands with autocomplete, no longer you have to suffer with message ids!
 
 ## Punishments
-- ban
-- mute
+- ban and unban with autocomplete, you no longer have to go fishing for the banned user's id!
+- mute and unmute
+- warn and unwarn
 - kick
-- warn
-- Has support for user right click menus!
 
 ## Reaction roles
-- Option to set it as a toggle and auto-remove the reaction or set it as a switch which adds/removes the role as the user adds/removes the reaction
 
 ## Bulk Message Clear
-- Specific user support
-- Query support with messages that include the text
-- More than 100 messages support
+- Query specific messages with author or text
+- Can select more than 100 messages to clear
 
 ## Ticket System
-- uses the modals feature for user-friendly ticket opening!
-- voice chat creation with the same permissions as the ticket
+- Uses modals for user-friendly ticket opening
 
 ## Fun and Games
 - Tic Tac Toe
