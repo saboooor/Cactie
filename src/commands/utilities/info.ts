@@ -38,14 +38,7 @@ export const info: SlashCommand = {
             .setLabel('Open the Dashboard!')
             .setStyle(ButtonStyle.Link),
         ]);
-      const row2 = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents([
-          new ButtonBuilder()
-            .setURL('https://netherdepths.com')
-            .setLabel('Also check out Nether Depths!')
-            .setStyle(ButtonStyle.Link),
-        ]);
-      await interaction.reply({ embeds: [InfEmbed], components: [row1, row2] });
+      await interaction.reply({ embeds: [InfEmbed], components: [row1] });
     }
     catch (err) { error(err, interaction); }
   },
