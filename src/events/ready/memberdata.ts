@@ -73,13 +73,13 @@ export default async (client: Client) => schedule('* * * * *', async () => {
         created: number;
         until?: number;
       }[] = JSON.parse(data.warns);
-  
+
       // Iterate through every warn
       for (const warn of warnList) {
         if (warn.until && warn.until < Date.now()) {
           // Remove warn from warns array
           warnList.splice(warnList.indexOf(warn), 1);
-  
+
           // Send warn message to target if silent is false
           if (user) {
             user.send({ content: `## Your warning has been removed in ${guild.name}\n**Warning:** ${warn.reason}\n**Created:** <t:${Math.round(warn.created / 1000)}>` })
@@ -89,7 +89,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
           }
           logger.info(`Unwarned user: ${user ? user.username : data.memberId} in ${guild.name}.`);
         }
-      }  
+      }
 
       // Set member data for warn
       await prisma.memberdata.update({
