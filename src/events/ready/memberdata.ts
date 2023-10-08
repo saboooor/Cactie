@@ -30,7 +30,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
     const member = await guild.members.fetch(data.memberId).catch(() => { return null; });
     const user = await client.users.fetch(data.memberId).catch(() => { return null; });
 
-    if (Number(data.mutedUntil) < Date.now()) {
+    if (data.mutedUntil && Number(data.mutedUntil) < Date.now()) {
       // Get the role and if it exists get rid of it from the member
       const role = await guild.roles.cache.get(srvconfig.mutecmd);
       if (role && member) await member.roles.remove(role);
@@ -49,7 +49,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
         logchannel.send({ embeds: [UnmuteEmbed] });
       }
     }
-    if (Number(data.bannedUntil) < Date.now()) {
+    if (data.bannedUntil && Number(data.bannedUntil) < Date.now()) {
       // Attempt to unban the member
       await guild.members.unban(data.memberId).catch(err => logger.error(err));
 
