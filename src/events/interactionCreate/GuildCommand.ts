@@ -47,10 +47,8 @@ export default async (client: Client, interaction: CommandInteraction) => {
           }
           await channel.send(payload).catch(err => logger.warn(err));
         }
-        else {
-          if (interaction.replied) await interaction.followUp(payload).catch(err => logger.warn(err));
-          else await interaction.reply(payload).catch(err => logger.warn(err));  
-        }
+        else if (interaction.replied) { await interaction.followUp(payload).catch(err => logger.warn(err)); }
+          else { await interaction.reply(payload).catch(err => logger.warn(err)); }
       }
 
       // Edit Channel
