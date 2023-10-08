@@ -27,6 +27,7 @@ export async function getGuildConfig(guildId: string) {
 
 type parsedMemberData = memberdata & {
   warns: any[]
+  polls: any[]
 }
 
 export async function getMemberData(memberId: string, guildId: string, ttl: number, upsert: true): Promise<parsedMemberData>
@@ -52,6 +53,7 @@ export async function getMemberData(memberId: string, guildId: string, ttl: numb
   const memberdata = {
     ...memberdataUnparsed,
     warns: JSON.parse(memberdataUnparsed.warns),
+    polls: JSON.parse(memberdataUnparsed.polls),
   };
 
   return memberdata;

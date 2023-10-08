@@ -1,7 +1,7 @@
 import { EmbedBuilder, TextChannel } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import unbanOptions from '~/options/unban';
-import { getGuildConfig } from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export const unban: SlashCommand<'cached'> = {
   description: 'Unban someone that was banned from this server',
@@ -61,6 +61,19 @@ export const unban: SlashCommand<'cached'> = {
       // Reply with unban log
       interaction.reply({ embeds: [UnbanEmbed] });
       logger.info(`Unbanned user: ${ban.user.username} in ${interaction.guild.name}`);
+
+      // Update member data to remove mute
+      await prisma.memberdata.update({
+        where: {
+          memberId_guildId: {
+            memberId: ban.user.id,
+            guildId: interaction.guild.id,
+          },
+        },
+        data: {
+          bannedUntil: null,
+        },
+      });
 
       // Check if log channel exists and send message
       // Get server config

@@ -14,6 +14,11 @@ export default async function options(cmd: SlashCommandBuilder) {
               .setName('question')
               .setDescription('The question to ask')
               .setRequired(true),
+          )
+          .addStringOption(
+            new SlashCommandStringOption()
+              .setName('timer')
+              .setDescription('Time to keep the poll open until s/m/h/d/mo (Ex. 10s, 2m)'),
           ),
       )
       .addSubcommand(

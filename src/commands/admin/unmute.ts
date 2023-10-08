@@ -37,21 +37,16 @@ export const unmute: SlashCommand<'cached'> = {
       if (role) await member.roles.remove(role);
       else await member.timeout(null);
 
-      // Reset the mute timer
-      // Get server config
-      await prisma.memberdata.upsert({
+      // Update member data to remove mute
+      await prisma.memberdata.update({
         where: {
           memberId_guildId: {
             memberId: member.id,
             guildId: interaction.guild.id,
           },
         },
-        update: {
+        data: {
           mutedUntil: null,
-        },
-        create: {
-          memberId: member.id,
-          guildId: interaction.guild.id,
         },
       });
 

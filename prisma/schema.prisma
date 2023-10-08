@@ -60,9 +60,10 @@ model customcmds {
 model memberdata {
   memberId    String
   guildId     String
-  mutedUntil  String? @db.Text
-  bannedUntil String? @db.Text
-  warns       String  @db.Text @default("[]")
+  mutedUntil  DateTime?
+  bannedUntil DateTime?
+  warns       String    @db.Text @default("[]")
+  polls       String    @db.Text @default("[]")
 
   @@unique([memberId, guildId], map: "Identifier")
 }

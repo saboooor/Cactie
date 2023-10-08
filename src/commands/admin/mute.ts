@@ -89,12 +89,12 @@ export const mute: SlashCommand<'cached'> = {
             },
           },
           update: {
-            mutedUntil: `${Date.now() + time}`,
+            mutedUntil: new Date(Date.now() + time),
           },
           create: {
             memberId: member.id,
             guildId: interaction.guild.id,
-            mutedUntil: `${Date.now() + time}`,
+            mutedUntil: new Date(Date.now() + time),
           },
         });
       }
