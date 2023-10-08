@@ -83,7 +83,6 @@ export default async (client: Client, interaction: CommandInteraction) => {
         if (action.name) role.setName(action.name);
         if (action.color) role.setColor(action.color);
         if (action.hoist) role.setHoist(action.hoist);
-        if (action.mentionable) role.setMentionable(action.mentionable);
       }
     }
 
