@@ -1,4 +1,4 @@
-import { PrismaClient, memberdata, settings } from '@prisma/client';
+import { PrismaClient, punishments, settings } from '@prisma/client';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
 const prisma = new PrismaClient().$extends(withAccelerate());
@@ -25,38 +25,38 @@ export async function getGuildConfig(guildId: string) {
   return srvconfig;
 }
 
-type parsedMemberData = memberdata & {
+type parsedPunishments = punishments & {
   warns: any[]
   polls: any[]
 }
 
-export async function getMemberData(memberId: string, guildId: string, ttl: number, upsert: true): Promise<parsedMemberData>
-export async function getMemberData(memberId: string, guildId: string, ttl?: number, upsert?: boolean): Promise<parsedMemberData | null>
-export async function getMemberData(memberId: string, guildId: string, ttl: number = 30, upsert?: boolean) {
-  let memberdataUnparsed;
+export async function getPunishments(memberId: string, guildId: string, ttl: number, upsert: true): Promise<parsedPunishments>
+export async function getPunishments(memberId: string, guildId: string, ttl?: number, upsert?: boolean): Promise<parsedPunishments | null>
+export async function getPunishments(memberId: string, guildId: string, ttl: number = 30, upsert?: boolean) {
+  let punishmentsUnparsed;
 
   if (!upsert) {
-    memberdataUnparsed = await prisma.memberdata.findUnique({
+    punishmentsUnparsed = await prisma.punishments.findUnique({
       where: { memberId_guildId: { memberId, guildId } },
       cacheStrategy: { ttl },
     });
-    if (!memberdataUnparsed) return null;
+    if (!punishmentsUnparsed) return null;
   }
   else {
-    memberdataUnparsed = await prisma.memberdata.upsert({
+    punishmentsUnparsed = await prisma.punishments.upsert({
       where: { memberId_guildId: { memberId, guildId } },
       create: { memberId, guildId },
       update: {},
     });
   }
 
-  const memberdata = {
-    ...memberdataUnparsed,
-    warns: JSON.parse(memberdataUnparsed.warns),
-    polls: JSON.parse(memberdataUnparsed.polls),
+  const punishments = {
+    ...punishmentsUnparsed,
+    warns: JSON.parse(punishmentsUnparsed.warns),
+    polls: JSON.parse(punishmentsUnparsed.polls),
   };
 
-  return memberdata;
+  return punishments;
 }
 
 export type guildConfig = settings & {

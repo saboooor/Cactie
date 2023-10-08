@@ -7,20 +7,20 @@ export default async function createVoice(client: Client<true>, srvconfig: guild
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({
+  const ticket = await prisma.tickets.findUnique({
     where: {
       channelId: channel.id,
     },
     cacheStrategy: { ttl: 60 },
   });
-  if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-  const ticketDataUsers = ticketData.users.split(',');
+  if (!ticket) throw new Error('This isn\'t a ticket that I know of!');
+  const ticketUserIds = ticket.users.split(',');
 
   // Check if ticket is closed
   if (channel.name.startsWith('closed')) throw new Error('This ticket is closed!');
 
   // Check if ticket already has a voiceticket
-  if (ticketData.voiceticket != 'false') throw new Error('This ticket already has a voiceticket!');
+  if (ticket.voiceticket != 'false') throw new Error('This ticket already has a voiceticket!');
 
   // Find category and if no category then set it to null
   const parent = await member.guild.channels.fetch(srvconfig.tickets.category).catch(() => { return null; });
@@ -29,7 +29,7 @@ export default async function createVoice(client: Client<true>, srvconfig: guild
   const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
 
   // Create voice channel for voiceticket
-  const author = await member.guild.members.fetch(ticketData.opener).catch(() => { return null; });
+  const author = await member.guild.members.fetch(ticket.opener).catch(() => { return null; });
   if (!author) throw new Error('Couldn\'t find the author of the ticket! Close this ticket.');
 
   const user = channel.name.split('-');
@@ -56,14 +56,14 @@ export default async function createVoice(client: Client<true>, srvconfig: guild
   });
 
   // Add permissions for each user in the voiceticket
-  ticketDataUsers.forEach(userid => voiceticket.permissionOverwrites.edit(userid, { ViewChannel: true }));
+  ticketUserIds.forEach(userid => voiceticket.permissionOverwrites.edit(userid, { ViewChannel: true }));
 
   // Find role and add their permissions to the channel
   const role = await member.guild.roles.fetch(srvconfig.tickets.role).catch(() => { return null; });
   if (role) voiceticket.permissionOverwrites.edit(role.id, { ViewChannel: true });
 
   // Add voiceticket to ticket database
-  await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { voiceticket: voiceticket.id } });
+  await prisma.tickets.update({ where: { channelId: channel.id }, data: { voiceticket: voiceticket.id } });
 
   // Create embed for log
   const VCEmbed = new EmbedBuilder()

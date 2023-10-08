@@ -2,7 +2,7 @@ import { EmbedBuilder } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import user from '~/options/user';
-import { getMemberData } from '~/functions/prisma';
+import { getPunishments } from '~/functions/prisma';
 
 export const warns: SlashCommand<'cached'> = {
   description: 'View someone\'s warnings',
@@ -18,11 +18,11 @@ export const warns: SlashCommand<'cached'> = {
       }
 
       // Get current member data
-      const memberdata = await getMemberData(member.id, interaction.guild.id);
+      const punishments = await getPunishments(member.id, interaction.guild.id);
 
-      // Check if member has any warns
-      if (!memberdata || !memberdata.warns[0]) {
-        error('This user does not have any warnings.', interaction, true);
+      // Check if member has any warnings
+      if (!punishments || !punishments.warns[0]) {
+        error('This member does not have any warnings.', interaction, true);
         return;
       }
 
@@ -30,7 +30,7 @@ export const warns: SlashCommand<'cached'> = {
         reason: string;
         created: number;
         until?: number;
-      }[] = JSON.parse(memberdata.warns);
+      }[] = JSON.parse(punishments.warns);
 
       // Create embed
       const WarnEmbed = new EmbedBuilder()

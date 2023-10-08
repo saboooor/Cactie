@@ -6,7 +6,7 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
   if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
 
   // Check if ticket already exists
-  const ticketData = await prisma.ticketdata.findUnique({
+  const ticket = await prisma.tickets.findUnique({
     where: {
       opener_guildId: {
         opener: member.id,
@@ -14,9 +14,9 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
       },
     },
   });
-  if (ticketData) {
+  if (ticket) {
     try {
-      const channel = await member.guild.channels.fetch(ticketData.channelId) as TextChannel;
+      const channel = await member.guild.channels.fetch(ticket.channelId) as TextChannel;
       if (channel.name.startsWith('ticket')) {
         await channel.send({ content: `❗ **${member} Ticket already exists!**` });
         return `**You've already created a ticket at ${channel}!**`;
@@ -24,7 +24,7 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
     }
     catch (err) {
       logger.error(`Ticket data found but can't be fetched: ${err}`);
-      await prisma.ticketdata.delete({ where: { channelId: ticketData.channelId } });
+      await prisma.tickets.delete({ where: { channelId: ticket.channelId } });
     }
   }
 
@@ -45,7 +45,7 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
 
   // Create ticket and set database
   const id = srvconfig.tickets.count == 'false' ? member.user.username.toLowerCase().replace(' ', '-') : srvconfig.tickets.count;
-  const ticket = await member.guild.channels.create({
+  const ticketChannel = await member.guild.channels.create({
     name: `ticket${branch}-${id}`,
     parent: parent ? parent.id : null,
     topic: `Ticket Opened by ${member.user.username}`,
@@ -68,13 +68,13 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
   });
 
   // If no role, send message to ticket
-  if (!role) await ticket.send({ content: '❗ **Can\'t find access role!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
+  if (!role) await ticketChannel.send({ content: '❗ **Can\'t find access role!**\nOnly Administrators can see this ticket.\nTo set an access role, go to https://cactie.luminescent.dev to change the bot\'s settings' });
 
   // Set the database
-  await prisma.ticketdata.create({
+  await prisma.tickets.create({
     data: {
       guildId: member.guild.id,
-      channelId: ticket.id,
+      channelId: ticketChannel.id,
       opener: member.id,
       users: member.id,
     },
@@ -126,19 +126,19 @@ export default async function createTicket(client: Client<true>, srvconfig: guil
           .setEmoji({ name: '🔊' })
           .setStyle(ButtonStyle.Secondary),
       ]);
-    await ticket.send({ content: `${member}${ping ?? ''}`, embeds: [CreateEmbed], components: [row] });
+    await ticketChannel.send({ content: `${member}${ping ?? ''}`, embeds: [CreateEmbed], components: [row] });
   }
   else if (srvconfig.tickets.type == 'reactions') {
     // Set the footer with the close reminder with reaction
     CreateEmbed.setFooter({ text: 'To close this ticket do /close, or react with 🔒' });
 
     // Send to ticket and react
-    const Panel = await ticket.send({ content: `${member}${ping ?? ''}`, embeds: [CreateEmbed] });
+    const Panel = await ticketChannel.send({ content: `${member}${ping ?? ''}`, embeds: [CreateEmbed] });
     await Panel.react('🔒');
     await Panel.react('🔊');
   }
 
   // Resolve with message
-  logger.info(`Ticket created at #${ticket.name}`);
+  logger.info(`Ticket created at #${ticketChannel.name}`);
   return `**Ticket created at ${ticket}!**`;
 }

@@ -63,7 +63,7 @@ export const unban: SlashCommand<'cached'> = {
       logger.info(`Unbanned user: ${ban.user.username} in ${interaction.guild.name}`);
 
       // Update member data to remove mute
-      await prisma.memberdata.update({
+      await prisma.punishments.update({
         where: {
           memberId_guildId: {
             memberId: ban.user.id,

@@ -10,14 +10,14 @@ export default async function reopenTicket(srvconfig: guildConfig, member: Guild
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({
+  const ticket = await prisma.tickets.findUnique({
     where: {
       channelId: channel.id,
     },
     cacheStrategy: { ttl: 60 },
   });
-  if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
-  const ticketDataUsers = ticketData.users.split(',');
+  if (!ticket) throw new Error('This isn\'t a ticket that I know of!');
+  const ticketUserIds = ticket.users.split(',');
 
   // Check if ticket is already opened
   if (channel.name.startsWith('ticket')) throw new Error('This ticket is already open!');
@@ -29,7 +29,7 @@ export default async function reopenTicket(srvconfig: guildConfig, member: Guild
   if (channel.name.startsWith('closed')) throw new Error('Failed to open ticket, please try again in 10 minutes');
 
   // Add permissions for each user in the ticket
-  for (const userid of ticketDataUsers) {
+  for (const userid of ticketUserIds) {
     channel.permissionOverwrites.edit(userid, { ViewChannel: true });
   }
 

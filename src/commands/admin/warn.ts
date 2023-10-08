@@ -2,7 +2,7 @@ import { EmbedBuilder, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import punish from '~/options/punish-reason';
-import prisma, { getGuildConfig, getMemberData } from '~/functions/prisma';
+import prisma, { getGuildConfig, getPunishments } from '~/functions/prisma';
 
 export const warn: SlashCommand<'cached'> = {
   description: 'Warn someone in this server',
@@ -53,17 +53,17 @@ export const warn: SlashCommand<'cached'> = {
       if (reason) WarnEmbed.addFields([{ name: 'Reason', value: reason }]);
 
       // Get Member Data
-      const memberdata = await getMemberData(member.id, interaction.guild.id, 0, true);
+      const punishments = await getPunishments(member.id, interaction.guild.id, 0, true);
 
       // Add warn to warns array
-      memberdata.warns.push({
+      punishments.warns.push({
         reason: reason ? reason : 'No reason specified.',
         created: Date.now(),
         until: !isNaN(time) ? Date.now() + time : undefined,
       });
 
       // Set member data for warn
-      await prisma.memberdata.upsert({
+      await prisma.punishments.upsert({
         where: {
           memberId_guildId: {
             guildId: interaction.guild.id,
@@ -71,12 +71,12 @@ export const warn: SlashCommand<'cached'> = {
           },
         },
         update: {
-          warns: JSON.stringify(memberdata.warns),
+          warns: JSON.stringify(punishments.warns),
         },
         create: {
           memberId: member.id,
           guildId: interaction.guild.id,
-          warns: JSON.stringify(memberdata.warns),
+          warns: JSON.stringify(punishments.warns),
         },
       });
 
