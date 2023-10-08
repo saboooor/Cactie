@@ -157,12 +157,17 @@ export const suggest: SlashCommand<'cached'> = {
       const botReactions = suggestMsg.reactions.cache.filter(reaction => reaction.me && reaction.emoji.name != '🔔');
       const totalCount = botReactions.reduce((a, b) => a + b.count, 0) - botReactions.size;
 
-      // Fetch result / reaction emojis and add field if not already added
-      const emojis = botReactions.map(reaction => {
-        const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
-        return `${emoji} **${reaction.count - 1}** ${Math.round((reaction.count - 1) / totalCount * 100)}%`;
-      });
-      if (emojis.length) ResponseEmbed.addFields([{ name: 'Results', value: `${emojis.join('\n')}` }]);
+      if (totalCount) {
+        // Fetch result / reaction emojis and add field if not already added
+        const emojis = botReactions.map(reaction => {
+          const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
+          return `${emoji} **${reaction.count - 1}** ${Math.round((reaction.count - 1) / totalCount * 100)}%`;
+        });
+        if (emojis.length) ResponseEmbed.addFields([{ name: 'Results', value: `${emojis.join('\n')}` }]);
+      }
+      else {
+        ResponseEmbed.addFields([{ name: 'Results', value: 'No votes.' }]);
+      }
 
       // Get suggestion thread
       const thread = interaction.guild.channels.cache.get(suggestMsg.id) as AnyThreadChannel | undefined;
@@ -223,7 +228,7 @@ export const suggest: SlashCommand<'cached'> = {
       }
 
       // Remove all reactions
-      suggestMsg.reactions.removeAll();
+      await suggestMsg.reactions.removeAll();
 
       // Update message and reply
       await suggestMsg.edit({ embeds: [ResponseEmbed] });

@@ -18,7 +18,7 @@ export default async function options(cmd: SlashCommandBuilder) {
           .addStringOption(
             new SlashCommandStringOption()
               .setName('timer')
-              .setDescription('Time to keep the poll open until s/m/h/d/mo (Ex. 10s, 2m)'),
+              .setDescription('Time to keep the poll open until s/m/h/d (Ex. 10s, 2m)'),
           ),
       )
       .addSubcommand(
@@ -76,7 +76,7 @@ export default async function options(cmd: SlashCommandBuilder) {
           .addStringOption(
             new SlashCommandStringOption()
               .setName('timer')
-              .setDescription('Time to keep the poll open until s/m/h/d/mo (Ex. 10s, 2m)'),
+              .setDescription('Time to keep the poll open until s/m/h/d (Ex. 10s, 2m)'),
           ),
       ),
   ).addSubcommand(

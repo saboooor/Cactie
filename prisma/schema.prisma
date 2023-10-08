@@ -67,3 +67,9 @@ model punishments {
 
   @@unique([memberId, guildId], map: "Identifier")
 }
+
+model temppolls {
+  channelId String
+  messageId String   @unique(map: "id")
+  expiresAt DateTime
+}

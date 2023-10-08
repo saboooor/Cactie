@@ -15,7 +15,7 @@ export default async function options(cmd: SlashCommandBuilder) {
   ).addStringOption(
     new SlashCommandStringOption()
       .setName('time')
-      .setDescription('Time to temporarily punish until s/m/h/d/mo (Ex. 10s, 2m)'),
+      .setDescription('Time to temporarily punish until s/m/h/d (Ex. 10s, 2m)'),
   ).addBooleanOption(
     new SlashCommandBooleanOption()
       .setName('silent')

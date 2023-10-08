@@ -3,7 +3,8 @@ import { yes, no } from '~/misc/emoji.json';
 import checkPerms from '~/functions/checkPerms';
 import { SlashCommand } from '~/types/Objects';
 import pollOptions from '~/options/poll';
-import { getGuildConfig } from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
+import ms from 'ms';
 
 function truncateString(str: string, num: number) {
   if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
@@ -55,8 +56,6 @@ export const poll: SlashCommand<'cached'> = {
 
       const cmdgroup = interaction.options.getSubcommandGroup();
       if (cmdgroup == 'create') {
-        const cmd = interaction.options.getSubcommand(true);
-
         // Get question
         const question = interaction.options.getString('question', true);
 
@@ -67,9 +66,27 @@ export const poll: SlashCommand<'cached'> = {
           .setAuthor({ name: `${interaction.member.displayName} (${interaction.user.username})`, iconURL: interaction.user.avatarURL() ?? undefined, url: `https://a${interaction.user.id}a.cactie` })
           .setDescription(question);
 
+        // Get timer
+        const timer = interaction.options.getString('timer');
+        let expiresAt;
+        if (timer) {
+          const time = ms(timer);
+          if (time > 15768000000) {
+            error('You cannot make a poll that lasts more than 6 months!', interaction, true);
+            return;
+          }
+          expiresAt = new Date(Date.now() + time);
+          pollEmbed.addFields([{ name: 'This poll ends', value: `<t:${Math.round(Number(expiresAt) / 1000)}:R>` }]);
+        }
+
+        // Get either yesno or multiple
+        const cmd = interaction.options.getSubcommand(true);
+
+        let pollMsg;
+
         if (cmd == 'yesno') {
           // Send poll message and react
-          const pollMsg = await channel.send({ embeds: [pollEmbed] });
+          pollMsg = await channel.send({ embeds: [pollEmbed] });
           await pollMsg.react(yes);
           await pollMsg.react(no);
         }
@@ -95,12 +112,22 @@ export const poll: SlashCommand<'cached'> = {
           }]);
 
           // Send poll message and react
-          const pollMsg = await channel.send({ embeds: [pollEmbed] });
+          pollMsg = await channel.send({ embeds: [pollEmbed] });
           for (let i = 0; i < choicesString.length; i++) await pollMsg.react(`${i + 1}\uFE0F\u20E3`);
         }
 
         // Send response message if command is slash command or different channel
-        interaction.reply({ content: `**Poll Created at ${channel}!**` });
+        const pollmsg = await interaction.reply({ content: `**Poll Created at ${channel}!**` });
+
+        if (expiresAt) {
+          await prisma.temppolls.create({
+            data: {
+              channelId: channel.id,
+              messageId: pollMsg!.id,
+              expiresAt,
+            },
+          });
+        }
         return;
       }
 
@@ -135,7 +162,7 @@ export const poll: SlashCommand<'cached'> = {
       }
 
       // Remove all reactions and set color to green and approved title
-      pollMsg.reactions.removeAll();
+      await pollMsg.reactions.removeAll();
       pollEmbed.setTitle('Poll (Ended)')
         .setTimestamp()
         .setColor(0xE74C3C);
@@ -144,7 +171,7 @@ export const poll: SlashCommand<'cached'> = {
       const botReactions = pollMsg.reactions.cache.filter(reaction => reaction.me);
       const totalCount = botReactions.reduce((a, b) => a + b.count, 0) - botReactions.size;
 
-      if (totalCount != 0) {
+      if (totalCount) {
         // Fetch result / reaction emojis and add field if not already added
         const emojis = botReactions.map(reaction => {
           const emoji = client.emojis.cache.get(reaction.emoji.id!) ?? reaction.emoji.name;
