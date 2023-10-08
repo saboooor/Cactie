@@ -30,7 +30,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
     const member = await guild.members.fetch(data.memberId).catch(() => { return null; });
     const user = await client.users.fetch(data.memberId).catch(() => { return null; });
 
-    if (Number(data.mutedUntil) < Date.now()) {
+    if (data.mutedUntil && Number(data.mutedUntil) < Date.now()) {
       // Get the role and if it exists get rid of it from the member
       const role = await guild.roles.cache.get(srvconfig.mutecmd);
       if (role && member) await member.roles.remove(role);
@@ -49,7 +49,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
         logchannel.send({ embeds: [UnmuteEmbed] });
       }
     }
-    if (Number(data.bannedUntil) < Date.now()) {
+    if (data.bannedUntil && Number(data.bannedUntil) < Date.now()) {
       // Attempt to unban the member
       await guild.members.unban(data.memberId).catch(err => logger.error(err));
 
@@ -73,13 +73,13 @@ export default async (client: Client) => schedule('* * * * *', async () => {
         created: number;
         until?: number;
       }[] = JSON.parse(data.warns);
-  
+
       // Iterate through every warn
       for (const warn of warnList) {
         if (warn.until && warn.until < Date.now()) {
           // Remove warn from warns array
           warnList.splice(warnList.indexOf(warn), 1);
-  
+
           // Send warn message to target if silent is false
           if (user) {
             user.send({ content: `## Your warning has been removed in ${guild.name}\n**Warning:** ${warn.reason}\n**Created:** <t:${Math.round(warn.created / 1000)}>` })
@@ -89,7 +89,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
           }
           logger.info(`Unwarned user: ${user ? user.username : data.memberId} in ${guild.name}.`);
         }
-      }  
+      }
 
       // Set member data for warn
       await prisma.memberdata.update({
