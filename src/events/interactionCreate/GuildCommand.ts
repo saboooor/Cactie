@@ -24,11 +24,6 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
     const actions = JSON.parse(command.actions);
     for (const action of actions) {
-      // Sleep
-      if (action.type == 0) {
-        sleep(action.ms);
-      }
-
       // Message
       if (action.type == 1) {
         const payload: any = { };
@@ -53,8 +48,13 @@ export default async (client: Client, interaction: CommandInteraction) => {
         }
       }
 
-      // Edit Channel
+      // Sleep
       if (action.type == 2) {
+        sleep(action.ms);
+      }
+
+      // Edit Channel
+      if (action.type == 3) {
         const channel = interaction.guild.channels.cache.get(action.channelId) as Exclude<PermissionChannel, AnyThreadChannel> | undefined;
         if (!channel) {
           logger.warn(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
@@ -67,7 +67,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
       }
 
       // Role
-      if (action.type == 3) {
+      if (action.type == 4) {
         const role = interaction.guild.roles.cache.get(action.roleId);
         if (!role) {
           logger.warn(`Failed to find role with id ${action.roleId} in ${interaction.guild.name}`);
