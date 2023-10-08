@@ -70,8 +70,8 @@ export default async function options(cmd: SlashCommandBuilder) {
           )
           .addStringOption(
             new SlashCommandStringOption()
-              .setName('choice9')
-              .setDescription('The ninth choice'),
+              .setName('timer')
+              .setDescription('Time to keep the poll open until s/m/h/d/mo (Ex. 10s, 2m)'),
           ),
       ),
   ).addSubcommand(
