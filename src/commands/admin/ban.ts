@@ -69,12 +69,12 @@ export const ban: SlashCommand<'cached'> = {
             },
           },
           update: {
-            bannedUntil: `${Date.now() + time}`,
+            bannedUntil: new Date(Date.now() + time),
           },
           create: {
             memberId: member.id,
             guildId: interaction.guild.id,
-            bannedUntil: `${Date.now() + time}`,
+            bannedUntil: new Date(Date.now() + time),
           },
         });
       }
