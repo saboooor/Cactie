@@ -44,7 +44,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
       // Edit Channel
       if (action.type == 2) {
-        const channel = interaction.guild.channels.cache.get(action.channelId) as Exclude<PermissionChannel, AnyThreadChannel>
+        const channel = interaction.guild.channels.cache.get(action.channelId) as Exclude<PermissionChannel, AnyThreadChannel>;
         if (!channel) {
           logger.warn(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
           interaction.channel?.send(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
