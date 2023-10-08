@@ -1,20 +1,37 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel } from 'discord.js';
-import { yes, no } from '~/misc/emoji.json';
-import checkPerms from '~/functions/checkPerms';
+import { ChannelType, PermissionFlagsBits } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 import vcOptions from '~/options/voicechat';
-import { getGuildConfig } from '~/functions/prisma';
 
 export const voicechat: SlashCommand<'cached'> = {
   description: 'Create a personal voice chat!',
   ephemeral: true,
   cooldown: 10,
   options: vcOptions,
-  async autoComplete(client, interaction) {
-    interaction.respond([]);
-  },
+  botPerms: ['ManageChannels'],
   async execute(interaction, client) {
     try {
+      const cmd = interaction.options.getSubcommand();
+
+      if (cmd == 'create') {
+        const name = interaction.options.getString('name', true);
+
+        const vc = await interaction.guild.channels.create({
+          name,
+          type: ChannelType.GuildVoice,
+          permissionOverwrites: [
+            {
+              id: interaction.guild.id,
+              deny: [PermissionFlagsBits.ViewChannel],
+            },
+            {
+              id: interaction.user.id,
+              allow: [PermissionFlagsBits.ViewChannel],
+            },
+          ]
+        });
+
+        interaction.reply({ content: `Your voice chat has been created at ${vc}!`, ephemeral: true });
+      }
     }
     catch (err) { error(err, interaction); }
   },

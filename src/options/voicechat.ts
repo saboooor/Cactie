@@ -9,24 +9,19 @@ export default async function options(cmd: SlashCommandBuilder) {
         new SlashCommandStringOption()
           .setName('name')
           .setDescription('The name of the voice chat')
+          .setMaxLength(100)
           .setRequired(true),
       ).addNumberOption(
         new SlashCommandNumberOption()
           .setName('limit')
           .setDescription('The user limit of the voice chat')
-          .setRequired(true),
+          .setMaxValue(99)
+          .setMinValue(1),
       ),
   ).addSubcommand(
     new SlashCommandSubcommandBuilder()
       .setName('delete')
-      .setDescription('Delete a voice chat')
-      .addStringOption(
-        new SlashCommandStringOption()
-          .setName('channelId')
-          .setDescription('The Id of the channel to delete')
-          .setRequired(true)
-          .setAutocomplete(true),
-      ),
+      .setDescription('Delete your voice chat'),
   ).addSubcommand(
     new SlashCommandSubcommandBuilder()
       .setName('add-user')
