@@ -66,8 +66,3 @@ model memberdata {
 
   @@unique([memberId, guildId], map: "Identifier")
 }
-
-model userdata {
-  userId    String    @unique(map: "userId")
-  lastvoted DateTime? @db.DateTime(0)
-}
