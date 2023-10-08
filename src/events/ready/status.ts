@@ -27,4 +27,4 @@ export default async (client: Client<true>) => {
     const activity = activities[i];
     client.user.setPresence({ activities: [{ name: activity[1], type: ActivityType[activity[0] as keyof typeof ActivityType] }], status: 'dnd' });
   });
-}
+};
