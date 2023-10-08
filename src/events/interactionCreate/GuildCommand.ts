@@ -1,5 +1,5 @@
 import prisma from '~/functions/prisma';
-import { EmbedBuilder, Client, CommandInteraction, InteractionReplyOptions, CategoryChannel, AnyThreadChannel, VoiceChannel } from 'discord.js';
+import { EmbedBuilder, Client, CommandInteraction, InteractionReplyOptions, CategoryChannel, AnyThreadChannel, VoiceChannel, GuildBasedChannel, GuildTextBasedChannel, MessageCreateOptions, MessagePayload } from 'discord.js';
 import { PermissionChannel } from '~/functions/checkPerms';
 
 export default async (client: Client, interaction: CommandInteraction) => {
@@ -31,20 +31,31 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
       // Message
       if (action.type == 1) {
-        const payload = { } as InteractionReplyOptions;
+        const payload: any = { };
         if (action.embeds[0]) {
           const embed = new EmbedBuilder(action.embeds[0]);
           payload.embeds = [embed];
         }
         if (action.content != '') payload.content = action.content;
         if (action.ephemeral) payload.ephemeral = action.ephemeral;
-        if (interaction.replied) await interaction.followUp(payload).catch(err => logger.warn(err));
-        else await interaction.reply(payload).catch(err => logger.warn(err));
+        if (action.channelId) {
+          const channel = action.channelId != 'sameChannel' ? interaction.guild.channels.cache.get(action.channelId) as GuildTextBasedChannel | undefined : interaction.channel;
+          if (!channel) {
+            logger.warn(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
+            interaction.channel?.send(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
+            continue;
+          }
+          await channel.send(payload).catch(err => logger.warn(err));
+        }
+        else {
+          if (interaction.replied) await interaction.followUp(payload).catch(err => logger.warn(err));
+          else await interaction.reply(payload).catch(err => logger.warn(err));  
+        }
       }
 
       // Edit Channel
       if (action.type == 2) {
-        const channel = interaction.guild.channels.cache.get(action.channelId) as Exclude<PermissionChannel, AnyThreadChannel>
+        const channel = interaction.guild.channels.cache.get(action.channelId) as Exclude<PermissionChannel, AnyThreadChannel> | undefined;
         if (!channel) {
           logger.warn(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
           interaction.channel?.send(`Failed to find channel with id ${action.channelId} in ${interaction.guild.name}`);
@@ -65,6 +76,10 @@ export default async (client: Client, interaction: CommandInteraction) => {
         }
         if (action.add) interaction.member.roles.add(role);
         if (action.remove) interaction.member.roles.remove(role);
+        if (action.toggle) {
+          if (interaction.member.roles.cache.has(role.id)) interaction.member.roles.remove(role);
+          else interaction.member.roles.add(role);
+        }
         if (action.name) role.setName(action.name);
         if (action.color) role.setColor(action.color);
         if (action.hoist) role.setHoist(action.hoist);
