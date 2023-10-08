@@ -38,7 +38,7 @@ export const unmute: SlashCommand<'cached'> = {
       else await member.timeout(null);
 
       // Update member data to remove mute
-      await prisma.memberdata.update({
+      await prisma.punishments.update({
         where: {
           memberId_guildId: {
             memberId: member.id,

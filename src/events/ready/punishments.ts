@@ -3,22 +3,21 @@ import { EmbedBuilder, Client, TextChannel } from 'discord.js';
 import prisma, { getGuildConfig } from '~/functions/prisma';
 
 export default async (client: Client) => schedule('* * * * *', async () => {
-  await prisma.memberdata.deleteMany({
+  await prisma.punishments.deleteMany({
     where: {
       mutedUntil: null,
       bannedUntil: null,
       warns: '[]',
-      polls: '[]',
     }
   });
 
   // Get all member data
-  const memberdata = await prisma.memberdata.findMany({
+  const punishments = await prisma.punishments.findMany({
     cacheStrategy: { ttl: 60 },
   });
 
   // Iterate through every row in the data
-  for (const data of memberdata) {
+  for (const data of punishments) {
     // Get the guild from the guildId
     const guild = await client.guilds.fetch(data.guildId).catch(() => { return null; });
     if (!guild) continue;
@@ -40,7 +39,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       logger.info(`Unmuted ${user ? user.username : data.memberId} in ${guild.name}`);
 
       // Set the data
-      await prisma.memberdata.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { mutedUntil: null } });
+      await prisma.punishments.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { mutedUntil: null } });
 
       // Check if log channel exists and send message
       const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
@@ -58,7 +57,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       logger.info(`Unbanned ${user ? user.username : data.memberId} in ${guild.name}`);
 
       // Set the data
-      await prisma.memberdata.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { bannedUntil: null } });
+      await prisma.punishments.update({ where: { memberId_guildId: { memberId: data.memberId, guildId: guild.id } }, data: { bannedUntil: null } });
 
       // Check if log channel exists and send message
       const logchannel = guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
@@ -92,7 +91,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       }
 
       // Set member data for warn
-      await prisma.memberdata.update({
+      await prisma.punishments.update({
         where: {
           memberId_guildId: {
             memberId: data.memberId,

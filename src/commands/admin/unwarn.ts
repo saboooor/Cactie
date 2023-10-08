@@ -2,7 +2,7 @@ import { EmbedBuilder, TextChannel } from 'discord.js';
 import ms from 'ms';
 import { SlashCommand } from '~/types/Objects';
 import unwarnOptions from '~/options/unwarn';
-import prisma, { getGuildConfig, getMemberData } from '~/functions/prisma';
+import prisma, { getGuildConfig, getPunishments } from '~/functions/prisma';
 
 function truncateString(str: string, num: number) {
   if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
@@ -21,11 +21,11 @@ export const unwarn: SlashCommand<'cached'> = {
       return;
     }
 
-    // Get Member Data
-    const memberdata = await getMemberData(member, interaction.guild.id, 0);
+    // Get Member Punishments
+    const punishments = await getPunishments(member, interaction.guild.id, 0);
 
     // Check if member has any warns
-    if (!memberdata || !memberdata.warns[0]) {
+    if (!punishments || !punishments.warns[0]) {
       interaction.respond([{ name: 'This user does not have any warnings.', value: '0' }]);
       return;
     }
@@ -34,7 +34,7 @@ export const unwarn: SlashCommand<'cached'> = {
       reason: string;
       created: number;
       until?: number;
-    }[] = JSON.parse(memberdata.warns);
+    }[] = JSON.parse(punishments.warns);
 
     const list = warnList.map((warn, i) => ({
       name: truncateString(`${i + 1}. ${warn.reason} - ${warn.until ? `Expires in: ${ms(warn.until - Date.now(), { long: true })}` : 'Permanent'}`, 100),
@@ -68,11 +68,11 @@ export const unwarn: SlashCommand<'cached'> = {
         return;
       }
 
-      // Get Member Data
-      const memberdata = await getMemberData(member.id, interaction.guild.id);
+      // Get Member Punishments
+      const punishments = await getPunishments(member.id, interaction.guild.id);
 
       // Check if member has any warns
-      if (!memberdata || !memberdata.warns[0]) {
+      if (!punishments || !punishments.warns[0]) {
         error('This user does not have any warnings.', interaction, true);
         return;
       }
@@ -81,7 +81,7 @@ export const unwarn: SlashCommand<'cached'> = {
         reason: string;
         created: number;
         until?: number;
-      }[] = JSON.parse(memberdata.warns);
+      }[] = JSON.parse(punishments.warns);
 
       const created = interaction.options.getString('warning', true);
 
@@ -101,7 +101,7 @@ export const unwarn: SlashCommand<'cached'> = {
       warnList.splice(warnList.indexOf(warn), 1);
 
       // Set member data for warn
-      await prisma.memberdata.upsert({
+      await prisma.punishments.upsert({
         where: {
           memberId_guildId: {
             guildId: interaction.guild.id,

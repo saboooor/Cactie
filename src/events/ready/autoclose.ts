@@ -6,23 +6,23 @@ import closeTicket from '~/functions/tickets/closeTicket';
 
 export default (client: Client) => schedule('0 0 * * *', async () => {
   // Get all tickets
-  const allTicketData = await prisma.ticketdata.findMany();
+  const tickets = await prisma.tickets.findMany();
 
   // Loop through all tickets
-  allTicketData.forEach(async ticketdata => {
+  tickets.forEach(async ticket => {
     // Check if the ticket is resolved
-    if (ticketdata.resolved == 'false') return;
+    if (ticket.resolved == 'false') return;
 
     // Fetch the guild
-    const guild = client.guilds.cache.get(ticketdata.guildId);
-    if (!guild) return prisma.ticketdata.deleteMany({ where: { guildId: ticketdata.guildId } });
+    const guild = client.guilds.cache.get(ticket.guildId);
+    if (!guild) return prisma.tickets.deleteMany({ where: { guildId: ticket.guildId } });
 
     // Fetch the channel
-    const channel = guild.channels.cache.get(ticketdata.channelId) as TextChannel;
-    if (!channel) return prisma.ticketdata.deleteMany({ where: { channelId: ticketdata.channelId } });
+    const channel = guild.channels.cache.get(ticket.channelId) as TextChannel;
+    if (!channel) return prisma.tickets.deleteMany({ where: { channelId: ticket.channelId } });
 
     // Get server config
-    const srvconfig = await getGuildConfig(ticketdata.guildId);
+    const srvconfig = await getGuildConfig(ticket.guildId);
 
     // Close the ticket
     await closeTicket(srvconfig, guild.members.me!, channel);

@@ -8,18 +8,18 @@ export default async (client: Client, member: GuildMember) => {
     const srvconfig = await getGuildConfig(member.guild.id);
 
     // Get the ticket data
-    const ticketdata = await prisma.ticketdata.findMany({
+    const tickets = await prisma.tickets.findMany({
       where: {
         opener: member.id,
         guildId: member.guild.id,
       },
     });
-    if (!ticketdata.length) return;
+    if (!tickets.length) return;
 
     // Close all tickets under member
-    ticketdata.forEach(async data => {
+    tickets.forEach(async ticket => {
       // Fetch the channel
-      const channel = member.guild.channels.cache.get(data.channelId) as TextChannel;
+      const channel = member.guild.channels.cache.get(ticket.channelId) as TextChannel;
 
       // Close the ticket
       await closeTicket(srvconfig, member, channel);

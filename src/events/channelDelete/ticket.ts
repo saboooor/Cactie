@@ -4,13 +4,13 @@ import { Client, EmbedBuilder, GuildChannel, GuildMember, TextChannel, VoiceChan
 export default async (client: Client, channel: GuildChannel) => {
   // Check if ticket is an actual ticket
   // Get server config
-  const ticketData = await prisma.ticketdata.findUnique({
+  const ticket = await prisma.tickets.findUnique({
     where: {
       channelId: channel.id,
     },
   });
-  if (!ticketData) return;
-  const ticketDataUsers = ticketData.users.split(',');
+  if (!ticket) return;
+  const ticketUserIds = ticket.users.split(',');
 
   // Check if ticket log channel is set in settings
   const srvconfig = await getGuildConfig(channel.guild.id);
@@ -18,7 +18,7 @@ export default async (client: Client, channel: GuildChannel) => {
   if (logchannel) {
     // Get list of users for embed
     const users: GuildMember[] = [];
-    ticketDataUsers.forEach(userid => {
+    ticketUserIds.forEach(userid => {
       const ticketmember = channel.guild.members.cache.get(userid);
       if (ticketmember) users.push(ticketmember);
     });
@@ -36,11 +36,11 @@ export default async (client: Client, channel: GuildChannel) => {
     await logchannel.send({ embeds: [DelEmbed] });
   }
 
-  if (ticketData.voiceticket !== 'false') {
-    const voiceticket = channel.guild.channels.cache.get(ticketData.voiceticket) as VoiceChannel;
+  if (ticket.voiceticket !== 'false') {
+    const voiceticket = channel.guild.channels.cache.get(ticket.voiceticket) as VoiceChannel;
     voiceticket.delete().catch(err => logger.warn(err));
   }
 
   // Delete ticket data
-  await prisma.ticketdata.delete({ where: { channelId: channel.id } });
+  await prisma.tickets.delete({ where: { channelId: channel.id } });
 };

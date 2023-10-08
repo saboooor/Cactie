@@ -81,7 +81,7 @@ export const mute: SlashCommand<'cached'> = {
 
       // Set member data for unmute time if set
       if (!isNaN(time)) {
-        await prisma.memberdata.upsert({
+        await prisma.punishments.upsert({
           where: {
             memberId_guildId: {
               guildId: interaction.guild.id,

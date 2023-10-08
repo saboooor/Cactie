@@ -61,7 +61,7 @@ export const ban: SlashCommand<'cached'> = {
 
       // Set unban timestamp to member data for auto-unban
       if (!isNaN(time)) {
-        await prisma.memberdata.upsert({
+        await prisma.punishments.upsert({
           where: {
             memberId_guildId: {
               guildId: interaction.guild.id,

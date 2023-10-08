@@ -7,19 +7,19 @@ export default async function deleteTicket(channel: GuildTextBasedChannel, force
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketData = await prisma.ticketdata.findUnique({
+  const ticket = await prisma.tickets.findUnique({
     where: {
       channelId: channel.id,
     },
     cacheStrategy: { ttl: 60 },
   });
-  if (!ticketData) throw new Error('This isn\'t a ticket that I know of!');
+  if (!ticket) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if ticket is open
   if (!force && channel.name.startsWith('ticket')) throw new Error('This ticket needs to be closed first!');
 
   // Actually delete ticket and ticket database
-  await prisma.ticketdata.delete({ where: { channelId: channel.id } });
+  await prisma.tickets.delete({ where: { channelId: channel.id } });
   logger.info(`Deleted ticket #${channel.name}`);
   await channel.delete();
   return '**Ticket deleted successfully!**';

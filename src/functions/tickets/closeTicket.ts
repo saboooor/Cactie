@@ -9,20 +9,20 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
 
   // Check if channel is a ticket
-  const ticketdata = await prisma.ticketdata.findUnique({
+  const ticket = await prisma.tickets.findUnique({
     where: {
       channelId: channel.id,
     },
     cacheStrategy: { ttl: 60 },
   });
-  if (!ticketdata) throw new Error('This isn\'t a ticket that I know of!');
-  const ticketDataUsers = ticketdata.users.split(',');
+  if (!ticket) throw new Error('This isn\'t a ticket that I know of!');
+  const ticketUserIds = ticket.users.split(',');
 
   // Check if ticket is already closed
   if (channel.name.startsWith('closed')) throw new Error('This ticket is already closed!');
 
   // Check if user is a user that has been added with -add
-  if (ticketDataUsers.includes(member.id) && member.id != ticketdata.opener) throw new Error('You can\'t close this ticket!');
+  if (ticketUserIds.includes(member.id) && member.id != ticket.opener) throw new Error('You can\'t close this ticket!');
 
   // Set the name to closed
   await channel.setName(channel.name.replace('ticket', 'closed'));
@@ -31,14 +31,14 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
   if (channel.name.startsWith('ticket')) throw new Error('This ticket couldn\'t be closed as the bot has been rate limited.\nWait 10 minutes to try again or delete the channel.');
 
   // If voiceticket is set, delete the voiceticket
-  if (ticketdata.voiceticket != 'false') {
-    const voiceticket = await member.guild.channels.fetch(ticketdata.voiceticket).catch(() => { return null; });
+  if (ticket.voiceticket != 'false') {
+    const voiceticket = await member.guild.channels.fetch(ticket.voiceticket).catch(() => { return null; });
     if (voiceticket) voiceticket.delete();
-    await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { voiceticket: 'false' } });
+    await prisma.tickets.update({ where: { channelId: channel.id }, data: { voiceticket: 'false' } });
   }
 
   // Unresolve ticket
-  if (ticketdata.resolved != 'false') await prisma.ticketdata.update({ where: { channelId: channel.id }, data: { resolved: 'false' } });
+  if (ticket.resolved != 'false') await prisma.tickets.update({ where: { channelId: channel.id }, data: { resolved: 'false' } });
 
   // Create a transcript of the ticket
   const messagechunks = await getMessages<true>(channel, 'infinite').catch((err: Error) => {
@@ -60,10 +60,10 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
       { name: '**Transcript**', value: `${link}` },
       { name: '**Closed by**', value: `${member}` },
     ]);
-  if (ticketDataUsers.length) CloseEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketDataUsers.map(u => { return `<@${u}>`; }).join(', ')}` }]);
+  if (ticketUserIds.length) CloseEmbed.addFields([{ name: '**Users in ticket**', value: `${ticketUserIds.map(u => { return `<@${u}>`; }).join(', ')}` }]);
 
   // Get all the users and get rid of their permissions
-  for (const userid of ticketDataUsers) {
+  for (const userid of ticketUserIds) {
     const ticketmember = await member.guild.members.fetch(userid).catch(() => { return null; });
     if (!ticketmember) continue;
     await channel.permissionOverwrites.edit(userid, { ViewChannel: false });

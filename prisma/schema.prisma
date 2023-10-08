@@ -8,7 +8,7 @@ datasource db {
   directUrl = env("DATABASE_URL_DIRECT")
 }
 
-model ticketdata {
+model tickets {
   guildId     String
   channelId   String @unique(map: "channelId")
   opener      String
@@ -57,7 +57,7 @@ model customcmds {
   @@unique([guildId, name], map: "Identifier")
 }
 
-model memberdata {
+model punishments {
   memberId    String
   guildId     String
   mutedUntil  DateTime?
