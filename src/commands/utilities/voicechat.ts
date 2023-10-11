@@ -28,10 +28,6 @@ export const voicechat: SlashCommand<'cached'> = {
 
       if (cmd == 'create') {
         const srvconfig = await getGuildConfig(interaction.guild.id);
-        if (!srvconfig.voicechats.enabled) {
-          interaction.reply({ content: `**Custom voice chats are disabled in this server!**` });
-          return;
-        }
 
         const name = interaction.options.getString('name', true);
         const userLimit = interaction.options.getNumber('limit', false) ?? undefined;
