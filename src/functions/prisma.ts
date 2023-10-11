@@ -18,6 +18,7 @@ export async function getGuildConfig(guildId: string) {
     joinmessage: JSON.parse(srvconfigUnparsed.joinmessage),
     leavemessage: JSON.parse(srvconfigUnparsed.leavemessage),
     tickets: JSON.parse(srvconfigUnparsed.tickets),
+    voicechats: JSON.parse(srvconfigUnparsed.voicechats),
     reactions: JSON.parse(srvconfigUnparsed.reactions),
     auditlogs: JSON.parse(srvconfigUnparsed.auditlogs),
   };

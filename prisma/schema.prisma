@@ -25,7 +25,7 @@ model settings {
   leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
   joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
   tickets           String @default("{\"enabled\":true,\"type\":\"buttons\",\"logchannel\":\"false\",\"category\":\"false\",\"role\":\"false\",\"mention\":\"here\",\"count\":1}") @db.Text
-  disabledcmds      String @default("false") @db.Text
+  voicechats        String @default("{\"enabled\":true,\"type\":\"private\",\"category\":\"false\"}") @db.Text
   auditlogs         String @default("{\"channel\":\"false\",\"logs\":{}}") @db.Text
   suggestionchannel String @default("false") @db.Text
   suggestthreads    String @default("true") @db.Text
@@ -72,4 +72,12 @@ model temppolls {
   channelId String
   messageId String   @unique(map: "id")
   expiresAt DateTime
+}
+
+model voicechats {
+  channelId String  @unique(map: "id")
+  guildId   String
+  ownerId   String
+
+  @@unique([guildId, ownerId], map: "Identifier")
 }

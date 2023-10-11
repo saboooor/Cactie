@@ -1,5 +1,5 @@
 import prisma from '~/functions/prisma';
-import { EmbedBuilder, Client, CommandInteraction, InteractionReplyOptions, CategoryChannel, AnyThreadChannel, VoiceChannel, GuildBasedChannel, GuildTextBasedChannel, MessageCreateOptions, MessagePayload } from 'discord.js';
+import { EmbedBuilder, Client, CommandInteraction, CategoryChannel, AnyThreadChannel, VoiceChannel, GuildTextBasedChannel } from 'discord.js';
 import { PermissionChannel } from '~/functions/checkPerms';
 
 export default async (client: Client, interaction: CommandInteraction) => {
