@@ -52,7 +52,7 @@ export const voicechat: SlashCommand<'cached'> = {
               PermissionFlagsBits.MoveMembers,
             ],
           },
-        ]
+        ];
 
         if (srvconfig.voicechats.type == "private") {
           permissionOverwrites.push({
@@ -96,13 +96,13 @@ export const voicechat: SlashCommand<'cached'> = {
       const user = interaction.options.getUser('user', true);
 
       if (cmd == 'add-user') {
-        await vc.permissionOverwrites.edit(user.id, { ViewChannel: true })
+        await vc.permissionOverwrites.edit(user.id, { ViewChannel: true });
         await interaction.reply({ content: `**${user} has been added to ${vc}!**` });
         await user.send({ content: `**You have been added to ${vc} in ${interaction.guild.name}!**` });
       }
 
       if (cmd == 'remove-user') {
-        await vc.permissionOverwrites.edit(user.id, { ViewChannel: false })
+        await vc.permissionOverwrites.edit(user.id, { ViewChannel: false });
         await interaction.reply({ content: `${user} has been removed from ${vc}!` });
         vc.members.get(user.id)?.voice.setChannel(null);
       }
