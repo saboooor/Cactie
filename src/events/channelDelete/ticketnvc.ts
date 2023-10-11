@@ -2,8 +2,7 @@ import prisma, { getGuildConfig } from '~/functions/prisma';
 import { Client, EmbedBuilder, GuildChannel, GuildMember, TextChannel, VoiceChannel } from 'discord.js';
 
 export default async (client: Client, channel: GuildChannel) => {
-  // Check if ticket is an actual ticket
-  // Get server config
+  // Find ticket data
   const ticket = await prisma.tickets.findUnique({
     where: {
       channelId: channel.id,
@@ -41,6 +40,7 @@ export default async (client: Client, channel: GuildChannel) => {
     voiceticket.delete().catch(err => logger.warn(err));
   }
 
-  // Delete ticket data
-  await prisma.tickets.delete({ where: { channelId: channel.id } });
+  // Delete data
+  await prisma.tickets.deleteMany({ where: { channelId: channel.id } });
+  await prisma.voicechats.deleteMany({ where: { channelId: channel.id } });
 };
