@@ -50,7 +50,7 @@ export const voicechat: SlashCommand<'cached'> = {
           },
         ];
 
-        if (srvconfig.voicechats.type == "private") {
+        if (srvconfig.voicechats.type == 'private') {
           permissionOverwrites.push({
             id: interaction.guild.id,
             deny: [PermissionFlagsBits.ViewChannel],
@@ -77,7 +77,7 @@ export const voicechat: SlashCommand<'cached'> = {
       }
 
       if (!vc) {
-        interaction.reply({ content: `**You don't have a voice chat!**` });
+        interaction.reply({ content: '**You don\'t have a voice chat!**' });
         return;
       }
 
@@ -85,7 +85,7 @@ export const voicechat: SlashCommand<'cached'> = {
         await vc.delete();
         await prisma.voicechats.delete({ where: { channelId: vc.id } });
 
-        interaction.reply({ content: `**Your voice chat has been deleted!**` });
+        interaction.reply({ content: '**Your voice chat has been deleted!**' });
         return;
       }
 

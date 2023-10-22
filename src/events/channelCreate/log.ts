@@ -23,7 +23,7 @@ export default async (client: Client, channel: GuildChannel) => {
     .setTitle(`<:yes:${yes}> Channel created`);
 
   // Add category and topic if applicable
-  if (channel.parent) logEmbed.addFields([{ name: 'Parent', value: `${channel.parent}`, inline: true }]);
+  if (channel.parent) logEmbed.addFields([{ name: 'Category', value: `${channel.parent}`, inline: true }]);
   if (channel instanceof TextChannel && channel.topic) logEmbed.addFields([{ name: 'Topic', value: channel.topic, inline: true }]);
 
   // Create button to go to channel

@@ -24,7 +24,7 @@ export default async (client: Client, oldChannel: GuildChannel, newChannel: Guil
 
   // Generic Channel Properties
   if (oldChannel.name != newChannel.name) logEmbed.addFields([{ name: 'Name', value: `**Old:**\n${oldChannel.name}\n**New:**\n${newChannel.name}`, inline: true }]);
-  if (oldChannel.parent?.id != newChannel.parent?.id) logEmbed.addFields([{ name: 'Parent', value: `**Old:**\n${oldChannel.parent?.name ?? 'None'}\n**New:**\n${newChannel.parent?.name ?? 'None'}`, inline: true }]);
+  if (oldChannel.parent?.id != newChannel.parent?.id) logEmbed.addFields([{ name: 'Category', value: `**Old:**\n${oldChannel.parent?.name ?? 'None'}\n**New:**\n${newChannel.parent?.name ?? 'None'}`, inline: true }]);
   if (oldChannel.type != newChannel.type) logEmbed.addFields([{ name: 'Type', value: `${ChannelType[oldChannel.type]} <:right:${right}> ${ChannelType[newChannel.type]}`, inline: true }]);
 
   // Text Channel Properties
