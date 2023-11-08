@@ -37,9 +37,6 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
     await prisma.tickets.update({ where: { channelId: channel.id }, data: { voiceticket: 'false' } });
   }
 
-  // Unresolve ticket
-  if (ticket.resolved != 'false') await prisma.tickets.update({ where: { channelId: channel.id }, data: { resolved: 'false' } });
-
   // Create a transcript of the ticket
   const messagechunks = await getMessages<true>(channel, 'infinite').catch((err: Error) => {
     logger.error(err);

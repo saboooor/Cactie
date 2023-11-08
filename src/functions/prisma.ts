@@ -6,6 +6,7 @@ logger.info('Prisma client initialized');
 
 export default prisma;
 
+export const guildConfigCache = new Map<string, guildConfig>();
 export async function getGuildConfig(guildId: string) {
   const srvconfigUnparsed = await prisma.settings.upsert({
     where: { guildId },
@@ -23,6 +24,7 @@ export async function getGuildConfig(guildId: string) {
     auditlogs: JSON.parse(srvconfigUnparsed.auditlogs),
   };
 
+  guildConfigCache.set(guildId, srvconfig);
   return srvconfig;
 }
 

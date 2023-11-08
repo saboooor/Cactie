@@ -10,9 +10,6 @@ export default (client: Client) => schedule('0 0 * * *', async () => {
 
   // Loop through all tickets
   tickets.forEach(async ticket => {
-    // Check if the ticket is resolved
-    if (ticket.resolved == 'false') return;
-
     // Fetch the guild
     const guild = client.guilds.cache.get(ticket.guildId);
     if (!guild) return prisma.tickets.deleteMany({ where: { guildId: ticket.guildId } });

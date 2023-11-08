@@ -12,7 +12,6 @@ model tickets {
   guildId     String
   channelId   String @unique(map: "channelId")
   opener      String
-  resolved    String @default("false")
   users       String @db.Text
   voiceticket String @default("false")
 
