@@ -17,7 +17,6 @@ export default (client: Client) => {
     }
     else if (req.body.guildId) {
       res.json({ message: 'Updating guild config' });
-      logger.info(`Updating guild config for ${req.body.guildId}`);
       await getGuildConfig(req.body.guildId);
     }
     else {

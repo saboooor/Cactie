@@ -9,6 +9,7 @@ export const guildConfigCache = new Map<string, guildConfig>();
 export async function getGuildConfig(guildId: string, cache?: boolean) {
   if (cache && guildConfigCache.has(guildId)) return guildConfigCache.get(guildId)!;
 
+  logger.info(`Updating guild config for ${guildId}`);
   const srvconfigUnparsed = await prisma.settings.upsert({
     where: { guildId },
     create: { guildId },
