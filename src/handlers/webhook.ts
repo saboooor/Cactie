@@ -13,10 +13,12 @@ export default (client: Client) => {
   app.post('/', async function(req: Request, res: Response) {
     if (req.headers.authorization === process.env.VOTE_AUTH) {
       res.json({ message: 'pog' });
+      logger.info(`Received vote from ${req.body.user}!`);
       await addVote(req.body, client);
     }
     else if (req.body.guildId) {
       res.json({ message: 'Updating guild config' });
+      logger.info(`Received update request from ${req.body.guildId}!`);
       await getGuildConfig(req.body.guildId, true);
     }
     else {
