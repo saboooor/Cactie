@@ -23,7 +23,7 @@ export default async function createVoice(client: Client<true>, member: GuildMem
   if (ticket.voiceticket != 'false') throw new Error('This ticket already has a voiceticket!');
 
   // Find category and if no category then set it to null
-  const srvconfig = await getGuildConfig(channel.guild.id, true);
+  const srvconfig = await getGuildConfig(channel.guild.id);
   const parent = await member.guild.channels.fetch(srvconfig.tickets.category).catch(() => { return null; });
 
   // Branch for ticket-dev or ticket-testing etc

@@ -1,4 +1,3 @@
-import { getGuildConfig } from '~/functions/prisma';
 import reopenTicket from '~/functions/tickets/reopenTicket';
 import { Button } from '~/types/Objects';
 

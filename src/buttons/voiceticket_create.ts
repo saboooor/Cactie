@@ -1,4 +1,3 @@
-import { getGuildConfig } from '~/functions/prisma';
 import createVoice from '~/functions/tickets/createVoice';
 import { Button } from '~/types/Objects';
 

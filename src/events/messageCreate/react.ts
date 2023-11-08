@@ -6,7 +6,7 @@ export default async (client: Client, message: Message<true>) => {
   if (!message.guild || message.webhookId || message.author.bot) return;
 
   // Get server config
-  const srvconfig = await getGuildConfig(message.guild.id, true);
+  const srvconfig = await getGuildConfig(message.guild.id);
 
   for (const reaction of srvconfig.reactions) {
     const regex = new RegExp(reaction.regex.slice(1, reaction.regex.lastIndexOf('/')), reaction.regex.slice(reaction.regex.lastIndexOf('/') + 1));

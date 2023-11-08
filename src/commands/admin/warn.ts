@@ -12,9 +12,6 @@ export const warn: SlashCommand<'cached'> = {
   options: punish,
   async execute(interaction) {
     try {
-      // Get server config
-      const srvconfig = await getGuildConfig(interaction.guild.id);
-
       // Get user and check if user is valid
       const member = interaction.options.getMember('user');
       if (!member) {
@@ -92,6 +89,9 @@ export const warn: SlashCommand<'cached'> = {
 
       // Reply to command
       await interaction.reply({ embeds: [WarnEmbed] });
+
+      // Get server config
+      const srvconfig = await getGuildConfig(interaction.guild.id);
 
       // Check if log channel exists and send message
       const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;

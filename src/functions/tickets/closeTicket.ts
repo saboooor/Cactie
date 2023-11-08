@@ -67,7 +67,7 @@ export default async function closeTicket(member: GuildMember, channel: GuildTex
     await ticketmember.send({ embeds: [CloseEmbed] }).catch(err => logger.warn(err));
   }
 
-  const srvconfig = await getGuildConfig(member.guild.id, true);
+  const srvconfig = await getGuildConfig(member.guild.id);
 
   // Get the ticket log channel
   const logchannel = member.guild.channels.cache.get(srvconfig.tickets.logchannel) as TextChannel | null;

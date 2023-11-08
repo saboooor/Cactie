@@ -17,7 +17,7 @@ export default (client: Client) => {
     }
     else if (req.body.guildId) {
       res.json({ message: 'Updating guild config' });
-      await getGuildConfig(req.body.guildId);
+      await getGuildConfig(req.body.guildId, true);
     }
     else {
       res.statusCode = 401;

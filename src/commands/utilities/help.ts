@@ -31,8 +31,7 @@ export const help: SlashCommand = {
           error('This command can only be used in servers!', interaction, true);
           return;
         }
-        // Get server config
-        const srvconfig = await getGuildConfig(interaction.guild.id);
+
         const permCheck = checkPerms(['Administrator'], interaction.member);
         if (permCheck) {
           error(permCheck, interaction, true);
@@ -53,6 +52,9 @@ export const help: SlashCommand = {
           error(permCheck2, interaction, true);
           return;
         }
+
+        // Get server config
+        const srvconfig = await getGuildConfig(interaction.guild.id);
 
         if (!srvconfig.tickets.enabled) {
           error('Tickets are disabled!', interaction, true);

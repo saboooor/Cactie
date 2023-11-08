@@ -9,7 +9,7 @@ export const ticket_create: Modal<'cached'> = {
   execute: async (interaction, client) => {
     try {
       // Get server config
-      const srvconfig = await getGuildConfig(interaction.guild.id, true);
+      const srvconfig = await getGuildConfig(interaction.guild.id);
       if (!srvconfig.tickets.enabled) return;
 
       if (!(interaction.member instanceof GuildMember)) {

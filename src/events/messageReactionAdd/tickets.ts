@@ -37,7 +37,7 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
 
   // Get current settings for the guild and check if tickets are enabled
   // Get server config
-  const srvconfig = await getGuildConfig(message.guild.id, true);
+  const srvconfig = await getGuildConfig(message.guild.id);
   if (!srvconfig.tickets.enabled) return;
 
   try {

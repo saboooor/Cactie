@@ -4,7 +4,7 @@ import { yes } from '~/misc/emoji.json';
 
 export default async (client: Client, channel: GuildChannel) => {
   // Get server config
-  const srvconfig = await getGuildConfig(channel.guild.id, true);
+  const srvconfig = await getGuildConfig(channel.guild.id);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.channelcreate && !srvconfig.auditlogs.logs.channel && !srvconfig.auditlogs.logs.all) return;
