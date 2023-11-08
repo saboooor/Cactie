@@ -7,7 +7,7 @@ export default async (client: Client, oldMember: GuildMember, newMember: GuildMe
   if (oldMember.displayName == newMember.displayName) return;
 
   // Get server config
-  const srvconfig = await getGuildConfig(oldMember.guild.id);
+  const srvconfig = await getGuildConfig(oldMember.guild.id, true);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.membernameupdate && !srvconfig.auditlogs.logs.member && !srvconfig.auditlogs.logs.all) return;

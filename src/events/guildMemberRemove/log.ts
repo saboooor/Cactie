@@ -4,7 +4,7 @@ import { leave } from '~/misc/emoji.json';
 
 export default async (client: Client, member: GuildMember) => {
   // Get server config
-  const srvconfig = await getGuildConfig(member.guild.id);
+  const srvconfig = await getGuildConfig(member.guild.id, true);
 
   // Check if log is enabled and send log
   if (!srvconfig.auditlogs.logs.memberleave && !srvconfig.auditlogs.logs.member && !srvconfig.auditlogs.logs.all) return;

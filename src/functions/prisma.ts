@@ -1,13 +1,14 @@
 import { PrismaClient, punishments, settings } from '@prisma/client';
-import { withAccelerate } from '@prisma/extension-accelerate';
 
-const prisma = new PrismaClient().$extends(withAccelerate());
+const prisma = new PrismaClient();
 logger.info('Prisma client initialized');
 
 export default prisma;
 
 export const guildConfigCache = new Map<string, guildConfig>();
-export async function getGuildConfig(guildId: string) {
+export async function getGuildConfig(guildId: string, cache?: boolean) {
+  if (cache && guildConfigCache.has(guildId)) return guildConfigCache.get(guildId)!;
+
   const srvconfigUnparsed = await prisma.settings.upsert({
     where: { guildId },
     create: { guildId },

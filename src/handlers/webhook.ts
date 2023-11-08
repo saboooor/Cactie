@@ -4,9 +4,10 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 const app = express();
 import addVote from '~/functions/addVote';
+import { getGuildConfig } from '~/functions/prisma';
 
 export default (client: Client) => {
-  if (!process.env.VOTE_WEBHOOK) return logger.info('Skipped webhook server loading!');
+  if (!process.env.WEBHOOK_PORT) return logger.info('Skipped webhook server loading!');
   app.use(bodyParser.json());
   // on post to server check if authorization matches
   app.post('/', async function(req: Request, res: Response) {
@@ -14,9 +15,14 @@ export default (client: Client) => {
       res.json({ message: 'pog' });
       await addVote(req.body, client);
     }
+    else if (req.body.guildId) {
+      res.json({ message: 'Updating guild config' });
+      logger.info(`Updating guild config for ${req.body.guildId}`);
+      await getGuildConfig(req.body.guildId);
+    }
     else {
       res.statusCode = 401;
     }
   });
-  app.listen(process.env.VOTE_WEBHOOK, () => logger.info(`Webhook server loaded on port ${process.env.VOTE_WEBHOOK}`));
+  app.listen(process.env.WEBHOOK_PORT, () => logger.info(`Webhook server loaded on port ${process.env.WEBHOOK_PORT}`));
 };
