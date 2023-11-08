@@ -1,9 +1,9 @@
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, Collection, GuildMember, TextChannel, Message, GuildTextBasedChannel } from 'discord.js';
 import getTranscript from '../messages/getTranscript';
 import getMessages from '../messages/getMessages';
-import prisma, { guildConfig } from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 
-export default async function closeTicket(srvconfig: guildConfig, member: GuildMember, channel: GuildTextBasedChannel) {
+export default async function closeTicket(member: GuildMember, channel: GuildTextBasedChannel) {
   // Check if channel is thread and set the channel to the parent channel
   if (channel.isThread() && channel.parent?.isTextBased()) channel = channel.parent;
   if (channel.isThread()) throw new Error('This isn\'t a ticket that I know of!');
@@ -66,6 +66,8 @@ export default async function closeTicket(srvconfig: guildConfig, member: GuildM
     await channel.permissionOverwrites.edit(userid, { ViewChannel: false });
     await ticketmember.send({ embeds: [CloseEmbed] }).catch(err => logger.warn(err));
   }
+
+  const srvconfig = await getGuildConfig(member.guild.id, true);
 
   // Get the ticket log channel
   const logchannel = member.guild.channels.cache.get(srvconfig.tickets.logchannel) as TextChannel | null;

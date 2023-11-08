@@ -43,24 +43,24 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
   try {
     if (emojiId == '🎫') {
       if (message.embeds[0] && message.embeds[0].title !== 'Need help? No problem!') return;
-      await createTicket(client, srvconfig, member);
+      await createTicket(client, member, 'Opened from reaction');
       await reaction.users.remove(member.id);
     }
     else if (emojiId == '⛔') {
       await deleteTicket(message.channel);
     }
     else if (emojiId == '🔓') {
-      await reopenTicket(srvconfig, member, message.channel);
+      await reopenTicket(member, message.channel);
       await reaction.users.remove(member.id);
     }
     else if (emojiId == '🔒') {
       if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-      await closeTicket(srvconfig, member, message.channel);
+      await closeTicket(member, message.channel);
       await reaction.users.remove(member.id);
     }
     else if (emojiId == '🔊') {
       if (message.embeds[0] && message.embeds[0].title !== 'Ticket Created') return;
-      await createVoice(client, srvconfig, member, message.channel);
+      await createVoice(client, member, message.channel);
       await reaction.users.remove(member.id);
     }
   }

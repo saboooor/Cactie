@@ -9,14 +9,15 @@ export const ticket_create: Modal<'cached'> = {
   execute: async (interaction, client) => {
     try {
       // Get server config
-      const srvconfig = await getGuildConfig(interaction.guild.id);
+      const srvconfig = await getGuildConfig(interaction.guild.id, true);
+      if (!srvconfig.tickets.enabled) return;
 
       if (!(interaction.member instanceof GuildMember)) {
         interaction.member = await interaction.guild.members.fetch(interaction.user.id);
       }
 
       // Create a ticket
-      const msg = await createTicket(client, srvconfig, interaction.member, interaction.fields.getTextInputValue('description'));
+      const msg = await createTicket(client, interaction.member, interaction.fields.getTextInputValue('description'));
 
       // Send the message
       interaction.reply(msg);

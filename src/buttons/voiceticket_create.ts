@@ -7,11 +7,8 @@ export const voiceticket_create: Button<'cached'> = {
   deferReply: true,
   execute: async (interaction, client) => {
     try {
-      // Get server config
-      const srvconfig = await getGuildConfig(interaction.guild.id);
-
       // Create a ticket
-      const msg = await createVoice(client, srvconfig, interaction.member, interaction.channel!);
+      const msg = await createVoice(client, interaction.member, interaction.channel!);
 
       // Send the message
       interaction.reply(msg);

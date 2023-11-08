@@ -1,10 +1,7 @@
-import prisma, { guildConfig } from '~/functions/prisma';
+import prisma, { getGuildConfig } from '~/functions/prisma';
 import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, PermissionsBitField, Client, GuildMember, TextChannel, CategoryChannel } from 'discord.js';
 
-export default async function createTicket(client: Client<true>, srvconfig: guildConfig, member: GuildMember, description?: string) {
-  // Check if tickets are disabled
-  if (!srvconfig.tickets.enabled) throw new Error('Tickets are disabled on this server.');
-
+export default async function createTicket(client: Client<true>, member: GuildMember, description?: string) {
   // Check if ticket already exists
   const ticket = await prisma.tickets.findUnique({
     where: {
