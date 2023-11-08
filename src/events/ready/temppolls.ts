@@ -6,7 +6,6 @@ import checkPerms from '~/functions/checkPerms';
 export default async (client: Client) => schedule('* * * * *', async () => {
   // Get all polls
   const polls = await prisma.temppolls.findMany({
-    cacheStrategy: { ttl: 60 },
   });
 
   // Iterate through every row in the data

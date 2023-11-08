@@ -35,15 +35,14 @@ type parsedPunishments = punishments & {
   polls: any[]
 }
 
-export async function getPunishments(memberId: string, guildId: string, ttl: number, upsert: true): Promise<parsedPunishments>
-export async function getPunishments(memberId: string, guildId: string, ttl?: number, upsert?: boolean): Promise<parsedPunishments | null>
-export async function getPunishments(memberId: string, guildId: string, ttl: number = 30, upsert?: boolean) {
+export async function getPunishments(memberId: string, guildId: string, upsert: true): Promise<parsedPunishments>
+export async function getPunishments(memberId: string, guildId: string, upsert?: boolean): Promise<parsedPunishments | null>
+export async function getPunishments(memberId: string, guildId: string, upsert?: boolean) {
   let punishmentsUnparsed;
 
   if (!upsert) {
     punishmentsUnparsed = await prisma.punishments.findUnique({
       where: { memberId_guildId: { memberId, guildId } },
-      cacheStrategy: { ttl },
     });
     if (!punishmentsUnparsed) return null;
   }

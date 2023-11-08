@@ -11,7 +11,6 @@ export default async function deleteTicket(channel: GuildTextBasedChannel, force
     where: {
       channelId: channel.id,
     },
-    cacheStrategy: { ttl: 60 },
   });
   if (!ticket) throw new Error('This isn\'t a ticket that I know of!');
 

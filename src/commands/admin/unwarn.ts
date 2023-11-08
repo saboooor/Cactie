@@ -22,7 +22,7 @@ export const unwarn: SlashCommand<'cached'> = {
     }
 
     // Get Member Punishments
-    const punishments = await getPunishments(member, interaction.guild.id, 0);
+    const punishments = await getPunishments(member, interaction.guild.id);
 
     // Check if member has any warns
     if (!punishments || !punishments.warns[0]) {

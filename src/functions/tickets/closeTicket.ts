@@ -13,7 +13,6 @@ export default async function closeTicket(member: GuildMember, channel: GuildTex
     where: {
       channelId: channel.id,
     },
-    cacheStrategy: { ttl: 60 },
   });
   if (!ticket) throw new Error('This isn\'t a ticket that I know of!');
   const ticketUserIds = ticket.users.split(',');

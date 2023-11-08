@@ -29,7 +29,6 @@ export default async (client: Client, reaction: MessageReaction, user: User) => 
         emojiId,
       },
     },
-    cacheStrategy: { ttl: 60 },
   });
   if (!reactionrole) return;
 

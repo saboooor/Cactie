@@ -16,9 +16,6 @@ export default async (client: Client, interaction: CommandInteraction) => {
           name: interaction.commandName,
         },
       },
-      cacheStrategy: {
-        ttl: 15,
-      },
     });
     if (!command) return;
 

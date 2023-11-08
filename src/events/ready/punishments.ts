@@ -8,12 +8,11 @@ export default async (client: Client) => schedule('* * * * *', async () => {
       mutedUntil: null,
       bannedUntil: null,
       warns: '[]',
-    }
+    },
   });
 
   // Get all member data
   const punishments = await prisma.punishments.findMany({
-    cacheStrategy: { ttl: 60 },
   });
 
   // Iterate through every row in the data
