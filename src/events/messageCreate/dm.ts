@@ -34,7 +34,7 @@ export default async (client: Client, message: Message<false>) => {
         autoArchiveDuration: 1440,
         message: {
           content: `${message.author} **@${message.author.username}**`,
-          files: [pfp],
+          files: pfp,
         },
       });
     }
