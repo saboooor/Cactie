@@ -19,11 +19,22 @@ export default async (client: Client, message: Message<false>) => {
     let thread = forum.threads.cache.find(t => t.name.endsWith(message.author.id));
 
     if (!thread) {
+      const pfp = [];
+      if (message.author.avatarURL()) {
+        const response = await fetch(message.author.avatarURL(), { method: 'GET' });
+        const arrayBuffer = await response.arrayBuffer();
+        pfp.push(
+          new AttachmentBuilder(Buffer.from(arrayBuffer))
+            .setName(message.author.username + '.png'),
+        );
+      }
+
       thread = await forum.threads.create({
         name: message.author.id,
         autoArchiveDuration: 1440,
         message: {
           content: `${message.author} **@${message.author.username}**`,
+          files: [pfp],
         },
       });
     }
