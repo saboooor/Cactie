@@ -34,6 +34,7 @@ export default async (client: Client, message: Message<false>) => {
   }
   else if (message.channel.parent?.id == forumId) {
     const user = await client.users.fetch(message.channel.name);
+    if (user.bot) return;
     const { content, embeds, components } = message;
     user.send({ content, files, embeds, components });
   }
