@@ -2,7 +2,7 @@ import { AttachmentBuilder, Client, Message, TextChannel } from 'discord.js';
 const forumId = '1182123441491558511';
 
 export default async (client: Client, message: Message<false>) => {
-  if (!message.channel.isDMBased() && message.channel.id != forumId) return;
+  if (!message.channel.isDMBased() && message.channel.parent?.id != forumId) return;
   const forum = client.guilds.cache.get('811354612547190794')!.channels.cache.get(forumId) as TextChannel;
   const files = [];
 
