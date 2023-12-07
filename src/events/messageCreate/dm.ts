@@ -11,9 +11,9 @@ export default async (client: Client, message: Message<false>) => {
     thread = await forum.threads.create({
       name: `${message.author.id}`,
       autoArchiveDuration: 1440,
-      startMessage: await forum.send({
+      message: {
         content: `${message.author}\n${message.author.username}`,
-      }),
+      },
     });
   }
 
