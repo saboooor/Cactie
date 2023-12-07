@@ -16,20 +16,21 @@ export default async (client: Client, message: Message<false>) => {
 
   // If channel is DM,send the dm to the dms channel
   if (message.channel.isDMBased()) {
-    const authorId = message.author.id == client.user?.id ? message.channel.recipient?.id : message.author.id;
-    if (!authorId) return;
-    let thread = forum.threads.cache.find(async t => (await t.fetchStarterMessage())?.content == authorId);
+    const recipient = message.channel.recipient;
+    if (!recipient) return;
+    let thread = forum.threads.cache.find(async t => (await t.fetchStarterMessage())?.content == recipient.id);
 
     if (!thread) {
       const userEmbed = new EmbedBuilder()
-        .setTitle(`@${message.author.username}`)
-        .setDescription(`${message.author}`)
-        .setThumbnail(message.author.avatarURL());
+        .setTitle(`@${recipient.username}`)
+        .setDescription(`${recipient}`)
+        .setThumbnail(recipient.avatarURL())
+        .addFields([{ name: 'Created Account At', value: `<t:${Math.round(recipient.createdTimestamp / 1000)}>\n<t:${Math.round(recipient.createdTimestamp / 1000)}:R>` }]);
 
       thread = await forum.threads.create({
-        name: message.author.displayName,
+        name: recipient.displayName,
         autoArchiveDuration: 1440,
-        message: { content: message.author.id, embeds: [userEmbed] },
+        message: { content: recipient.id, embeds: [userEmbed] },
       });
     }
 
@@ -40,7 +41,7 @@ export default async (client: Client, message: Message<false>) => {
   else if (message.channel.isThread() && message.channel.parent?.id == forumId) {
     const startMessage = await message.channel.fetchStarterMessage();
     if (!startMessage) return;
-    const user = await client.users.cache.get(startMessage.content);
+    const user = client.users.cache.get(startMessage.content);
     if (!user || user.bot || message.author.bot) return;
     const { content, embeds, components } = message;
     user.send({ content, files, embeds, components });
