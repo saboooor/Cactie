@@ -1,4 +1,4 @@
-import { AttachmentBuilder, Client, Message, TextChannel } from 'discord.js';
+import { AttachmentBuilder, Client, EmbedBuilder, Message, TextChannel } from 'discord.js';
 
 export default async (client: Client, message: Message<false>) => {
   const forumId = client.user?.username.split(' ')[1] ? '1182176470374826024' : '1182123441491558511';
@@ -19,23 +19,15 @@ export default async (client: Client, message: Message<false>) => {
     let thread = forum.threads.cache.find(t => t.name.endsWith(message.author.id));
 
     if (!thread) {
-      const pfp = [];
-      if (message.author.avatarURL()) {
-        const response = await fetch(message.author.avatarURL(), { method: 'GET' });
-        const arrayBuffer = await response.arrayBuffer();
-        pfp.push(
-          new AttachmentBuilder(Buffer.from(arrayBuffer))
-            .setName(message.author.username + '.png'),
-        );
-      }
+      const userEmbed = new EmbedBuilder()
+        .setTitle(`@${message.author.username}`)
+        .setDescription(`${message.author}`)
+        .setThumbnail(message.author.avatarURL());
 
       thread = await forum.threads.create({
         name: message.author.id,
         autoArchiveDuration: 1440,
-        message: {
-          content: `${message.author} **@${message.author.username}**`,
-          files: pfp,
-        },
+        message: { embeds: [userEmbed] },
       });
     }
 
