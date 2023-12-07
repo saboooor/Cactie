@@ -1,7 +1,7 @@
 import { AttachmentBuilder, Client, Message, TextChannel } from 'discord.js';
-const forumId = '1182123441491558511';
 
 export default async (client: Client, message: Message<false>) => {
+  const forumId = client.user?.username.split(' ')[1] ? '1182176470374826024' : '1182123441491558511';
   if (!message.channel.isDMBased() && message.channel.parent?.id != forumId) return;
   const forum = client.guilds.cache.get('811354612547190794')!.channels.cache.get(forumId) as TextChannel;
   const files = [];
@@ -14,15 +14,13 @@ export default async (client: Client, message: Message<false>) => {
     files.push(img);
   }
 
-  const branch = client.user?.username.split(' ')[1] ? `-${client.user.username.split(' ')[1].toLowerCase()}` : '';
-
   // If channel is DM,send the dm to the dms channel
   if (message.channel.isDMBased()) {
-    let thread = forum.threads.cache.find(t => t.name.endsWith(message.author.id + branch));
+    let thread = forum.threads.cache.find(t => t.name.endsWith(message.author.id));
 
     if (!thread) {
       thread = await forum.threads.create({
-        name: message.author.id + branch,
+        name: message.author.id,
         autoArchiveDuration: 1440,
         message: {
           content: `${message.author} **@${message.author.username}**`,
@@ -35,13 +33,7 @@ export default async (client: Client, message: Message<false>) => {
     thread.send({ content: `**${author}** > ${message.content}`, files, embeds: message.embeds, components: message.components });
   }
   else if (message.channel.parent?.id == forumId) {
-    let id = message.channel.name;
-    if (branch != '') {
-      if (!id.endsWith(branch)) return;
-      id = id.replace(branch, '');
-    }
-
-    const user = await client.users.cache.get(id);
+    const user = await client.users.cache.get(message.channel.name);
     if (!user || user.bot || message.author.bot) return;
     const { content, embeds, components } = message;
     user.send({ content, files, embeds, components });
