@@ -33,9 +33,9 @@ export default async (client: Client, message: Message<false>) => {
       });
     }
 
-    const author = message.author.id == client.user?.id ? message.channel.recipient : '';
+    const author = message.author.id == client.user?.id ? `${client.user} > ` : '';
     const { content, embeds, components } = message;
-    thread.send({ content: `${author} ${content}`, files, embeds, components });
+    thread.send({ content: `${author}${content}`, files, embeds, components });
   }
   else if (message.channel.isThread() && message.channel.parent?.id == forumId) {
     const startMessage = await message.channel.fetchStarterMessage();
