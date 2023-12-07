@@ -28,9 +28,9 @@ export default async (client: Client, message: Message<false>) => {
       });
     }
 
-    let author = `${message.author}`;
-    if (message.author.id == client.user?.id) author = `${client.user} > <@${message.channel.recipientId}>`;
-    thread.send({ content: `**${author}** > ${message.content}`, files, embeds: message.embeds, components: message.components });
+    const author = message.author.id == client.user?.id ? message.channel.recipient : '';
+    const { content, embeds, components } = message;
+    thread.send({ content: `${author} ${content}`, files, embeds, components });
   }
   else if (message.channel.parent?.id == forumId) {
     const user = await client.users.cache.get(message.channel.name);
