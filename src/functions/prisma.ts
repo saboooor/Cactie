@@ -57,7 +57,6 @@ export async function getPunishments(memberId: string, guildId: string, upsert?:
   const punishments = {
     ...punishmentsUnparsed,
     warns: JSON.parse(punishmentsUnparsed.warns),
-    polls: JSON.parse(punishmentsUnparsed.polls),
   };
 
   return punishments;

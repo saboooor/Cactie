@@ -25,6 +25,9 @@ export default async function createTicket(client: Client<true>, member: GuildMe
     }
   }
 
+  // Get guild config
+  const srvconfig = await getGuildConfig(member.guild.id);
+
   // Find category and if no category then set it to null
   const parent = await member.guild.channels.fetch(srvconfig.tickets.category).catch(() => { return null; }) as CategoryChannel | null;
 
