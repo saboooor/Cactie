@@ -22,7 +22,7 @@ RUN pnpm install
 ENV UPLOADS_DIR=/app/uploads
 ENV DATABASE_URL=file:/app/data/prod.db
 
-RUN pnpm run deploy
+RUN pnpm run start
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
