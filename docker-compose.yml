@@ -1,16 +1,19 @@
 version: '3.8'
 
 services:
-  app:
+  bot:
     build: .
-    ports:
-      - "3000:58720"
+    container_name: cactie-bot
     environment:
       - NODE_ENV=production
-      - WEBHOOK_PORT=58720
+      - WEBHOOK_PORT=${WEBHOOK_PORT:-3000}
       - DATABASE_URL=${DATABASE_URL}
       # Add your environment variables here or use an .env file
       - VOTE_AUTH=${VOTE_AUTH}
       - BOT_TOKEN=${BOT_TOKEN}
       - PREFIX=${PREFIX}
     restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    # Run database migrations before starting the bot
+    command: sh -c "pnpm prisma migrate deploy && pnpm start"
