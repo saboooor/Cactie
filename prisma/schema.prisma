@@ -85,3 +85,13 @@ model voicechats {
   @@unique([guildId(length: 191), ownerId(length: 191)], map: "guildId")
   @@index([channelId(length: 191)], map: "Id")
 }
+
+model sessions {
+  sessionId    String    @unique(map: "sessionId")
+  accessToken  String    @unique(map: "accessToken")
+  refreshToken String?   @db.Text
+  expiresAt    DateTime? @db.DateTime(0)
+  scope        String?   @db.Text
+  pfp          String?   @default("https://cdn.discordapp.com/embed/avatars/0.png") @db.Text
+  accent       String?   @db.Text
+}
