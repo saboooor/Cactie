@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `settings` MODIFY `reactions` TEXT NOT NULL DEFAULT '[{"regex":"/(?=.*\b(bad|gross|shit|dum)\b)(?=.*\bcactie\b).*/i","emojis":["🇳","🇴"]},{"regex":"/\b(mad|madd|angry|angri|kill|punch|evil)(er|ing|s)?\b/i","emojis":["899340907432792105"]},{"regex":"/shoto/i","emojis":["867259182642102303","😩"]},{"regex":"/\b(love|lov|ily|simp|kiss|cute)(t|r|er|ing|s)?\b/i","emojis":["896483408753082379"]}]';
