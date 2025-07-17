@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "58720:58720"
+    environment:
+      - NODE_ENV=production
+      - WEBHOOK_PORT=58720
+      - DATABASE_URL=${DATABASE_URL}
+      # Add your environment variables here or use an .env file
+      - VOTE_AUTH=${VOTE_AUTH}
+      - BOT_TOKEN=${BOT_TOKEN}
+      - PREFIX=${PREFIX}
+    restart: unless-stopped
