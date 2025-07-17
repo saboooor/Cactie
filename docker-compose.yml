@@ -4,7 +4,7 @@ services:
   app:
     build: .
     ports:
-      - "58720:58720"
+      - "3000:58720"
     environment:
       - NODE_ENV=production
       - WEBHOOK_PORT=58720
