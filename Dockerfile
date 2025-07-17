@@ -9,7 +9,8 @@ RUN apk add --no-cache \
     g++ \
     libc6-compat \
     vips-dev \
-    vips
+    vips \
+    openssl
 
 # Install pnpm
 RUN npm install -g pnpm
