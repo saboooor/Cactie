@@ -7,7 +7,7 @@
     "url": "git+https://github.com/saboooor/Cactie.git"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.11.0"
   },
   "scripts": {
     "start": "ts-node --transpileOnly src/index.ts",
