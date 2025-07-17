@@ -9,18 +9,17 @@ datasource db {
 
 model tickets {
   guildId     String @db.Text
-  channelId   String @db.Text
+  channelId   String @unique(map: "channelId", length: 191) @db.Text
   opener      String @db.Text
   resolved    String @default("false") @db.Text
   users       String @db.Text
   voiceticket String @default("false") @db.Text
 
-  @@unique([channelId(length: 191)], map: "channelId")
   @@unique([opener(length: 191), guildId(length: 191)], map: "noChannelId")
 }
 
 model settings {
-  guildId           String @db.Text
+  guildId           String @unique(map: "guildId", length: 191) @db.Text
   reactions         String @default("[{\"regex\":\"/(?=.*\\b(bad|gross|shit|dum)\\b)(?=.*\\bcactie\\b).*/i\",\"emojis\":[\"🇳\",\"🇴\"]},{\"regex\":\"/\\b(mad|madd|angry|angri|kill|punch|evil)(er|ing|s)?\\b/i\",\"emojis\":[\"899340907432792105\"]},{\"regex\":\"/shoto/i\",\"emojis\":[\"867259182642102303\",\"😩\"]},{\"regex\":\"/\\b(love|lov|ily|simp|kiss|cute)(t|r|er|ing|s)?\\b/i\",\"emojis\":[\"896483408753082379\"]}]") @db.Text
   leavemessage      String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
   joinmessage       String @default("{\"message\":\"\",\"channel\":\"false\"}") @db.Text
@@ -33,7 +32,6 @@ model settings {
   logchannel        String @default("false") @db.Text
   mutecmd           String @default("timeout") @db.Text
   msgshortener      Int    @default(30)
-  @@unique([guildId(length: 191)], map: "guildId")
 }
 
 model reactionroles {
@@ -49,13 +47,12 @@ model reactionroles {
 }
 
 model customcmds {
-  id          String @db.Text
+  id          String @unique(map: "id", length: 191) @db.Text
   guildId     String @db.Text
   name        String @db.Text
   description String @default("A custom command") @db.Text
   actions     String @default("[]") @db.Text
 
-  @@unique([id(length: 191)], map: "id")
   @@unique([guildId(length: 191), name(length: 191)], map: "guildId")
 }
 
@@ -71,10 +68,8 @@ model punishments {
 
 model temppolls {
   channelId String   @db.Text
-  messageId String   @db.Text
+  messageId String   @unique(map: "messageId", length: 191) @db.Text
   expiresAt DateTime @db.DateTime(0)
-
-  @@unique([messageId(length: 191)], map: "messageId")
 }
 
 model voicechats {
