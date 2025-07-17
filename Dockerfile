@@ -1,33 +1,26 @@
-FROM node:20-alpine
+# Use the official Node.js 23 Alpine image
+FROM node:23-alpine
 
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies required for sharp and other native modules
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    libc6-compat \
-    vips-dev \
-    vips \
-    openssl
-
-# Install pnpm
+# Install pnpm globally
 RUN npm install -g pnpm
 
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+# Install dependencies
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
 
-RUN pnpm install
+# Generate Prisma client
+RUN pnpm prisma generate
 
-# Set environment variables needed for Prisma during build
-ENV UPLOADS_DIR=/app/uploads
-ENV DATABASE_URL=file:/app/data/prod.db
+# Expose port (if your bot has a web server)
+EXPOSE 3000
 
-RUN pnpm run start
-
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Set entrypoint and command
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["node", "server/entry.node-server.js"]
+# Start the bot
+CMD ["pnpm", "start"]
