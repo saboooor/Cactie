@@ -1,7 +1,7 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { SlashCommand } from '~/types/Objects';
 // @ts-ignore
-import packageJSON from '../../../package.json';
+import packageJSON from '../../../package.json' assert { type: 'json' };
 
 export const info: SlashCommand = {
   description: 'Get various information about Cactie',

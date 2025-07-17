@@ -8,7 +8,8 @@ const contextcommands = new Collection<string, ContextMenuCommand<'Message'> | C
 // Register all context menu commands
 const contextFiles = readdirSync('./src/context');
 contextFiles.forEach(async file => {
-  const context = require(`../context/${file}`).context;
+  const module = await import(`../context/${file}`);
+  const context = module.context;
   contextcommands.set(context.name, context);
 });
 logger.info(`${contextFiles.length} context menu commands loaded`);

@@ -31,7 +31,7 @@ export default async function options(cmd: SlashCommandBuilder) {
           .setName('user')
           .setDescription('The user to add')
           .setRequired(true),
-      )
+      ),
   ).addSubcommand(
     new SlashCommandSubcommandBuilder()
       .setName('remove-user')
@@ -41,6 +41,6 @@ export default async function options(cmd: SlashCommandBuilder) {
           .setName('user')
           .setDescription('The user to remove')
           .setRequired(true),
-      )
+      ),
   );
 }

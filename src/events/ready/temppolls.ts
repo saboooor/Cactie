@@ -66,7 +66,7 @@ export default async (client: Client) => schedule('* * * * *', async () => {
     const srvconfig = await getGuildConfig(channel.guild.id);
     const logchannel = channel.guild.channels.cache.get(srvconfig.logchannel) as GuildTextBasedChannel | undefined;
     if (logchannel) {
-      pollEmbed.setTitle(`Poll ended automatically`).setFields([]);
+      pollEmbed.setTitle('Poll ended automatically').setFields([]);
       const msglink = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([new ButtonBuilder()
           .setURL(message.url)

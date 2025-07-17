@@ -117,7 +117,7 @@ export const poll: SlashCommand<'cached'> = {
         }
 
         // Send response message if command is slash command or different channel
-        const pollmsg = await interaction.reply({ content: `**Poll Created at ${channel}!**` });
+        await interaction.reply({ content: `**Poll Created at ${channel}!**` });
 
         if (expiresAt) {
           await prisma.temppolls.create({

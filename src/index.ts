@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 
 import { readdirSync } from 'fs';
 import { Client, Partials, GatewayIntentBits, Message, CommandInteraction, ModalSubmitInteraction, InteractionResponse, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
@@ -46,4 +45,9 @@ function sleepfunc(ms: number) {
 global.sleep = sleepfunc;
 
 // Load the universal and discord-specific handlers
-for (const handlerName of readdirSync('./src/handlers').filter((file: string) => file.endsWith('.ts'))) require(`./handlers/${handlerName}`).default(client);
+(async () => {
+  for (const handlerName of readdirSync('./src/handlers').filter((file: string) => file.endsWith('.ts'))) {
+    const handlerModule = await import(`./handlers/${handlerName}`);
+    handlerModule.default(client);
+  }
+})();

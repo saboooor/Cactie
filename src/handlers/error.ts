@@ -39,7 +39,6 @@ export default (client: Client) => {
   };
   client.rest.on('rateLimited', (info) => logger.warn(`Encountered ${info.method} rate limit!`));
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   process.on('unhandledRejection', (reason: any) => {
     if (reason.rawError && (reason.rawError.message == 'Unknown Message' || reason.rawError.message == 'Unknown Interaction' || reason.rawError.message == 'Missing Access' || reason.rawError.message == 'Missing Permissions')) {
       logger.error(JSON.stringify(reason.requestBody));

@@ -41,7 +41,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
         }
         else {
           if (interaction.replied) await interaction.followUp(payload).catch(err => logger.warn(err));
-          else await interaction.reply(payload).catch(err => logger.warn(err));  
+          else await interaction.reply(payload).catch(err => logger.warn(err));
         }
       }
 

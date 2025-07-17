@@ -7,9 +7,10 @@ export default (client: Client) => {
   for (const event of eventFolders) {
     const jsFiles = readdirSync(`./src/events/${event}`).filter(subfile => subfile.endsWith('.js') || subfile.endsWith('.ts'));
     for (const file of jsFiles) {
-      const js = require(`../events/${event}/${file}`).default ?? require(`../events/${event}/${file}`);
-      client.on(event, js.bind(null, client));
-      delete require.cache[require.resolve(`../events/${event}/${file}`)];
+      import(`../events/${event}/${file}`).then(module => {
+        const js = module.default ?? module;
+        client.on(event, js.bind(null, client));
+      });
     }
     listeners += jsFiles.length;
   }

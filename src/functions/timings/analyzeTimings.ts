@@ -18,7 +18,6 @@ export default async function analyzeTimings(id: string) {
   const timings_json = `https://timings.aikar.co/data.php?id=${id}`;
   const url_raw = `https://timings.aikar.co/?id=${id}&raw=1`;
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   let request_raw: any;
   let request: any;
 
@@ -33,7 +32,10 @@ export default async function analyzeTimings(id: string) {
     request = await response_json.json();
   }
   catch (err) {
-    return [{ name: '❌ Processing Error', value: 'SimplyMC cannot process this spark profile. Please use an alternative spark profile.' }];
+    return [
+      { name: '❌ Processing Error', value: 'SimplyMC cannot process this spark profile. Please use an alternative spark profile.' },
+      { name: 'Error', value: `\`${err}\`` },
+    ];
   }
 
   let version = request.timingsMaster.version;
@@ -41,7 +43,6 @@ export default async function analyzeTimings(id: string) {
   if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 
   let server_properties: any, bukkit: any, spigot: any, paper: any, pufferfish: any, purpur: any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const plugins = Object.keys(request.timingsMaster.plugins).map(i => { return request.timingsMaster.plugins[i]; });
   const configs = request.timingsMaster.config;

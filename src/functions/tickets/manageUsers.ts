@@ -21,7 +21,11 @@ export default async function manageUsers(member: GuildMember, channel: GuildTex
   // Check if user is already in the ticket, if not, add them to the ticket data
   if (add && ticketUserIds.includes(targetMember.id)) throw new Error('This user has already been added!');
   else if (!add && !ticketUserIds.includes(targetMember.id)) throw new Error('This user isn\'t added!');
-  add ? ticketUserIds.push(targetMember.id) : ticketUserIds.splice(ticketUserIds.indexOf(targetMember.id), 1);
+  if (add) {
+    ticketUserIds.push(targetMember.id);
+  } else {
+    ticketUserIds.splice(ticketUserIds.indexOf(targetMember.id), 1);
+  }
   await prisma.tickets.update({ where: { channelId: channel.id }, data: { users: ticketUserIds.join(',') } });
 
   // If the ticket has a voiceticket, give permissions to the user there

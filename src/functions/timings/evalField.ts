@@ -2,7 +2,6 @@ import { configValue } from '~/analysis_config/types';
 import createField from './createField';
 import { Field } from '~/types/Field';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function evalField(fields: Field[], option: configValue[], option_name: string, plugins: any[], server_properties: any, bukkit: any, spigot: any, paper: any, pufferfish: any, purpur: any) {
   const dict_of_vars = { plugins, server_properties, bukkit, spigot, paper, pufferfish, purpur };
   option.forEach(option_data => {

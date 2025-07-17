@@ -10,10 +10,10 @@ const commandFolders = readdirSync('./src/commands');
 for (const folder of commandFolders) {
   const commandFiles = readdirSync(`./src/commands/${folder}`).filter(file => file.endsWith('ts') && folder == 'private');
   for (const file of commandFiles) {
-    const command = require(`../commands/${folder}/${file}`);
-    const name = Object.keys(command)[0];
-
-    commands.set(name, command[name]);
+    import(`../commands/${folder}/${file}`).then(command => {
+      const name = Object.keys(command)[0];
+      commands.set(name, command[name]);
+    });
   }
 }
 logger.info(`${commands.size} private commands loaded`);

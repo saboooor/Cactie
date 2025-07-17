@@ -23,14 +23,16 @@ export default async function analyzeProfile(id: string) {
     sampler = await response_raw.json();
   }
   catch (err) {
-    return [{ name: '❌ Processing Error', value: 'SimplyMC cannot process this spark profile. Please use an alternative spark profile.' }];
+    return [
+      { name: '❌ Processing Error', value: 'SimplyMC cannot process this spark profile. Please use an alternative spark profile.' },
+      { name: 'Error', value: `\`${err}\`` },
+    ];
   }
 
   let version = sampler.metadata.platform.version;
 
   if (version.endsWith('(MC: 1.17)')) version = version.replace('(MC: 1.17)', '(MC: 1.17.0)');
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let server_properties: any, bukkit: any, spigot: any, paper: any, purpur: any;
 
   const plugins: {

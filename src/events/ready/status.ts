@@ -3,7 +3,7 @@ import { ActivityType, Client } from 'discord.js';
 import ms from 'ms';
 
 // @ts-ignore
-import packageJSON from '../../../package.json';
+import packageJSON from '../../../package.json' assert { type: 'json' };
 
 export default async (client: Client<true>) => {
   client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Playing }], status: 'dnd' });
