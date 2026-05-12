@@ -15,8 +15,8 @@ importers:
         specifier: 2.2.0
         version: 2.2.0
       diff:
-        specifier: 8.0.2
-        version: 8.0.2
+        specifier: 8.0.3
+        version: 8.0.3
       discord.js:
         specifier: 14.21.0
         version: 14.21.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
@@ -569,6 +569,10 @@ packages:
 
   diff@8.0.2:
     resolution: {integrity: sha512-sSuxWU5j5SR9QQji/o2qMvqRNYRDOcBTgsJ/DeCf4iSN4gW+gNMXM7wFIP+fdXZxoNiAnHUTGjCr+TSWXdRDKg==}
+    engines: {node: '>=0.3.1'}
+
+  diff@8.0.3:
+    resolution: {integrity: sha512-qejHi7bcSD4hQAZE0tNAawRK1ZtafHDmMTMkrrIGgSLl7hTnQHmKCeB45xAcbfTqK2zowkM3j3bHt/4b/ARbYQ==}
     engines: {node: '>=0.3.1'}
 
   discord-api-types@0.38.16:
@@ -1924,6 +1928,8 @@ snapshots:
   diff@4.0.2: {}
 
   diff@8.0.2: {}
+
+  diff@8.0.3: {}
 
   discord-api-types@0.38.16: {}
 
