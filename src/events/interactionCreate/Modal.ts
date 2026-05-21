@@ -1,7 +1,7 @@
 import { Client, EmbedBuilder, InteractionType, ModalSubmitInteraction, TextChannel } from 'discord.js';
 import modals from '~/lists/modals';
 
-export default async (client: Client, interaction: ModalSubmitInteraction) => {
+export default async (client: Client<true>, interaction: ModalSubmitInteraction) => {
   // Check if interaction is modal
   if (interaction.type != InteractionType.ModalSubmit) return;
   if (!interaction.inCachedGuild()) return;
@@ -17,7 +17,7 @@ export default async (client: Client, interaction: ModalSubmitInteraction) => {
   // Defer and execute the modal
   try {
     logger.info(`${interaction.user.username} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
-    await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
+    await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ flags: modal.flags });
     interaction.reply = interaction.editReply as typeof interaction.reply;
     modal.execute(interaction, client, modalInfo!);
   }

@@ -1,17 +1,17 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import githubOptions from '~/options/github';
 
 function truncateString(str: string, num: number) {
   if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
 }
 
-export const github: SlashCommand = {
+export const github: Command = {
   description: 'Get info on any GitHub repository',
   options: githubOptions,
   async autoComplete(client, interaction) {
     const value = interaction.options.getFocused();
-    if (!value) return interaction.respond([{ name: 'Invalid Query', value: 'saboooor/Cactie' }]);
+    if (!value) return interaction.respond([{ name: 'Invalid Query', value: 'saboooor/Sova' }]);
     const query = await fetch(`https://api.github.com/search/repositories?q=${value}&per_page=25`, { headers: { 'Accept': 'application/json' } });
     const searchResult = await query.json();
     if (!searchResult.items) return interaction.respond([{ name: value, value }]);

@@ -1,9 +1,9 @@
 import { EmbedBuilder } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import questionOption from '~/options/question';
 import ball from '~/misc/8ball.json';
 
-export const eightball: SlashCommand = {
+export const eightball: Command = {
   name: '8ball',
   description: 'Let the 8 ball decide your fate!',
   options: questionOption,

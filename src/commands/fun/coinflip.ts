@@ -1,6 +1,6 @@
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 
-export const coinflip: SlashCommand = {
+export const coinflip: Command = {
   description: 'Heads or Tails?',
   async execute(interaction) {
     try {

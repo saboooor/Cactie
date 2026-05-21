@@ -1,11 +1,11 @@
-<img src="https://cactie.luminescent.dev/icon-512x512.png" width="20%" alt="Cactie">
+<img src="https://sova.fyi/icon-512x512.png" width="20%" alt="Sova">
 
-# Cactie Discord Bot
-This is the source code for my public Discord bot, Cactie.
+# Sova Discord Bot
+This is the source code for my public Discord bot, Sova.
 
 [![Discord](https://discord.com/api/guilds/811354612547190794/widget.png)](https://discord.gg/Bsefgbaedz)
-[![CodeFactor](https://www.codefactor.io/repository/github/saboooor/cactie/badge/master)](https://www.codefactor.io/repository/github/saboooor/cactie/overview/master)
-![Lines](https://tokei.rs/b1/github/saboooor/cactie)
+[![CodeFactor](https://www.codefactor.io/repository/github/saboooor/sova/badge/master)](https://www.codefactor.io/repository/github/saboooor/sova/overview/master)
+![Lines](https://tokei.rs/b1/github/saboooor/sova)
 ![Discord Bots](https://top.gg/api/widget/upvotes/848775888673439745.svg)
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
 
@@ -70,4 +70,4 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - Wallpaper Picker
 
 ### Contributors
-![Contributors](https://contrib.rocks/image?repo=saboooor/cactie)
+![Contributors](https://contrib.rocks/image?repo=saboooor/sova)

@@ -1,14 +1,10 @@
-import prisma from '~/functions/prisma';
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Guild } from 'discord.js';
 
 export default async (client: Client, guild: Guild) => {
-  // Set server config
-  await prisma.settings.create({ data: { guildId: guild.id } });
-
   const row = new ActionRowBuilder<ButtonBuilder>()
     .addComponents([
       new ButtonBuilder()
-        .setURL('https://cactie.luminescent.dev')
+        .setURL('https://sova.fyi')
         .setLabel('Dashboard')
         .setStyle(ButtonStyle.Link),
       new ButtonBuilder()
@@ -27,7 +23,7 @@ export default async (client: Client, guild: Guild) => {
 Type \`/help\` for help, and \`/invite\` to invite me to other servers!
 Please take some time going through the dashboard so that ${client.user?.username} works well!
 		`)
-    .setURL('https://cactie.luminescent.dev');
+    .setURL('https://sova.fyi');
   const message = { embeds: [greetingEmbed], components: [row] };
   const owner = await guild.fetchOwner();
   if (!guild.systemChannel) owner.send(message).catch(err => logger.warn(err));

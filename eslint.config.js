@@ -1,24 +1,62 @@
-// eslint.config.mjs
-import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import { globalIgnores } from 'eslint/config';
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import { globalIgnores } from "eslint/config";
+
+const ignores = [
+  "**/*.log",
+  "**/.DS_Store",
+  "**/*.",
+  ".vscode/settings.json",
+  "**/.history",
+  "**/.yarn",
+  "**/bazel-*",
+  "**/bazel-bin",
+  "**/bazel-out",
+  "**/bazel-qwik",
+  "**/bazel-testlogs",
+  "**/dist",
+  "**/dist-dev",
+  "**/lib",
+  "**/lib-types",
+  "**/etc",
+  "**/external",
+  "**/node_modules",
+  "**/temp",
+  "**/tsc-out",
+  "**/tsdoc-metadata.json",
+  "**/target",
+  "**/output",
+  "**/rollup.config.js",
+  "**/build",
+  "**/.cache",
+  "**/.vscode",
+  "**/.rollup.cache",
+  "**/dist",
+  "**/tsconfig.tsbuildinfo",
+  "**/vite.config.ts",
+  "**/*.spec.tsx",
+  "**/*.spec.ts",
+  "**/.netlify",
+  "**/pnpm-lock.yaml",
+  "**/package-lock.json",
+  "**/yarn.lock",
+  "**/server",
+  "eslint.config.js",
+];
 
 export default tseslint.config(
-  globalIgnores(['node_modules/*', 'dist/*', 'server/*', 'tmp/*']),
+  globalIgnores(ignores),
   js.configs.recommended,
   tseslint.configs.recommended,
   {
-    files: ['src/**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}'],
     languageOptions: {
-      globals: {
-        ...globals.node,
-        "sleep": "readonly",
-        "rn": "readonly",
-        "logger": "readonly",
-        "error": "readonly"
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -32,9 +70,9 @@ export default tseslint.config(
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/only-throw-error': 'off',
-      'indent': ['error', 2],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
+      indent: ['error', 2],
+      quotes: ['error', 'single'],
+      semi: ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],
       'no-trailing-spaces': ['error'],
       'no-multiple-empty-lines': ['error', { max: 1 }],
@@ -44,5 +82,5 @@ export default tseslint.config(
       'key-spacing': ['error', { beforeColon: false, afterColon: true }],
       'keyword-spacing': ['error', { before: true, after: true }],
     },
-  }
+  },
 );

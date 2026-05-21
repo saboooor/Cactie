@@ -1,7 +1,7 @@
 import redditFetch from '~/functions/redditFetch';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 
-export const meme: SlashCommand = {
+export const meme: Command = {
   description: 'memes haha funny',
   async execute(interaction, client) {
     try {

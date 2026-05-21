@@ -28,7 +28,7 @@ export const tickets: HelpDesc = {
   description: 'These commands are related to the bot\'s tickets system',
   field: {
     name: '**How to create support tickets:**',
-    value: '**1.** Set ticket related settings in the dashboard by going to https://cactie.luminescent.dev\n**2.** Execute /help supportpanel if you want to create an embed for users to easily create tickets\n**3.** Create a ticket to test it out',
+    value: '**1.** Set ticket related settings in the dashboard by going to https://sova.fyi\n**2.** Execute /help supportpanel if you want to create an embed for users to easily create tickets\n**3.** Create a ticket to test it out',
   },
 };
 

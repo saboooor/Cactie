@@ -1,8 +1,8 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import userOption from '~/options/user';
 
-export const rockpaperscissors: SlashCommand<'cached'> = {
+export const rockpaperscissors: Command<'cached'> = {
   description: 'Play Rock Paper Scissors',
   cooldown: 10,
   options: userOption,
@@ -51,7 +51,7 @@ export const rockpaperscissors: SlashCommand<'cached'> = {
     } = {};
     collector.on('collect', async btnint => {
       if (btnint.customId != 'rock' && btnint.customId != 'paper' && btnint.customId != 'scissors') return;
-      await btnint.deferReply({ ephemeral: true }).catch((err: Error) => logger.error(err));
+      await btnint.deferReply({ flags: ['Ephemeral'] }).catch((err: Error) => logger.error(err));
       if (choices[btnint.user.id]) {
         btnint.editReply({ content: `You've already selected ${emoji[choices[btnint.user.id] as keyof typeof emoji][2]}!` });
         return;

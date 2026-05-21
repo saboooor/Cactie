@@ -1,4 +1,4 @@
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import redditFetch from '~/functions/redditFetch';
 
 const animals = {
@@ -15,7 +15,7 @@ const animals = {
   snake: ['snake', 'Sneks'],
 };
 
-export const animal: SlashCommand = {
+export const animal: Command = {
   name: Object.keys(animals),
   description: 'get a picture of a {NAME}!',
   async execute(interaction, client) {

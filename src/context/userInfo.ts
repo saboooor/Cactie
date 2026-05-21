@@ -5,7 +5,7 @@ import { ContextMenuCommand } from '~/types/Objects';
 
 export const context: ContextMenuCommand<'User'> = {
   name: 'User Info',
-  ephemeral: true,
+  flags: ['Ephemeral'],
   type: 'User',
   async execute(interaction, client, member) {
     try {

@@ -11,7 +11,7 @@ const again = new ActionRowBuilder<ButtonBuilder>()
   ]);
 
 export const xo_again: Button<'cached'> = {
-  ephemeral: true,
+  flags: ['Ephemeral'],
   execute: async (interaction) => {
     const TicTacToe = new EmbedBuilder(interaction.message.embeds[0].toJSON())!;
     const lines = TicTacToe.toJSON().description!.split('\n');
@@ -73,7 +73,7 @@ export const xo_again: Button<'cached'> = {
     const collector = xomsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
     collector.on('collect', async (btninteraction) => {
       if (btninteraction.user.id != (turn ? xuser.id : ouser.id)) {
-        btninteraction.reply({ content: 'It\'s not your turn!', ephemeral: true });
+        btninteraction.reply({ content: 'It\'s not your turn!', flags: ['Ephemeral'] });
         return;
       }
       await btninteraction.deferUpdate().catch(err => logger.error(err));

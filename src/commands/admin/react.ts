@@ -1,10 +1,10 @@
-import { EmbedBuilder, GuildTextBasedChannel } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { EmbedBuilder, type GuildTextBasedChannel } from 'discord.js';
+import { Command } from '~/types/Objects';
 import reactOptions from '~/options/react';
 
-export const react: SlashCommand<'cached'> = {
+export const react: Command<'cached'> = {
   description: 'Add a reaction to a message',
-  ephemeral: true,
+  flags: ['Ephemeral'],
   permission: 'Administrator',
   botChannelPerms: ['AddReactions'],
   options: reactOptions,

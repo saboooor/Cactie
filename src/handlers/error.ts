@@ -14,7 +14,7 @@ export default (client: Client) => {
       .setDescription(`\`\`\`\n${err}\n\`\`\``);
     const components: ActionRowBuilder<ButtonBuilder>[] = [];
     if (!userError) {
-      errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Cactie Support Discord Server.' });
+      errEmbed.setFooter({ text: 'This was most likely an error on our end. Please report this at the Sova Support Discord Server.' });
       components.push(
         new ActionRowBuilder<ButtonBuilder>()
           .addComponents([

@@ -1,10 +1,10 @@
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import { EmbedBuilder, GuildMember } from 'discord.js';
 import convertTime from '~/functions/music/convert';
 import progressbar from '~/functions/music/progressbar';
 import userOption from '~/options/user';
 
-export const userinfo: SlashCommand = {
+export const userinfo: Command = {
   description: 'Get a user\'s information',
   options: userOption,
   async execute(interaction) {

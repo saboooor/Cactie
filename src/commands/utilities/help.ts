@@ -1,13 +1,11 @@
-import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType, BaseGuildTextChannel } from 'discord.js';
-import checkPerms from '~/functions/checkPerms';
-import { SlashCommand } from '~/types/Objects';
+import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType } from 'discord.js';
+import { Command } from '~/types/Objects';
 import commands from '~/lists/cmds';
 import helpOptions from '~/options/help';
 import * as helpdesc from '~/misc/helpdesc';
-import { getGuildConfig } from '~/functions/prisma';
 
-export const help: SlashCommand = {
-  description: 'Get help with Cactie',
+export const help: Command = {
+  description: 'Get help with Sova',
   cooldown: 10,
   options: helpOptions,
   async execute(interaction) {
@@ -25,61 +23,6 @@ export const help: SlashCommand = {
         HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
         if (category.footer) HelpEmbed.setFooter({ text: category.footer });
         if (category.field) HelpEmbed.setFields([category.field]);
-      }
-      else if (subcmd == 'supportpanel') {
-        if (!interaction.inCachedGuild()) {
-          error('This command can only be used in servers!', interaction, true);
-          return;
-        }
-
-        const permCheck = checkPerms(['Administrator'], interaction.member);
-        if (permCheck) {
-          error(permCheck, interaction, true);
-          return;
-        }
-        let channel = interaction.options.getChannel('channel');
-        if (!channel || !(channel instanceof BaseGuildTextChannel)) channel = interaction.channel!;
-        const title = interaction.options.getString('title');
-        const description = interaction.options.getString('description');
-        const footer = interaction.options.getString('footer');
-
-        const Panel = new EmbedBuilder()
-          .setColor(0x2f3136)
-          .setTitle(title ?? 'Need help? No problem!')
-          .setFooter({ text: footer ?? `${interaction.guild.name} Support`, iconURL: interaction.guild.iconURL() ?? undefined });
-        const permCheck2 = checkPerms(['SendMessages', 'ReadMessageHistory'], interaction.guild.members.me!, channel);
-        if (permCheck2) {
-          error(permCheck2, interaction, true);
-          return;
-        }
-
-        // Get server config
-        const srvconfig = await getGuildConfig(interaction.guild.id);
-
-        if (!srvconfig.tickets.enabled) {
-          error('Tickets are disabled!', interaction, true);
-          return;
-        }
-
-        if (srvconfig.tickets.type == 'buttons') {
-          Panel.setDescription(description ?? 'Click the button below to open a ticket!');
-          const row = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents([
-              new ButtonBuilder()
-                .setCustomId('create_ticket')
-                .setLabel('Open Ticket')
-                .setEmoji({ name: '🎫' })
-                .setStyle(ButtonStyle.Primary),
-            ]);
-          await channel.send({ embeds: [Panel], components: [row] });
-          interaction.reply({ content: 'Support panel created! You may now delete this message' });
-          return;
-        }
-        else if (srvconfig.tickets.type == 'reactions') {
-          Panel.setDescription(description ?? 'React with 🎫 to open a ticket!');
-          const panelMsg = await channel.send({ embeds: [Panel] });
-          await panelMsg.react('🎫');
-        }
       }
       else {
         HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Tickets, Utilities, Actions');

@@ -2,7 +2,7 @@ import { ButtonInteraction, Client, EmbedBuilder, StringSelectMenuInteraction, T
 import checkPerms from '~/functions/checkPerms';
 import buttons from '~/lists/buttons';
 
-export default async (client: Client, interaction: ButtonInteraction | StringSelectMenuInteraction) => {
+export default async (client: Client<true>, interaction: ButtonInteraction | StringSelectMenuInteraction) => {
   // Check if interaction is button
   if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
   if (!interaction.guild) return;
@@ -28,7 +28,7 @@ export default async (client: Client, interaction: ButtonInteraction | StringSel
   // Defer and execute the button
   try {
     if (!button.noDefer) {
-      await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: button.ephemeral });
+      await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ flags: button.flags });
       interaction.reply = interaction.editReply as typeof interaction.reply;
     }
     button.execute(interaction, client);

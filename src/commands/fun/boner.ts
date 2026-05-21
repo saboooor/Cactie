@@ -1,8 +1,8 @@
 import { EmbedBuilder } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import someone from '~/options/someone';
 
-export const boner: SlashCommand = {
+export const boner: Command = {
   description: 'See your boner expand!',
   options: someone,
   async execute(interaction) {

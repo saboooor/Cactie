@@ -30,7 +30,7 @@ export const choose_answer: Modal<'cached'> = {
 
       // Edit the message with the new embed and button
       await interaction.editReply({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
-      await interaction.followUp({ content: `**The answer you chose is:**\n\`${answer}\``, ephemeral: true });
+      await interaction.followUp({ content: `**The answer you chose is:**\n\`${answer}\``, flags: ['Ephemeral'] });
 
       // Ping the user
       try {

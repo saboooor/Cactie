@@ -1,37 +1,28 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildTextBasedChannel } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { yes, no } from '~/misc/emoji.json';
 import checkPerms from '~/functions/checkPerms';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import pollOptions from '~/options/poll';
-import prisma, { getGuildConfig } from '~/functions/prisma';
-import ms from 'ms';
+import ms, { type StringValue } from 'ms';
 
 function truncateString(str: string, num: number) {
   if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
 }
 
-export const poll: SlashCommand<'cached'> = {
+export const poll: Command<'cached'> = {
   description: 'Create a poll!',
-  ephemeral: true,
+  flags: ['Ephemeral'],
   cooldown: 10,
   options: pollOptions,
   async autoComplete(client, interaction) {
-    // Get server config
-    const srvconfig = await getGuildConfig(interaction.guild.id);
-
     // Get the poll channel
-    let channel = interaction.guild.channels.cache.get(srvconfig.pollchannel) as GuildTextBasedChannel | null;
-    if (!channel) channel = interaction.channel!;
-    if (!channel) {
-      interaction.respond([]);
-      return;
-    }
+    const channel = interaction.channel!;
 
     const messages = await channel.messages.fetch({ limit: 100 });
     const polls = messages.filter(msg => msg.author.id == client.user.id && msg.embeds[0]?.title?.startsWith('Poll'));
 
     const pollsArray = polls.map(pollmsg => ({
-      name: truncateString(`${pollmsg.embeds[0].title!.split(' ')[1] ?? ''} ${pollmsg.createdAt.toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })} - ${pollmsg.embeds[0]?.description}`, 100) ?? 'No description',
+      name: truncateString(`${pollmsg.embeds[0]?.title!.split(' ')[1] ?? ''} ${pollmsg.createdAt.toLocaleString('default', { month: 'short', day: 'numeric', year: 'numeric' })} - ${pollmsg.embeds[0]?.description}`, 100) ?? 'No description',
       value: pollmsg.id,
     }));
 
@@ -39,13 +30,8 @@ export const poll: SlashCommand<'cached'> = {
   },
   async execute(interaction, client) {
     try {
-      // Get server config
-      const srvconfig = await getGuildConfig(interaction.guild.id);
-
       // Get channel to send poll in
-      let channel = interaction.guild.channels.cache.get(srvconfig.pollchannel) as GuildTextBasedChannel | null;
-      if (!channel) channel = interaction.channel;
-      if (!channel) return;
+      const channel = interaction.channel!;
 
       // Check permissions in that channel
       const permCheck = checkPerms(['ViewChannel', 'SendMessages', 'AddReactions'], interaction.guild.members.me!, channel);
@@ -63,11 +49,11 @@ export const poll: SlashCommand<'cached'> = {
         const pollEmbed = new EmbedBuilder()
           .setColor(0x2ECC71)
           .setTitle('Poll')
-          .setAuthor({ name: `${interaction.member.displayName} (${interaction.user.username})`, iconURL: interaction.user.avatarURL() ?? undefined, url: `https://a${interaction.user.id}a.cactie` })
+          .setAuthor({ name: `${interaction.member.displayName} (${interaction.user.username})`, iconURL: interaction.user.avatarURL() ?? undefined, url: `https://a${interaction.user.id}a.sova` })
           .setDescription(question);
 
         // Get timer
-        const timer = interaction.options.getString('timer');
+        const timer = interaction.options.getString('timer') as StringValue;
         let expiresAt;
         if (timer) {
           const time = ms(timer);
@@ -119,15 +105,15 @@ export const poll: SlashCommand<'cached'> = {
         // Send response message if command is slash command or different channel
         await interaction.reply({ content: `**Poll Created at ${channel}!**` });
 
-        if (expiresAt) {
-          await prisma.temppolls.create({
-            data: {
-              channelId: channel.id,
-              messageId: pollMsg!.id,
-              expiresAt,
-            },
-          });
-        }
+        //if (expiresAt) {
+        //  await prisma.temppolls.create({
+        //    data: {
+        //      channelId: channel.id,
+        //      messageId: pollMsg!.id,
+        //      expiresAt,
+        //    },
+        //  });
+        //}
         return;
       }
 
@@ -152,7 +138,7 @@ export const poll: SlashCommand<'cached'> = {
       if (pollMsg.author.id != client.user.id) return;
 
       // Get embed and check if embed is a poll
-      const pollEmbed = new EmbedBuilder(pollMsg.embeds[0].toJSON());
+      const pollEmbed = new EmbedBuilder(pollMsg.embeds[0]?.toJSON());
       if (!pollEmbed || !pollEmbed.toJSON().author || !pollEmbed.toJSON().title!.startsWith('Poll')) return;
 
       // Check if user is the one who posted the poll
@@ -186,19 +172,6 @@ export const poll: SlashCommand<'cached'> = {
       // Update message and reply with approved
       await pollMsg.edit({ embeds: [pollEmbed] });
       interaction.reply({ content: `<:yes:${yes}> **Poll Ended!**` }).catch(() => { return null; });
-
-      // Check if log channel exists and send message
-      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as GuildTextBasedChannel | undefined;
-      if (logchannel) {
-        pollEmbed.setTitle(`${interaction.user.username} ended their poll`).setFields([]);
-        const msglink = new ActionRowBuilder<ButtonBuilder>()
-          .addComponents([new ButtonBuilder()
-            .setURL(pollMsg.url)
-            .setLabel('Go to Message')
-            .setStyle(ButtonStyle.Link),
-          ]);
-        logchannel.send({ embeds: [pollEmbed], components: [msglink] });
-      }
     }
     catch (err) { error(err, interaction); }
   },

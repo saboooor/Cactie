@@ -2,7 +2,7 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInter
 import { x, o, empty, refresh } from '~/misc/emoji.json';
 import evalXO from '~/functions/evalXO';
 import userOption from '~/options/user';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 const again = new ActionRowBuilder<ButtonBuilder>()
   .addComponents([new ButtonBuilder()
     .setCustomId('xo_again')
@@ -11,7 +11,7 @@ const again = new ActionRowBuilder<ButtonBuilder>()
     .setStyle(ButtonStyle.Secondary),
   ]);
 
-export const tictactoe: SlashCommand<'cached'> = {
+export const tictactoe: Command<'cached'> = {
   description: 'Play Tic Tac Toe',
   cooldown: 10,
   options: userOption,
@@ -66,7 +66,7 @@ export const tictactoe: SlashCommand<'cached'> = {
 
     collector.on('collect', async (btnint: ButtonInteraction) => {
       if (btnint.user.id != (turn ? interaction.user.id : interaction.id)) {
-        btnint.reply({ content: 'It\'s not your turn!', ephemeral: true });
+        btnint.reply({ content: 'It\'s not your turn!', flags: ['Ephemeral'] });
         return;
       }
       await btnint.deferUpdate().catch((err: Error) => logger.error(err));

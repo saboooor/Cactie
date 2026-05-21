@@ -2,7 +2,7 @@ import { Client, ContextMenuCommandInteraction, EmbedBuilder, GuildMember, Messa
 import checkPerms from '~/functions/checkPerms';
 import contextcommands from '~/lists/context';
 
-export default async (client: Client, interaction: ContextMenuCommandInteraction) => {
+export default async (client: Client<true>, interaction: ContextMenuCommandInteraction) => {
   // Check if interaction is context menu
   if (!interaction.isContextMenuCommand()) return;
   if (!interaction.inCachedGuild()) return;
@@ -23,7 +23,7 @@ export default async (client: Client, interaction: ContextMenuCommandInteraction
   // Defer and execute the command
   try {
     if (!command.noDefer) {
-      await interaction.deferReply({ ephemeral: command.ephemeral });
+      await interaction.deferReply({ flags: command.flags });
       interaction.reply = interaction.editReply as typeof interaction.reply;
     }
     logger.info(`${interaction.user.username} issued context menu command: '${command.name}' with target: ${item?.id}, in ${interaction.guild.name}`.replace(' ,', ','));

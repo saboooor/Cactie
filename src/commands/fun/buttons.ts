@@ -1,9 +1,9 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType } from 'discord.js';
 import { empty } from '~/misc/emoji.json';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import text from '~/options/text';
 
-export const buttons: SlashCommand = {
+export const buttons: Command = {
   description: 'ya just buttons idk',
   cooldown: 10,
   options: text,

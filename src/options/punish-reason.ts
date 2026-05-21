@@ -1,4 +1,4 @@
-import { SlashCommandUserOption, SlashCommandStringOption, SlashCommandBuilder, SlashCommandBooleanOption } from 'discord.js';
+import { SlashCommandUserOption, SlashCommandStringOption, SlashCommandBuilder, CommandBooleanOption } from 'discord.js';
 
 export default async function options(cmd: SlashCommandBuilder) {
   cmd.addUserOption(
@@ -17,7 +17,7 @@ export default async function options(cmd: SlashCommandBuilder) {
       .setName('time')
       .setDescription('Time to temporarily punish until s/m/h/d (Ex. 10s, 2m)'),
   ).addBooleanOption(
-    new SlashCommandBooleanOption()
+    new CommandBooleanOption()
       .setName('silent')
       .setDescription('Whether to send a message to the user or not'),
   );

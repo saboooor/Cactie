@@ -1,4 +1,4 @@
-import { SlashCommandUserOption, SlashCommandStringOption, SlashCommandBuilder, SlashCommandBooleanOption } from 'discord.js';
+import { SlashCommandUserOption, SlashCommandStringOption, SlashCommandBuilder, CommandBooleanOption } from 'discord.js';
 
 export default async function options(cmd: SlashCommandBuilder) {
   cmd.addUserOption(
@@ -16,7 +16,7 @@ export default async function options(cmd: SlashCommandBuilder) {
       .setDescription('The reason for punishing the user')
       .setMaxLength(1024),
   ).addBooleanOption(
-    new SlashCommandBooleanOption()
+    new CommandBooleanOption()
       .setName('silent')
       .setDescription('Whether to send a message to the user or not'),
   );

@@ -1,10 +1,10 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 // @ts-ignore
 import packageJSON from '../../../package.json' assert { type: 'json' };
 
-export const info: SlashCommand = {
-  description: 'Get various information about Cactie',
+export const info: Command = {
+  description: 'Get various information about Sova',
   cooldown: 10,
   async execute(interaction, client) {
     try {
@@ -26,15 +26,15 @@ export const info: SlashCommand = {
       const row1 = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
           new ButtonBuilder()
-            .setURL('https://cactie.luminescent.dev/invite')
-            .setLabel('Invite Cactie!')
+            .setURL('https://sova.fyi/invite')
+            .setLabel('Invite Sova!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
             .setURL('https://luminescent.dev/discord')
             .setLabel('Join the LuminescentDev Server!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL('https://cactie.luminescent.dev')
+            .setURL('https://sova.fyi')
             .setLabel('Open the Dashboard!')
             .setStyle(ButtonStyle.Link),
         ]);

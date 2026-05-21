@@ -55,7 +55,7 @@ export default async function redditFetch(subreddits: string[], message: Command
   // Log the url
   logger.info(`Image URL: ${data.url}`);
 
-  // Check if the url is one that Cactie cannot parse
+  // Check if the url is one that Sova cannot parse
   if (!['i.redd.it', 'v.redd.it', 'i.imgur.com', 'redgifs.com/watch/'].some(url => data.url.includes(url))) {
     logger.error('Can\'t parse URL!');
     return redditFetch(subreddits, message, client, attempts + 1);

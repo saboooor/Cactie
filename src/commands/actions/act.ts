@@ -1,9 +1,9 @@
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import action from '~/functions/action';
 import actions from '~/misc/actions.json';
 import someone from '~/options/someone';
 
-export const act: SlashCommand = {
+export const act: Command = {
   name: Object.keys(actions),
   description: '{NAME}!',
   options: someone,

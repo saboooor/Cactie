@@ -1,14 +1,14 @@
 import { SlashCommandBuilder, PermissionsBitField, Message, Client, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction, ChatInputCommandInteraction, CacheType } from 'discord.js';
 
-export class Command {
+export class PrivateCommand {
   name?: string;
   description: string;
   execute: (message: Message<true>, args: string[], client: Client<true>) => void | Promise<void>;
 }
 
-export class SlashCommand<Cached extends CacheType = CacheType> extends Command {
+export class Command<Cached extends CacheType = CacheType> extends PrivateCommand {
   name?: string | string[];
-  ephemeral?: boolean;
+  flags?: InteractionDeferReplyOptions.flags;
   noDefer?: boolean;
   category?: string;
   cooldown?: number;
@@ -26,7 +26,7 @@ export class ContextMenuCommand<T extends 'User' | 'Message'> {
   name: string;
   permission?: keyof typeof PermissionsBitField.Flags;
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
-  ephemeral?: boolean;
+  flags?: InteractionDeferReplyOptions.flags;
   noDefer?: boolean;
   type: T;
   execute: (interaction: ContextMenuCommandInteraction<'cached'>, client: Client<true>, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
@@ -44,6 +44,6 @@ export class Button<Cached extends CacheType = CacheType> {
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   deferReply?: boolean;
   noDefer?: boolean;
-  ephemeral?: boolean;
+  flags?: InteractionDeferReplyOptions.flags;
   execute: (interaction: ButtonInteraction<Cached> | StringSelectMenuInteraction<Cached>, client: Client<true>) => void | Promise<void>;
 }

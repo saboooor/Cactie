@@ -1,7 +1,7 @@
 import { EmbedBuilder } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 
-export const server: SlashCommand<'cached'> = {
+export const server: Command<'cached'> = {
   description: 'Discord server info',
   cooldown: 10,
   async execute(interaction) {

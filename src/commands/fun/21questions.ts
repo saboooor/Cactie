@@ -1,8 +1,8 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
+import { Command } from '~/types/Objects';
 import questionsOptions from '~/options/21q';
 
-export const questions: SlashCommand<'cached'> = {
+export const questions: Command<'cached'> = {
   name: '21questions',
   description: 'Play 21 Questions',
   cooldown: 10,
