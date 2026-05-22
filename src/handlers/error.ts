@@ -11,10 +11,10 @@ export default (client: Client) => {
 
     // Create error message container
     const ErrorContainer = new ContainerBuilder()
-      .setAccentColor(0xE74C3C)
+      .setAccentColor(userError ? 0xe7a83c : 0xE74C3C)
       .addSectionComponents((section) => section
         .addTextDisplayComponents((textDisplay) =>
-          textDisplay.setContent('# An error has occured!'),
+          textDisplay.setContent(userError ? '## Invalid command usage' : '## An error has occured!'),
         )
         .setButtonAccessory((btn) => btn
           .setStyle(ButtonStyle.Link)
@@ -41,13 +41,13 @@ export default (client: Client) => {
 
     // send error message, if that fails, send it in the channel, if that also fails, log it
     try {
-      if (message instanceof Message) return await message.reply({ components: [ErrorContainer] });
-      else return await message.reply({ components: [ErrorContainer] });
+      if (message instanceof Message) return await message.reply({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
+      else return await message.reply({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
     }
     catch (err_1) {
       logger.warn(err_1);
       if (message.channel && 'send' in message.channel)
-        message.channel.send({ components: [ErrorContainer] }).catch(err_2 => logger.warn(err_2));
+        message.channel.send({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 }).catch(err_2 => logger.warn(err_2));
     }
   };
 

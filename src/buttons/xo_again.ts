@@ -2,13 +2,11 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInter
 import { x, o, empty, refresh } from '~/misc/emoji.json';
 import evalXO from '~/functions/evalXO';
 import { Button } from '~/types/Objects';
-const again = new ActionRowBuilder<ButtonBuilder>()
-  .addComponents([new ButtonBuilder()
-    .setCustomId('xo_again')
-    .setEmoji({ id: refresh })
-    .setLabel('Play Again')
-    .setStyle(ButtonStyle.Secondary),
-  ]);
+const again = new ButtonBuilder()
+  .setCustomId('xo_again')
+  .setEmoji({ id: refresh })
+  .setLabel('Play Again')
+  .setStyle(ButtonStyle.Secondary);
 
 export const xo_again: Button<'cached'> = {
   flags: ['Ephemeral'],
