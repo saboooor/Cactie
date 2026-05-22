@@ -22,6 +22,10 @@ export class Command<Cached extends CacheType = CacheType> extends PrivateComman
   execute: (interaction: ChatInputCommandInteraction<Cached>, client: Client<true>) => void | Promise<void>;
 }
 
+export class LoadedCommand extends Command {
+  name: string;
+}
+
 export class ContextMenuCommand<T extends 'User' | 'Message'> {
   name: string;
   permission?: keyof typeof PermissionsBitField.Flags;

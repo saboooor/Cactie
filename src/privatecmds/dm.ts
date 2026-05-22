@@ -6,7 +6,7 @@ export const dm: PrivateCommand = {
   async execute(message, args, client) {
     try {
       // Get user and check if they exist
-      const user = client.users.cache.get(args[0].replace(/\D/g, ''));
+      const user = client.users.cache.get(args[0]?.replace(/\D/g, '') ?? '');
       if (!user) {
         error('Invalid User!', message, true);
         return;

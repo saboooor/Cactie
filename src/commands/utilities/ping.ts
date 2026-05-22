@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder, ComponentType, ButtonInteraction } from 'discord.js';
+import { ButtonStyle, ComponentType, ButtonInteraction, ContainerBuilder, MessageFlags, TextDisplayBuilder, SectionBuilder } from 'discord.js';
 import { refresh } from '~/misc/emoji.json';
 import { Command } from '~/types/Objects';
 import pong from '~/misc/pong.json';
@@ -8,22 +8,30 @@ export const ping: Command = {
   cooldown: 10,
   async execute(interaction, client) {
     try {
-      // Create embed with ping information and add ping again button
-      const PingEmbed = new EmbedBuilder()
-        .setColor('Random')
-        .setTitle(pong[0])
-        .setDescription(`**Message Latency** ${Date.now() - interaction.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`);
-      const row = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents([
-          new ButtonBuilder()
+      // Create container with ping information and add ping again button
+      const PingContainer = new ContainerBuilder()
+        .setAccentColor(0x5865F2)
+        .addSectionComponents((section) => section
+          .addTextDisplayComponents((textDisplay) =>
+            textDisplay.setContent(`# ${pong[0]}`),
+          )
+          .setButtonAccessory((btn) => btn
             .setCustomId('ping_again')
             .setEmoji({ id: refresh })
             .setLabel('Refresh')
             .setStyle(ButtonStyle.Secondary),
-        ]);
+          ),
+        )
+        .addSeparatorComponents((separator) => separator)
+        .addTextDisplayComponents((textDisplay) =>
+          textDisplay.setContent(`**Message Latency** ${Date.now() - interaction.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`),
+        );
 
-      // reply with embed
-      const pingmsg = await interaction.reply({ embeds: [PingEmbed], components: [row] });
+      // reply
+      const pingmsg = await interaction.reply({
+        components: [PingContainer],
+        flags: MessageFlags.IsComponentsV2,
+      });
 
       // create collector for ping again button
       const filter = (i: ButtonInteraction) => i.customId == 'ping_again';
@@ -32,20 +40,31 @@ export const ping: Command = {
         // Check if the button is one of the settings buttons
         await btnint.deferUpdate();
 
-        // Set the embed description with new ping stuff
-        PingEmbed.setDescription(`**Message Latency** ${Date.now() - btnint.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`);
+        // Set the description with new ping stuff
+        const DescriptionComponent = PingContainer.components[2] as TextDisplayBuilder;
+        DescriptionComponent.setContent(`**Message Latency** ${Date.now() - interaction.createdTimestamp}ms\n**API Latency** ${client.ws.ping}ms`);
+
+        // Get the current title, get the next one from the pong array, and set it
+        const TitleSection = PingContainer.components[0] as SectionBuilder;
+        const TitleComponent = TitleSection.components[0] as TextDisplayBuilder;
 
         // Get next string (if last index, go to index 0)
-        const newIndex = pong.indexOf(PingEmbed.toJSON().title!) == pong.length - 1 ? 0 : pong.indexOf(PingEmbed.toJSON().title!) + 1;
+        const oldIndex = pong.indexOf(TitleComponent.toJSON().content.replace('# ', ''));
+        const newIndex = oldIndex == pong.length - 1 ? 0 : oldIndex + 1;
 
         // Set title and update message
-        PingEmbed.setTitle(pong[newIndex]);
-        await btnint.editReply({ embeds: [PingEmbed] });
+        TitleComponent.setContent(`# ${pong[newIndex]}`);
+        await btnint.editReply({ components: [PingContainer] });
       });
 
-      // When the collector stops, remove all buttons from it
+      // When the collector stops, remove refresh button from it
       collector.on('end', () => {
-        interaction.editReply({ components: [] }).catch(err => logger.warn(err));
+        // get title section and replace it with just the title component to remove the button from the container
+        const TitleSection = PingContainer.components[0] as SectionBuilder;
+        const TitleComponent = TitleSection.components[0] as TextDisplayBuilder;
+        PingContainer.components[0] = TitleComponent;
+
+        interaction.editReply({ components: [PingContainer] });
       });
     }
     catch (err) { error(err, interaction); }

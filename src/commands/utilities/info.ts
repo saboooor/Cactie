@@ -30,7 +30,7 @@ export const info: Command = {
             .setLabel('Invite Sova!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL('https://luminescent.dev/discord')
+            .setURL('https://sova.fyi/discord')
             .setLabel('Join the LuminescentDev Server!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()

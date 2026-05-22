@@ -15,7 +15,7 @@ export const help: Command = {
         .setTitle('**HELP**');
       const subcmd = interaction.options.getSubcommand();
 
-      if (subcmd == 'admin' || subcmd == 'fun' || subcmd == 'animals' || subcmd == 'tickets' || subcmd == 'utilities' || subcmd == 'actions') {
+      if (subcmd == 'admin' || subcmd == 'fun' || subcmd == 'tickets' || subcmd == 'utilities' || subcmd == 'actions') {
         const category = helpdesc[subcmd as keyof typeof helpdesc];
         const commandList = commands.filter(c => c.category == subcmd);
         const array: string[] = [];
@@ -25,7 +25,7 @@ export const help: Command = {
         if (category.field) HelpEmbed.setFields([category.field]);
       }
       else {
-        HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Animals, Tickets, Utilities, Actions');
+        HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Tickets, Utilities, Actions');
       }
       const options: StringSelectMenuOptionBuilder[] = [];
       const categories = Object.keys(helpdesc);
@@ -49,7 +49,7 @@ export const help: Command = {
       const row2 = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
           new ButtonBuilder()
-            .setURL('https://luminescent.dev/discord')
+            .setURL('https://sova.fyi/discord')
             .setLabel('Support Discord')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()

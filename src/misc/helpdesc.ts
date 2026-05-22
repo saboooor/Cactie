@@ -18,11 +18,6 @@ export const fun: HelpDesc = {
   description: 'These commands are made just for fun',
 };
 
-export const animals: HelpDesc = {
-  name: 'Animals',
-  description: 'These commands show cute animals',
-};
-
 export const tickets: HelpDesc = {
   name: 'Tickets',
   description: 'These commands are related to the bot\'s tickets system',

@@ -1,4 +1,4 @@
-import { Collection, FetchMessagesOptions, GuildTextBasedChannel, Message } from 'discord.js';
+import { Collection, type FetchMessagesOptions, type GuildTextBasedChannel, Message } from 'discord.js';
 
 export default async function getMessages<InGuild extends boolean = boolean>(channel: GuildTextBasedChannel, limit: number | 'infinite' = 100, after?: string) {
   const messagechunks = [];

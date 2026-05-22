@@ -8,10 +8,10 @@ const commands = new Collection<string, PrivateCommand>();
 // Register all commands
 const commandFolders = readdirSync('./src/privatecmds');
 for (const file of commandFolders) {
-  import(`../privatecmds/${file}`).then(command => {
-    const name = Object.keys(command)[0]!;
-    commands.set(name, command[name]);
-  });
+  const module = await import(`../privatecmds/${file}`);
+
+  const name = Object.keys(module)[0]!;
+  commands.set(name, module[name]);
 }
 logger.info(`${commands.size} private commands loaded`);
 

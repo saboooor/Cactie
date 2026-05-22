@@ -3,7 +3,7 @@ version: '3.8'
 services:
   bot:
     build: .
-    container_name: sovaa-bot
+    container_name: sova-bot
     environment:
       - NODE_ENV=production
       - WEBHOOK_PORT=${WEBHOOK_PORT:-3000}

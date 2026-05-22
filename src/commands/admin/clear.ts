@@ -1,6 +1,6 @@
 import { Collection, Message } from 'discord.js';
 import getMessages from '~/functions/messages/getMessages';
-import { yes } from '~/misc/emoji.json';
+import { yes, loading } from '~/misc/emoji.json';
 import { Command } from '~/types/Objects';
 import clearOptions from '~/options/clear';
 
@@ -35,10 +35,21 @@ export const clear: Command<'cached'> = {
       const text = interaction.options.getString('text');
       for (const i in messagechunks) {
         if (!messagechunks[i]) return;
+        await interaction.reply({ content: `<:loading:${loading}> **Removing ${i} of ${messagechunks.length} chunks...**`, flags: 64 });
+
+        // Filter messages that are older than 14 days, since those can't be bulk deleted, and filter by user and text if those options are set
         messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
+
+        // If user option is set, filter messages by that user, if text option is set, filter messages that include that text
         if (user) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == user.id);
+
+        // If there are no messages left after filtering, skip bulk deleting and move on to the next chunk
         if (text) messagechunks[i] = messagechunks[i].filter(msg => msg.content.includes(text));
+
+        // If there are no messages left after filtering, skip bulk deleting and move on to the next chunk
         if (!messagechunks[i].size) return;
+
+        // Bulk delete messages and catch any errors (like if messages are older than 14 days or if the bot doesn't have permissions)
         await interaction.channel?.bulkDelete(messagechunks[i]).catch((err: Error) => error(err, interaction, true));
       }
 

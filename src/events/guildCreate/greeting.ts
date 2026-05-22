@@ -8,7 +8,7 @@ export default async (client: Client, guild: Guild) => {
         .setLabel('Dashboard')
         .setStyle(ButtonStyle.Link),
       new ButtonBuilder()
-        .setURL('https://luminescent.dev/discord')
+        .setURL('https://sova.fyi/discord')
         .setLabel('Support Server')
         .setStyle(ButtonStyle.Link),
       new ButtonBuilder()

@@ -10,27 +10,11 @@ This is the source code for my public Discord bot, Sova.
 ![Discord Bots](https://top.gg/api/widget/upvotes/765287593762881616.svg)
 
 #### Type /help for help
-I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://luminescent.dev/discord) and we'll fix it ASAP
-
-## Suggestions
-- Uses threads to organize discussions
-- Bell reaction along with upvote/downvote to notify users who want to be updated
-- Easy approve/deny commands with autocomplete, no longer you have to suffer with message ids!
-
-## Punishments
-- ban and unban with autocomplete, you no longer have to go fishing for the banned user's id!
-- mute and unmute
-- warn and unwarn
-- kick
-
-## Reaction roles
+I'm not perfect at coding this bot so if you do find any bugs, [contact us here](https://sova.fyi/discord) and we'll fix it ASAP
 
 ## Bulk Message Clear
 - Query specific messages with author or text
 - Can select more than 100 messages to clear
-
-## Ticket System
-- Uses modals for user-friendly ticket opening
 
 ## Fun and Games
 - Tic Tac Toe
@@ -39,9 +23,7 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - Button grid
 - 8 Ball
 - Coin Flip
-- Memes
 - Rating
-- Animal Pics
 
 ## Action commands
 - awooga
@@ -64,10 +46,6 @@ I'm not perfect at coding this bot so if you do find any bugs, [contact us here]
 - serverinfo
 - Right click a message for raw embed or message content
 - GitHub repository viewer
-- Minecraft Server status
-- Profile and Timings Analysis
-- Get latest Minecraft Server software from Paper, Purpur, etc.
-- Wallpaper Picker
 
 ### Contributors
 ![Contributors](https://contrib.rocks/image?repo=saboooor/sova)
