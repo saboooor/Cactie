@@ -2,6 +2,7 @@ import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'disc
 import { Command } from '~/types/Objects';
 // @ts-ignore
 import packageJSON from '../../../package.json' assert { type: 'json' };
+import { lastStarted } from '~/index';
 
 export const info: Command = {
   description: 'Get various information about Sova',
@@ -20,7 +21,7 @@ export const info: Command = {
           { name: 'Bot Version', value: `\`\`\`${packageJSON.version}\`\`\``, inline: true },
           { name: 'NodeJS Version', value: `\`\`\`${process.version}\`\`\``, inline: true },
           { name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499')!.username}\`\`\`` },
-          { name: 'Last restart', value: `<t:${Math.ceil(Number(rn) / 1000)}:R>` },
+          { name: 'Last restart', value: `<t:${Math.ceil(Number(lastStarted) / 1000)}:R>` },
           { name: 'Dependencies', value: `\`\`\`${Object.keys(dependencies).map(depName => `${depName}: ${dependencies[depName as keyof typeof dependencies]}`).join('\n')}\`\`\`` },
         ]);
       const row1 = new ActionRowBuilder<ButtonBuilder>()

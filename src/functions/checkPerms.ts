@@ -1,4 +1,4 @@
-import { PermissionsBitField, GuildMember, GuildChannel, Channel, DMChannel, ForumChannel, PartialDMChannel, PartialGroupDMChannel } from 'discord.js';
+import { PermissionsBitField, GuildMember, GuildChannel, type Channel, DMChannel, ForumChannel, type PartialDMChannel, PartialGroupDMChannel } from 'discord.js';
 
 export type PermissionChannel = Exclude<Channel, DMChannel | PartialDMChannel | PartialGroupDMChannel | ForumChannel>;
 

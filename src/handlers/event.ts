@@ -4,15 +4,19 @@ import { readdirSync } from 'fs';
 export default async (client: Client) => {
   const eventFolders = readdirSync('./src/events/');
   let listeners = 0;
-  for (const event of eventFolders) {
-    const jsFiles = readdirSync(`./src/events/${event}`).filter(subfile => subfile.endsWith('.js') || subfile.endsWith('.ts'));
-    for (const file of jsFiles) {
-      const module = await import(`../events/${event}/${file}`);
+  await Promise.all(
+    eventFolders.map(async (event) => {
+      const jsFiles = readdirSync(`./src/events/${event}`).filter(subfile => subfile.endsWith('.js') || subfile.endsWith('.ts'));
+      await Promise.all(
+        jsFiles.map(async (file) => {
+          const module = await import(`../events/${event}/${file}`);
 
-      const js = module.default ?? module;
-      client.on(event, js.bind(null, client));;
-    }
-    listeners += jsFiles.length;
-  }
+          const js = module.default ?? module;
+          client.on(event, js.bind(null, client));;
+        }),
+      );
+      listeners += jsFiles.length;
+    }),
+  );
   logger.info(`${listeners} event listeners loaded`);
 };

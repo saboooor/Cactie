@@ -8,32 +8,31 @@ const truncateString = (string: string, maxLength: number) =>
     : string;
 
 export default async (client: Client) =>{
-  const cmds = [];
+  const cmds: (SlashCommandBuilder | ContextMenuCommandBuilder)[] = [];
 
-  for (const obj of commands){
-    const command = obj[1];
-    logger.info(`Loading slash command ${command.name}`);
+  await Promise.all([
+    ...commands.map(async (command) => {
+      logger.info(`Loading slash command ${command.name}`);
 
-    const cmd = new SlashCommandBuilder()
-      .setName(command.name)
-      .setDescription(truncateString(command.description, 99))
-      .setDMPermission(command.category != 'admin' && command.category != 'tickets');
-    if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
-    if (command.options) command.options(cmd);
-    cmds.push(cmd);
-  }
+      const cmd = new SlashCommandBuilder()
+        .setName(command.name)
+        .setDescription(truncateString(command.description, 99))
+        .setDMPermission(command.category != 'admin' && command.category != 'tickets');
+      if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
+      if (command.options) command.options(cmd);
+      cmds.push(cmd);
+    }),
+    ...contextcommands.map(async (command) => {
+      logger.info(`Loading context command ${command.name}`);
 
-  for (const obj of contextcommands) {
-    const command = obj[1];
-    logger.info(`Loading context command ${command.name}`);
-
-    const cmd = new ContextMenuCommandBuilder()
-      .setName(command.name!)
-      .setType(ApplicationCommandType[command.type])
-      .setDMPermission(false);
-    if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
-    cmds.push(cmd);
-  }
+      const cmd = new ContextMenuCommandBuilder()
+        .setName(command.name!)
+        .setType(ApplicationCommandType[command.type])
+        .setDMPermission(false);
+      if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
+      cmds.push(cmd);
+    }),
+  ]);
 
   await client.application?.commands.set(cmds, '811354612547190794');
   logger.info(`${cmds.length} slash/context commands loaded`);

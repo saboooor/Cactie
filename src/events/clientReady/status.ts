@@ -3,6 +3,7 @@ import { ActivityType, Client } from 'discord.js';
 import ms from 'ms';
 
 import packageJSON from '../../../package.json' with { type: 'json' };
+import { lastStarted } from '~/index';
 
 export default async (client: Client<true>) => {
   client.user.setPresence({ activities: [{ name: 'Just Restarted!', type: ActivityType.Playing }], status: 'dnd' });
@@ -14,7 +15,7 @@ export default async (client: Client<true>) => {
       'Also check out Lumin!',
       'sova.fyi',
       `Version: ${packageJSON.version}`,
-      `Uptime: ${ms(Date.now() - Number(rn), { long: true })}`,
+      `Uptime: ${ms(Date.now() - Number(lastStarted), { long: true })}`,
       `I'm in ${client.guilds.cache.size} servers!`,
     ];
     const i = Math.floor(Math.random() * activities.length);
