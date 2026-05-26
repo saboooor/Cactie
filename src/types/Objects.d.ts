@@ -9,7 +9,7 @@ export class PrivateCommand {
 export class Command<Cached extends CacheType = CacheType> extends PrivateCommand {
   name?: string | string[];
   flags?: InteractionDeferReplyOptions.flags;
-  noDefer?: boolean;
+  defer?: boolean;
   category?: string;
   cooldown?: number;
   permission?: keyof typeof PermissionsBitField.Flags;
@@ -31,14 +31,15 @@ export class ContextMenuCommand<T extends 'User' | 'Message'> {
   permission?: keyof typeof PermissionsBitField.Flags;
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   flags?: InteractionDeferReplyOptions.flags;
-  noDefer?: boolean;
+  defer?: boolean;
   type: T;
   execute: (interaction: ContextMenuCommandInteraction<'cached'>, client: Client<true>, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
 }
 
 export class Modal<Cached extends CacheType = CacheType> {
   name?: string;
-  deferReply?: boolean;
+  defer?: 'reply' | 'update' | false;
+  flags?: InteractionDeferReplyOptions.flags;
   ephemeral?: boolean;
   execute: (interaction: ModalSubmitInteraction<Cached>, client: Client<true>, modalInfo: string) => void | Promise<void>;
 }
@@ -46,8 +47,7 @@ export class Modal<Cached extends CacheType = CacheType> {
 export class Button<Cached extends CacheType = CacheType> {
   name?: string;
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
-  deferReply?: boolean;
-  noDefer?: boolean;
+  defer?: 'reply' | 'update' | false;
   flags?: InteractionDeferReplyOptions.flags;
-  execute: (interaction: ButtonInteraction<Cached> | StringSelectMenuInteraction<Cached>, client: Client<true>) => void | Promise<void>;
+  execute: (interaction: ButtonInteraction<Cached> | StringSelectMenuInteraction<Cached>, client: Client<true>, args?: string[]) => void | Promise<void>;
 }

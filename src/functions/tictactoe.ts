@@ -1,15 +1,11 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, ComponentType, ContainerBuilder, MessageFlags, SectionBuilder, User } from 'discord.js';
 import { x, o, empty, refresh } from '~/misc/emoji.json';
 import evalXO from './evalXO';
-const again = new ButtonBuilder()
-  .setCustomId('xo_again')
-  .setEmoji({ id: refresh })
-  .setLabel('Play Again')
-  .setStyle(ButtonStyle.Secondary);
 
 export default async function createTicTacToe(xUser: User, oUser: User, interaction: ButtonInteraction | CommandInteraction) {
   // set random turn - true = X / false = O
   let turn = Boolean(Math.round(Math.random()));
+  let gameEnded = false;
 
   // construct buttons and rows
   const btns: { [key: string]: ButtonBuilder | undefined; } = {};
@@ -55,11 +51,17 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
       textDisplay.setContent(`**X:** ${xUser}\n**O:** ${oUser}`),
     );
 
-  const TicTacToeMsg = await interaction.reply({ components: [TicTacToeContainer], flags: MessageFlags.IsComponentsV2 });
+  const TicTacToeMsg = await interaction.editReply({ components: [TicTacToeContainer], flags: MessageFlags.IsComponentsV2 });
 
   // create collector for buttons
-  const filter = (i: ButtonInteraction) => i.customId != 'xo_again';
+  const filter = (i: ButtonInteraction) => !i.customId.startsWith('tictactoe_again');
   const collector = TicTacToeMsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
+
+  const againButton = new ButtonBuilder()
+    .setCustomId(`tictactoe_again|${xUser.id}|${oUser.id}`)
+    .setEmoji({ id: refresh })
+    .setLabel('Play Again')
+    .setStyle(ButtonStyle.Secondary);
 
   collector.on('collect', async (btnint: ButtonInteraction) => {
     // check if it's the correct user's turn
@@ -110,6 +112,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
     const win = evalXO(reslist);
     if (win.rows) { win.rows.forEach(i => btns[i.toString() as keyof typeof btns]!.setStyle(ButtonStyle.Success)); }
     if (win.winner) {
+      gameEnded = true;
       const XIsWinner = win.winner == 'x';
       Object.keys(btns).map(i => btns[i as keyof typeof btns]!.setDisabled(true));
       TicTacToeContainer.setAccentColor(XIsWinner ? 0xff0000 : 0x00ff00)
@@ -121,7 +124,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
           .setThumbnailAccessory((thumbnail) => thumbnail.setURL(
             (XIsWinner ? xUser.avatarURL() : oUser.avatarURL()) ?? '',
           ))
-          .setButtonAccessory(again),
+          .setButtonAccessory(againButton),
         );
       await btnint.editReply({ components: [TicTacToeContainer], flags: MessageFlags.IsComponentsV2 });
       return collector.stop();
@@ -133,12 +136,13 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
       if (!btns[i as keyof typeof btns]!.toJSON().disabled) { draw = false; }
     });
     if (draw) {
+      gameEnded = true;
       TicTacToeContainer.setAccentColor(0x2f3136)
         .addSectionComponents((section) => section
           .addTextDisplayComponents((textDisplay) =>
             textDisplay.setContent('**Result:** Draw!'),
           )
-          .setButtonAccessory(again),
+          .setButtonAccessory(againButton),
         );
       await btnint.editReply({ components: [TicTacToeContainer], flags: MessageFlags.IsComponentsV2 });
       return collector.stop();
@@ -161,7 +165,8 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
 
   // When the collector stops, edit the message with a timeout message if the game hasn't ended already
   collector.on('end', () => {
-    if (TicTacToeContainer.components.length <= 7) return;
+    // check if the game has already ended, if it has, do nothing
+    if (gameEnded) return;
 
     // disable all buttons and show timeout message
     Object.keys(btns).map(i => btns[i as keyof typeof btns]!.setDisabled(true));
@@ -172,7 +177,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
         .addTextDisplayComponents((textDisplay) =>
           textDisplay.setContent('**Game Over:** Time ran out!'),
         )
-        .setButtonAccessory(again),
+        .setButtonAccessory(againButton),
       );
     TicTacToeMsg.edit({ components: [TicTacToeContainer], flags: MessageFlags.IsComponentsV2 });
   });

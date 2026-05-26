@@ -22,10 +22,7 @@ export default async (client: Client<true>, interaction: ContextMenuCommandInter
 
   // Defer and execute the command
   try {
-    if (!command.noDefer) {
-      await interaction.deferReply({ flags: command.flags });
-      interaction.reply = interaction.editReply as typeof interaction.reply;
-    }
+    if (command.defer) await interaction.deferReply({ flags: command.flags });
     logger.info(`${interaction.user.username} issued context menu command: '${command.name}' with target: ${item?.id}, in ${interaction.guild.name}`.replace(' ,', ','));
     command.execute(interaction, client, item as Message<true> & GuildMember);
   }

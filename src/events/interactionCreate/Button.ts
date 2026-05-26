@@ -7,13 +7,19 @@ export default async (client: Client<true>, interaction: ButtonInteraction | Str
   if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
   if (!interaction.guild) return;
 
-  const id = interaction instanceof StringSelectMenuInteraction ? interaction.values[0] : interaction.customId;
+  // There may be extra data along with the customId, so we split it and get the first part as the id
+  const IdWithArgs = interaction instanceof StringSelectMenuInteraction
+    ? interaction.values[0]
+    : interaction.customId;
+  const Id = IdWithArgs?.split('|')[0];
+  const args = IdWithArgs?.split('|').slice(1);
+  if (!Id) return;
 
   // Log every button interaction
-  logger.info(`${interaction.user.username} clicked button with id: ${id}, in ${interaction.guild.name}`);
+  logger.info(`${interaction.user.username} clicked button with id: ${Id}, in ${interaction.guild.name}`);
 
   // Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
-  const button = buttons.get(id);
+  const button = buttons.get(Id);
   if (!button) return;
 
   // Check if bot has the permissions necessary in the guild to run the command
@@ -27,11 +33,8 @@ export default async (client: Client<true>, interaction: ButtonInteraction | Str
 
   // Defer and execute the button
   try {
-    if (!button.noDefer) {
-      await interaction[button.deferReply ? 'deferReply' : 'deferUpdate']({ flags: button.flags });
-      interaction.reply = interaction.editReply as typeof interaction.reply;
-    }
-    button.execute(interaction, client);
+    if (button.defer) await interaction[button.defer == 'reply' ? 'deferReply' : 'deferUpdate']({ flags: button.flags });
+    button.execute(interaction, client, args);
   }
   catch (err) {
     const interactionFailed = new EmbedBuilder()

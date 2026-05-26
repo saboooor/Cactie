@@ -79,10 +79,7 @@ export default async (client: Client<true>, interaction: CommandInteraction) => 
 
   // Defer and execute the command
   try {
-    if (!command.noDefer) {
-      await interaction.deferReply({ flags: command.flags });
-      interaction.reply = interaction.editReply as typeof interaction.reply;
-    }
+    if (command.defer) await interaction.deferReply({ flags: command.flags });
     command.execute(interaction, client);
   }
   catch (err) {

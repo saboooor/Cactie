@@ -17,8 +17,7 @@ export default async (client: Client<true>, interaction: ModalSubmitInteraction)
   // Defer and execute the modal
   try {
     logger.info(`${interaction.user.username} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
-    await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ flags: modal.flags });
-    interaction.reply = interaction.editReply as typeof interaction.reply;
+    if (modal.defer) await interaction[modal.defer == 'reply' ? 'deferReply' : 'deferUpdate']({ flags: modal.flags });
     modal.execute(interaction, client, modalInfo!);
   }
   catch (err) {
