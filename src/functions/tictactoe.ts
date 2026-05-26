@@ -111,7 +111,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
     if (win.rows) { win.rows.forEach(i => btns[i.toString() as keyof typeof btns]!.setStyle(ButtonStyle.Success)); }
     if (win.winner) {
       const XIsWinner = win.winner == 'x';
-      Object.keys(btns).map(i => { btns[i as keyof typeof btns]!.setDisabled(true); });
+      Object.keys(btns).map(i => btns[i as keyof typeof btns]!.setDisabled(true));
       TicTacToeContainer.setAccentColor(XIsWinner ? 0xff0000 : 0x00ff00)
         .addSeparatorComponents((separator) => separator)
         .addSectionComponents((section) => section
@@ -162,6 +162,18 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
   // When the collector stops, edit the message with a timeout message if the game hasn't ended already
   collector.on('end', () => {
     if (TicTacToeContainer.components.length <= 7) return;
-    interaction.editReply({ content: 'A game of tic tac toe should not last longer than two hours...' }).catch(err => logger.warn(err));
+
+    // disable all buttons and show timeout message
+    Object.keys(btns).map(i => btns[i as keyof typeof btns]!.setDisabled(true));
+    TicTacToeContainer
+      .setAccentColor(0x2f3136)
+      .addSeparatorComponents((separator) => separator)
+      .addSectionComponents((section) => section
+        .addTextDisplayComponents((textDisplay) =>
+          textDisplay.setContent('**Game Over:** Time ran out!'),
+        )
+        .setButtonAccessory(again),
+      );
+    TicTacToeMsg.edit({ components: [TicTacToeContainer], flags: MessageFlags.IsComponentsV2 });
   });
 }
