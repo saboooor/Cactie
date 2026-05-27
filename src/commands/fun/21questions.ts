@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
 import { Command } from '~/types/Objects';
 import questionsOptions from '~/options/21q';
 
@@ -8,8 +8,8 @@ export const questions: Command<'cached'> = {
   cooldown: 10,
   options: questionsOptions,
   async execute(interaction) {
-    const member = interaction.options.getMember('user');
-    if (member?.id == interaction.user.id) {
+    const user = interaction.options.getMember('user')?.user;
+    if (user?.id == interaction.user.id) {
       error('You played yourself, oh wait, you can\'t.', interaction, true);
       return;
     }
@@ -18,24 +18,51 @@ export const questions: Command<'cached'> = {
       error('The amount of questions must be between 1 and 25!', interaction, true);
       return;
     }
-    if (member?.user.bot) {
+    if (user?.bot) {
       error('Bots aren\'t fun to play with, yet. ;)', interaction, true);
       return;
     }
+
+  // create container for the game
+  const QuestionsContainer = new ContainerBuilder()
+    // Title section with thumbnail
+    .addSectionComponents((section) => section
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent(`# ${questionAmt ?? 21} Questions`),
+      )
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent('-# Please choose an answer by clicking the button below!'),
+      )
+      .setThumbnailAccessory((thumbnail) => thumbnail.setURL(
+        interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'
+      )),
+    )
+    // actual game
+    .addSeparatorComponents((separator) => separator)
+    .addActionRowComponents((actionRow) => actionRow
+      .addComponents(
+        new ButtonBuilder()
+          .setCustomId('choose_answer')
+          .setLabel('Choose Answer')
+          .setStyle(ButtonStyle.Secondary),
+      ),
+    )
+    .addSeparatorComponents((separator) => separator)
+    // legend (index 6)
+    .addTextDisplayComponents((textDisplay) =>
+      textDisplay.setContent(`**Host:** ${interaction.user}\n**Guesser:** ${oUser}`),
+    );
 
     const row = new ActionRowBuilder<ButtonBuilder>()
       .addComponents([
         new ButtonBuilder()
           .setCustomId('choose_answer')
           .setLabel('Choose Answer')
-          .setStyle(ButtonStyle.Secondary),
-      ]);
+          .setStyle(ButtonStyle.
 
     const TwentyOneQuestions = new EmbedBuilder()
       .setColor(0x2f3136)
       .setTitle(`${questionAmt ?? 21} Questions`)
-      .setDescription(`**Playing with:**\n${member ?? 'Everyone'}\n**Host:**\n${interaction.user}\nPlease choose an answer by clicking the button below.`)
-      .setThumbnail(interaction.user.avatarURL());
 
     const questionmsg = await interaction.reply({ content: `${interaction.user}`, embeds: [TwentyOneQuestions], components: [row] });
 
