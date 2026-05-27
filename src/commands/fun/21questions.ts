@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
 import { Command } from '~/types/Objects';
 import questionsOptions from '~/options/21q';
 
@@ -9,6 +9,10 @@ export const questions: Command<'cached'> = {
   options: questionsOptions,
   async execute(interaction) {
     const user = interaction.options.getMember('user')?.user;
+    if (!user) {
+      error('You must specify a user to play with!', interaction, true);
+      return;
+    }
     if (user?.id == interaction.user.id) {
       error('You played yourself, oh wait, you can\'t.', interaction, true);
       return;
@@ -63,16 +67,16 @@ export const questions: Command<'cached'> = {
       const modal = new ModalBuilder()
         .setTitle('Choose an answer')
         .setCustomId('choose_answer')
-        .addComponents([
-          new ActionRowBuilder<TextInputBuilder>().addComponents([
-            new TextInputBuilder()
-              .setCustomId('answer')
-              .setLabel('This will be the answer to the game')
-              .setStyle(TextInputStyle.Short)
-              .setMaxLength(1024),
-          ]),
-        ]);
+        .addLabelComponents((label) => label
+          .setLabel('Please choose an answer:')
+          .setTextInputComponent(textInput => textInput
+            .setCustomId('answer')
+            .setStyle(TextInputStyle.Short)
+            .setMaxLength(1024)
+          )
+        );
       btnint.showModal(modal);
+
       collector.stop();
     });
 
