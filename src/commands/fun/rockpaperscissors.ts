@@ -119,7 +119,7 @@ export const rockpaperscissors: Command<'cached'> = {
         const winner = win ? interaction.user : opponent;
         const loser = win ? opponent : interaction.user;
         RSPContainer.addTextDisplayComponents(textDisplay =>
-          textDisplay.setContent(`**${winner} wins!**\n\n${emoji[choices[winner.id] as keyof typeof emoji][2]} wins over ${emoji[choices[loser.id] as keyof typeof emoji][2]}!`),
+          textDisplay.setContent(`## ${winner} wins!\n${emoji[choices[winner.id] as keyof typeof emoji][2]} wins over ${emoji[choices[loser.id] as keyof typeof emoji][2]}!`),
         );
         TitleSection.setThumbnailAccessory(thumb => thumb
           .setURL(winner.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
