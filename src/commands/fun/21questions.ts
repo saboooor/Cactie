@@ -1,4 +1,4 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
 import { Command } from '~/types/Objects';
 import questionsOptions from '~/options/21q';
 
@@ -53,18 +53,7 @@ export const questions: Command<'cached'> = {
       textDisplay.setContent(`**Host:** ${interaction.user}\n**Guesser:** ${oUser}`),
     );
 
-    const row = new ActionRowBuilder<ButtonBuilder>()
-      .addComponents([
-        new ButtonBuilder()
-          .setCustomId('choose_answer')
-          .setLabel('Choose Answer')
-          .setStyle(ButtonStyle.
-
-    const TwentyOneQuestions = new EmbedBuilder()
-      .setColor(0x2f3136)
-      .setTitle(`${questionAmt ?? 21} Questions`)
-
-    const questionmsg = await interaction.reply({ content: `${interaction.user}`, embeds: [TwentyOneQuestions], components: [row] });
+    const questionmsg = await interaction.reply({ components: [QuestionsContainer], flags: [MessageFlags.IsComponentsV2] });
 
     const filter = (i: ButtonInteraction) => i.customId == 'choose_answer' && i.user.id == interaction.user.id;
     const collector = questionmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 7200000 });
