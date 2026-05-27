@@ -1,0 +1,8 @@
+{
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "latest"
+    },
+    "ghcr.io/oven-sh/bun/devcontainer:1": {} 
+  }
+}
