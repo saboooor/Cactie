@@ -39,20 +39,21 @@ export const rockpaperscissors: Command<'cached'> = {
       .setThumbnailAccessory(thumb => thumb
         .setURL(opponent.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
       );
+
+    const TitleSection = new SectionBuilder()
+      .addTextDisplayComponents(
+        textDisplay => textDisplay
+          .setContent('# Rock Paper Scissors'),
+        textDisplay => textDisplay
+          .setContent(`${interaction.user} challenged ${opponent} to a game of Rock Paper Scissors!`),
+        textDisplay => textDisplay
+          .setContent('-# Please select your choice by clicking one of the buttons below!'),
+      ).setThumbnailAccessory(thumb => thumb
+        .setURL(interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
+      );
+
     const RSPContainer = new ContainerBuilder()
-      .addSectionComponents(section => section
-        .addTextDisplayComponents(
-          textDisplay => textDisplay
-            .setContent('# Rock Paper Scissors'),
-          textDisplay => textDisplay
-            .setContent(`${interaction.user} challenged ${opponent} to a game of Rock Paper Scissors!`),
-          textDisplay => textDisplay
-            .setContent('Please select your choice by clicking one of the buttons below!'),
-        )
-        .setThumbnailAccessory(thumb => thumb
-          .setURL(interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
-        ),
-      )
+      .addSectionComponents(TitleSection)
       .addSeparatorComponents(separator => separator)
       .addActionRowComponents(actionRow => actionRow
         .addComponents(
@@ -102,28 +103,27 @@ export const rockpaperscissors: Command<'cached'> = {
         else if (choices[opponent.id] == 'paper' && choices[interaction.user.id] == 'rock') win = false;
         else if (choices[opponent.id] == 'scissors' && choices[interaction.user.id] == 'paper') win = false;
 
+        // Clear waiting for section and buttons
+        RSPContainer.spliceComponents(1, 4);
+
         if (choices[interaction.user.id] == choices[opponent.id]) {
-          WaitingForSection.addTextDisplayComponents(textDisplay =>
+          RSPContainer.addTextDisplayComponents(textDisplay =>
             textDisplay.setContent(`## It's a tie!\nBoth users picked ${emoji[choices[opponent.id] as keyof typeof emoji][2]}!`),
           );
-          await btnint.editReply({ components: [WaitingForSection], flags: MessageFlags.IsComponentsV2 });
+          await interaction.editReply({ components: [RSPContainer], flags: MessageFlags.IsComponentsV2 });
           return;
         }
-        else {
-          RSPContainer.spliceComponents(4, 1);
-        }
 
+        // add result
         const winner = win ? interaction.user : opponent;
         const loser = win ? opponent : interaction.user;
-        WaitingForSection.addTextDisplayComponents(textDisplay =>
+        RSPContainer.addTextDisplayComponents(textDisplay =>
           textDisplay.setContent(`**${winner} wins!**\n\n${emoji[choices[winner.id] as keyof typeof emoji][2]} wins over ${emoji[choices[loser.id] as keyof typeof emoji][2]}!`),
         );
-
-        await btnint.editReply({ components: [WaitingForSection], flags: MessageFlags.IsComponentsV2 });
       }
 
       // Go on to next turn if no matches
-      interaction.editReply({ components: [WaitingForSection], flags: MessageFlags.IsComponentsV2 });
+      await interaction.editReply({ components: [RSPContainer], flags: MessageFlags.IsComponentsV2 });
     });
   },
 };
