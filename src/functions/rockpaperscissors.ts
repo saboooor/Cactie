@@ -70,7 +70,7 @@ export default async function createRPS(user: User, opponent: User, interaction:
     .setEmoji({ id: RefreshCw.id })
     .setLabel('Play Again')
     .setStyle(ButtonStyle.Secondary);
-
+  if (opponent.bot) choices[opponent.id] = Object.keys(emoji)[Math.floor(Math.random() * Object.keys(emoji).length)]!;
   collector.on('collect', async btnint => {
     // check if user has already selected an option
     if (choices[btnint.user.id]) {
@@ -108,6 +108,7 @@ export default async function createRPS(user: User, opponent: User, interaction:
             .setContent(`## It's a tie!\nBoth users picked ${emoji[choices[opponent.id] as keyof typeof emoji][2]}!`),
           ).setButtonAccessory(againButton),
         );
+        collector.stop();
       }
       // add section with winner
       else {
@@ -121,6 +122,7 @@ export default async function createRPS(user: User, opponent: User, interaction:
         TitleSection.setThumbnailAccessory(thumb => thumb
           .setURL(winner.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
         );
+        collector.stop();
       }
     }
 
