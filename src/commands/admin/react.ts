@@ -1,19 +1,17 @@
-import { EmbedBuilder, type GuildTextBasedChannel } from 'discord.js';
+import { type GuildTextBasedChannel } from 'discord.js';
 import { Command } from '~/types/Objects';
 import reactOptions from '~/options/react';
+import { yes } from '~/misc/emoji.json';
 
 export const react: Command<'cached'> = {
   description: 'Add a reaction to a message',
+  defer: true,
   flags: ['Ephemeral'],
   permission: 'Administrator',
   botChannelPerms: ['AddReactions'],
   options: reactOptions,
   async execute(interaction, client) {
     try {
-      const ReactEmbed = new EmbedBuilder()
-        .setColor('Random')
-        .setTitle('Reacted to message!');
-
       const urlArg = interaction.options.getString('url', true);
       const messagelink = urlArg.split('/');
       if (!messagelink[4]) messagelink[4] = interaction.guild.id;
@@ -35,7 +33,7 @@ export const react: Command<'cached'> = {
         return;
       });
 
-      interaction.reply({ embeds: [ReactEmbed] });
+      interaction.editReply({ content: `<:yes:${yes}> **Added reaction ${emoji} to [this message](${urlArg})!**` });
     }
     catch (err) { error(err, interaction); }
   },

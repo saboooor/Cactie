@@ -22,6 +22,7 @@ export const questions: Command<'cached'> = {
       error('Bots aren\'t fun to play with, yet. ;)', interaction, true);
       return;
     }
+
     const row = new ActionRowBuilder<ButtonBuilder>()
       .addComponents([
         new ButtonBuilder()
@@ -29,6 +30,7 @@ export const questions: Command<'cached'> = {
           .setLabel('Choose Answer')
           .setStyle(ButtonStyle.Secondary),
       ]);
+
     const TwentyOneQuestions = new EmbedBuilder()
       .setColor(0x2f3136)
       .setTitle(`${questionAmt ?? 21} Questions`)

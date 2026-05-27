@@ -6,6 +6,7 @@ import clearOptions from '~/options/clear';
 
 export const clear: Command<'cached'> = {
   description: 'Delete multiple messages at once',
+  defer: true,
   flags: ['Ephemeral'],
   channelPermissions: ['ManageMessages'],
   botChannelPerms: ['ManageMessages'],
@@ -35,7 +36,7 @@ export const clear: Command<'cached'> = {
       const text = interaction.options.getString('text');
       for (const i in messagechunks) {
         if (!messagechunks[i]) return;
-        await interaction.reply({ content: `<:loading:${loading}> **Removing ${i} of ${messagechunks.length} chunks...**`, flags: 64 });
+        await interaction.editReply({ content: `<a:loading:${loading}> **Removing ${i} of ${messagechunks.length} chunks...**` });
 
         // Filter messages that are older than 14 days, since those can't be bulk deleted, and filter by user and text if those options are set
         messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
@@ -61,7 +62,7 @@ export const clear: Command<'cached'> = {
       }
 
       // Reply with response
-      interaction.reply({ content: `<:yes:${yes}> **Cleared ${allmessages.size} messages!**` });
+      interaction.editReply({ content: `<:yes:${yes}> **Cleared ${allmessages.size} messages!**` });
       logger.info(`Cleared ${allmessages.size} messages from #${interaction.channel?.name} in ${interaction.guild.name}`);
     }
     catch (err) { error(err, interaction); }

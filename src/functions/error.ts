@@ -2,11 +2,11 @@ import { ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteract
 import { readFileSync } from 'fs';
 import { logDate } from '..';
 
-export async function error(err: unknown, message: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
+export async function errorFunc(err: unknown, messageOrInteraction: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
   if (`${err}`.includes('Received one or more errors')) console.log(err);
   logger.error(err);
 
-  const client = message.client;
+  const client = messageOrInteraction.client;
 
   // Create error message container
   const ErrorContainer = new ContainerBuilder()
@@ -40,12 +40,21 @@ export async function error(err: unknown, message: Message | CommandInteraction 
 
   // send error message, if that fails, send it in the channel, if that also fails, log it
   try {
-    if (message instanceof Message) return await message.reply({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
-    else return await message.reply({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
+    if (messageOrInteraction instanceof Message) {
+      return await messageOrInteraction.reply({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
+    }
+    else {
+      if (messageOrInteraction.deferred || messageOrInteraction.replied) {
+        return await messageOrInteraction.followUp({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
+      }
+      else {
+        return await messageOrInteraction.reply({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 });
+      }
+    }
   }
   catch (err_1) {
     logger.warn(err_1);
-    if (message.channel && 'send' in message.channel)
-      message.channel.send({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 }).catch(err_2 => logger.warn(err_2));
+    if (messageOrInteraction.channel && 'send' in messageOrInteraction.channel)
+      messageOrInteraction.channel.send({ components: [ErrorContainer], flags: MessageFlags.IsComponentsV2 }).catch(err_2 => logger.warn(err_2));
   }
 };

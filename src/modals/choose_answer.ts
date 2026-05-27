@@ -3,6 +3,7 @@ import { srch } from '~/misc/emoji.json';
 import { Modal } from '~/types/Objects';
 
 export const choose_answer: Modal<'cached'> = {
+  defer: 'update',
   execute: async (interaction) => {
     try {
       // Get the answer from the field and send it back to the user ephemerally

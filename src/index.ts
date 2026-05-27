@@ -3,6 +3,8 @@ import { readdirSync } from 'fs';
 import { Client, Partials, GatewayIntentBits, Message, CommandInteraction, ModalSubmitInteraction, InteractionResponse, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
 import { createLogger, format, Logger, transports } from 'winston';
 import dotenv from 'dotenv';
+import { errorFunc } from './functions/error';
+
 dotenv.config();
 
 // Create Discord client
@@ -68,9 +70,7 @@ global.logger = createLogger({
 });
 logger.info('Logger started');
 
-global.error = async (err: unknown, message: any, userError?: boolean) => {
-  return await error(err, message, userError);
-};
+global.error = errorFunc;
 
 // Load the universal and discord-specific handlers
 const handlers = readdirSync('./src/handlers').filter((file: string) => file.endsWith('.ts'));
