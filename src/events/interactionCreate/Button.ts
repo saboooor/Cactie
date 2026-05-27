@@ -16,7 +16,7 @@ export default async (client: Client<true>, interaction: ButtonInteraction | Str
   if (!Id) return;
 
   // Log every button interaction
-  logger.info(`${interaction.user.username} clicked button with id: ${Id}, in ${interaction.guild.name}`);
+  logger.info(`${interaction.user.username} clicked button with id: ${IdWithArgs}, in ${interaction.guild.name}`);
 
   // Get the button from the available buttons in the bot, if there isn't one, just return because discord will throw an error itself
   const button = buttons.get(Id);

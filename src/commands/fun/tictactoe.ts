@@ -4,6 +4,7 @@ import createTicTacToe from '~/functions/tictactoe';
 
 export const tictactoe: Command<'cached'> = {
   description: 'Play Tic Tac Toe',
+  defer: true,
   cooldown: 10,
   options: userOption,
   async execute(interaction) {
