@@ -68,17 +68,17 @@ export const rockpaperscissors: Command<'cached'> = {
       .addSeparatorComponents(separator => separator)
       .addSectionComponents(WaitingForSection);
 
+    // send message and create collector for buttons
     const rpsmsg = await interaction.reply({ components: [RSPContainer], flags: MessageFlags.IsComponentsV2 });
-
+    // record choices that users made
+    const choices: {
+      [id: string]: string;
+    } = {};
     const filter = (i: ButtonInteraction) => (
       (i.user.id == interaction.user.id || i.user.id == opponent.id) &&
       (i.customId == 'rock' || i.customId == 'paper' || i.customId == 'scissors')
     );
     const collector = rpsmsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
-
-    const choices: {
-      [id: string]: string;
-    } = {};
     collector.on('collect', async btnint => {
       // check if user has already selected an option
       if (choices[btnint.user.id]) {
@@ -90,15 +90,17 @@ export const rockpaperscissors: Command<'cached'> = {
       choices[btnint.user.id] = btnint.customId;
       await btnint.reply({ content: `${CheckGreen.getString()} **Selected ${emoji[btnint.customId as keyof typeof emoji][2]}!**`, flags: MessageFlags.Ephemeral });
 
+      // Remove user from waiting for section
       WaitingForSection.spliceTextDisplayComponents(1, 2,
         ...[interaction.user, opponent].filter(user => !choices[user.id])
           .map(user => new TextDisplayBuilder().setContent(`${user}`)),
       );
 
+      // check if both people picked
       if (choices[interaction.user.id] && choices[opponent.id]) {
 
+        // try and figure out if the user won
         let win = true;
-
         if (choices[opponent.id] == 'rock' && choices[interaction.user.id] == 'scissors') win = false;
         else if (choices[opponent.id] == 'paper' && choices[interaction.user.id] == 'rock') win = false;
         else if (choices[opponent.id] == 'scissors' && choices[interaction.user.id] == 'paper') win = false;
@@ -107,23 +109,23 @@ export const rockpaperscissors: Command<'cached'> = {
         TitleSection.spliceTextDisplayComponents(2, 1);
         RSPContainer.spliceComponents(1, 4);
 
+        // add section with tie
         if (choices[interaction.user.id] == choices[opponent.id]) {
           RSPContainer.addTextDisplayComponents(textDisplay =>
             textDisplay.setContent(`## It's a tie!\nBoth users picked ${emoji[choices[opponent.id] as keyof typeof emoji][2]}!`),
           );
-          await interaction.editReply({ components: [RSPContainer], flags: MessageFlags.IsComponentsV2 });
-          return;
         }
-
-        // add result
-        const winner = win ? interaction.user : opponent;
-        const loser = win ? opponent : interaction.user;
-        RSPContainer.addTextDisplayComponents(textDisplay =>
-          textDisplay.setContent(`## ${winner} wins!\n${emoji[choices[winner.id] as keyof typeof emoji][2]} wins over ${emoji[choices[loser.id] as keyof typeof emoji][2]}!`),
-        );
-        TitleSection.setThumbnailAccessory(thumb => thumb
-          .setURL(winner.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
-        );
+        // add section with winner
+        else {
+          const winner = win ? interaction.user : opponent;
+          const loser = win ? opponent : interaction.user;
+          RSPContainer.addTextDisplayComponents(textDisplay =>
+            textDisplay.setContent(`## ${winner} wins!\n${emoji[choices[winner.id] as keyof typeof emoji][2]} wins over ${emoji[choices[loser.id] as keyof typeof emoji][2]}!`),
+          );
+          TitleSection.setThumbnailAccessory(thumb => thumb
+            .setURL(winner.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
+          );
+        }
       }
 
       // Go on to next turn if no matches
