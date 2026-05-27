@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags } from 'discord.js';
-import { empty } from '~/misc/emoji.json';
+import { Empty } from '~/misc/emoji';
 import { Command } from '~/types/Objects';
 import text from '~/options/text';
 
@@ -30,7 +30,7 @@ export const buttons: Command = {
           const index = `${row}${column}`;
           btns[index] = new ButtonBuilder()
             .setCustomId(index)
-            .setEmoji({ id: empty })
+            .setEmoji({ id: Empty.id })
             .setStyle(ButtonStyle.Secondary);
           ActionRow.addComponents(btns[index]!);
         });

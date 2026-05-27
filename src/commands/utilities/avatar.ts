@@ -1,5 +1,5 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType, GuildMember } from 'discord.js';
-import { refresh } from '~/misc/emoji.json';
+import { RefreshCw } from '~/misc/emoji';
 import { Command } from '~/types/Objects';
 import userOption from '~/options/user';
 
@@ -26,7 +26,7 @@ export const avatar: Command = {
             new ButtonBuilder()
               .setCustomId('avatar_user')
               .setLabel('Toggle Global Avatar')
-              .setEmoji({ id: refresh })
+              .setEmoji({ id: RefreshCw.id })
               .setStyle(ButtonStyle.Secondary),
           ]),
         );

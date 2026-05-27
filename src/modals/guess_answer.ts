@@ -1,5 +1,5 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextInputComponent, ButtonInteraction, ComponentType } from 'discord.js';
-import { yes, no, srch } from '~/misc/emoji.json';
+import { CheckGreen, XRed, Search } from '~/misc/emoji';
 import { Modal } from '~/types/Objects';
 
 export const guess_answer: Modal<'cached'> = {
@@ -21,12 +21,12 @@ export const guess_answer: Modal<'cached'> = {
           new ButtonBuilder()
             .setCustomId('guess_yes')
             .setLabel('Yes')
-            .setEmoji({ id: yes })
+            .setEmoji({ id: CheckGreen.id })
             .setStyle(ButtonStyle.Success),
           new ButtonBuilder()
             .setCustomId('guess_no')
             .setLabel('No')
-            .setEmoji({ id: no })
+            .setEmoji({ id: XRed.id })
             .setStyle(ButtonStyle.Danger),
           new ButtonBuilder()
             .setCustomId('guess_sometimes')
@@ -70,10 +70,10 @@ export const guess_answer: Modal<'cached'> = {
 
         // Set the fields for the answer selected
         if (guess_ans == 'yes') {
-					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `<:yes:${yes}> Yes`;
+					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `${CheckGreen.getString()} Yes`;
         }
         if (guess_ans == 'no') {
-					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `<:no:${no}> No`;
+					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `${XRed.getString()} No`;
         }
         if (guess_ans == 'sometimes') {
 					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = '🤷🏽 Sometimes';
@@ -101,7 +101,7 @@ export const guess_answer: Modal<'cached'> = {
             new ButtonBuilder()
               .setCustomId('guess_answer')
               .setLabel('Ask a question about the answer')
-              .setEmoji({ id: srch })
+              .setEmoji({ id: Search.id })
               .setStyle(ButtonStyle.Primary),
           ]);
 

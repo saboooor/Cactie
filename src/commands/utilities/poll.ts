@@ -1,5 +1,5 @@
 import { EmbedBuilder } from 'discord.js';
-import { yes, no } from '~/misc/emoji.json';
+import { CheckGreen, XRed } from '~/misc/emoji';
 import checkPerms from '~/functions/checkPerms';
 import { Command } from '~/types/Objects';
 import pollOptions from '~/options/poll';
@@ -73,8 +73,8 @@ export const poll: Command<'cached'> = {
         if (cmd == 'yesno') {
           // Send poll message and react
           pollMsg = await channel.send({ embeds: [pollEmbed] });
-          await pollMsg.react(yes);
-          await pollMsg.react(no);
+          await pollMsg.react(CheckGreen.id);
+          await pollMsg.react(XRed.id);
         }
         else if (cmd == 'multiple') {
           // Get choices
@@ -171,7 +171,7 @@ export const poll: Command<'cached'> = {
 
       // Update message and reply with approved
       await pollMsg.edit({ embeds: [pollEmbed] });
-      interaction.reply({ content: `<:yes:${yes}> **Poll Ended!**` }).catch(() => { return null; });
+      interaction.reply({ content: `${CheckGreen.getString()} **Poll Ended!**` }).catch(() => { return null; });
     }
     catch (err) { error(err, interaction); }
   },

@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle, ButtonInteraction, ContainerBuilder, MessageFlags } from 'discord.js';
-import { refresh } from '~/misc/emoji.json';
+import { RefreshCw } from '~/misc/emoji';
 import { Button } from '~/types/Objects';
 import createTicTacToe from '~/functions/tictactoe';
 
@@ -47,7 +47,7 @@ export const tictactoe_again: Button<'cached'> = {
           .addComponents(
             new ButtonBuilder()
               .setURL(interaction.message.url)
-              .setEmoji({ id: refresh })
+              .setEmoji({ id: RefreshCw.id })
               .setLabel('Play Tic Tac Toe')
               .setStyle(ButtonStyle.Link),
           ),

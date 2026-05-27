@@ -1,7 +1,7 @@
 import { type GuildTextBasedChannel } from 'discord.js';
 import { Command } from '~/types/Objects';
 import reactOptions from '~/options/react';
-import { yes } from '~/misc/emoji.json';
+import { CheckGreen } from '~/misc/emoji';
 
 export const react: Command<'cached'> = {
   description: 'Add a reaction to a message',
@@ -33,7 +33,7 @@ export const react: Command<'cached'> = {
         return;
       });
 
-      interaction.editReply({ content: `<:yes:${yes}> **Added reaction ${emoji} to [this message](${urlArg})!**` });
+      interaction.editReply({ content: `${CheckGreen.getString()} **Added reaction ${emoji} to [this message](${urlArg})!**` });
     }
     catch (err) { error(err, interaction); }
   },

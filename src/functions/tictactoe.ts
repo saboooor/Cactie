@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, ComponentType, ContainerBuilder, MessageFlags, SectionBuilder, User } from 'discord.js';
-import { x, o, empty, refresh } from '~/misc/emoji.json';
+import { X, Circle, Empty, RefreshCw } from '~/misc/emoji';
 import evalXO from './evalXO';
 
 export default async function createTicTacToe(xUser: User, oUser: User, interaction: ButtonInteraction | CommandInteraction) {
@@ -16,7 +16,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
       const index = `${row}${column}`;
       btns[index] = new ButtonBuilder()
         .setCustomId(index)
-        .setEmoji({ id: empty })
+        .setEmoji({ id: Empty.id })
         .setStyle(ButtonStyle.Secondary);
       ActionRow.addComponents(btns[index]!);
     });
@@ -26,7 +26,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
   // random bot move if bot is playing and it's O's turn
   if (oUser.bot && !turn) {
     const whichButton = Object.keys(btns)[Math.floor(Math.random() * Object.keys(btns).length)];
-    btns[whichButton as keyof typeof btns]?.setEmoji({ id: o }).setStyle(ButtonStyle.Primary).setDisabled(true);
+    btns[whichButton as keyof typeof btns]?.setEmoji({ id: Circle.id }).setStyle(ButtonStyle.Primary).setDisabled(true);
     turn = !turn;
   }
 
@@ -59,7 +59,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
 
   const againButton = new ButtonBuilder()
     .setCustomId(`tictactoe_again|${xUser.id}|${oUser.id}`)
-    .setEmoji({ id: refresh })
+    .setEmoji({ id: RefreshCw.id })
     .setLabel('Play Again')
     .setStyle(ButtonStyle.Secondary);
 
@@ -77,7 +77,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
     const btn = btns[btnint.customId as keyof typeof btns]!;
     if (btn.toJSON().style == ButtonStyle.Secondary) {
       btn.setStyle(turn ? ButtonStyle.Danger : ButtonStyle.Primary)
-        .setEmoji({ id: turn ? x : o })
+        .setEmoji({ id: turn ? X.id : Circle.id })
         .setDisabled(true);
     }
 
@@ -86,7 +86,7 @@ export default async function createTicTacToe(xUser: User, oUser: User, interact
 
     if (oUser.bot && !turn) {
       const whichButton = Object.keys(btns)[Math.floor(Math.random() * Object.keys(btns).length)];
-      btns[whichButton as keyof typeof btns]?.setEmoji({ id: o }).setStyle(ButtonStyle.Primary).setDisabled(true);
+      btns[whichButton as keyof typeof btns]?.setEmoji({ id: Circle.id }).setStyle(ButtonStyle.Primary).setDisabled(true);
       turn = !turn;
     }
 

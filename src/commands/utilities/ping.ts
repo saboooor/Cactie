@@ -1,5 +1,5 @@
 import { ButtonStyle, ComponentType, ButtonInteraction, ContainerBuilder, MessageFlags, TextDisplayBuilder, SectionBuilder } from 'discord.js';
-import { refresh } from '~/misc/emoji.json';
+import { RefreshCw } from '~/misc/emoji';
 import { Command } from '~/types/Objects';
 import pong from '~/misc/pong.json';
 
@@ -17,7 +17,7 @@ export const ping: Command = {
           )
           .setButtonAccessory((btn) => btn
             .setCustomId('ping_again')
-            .setEmoji({ id: refresh })
+            .setEmoji({ id: RefreshCw.id })
             .setLabel('Refresh')
             .setStyle(ButtonStyle.Secondary),
           ),

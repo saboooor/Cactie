@@ -1,5 +1,5 @@
 import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
-import { srch } from '~/misc/emoji.json';
+import { Search } from '~/misc/emoji';
 import { Modal } from '~/types/Objects';
 
 export const choose_answer: Modal<'cached'> = {
@@ -19,7 +19,7 @@ export const choose_answer: Modal<'cached'> = {
           new ButtonBuilder()
             .setCustomId('guess_answer')
             .setLabel('Ask a question about the answer')
-            .setEmoji({ id: srch })
+            .setEmoji({ id: Search.id })
             .setStyle(ButtonStyle.Primary),
         ]);
       const TwentyOneQuestions = new EmbedBuilder(embedJSON)

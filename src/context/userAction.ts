@@ -1,14 +1,13 @@
 import { ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, ComponentType, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
 import action from '~/functions/action';
 import actions from '~/misc/actions.json';
-import { x } from '~/misc/emoji.json';
+import { X } from '~/misc/emoji';
 import { ContextMenuCommand } from '~/types/Objects';
 
 export const context: ContextMenuCommand<'User'> = {
   name: 'Do action on user',
-  noDefer: true,
   type: 'User',
-  async execute(interaction, client, member) {
+  async execute(interaction, _, member) {
     try {
       const row = new ActionRowBuilder<StringSelectMenuBuilder>()
         .addComponents([
@@ -66,7 +65,7 @@ export const context: ContextMenuCommand<'User'> = {
         .addComponents([
           new ButtonBuilder()
             .setCustomId('cancel')
-            .setEmoji({ id: x })
+            .setEmoji({ id: X.id })
             .setLabel('Cancel')
             .setStyle(ButtonStyle.Danger),
         ]);
