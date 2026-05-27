@@ -2,8 +2,7 @@ import { ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteract
 import { readFileSync } from 'fs';
 import { logDate } from '..';
 
-export async function errorFunc(err: unknown, messageOrInteraction: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
-  if (`${err}`.includes('Received one or more errors')) console.log(err);
+export async function errorFunc(err: any, messageOrInteraction: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
   logger.error(err);
 
   const client = messageOrInteraction.client;

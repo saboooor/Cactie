@@ -16,6 +16,7 @@ class Emoji {
   }
 }
 
+export const CoinFlip = new Emoji('CoinFlip', '1509247496793227435', true);
 export const Loading = new Emoji('Loading', '1509168416873779240', true);
 export const CheckGreen = new Emoji('CheckGreen', '1509237408850509875');
 export const CircleXRed = new Emoji('CircleXRed', '1509237546327081001');
