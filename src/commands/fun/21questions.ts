@@ -42,7 +42,7 @@ export const questions: Command<'cached'> = {
     .addActionRowComponents((actionRow) => actionRow
       .addComponents(
         new ButtonBuilder()
-          .setCustomId('choose_answer')
+          .setCustomId(`choose_answer|${interaction.user.id}|${user.id}`)
           .setLabel('Choose Answer')
           .setStyle(ButtonStyle.Secondary),
       ),
@@ -50,7 +50,7 @@ export const questions: Command<'cached'> = {
     .addSeparatorComponents((separator) => separator)
     // legend (index 6)
     .addTextDisplayComponents((textDisplay) =>
-      textDisplay.setContent(`**Host:** ${interaction.user}\n**Guesser:** ${oUser}`),
+      textDisplay.setContent(`**Host:** ${interaction.user}\n**Guesser:** ${user}`),
     );
 
     const questionmsg = await interaction.reply({ components: [QuestionsContainer], flags: [MessageFlags.IsComponentsV2] });
