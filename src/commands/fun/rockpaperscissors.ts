@@ -104,6 +104,7 @@ export const rockpaperscissors: Command<'cached'> = {
         else if (choices[opponent.id] == 'scissors' && choices[interaction.user.id] == 'paper') win = false;
 
         // Clear waiting for section and buttons
+        TitleSection.spliceTextDisplayComponents(2, 1);
         RSPContainer.spliceComponents(1, 4);
 
         if (choices[interaction.user.id] == choices[opponent.id]) {
@@ -119,6 +120,9 @@ export const rockpaperscissors: Command<'cached'> = {
         const loser = win ? opponent : interaction.user;
         RSPContainer.addTextDisplayComponents(textDisplay =>
           textDisplay.setContent(`**${winner} wins!**\n\n${emoji[choices[winner.id] as keyof typeof emoji][2]} wins over ${emoji[choices[loser.id] as keyof typeof emoji][2]}!`),
+        );
+        TitleSection.setThumbnailAccessory(thumb => thumb
+          .setURL(winner.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
         );
       }
 
