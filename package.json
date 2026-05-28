@@ -26,7 +26,7 @@
   "author": "Saboor Bilal",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
-    "@prisma/client": "6.12.0",
+    "@prisma/client": "6.19.3",
     "body-parser": "2.2.0",
     "diff": "8.0.2",
     "discord.js": "14.21.0",
@@ -35,7 +35,7 @@
     "hastebin": "0.2.1",
     "ms": "2.1.3",
     "node-cron": "4.2.1",
-    "prisma": "6.12.0",
+    "prisma": "6.19.3",
     "uuid": "11.1.0",
     "winston": "3.17.0"
   },
