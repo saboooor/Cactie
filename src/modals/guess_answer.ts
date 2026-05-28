@@ -1,21 +1,35 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextInputComponent, ButtonInteraction, ComponentType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType, ContainerComponent, ContainerBuilder, TextDisplayBuilder, type LabelModalData, type TextInputModalData, MessageFlags, SectionBuilder, SectionComponent } from 'discord.js';
 import { CheckGreen, XRed, Search } from '~/misc/emoji';
 import { Modal } from '~/types/Objects';
 
 export const guess_answer: Modal<'cached'> = {
-  execute: async (interaction) => {
+  execute: async (interaction, _, args) => {
     try {
-      // Get the field and answer from the modal
-      const field = interaction.components[0].components[0] as TextInputComponent;
-      const answer = field.customId;
+      // Since the custom id of the modal is the answer, the question field must be obtained directly from the components of the message
+      const TextInputData = (interaction.components[0] as LabelModalData | undefined)?.component as TextInputModalData | undefined;
+      const question = TextInputData?.value;
+      const answer = TextInputData?.customId;
 
-      // Get the opponent from the embed description
-      const embedJSON = interaction.message!.embeds[0].toJSON();
-      const host = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
-      if (!host) return;
-      const guesser = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[3].replace(/\D/g, ''));
+      // Get the host and guesser from the args
+      const host = interaction.guild.members.cache.get(args?.[0] ?? '')?.user;
+      const guesser = interaction.guild.members.cache.get(args?.[1] ?? '')?.user;
 
-      // Create buttons and embed for the host to answer the question
+      // Get the current amount of questions asked from the custom id and add 1 to it
+      const QuestionsLeft = parseInt(args?.[3] ?? '21') - 1;
+      const currentQuestionNum = parseInt(args?.[4] ?? '1');
+      const newQuestions = currentQuestionNum + 1;
+
+      // Create the embed for the game
+      const Container = interaction.message!.components[0] as ContainerComponent | undefined;
+      const QuestionsContainer = new ContainerBuilder(Container?.toJSON());
+
+      // add the question that was just asked to the embed
+      const Section = QuestionsContainer.components[2] as SectionBuilder | undefined;
+      Section?.addTextDisplayComponents(textDisplay => textDisplay
+        .setContent(`**Question ${currentQuestionNum}:**\n${question}`),
+      );
+
+      // Replace buttons with buttons to answer the question and a button to guess the answer
       const row = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
           new ButtonBuilder()
@@ -39,15 +53,15 @@ export const guess_answer: Modal<'cached'> = {
             .setLabel('You guessed it!')
             .setStyle(ButtonStyle.Primary),
         ]);
-      const TwentyOneQuestions = new EmbedBuilder(embedJSON)
-        .setColor(0xde4b37)
-        .setDescription(`**Playing with:**\n${guesser ?? 'Everyone'}`)
-        .addFields([{ name: field.value, value: `${host}\nPlease answer this question by clicking the buttons below` }])
-        .setThumbnail(host.user.avatarURL())
-        .setFooter({ text: `${parseInt(embedJSON.footer!.text.split(' ')[0]) - 1} Questions left` });
+      QuestionsContainer.spliceComponents(3, 1, row);
+
+      // add a text to the embed telling the guesser how many questions they have left
+      QuestionsContainer.spliceComponents(5, 1, new TextDisplayBuilder()
+        .setContent(`-# You have **${QuestionsLeft}** questions left!`),
+      );
 
       // Edit the message with the new embed and buttons
-      await interaction.reply({ content: `${host}`, embeds: [TwentyOneQuestions], components: [row] });
+      await interaction.reply({ components: [QuestionsContainer], flags: MessageFlags.IsComponentsV2 });
 
       // Ping the user
       try {
@@ -59,26 +73,23 @@ export const guess_answer: Modal<'cached'> = {
       }
 
       // Create a collector for the buttons
-      const filter = (i: ButtonInteraction) => i.customId.startsWith('guess_') && i.customId != 'guess_answer' && i.member!.user.id == host.id;
+      const filter = (i: ButtonInteraction) => i.customId.startsWith('guess|') && i.member!.user.id == host?.id;
       const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
       collector.on('collect', async (btnint) => {
         // Defer the button
         await btnint.deferUpdate();
 
         // Get the answer from the custom id
-        const guess_ans = btnint.customId.split('_')[1];
+        const answer = btnint.customId.split('|')[1];
 
         // Set the fields for the answer selected
-        if (guess_ans == 'yes') {
-					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `${CheckGreen.getString()} Yes`;
+        if (answer == 'yes') {
         }
-        if (guess_ans == 'no') {
-					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `${XRed.getString()} No`;
+        if (answer == 'no') {
         }
-        if (guess_ans == 'sometimes') {
-					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = '🤷🏽 Sometimes';
+        if (answer == 'sometimes') {
         }
-        if (guess_ans == 'finish') {
+        if (answer == 'finish') {
 					TwentyOneQuestions.toJSON().fields![TwentyOneQuestions.toJSON().fields!.length - 1].value = `🎉 You guessed it!\n\n**The answer is**\n\`${answer}\``;
 
 					// Finish the game with a positive response

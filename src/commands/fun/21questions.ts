@@ -10,14 +10,14 @@ export const questions: Command<'cached'> = {
   async execute(interaction) {
     const user = interaction.options.getMember('user')?.user;
     if (!user) {
-      error('You must specify a user to play with!', interaction, true);
+      error('Invalid member! Are they in this server?', interaction, true);
       return;
     }
     if (user?.id == interaction.user.id) {
       error('You played yourself, oh wait, you can\'t.', interaction, true);
       return;
     }
-    const questionAmt = interaction.options.getNumber('amount');
+    const questionAmt = interaction.options.getNumber('amount') ?? 21;
     if (questionAmt && (questionAmt < 1 || questionAmt > 25)) {
       error('The amount of questions must be between 1 and 25!', interaction, true);
       return;
@@ -27,35 +27,41 @@ export const questions: Command<'cached'> = {
       return;
     }
 
-  // create container for the game
-  const QuestionsContainer = new ContainerBuilder()
-    // Title section with thumbnail
-    .addSectionComponents((section) => section
-      .addTextDisplayComponents((textDisplay) =>
-        textDisplay.setContent(`# ${questionAmt ?? 21} Questions`),
+    // create container for the game
+    const QuestionsContainer = new ContainerBuilder()
+      // Title section with thumbnail
+      .addSectionComponents((section) => section
+        .addTextDisplayComponents(
+          (textDisplay) =>
+            textDisplay.setContent(`# ${questionAmt} Questions\n${interaction.user} challenged ${user} to a game of ${questionAmt} Questions!`),
+        )
+        .setThumbnailAccessory((thumbnail) => thumbnail.setURL(
+          interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
+        )),
       )
-      .addTextDisplayComponents((textDisplay) =>
-        textDisplay.setContent('-# Please choose an answer by clicking the button below!'),
+      // actual game
+      .addSeparatorComponents((separator) => separator)
+      // this is where questions will go
+      .addSectionComponents((section) => section
+        .addTextDisplayComponents((textDisplay) =>
+          textDisplay.setContent(`## Guesser: ${user}`),
+        ).setThumbnailAccessory((thumbnail) => thumbnail.setURL(
+          user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
+        )),
       )
-      .setThumbnailAccessory((thumbnail) => thumbnail.setURL(
-        interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'
-      )),
-    )
-    // actual game
-    .addSeparatorComponents((separator) => separator)
-    .addActionRowComponents((actionRow) => actionRow
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId('choose_answer')
-          .setLabel('Choose Answer')
-          .setStyle(ButtonStyle.Secondary),
-      ),
-    )
-    .addSeparatorComponents((separator) => separator)
-    // legend (index 6)
-    .addTextDisplayComponents((textDisplay) =>
-      textDisplay.setContent(`**Host:** ${interaction.user}\n**Guesser:** ${user}`),
-    );
+      // this is where buttons will go
+      .addActionRowComponents((actionRow) => actionRow
+        .addComponents(
+          new ButtonBuilder()
+            .setCustomId('choose_answer')
+            .setLabel('Choose Answer')
+            .setStyle(ButtonStyle.Secondary),
+        ),
+      )
+      .addSeparatorComponents((separator) => separator)
+      .addTextDisplayComponents((textDisplay) =>
+        textDisplay.setContent(`${interaction.user} Please choose an answer by clicking the button above!`),
+      );
 
     const questionmsg = await interaction.reply({ components: [QuestionsContainer], flags: [MessageFlags.IsComponentsV2] });
 
@@ -66,14 +72,14 @@ export const questions: Command<'cached'> = {
       // Create and show a modal for the user to fill out the answer
       const modal = new ModalBuilder()
         .setTitle('Choose an answer')
-        .setCustomId(`choose_answer|${interaction.user.id}|${user.id}`)
+        .setCustomId(`choose_answer|${interaction.user.id}|${user.id}|${questionAmt}`)
         .addLabelComponents((label) => label
           .setLabel('Please choose an answer:')
           .setTextInputComponent(textInput => textInput
             .setCustomId('answer')
             .setStyle(TextInputStyle.Short)
-            .setMaxLength(1024)
-          )
+            .setMaxLength(100),
+          ),
         );
       btnint.showModal(modal);
 
@@ -83,7 +89,7 @@ export const questions: Command<'cached'> = {
     // When the collector stops, edit the message with a timeout message if the game hasn't ended already
     collector.on('end', () => {
       if (collector.collected.size) return;
-      interaction.editReply({ content: `A game of ${questionAmt ?? 21} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
+      interaction.editReply({ content: `A game of ${questionAmt} Questions should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
     });
   },
 };
