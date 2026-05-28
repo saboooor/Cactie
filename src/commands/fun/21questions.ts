@@ -1,6 +1,7 @@
 import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
 import { Command } from '~/types/Objects';
 import questionsOptions from '~/options/21q';
+import { MessageCircleQuestionMark } from '~/misc/emoji';
 
 export const questions: Command<'cached'> = {
   name: '21questions',
@@ -11,10 +12,6 @@ export const questions: Command<'cached'> = {
     const user = interaction.options.getMember('user')?.user;
     if (!user) {
       error('Invalid member! Are they in this server?', interaction, true);
-      return;
-    }
-    if (user?.id == interaction.user.id) {
-      error('You played yourself, oh wait, you can\'t.', interaction, true);
       return;
     }
     const questionAmt = interaction.options.getNumber('amount') ?? 21;
@@ -33,7 +30,7 @@ export const questions: Command<'cached'> = {
       .addSectionComponents((section) => section
         .addTextDisplayComponents(
           (textDisplay) =>
-            textDisplay.setContent(`# ${questionAmt} Questions\n${interaction.user} challenged ${user} to a game of ${questionAmt} Questions!`),
+            textDisplay.setContent(`# ${MessageCircleQuestionMark.getString()} ${questionAmt} Questions\n${interaction.user} challenged ${user} to a game of ${questionAmt} Questions!`),
         )
         .setThumbnailAccessory((thumbnail) => thumbnail.setURL(
           interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
