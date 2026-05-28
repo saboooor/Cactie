@@ -1,17 +1,17 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerComponent } from 'discord.js';
 import { Search } from '~/misc/emoji';
 import { Modal } from '~/types/Objects';
 
 export const choose_answer: Modal<'cached'> = {
   defer: 'update',
-  execute: async (interaction) => {
+  execute: async (interaction, _, args) => {
     try {
       // Get the answer from the field and send it back to the user ephemerally
       const answer = interaction.fields.getTextInputValue('answer');
 
-      // Get the opponent from the embed description
-      const embedJSON = interaction.message!.embeds[0].toJSON();
-      const guesser = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
+      // Get the opponent from the args
+      const opponent = interaction.guild.members.cache.get(args?.[1] ?? '');
+      if (!opponent) return;
 
       // Create button and embed for the guesser
       const row = new ActionRowBuilder<ButtonBuilder>()
@@ -22,20 +22,17 @@ export const choose_answer: Modal<'cached'> = {
             .setEmoji({ id: Search.id })
             .setStyle(ButtonStyle.Primary),
         ]);
-      const TwentyOneQuestions = new EmbedBuilder(embedJSON)
-        .setColor(0x5b62fa)
-        .setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser ?? 'Anyone'}\nAsk a question or guess the answer by clicking the button below.`)
-        .setFooter({ text: `${embedJSON.title} left` });
 
-      if (guesser) TwentyOneQuestions.setThumbnail(guesser.user.avatarURL());
+      
+      const QuestionsContainer = interaction.message!.components[0] as ContainerComponent;
 
       // Edit the message with the new embed and button
-      await interaction.editReply({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
+      await interaction.editReply({ components: [QuestionsContainer] });
       await interaction.followUp({ content: `**The answer you chose is:**\n\`${answer}\``, flags: ['Ephemeral'] });
 
       // Ping the user
       try {
-        const pingmsg = await interaction.channel!.send({ content: `${guesser}` });
+        const pingmsg = await interaction.channel!.send({ content: `${opponent}` });
         await pingmsg.delete();
       }
       catch (err) {
@@ -43,7 +40,7 @@ export const choose_answer: Modal<'cached'> = {
       }
 
       // Create a collector for the button
-      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && (guesser ? i.user.id == guesser.id : true);
+      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && (opponent ? i.user.id == opponent.id : true);
       const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
       collector.on('collect', async (btnint) => {
         // Create and show a modal for the user to fill out the question
@@ -64,9 +61,9 @@ export const choose_answer: Modal<'cached'> = {
       });
 
       // When the collector stops, edit the message with a timeout message if the game hasn't ended already
-      collector.on('end', () => {
-        if (interaction.message!.embeds[0].toJSON().description!.endsWith('guessed the answer!**') || interaction.message!.embeds[0].toJSON().description!.endsWith('ran out of questions!**')) { return; }
-        interaction.editReply({ content: `A game of ${embedJSON.title} should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
+      collector.on('egnd', () => {
+        if (!interaction.message!.embeds[0].toJSON().description!.endsWith('guessed the answer!**') || interaction.message!.embeds[0].toJSON().description!.endsWith('ran out of questions!**')) { return; }
+        interaction.editReply({ content: `A game of should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
       });
     }
     catch (err) { error(err, interaction); }

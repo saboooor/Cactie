@@ -12,6 +12,9 @@ export default async (client: Client<true>, interaction: ModalSubmitInteraction)
   const args = IdWithArgs?.split('|').slice(1);
   if (!Id) return;
 
+  const modal = modals.get(Id);
+  if (!modal) return;
+
   // Defer and execute the modal
   try {
     logger.info(`${interaction.user.username} submitted modal: ${modal.name}, in ${interaction.guild.name}`);

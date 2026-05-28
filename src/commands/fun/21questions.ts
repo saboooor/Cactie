@@ -46,7 +46,7 @@ export const questions: Command<'cached'> = {
     .addActionRowComponents((actionRow) => actionRow
       .addComponents(
         new ButtonBuilder()
-          .setCustomId(`choose_answer|${interaction.user.id}|${user.id}`)
+          .setCustomId('choose_answer')
           .setLabel('Choose Answer')
           .setStyle(ButtonStyle.Secondary),
       ),
@@ -66,7 +66,7 @@ export const questions: Command<'cached'> = {
       // Create and show a modal for the user to fill out the answer
       const modal = new ModalBuilder()
         .setTitle('Choose an answer')
-        .setCustomId('choose_answer')
+        .setCustomId(`choose_answer|${interaction.user.id}|${user.id}`)
         .addLabelComponents((label) => label
           .setLabel('Please choose an answer:')
           .setTextInputComponent(textInput => textInput

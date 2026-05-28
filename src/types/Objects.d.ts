@@ -41,7 +41,7 @@ export class Modal<Cached extends CacheType = CacheType> {
   defer?: 'reply' | 'update' | false;
   flags?: InteractionDeferReplyOptions.flags;
   ephemeral?: boolean;
-  execute: (interaction: ModalSubmitInteraction<Cached>, client: Client<true>, modalInfo: string) => void | Promise<void>;
+  execute: (interaction: ModalSubmitInteraction<Cached>, client: Client<true>, args?: string[]) => void | Promise<void>;
 }
 
 export class Button<Cached extends CacheType = CacheType> {
