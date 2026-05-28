@@ -6,13 +6,11 @@ export default async (client: Client<true>, interaction: ModalSubmitInteraction)
   if (interaction.type != InteractionType.ModalSubmit) return;
   if (!interaction.inCachedGuild()) return;
 
-  // Get the modal from the available modals in the bot, if there isn't one, just return because discord will throw an error itself
-  const customIdSplit = interaction.customId.split('_');
-  const modalInfo = customIdSplit.pop();
-  const modalName = customIdSplit.join('_');
-  let modal = modals.get(interaction.customId);
-  if (!modal) modal = modals.get(modalName);
-  if (!modal) return;
+  // There may be extra data along with the customId, so we split it and get the first part as the id
+  const IdWithArgs = interaction.customId;
+  const Id = IdWithArgs?.split('|')[0];
+  const args = IdWithArgs?.split('|').slice(1);
+  if (!Id) return;
 
   // Defer and execute the modal
   try {
