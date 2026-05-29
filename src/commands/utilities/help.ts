@@ -1,44 +1,39 @@
-import { ButtonBuilder, ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, StringSelectMenuInteraction, ComponentType } from 'discord.js';
+import { ButtonBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, ContainerBuilder, MessageFlags, StringSelectMenuInteraction, ComponentType, TextDisplayBuilder } from 'discord.js';
 import { Command } from '~/types/Objects';
 import commands from '~/lists/cmds';
-import helpOptions from '~/options/help';
-import * as helpdesc from '~/misc/helpdesc';
+import * as helpDict from '~/misc/helpdict';
 
 export const help: Command = {
   description: 'Get help with Sova',
   cooldown: 10,
-  options: helpOptions,
-  async execute(interaction) {
+  async execute(interaction, client) {
     try {
-      let HelpEmbed = new EmbedBuilder()
-        .setColor('Random')
-        .setTitle('**HELP**');
-      const subcmd = interaction.options.getSubcommand();
+      const HelpContainer = new ContainerBuilder()
+        .addSectionComponents(section => section
+          .addTextDisplayComponents(text => text
+            .setContent(`# ${client.user.username} Help Menu\nUse the dropdown below to select a category to view commands in that category!`),
+          )
+          .setThumbnailAccessory(thumb => thumb
+            .setURL(client.user.displayAvatarURL()),
+          ),
+        )
+        .addSeparatorComponents(separator => separator)
+        .addTextDisplayComponents(text => text
+          .setContent('-# No category selected'),
+        );
 
-      if (subcmd == 'admin' || subcmd == 'fun' || subcmd == 'tickets' || subcmd == 'utilities' || subcmd == 'actions') {
-        const category = helpdesc[subcmd as keyof typeof helpdesc];
-        const commandList = commands.filter(c => c.category == subcmd);
-        const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}**${c.description ? `\n${c.description}` : ''}${c.permission ? `\n*Permission: ${c.permission}*` : ''}`); });
-        HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
-        if (category.footer) HelpEmbed.setFooter({ text: category.footer });
-        if (category.field) HelpEmbed.setFields([category.field]);
-      }
-      else {
-        HelpEmbed.setDescription('Please use the dropdown below to navigate through the help menu\n\n**Options:**\nAdmin, Fun, Tickets, Utilities, Actions');
-      }
       const options: StringSelectMenuOptionBuilder[] = [];
-      const categories = Object.keys(helpdesc);
+      const categories = Object.keys(helpDict);
       categories.forEach(category => {
         if (category == 'supportpanel') return;
         options.push(
           new StringSelectMenuOptionBuilder()
-            .setLabel(helpdesc[category as keyof typeof helpdesc].name)
-            .setDescription(helpdesc[category as keyof typeof helpdesc].description)
-            .setValue(`help_${category}`)
-            .setDefault(subcmd == category),
+            .setLabel(helpDict[category as keyof typeof helpDict].name)
+            .setDescription(helpDict[category as keyof typeof helpDict].description)
+            .setValue(category),
         );
       });
+
       const row = new ActionRowBuilder<StringSelectMenuBuilder>()
         .addComponents([
           new StringSelectMenuBuilder()
@@ -57,30 +52,40 @@ export const help: Command = {
             .setLabel('Donate')
             .setStyle(ButtonStyle.Link),
         ]);
-      const helpMsg = await interaction.reply({ embeds: [HelpEmbed], components: [row, row2] });
+
+      HelpContainer.addActionRowComponents(row).addActionRowComponents(row2);
+      const helpMsg = await interaction.reply({ components: [HelpContainer], flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] });
 
       const filter = (i: StringSelectMenuInteraction) => i.customId == 'help_menu';
       const collector = helpMsg.createMessageComponentCollector<ComponentType.StringSelect>({ filter, time: 3600000 });
       collector.on('collect', async (selint: StringSelectMenuInteraction) => {
         await selint.deferUpdate();
-        HelpEmbed = new EmbedBuilder()
-          .setColor('Random')
-          .setTitle('**HELP**');
-        const category = helpdesc[selint.values[0].split('_')[1] as keyof typeof helpdesc];
-        const commandList = commands.filter(c => c.category == selint.values[0].split('_')[1]);
-        const array: string[] = [];
-        commandList.forEach(c => { array.push(`**${c.name}**${c.description ? `\n${c.description}` : ''}${c.permission ? `\nPermission: ${c.permission}` : ''}`); });
-        HelpEmbed.setDescription(`**${category.name.toUpperCase()}**\n${category.description}\n[] = Optional\n<> = Required\n\n${array.join('\n')}`);
-        if (category.footer) HelpEmbed.setFooter({ text: category.footer });
-        if (category.field) HelpEmbed.setFields([category.field]);
-        row.components[0].options.forEach(option => option.setDefault(option.toJSON().value == selint.values[0]));
-        selint.editReply({ embeds: [HelpEmbed], components: [row, row2] });
+
+        const subcmd = selint.values[0];
+        console.log(subcmd);
+        const category = helpDict[subcmd as keyof typeof helpDict];
+        if (!category) {
+          error('Invalid help category', interaction);
+          return;
+        }
+
+        // filter the commands list to only commands in that category and create an array of their names and descriptions
+        const commandList = commands.filter(c => c.category == subcmd);
+        const array: string[] = commandList.map(c => {
+          return `**${c.name}**${c.description ? `\n${c.description}` : ''}${c.permission ? `\n-# *Permission: ${c.permission}*` : ''}`;
+        });
+        HelpContainer.spliceComponents(2, 1, new TextDisplayBuilder()
+          .setContent(`**${category.name.toUpperCase()}**\n${category.description}\n-# [] = Optional\n-# <> = Required\n\n${array.join('\n')}`),
+        );
+
+        selint.editReply({ components: [HelpContainer], flags: [MessageFlags.IsComponentsV2] });
       });
 
       collector.on('end', () => {
-        HelpEmbed.setDescription('Help command timed out.')
-          .setFooter({ text: 'please do the help command again if you still need a list of commands.' });
-        interaction.editReply({ embeds: [HelpEmbed], components: [row2] }).catch(err => logger.warn(err));
+        HelpContainer.addTextDisplayComponents(text => text
+          .setContent('Help command timed out.'),
+        );
+        interaction.editReply({ components: [HelpContainer], flags: [MessageFlags.IsComponentsV2] }).catch(err => logger.warn(err));
       });
     }
     catch (err) { error(err, interaction); }

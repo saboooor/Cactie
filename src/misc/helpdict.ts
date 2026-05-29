@@ -1,11 +1,6 @@
 declare interface HelpDesc {
     name: string;
     description: string;
-    field?: {
-        name: string;
-        value: string;
-    };
-    footer?: string;
 }
 
 export const admin: HelpDesc = {
@@ -18,15 +13,6 @@ export const fun: HelpDesc = {
   description: 'These commands are made just for fun',
 };
 
-export const tickets: HelpDesc = {
-  name: 'Tickets',
-  description: 'These commands are related to the bot\'s tickets system',
-  field: {
-    name: '**How to create support tickets:**',
-    value: '**1.** Set ticket related settings in the dashboard by going to https://sova.fyi\n**2.** Execute /help supportpanel if you want to create an embed for users to easily create tickets\n**3.** Create a ticket to test it out',
-  },
-};
-
 export const utilities: HelpDesc = {
   name: 'Utilities',
   description: 'These commands are useful for some situations',
@@ -35,7 +21,6 @@ export const utilities: HelpDesc = {
 export const actions: HelpDesc = {
   name: 'Actions',
   description: 'These commands let you do stuff to people',
-  footer: '*All these commands can be suffixed with a user @ to do the action on them.*',
 };
 
 export const supportpanel: HelpDesc = {
