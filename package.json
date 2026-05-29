@@ -7,10 +7,10 @@
     "url": "git+https://github.com/saboooor/Sova.git"
   },
   "scripts": {
-    "start": "bun src/index.ts",
+    "start": "bun --bun src/index.ts",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
-    "dev": "bun --watch src/index.ts",
+    "dev": "bun --bun --watch src/index.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
