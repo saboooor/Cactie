@@ -7,15 +7,13 @@ const modals = new Collection<string, Modal>();
 
 // Register all modals
 const modalFiles = readdirSync('./src/modals').filter(file => file.endsWith('.ts'));
-(async () => {
-  for (const file of modalFiles) {
-    const modalModule = await import(`../modals/${file}`);
-    const name = Object.keys(modalModule)[0] as keyof typeof modalModule;
-    const modal = { name, ...modalModule[name] };
+await Promise.all(modalFiles.map(async file => {
+  const modalModule = await import(`../modals/${file}`);
+  const name = Object.keys(modalModule)[0] as keyof typeof modalModule;
+  const modal = { name, ...modalModule[name] };
 
-    modals.set(modal.name, modal);
-  }
-  logger.info(`${modalFiles.length} modals loaded`);
-})();
+  modals.set(modal.name, modal);
+}));
+logger.info(`${modalFiles.length} modals loaded`);
 
 export default modals;
