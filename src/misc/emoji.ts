@@ -29,5 +29,6 @@ export const Loading = new Emoji('Loading', '1509168416873779240', true);
 export const MessageCircleQuestionMark = new Emoji('MessageCircleQuestionMark_', '1509605116507066398');
 export const RefreshCw = new Emoji('RefreshCw', '1509237585011277976');
 export const Search = new Emoji('Search', '1509237614203637962');
+export const UserRound = new Emoji('UserRound', '1509965613102272675');
 export const X = new Emoji('X', '1509237633879113788');
 export const XRed = new Emoji('XRed', '1509241654048198686');
