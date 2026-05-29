@@ -9,8 +9,8 @@ export const questions: Command<'cached'> = {
   cooldown: 10,
   options: questionsOptions,
   async execute(interaction) {
-    const user = interaction.options.getMember('user')?.user;
-    if (!user) {
+    const guesser = interaction.options.getMember('user')?.user;
+    if (!guesser) {
       error('Invalid member! Are they in this server?', interaction, true);
       return;
     }
@@ -19,7 +19,7 @@ export const questions: Command<'cached'> = {
       error('The amount of questions must be between 1 and 25!', interaction, true);
       return;
     }
-    if (user?.bot) {
+    if (guesser?.bot) {
       error('Bots aren\'t fun to play with, yet. ;)', interaction, true);
       return;
     }
@@ -30,7 +30,7 @@ export const questions: Command<'cached'> = {
       .addSectionComponents((section) => section
         .addTextDisplayComponents(
           (textDisplay) =>
-            textDisplay.setContent(`# ${MessageCircleQuestionMark.getString()} ${questionAmt} Questions\n${interaction.user} challenged ${user} to a game of ${questionAmt} Questions!`),
+            textDisplay.setContent(`# ${MessageCircleQuestionMark.getString()} ${questionAmt} Questions\n${interaction.user} challenged ${guesser} to a game of ${questionAmt} Questions!`),
         )
         .setThumbnailAccessory((thumbnail) => thumbnail.setURL(
           interaction.user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
@@ -41,9 +41,9 @@ export const questions: Command<'cached'> = {
       // this is where questions will go
       .addSectionComponents((section) => section
         .addTextDisplayComponents((textDisplay) =>
-          textDisplay.setContent(`## Guesser: ${user}`),
+          textDisplay.setContent(`## Guesser: ${guesser}`),
         ).setThumbnailAccessory((thumbnail) => thumbnail.setURL(
-          user.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
+          guesser.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png',
         )),
       )
       // this is where buttons will go
@@ -69,7 +69,7 @@ export const questions: Command<'cached'> = {
       // Create and show a modal for the user to fill out the answer
       const modal = new ModalBuilder()
         .setTitle('Choose an answer')
-        .setCustomId(`choose_answer|${interaction.user.id}|${user.id}|${questionAmt}`)
+        .setCustomId(`choose_answer|${interaction.user.id}|${guesser.id}|${questionAmt}`)
         .addLabelComponents((label) => label
           .setLabel('Please choose an answer:')
           .setTextInputComponent(textInput => textInput
@@ -80,6 +80,7 @@ export const questions: Command<'cached'> = {
         );
       btnint.showModal(modal);
 
+      await btnint.awaitModalSubmit({ time: 3600000 });
       collector.stop();
     });
 

@@ -2,6 +2,12 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, Compon
 import { CheckGreen, XRed, MessageCircleQuestionMark } from '~/misc/emoji';
 import { Modal } from '~/types/Objects';
 
+function addTextToTextDisplay(textDisplay: TextDisplayBuilder | undefined, content: string) {
+  if (!textDisplay) return;
+  const currentContent = textDisplay.data.content;
+  textDisplay.setContent(`${currentContent}\n${content}`);
+}
+
 export const guess_answer: Modal<'cached'> = {
   defer: 'update',
   execute: async (interaction, _, args) => {
@@ -25,9 +31,8 @@ export const guess_answer: Modal<'cached'> = {
       }
 
       // Get the current amount of questions asked from the custom id and add 1 to it
-      const QuestionsLeft = parseInt(args?.[3] ?? '21') - 1;
-      const currentQuestionNum = parseInt(args?.[4] ?? '1');
-      const newQuestions = currentQuestionNum + 1;
+      const QuestionsLeft = parseInt(args?.[2] ?? '21') - 1;
+      const questionsAsked = parseInt(args?.[3] ?? '0') + 1;
 
       // Create the embed for the game
       const Container = interaction.message!.components[0] as ContainerComponent | undefined;
@@ -35,13 +40,13 @@ export const guess_answer: Modal<'cached'> = {
 
       // add the question that was just asked to the embed
       const QuestionsSection = QuestionsContainer.components[2] as SectionBuilder | undefined;
-      if (!QuestionsSection) {
+      const textDisplay = QuestionsSection?.components[0] as TextDisplayBuilder | undefined;
+      if (!textDisplay) {
         error('Could not find questions section in the container!', interaction);
         return;
       }
-      QuestionsSection?.addTextDisplayComponents(textDisplay => textDisplay
-        .setContent(`**Question ${currentQuestionNum}:**\n${question}`),
-      );
+
+      addTextToTextDisplay(textDisplay, `\n**Question ${questionsAsked}:**\n${question}`);
 
       // Replace buttons with buttons to answer the question and a button to guess the answer
       const row = new ActionRowBuilder<ButtonBuilder>()
@@ -74,8 +79,6 @@ export const guess_answer: Modal<'cached'> = {
         .setContent(`-# You have **${QuestionsLeft}** questions left!`),
       );
 
-      console.log(QuestionsContainer);
-
       // Edit the message with the new embed and buttons
       await interaction.editReply({ components: [QuestionsContainer], flags: MessageFlags.IsComponentsV2 });
 
@@ -92,7 +95,6 @@ export const guess_answer: Modal<'cached'> = {
       const filter = (i: ButtonInteraction) => i.customId.startsWith('guess|');
       const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
       collector.on('collect', async (btnint) => {
-        console.log(btnint.customId);
         // Defer the button
         await btnint.deferUpdate();
 
@@ -100,25 +102,28 @@ export const guess_answer: Modal<'cached'> = {
         const arg = btnint.customId.split('|')[1];
 
         // Set the fields for the answer selected
-        if (arg == 'yes') {
-          QuestionsSection?.addTextDisplayComponents(textDisplay => textDisplay
-            .setContent(`${CheckGreen.getString()} Yes`),
+        switch (arg) {
+        case 'yes':
+          addTextToTextDisplay(textDisplay, `${CheckGreen.getString()} Yes`);
+          break;
+        case 'no':
+          addTextToTextDisplay(textDisplay, `${XRed.getString()} No`);
+          break;
+        case 'sometimes':
+          addTextToTextDisplay(textDisplay, `${MessageCircleQuestionMark.getString()} Sometimes`);
+          break;
+        case 'finish':
+          // add a text to the embed telling the guesser how many questions they have left
+          QuestionsContainer.spliceComponents(5, 1, new TextDisplayBuilder()
+            .setContent(`-# Finished with **${QuestionsLeft}** questions left!`),
           );
-        }
-        if (arg == 'no') {
-          QuestionsSection?.addTextDisplayComponents(textDisplay => textDisplay
-            .setContent(`${XRed.getString()} No`),
-          );
-        }
-        if (arg == 'sometimes') {
-          QuestionsSection?.addTextDisplayComponents(textDisplay => textDisplay
-            .setContent(`${MessageCircleQuestionMark.getString()} Sometimes`),
-          );
-        }
-        if (arg == 'finish') {
-          QuestionsSection?.addTextDisplayComponents(textDisplay => textDisplay
-            .setContent(`🎉 You guessed it!\n\n**The answer is**\n\`${answer}\``),
-          );
+          QuestionsContainer
+            .setAccentColor(0x2f3136)
+            .addSeparatorComponents((separator) => separator)
+            .addTextDisplayComponents((textDisplay) =>
+              textDisplay.setContent(`## 🎉 ${guesser} guessed it!\n**The answer is**\n\`${answer}\``),
+            );
+          QuestionsContainer.spliceComponents(3, 1);
           await btnint.editReply({ components: [QuestionsContainer] });
           return;
         }
@@ -128,8 +133,11 @@ export const guess_answer: Modal<'cached'> = {
             .setAccentColor(0x2f3136)
             .addSeparatorComponents((separator) => separator)
             .addTextDisplayComponents((textDisplay) =>
-              textDisplay.setContent('**Game Over:** You ran out of questions!'),
+              textDisplay.setContent(`## Game Over:\n${guesser} ran out of questions!`),
             );
+          QuestionsContainer.spliceComponents(3, 1);
+          await btnint.editReply({ components: [QuestionsContainer] });
+          return;
         }
 
         // replace current button with a button to ask a question and add the question to the embed
@@ -143,14 +151,17 @@ export const guess_answer: Modal<'cached'> = {
 
         await btnint.editReply({ components: [QuestionsContainer] });
 
+        // Stop the answer collector
+        collector.stop();
+
         // Create a collector for the button
         const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && i.user.id == guesser.id;
-        const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
-        collector.on('collect', async (btnint) => {
+        const collector2 = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
+        collector2.on('collect', async (btnint) => {
           // Create and show a modal for the user to fill out the question
           const modal = new ModalBuilder()
             .setTitle('Ask a question')
-            .setCustomId(`guess_answer|${host?.id}|${guesser?.id}|${QuestionsLeft}|${newQuestions}`)
+            .setCustomId(`guess_answer|${host?.id}|${guesser?.id}|${QuestionsLeft}|${questionsAsked}`)
             .addLabelComponents(label => label
               .setLabel('Ask a question about the answer')
               .setTextInputComponent(textInput => textInput
@@ -159,7 +170,9 @@ export const guess_answer: Modal<'cached'> = {
               ),
             );
           btnint.showModal(modal);
-          collector.stop();
+
+          await btnint.awaitModalSubmit({ time: 3600000 });
+          collector2.stop();
         });
 
         // Ping the user
@@ -170,9 +183,6 @@ export const guess_answer: Modal<'cached'> = {
         catch (err) {
           logger.warn(err);
         }
-
-        // Stop the answer collector
-        collector.stop();
       });
 
       // When the collector stops, edit the message with a timeout message if the game hasn't ended already
