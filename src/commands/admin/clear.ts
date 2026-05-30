@@ -1,17 +1,34 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Collection, Message, TextChannel } from 'discord.js';
-import getTranscript from '~/functions/messages/getTranscript';
-import getMessages from '~/functions/messages/getMessages';
-import { yes, no } from '~/misc/emoji.json';
-import { SlashCommand } from '~/types/Objects';
-import clearOptions from '~/options/clear';
-import { getGuildConfig } from '~/functions/prisma';
+import { Collection, Message } from 'discord.js';
+import getMessages from '~/util/messages/getMessages';
+import { CheckGreen, Loading } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
 
-export const clear: SlashCommand<'cached'> = {
+export const clear: Command<'cached'> = {
   description: 'Delete multiple messages at once',
-  ephemeral: true,
+  defer: true,
+  flags: ['Ephemeral'],
+  cmd: cmd => cmd
+    .addNumberOption(numberOption => numberOption
+      .setName('scope')
+      .setDescription('The amount of messages to select')
+      .setRequired(true)
+      .setMinValue(1)
+      .setMaxValue(1000),
+    )
+    .addUserOption(userOption => userOption
+      .setName('user')
+      .setDescription('Filters the messages to only messages authored by this user'),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('text')
+      .setDescription('Filters the messages to only messages that contain this content'),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('until')
+      .setDescription('Clears all messages sent after this message Id'),
+    ),
   channelPermissions: ['ManageMessages'],
   botChannelPerms: ['ManageMessages'],
-  options: clearOptions,
   async execute(interaction) {
     try {
       // Check if arg is a number and is more than 100
@@ -36,10 +53,22 @@ export const clear: SlashCommand<'cached'> = {
       const user = interaction.options.getUser('user');
       const text = interaction.options.getString('text');
       for (const i in messagechunks) {
+        if (!messagechunks[i]) return;
+        await interaction.editReply({ content: `${Loading.getString()} **Removing ${i} of ${messagechunks.length} chunks...**` });
+
+        // Filter messages that are older than 14 days, since those can't be bulk deleted, and filter by user and text if those options are set
         messagechunks[i] = messagechunks[i].filter(msg => msg.createdTimestamp > Date.now() - 1209600000);
+
+        // If user option is set, filter messages by that user, if text option is set, filter messages that include that text
         if (user) messagechunks[i] = messagechunks[i].filter(msg => msg.author.id == user.id);
+
+        // If there are no messages left after filtering, skip bulk deleting and move on to the next chunk
         if (text) messagechunks[i] = messagechunks[i].filter(msg => msg.content.includes(text));
+
+        // If there are no messages left after filtering, skip bulk deleting and move on to the next chunk
         if (!messagechunks[i].size) return;
+
+        // Bulk delete messages and catch any errors (like if messages are older than 14 days or if the bot doesn't have permissions)
         await interaction.channel?.bulkDelete(messagechunks[i]).catch((err: Error) => error(err, interaction, true));
       }
 
@@ -51,42 +80,8 @@ export const clear: SlashCommand<'cached'> = {
       }
 
       // Reply with response
-      interaction.reply({ content: `<:yes:${yes}> **Cleared ${allmessages.size} messages!**` });
+      interaction.editReply({ content: `${CheckGreen.getString()} **Cleared ${allmessages.size} messages!**` });
       logger.info(`Cleared ${allmessages.size} messages from #${interaction.channel?.name} in ${interaction.guild.name}`);
-
-      // Check if log channel exists and send message
-      const srvconfig = await getGuildConfig(interaction.guild.id);
-      const logchannel = interaction.guild.channels.cache.get(srvconfig.logchannel) as TextChannel | undefined;
-      if (!logchannel) return;
-
-      // Create log embed
-      const logEmbed = new EmbedBuilder()
-        .setColor(0x2f3136)
-        .setAuthor({ name: interaction.user.username, iconURL: interaction.user.avatarURL() ?? undefined })
-        .setTitle(`<:no:${no}> ${allmessages.size} Messages bulk-deleted`)
-        .setFields([
-          { name: 'Channel', value: `${interaction.channel}`, inline: true },
-          { name: 'Transcript', value: `${await getTranscript(allmessages)}` },
-        ]);
-
-      // Create abovemessage button if above message is found
-      const components = [];
-      const aboveMessages = await interaction.channel?.messages.fetch({ before: allmessages.first()?.id, limit: 1 }).catch(() => { return null; });
-      if (aboveMessages && aboveMessages.first()) {
-        const aboveMessage = aboveMessages.first()!;
-        components.push(
-          new ActionRowBuilder<ButtonBuilder>()
-            .addComponents([
-              new ButtonBuilder()
-                .setURL(aboveMessage.url)
-                .setLabel('Go to above message')
-                .setStyle(ButtonStyle.Link),
-            ]),
-        );
-      }
-
-      // Send log
-      logchannel.send({ embeds: [logEmbed], components }).catch(err => logger.error(err));
     }
     catch (err) { error(err, interaction); }
   },

@@ -1,71 +1,80 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType } from 'discord.js';
-import { empty } from '~/misc/emoji.json';
-import { SlashCommand } from '~/types/Objects';
-import text from '~/options/text';
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags } from 'discord.js';
+import { Empty } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
 
-export const buttons: SlashCommand = {
+export const buttons: Command = {
   description: 'ya just buttons idk',
   cooldown: 10,
-  options: text,
+  cmd: cmd => cmd
+    .addStringOption(stringOption => stringOption
+      .setName('rows')
+      .setDescription('The number of rows')
+      .setRequired(true),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('columns')
+      .setDescription('The number of columns')
+      .setRequired(true),
+    ),
   async execute(interaction) {
-    const btns: {
-      '11'?: ButtonBuilder;
-      '12'?: ButtonBuilder;
-      '13'?: ButtonBuilder;
-      '14'?: ButtonBuilder;
-      '15'?: ButtonBuilder;
-      '21'?: ButtonBuilder;
-      '22'?: ButtonBuilder;
-      '23'?: ButtonBuilder;
-      '24'?: ButtonBuilder;
-      '25'?: ButtonBuilder;
-      '31'?: ButtonBuilder;
-      '32'?: ButtonBuilder;
-      '33'?: ButtonBuilder;
-      '34'?: ButtonBuilder;
-      '35'?: ButtonBuilder;
-      '41'?: ButtonBuilder;
-      '42'?: ButtonBuilder;
-      '43'?: ButtonBuilder;
-      '44'?: ButtonBuilder;
-      '45'?: ButtonBuilder;
-      '51'?: ButtonBuilder;
-      '52'?: ButtonBuilder;
-      '53'?: ButtonBuilder;
-      '54'?: ButtonBuilder;
-      '55'?: ButtonBuilder;
-    } = {};
-    const rows: ActionRowBuilder<ButtonBuilder>[] = [];
-    const [ro, co] = interaction.options.getString('text', true).split('x');
-    if (isNaN(Number(ro)) || isNaN(Number(co)) || ro == '0' || co == '0') {
+    const rowsAmt = Number(interaction.options.getString('rows', true));
+    const columnsAmt = Number(interaction.options.getString('columns', true));
+    if (isNaN(rowsAmt) || isNaN(columnsAmt) || rowsAmt == 0 || columnsAmt == 0) {
       error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', interaction, true);
       return;
     }
-    if (Number(ro) > 5 || Number(co) > 5) {
+    if (rowsAmt > 5 || columnsAmt > 5) {
       error('The maximum size of the board is 5x5 due to Discord limitations', interaction, true);
       return;
     }
-    for (let row = 0; row < parseInt(ro); row++) {
-      rows.push(new ActionRowBuilder<ButtonBuilder>());
-      for (let column = 0; column < parseInt(co); column++) {
-        btns[`${column}${row}` as keyof typeof btns] = new ButtonBuilder()
-          .setCustomId(`${column}${row}`)
-          .setEmoji({ id: empty })
-          .setStyle(ButtonStyle.Secondary);
-        rows[row - 1].addComponents([btns[`${column}${row}` as keyof typeof btns]!]);
-      }
-    }
-    const btnMsg = await interaction.reply({ content: '\u200b', components: rows });
+
+    // construct buttons and rows
+    const btns: { [key: string]: ButtonBuilder | undefined; } = {};
+    const rows: ActionRowBuilder<ButtonBuilder>[] = [];
+    await Promise.all(
+      Array.from({ length: rowsAmt }, (_, i) => i + 1).map(row => {
+        const ActionRow = new ActionRowBuilder<ButtonBuilder>();
+        Array.from({ length: columnsAmt }, (_, i) => i + 1).map(column => {
+          const index = `${row}${column}`;
+          btns[index] = new ButtonBuilder()
+            .setCustomId(index)
+            .setEmoji({ id: Empty.id })
+            .setStyle(ButtonStyle.Secondary);
+          ActionRow.addComponents(btns[index]!);
+        });
+        rows.push(ActionRow);
+      }),
+    );
+
+    // create container for the buttons
+    const ButtonsContainer = new ContainerBuilder()
+      .addActionRowComponents(rows);
+    const btnMsg = await interaction.reply({ components: [ButtonsContainer], flags: [MessageFlags.IsComponentsV2] });
+
+    // create collector for the buttons
     const filter = (i: ButtonInteraction) => i.user.id == interaction.user.id;
     const collector = btnMsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 300000 });
-    collector.on('collect', async i => {
-      await i.deferUpdate();
-      const btn = btns[i.customId as keyof typeof btns]!;
-      if (btn.toJSON().style == ButtonStyle.Secondary) btn.setStyle(ButtonStyle.Danger);
-      else if (btn.toJSON().style == ButtonStyle.Danger) btn.setStyle(ButtonStyle.Primary);
-      else if (btn.toJSON().style == ButtonStyle.Primary) btn.setStyle(ButtonStyle.Success);
-      else if (btn.toJSON().style == ButtonStyle.Success) btn.setStyle(ButtonStyle.Secondary);
-      i.editReply({ components: rows });
+    collector.on('collect', async btnInt => {
+      await btnInt.deferUpdate();
+
+      const btn = btns[btnInt.customId as keyof typeof btns]!;
+      const btnStyle = btn.toJSON().style;
+      switch (btnStyle) {
+      case ButtonStyle.Secondary:
+        btn.setStyle(ButtonStyle.Danger);
+        break;
+      case ButtonStyle.Danger:
+        btn.setStyle(ButtonStyle.Primary);
+        break;
+      case ButtonStyle.Primary:
+        btn.setStyle(ButtonStyle.Success);
+        break;
+      case ButtonStyle.Success:
+        btn.setStyle(ButtonStyle.Secondary);
+        break;
+      }
+
+      btnInt.editReply({ components: [ButtonsContainer], flags: [MessageFlags.IsComponentsV2] });
     });
   },
 };

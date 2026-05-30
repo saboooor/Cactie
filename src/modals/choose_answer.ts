@@ -1,36 +1,39 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, ButtonInteraction, ComponentType } from 'discord.js';
-import { srch } from '~/misc/emoji.json';
-import { Modal } from '~/types/Objects';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerComponent, ContainerBuilder, TextDisplayBuilder, MessageFlags } from 'discord.js';
+import { MessageCircleQuestionMark } from '~/dict/emoji';
+import { Modal } from '~/lists/Objects';
 
 export const choose_answer: Modal<'cached'> = {
-  execute: async (interaction) => {
+  defer: 'update',
+  execute: async (interaction, _, args) => {
     try {
       // Get the answer from the field and send it back to the user ephemerally
       const answer = interaction.fields.getTextInputValue('answer');
 
-      // Get the opponent from the embed description
-      const embedJSON = interaction.message!.embeds[0].toJSON();
-      const guesser = interaction.guild.members.cache.get(embedJSON.description!.split('\n')[1].replace(/\D/g, ''));
+      // Get the guesser from the args
+      const guesser = interaction.guild.members.cache.get(args?.[1] ?? '')?.user;
+      if (!guesser) return;
+      const questionAmt = parseInt(args?.[2] ?? '21');
 
-      // Create button and embed for the guesser
-      const row = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents([
-          new ButtonBuilder()
-            .setCustomId('guess_answer')
-            .setLabel('Ask a question about the answer')
-            .setEmoji({ id: srch })
-            .setStyle(ButtonStyle.Primary),
-        ]);
-      const TwentyOneQuestions = new EmbedBuilder(embedJSON)
-        .setColor(0x5b62fa)
-        .setDescription(`**Host:**\n${interaction.member}\n**Guesser:**\n${guesser ?? 'Anyone'}\nAsk a question or guess the answer by clicking the button below.`)
-        .setFooter({ text: `${embedJSON.title} left` });
+      // Get current container
+      const Container = interaction.message!.components[0] as ContainerComponent | undefined;
+      const QuestionsContainer = new ContainerBuilder(Container?.toJSON());
 
-      if (guesser) TwentyOneQuestions.setThumbnail(guesser.user.avatarURL());
+      // replace current button with a button to ask a question and add the question to the embed
+      QuestionsContainer.spliceComponents(3, 1, new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
+          .setCustomId('guess_answer')
+          .setLabel('Ask a question about the answer')
+          .setEmoji({ id: MessageCircleQuestionMark.id })
+          .setStyle(ButtonStyle.Primary),
+      ));
+      // add a text to the embed telling the guesser to ask questions and try to guess the answer
+      QuestionsContainer.spliceComponents(5, 1, new TextDisplayBuilder()
+        .setContent(`-# ${interaction.user} has chosen an answer! Now it's up to ${guesser} to ask questions and try to guess it!`),
+      );
 
       // Edit the message with the new embed and button
-      await interaction.editReply({ content: `${guesser}`, embeds: [TwentyOneQuestions], components: [row] });
-      await interaction.followUp({ content: `**The answer you chose is:**\n\`${answer}\``, ephemeral: true });
+      await interaction.editReply({ components: [QuestionsContainer] });
+      await interaction.followUp({ content: `${MessageCircleQuestionMark.getString()} **The answer you chose is:**\n\`${answer}\`\n-# Do not dismiss this message or else you won't be able to see this answer again!`, flags: ['Ephemeral'] });
 
       // Ping the user
       try {
@@ -42,30 +45,36 @@ export const choose_answer: Modal<'cached'> = {
       }
 
       // Create a collector for the button
-      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && (guesser ? i.user.id == guesser.id : true);
+      const filter = (i: ButtonInteraction) => i.customId == 'guess_answer' && i.user.id == guesser.id;
       const collector = interaction.message!.createMessageComponentCollector<ComponentType.Button>({ filter, time: 3600000 });
       collector.on('collect', async (btnint) => {
         // Create and show a modal for the user to fill out the question
         const modal = new ModalBuilder()
           .setTitle('Ask a question')
-          .setCustomId('guess_answer')
-          .addComponents([
-            new ActionRowBuilder<TextInputBuilder>()
-              .addComponents([
-                new TextInputBuilder()
-                  .setCustomId(answer)
-                  .setLabel('Ask a question about the answer')
-                  .setStyle(TextInputStyle.Short)
-                  .setMaxLength(512),
-              ]),
-          ]);
+          .setCustomId(`guess_answer|${interaction.user.id}|${guesser?.id}|${questionAmt}`)
+          .addLabelComponents(label => label
+            .setLabel('Ask a question about the answer')
+            .setTextInputComponent(textInput => textInput
+              .setCustomId(answer)
+              .setStyle(TextInputStyle.Short),
+            ),
+          );
         btnint.showModal(modal);
+
+        await btnint.awaitModalSubmit({ time: 3600000 });
+        collector.stop();
       });
 
       // When the collector stops, edit the message with a timeout message if the game hasn't ended already
       collector.on('end', () => {
-        if (interaction.message!.embeds[0].toJSON().description!.endsWith('guessed the answer!**') || interaction.message!.embeds[0].toJSON().description!.endsWith('ran out of questions!**')) { return; }
-        interaction.editReply({ content: `A game of ${embedJSON.title} should not last longer than two hours...`, components: [], embeds: [] }).catch(err => logger.warn(err));
+        if (collector.collected.size) return;
+        QuestionsContainer
+          .setAccentColor(0x2f3136)
+          .addSeparatorComponents((separator) => separator)
+          .addTextDisplayComponents((textDisplay) =>
+            textDisplay.setContent('**Game Over:** Time ran out!'),
+          );
+        interaction.editReply({ components: [QuestionsContainer], flags: MessageFlags.IsComponentsV2 });
       });
     }
     catch (err) { error(err, interaction); }

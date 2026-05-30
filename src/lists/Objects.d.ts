@@ -1,0 +1,55 @@
+import { SlashCommandOptionsOnlyBuilder, PermissionsBitField, Message, Client, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction, ChatInputCommandInteraction, CacheType, ContextMenuCommandBuilder, SlashCommandBuilder, type SlashCommandSubcommandsOnlyBuilder } from 'discord.js';
+
+export class PrivateCommand {
+  name?: string;
+  description: string;
+  execute: (message: Message<true>, args: string[], client: Client<true>) => void | Promise<void>;
+}
+
+type SlashCommandBuilderCallback = (slashCommandBuilder: SlashCommandBuilder) => SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
+export class Command<Cached extends CacheType = CacheType> extends PrivateCommand {
+  name?: string | string[];
+  cmd?: SlashCommandBuilderCallback;
+  flags?: InteractionDeferReplyOptions.flags;
+  defer?: boolean;
+  category?: string;
+  cooldown?: number;
+  channelPermissions?: (keyof typeof PermissionsBitField.Flags)[];
+  botPerms?: (keyof typeof PermissionsBitField.Flags)[];
+  botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
+  dms?: boolean;
+  autoComplete?: (client: Client<true>, interaction: AutocompleteInteraction<Cached>) => void | Promise<void>;
+  execute: (interaction: ChatInputCommandInteraction<Cached>, client: Client<true>) => void | Promise<void>;
+}
+
+export class LoadedCommand extends Command {
+  name: string;
+}
+
+export class ContextMenuCommand<T extends 'User' | 'Message'> {
+  name: string;
+  cmd?: ContextMenuCommandBuilder;
+  botPerms?: (keyof typeof PermissionsBitField.Flags)[];
+  flags?: InteractionDeferReplyOptions.flags;
+  defer?: boolean;
+  type: T;
+  execute: (interaction: ContextMenuCommandInteraction<'cached'>, client: Client<true>,
+    item: T extends 'User' ? GuildMember : Message<true>
+  ) => void | Promise<void>;
+}
+
+export class Modal<Cached extends CacheType = CacheType> {
+  name?: string;
+  defer?: 'reply' | 'update' | false;
+  flags?: InteractionDeferReplyOptions.flags;
+  ephemeral?: boolean;
+  execute: (interaction: ModalSubmitInteraction<Cached>, client: Client<true>, args?: string[]) => void | Promise<void>;
+}
+
+export class Button<Cached extends CacheType = CacheType> {
+  name?: string;
+  botPerms?: (keyof typeof PermissionsBitField.Flags)[];
+  defer?: 'reply' | 'update' | false;
+  flags?: InteractionDeferReplyOptions.flags;
+  execute: (interaction: ButtonInteraction<Cached> | StringSelectMenuInteraction<Cached>, client: Client<true>, args?: string[]) => void | Promise<void>;
+}

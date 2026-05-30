@@ -1,10 +1,10 @@
-import { SlashCommand } from '~/types/Objects';
-import someone from '~/options/someone';
-import ratings from '~/misc/rate.json';
+import { Command } from '~/lists/Objects';
+import { SomeoneOption } from '~/commonOptions/someone';
+import ratings from '~/dict/rate.json';
 
-export const rate: SlashCommand = {
+export const rate: Command = {
   description: 'Rate someone or something! Or yourself.',
-  options: someone,
+  cmd: cmd => cmd.addStringOption(SomeoneOption),
   async execute(interaction) {
     try {
       // If arg isn't set, set it to the author's name/nick
@@ -13,7 +13,7 @@ export const rate: SlashCommand = {
       // Get random rating and reply with that
       const rating = Math.floor(Math.random() * (ratings.length * 10)) / 10;
       const i = Math.floor(rating);
-      interaction.reply(ratings[i]
+      interaction.reply(ratings[i]!
         .replace(/-r/g, `${rating}/${ratings.length - 1}`)
         .replace(/-m/g, arg)
         .replace(/<@&.?[0-9]*?>/g, 'that')

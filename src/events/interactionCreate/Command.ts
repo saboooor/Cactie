@@ -1,9 +1,9 @@
 import { EmbedBuilder, Collection, Client, CommandInteraction, TextChannel } from 'discord.js';
-import checkPerms from '~/functions/checkPerms';
+import checkPerms from '~/util/misc/checkPerms';
 import slashcommands, { cooldowns } from '~/lists/cmds';
-import cooldownMessages from '~/misc/cooldown.json';
+import cooldownMessages from '~/dict/cooldown.json';
 
-export default async (client: Client, interaction: CommandInteraction) => {
+export default async (client: Client<true>, interaction: CommandInteraction) => {
   // Check if interaction is command
   if (!interaction.isChatInputCommand()) return;
   if (interaction.inGuild() && !interaction.inCachedGuild()) await interaction.guild?.fetch();
@@ -38,9 +38,9 @@ export default async (client: Client, interaction: CommandInteraction) => {
       const timeLeft = (expirationTime - now) / 1000;
       const cooldownEmbed = new EmbedBuilder()
         .setColor('Random')
-        .setTitle(cooldownMessages[random])
+        .setTitle(cooldownMessages[random]!)
         .setDescription(`wait ${timeLeft.toFixed(1)} more seconds before reusing the ${command.name} command.`);
-      return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true });
+      return interaction.reply({ embeds: [cooldownEmbed], flags: ['Ephemeral'] });
     }
   }
 
@@ -79,10 +79,7 @@ export default async (client: Client, interaction: CommandInteraction) => {
 
   // Defer and execute the command
   try {
-    if (!command.noDefer) {
-      await interaction.deferReply({ ephemeral: command.ephemeral });
-      interaction.reply = interaction.editReply as typeof interaction.reply;
-    }
+    if (command.defer) await interaction.deferReply({ flags: command.flags });
     command.execute(interaction, client);
   }
   catch (err) {

@@ -1,26 +1,25 @@
-import { createPaste } from 'hastebin';
-import { ContextMenuCommand } from '~/types/Objects';
+import { ContextMenuCommand } from '~/lists/Objects';
 
 export const context: ContextMenuCommand<'Message'> = {
   name: 'Get Raw Embed JSON',
-  ephemeral: true,
+  flags: ['Ephemeral'],
   type: 'Message',
-  async execute(interaction, client, message) {
+  async execute(interaction, _, message) {
     try {
       // Check if message has embeds
       if (!message.embeds.length) {
-        interaction.reply({ content: 'There is no embed in this message!', ephemeral: true });
+        interaction.reply({ content: 'There is no embed in this message!', flags: ['Ephemeral'] });
         return;
       }
 
       // Get embed
-      const MsgEmbed = message.embeds[0].toJSON();
+      const MsgEmbed = message.embeds[0]?.toJSON();
 
       // Set the content
-      let content = `\`\`\`json\n${JSON.stringify(MsgEmbed, null, 2)}\n\`\`\``;
+      const content = `\`\`\`json\n${JSON.stringify(MsgEmbed, null, 2)}\n\`\`\``;
 
       // If the content is too long, put it in hastebin
-      if (content.length > 2000) content = await createPaste(JSON.stringify(MsgEmbed, null, 2), { server: 'https://bin.birdflop.com' });
+      // if (content.length > 2000) content = await createPaste(JSON.stringify(MsgEmbed, null, 2), { server: 'https://bin.birdflop.com' });
 
       // Send the content
       interaction.reply({ content, embeds: message.embeds });

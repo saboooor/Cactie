@@ -1,12 +1,12 @@
-import { SlashCommand } from '~/types/Objects';
-import action from '~/functions/action';
-import actions from '~/misc/actions.json';
-import someone from '~/options/someone';
+import { Command } from '~/lists/Objects';
+import action from '~/util/fun/action';
+import actions from '~/dict/actions.json';
+import { SomeoneOption } from '~/commonOptions/someone';
 
-export const act: SlashCommand = {
+export const act: Command = {
   name: Object.keys(actions),
   description: '{NAME}!',
-  options: someone,
+  cmd: cmd => cmd.addStringOption(SomeoneOption),
   async execute(interaction) {
     try { action(interaction, interaction.options.getString('someone'), interaction.commandName as keyof typeof actions); }
     catch (err) { error(err, interaction); }

@@ -1,10 +1,10 @@
-import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
-import { SlashCommand } from '~/types/Objects';
-// @ts-ignore
-import packageJSON from '../../../package.json' assert { type: 'json' };
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags } from 'discord.js';
+import { Command } from '~/lists/Objects';
+import packageJSON from '../../../package.json';
+import { lastStarted } from '~/index';
 
-export const info: SlashCommand = {
-  description: 'Get various information about Cactie',
+export const info: Command = {
+  description: 'Get various information about Sova',
   cooldown: 10,
   async execute(interaction, client) {
     try {
@@ -12,33 +12,46 @@ export const info: SlashCommand = {
         ...packageJSON.dependencies,
         ...packageJSON.devDependencies,
       };
-      const InfEmbed = new EmbedBuilder()
-        .setColor('Random')
-        .setTitle(client.user.username)
-        .setDescription(`\`\`\`${packageJSON.description}\`\`\``)
-        .setFields([
-          { name: 'Bot Version', value: `\`\`\`${packageJSON.version}\`\`\``, inline: true },
-          { name: 'NodeJS Version', value: `\`\`\`${process.version}\`\`\``, inline: true },
-          { name: 'Developer', value: `\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499')!.username}\`\`\`` },
-          { name: 'Last restart', value: `<t:${Math.ceil(Number(rn) / 1000)}:R>` },
-          { name: 'Dependencies', value: `\`\`\`${Object.keys(dependencies).map(depName => `${depName}: ${dependencies[depName as keyof typeof dependencies]}`).join('\n')}\`\`\`` },
-        ]);
-      const row1 = new ActionRowBuilder<ButtonBuilder>()
+
+      const row = new ActionRowBuilder<ButtonBuilder>()
         .addComponents([
           new ButtonBuilder()
-            .setURL('https://cactie.luminescent.dev/invite')
-            .setLabel('Invite Cactie!')
+            .setURL('https://sova.fyi/invite')
+            .setLabel('Invite Sova!')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL('https://luminescent.dev/discord')
-            .setLabel('Join the LuminescentDev Server!')
+            .setURL('https://sova.fyi/discord')
+            .setLabel('Support Server')
             .setStyle(ButtonStyle.Link),
           new ButtonBuilder()
-            .setURL('https://cactie.luminescent.dev')
-            .setLabel('Open the Dashboard!')
+            .setURL('https://sova.fyi')
+            .setLabel('Dashboard')
             .setStyle(ButtonStyle.Link),
         ]);
-      await interaction.reply({ embeds: [InfEmbed], components: [row1] });
+
+      const InfoContainer = new ContainerBuilder()
+        .addSectionComponents(section => section
+          .addTextDisplayComponents(text => text
+            .setContent(`# ${client.user.username}\n\`\`\`${packageJSON.description}\`\`\``),
+          )
+          .setThumbnailAccessory(thumb => thumb.setURL(client.user.displayAvatarURL({ size: 4096 }))),
+        )
+        .addSeparatorComponents(separator => separator)
+        .addTextDisplayComponents(
+          text => text
+            .setContent(`**Bot Version**\n\`\`\`${packageJSON.version}\`\`\``),
+          text => text
+            .setContent(`**Bun Version**\n\`\`\`${process.versions.bun}\`\`\``),
+          text => text
+            .setContent(`**Developer**\n\`\`\`${packageJSON.author} | @${client.users.cache.get('249638347306303499')!.username}\`\`\``),
+          text => text
+            .setContent(`**Last restart**\n<t:${Math.ceil(Number(lastStarted) / 1000)}:R>`),
+          text => text
+            .setContent(`**Dependencies**\n\`\`\`${Object.keys(dependencies).map(depName => `${depName}: ${dependencies[depName as keyof typeof dependencies]}`).join('\n')}\`\`\``),
+        )
+        .addActionRowComponents(row);
+
+      await interaction.reply({ components: [InfoContainer], flags: MessageFlags.IsComponentsV2 });
     }
     catch (err) { error(err, interaction); }
   },

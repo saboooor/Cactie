@@ -1,11 +1,18 @@
-import { AttachmentBuilder, Client, EmbedBuilder, Message, TextChannel } from 'discord.js';
+import { AttachmentBuilder, Client, ComponentType, ContainerBuilder, ForumChannel, Message, MessageFlags } from 'discord.js';
+import getMessages from '~/util/messages/getMessages';
+import { sendAs } from '~/util/misc/sendAs';
 
 export default async (client: Client, message: Message<false>) => {
-  const forumId = client.user?.username.split(' ')[1] ? '1182176470374826024' : '1182123441491558511';
-  if (!message.channel.isDMBased() && message.channel.parent?.id != forumId) return;
-  const forum = client.guilds.cache.get('811354612547190794')!.channels.cache.get(forumId) as TextChannel;
-  const files = [];
+  // get forum channel
+  const guildId = '811354612547190794';
+  const forumId = '1509039866317504666';
+  const forum = client.guilds.cache.get(guildId)!.channels.cache.get(forumId) as ForumChannel;
 
+  // Check if channel is DM for recieving, or if it's a thread in the forum for sending from the bot
+  if (!message.channel.isDMBased() && message.channel.parent?.id != forumId) return;
+
+  // Gather all attachments in the message and convert them to AttachmentBuilders so they can be sent in the thread or DM
+  const files = [];
   for (const attachment of message.attachments) {
     const response = await fetch(attachment[1].url, { method: 'GET' });
     const arrayBuffer = await response.arrayBuffer();
@@ -14,35 +21,129 @@ export default async (client: Client, message: Message<false>) => {
     files.push(img);
   }
 
-  // If channel is DM,send the dm to the dms channel
+  // If channel is DM, send the dm to the dms channel
   if (message.channel.isDMBased()) {
-    const recipient = message.channel.recipient;
+    // Get the recipient of the dm
+    const recipient = 'recipient' in message.channel ? message.channel.recipient : null;
     if (!recipient) return;
-    let thread = forum.threads.cache.find(async t => (await t.fetchStarterMessage())?.content == recipient.id);
 
+    // Check if a thread already exists for this user in the foru
+    const matches = await Promise.all(
+      forum.threads.cache.values().map(async (t) => {
+        const startMessage = await t.fetchStarterMessage();
+        if (!startMessage) return null;
+
+        const container =
+          startMessage.components[0]?.type === ComponentType.Container
+            ? startMessage.components[0]
+            : null;
+
+        const textDisplay =
+          container?.components[2]?.type === ComponentType.TextDisplay
+            ? container.components[2]
+            : null;
+
+        return textDisplay?.content === recipient.id ? t : null;
+      }),
+    );
+
+    let thread = matches.find(Boolean);
+
+    // If no thread exists for this user, create one with an embed of their user info as the first message
     if (!thread) {
-      const userEmbed = new EmbedBuilder()
-        .setTitle(`@${recipient.username}`)
-        .setDescription(`${recipient}`)
-        .setThumbnail(recipient.avatarURL())
-        .addFields([{ name: 'Created Account At', value: `<t:${Math.round(recipient.createdTimestamp / 1000)}>\n<t:${Math.round(recipient.createdTimestamp / 1000)}:R>` }]);
+      const userContainer = new ContainerBuilder()
+        .addSectionComponents(section => section
+          .addTextDisplayComponents(textDisplay => textDisplay
+            .setContent(`# ${recipient}`),
+          )
+          .setThumbnailAccessory(thumbnail => thumbnail
+            .setURL(recipient.avatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
+          ),
+        )
+        .addTextDisplayComponents(
+          textDisplay => textDisplay
+            .setContent(`Created Account At <t:${Math.round(recipient.createdTimestamp / 1000)}>\n<t:${Math.round(recipient.createdTimestamp / 1000)}:R>`),
+          textDisplay => textDisplay
+            .setContent(`${recipient.id}`),
+        );
 
+      // Create the thread with the userContainer as the first message, and the recipient's ID as the content of the message so we can identify which thread belongs to which user later
       thread = await forum.threads.create({
         name: recipient.displayName,
         autoArchiveDuration: 1440,
-        message: { content: recipient.id, embeds: [userEmbed] },
+        message: {
+          components: [userContainer],
+          flags: MessageFlags.IsComponentsV2,
+        },
       });
+
+      // if there is any backlog of messages in the dm, send them to the thread
+      const dmMessages = await getMessages(message.channel, 'infinite');
+      for (const chunk of dmMessages.reverse()) {
+        for (const msg of [...chunk.values()].reverse()) {
+          const content = msg.content || '\u200b';
+          const embeds = msg.embeds;
+          const components = msg.components;
+          const attachments = [];
+          for (const attachment of msg.attachments.values()) {
+            const response = await fetch(attachment.url, { method: 'GET' });
+            const arrayBuffer = await response.arrayBuffer();
+            const img = new AttachmentBuilder(Buffer.from(arrayBuffer))
+              .setName(attachment.name);
+            attachments.push(img);
+          }
+
+          try {
+            await sendAs(thread, {
+              content,
+              embeds,
+              components,
+              files: attachments,
+              username: msg.author.username,
+              avatarURL: msg.author.avatarURL() ?? undefined,
+            });
+          }
+          catch (err) {
+            logger.warn(`Failed to send message ${msg.id} in backlog for user ${recipient.id} in thread ${thread!.id}: ${err}`);
+          }
+        }
+      }
     }
 
-    const author = message.author.id == client.user?.id ? `${client.user} > ` : '';
-    const { content, embeds, components } = message;
-    thread.send({ content: `${author}${content}`, files, embeds, components });
+    try {
+      await sendAs(thread, {
+        content: message.content,
+        files,
+        embeds: message.embeds,
+        components: message.components,
+        username: message.author.username,
+        avatarURL: message.author.avatarURL() ?? undefined,
+      });
+    }
+    catch (err) {
+      logger.error(`Failed to send message ${message.id} from DM to thread for user ${recipient.id}: ${err}`);
+    }
   }
+  // If channel is a thread in the forum, send the message to the user in the DMs
   else if (message.channel.isThread() && message.channel.parent?.id == forumId) {
     const startMessage = await message.channel.fetchStarterMessage();
     if (!startMessage) return;
-    const user = client.users.cache.get(startMessage.content);
+
+    // Get the user ID from the container
+    const containerFromMessage = startMessage.components[0]?.type === ComponentType.Container
+      ? startMessage.components[0] : null;
+    const textDisplayFromContainer = containerFromMessage?.components[2]?.type === ComponentType.TextDisplay
+      ? containerFromMessage.components[2] : null;
+
+    // If we can't find the user ID in the container, return
+    const userId = textDisplayFromContainer?.content;
+    if (!userId) return;
+
+    // Send the message to the user in the DMs
+    const user = client.users.cache.get(userId);
     if (!user || user.bot || message.author.bot) return;
+
+    // Extract content, embeds, and components from the message and send them to the user in the DMs, along with any attachments
     const { content, embeds, components } = message;
     user.send({ content, files, embeds, components });
   }

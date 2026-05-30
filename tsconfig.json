@@ -1,38 +1,37 @@
 {
-    "ts-node": {
-        "require": ["tsconfig-paths/register"]
+  "compilerOptions": {
+    // Environment setup & latest features
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": false,
+
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+
+    "paths": {
+      "~/*": ["./src/*"]
     },
-    "compilerOptions": {
-        "target": "ES2017",
-        "module": "CommonJS",
-        "rootDir": "./src/",
-        "outDir": "./dist/",
-        "strict": true,
-        "moduleResolution": "node",
-        "importHelpers": true,
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "forceConsistentCasingInFileNames": true,
-        "removeComments": true,
-        "typeRoots": [
-            "node_modules/@types",
-            "src/types"
-        ],
-        "sourceMap": false,
-        "baseUrl": "./",
-        "paths": {
-            "~/*": ["./src/*"]
-        }
-    },
-    "files": [
-        "src/index.ts"
-    ],
-    "include": ["./**/*.ts"],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
+  }
 }

@@ -1,25 +1,25 @@
 import { Client, EmbedBuilder, InteractionType, ModalSubmitInteraction, TextChannel } from 'discord.js';
 import modals from '~/lists/modals';
 
-export default async (client: Client, interaction: ModalSubmitInteraction) => {
+export default async (client: Client<true>, interaction: ModalSubmitInteraction) => {
   // Check if interaction is modal
   if (interaction.type != InteractionType.ModalSubmit) return;
   if (!interaction.inCachedGuild()) return;
 
-  // Get the modal from the available modals in the bot, if there isn't one, just return because discord will throw an error itself
-  const customIdSplit = interaction.customId.split('_');
-  const modalInfo = customIdSplit.pop();
-  const modalName = customIdSplit.join('_');
-  let modal = modals.get(interaction.customId);
-  if (!modal) modal = modals.get(modalName);
+  // There may be extra data along with the customId, so we split it and get the first part as the id
+  const IdWithArgs = interaction.customId;
+  const Id = IdWithArgs?.split('|')[0];
+  const args = IdWithArgs?.split('|').slice(1);
+  if (!Id) return;
+
+  const modal = modals.get(Id);
   if (!modal) return;
 
   // Defer and execute the modal
   try {
     logger.info(`${interaction.user.username} submitted modal: ${modal.name}, in ${interaction.guild.name}`);
-    await interaction[modal.deferReply ? 'deferReply' : 'deferUpdate']({ ephemeral: modal.ephemeral });
-    interaction.reply = interaction.editReply as typeof interaction.reply;
-    modal.execute(interaction, client, modalInfo!);
+    if (modal.defer) await interaction[modal.defer == 'reply' ? 'deferReply' : 'deferUpdate']({ flags: modal.flags });
+    modal.execute(interaction, client, args);
   }
   catch (err) {
     const interactionFailed = new EmbedBuilder()
