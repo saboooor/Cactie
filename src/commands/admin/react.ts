@@ -1,11 +1,11 @@
-import { PermissionsBitField, SlashCommandBuilder, type GuildTextBasedChannel } from 'discord.js';
+import { PermissionsBitField, type GuildTextBasedChannel } from 'discord.js';
 import { Command } from '~/lists/Objects';
 import { CheckGreen } from '~/dict/emoji';
 
 export const react: Command<'cached'> = {
   description: 'Add a reaction to a message',
   defer: true,
-  cmd: new SlashCommandBuilder()
+  cmd: cmd => cmd
     .addStringOption(stringOption => stringOption
       .setName('url')
       .setDescription('The link to the message to add the reaction to')

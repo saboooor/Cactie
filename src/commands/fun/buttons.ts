@@ -1,11 +1,11 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags } from 'discord.js';
 import { Empty } from '~/dict/emoji';
 import { Command } from '~/lists/Objects';
 
 export const buttons: Command = {
   description: 'ya just buttons idk',
   cooldown: 10,
-  cmd: new SlashCommandBuilder()
+  cmd: cmd => cmd
     .addStringOption(stringOption => stringOption
       .setName('rows')
       .setDescription('The number of rows')

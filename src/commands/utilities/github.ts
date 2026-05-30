@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags } from 'discord.js';
 import { Command } from '~/lists/Objects';
 
 function truncateString(str: string, num: number) {
@@ -7,7 +7,7 @@ function truncateString(str: string, num: number) {
 
 export const github: Command = {
   description: 'Get info on any GitHub repository',
-  cmd: new SlashCommandBuilder().addStringOption(stringOption => stringOption
+  cmd: cmd => cmd.addStringOption(stringOption => stringOption
     .setName('repo')
     .setDescription('The GitHub Repository')
     .setRequired(true)

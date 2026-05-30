@@ -1,4 +1,3 @@
-import { SlashCommandBuilder } from 'discord.js';
 import { UserOption } from '~/commonOptions/someone';
 import { Command } from '~/lists/Objects';
 import createRPS from '~/util/fun/rockpaperscissors';
@@ -7,7 +6,7 @@ export const rockpaperscissors: Command<'cached'> = {
   description: 'Play Rock Paper Scissors',
   defer: true,
   cooldown: 10,
-  cmd: new SlashCommandBuilder().addUserOption(option => UserOption(option).setRequired(true)),
+  cmd: cmd => cmd.addUserOption(option => UserOption(option).setRequired(true)),
   async execute(interaction) {
     const user = interaction.user;
     const opponent = interaction.options.getMember('user')?.user;

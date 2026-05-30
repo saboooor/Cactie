@@ -1,11 +1,11 @@
-import { ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
+import { ContainerBuilder, MessageFlags } from 'discord.js';
 import { Command } from '~/lists/Objects';
 import ball from '~/dict/8ball.json';
 
 export const eightball: Command = {
   name: '8ball',
   description: 'Let the 8 ball decide your fate!',
-  cmd: new SlashCommandBuilder()
+  cmd: cmd => cmd
     .addStringOption(stringOption => stringOption
       .setName('question')
       .setDescription('The question to ask')

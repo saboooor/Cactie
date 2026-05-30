@@ -15,9 +15,12 @@ export default async (client: Client) =>{
       logger.info(`Loading slash command ${command.name}`);
 
       // set name and description from command object
-      const cmd = (command.cmd ?? new SlashCommandBuilder())
+      const cmd = new SlashCommandBuilder()
         .setName(command.name)
         .setDescription(truncateString(command.description, 99));
+
+      // Add any options from the command object
+      if (command.cmd) command.cmd(cmd);
 
       cmds.push(cmd);
     }),
@@ -32,6 +35,7 @@ export default async (client: Client) =>{
       cmds.push(cmd);
     }),
   ]);
+  console.log(cmds.map(c => c.name).join(', '));
 
   await client.application?.commands.set(cmds, '811354612547190794');
   logger.info(`${cmds.length} slash/context commands loaded`);

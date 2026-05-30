@@ -1,4 +1,4 @@
-import { Collection, Message, SlashCommandBuilder } from 'discord.js';
+import { Collection, Message } from 'discord.js';
 import getMessages from '~/util/messages/getMessages';
 import { CheckGreen, Loading } from '~/dict/emoji';
 import { Command } from '~/lists/Objects';
@@ -7,7 +7,7 @@ export const clear: Command<'cached'> = {
   description: 'Delete multiple messages at once',
   defer: true,
   flags: ['Ephemeral'],
-  cmd: new SlashCommandBuilder()
+  cmd: cmd => cmd
     .addNumberOption(numberOption => numberOption
       .setName('scope')
       .setDescription('The amount of messages to select')

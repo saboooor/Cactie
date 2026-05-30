@@ -1,4 +1,4 @@
-import { SlashCommandOptionsOnlyBuilder, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, PermissionsBitField, Message, Client, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction, ChatInputCommandInteraction, CacheType, ContextMenuCommandBuilder } from 'discord.js';
+import { SlashCommandOptionsOnlyBuilder, PermissionsBitField, Message, Client, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction, ChatInputCommandInteraction, CacheType, ContextMenuCommandBuilder, SlashCommandBuilder, type SlashCommandSubcommandsOnlyBuilder } from 'discord.js';
 
 export class PrivateCommand {
   name?: string;
@@ -6,9 +6,10 @@ export class PrivateCommand {
   execute: (message: Message<true>, args: string[], client: Client<true>) => void | Promise<void>;
 }
 
+type SlashCommandBuilderCallback = (slashCommandBuilder: SlashCommandBuilder) => SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
 export class Command<Cached extends CacheType = CacheType> extends PrivateCommand {
   name?: string | string[];
-  cmd?: SlashCommandOptionsOnlyBuilder | SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
+  cmd?: SlashCommandBuilderCallback;
   flags?: InteractionDeferReplyOptions.flags;
   defer?: boolean;
   category?: string;

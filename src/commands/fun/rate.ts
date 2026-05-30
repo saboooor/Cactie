@@ -1,11 +1,10 @@
-import { SlashCommandBuilder } from 'discord.js';
 import { Command } from '~/lists/Objects';
 import { SomeoneOption } from '~/commonOptions/someone';
 import ratings from '~/dict/rate.json';
 
 export const rate: Command = {
   description: 'Rate someone or something! Or yourself.',
-  cmd: new SlashCommandBuilder().addStringOption(SomeoneOption),
+  cmd: cmd => cmd.addStringOption(SomeoneOption),
   async execute(interaction) {
     try {
       // If arg isn't set, set it to the author's name/nick

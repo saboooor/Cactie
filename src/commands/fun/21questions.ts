@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder, SlashCommandBuilder } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
 import { Command } from '~/lists/Objects';
 import { MessageCircleQuestionMark } from '~/dict/emoji';
 import { UserOption } from '~/commonOptions/someone';
@@ -7,7 +7,7 @@ export const questions: Command<'cached'> = {
   name: '21questions',
   description: 'Play 21 Questions',
   cooldown: 10,
-  cmd: new SlashCommandBuilder().addUserOption(option => UserOption(option).setRequired(true))
+  cmd: cmd => cmd.addUserOption(option => UserOption(option).setRequired(true))
     .addNumberOption(numberOption => numberOption
       .setName('amount')
       .setDescription('The amount of questions (Default is 21)')
