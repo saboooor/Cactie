@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonStyle, ButtonInteraction, ContainerBuilder, MessageFlags } from 'discord.js';
-import { RefreshCw } from '~/misc/emoji';
-import { Button } from '~/types/Objects';
-import createRPS from '~/functions/rockpaperscissors';
+import { RefreshCw } from '~/dict/emoji';
+import { Button } from '~/lists/Objects';
+import createRPS from '~/util/fun/rockpaperscissors';
 
 export const rockpaperscissors_again: Button<'cached'> = {
   execute: async (interaction, _, args) => {

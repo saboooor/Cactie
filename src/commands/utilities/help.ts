@@ -1,7 +1,7 @@
 import { ButtonBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonStyle, ContainerBuilder, MessageFlags, StringSelectMenuInteraction, ComponentType, TextDisplayBuilder } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import commands from '~/lists/cmds';
-import * as helpDict from '~/misc/helpdict';
+import * as helpDict from '~/dict/helpdict';
 
 export const help: Command = {
   description: 'Get help with Sova',

@@ -1,7 +1,7 @@
 import { EmbedBuilder, Collection, Client, CommandInteraction, TextChannel } from 'discord.js';
-import checkPerms from '~/functions/checkPerms';
+import checkPerms from '~/util/misc/checkPerms';
 import slashcommands, { cooldowns } from '~/lists/cmds';
-import cooldownMessages from '~/misc/cooldown.json';
+import cooldownMessages from '~/dict/cooldown.json';
 
 export default async (client: Client<true>, interaction: CommandInteraction) => {
   // Check if interaction is command

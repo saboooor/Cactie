@@ -1,6 +1,6 @@
 import { ButtonStyle, CommandInteraction, ModalSubmitInteraction, ButtonInteraction, TextChannel, Message, StringSelectMenuInteraction, AttachmentBuilder, ContainerBuilder, MessageFlags } from 'discord.js';
 import { readFileSync } from 'fs';
-import { logDate } from '..';
+import { logDate } from '../..';
 
 export async function errorFunc(err: any, messageOrInteraction: Message | CommandInteraction | ModalSubmitInteraction | ButtonInteraction | StringSelectMenuInteraction, userError?: boolean) {
   logger.error(err);

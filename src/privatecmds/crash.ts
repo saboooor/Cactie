@@ -1,4 +1,4 @@
-import { PrivateCommand } from '~/types/Objects';
+import { PrivateCommand } from '~/lists/Objects';
 
 export const crash: PrivateCommand = {
   description: 'crashes the bot',

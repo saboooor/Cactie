@@ -1,4 +1,4 @@
-import { PrivateCommand } from '~/types/Objects';
+import { PrivateCommand } from '~/lists/Objects';
 
 export const psa: PrivateCommand = {
   description: 'Broadcasts a message to all server owners with the bot in them.',

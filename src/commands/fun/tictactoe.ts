@@ -1,6 +1,6 @@
 import userOption from '~/options/user';
-import { Command } from '~/types/Objects';
-import createTicTacToe from '~/functions/tictactoe';
+import { Command } from '~/lists/Objects';
+import createTicTacToe from '~/util/fun/tictactoe';
 
 export const tictactoe: Command<'cached'> = {
   description: 'Play Tic Tac Toe',

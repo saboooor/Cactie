@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
-import { LoadedCommand } from '~/types/Objects';
+import { LoadedCommand } from '~/lists/Objects';
 
 // Set the slash commands collection
 const slashcommands = new Collection<string, LoadedCommand>();

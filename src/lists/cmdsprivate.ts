@@ -1,6 +1,6 @@
 import { readdirSync } from 'fs';
 import { Collection } from 'discord.js';
-import { PrivateCommand } from '~/types/Objects';
+import { PrivateCommand } from '~/lists/Objects';
 
 // Set the commands collection
 const commands = new Collection<string, PrivateCommand>();

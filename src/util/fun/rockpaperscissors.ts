@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle, ButtonInteraction, CommandInteraction, ComponentType, ContainerBuilder, MessageFlags, SectionBuilder, TextDisplayBuilder, User } from 'discord.js';
-import { CheckGreen, RefreshCw } from '~/misc/emoji';
+import { CheckGreen, RefreshCw } from '~/dict/emoji';
 
 export default async function createRPS(user: User, opponent: User, interaction: ButtonInteraction | CommandInteraction) {
   if (opponent.id == user.id) {

@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js';
-import checkPerms, { type PermissionChannel } from '~/functions/checkPerms';
+import checkPerms, { type PermissionChannel } from '~/util/misc/checkPerms';
 import commands from '~/lists/cmdsprivate';
 
 export default async (client: Client<true>, message: Message<true>) => {

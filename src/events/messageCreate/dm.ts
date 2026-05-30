@@ -1,6 +1,6 @@
 import { AttachmentBuilder, Client, ComponentType, ContainerBuilder, ForumChannel, Message, MessageFlags } from 'discord.js';
-import getMessages from '~/functions/messages/getMessages';
-import { sendAs } from '~/functions/sendAs';
+import getMessages from '~/util/messages/getMessages';
+import { sendAs } from '~/util/misc/sendAs';
 
 export default async (client: Client, message: Message<false>) => {
   // get forum channel

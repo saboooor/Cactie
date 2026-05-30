@@ -1,6 +1,6 @@
 import userOption from '~/options/user';
-import { Command } from '~/types/Objects';
-import createRPS from '~/functions/rockpaperscissors';
+import { Command } from '~/lists/Objects';
+import createRPS from '~/util/fun/rockpaperscissors';
 
 export const rockpaperscissors: Command<'cached'> = {
   description: 'Play Rock Paper Scissors',

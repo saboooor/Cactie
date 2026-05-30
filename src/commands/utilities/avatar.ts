@@ -1,7 +1,7 @@
 import { GuildMember, MediaGalleryBuilder, ContainerBuilder, MessageFlags } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import userOption from '~/options/user';
-import { UserRound } from '~/misc/emoji';
+import { UserRound } from '~/dict/emoji';
 
 export const avatar: Command = {
   description: 'Get the avatar of a user',

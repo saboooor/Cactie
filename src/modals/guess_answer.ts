@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ButtonInteraction, ComponentType, ContainerComponent, ContainerBuilder, TextDisplayBuilder, type LabelModalData, type TextInputModalData, MessageFlags, ModalBuilder, SectionBuilder, TextInputStyle } from 'discord.js';
-import { CheckGreen, XRed, MessageCircleQuestionMark } from '~/misc/emoji';
-import { Modal } from '~/types/Objects';
+import { CheckGreen, XRed, MessageCircleQuestionMark } from '~/dict/emoji';
+import { Modal } from '~/lists/Objects';
 
 function addTextToTextDisplay(textDisplay: TextDisplayBuilder | undefined, content: string) {
   if (!textDisplay) return;

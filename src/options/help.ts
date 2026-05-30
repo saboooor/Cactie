@@ -1,5 +1,5 @@
 import { SlashCommandSubcommandBuilder, SlashCommandChannelOption, SlashCommandBuilder, SlashCommandStringOption } from 'discord.js';
-import * as helpdesc from '~/misc/helpdict';
+import * as helpdesc from '~/dict/helpdict';
 
 export default async function options(cmd: SlashCommandBuilder) {
   const categories = Object.keys(helpdesc) as (keyof typeof helpdesc)[];

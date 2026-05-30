@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import packageJSON from '../../../package.json';
 import { lastStarted } from '~/index';
 

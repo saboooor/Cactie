@@ -1,5 +1,5 @@
 import { ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import githubOptions from '~/options/github';
 
 function truncateString(str: string, num: number) {

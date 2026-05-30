@@ -1,7 +1,7 @@
 import { Collection, Message } from 'discord.js';
-import getMessages from '~/functions/messages/getMessages';
-import { CheckGreen, Loading } from '~/misc/emoji';
-import { Command } from '~/types/Objects';
+import getMessages from '~/util/messages/getMessages';
+import { CheckGreen, Loading } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
 import clearOptions from '~/options/clear';
 
 export const clear: Command<'cached'> = {

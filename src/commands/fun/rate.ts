@@ -1,6 +1,6 @@
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import someone from '~/options/someone';
-import ratings from '~/misc/rate.json';
+import ratings from '~/dict/rate.json';
 
 export const rate: Command = {
   description: 'Rate someone or something! Or yourself.',

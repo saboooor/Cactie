@@ -1,6 +1,6 @@
-import { Command } from '~/types/Objects';
-import action from '~/functions/action';
-import actions from '~/misc/actions.json';
+import { Command } from '~/lists/Objects';
+import action from '~/util/fun/action';
+import actions from '~/dict/actions.json';
 import someone from '~/options/someone';
 
 export const act: Command = {

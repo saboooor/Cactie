@@ -3,7 +3,7 @@ import { Client } from 'discord.js';
 import express, { type Request, type Response } from 'express';
 import bodyParser from 'body-parser';
 const app = express();
-import addVote from '~/functions/addVote';
+import addVote from '~/util/misc/addVote';
 
 export default (client: Client) => {
   if (!process.env.WEBHOOK_PORT) return logger.info('Skipped webhook server loading!');

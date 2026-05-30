@@ -1,10 +1,10 @@
-import { ContextMenuCommand } from '~/types/Objects';
+import { ContextMenuCommand } from '~/lists/Objects';
 
 export const context: ContextMenuCommand<'Message'> = {
   name: 'Get Raw Embed JSON',
   flags: ['Ephemeral'],
   type: 'Message',
-  async execute(interaction, client, message) {
+  async execute(interaction, _, message) {
     try {
       // Check if message has embeds
       if (!message.embeds.length) {

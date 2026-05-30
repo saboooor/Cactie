@@ -1,5 +1,5 @@
 import { Client, ContextMenuCommandInteraction, EmbedBuilder, GuildMember, Message, TextChannel } from 'discord.js';
-import checkPerms from '~/functions/checkPerms';
+import checkPerms from '~/util/misc/checkPerms';
 import contextcommands from '~/lists/context';
 
 export default async (client: Client<true>, interaction: ContextMenuCommandInteraction) => {

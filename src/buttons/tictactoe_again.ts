@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonStyle, ButtonInteraction, ContainerBuilder, MessageFlags } from 'discord.js';
-import { RefreshCw } from '~/misc/emoji';
-import { Button } from '~/types/Objects';
-import createTicTacToe from '~/functions/tictactoe';
+import { RefreshCw } from '~/dict/emoji';
+import { Button } from '~/lists/Objects';
+import createTicTacToe from '~/util/fun/tictactoe';
 
 export const tictactoe_again: Button<'cached'> = {
   execute: async (interaction, _, args) => {

@@ -1,10 +1,10 @@
-import { ContextMenuCommand } from '~/types/Objects';
+import { ContextMenuCommand } from '~/lists/Objects';
 
 export const context: ContextMenuCommand<'Message'> = {
   name: 'Get Raw Message',
   flags: ['Ephemeral'],
   type: 'Message',
-  async execute(interaction, client, message) {
+  async execute(interaction, _, message) {
     try {
       // Get content and check if it exists
       if (!message.content) {

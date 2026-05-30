@@ -1,7 +1,7 @@
 import { ContainerBuilder, MessageFlags } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import questionOption from '~/options/question';
-import ball from '~/misc/8ball.json';
+import ball from '~/dict/8ball.json';
 
 export const eightball: Command = {
   name: '8ball',

@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags } from 'discord.js';
-import { Empty } from '~/misc/emoji';
-import { Command } from '~/types/Objects';
+import { Empty } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
 import text from '~/options/text';
 
 export const buttons: Command = {

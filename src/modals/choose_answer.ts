@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerComponent, ContainerBuilder, TextDisplayBuilder, MessageFlags } from 'discord.js';
-import { MessageCircleQuestionMark } from '~/misc/emoji';
-import { Modal } from '~/types/Objects';
+import { MessageCircleQuestionMark } from '~/dict/emoji';
+import { Modal } from '~/lists/Objects';
 
 export const choose_answer: Modal<'cached'> = {
   defer: 'update',

@@ -3,7 +3,7 @@ import { readdirSync } from 'fs';
 import { Client, Partials, GatewayIntentBits, Message, CommandInteraction, ModalSubmitInteraction, InteractionResponse, ButtonInteraction, StringSelectMenuInteraction } from 'discord.js';
 import { createLogger, format, Logger, transports } from 'winston';
 import dotenv from 'dotenv';
-import { errorFunc } from './functions/error';
+import { errorFunc } from './util/misc/error';
 
 dotenv.config();
 

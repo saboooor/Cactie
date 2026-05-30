@@ -1,5 +1,5 @@
-import { CoinFlip } from '~/misc/emoji';
-import { Command } from '~/types/Objects';
+import { CoinFlip } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
 
 export const coinflip: Command = {
   description: 'Heads or Tails?',

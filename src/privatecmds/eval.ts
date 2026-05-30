@@ -1,4 +1,4 @@
-import { PrivateCommand } from '~/types/Objects';
+import { PrivateCommand } from '~/lists/Objects';
 import util from 'util';
 
 export const ec: PrivateCommand = {

@@ -1,5 +1,5 @@
 import { EmbedBuilder, AttachmentBuilder } from 'discord.js';
-import { PrivateCommand } from '~/types/Objects';
+import { PrivateCommand } from '~/lists/Objects';
 
 export const dm: PrivateCommand = {
   description: 'DM someone through Sova bot.',

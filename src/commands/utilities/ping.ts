@@ -1,7 +1,7 @@
 import { ButtonStyle, ComponentType, ButtonInteraction, ContainerBuilder, MessageFlags, TextDisplayBuilder, SectionBuilder } from 'discord.js';
-import { RefreshCw } from '~/misc/emoji';
-import { Command } from '~/types/Objects';
-import pong from '~/misc/pong.json';
+import { RefreshCw } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
+import pong from '~/dict/pong.json';
 
 export const ping: Command = {
   description: 'Pong!',

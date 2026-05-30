@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, StringSelectMenuInteraction, ContainerBuilder, MessageFlags, GuildMember } from 'discord.js';
-import actions from '~/misc/actions.json';
+import actions from '~/dict/actions.json';
 
 let current: number;
 

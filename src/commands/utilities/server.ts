@@ -1,26 +1,72 @@
-import { EmbedBuilder } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags } from 'discord.js';
+import { getUserInfo } from '~/util/misc/userinfo';
+import { UserRound } from '~/dict/emoji';
+import { Command } from '~/lists/Objects';
 
 export const server: Command<'cached'> = {
   description: 'Discord server info',
   cooldown: 10,
   async execute(interaction) {
     try {
-      const owner = await interaction.guild.fetchOwner();
-      const srvEmbed = new EmbedBuilder()
-        .setColor('Random')
-        .setTitle(interaction.guild.name)
-        .setThumbnail(interaction.guild.iconURL())
-        .setFooter({ text: `Owner: ${owner.user.username}`, iconURL: owner.user.avatarURL() ?? undefined });
-      if (interaction.guild.description) srvEmbed.addFields([{ name: 'Description', value: interaction.guild.description }]);
-      if (interaction.guild.vanityURLCode) srvEmbed.addFields([{ name: 'Vanity URL', value: `discord.gg/${interaction.guild.vanityURLCode}` }]);
-      const timestamp = Math.round(interaction.guild.createdTimestamp / 1000);
-      srvEmbed.addFields([
-        { name: 'Members', value: `${interaction.guild.memberCount}` },
-        { name: 'Channels', value: `${interaction.guild.channels.cache.size}` },
-        { name: 'Created At', value: `<t:${timestamp}>\n<t:${timestamp}:R>` },
-      ]);
-      await interaction.reply({ embeds: [srvEmbed] });
+      const guild = interaction.guild;
+      const owner = await guild.fetchOwner();
+      const createdTimestamp = Math.round(guild.createdTimestamp / 1000);
+
+      const ServerInfoContainer = new ContainerBuilder()
+        .addSectionComponents(section => section
+          .addTextDisplayComponents(
+            textDisplay => textDisplay
+              .setContent(`# ${guild.name}${
+                guild.description ? `\n${guild.description}` : ''
+              }${
+                guild.vanityURLCode ? `\n-# discord.gg/${guild.vanityURLCode}` : ''
+              }`),
+            textDisplay => textDisplay
+              .setContent(`**Created At**\n<t:${createdTimestamp}>\n<t:${createdTimestamp}:R>`),
+          )
+          .setThumbnailAccessory(thumbnail => thumbnail.setURL(
+            guild.iconURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
+          ),
+        )
+        .addSeparatorComponents(separator => separator)
+        .addSectionComponents(section => section
+          .addTextDisplayComponents(textDisplay => textDisplay
+            .setContent(`## Owner\n${owner}`),
+          )
+          .setThumbnailAccessory(thumbnail => thumbnail.setURL(
+            owner.displayAvatarURL() ?? 'https://cdn.discordapp.com/embed/avatars/0.png'),
+          ),
+        )
+        .addActionRowComponents(actionRow => actionRow
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId('user_info')
+              .setEmoji({ id: UserRound.id })
+              .setLabel('User Info')
+              .setStyle(ButtonStyle.Secondary),
+          ),
+        )
+        .addSeparatorComponents(separator => separator)
+        .addTextDisplayComponents(
+          textDisplay => textDisplay
+            .setContent(`**Members**\n${interaction.guild.memberCount}`),
+          textDisplay => textDisplay
+            .setContent(`**Channels**\n${interaction.guild.channels.cache.size}`),
+        );
+
+      const srvInfoMsg = await interaction.reply({ components: [ServerInfoContainer], flags: [MessageFlags.IsComponentsV2], allowedMentions: { parse: [] } });
+
+      const filter = (i: ButtonInteraction) => i.customId === 'user_info';
+      const collector = srvInfoMsg.createMessageComponentCollector<ComponentType.Button>({ filter, time: 60000 });
+      collector.on('collect', async (i) => {
+        getUserInfo(owner.user, i, owner);
+        collector.stop();
+      });
+
+      collector.on('end', async () => {
+        ServerInfoContainer.spliceComponents(3, 1);
+        await interaction.editReply({ components: [ServerInfoContainer], flags: [MessageFlags.IsComponentsV2], allowedMentions: { parse: [] } });
+      });
     }
     catch (err) { error(err, interaction); }
   },

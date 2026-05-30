@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import questionsOptions from '~/options/21q';
-import { MessageCircleQuestionMark } from '~/misc/emoji';
+import { MessageCircleQuestionMark } from '~/dict/emoji';
 
 export const questions: Command<'cached'> = {
   name: '21questions',

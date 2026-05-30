@@ -1,7 +1,7 @@
 import { type GuildTextBasedChannel } from 'discord.js';
-import { Command } from '~/types/Objects';
+import { Command } from '~/lists/Objects';
 import reactOptions from '~/options/react';
-import { CheckGreen } from '~/misc/emoji';
+import { CheckGreen } from '~/dict/emoji';
 
 export const react: Command<'cached'> = {
   description: 'Add a reaction to a message',
