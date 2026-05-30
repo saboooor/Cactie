@@ -1,13 +1,19 @@
-import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, MessageFlags, ModalBuilder, TextInputStyle, ButtonInteraction, ComponentType, ContainerBuilder, SlashCommandBuilder } from 'discord.js';
 import { Command } from '~/lists/Objects';
-import questionsOptions from '~/options/21q';
 import { MessageCircleQuestionMark } from '~/dict/emoji';
+import { UserOption } from '~/commonOptions/someone';
 
 export const questions: Command<'cached'> = {
   name: '21questions',
   description: 'Play 21 Questions',
   cooldown: 10,
-  options: questionsOptions,
+  cmd: new SlashCommandBuilder().addUserOption(option => UserOption(option).setRequired(true))
+    .addNumberOption(numberOption => numberOption
+      .setName('amount')
+      .setDescription('The amount of questions (Default is 21)')
+      .setMinValue(1)
+      .setMaxValue(25),
+    ),
   async execute(interaction) {
     const guesser = interaction.options.getMember('user')?.user;
     if (!guesser) {

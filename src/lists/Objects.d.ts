@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionsBitField, Message, Client, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction, ChatInputCommandInteraction, CacheType } from 'discord.js';
+import { SlashCommandOptionsOnlyBuilder, SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder, PermissionsBitField, Message, Client, ButtonInteraction, ModalSubmitInteraction, ContextMenuCommandInteraction, GuildMember, StringSelectMenuInteraction, AutocompleteInteraction, ChatInputCommandInteraction, CacheType, ContextMenuCommandBuilder } from 'discord.js';
 
 export class PrivateCommand {
   name?: string;
@@ -8,16 +8,15 @@ export class PrivateCommand {
 
 export class Command<Cached extends CacheType = CacheType> extends PrivateCommand {
   name?: string | string[];
+  cmd?: SlashCommandOptionsOnlyBuilder | SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
   flags?: InteractionDeferReplyOptions.flags;
   defer?: boolean;
   category?: string;
   cooldown?: number;
-  permission?: keyof typeof PermissionsBitField.Flags;
   channelPermissions?: (keyof typeof PermissionsBitField.Flags)[];
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   botChannelPerms?: (keyof typeof PermissionsBitField.Flags)[];
   dms?: boolean;
-  options?: (cmd: SlashCommandBuilder) => void | Promise<void>;
   autoComplete?: (client: Client<true>, interaction: AutocompleteInteraction<Cached>) => void | Promise<void>;
   execute: (interaction: ChatInputCommandInteraction<Cached>, client: Client<true>) => void | Promise<void>;
 }
@@ -28,12 +27,14 @@ export class LoadedCommand extends Command {
 
 export class ContextMenuCommand<T extends 'User' | 'Message'> {
   name: string;
-  permission?: keyof typeof PermissionsBitField.Flags;
+  cmd?: ContextMenuCommandBuilder;
   botPerms?: (keyof typeof PermissionsBitField.Flags)[];
   flags?: InteractionDeferReplyOptions.flags;
   defer?: boolean;
   type: T;
-  execute: (interaction: ContextMenuCommandInteraction<'cached'>, client: Client<true>, item: T extends 'User' ? GuildMember : Message<true>) => void | Promise<void>;
+  execute: (interaction: ContextMenuCommandInteraction<'cached'>, client: Client<true>,
+    item: T extends 'User' ? GuildMember : Message<true>
+  ) => void | Promise<void>;
 }
 
 export class Modal<Cached extends CacheType = CacheType> {

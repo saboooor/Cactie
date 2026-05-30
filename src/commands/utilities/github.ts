@@ -1,6 +1,5 @@
-import { ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { Command } from '~/lists/Objects';
-import githubOptions from '~/options/github';
 
 function truncateString(str: string, num: number) {
   if (str.length <= num) return str; return str.slice(0, num - 1) + '…';
@@ -8,7 +7,12 @@ function truncateString(str: string, num: number) {
 
 export const github: Command = {
   description: 'Get info on any GitHub repository',
-  options: githubOptions,
+  cmd: new SlashCommandBuilder().addStringOption(stringOption => stringOption
+    .setName('repo')
+    .setDescription('The GitHub Repository')
+    .setRequired(true)
+    .setAutocomplete(true),
+  ),
   async autoComplete(_, interaction) {
     const value = interaction.options.getFocused();
     if (!value) return interaction.respond([{ name: 'Invalid Query', value: 'saboooor/Sova' }]);

@@ -1,4 +1,5 @@
-import userOption from '~/options/user';
+import { SlashCommandBuilder } from 'discord.js';
+import { UserOption } from '~/commonOptions/someone';
 import { Command } from '~/lists/Objects';
 import createTicTacToe from '~/util/fun/tictactoe';
 
@@ -6,7 +7,7 @@ export const tictactoe: Command<'cached'> = {
   description: 'Play Tic Tac Toe',
   defer: true,
   cooldown: 10,
-  options: userOption,
+  cmd: new SlashCommandBuilder().addUserOption(option => UserOption(option).setRequired(true)),
   async execute(interaction) {
     const xUser = interaction.user;
     const oUser = interaction.options.getMember('user')?.user;

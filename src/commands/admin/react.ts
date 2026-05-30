@@ -1,15 +1,26 @@
-import { type GuildTextBasedChannel } from 'discord.js';
+import { PermissionsBitField, SlashCommandBuilder, type GuildTextBasedChannel } from 'discord.js';
 import { Command } from '~/lists/Objects';
-import reactOptions from '~/options/react';
 import { CheckGreen } from '~/dict/emoji';
 
 export const react: Command<'cached'> = {
   description: 'Add a reaction to a message',
   defer: true,
+  cmd: new SlashCommandBuilder()
+    .addStringOption(stringOption => stringOption
+      .setName('url')
+      .setDescription('The link to the message to add the reaction to')
+      .setRequired(true),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('emoji')
+      .setDescription('The emoji to react with')
+      .setRequired(true),
+    )
+    .setDefaultMemberPermissions(
+      PermissionsBitField.Flags.Administrator,
+    ),
   flags: ['Ephemeral'],
-  permission: 'Administrator',
   botChannelPerms: ['AddReactions'],
-  options: reactOptions,
   async execute(interaction, client) {
     try {
       const urlArg = interaction.options.getString('url', true);

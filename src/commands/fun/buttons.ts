@@ -1,16 +1,24 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { Empty } from '~/dict/emoji';
 import { Command } from '~/lists/Objects';
-import text from '~/options/text';
 
 export const buttons: Command = {
   description: 'ya just buttons idk',
   cooldown: 10,
-  options: text,
+  cmd: new SlashCommandBuilder()
+    .addStringOption(stringOption => stringOption
+      .setName('rows')
+      .setDescription('The number of rows')
+      .setRequired(true),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('columns')
+      .setDescription('The number of columns')
+      .setRequired(true),
+    ),
   async execute(interaction) {
-    const [rowsInput, columnsInput] = interaction.options.getString('text', true).split('x');
-    const rowsAmt = Number(rowsInput);
-    const columnsAmt = Number(columnsInput);
+    const rowsAmt = Number(interaction.options.getString('rows', true));
+    const columnsAmt = Number(interaction.options.getString('columns', true));
     if (isNaN(rowsAmt) || isNaN(columnsAmt) || rowsAmt == 0 || columnsAmt == 0) {
       error('Invalid Argument. Please specify the number of rows and columns (ex: 5x5)', interaction, true);
       return;

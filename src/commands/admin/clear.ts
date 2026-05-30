@@ -1,16 +1,34 @@
-import { Collection, Message } from 'discord.js';
+import { Collection, Message, SlashCommandBuilder } from 'discord.js';
 import getMessages from '~/util/messages/getMessages';
 import { CheckGreen, Loading } from '~/dict/emoji';
 import { Command } from '~/lists/Objects';
-import clearOptions from '~/options/clear';
 
 export const clear: Command<'cached'> = {
   description: 'Delete multiple messages at once',
   defer: true,
   flags: ['Ephemeral'],
+  cmd: new SlashCommandBuilder()
+    .addNumberOption(numberOption => numberOption
+      .setName('scope')
+      .setDescription('The amount of messages to select')
+      .setRequired(true)
+      .setMinValue(1)
+      .setMaxValue(1000),
+    )
+    .addUserOption(userOption => userOption
+      .setName('user')
+      .setDescription('Filters the messages to only messages authored by this user'),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('text')
+      .setDescription('Filters the messages to only messages that contain this content'),
+    )
+    .addStringOption(stringOption => stringOption
+      .setName('until')
+      .setDescription('Clears all messages sent after this message Id'),
+    ),
   channelPermissions: ['ManageMessages'],
   botChannelPerms: ['ManageMessages'],
-  options: clearOptions,
   async execute(interaction) {
     try {
       // Check if arg is a number and is more than 100

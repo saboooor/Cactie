@@ -1,11 +1,11 @@
-import { GuildMember, MediaGalleryBuilder, ContainerBuilder, MessageFlags } from 'discord.js';
+import { GuildMember, MediaGalleryBuilder, ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { Command } from '~/lists/Objects';
-import userOption from '~/options/user';
 import { UserRound } from '~/dict/emoji';
+import { UserOption } from '~/commonOptions/someone';
 
 export const avatar: Command = {
   description: 'Get the avatar of a user',
-  options: userOption,
+  cmd: new SlashCommandBuilder().addUserOption(UserOption),
   async execute(interaction) {
     try {
       let member = interaction.options.getMember('user') ?? interaction.member;

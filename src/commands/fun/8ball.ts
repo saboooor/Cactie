@@ -1,12 +1,17 @@
-import { ContainerBuilder, MessageFlags } from 'discord.js';
+import { ContainerBuilder, MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { Command } from '~/lists/Objects';
-import questionOption from '~/options/question';
 import ball from '~/dict/8ball.json';
 
 export const eightball: Command = {
   name: '8ball',
   description: 'Let the 8 ball decide your fate!',
-  options: questionOption,
+  cmd: new SlashCommandBuilder()
+    .addStringOption(stringOption => stringOption
+      .setName('question')
+      .setDescription('The question to ask')
+      .setRequired(true)
+      .setMaxLength(253),
+    ),
   async execute(interaction) {
     try {
       // Get random index and reply with the string in the array of the index

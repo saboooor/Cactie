@@ -1,4 +1,4 @@
-import { ApplicationCommandType, Client, ContextMenuCommandBuilder, PermissionsBitField, SlashCommandBuilder } from 'discord.js';
+import { ApplicationCommandType, Client, ContextMenuCommandBuilder, SlashCommandBuilder, type ApplicationCommandDataResolvable } from 'discord.js';
 import commands from '~/lists/cmds';
 import contextcommands from '~/lists/context';
 
@@ -8,28 +8,27 @@ const truncateString = (string: string, maxLength: number) =>
     : string;
 
 export default async (client: Client) =>{
-  const cmds: (SlashCommandBuilder | ContextMenuCommandBuilder)[] = [];
+  const cmds: ApplicationCommandDataResolvable[] = [];
 
   await Promise.all([
     ...commands.map(async (command) => {
       logger.info(`Loading slash command ${command.name}`);
 
-      const cmd = new SlashCommandBuilder()
+      // set name and description from command object
+      const cmd = (command.cmd ?? new SlashCommandBuilder())
         .setName(command.name)
-        .setDescription(truncateString(command.description, 99))
-        .setDMPermission(command.category != 'admin' && command.category != 'tickets');
-      if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
-      if (command.options) command.options(cmd);
+        .setDescription(truncateString(command.description, 99));
+
       cmds.push(cmd);
     }),
     ...contextcommands.map(async (command) => {
       logger.info(`Loading context command ${command.name}`);
 
-      const cmd = new ContextMenuCommandBuilder()
-        .setName(command.name!)
-        .setType(ApplicationCommandType[command.type])
-        .setDMPermission(false);
-      if (command.permission) cmd.setDefaultMemberPermissions(PermissionsBitField.Flags[command.permission]);
+      // set name and type from command object
+      const cmd = (command.cmd ?? new ContextMenuCommandBuilder())
+        .setName(command.name)
+        .setType(ApplicationCommandType[command.type]);
+
       cmds.push(cmd);
     }),
   ]);
