@@ -72,7 +72,7 @@ export const help: Command = {
         // filter the commands list to only commands in that category and create an array of their names and descriptions
         const commandList = commands.filter(c => c.category == subcmd);
         const array: string[] = commandList.map(c => {
-          return `**${c.name}**${c.description ? `\n${c.description}` : ''}${c.permission ? `\n-# *Permission: ${c.permission}*` : ''}`;
+          return `**${c.name}**${c.description ? `\n${c.description}` : ''}`;
         });
         HelpContainer.spliceComponents(2, 1, new TextDisplayBuilder()
           .setContent(`**${category.name.toUpperCase()}**\n${category.description}\n-# [] = Optional\n-# <> = Required\n\n${array.join('\n')}`),

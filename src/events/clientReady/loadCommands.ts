@@ -35,7 +35,6 @@ export default async (client: Client) =>{
       cmds.push(cmd);
     }),
   ]);
-  console.log(cmds.map(c => c.name).join(', '));
 
   await client.application?.commands.set(cmds, '811354612547190794');
   logger.info(`${cmds.length} slash/context commands loaded`);

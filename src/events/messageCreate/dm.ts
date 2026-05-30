@@ -110,14 +110,19 @@ export default async (client: Client, message: Message<false>) => {
       }
     }
 
-    sendAs(thread, {
-      content: message.content,
-      files,
-      embeds: message.embeds,
-      components: message.components,
-      username: message.author.username,
-      avatarURL: message.author.avatarURL() ?? undefined,
-    });
+    try {
+      await sendAs(thread, {
+        content: message.content,
+        files,
+        embeds: message.embeds,
+        components: message.components,
+        username: message.author.username,
+        avatarURL: message.author.avatarURL() ?? undefined,
+      });
+    }
+    catch (err) {
+      logger.error(`Failed to send message ${message.id} from DM to thread for user ${recipient.id}: ${err}`);
+    }
   }
   // If channel is a thread in the forum, send the message to the user in the DMs
   else if (message.channel.isThread() && message.channel.parent?.id == forumId) {
